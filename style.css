@@ -25,6 +25,77 @@ body {
             transition: 0.3s;
         }
 
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #007BFF;
+        }
+
+        .section-content p, ul {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #007bff;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-item {
+            padding: 10px 20px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            left: 100%;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #007bff;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            right: 100%;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #007bff transparent transparent;
+        }
+
         .sidebar a:hover {
             background-color: #495057;
         }
