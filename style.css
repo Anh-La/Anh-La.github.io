@@ -1,4 +1,4 @@
-// General Style
+/* General Style*/
 body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background-color: #f8f9fa;
@@ -42,7 +42,7 @@ body {
             list-style-type: square;
             padding-left: 20px;
         }
-// Timeline Style
+/* Timeline Style*/
         .timeline {
             position: relative;
             max-width: 100%;
@@ -96,7 +96,7 @@ body {
             border-width: 10px 10px 10px 0;
             border-color: transparent #007bff transparent transparent;
         }
-// Sidebar Style
+/* Sidebar Style*/
         .sidebar a:hover {
             background-color: #495057;
         }
@@ -137,7 +137,7 @@ body {
         .card a:hover {
             text-decoration: underline;
         }
-// Form Style
+/* Form Style*/
         .form-container {
             max-width: 600px;
             margin: 0 auto;
