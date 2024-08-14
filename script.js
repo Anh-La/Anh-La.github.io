@@ -54,3 +54,75 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the chart context
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Create the chart
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // Labels will be set dynamically
+            datasets: [{
+                label: 'Projected Savings',
+                data: [], // Data will be set dynamically
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Update chart and JSON output
+    function updateChart() {
+        // Get form values
+        const startingAmount = parseFloat(document.getElementById('starting_amount').value) || 0;
+        const returnRate = parseFloat(document.getElementById('return_rate').value) || 0;
+        const numberOfPeriods = parseInt(document.getElementById('number_of_periods').value) || 0;
+        const annualAdditionalContribution = parseFloat(document.getElementById('annual_additional_contribution').value) || 0;
+        const frequency = document.getElementById('frequency').value;
+        const ExtraPerPeriod = document.getElementById('ExtraPerPeriod').value;
+        
+        // Calculate savings data
+        const labels = [];
+        const data = [];
+        let totalAmount = startingAmount;
+
+        for (let i = 0; i <= numberOfPeriods; i++) {
+            labels.push(i);
+            data.push(totalAmount.toFixed(2));
+            
+            // Update totalAmount
+            totalAmount = totalAmount * (1 + returnRate / 100) + annualAdditionalContribution;
+        }
+
+        // Update chart
+        myChart.data.labels = labels;
+        myChart.data.datasets[0].data = data;
+        myChart.update();
+
+        // Update JSON output
+        const jsonOutput = {
+            labels: labels,
+            data: data
+        };
+        document.getElementById('jsonOutput').textContent = JSON.stringify(jsonOutput, null, 2);
+    }
+
+    // Initialize chart and JSON output
+    updateChart();
+
+    // Add event listeners to form elements
+    document.getElementById('dataForm').addEventListener('input', updateChart);
+});
