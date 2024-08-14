@@ -38,6 +38,11 @@
             background-color: #495057;
         }
 
+        .sidebar .submenu a {
+            padding-left: 40px; /* Indent submenu items */
+            font-size: 16px;
+        }
+
         .content {
             padding: 20px;
             max-width: 1200px;
@@ -75,7 +80,12 @@
 
     <div class="sidebar">
         <a href="#about">About</a>
-        <a href="#calculators">Calculators</a>
+        <a href="#calculators" data-bs-toggle="collapse" data-bs-target="#calculatorsSubMenu" aria-expanded="false" aria-controls="calculatorsSubMenu">Calculators &#9662;</a>
+        <div class="collapse submenu" id="calculatorsSubMenu">
+            <a href="#project1">Project 1</a>
+            <a href="#project2">Project 2</a>
+            <!-- Add more projects as needed -->
+        </div>
     </div>
 
     <div class="content container">
@@ -84,7 +94,7 @@
             <div class="col">
                 <div class="card h-100">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Project 1</h5>
+                        <h5 class="card-title" id="project1">Project 1</h5>
                         <p class="card-text">Short description of project 1.</p>
                         <a href="#" class="stretched-link">View Project</a>
                     </div>
@@ -93,7 +103,7 @@
             <div class="col">
                 <div class="card h-100">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Project 2</h5>
+                        <h5 class="card-title" id="project2">Project 2</h5>
                         <p class="card-text">Short description of project 2.</p>
                         <a href="#" class="stretched-link">View Project</a>
                     </div>
