@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Details Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #faf0f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            color: #2c2c54;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c2c54;
+        }
+        .form-group input[type="text"], 
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group .options {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group .options button {
+            width: 30%;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c2c54;
+        }
+        .form-group .options button.selected {
+            border: 2px solid #e83f78;
+            color: #e83f78;
+        }
+        .form-group .balloon-info {
+            display: flex;
+            align-items: center;
+        }
+        .form-group .balloon-info span {
+            margin-left: 10px;
+            color: #2c2c54;
+        }
+        .form-group .interest-rate {
+            display: flex;
+            align-items: center;
+        }
+        .form-group .interest-rate input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .form-group .rate-type {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group .rate-type button {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Your loan details</h2>
+    
+    <div class="form-group">
+        <label for="loan-amount">Loan amount</label>
+        <input type="text" id="loan-amount" name="loan_amount" placeholder="$ 45,000">
+    </div>
+
+    <div class="form-group">
+        <label for="vehicle-price">Vehicle purchase price</label>
+        <input type="text" id="vehicle-price" name="vehicle_price" placeholder="$ 45,000">
+    </div>
+
+    <div class="form-group">
+        <label>Reason for loan</label>
+        <div class="options">
+            <button type="button" class="selected">Buying new</button>
+            <button type="button">Buying used</button>
+            <button type="button">Refinance</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Loan term</label>
+        <div class="options">
+            <button type="button">3 yr</button>
+            <button type="button">4 yr</button>
+            <button type="button">5 yr</button>
+            <button type="button">6 yr</button>
+            <button type="button" class="selected">7 yr</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="interest-rate">Interest rate</label>
+        <div class="interest-rate">
+            <input type="text" id="interest-rate" name="interest_rate" placeholder="7.19%">
+            <div class="rate-type">
+                <button type="button" class="selected">Fixed</button>
+                <button type="button">Variable</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="initial-deposit">Initial deposit / trade in</label>
+        <input type="text" id="initial-deposit" name="initial_deposit" placeholder="$ 0">
+    </div>
+
+    <div class="form-group">
+        <label for="balloon-repayment">Balloon repayment</label>
+        <div class="balloon-info">
+            <input type="text" id="balloon-repayment" name="balloon_repayment" placeholder="0%">
+            <span>?</span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
