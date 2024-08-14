@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saving Calculator</title>
+    
+    <!-- ================================
+    Start CSS
+    ================================= -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!-- ================================
+    End CSS
+    ================================= -->
+
+    <!-- ================================
+    Start Scripts
+    ================================= -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <!-- ================================
+    End Scripts
+    ================================= -->
+
+    {% block extend_header %}{% endblock %}
+    {% block extend_footer %}{% endblock %}
+</head>
+<body>
+    <!-- Top nav bar -->
+    <div>
+        <!-- Include navbar HTML -->
+        <!-- Nav bar content here -->
+    </div>
+    <br>
+    
+    <!-- Sidebar and content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'index' %}">
+                                <i class="bi bi-house-door me-2"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'calculator' %}">
+                                <i class="bi bi-calculator me-2"></i>
+                                Calculator
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'car_loan' %}">
+                                <i class="bi bi-car-front me-2"></i>
+                                Car Loan
+                            </a>
+                        </li>
+                        <!-- Add more sidebar items as needed -->
+                    </ul>
+                </div>
+            </nav>
+            
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
+                <div id="results">
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="p-3 text-primary-emphasis text-center bg-primary-subtle border border-primary-subtle rounded-3">
+                            <h2>Saving Calculator</h2>
+                        </div>
+                        <!-- Section 1: general info -->
+                        <div class="text-center accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <i class="bi bi-info-circle me-2" style="font-size: 1.5rem;"></i>
+                                    <span>General Information</span>
+                                </button>            
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">{{ html_content|safe }}</div>
+                            </div>
+                        </div>
+                        <!-- Section 2: assumptions -->
+                        <!-- Include assumptions content here -->
+                    </div>
+                    <br>
+                    
+                    <!-- Calculator -->
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="p-3 border bg-light">
+                                <!-- Form -->
+                                <form id="dataForm" method="POST">    
+                                    {% csrf_token %}        
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <!-- Field for Initial Deposit -->
+                                            <div class="col-6">
+                                                <label for="starting_amount">Deposit:</label>
+                                                <input onchange="updateChart()" type="number" id="starting_amount" name="starting_amount" class="form-control">
+                                                <input onchange="updateChart()" type="range" id="starting_amount_range" name="starting_amount_range" min="0" max="1000000" value="0" class="form-range">
+                                            </div>
+                                            <!-- Field for expected return rate -->
+                                            <div class="col-6">
+                                                <label for="return_rate">Rate of Return</label>
+                                                <input onchange="updateChart()" type="number" id="return_rate" name="return_rate" class="form-control">
+                                                <input onchange="updateChart()" type="range" id="return_rate_range" name="return_rate" min="0" max="100" value="0" class="form-range">
+                                            </div>                   
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <!-- Field for Number of years -->
+                                            <div class="col-6">
+                                                <label for="number_of_periods">How long?</label>
+                                                <input type="number" id="number_of_periods" name="number_of_periods" class="form-control">
+                                                <input type="range" id="number_of_periods_range" name="number_of_periods_range" min="0" max="1000" value="0" class="form-range">
+                                            </div>  
+                                            <!-- Frequency dropdown -->
+                                            <div class="col-6">
+                                                <label for="frequency">Period</label>
+                                                <select id="frequency" name="frequency" class="form-select form-select-sm">
+                                                    <option value="yearly">Yearly</option>
+                                                    <option value="monthly">Monthly</option>
+                                                    <option value="fortnightly">Fortnightly</option>
+                                                    <option value="weekly">Weekly</option>
+                                                    <option value="daily">Daily</option>
+                                                </select>  
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <!-- Additional deposit -->
+                                            <div class="col-6">
+                                                <label for="annual_additional_contribution">Extra Saving</label>
+                                                <input onchange="updateChart()" type="number" id="annual_additional_contribution" name="annual_additional_contribution" class="form-control">
+                                                <input onchange="updateChart()" type="range" id="annual_additional_contribution_range" name="annual_additional_contribution_range" min="0" value="0" max="100000" class="form-range">
+                                            </div>
+                                            <!-- Frequency dropdown -->
+                                            <div class="col-6">
+                                                <label for="ExtraPerPeriod">Frequency</label>
+                                                <select id="ExtraPerPeriod" name="ExtraPerPeriod" class="form-select form-select-sm">
+                                                    <option value="yearly">Yearly</option>
+                                                    <option value="monthly">Monthly</option>
+                                                    <option value="fortnightly">Fortnightly</option>
+                                                    <option value="weekly">Weekly</option>
+                                                    <option value="daily">Daily</option>
+                                                </select>  
+                                            </div>    
+                                        </div>
+                                    </div>  
+                                </form>
+                                
+                                <script>
+                                    // Customise form
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var initialAmountInput = document.getElementById('starting_amount');
+                                        var initialRangeInput = document.getElementById('starting_amount_range');
+                                        var periodInput = document.getElementById('number_of_periods');
+                                        var periodRangeInput = document.getElementById('number_of_periods_range');
+                                        var rateInput = document.getElementById('return_rate');
+                                        var rateRangeInput = document.getElementById('return_rate_range');
+                                        var additionalAmountInput = document.getElementById('annual_additional_contribution');
+                                        var additionalRangeInput = document.getElementById('annual_additional_contribution_range');
+                                        
+                                        // Match value field with value range
+                                        initialAmountInput.addEventListener('input', function() {
+                                            initialRangeInput.value = initialAmountInput.value;
+                                        });
+
+                                        initialRangeInput.addEventListener('input', function() {
+                                            initialAmountInput.value = initialRangeInput.value;
+                                        });
+
+                                        periodInput.addEventListener('input', function() {
+                                            periodRangeInput.value = periodInput.value;
+                                        });
+
+                                        periodRangeInput.addEventListener('input', function() {
+                                            periodInput.value = periodRangeInput.value;
+                                        });
+
+                                        rateInput.addEventListener('input', function() {
+                                            rateRangeInput.value = rateInput.value;
+                                        });
+
+                                        rateRangeInput.addEventListener('input', function() {
+                                            rateInput.value = rateRangeInput.value;
+                                        });
+
+                                        additionalAmountInput.addEventListener('input', function() {
+                                            additionalRangeInput.value = additionalAmountInput.value;
+                                        });
+
+                                        additionalRangeInput.addEventListener('input', function() {
+                                            additionalAmountInput.value = additionalRangeInput.value;
+                                        });
+
+                                        // Update range backgrounds on load
+                                        [initialRangeInput, periodRangeInput, rateRangeInput, additionalRangeInput].forEach(function(rangeInput) {
+                                            updateRangeBackground(rangeInput);
+                                        });
+
+                                        // Update range backgrounds on input
+                                        [initialRangeInput, periodRangeInput, rateRangeInput, additionalRangeInput].forEach(function(rangeInput) {
+                                            rangeInput.addEventListener('input', function() {
+                                                updateRangeBackground(rangeInput);
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-9">
+                            <!-- Chart -->
+                            <div class="p-3 border bg-light">
+                                <div class="chart-container">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>
+                            <!-- JSON data -->
+                            <div class="p-3 border bg-light">
+                                <div class="json-data">
+                                    <pre id="jsonOutput"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                
+                <!-- Bottom footer -->
+                <div>
+                    <!-- Include footer HTML -->
+                    <!-- Footer content here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the chart context
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // Create the chart
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Labels will be set dynamically
+                    datasets: [{
+                        label: 'Projected Savings',
+                        data: [], // Data will be set dynamically
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Update chart and JSON output
+            function updateChart() {
+                // Get form values
+                const startingAmount = parseFloat(document.getElementById('starting_amount').value) || 0;
+                const returnRate = parseFloat(document.getElementById('return_rate').value) || 0;
+                const numberOfPeriods = parseInt(document.getElementById('number_of_periods').value) || 0;
+                const annualAdditionalContribution = parseFloat(document.getElementById('annual_additional_contribution').value) || 0;
+                const frequency = document.getElementById('frequency').value;
+                const ExtraPerPeriod = document.getElementById('ExtraPerPeriod').value;
+                
+                // Calculate savings data
+                const labels = [];
+                const data = [];
+                let totalAmount = startingAmount;
+
+                for (let i = 0; i <= numberOfPeriods; i++) {
+                    labels.push(i);
+                    data.push(totalAmount.toFixed(2));
+                    
+                    // Update totalAmount
+                    totalAmount = totalAmount * (1 + returnRate / 100) + annualAdditionalContribution;
+                }
+
+                // Update chart
+                myChart.data.labels = labels;
+                myChart.data.datasets[0].data = data;
+                myChart.update();
+
+                // Update JSON output
+                const jsonOutput = {
+                    labels: labels,
+                    data: data
+                };
+                document.getElementById('jsonOutput').textContent = JSON.stringify(jsonOutput, null, 2);
+            }
+
+            // Initialize chart and JSON output
+            updateChart();
+
+            // Add event listeners to form elements
+            document.getElementById('dataForm').addEventListener('input', updateChart);
+        });
+    </script>
+</body>
+</html>
