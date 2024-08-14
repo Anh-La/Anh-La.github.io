@@ -27,37 +27,19 @@
     ================================= -->
 </head>
 <body>
-
-    
     <!-- Sidebar and content -->
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                <div class="position-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'index' %}">
-                                <i class="bi bi-house-door me-2"></i>
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'calculator' %}">
-                                <i class="bi bi-calculator me-2"></i>
-                                Calculator
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'car_loan' %}">
-                                <i class="bi bi-car-front me-2"></i>
-                                Car Loan
-                            </a>
-                        </li>
-                        <!-- Add more sidebar items as needed -->
-                    </ul>
-                </div>
-            </nav>
+    <div class="sidebar">
+        <a href="about">About</a>
+        <a href="" data-bs-toggle="collapse" data-bs-target="#calculatorsSubMenu" aria-expanded="false" aria-controls="calculatorsSubMenu">Calculators &#9662;</a>
+        <div class="collapse submenu" id="calculatorsSubMenu">
+            <a href="interest_saving">Interest Saving</a>
+            <a href="#project2">Car Loan</a>
+            <!-- Add more projects as needed -->
+        </div>
+    </div>
             
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
