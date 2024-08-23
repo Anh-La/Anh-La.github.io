@@ -126,3 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners to form elements
     document.getElementById('dataForm').addEventListener('input', updateChart);
 });
+
+(function () {
+  'use strict'
+  feather.replace()
+})()
