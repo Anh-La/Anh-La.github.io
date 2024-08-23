@@ -26,6 +26,43 @@ body {
             transition: 0.3s;
         }
 
+body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/* Sidebar styles */
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.sidebar {
+  background-color: #f8f9fa;
+}
+
+.nav-link.active {
+  background-color: #0d6efd;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  transition: color 0.3s;
+}
+
+.sidebar .nav-link:hover {
+  color: #007bff;
+}
+
+
         .section-title {
             font-size: 1.5rem;
             font-weight: bold;
