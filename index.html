@@ -10,17 +10,66 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-
-    <div class="sidebar">
+<!-- Sidebar-->
+    <!--div class="sidebar">
         <a href="about">About</a>
         <a href="" data-bs-toggle="collapse" data-bs-target="#calculatorsSubMenu" aria-expanded="false" aria-controls="calculatorsSubMenu">Calculators &#9662;</a>
         <div class="collapse submenu" id="calculatorsSubMenu">
             <a href="interest_saving">Interest Saving</a>
             <a href="car_loan">Car Loan</a>
-            <!-- Add more projects as needed -->
+            <!-- Add more projects as needed>
         </div>
+    </div-->
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+        <span class="fs-4">Sidebar</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            Customers
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+      </div>
     </div>
 
+
+    
     <div class="content container">
         <h1 class="text-center mb-4">Demo of my projects</h1>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -48,6 +97,6 @@
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
