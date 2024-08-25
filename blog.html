@@ -5,40 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Blog Post</title>
+    <title>Blog Post - Start Bootstrap Template</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="styles.css" rel="stylesheet" />
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        #wrapper {
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .container-fluid, .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .row {
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
-    <div class="d-flex flex-column" id="wrapper">
+    <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
         <div class="border-end bg-dark" id="sidebar-wrapper">
             <div class="sidebar-heading border-bottom bg-secondary text-white">Anh La</div>
@@ -52,7 +26,7 @@
             </div>
         </div>
         <!-- Page content wrapper-->
-        <div id="page-content-wrapper" class="flex-fill">
+        <div id="page-content-wrapper">
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
                 <div class="container-fluid">
@@ -61,15 +35,23 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li class="nav-item active"><a class="nav-link text-white" href="index">Home</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="blogHome">Blog</a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="#!">Contact</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <div class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-white" href="#!">Action</a>
+                                    <a class="dropdown-item text-white" href="#!">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-white" href="#!">Something else here</a>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </nav>
             <!-- Page content-->
             <div class="container mt-5">
-                <div class="row justify-content-center">
+                <div class="row">
                     <div class="col-lg-8">
                         <!-- Post content-->
                         <article>
@@ -88,7 +70,7 @@
                             <!-- Post content-->
                             <section class="mb-5">
                                 <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
-                                <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether or not the life became intelligent is a different question, and we'll see if we find that.</p>
+                                <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
                                 <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
                                 <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
                                 <p class="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them with people who might be interested.</p>
@@ -137,6 +119,46 @@
                                 </div>
                             </div>
                         </section>
+                    </div>
+                    <!-- Side widgets-->
+                    <div class="col-lg-4">
+                        <!-- Search widget-->
+                        <div class="card mb-4">
+                            <div class="card-header">Search</div>
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                    <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Categories widget-->
+                        <div class="card mb-4">
+                            <div class="card-header">Categories</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="list-unstyled mb-0">
+                                            <li><a href="#!">Web Design</a></li>
+                                            <li><a href="#!">HTML</a></li>
+                                            <li><a href="#!">Freebies</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="list-unstyled mb-0">
+                                            <li><a href="#!">JavaScript</a></li>
+                                            <li><a href="#!">CSS</a></li>
+                                            <li><a href="#!">Tutorials</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Side widget-->
+                        <div class="card mb-4">
+                            <div class="card-header">Side Widget</div>
+                            <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                        </div>
                     </div>
                 </div>
             </div>
