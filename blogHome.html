@@ -10,9 +10,35 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="styles.css" rel="stylesheet" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #wrapper {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .container-fluid, .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .row {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
+    <div class="d-flex flex-column" id="wrapper">
         <!-- Sidebar-->
         <div class="border-end bg-dark" id="sidebar-wrapper">
             <div class="sidebar-heading border-bottom bg-secondary text-white">Anh La</div>
@@ -26,7 +52,7 @@
             </div>
         </div>
         <!-- Page content wrapper-->
-        <div id="page-content-wrapper">
+        <div id="page-content-wrapper" class="flex-fill">
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
                 <div class="container-fluid">
@@ -60,7 +86,7 @@
             </header>
             <!-- Page content-->
             <div class="container-fluid">
-                <div class="row">
+                <div class="row justify-content-center">
                     <!-- Blog entries-->
                     <div class="col-lg-8">
                         <!-- Featured blog post-->
