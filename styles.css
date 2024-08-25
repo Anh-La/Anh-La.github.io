@@ -3747,6 +3747,9 @@ textarea.form-control-lg {
   --bs-navbar-toggler-focus-width: 0.25rem;
   --bs-navbar-toggler-transition: box-shadow 0.15s ease-in-out;
   position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1020;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -10829,8 +10832,13 @@ textarea.form-control-lg {
 }
 
 #sidebar-wrapper {
-  position: fixed-top;
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  z-index: 1000;
+  overflow-y: auto;
   margin-left: -15rem;
   transition: margin 0.25s ease-out;
 }
@@ -10846,7 +10854,6 @@ textarea.form-control-lg {
 
 #page-content-wrapper {
   min-width: 100vw;
-  padding-top: 56px; /* Adjust padding to avoid content being hidden under the sticky navbar */
 }
 
 body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
