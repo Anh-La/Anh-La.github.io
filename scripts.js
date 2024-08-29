@@ -11,11 +11,16 @@ window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
+    
+    // Apply the sb-sidenav-toggled class by default
+    document.body.classList.add('sb-sidenav-toggled');
+    
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
+        // Persist sidebar toggle between refreshes
+        if (localStorage.getItem('sb|sidebar-toggle') === 'false') {
+            document.body.classList.remove('sb-sidenav-toggled');
+        }
+
         sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
