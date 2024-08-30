@@ -28,8 +28,11 @@
                 <div class="collapse navbar-collapse" id="navbarText">
                     <!-- Personalised text-->
                     <span class="navbar-text">
-                    <span class="fs-4">G'day! This is Anh.</span>
-                  </span>
+                        <form name="text_Marquee">
+                           <input name="text" class="form-control"
+                             value=" Welcome to my personal pages..... Do you have a source code, articles, tutorials, web links, and books to share? You can write your own content here. You can even have your own blog.... Submit now!!! "  disabled />
+                        </form>
+                      </span>
                     
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -321,5 +324,24 @@
         <script src="chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
+        <script>
+            /*
+            Text box marquee,
+            You can used/modified if credit
+            line is retained
+            */
+            speed_Scrolling = 150
+            characters_Scroll = 1
+         
+            function scrolling_Text() {
+                window.setTimeout('scrolling_Text()', speed_Scrolling);
+         
+                var msg = document.text_Marquee.text.value;
+                document.text_Marquee.text.value =
+                    msg.substring(characters_Scroll) +
+                    msg.substring(0, characters_Scroll);
+            }
+            scrolling_Text()
+        </script>
     </body>
 </html>
