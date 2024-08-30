@@ -21,6 +21,26 @@ function scrolling_Text() {
 }
 scrolling_Text()
 
+// hard coded pass
+function validateLogin() {
+            // Hard-coded password
+            const hardCodedPassword = "Admin12345";
+
+            // Get the value entered in the password field
+            const enteredPassword = document.getElementById("inputPassword").value;
+
+            // Validate the password
+            if (enteredPassword === hardCodedPassword) {
+                // Password is correct, redirect to index.html
+                window.location.href = "index.html";
+                return false; // Prevent form submission
+            } else {
+                // Password is incorrect, show an alert
+                alert("Incorrect password. Please try again.");
+                return false; // Prevent form submission
+            }
+        }
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
