@@ -23,33 +23,47 @@ scrolling_Text()
 
 // login
 function validateLogin() {
-    // Hard-coded password
     const hardCodedPassword = "Admin12345";
-
-    // Get the value entered in the email and password fields
     const enteredEmail = document.getElementById("inputEmail").value;
     const enteredPassword = document.getElementById("inputPassword").value;
 
-    // Regex pattern for validating email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Validate the email
     if (!emailPattern.test(enteredEmail)) {
         alert("Please enter a valid email address.");
-        return false; // Prevent form submission
+        return false;
     }
 
-    // Validate the password
     if (enteredPassword === hardCodedPassword) {
-        // Password is correct, redirect to index.html
+        // Set authorization in localStorage
+        localStorage.setItem('isAuthorized', 'true');
         window.location.href = "index.html";
-        return false; // Prevent form submission
+        return false;
     } else {
-        // Password is incorrect, show an alert
         alert("Incorrect password. Please try again.");
-        return false; // Prevent form submission
+        return false;
     }
 }
+
+// Check authorization status and show/hide sidebar items accordingly
+function checkAuthorization() {
+    const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
+
+    if (!isAuthorized) {
+        const authorizedElements = document.querySelectorAll('[data-authorized="true"]');
+        authorizedElements.forEach(el => el.style.display = 'none');
+    }
+}
+
+// Run authorization check on page load
+document.addEventListener('DOMContentLoaded', checkAuthorization);
+
+//logout
+function logout() {
+    localStorage.removeItem('isAuthorized');
+    window.location.href = "login.html";
+}
+
 
 window.addEventListener('DOMContentLoaded', event => {
 
