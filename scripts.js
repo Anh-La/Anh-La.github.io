@@ -21,25 +21,35 @@ function scrolling_Text() {
 }
 scrolling_Text()
 
-// hard coded pass
+// login
 function validateLogin() {
-            // Hard-coded password
-            const hardCodedPassword = "Admin12345";
+    // Hard-coded password
+    const hardCodedPassword = "Admin12345";
 
-            // Get the value entered in the password field
-            const enteredPassword = document.getElementById("inputPassword").value;
+    // Get the value entered in the email and password fields
+    const enteredEmail = document.getElementById("inputEmail").value;
+    const enteredPassword = document.getElementById("inputPassword").value;
 
-            // Validate the password
-            if (enteredPassword === hardCodedPassword) {
-                // Password is correct, redirect to index.html
-                window.location.href = "index.html";
-                return false; // Prevent form submission
-            } else {
-                // Password is incorrect, show an alert
-                alert("Incorrect password. Please try again.");
-                return false; // Prevent form submission
-            }
-        }
+    // Regex pattern for validating email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate the email
+    if (!emailPattern.test(enteredEmail)) {
+        alert("Please enter a valid email address.");
+        return false; // Prevent form submission
+    }
+
+    // Validate the password
+    if (enteredPassword === hardCodedPassword) {
+        // Password is correct, redirect to index.html
+        window.location.href = "index.html";
+        return false; // Prevent form submission
+    } else {
+        // Password is incorrect, show an alert
+        alert("Incorrect password. Please try again.");
+        return false; // Prevent form submission
+    }
+}
 
 window.addEventListener('DOMContentLoaded', event => {
 
