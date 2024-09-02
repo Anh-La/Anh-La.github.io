@@ -10,6 +10,11 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+        .hidden {
+            display: none;
+        }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
@@ -42,9 +47,10 @@
               </div>   
         </nav>
         <!-- Sidebar-->
-        <div id="layoutSidenav"> <!-- Restricted section for authorized users -->
-            <div id="layoutSidenav_nav" data-authorized="true">
-                <nav class="sb-sidenav accordion sb-sidenav-primary" id="sidenavAccordion">
+        <div id="layoutSidenav"> 
+            <!-- Restricted section for authorized users -->
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-primary" id="sidenavAccordion" data-authorized="true">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
