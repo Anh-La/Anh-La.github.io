@@ -47,9 +47,9 @@
               </div>   
         </nav>
         <!-- Sidebar-->
-        <div id="layoutSidenav"> 
+        <div id="layoutSidenav" class="hidden"> 
             <!-- Restricted section for authorized users -->
-            <div id="layoutSidenav_nav" class="hidden">
+            <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-primary" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
@@ -138,7 +138,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Anh La
+                        Admin
                     </div>
                 </nav>
             </div>
@@ -346,5 +346,19 @@
         <script src="chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
+        <script>
+            // Simulate an authentication check
+            var isAuthenticated = false; // Change this to true if the user is authenticated
+    
+            // Get the sidenav element
+            var sidenav = document.getElementById('layoutSidenav_nav');
+    
+            // Show or hide the sidenav based on authentication status
+            if (isAuthenticated) {
+                sidenav.classList.remove('hidden');
+            } else {
+                sidenav.classList.add('hidden');
+            }
+        </script>
     </body>
 </html>
