@@ -46,18 +46,6 @@ function validateLogin() {
 }
 
 // Check authorization status and show/hide sidebar items accordingly
-// Simulate an authentication check
-        var isAuthenticated = false; // Change this to true if the user is authenticated
-
-        // Get the sidenav element
-        var sidenav = document.getElementById('layoutSidenav_nav');
-
-        // Show or hide the sidenav based on authentication status
-        if (isAuthenticated) {
-            sidenav.classList.remove('hidden');
-        } else {
-            sidenav.classList.add('hidden');
-        }
 
 function checkAuthorization() {
     const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
