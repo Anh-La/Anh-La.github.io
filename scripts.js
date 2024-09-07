@@ -21,30 +21,6 @@ function scrolling_Text() {
 }
 scrolling_Text()
 
-// login
-function validateLogin() {
-    const hardCodedPassword = "Admin12345";
-    const enteredEmail = document.getElementById("inputEmail").value;
-    const enteredPassword = document.getElementById("inputPassword").value;
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(enteredEmail)) {
-        alert("Please enter a valid email address.");
-        return false;
-    }
-
-    if (enteredPassword === hardCodedPassword) {
-        // Set authorization in localStorage
-        localStorage.setItem('isAuthorized', 'true');
-        window.location.href = "index.html";
-        return false;
-    } else {
-        alert("Incorrect password. Please try again.");
-        return false;
-    }
-}
-
 // Simulate an authentication check
 var isAuthenticated = false; // Change this to true if the user is authenticated
 
