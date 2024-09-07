@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Static Navigation - SB Admin</title>
+        <title>Projects</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand ps-3" href="index.html">Anh La</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -59,6 +59,21 @@
                                     <a class="nav-link" href="blog">Blog Post</a>
                                 </nav>
                             </div>
+                            <div class="sb-sidenav-menu-heading">Projects</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="false" aria-controls="collapseContent">
+                                <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                Blogs
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseProjects" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="projectsLayout1">Project layout 1</a>
+                                    <a class="nav-link" href="projectsLayout2">Project layout 2</a>
+                                    <a class="nav-link" href="projectsLayout3">Project layout 3</a>
+                                    <a class="nav-link" href="projects">Project</a>
+                                </nav>
+                            </div>
+                            
                             <div class="sb-sidenav-menu-heading">Shop</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-shop"></i></div>
@@ -69,6 +84,8 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="services">Products</a>
                                     <a class="nav-link" href="serviceItem">Items</a>
+                                    <a class="nav-link" href="pricing">Pricing</a>
+                                    <a class="nav-link" href="checkout">Check out</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Interface</div>
@@ -79,6 +96,7 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dashboard.html">Dashboard</a>
                                     <a class="nav-link" href="layout-static.html">Static Navigation</a>
                                     <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                                 </nav>
@@ -127,7 +145,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        Admin
                     </div>
                 </nav>
             </div>
@@ -135,125 +153,151 @@
                 <main>
                     <div class="container-fluid px-4">
                         <!-- Page Content -->
-<div class="container">
+                        <div class="container">
+                          <!-- Page Heading -->
+                          <h1 class="my-4">Projects
+                            <small>Bitcoin</small>
+                          </h1>
+                        
+                          <div class="row">
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
+                                    aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
+                                    dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/bitcoin-model">Project Two</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
+                                    odio, gravida pellentesque urna varius vitae.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error
+                                    quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
+                                    perspiciatis mollitia recusandae vero vel quam!</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/tranh-cai-Bitcoin">Project Four</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
+                                    odio, gravida pellentesque urna varius vitae.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/su-dung-Bitcoin">Project Five</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
+                                    odio, gravida pellentesque urna varius vitae.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/dong-tien-chung">Project Six</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
+                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
+                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/21-lessons-by-Gigi">Project Six</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
+                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
+                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
+                                </div>
+                              </div>
+                            </div>
+                              <div class="col-lg-4 col-sm-6 mb-4">
+                              <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                <div class="card-body">
+                                  <h4 class="card-title">
+                                    <a href="https://anh.contact/gradually-then-suddenly-by-Parker-Lewis">Project Six</a>
+                                  </h4>
+                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
+                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
+                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /.row -->
+                        
+                          <!-- Pagination -->
+                          <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                              <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                            </li>
+                            <li class="page-item">
+                              <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item">
+                              <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                              <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                              <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                          </ul>
+                        
+                        </div>
 
-  <!-- Page Heading -->
-  <h1 class="my-4">Page Heading
-    <small>Secondary Text</small>
-  </h1>
-
-  <div class="row">
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project One</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-            aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
-            dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project Two</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-            odio, gravida pellentesque urna varius vitae.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project Three</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error
-            quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
-            perspiciatis mollitia recusandae vero vel quam!</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project Four</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-            odio, gravida pellentesque urna varius vitae.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project Five</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-            odio, gravida pellentesque urna varius vitae.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Project Six</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-            suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-            nemo repellat fugiat excepturi! Nemo, esse.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /.row -->
-
-  <!-- Pagination -->
-  <ul class="pagination justify-content-center">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">1</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">3</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-
-</div>
-<!-- /.container -->
+                        <!-- /.container -->
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div class="text-muted">Copyright &copy; Your Website 2024</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
