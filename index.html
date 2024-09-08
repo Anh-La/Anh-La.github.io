@@ -269,5 +269,19 @@
         <script src="chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
+        <script>
+            // Simulate an authentication check
+            var isAuthenticated = false; // Change this to true if the user is authenticated
+            
+            // Get the sidenav element
+            var sidenav = document.getElementById('layoutSidenav_nav');
+            
+            // Show or hide the sidenav based on authentication status
+            if (isAuthenticated) {
+                sidenav.classList.remove('hidden');
+            } else {
+                sidenav.classList.add('hidden');
+            }
+        </script>
     </body>
 </html>
