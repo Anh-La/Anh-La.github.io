@@ -60,13 +60,11 @@
                  <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <!-- Guest auth--> 
-                            <div id="guest" class="nav">
-                                
-                                
+                            <div id="guestNav" class="nav">                                
                                 <div class="sb-sidenav-menu-heading">Australian Tax</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAusTax" aria-expanded="false" aria-controls="collapseAusTax">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Blogs
+                                    <div class="sb-nav-link-icon"><i class="bi bi-cash-coin"></i></div>
+                                    Australian Tax
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="collapseAusTax" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -80,7 +78,7 @@
                         <!-- /.Guest auth--> 
                         
                         <!-- Admin auth--> 
-                            <div id="admin" class="nav hidden">
+                            <div id="adminNav" class="nav hidden">
                                 <div class="sb-sidenav-menu-heading">Admin</div>
                                     <a class="nav-link" href="layout-static">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -166,7 +164,7 @@
                         </div>
                         <div class="sb-sidenav-footer">
                             <div class="small">Logged in as:</div>
-                            User Guest
+                            <span id="userStatus">Guest</span>
                         </div>
                     </nav>
                 </div>
@@ -399,15 +397,23 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
         <script>
-            // Simulate an authentication check
-            var isAuthenticated = false; // Change this to true if the user is authenticated
-            // Get the sidenav element
-            var sidenav = document.getElementById('admin');
-            // Show or hide the sidenav based on authentication status
+            // Simulate authentication status (change to true for admin)
+            var isAuthenticated = false;
+    
+            // Get elements by their IDs
+            var guestNav = document.getElementById('guestNav');
+            var adminNav = document.getElementById('adminNav');
+            var userStatus = document.getElementById('userStatus');
+    
+            // Show appropriate nav and user status based on authentication
             if (isAuthenticated) {
-                sidenav.classList.remove('hidden');
+                adminNav.classList.remove('hidden');
+                guestNav.classList.add('hidden');
+                userStatus.textContent = 'Admin';
             } else {
-                sidenav.classList.add('hidden');
+                adminNav.classList.add('hidden');
+                guestNav.classList.remove('hidden');
+                userStatus.textContent = 'Guest';
             }
         </script>
     </body>
