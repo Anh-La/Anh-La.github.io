@@ -21,8 +21,9 @@ function scrolling_Text() {
 }
 scrolling_Text()
 
+// Run authorization check on page load
+document.addEventListener('DOMContentLoaded', checkAuthorization);
 // Check authorization status and show/hide sidebar items accordingly
-
 function checkAuthorization() {
     const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
 
@@ -32,9 +33,6 @@ function checkAuthorization() {
     }
 }
 
-// Run authorization check on page load
-document.addEventListener('DOMContentLoaded', checkAuthorization);
-
 //logout
 function logout() {
     localStorage.removeItem('isAuthorized');
@@ -43,12 +41,10 @@ function logout() {
 
 
 window.addEventListener('DOMContentLoaded', event => {
-
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    
     // Apply the sb-sidenav-toggled class by default
-    //document.body.classList.add('sb-sidenav-toggled');
+    document.body.classList.add('sb-sidenav-toggled');
     
     if (sidebarToggle) {
         // Persist sidebar toggle between refreshes
