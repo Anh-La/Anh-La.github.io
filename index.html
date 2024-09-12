@@ -25,18 +25,20 @@
                 </a>
             </div>            
             <!-- Add Sidebar Toggle-->
-            
             <!-- Navbar Search-->
             <div class="container-fluid">
                 <!--Add toggle button-->
                 <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+                <!--Add text in top bar-->
+                <h1 id="pageTitle">Welcome to Our Website</h1>
+                <p id="pageContent">This is a sample page where you can change the language by clicking on the flags.</p>
                 <!-- Top navbar content -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarText">
                       <!-- Language Switcher with Flag Icons -->
-                        <a href="?lang=en" class="me-2">
+                        <a href="javascript:void(0)" class="me-2" id="enFlag">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
                         </a> 
-                        <a href="?lang=vi">
+                        <a href="javascript:void(0)" id="viFlag">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
                         </a>
                 </div>
@@ -419,6 +421,32 @@
                 adminNav.classList.add('hidden');
                 guestNav.classList.remove('hidden');
                 userStatus.textContent = 'Guest';
+            }
+            // Fetch translations from the JSON file
+            async function fetchTranslations() {
+                const response = await fetch('translations.json');
+                const data = await response.json();
+                return data;
+            }
+    
+            // Elements to update
+            const pageTitle = document.getElementById("pageTitle");
+            const pageContent = document.getElementById("pageContent");
+    
+            // Event listeners for flag clicks
+            document.getElementById("enFlag").addEventListener("click", function() {
+                switchLanguage('en');
+            });
+    
+            document.getElementById("viFlag").addEventListener("click", function() {
+                switchLanguage('vi');
+            });
+    
+            // Switch language function
+            async function switchLanguage(lang) {
+                const translations = await fetchTranslations();
+                pageTitle.textContent = translations[lang].title;
+                pageContent.textContent = translations[lang].content;
             }
         </script>
     </body>
