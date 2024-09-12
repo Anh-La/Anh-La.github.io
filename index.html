@@ -10,6 +10,11 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="styles.css" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            .hidden {
+                        display: none;
+                    }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
@@ -34,7 +39,31 @@
                 <!--Add toggle button-->
                 <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!-- Top navbar content -->
-                <div class="collapse navbar-collapse justify-content-end" id="navbarText"> </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                     <!-- Icons -->
+                        <ul class="navbar-nav d-flex flex-row me-1">
+                            <li class="nav-item me-3 me-lg-0">
+                                <a class="nav-link text-white" href="#"><i class="fas fa-envelope mx-1"></i> Contact</a>
+                            </li>
+                            <li class="nav-item me-3 me-lg-0">
+                                <a class="nav-link text-white" href="#"><i class="fas fa-cog mx-1"></i> Settings</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a data-mdb-dropdown-init class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+                                data-mdb-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user mx-1"></i> Profile </a>
+                                <!-- Dropdown menu -->
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="#">My account</a>
+                                    </li>
+                
+                                    <li>
+                                        <a class="dropdown-item" href="#">Log out</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                </div>
               </div>   
         </nav>
         <!-- Sidebar-->
