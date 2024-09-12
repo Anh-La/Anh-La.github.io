@@ -1,10 +1,10 @@
 {
   "en": {
-    "title": "Welcome to Our Website",
-    "content": "This is a sample page where you can change the language by clicking on the flags."
+    "title": "Happy day!",
+    "content": "You are viewing in English."
   },
   "vi": {
-    "title": "Chào mừng đến với trang web của chúng tôi",
-    "content": "Đây là trang mẫu nơi bạn có thể thay đổi ngôn ngữ bằng cách nhấp vào các lá cờ."
+    "title": "Một ngày vui nhé!",
+    "content": "Bạn đang xem bằng Tiếng Việt."
   }
 }
