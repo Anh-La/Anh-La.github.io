@@ -10,11 +10,6 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="styles.css" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <style>
-            .hidden {
-                        display: none;
-                    }
-        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
@@ -222,24 +217,6 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
         <script>
-            // Simulate authentication status (change to true for admin)
-            var isAuthenticated = false;
-    
-            // Get elements by their IDs
-            var guestNav = document.getElementById('guestNav');
-            var adminNav = document.getElementById('adminNav');
-            var userStatus = document.getElementById('userStatus');
-    
-            // Show appropriate nav and user status based on authentication
-            if (isAuthenticated) {
-                adminNav.classList.remove('hidden');
-                guestNav.classList.add('hidden');
-                userStatus.textContent = 'Admin';
-            } else {
-                adminNav.classList.add('hidden');
-                guestNav.classList.remove('hidden');
-                userStatus.textContent = 'Guest';
-            }
             // Fetch translations from the JSON file
             async function fetchTranslations() {
                 const response = await fetch('translations.json');
