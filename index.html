@@ -31,7 +31,7 @@
                 <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!--Add text in top bar-->
                 <div class="justify-content-center text-white">
-                    <h1 id="pageTitle" style="font-size:2vw;"> Happy day!</h1>
+                    <h1 id="pageTitle" style="font-size:2vw;"></h1>
                     <p id="pageContent" style="font-size:2vw;"> You are viewing in English.</p>
                 </div>
                 <!-- Top navbar content -->
@@ -50,114 +50,7 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                  <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <!-- Guest auth--> 
-                            <div id="guestNav" class="nav">                                
-                                <div class="sb-sidenav-menu-heading">Welcome! <span id="userStatus">Guest</span> </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAusTax" aria-expanded="false" aria-controls="collapseAusTax">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-comments-dollar"></i></div>
-                                    Australian Tax
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseAusTax" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">International Tax</a>
-                                        <a class="nav-link" href="blog">Company Tax</a>
-                                    </nav>
-                                </div>
-                                
-                            </div>
-                        <!-- /.Guest auth--> 
-                        
-                        <!-- Admin auth--> 
-                            <div id="adminNav" class="nav hidden">
-                                <div class="sb-sidenav-menu-heading">Admin</div>
-                                    <a class="nav-link" href="layout-static">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Dashboard
-                                    </a>
-                                <div class="sb-sidenav-menu-heading">Content</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Blogs
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseContent" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Blog Home Page</a>
-                                        <a class="nav-link" href="blog">Blog Post</a>
-                                    </nav>
-                                </div>
-                                <div class="sb-sidenav-menu-heading">Shop</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-shop"></i></div>
-                                    Products
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseProducts" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="services">Products</a>
-                                        <a class="nav-link" href="serviceItem">Items</a>
-                                    </nav>
-                                </div>
-                                <div class="sb-sidenav-menu-heading">Interface</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    Layouts
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                        <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    Pages
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                            Authentication
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" href="login.html">Login</a>
-                                                <a class="nav-link" href="register.html">Register</a>
-                                                <a class="nav-link" href="password.html">Forgot Password</a>
-                                            </nav>
-                                        </div>
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                            Error
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" href="401.html">401 Page</a>
-                                                <a class="nav-link" href="404.html">404 Page</a>
-                                                <a class="nav-link" href="500.html">500 Page</a>
-                                            </nav>
-                                        </div>
-                                    </nav>
-                                </div>
-                                <div class="sb-sidenav-menu-heading">Addons</div>
-                                <a class="nav-link" href="charts.html">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                    Charts
-                                </a>
-                                <a class="nav-link" href="tables.html">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                    Tables
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sb-sidenav-footer">
-                            <div class="small">Logged in as:</div>
-                            <span id="userStatus">Guest</span>
-                        </div>
+                    <div class="sb-sidenav-menu"></div>
                     </nav>
                 </div>
             <!-- Sidebar content-->
@@ -177,12 +70,12 @@
                             <!-- Interest section -->
                             <div class="mb-4 bg-body-tertiary rounded-3">
                               <div class="container-fluid">
-                                  <h1 class="display-5 fw-bold"></h1>
+                                  <h1 class="display-5 fw-bold">I'm working on..</h1>
                                     <p class="col-md-8 fs-4"></p>
                                       <!-- Personalised text -->
                                       <div class="d-flex w-100">         
                                         <form name="text_Marquee" class="flex-grow-1">
-                                            <input name="text" class="form-control border-0 display-5 fw-bold" style="font-size:3vw; background-color: transparent; font-style: italic;"
+                                            <input name="text" class="form-control border-0 display-5" style="font-size:3vw; background-color: transparent; font-style: italic;"
                                             value=" 
                                                 “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
                                                 “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
@@ -194,90 +87,13 @@
                                                 " disabled />
                                         </form>
                                     </div>
-
-                                    <!-- Topic buttons >
-                                    <div class="row align-items-md-stretch">
-                                        <div class="col-md-12">
-                                            <a href="https://anh.contact/accounting-tax-franchise/" class="text-decoration-none">
-                                              <button class="btn btn-outline-primary shadow-sm w-auto p-3">
-                                                Australian Tax
-                                              </button>
-                                            </a>
-                                            <a href="https://anh.contact/projectsLayout2" class="text-decoration-none">
-                                              <button class="btn btn-warning shadow-sm w-auto p-3">
-                                                Bitcoin
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/projectsLayout3" class="text-decoration-none">
-                                              <button class="btn btn-outline-success shadow-sm w-auto p-3">
-                                                Macro-investing
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/projectsLayout3" class="text-decoration-none">
-                                              <button class="btn btn-danger shadow-sm w-auto p-3 text-dark">
-                                                Financial Planning
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/books" class="text-decoration-none">
-                                              <button class="btn btn-outline-info shadow-sm w-auto p-3">
-                                                Books
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/ai" class="text-decoration-none">
-                                              <button class="btn btn-secondary shadow-sm w-auto p-3">
-                                                AI
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/cpa" class="text-decoration-none">
-                                              <button class="btn btn-online-primary shadow-sm w-auto p-3 text-dark">
-                                                CPA
-                                              </button>
-                                            </a>
-                                          
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-info shadow-sm w-auto p-3 text-dark">
-                                                CTA
-                                              </button>
-                                            </a>
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-outline-danger shadow-sm w-auto p-3 text-dark">
-                                                Vietnamese Tax
-                                              </button>
-                                            </a>
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-primary shadow-sm w-auto p-3 text-dark">
-                                                Culture
-                                              </button>
-                                            </a>
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-outline-success shadow-sm w-auto p-3 text-dark">
-                                                History
-                                              </button>
-                                            </a>
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-primary shadow-sm w-auto p-3 text-dark">
-                                                People
-                                              </button>
-                                            </a>  
-                                            <a href="https://anh.contact/cta" class="text-decoration-none">
-                                              <button class="btn btn-outline-success shadow-sm w-auto p-3 text-dark">
-                                                Comedy
-                                              </button>
-                                            </a>
-                                        </div>
-                                </div><!-- /.button section -->
                               </div>
                             </div><!-- /.Interest section -->
                             <hr>
                         <!-- Projects section -->
                         <div class="container">
                         <!-- Page Heading -->
-                        <h1 class="my-4 text-center">I'm working on..</h1>
+                        <h1 class="my-4 text-center"></h1>
                         <!-- Tax Projects -->       
                         <div class="row">
                           <div id="carouselExampleDark" class="carousel carousel-dark slide">
