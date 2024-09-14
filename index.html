@@ -44,22 +44,16 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
             <!-- Language options -->
-            <div class="dropdown">
-                <button>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
-                        English
-                </button>
-                <div class="dropdown-content">
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="changeFlag('https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg', 'English')">
+           
+                    <a>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
                         English
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="changeFlag('https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg', 'Vietnamese')">
+                    <a>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
                         Vietnamese
                     </a>
-                </div>
-            </div>
+               
             <!-- /. language options -->
 
             <div class="container-fluid">
@@ -78,7 +72,6 @@
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu"></div>
                 </nav><!-- /.Nav Sidebar elements-->
-            </div>
             
             <!-- Sidebar content (main page)-->
             <div id="layoutSidenav_content">
@@ -277,17 +270,7 @@
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
 
-            // Function to change the flag and text when a language is selected
-            function changeFlag(flagSrc, languageText) {
-                // Change the image in the button
-                document.getElementById('selectedFlag').src = flagSrc;
-        
-                // Optionally change the button text
-                document.querySelector('.dropbtn').textContent = languageText;
-        
-                // Keep the flag alongside the text
-                document.querySelector('.dropbtn').prepend(document.getElementById('selectedFlag'));
-            }
+         
         </script>
     </body>
 </html>
