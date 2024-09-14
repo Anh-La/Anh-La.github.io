@@ -29,6 +29,7 @@
               padding: 14px 16px;
               font-size: 17px;
               width: 25%;
+              height: 100%;
             }
             
             .tablink:hover {
@@ -490,6 +491,7 @@
               tablinks = document.getElementsByClassName("tablink");
               for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].style.backgroundColor = "";
+                tablinks[i].style.color = ""; // Reset text color
               }
             
               // Show the specific tab content
@@ -497,6 +499,7 @@
             
               // Add the specific color to the button used to open the tab content
               elmnt.style.backgroundColor = color;
+              elmnt.style.color = "blue";  // Set text color to blue
             }
             
             // Get the element with id="defaultOpen" and click on it
