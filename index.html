@@ -22,7 +22,7 @@
             
             /* Style tab links */
             .tablink {
-              color: white;
+              color: black;
               float: left;
               border: none;
               outline: none;
@@ -43,11 +43,6 @@
               padding: 100px 20px;
               height: 100%;
             }
-            
-            #Home {background-color: red;}
-            #News {background-color: green;}
-            #Contact {background-color: blue;}
-            #About {background-color: orange;}
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -65,10 +60,10 @@
                     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!--/. toggle button-->
                 <!--Top buttons-->    
-                    <button id="topBtn1" class="tablink" onclick="openPage('Home', this, 'red')">Macro</button>
-                    <button id="topBtn2" class="tablink" onclick="openPage('News', this, 'green')" id="defaultOpen">Tax</button>
-                    <button id="topBtn3" class="tablink" onclick="openPage('Contact', this, 'blue')">Investing</button>
-                    <button id="topBtn4" class="tablink" onclick="openPage('About', this, 'orange')">Bitcoin</button>
+                    <button id="topBtn1" class="tablink" onclick="openPage('Macro', this, 'red')">Macro</button>
+                    <button id="topBtn2" class="tablink" onclick="openPage('Tax', this, 'green')" id="defaultOpen">Tax</button>
+                    <button id="topBtn3" class="tablink" onclick="openPage('Investing', this, 'blue')">Investing</button>
+                    <button id="topBtn4" class="tablink" onclick="openPage('Bitcoin', this, 'orange')">Bitcoin</button>
                 <!--/. Top buttons-->
                 <!--Text in top bar>
                 <div class="justify-content-center text-white">
@@ -303,10 +298,10 @@
             // Switch language function
             async function switchLanguage(lang) {
                 const translations = await fetchTranslations();
-                topBtn1.textContent = translations[lang].title;
-                topBtn2.textContent = translations[lang].content;
-                topBtn3.textContent = translations[lang].title;
-                topBtn4.textContent = translations[lang].content;
+                topBtn1.textContent = translations[lang].topBtn1;
+                topBtn2.textContent = translations[lang].topBtn2;
+                topBtn3.textContent = translations[lang].topBtn3;
+                topBtn4.textContent = translations[lang].topBtn4;
             }
 
             function openPage(pageName,elmnt,color) {
