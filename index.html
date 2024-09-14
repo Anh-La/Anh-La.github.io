@@ -11,7 +11,7 @@
         <link href="styles.css" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style>
-            * {box-sizing: border-box}
+            * {box-sizing: border-box;}
             
             /* Style tab links */
             .tablink {
@@ -37,21 +37,17 @@
               padding: 100px 20px;
               height: 100%;
             }
-
-
         </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
             <!-- Language options -->
-           
-                    <a>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
-                    </a>
-                    <a>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
-                    </a>
-               
+            <a id="enFlag">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
+            </a>
+            <a id="viFlag">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
+            </a>
             <!-- /. language options -->
 
             <div class="container-fluid">
@@ -63,10 +59,13 @@
                 <!--/. Top buttons -->
             </div>   
         </nav>
+
         <!-- Sidebar-->
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-            
+                <!-- Sidebar menu -->
+            </div> <!-- Added missing closing div -->
+
             <!-- Sidebar content (main page)-->
             <div id="layoutSidenav_content">
                 <main>
@@ -83,132 +82,135 @@
                             </div><!-- /.Interest section -->
                             <hr>
                         
-                        <!-- Projects section -->
-                        <div class="container">
-                            <h1 class="my-4 text-center"></h1>
-                            <!-- Tax Projects -->       
-                            <div id="Tax" class="row">
-                                <div id="carouselExampleDark" class="carousel carousel-dark slide">
-                                    <div class="carousel-inner">
-                                        <!-- Project One -->   
-                                        <div class="carousel-item active" data-bs-interval="1000">  
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7 shadow-lg p-3 mb-5 bg-body rounded">
-                                                    <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
-                                                    </a>
+                            <!-- Projects section -->
+                            <div class="container">
+                                <h1 class="my-4 text-center"></h1>
+                                <!-- Tax Projects -->       
+                                <div id="Tax" class="row">
+                                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                        <div class="carousel-inner">
+                                            <!-- Project One -->   
+                                            <div class="carousel-item active" data-bs-interval="1000">  
+                                                <div class="row justify-content-md-center">
+                                                    <div class="col-md-7 shadow-lg p-3 mb-5 bg-body rounded">
+                                                        <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
+                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                        
-                                        <!-- Project Two -->
-                                        <div class="carousel-item" data-bs-interval="1000">
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
-                                                    <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                        
-                                        <!-- Project Three -->  
-                                        <div class="carousel-item">
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7"> 
-                                                    <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                        
-                                        <!-- Project Four -->   
-                                        <div class="carousel-item" data-bs-interval="10000">  
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
-                                                    <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                        
-                                        <!-- Project Five -->   
-                                        <div class="carousel-item">  
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
-                                                    <a href="https://anh.contact/GST-Practice-Case-Study-2024">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>    
-                                    </div>  <!-- Carousel-inner -->                                 
-                                    <!-- Carousel Controls -->
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
-                                </div> <!-- Carousel-slide -->  
-                            </div> <!-- /.row --> 
-                        
-                            <!-- Personalised text -->
-                            <div class="d-flex w-100">         
-                                <form name="text_Marquee" class="flex-grow-1">
-                                    <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
-                                    value=" 
-                                        “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
-                                        “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
-                                        “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
-                                        “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
-                                        “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
-                                        “Nói thì dễ, làm thì khó.”
-                                        “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
-                                        " disabled />
-                                </form>
-                            </div><!-- /.Personalised text -->
-                        </div> <!-- Tax tab page -->
 
-                        <!-- Other tab pages -->
-                        <div id="Macro" class="tabcontent">
-                            <h3>Macro</h3>
-                            <p>Some news this fine day!</p> 
-                        </div>
-                        
-                        <div id="Investing" class="tabcontent">
-                            <h3>Investing</h3>
-                            <p>Get in touch, or swing by for a cup of coffee.</p>
-                        </div>
-                        
-                        <div id="Bitcoin" class="tabcontent">
-                            <h3>Bitcoin</h3>
-                            <p>Who we are and what we do.</p>
-                        </div> <!-- /.Other tab pages -->
-                        
-                        <hr> 
-                    </div>
-                </main>
+                                            <!-- Project Two -->
+                                            <div class="carousel-item" data-bs-interval="1000">
+                                                <div class="row justify-content-md-center">
+                                                    <div class="col-md-7">
+                                                        <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
+                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Anh La 2024</div>
-                            <!-- Navbar Brand-->
-                            <div class="text-center">
-                                <a class="navbar-brand ps-3" href="login">
-                                    <img src="avatar.png" alt="Avatar" class="avatar">
-                                </a>
-                            </div><!-- /.Navbar Brand-->
+                                            <!-- Project Three -->  
+                                            <div class="carousel-item">
+                                                <div class="row justify-content-md-center">
+                                                    <div class="col-md-7"> 
+                                                        <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
+                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Four -->   
+                                            <div class="carousel-item" data-bs-interval="10000">  
+                                                <div class="row justify-content-md-center">
+                                                    <div class="col-md-7">
+                                                        <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
+                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Five -->   
+                                            <div class="carousel-item">  
+                                                <div class="row justify-content-md-center">
+                                                    <div class="col-md-7">
+                                                        <a href="https://anh.contact/GST-Practice-Case-Study-2024">
+                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>    
+                                        </div> <!-- Carousel-inner -->                                 
+                                        
+                                        <!-- Carousel Controls -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div> <!-- Carousel-slide -->  
+                                </div> <!-- /.row --> 
+                            
+                                <!-- Personalised text -->
+                                <div class="d-flex w-100">         
+                                    <form name="text_Marquee" class="flex-grow-1">
+                                        <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
+                                        value=" 
+                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                            “Nói thì dễ, làm thì khó.”
+                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                            " disabled />
+                                    </form>
+                                </div><!-- /.Personalised text -->
+                            </div> <!-- Tax tab page -->
+
+                            <!-- Other tab pages -->
+                            <div id="Macro" class="tabcontent">
+                                <h3>Macro</h3>
+                                <p>Some news this fine day!</p> 
+                            </div>
+                            
+                            <div id="Investing" class="tabcontent">
+                                <h3>Investing</h3>
+                                <p>Get in touch, or swing by for a cup of coffee.</p>
+                            </div>
+                            
+                            <div id="Bitcoin" class="tabcontent">
+                                <h3>Bitcoin</h3>
+                                <p>Who we are and what we do.</p>
+                            </div> <!-- /.Other tab pages -->
+                            
+                            <hr> 
                         </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
+                    </main>
+
+                    <footer class="py-4 bg-light mt-auto">
+                        <div class="container-fluid px-4">
+                            <div class="d-flex align-items-center justify-content-between small">
+                                <div class="text-muted">Copyright &copy; Anh La 2024</div>
+                                <!-- Navbar Brand-->
+                                <div class="text-center">
+                                    <a class="navbar-brand ps-3" href="login">
+                                        <img src="avatar.png" alt="Avatar" class="avatar">
+                                    </a>
+                                </div><!-- /.Navbar Brand-->
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div> <!-- End of layoutSidenav_content -->
+        </div> <!-- End of layoutSidenav -->
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="chart-area-demo.js"></script>
@@ -263,8 +265,6 @@
 
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
-
-         
         </script>
     </body>
 </html>
