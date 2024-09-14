@@ -76,7 +76,7 @@
                             <!-- Interest section -->
                             <div class="mb-4 bg-body-tertiary rounded-3">
                               <div class="container-fluid">
-                                  <h1 class="display-5 fw-bold">I'm working on..</h1>
+                                  <h1 id="introProject" class="display-5 fw-bold">I'm working on..</h1>
                                     <p class="col-md-8 fs-4"></p>
                               </div>
                             </div><!-- /.Interest section -->
@@ -92,9 +92,9 @@
                                             <!-- Project One -->   
                                             <div class="carousel-item active" data-bs-interval="1000">  
                                                 <div class="row justify-content-md-center">
-                                                    <div class="col-md-7 shadow-lg p-3 mb-5 bg-body rounded">
+                                                    <div class="col-md-7">
                                                         <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
+                                                            <img class="img-fluid shadow-lg p-3 mb-5 bg-body rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -230,6 +230,7 @@
             const topBtn2 = document.getElementById("topBtn2");
             const topBtn3 = document.getElementById("topBtn3");
             const topBtn4 = document.getElementById("topBtn4");
+            const introProject = document.getElementById("introProject");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -247,6 +248,7 @@
                 topBtn2.textContent = translations[lang].topBtn2;
                 topBtn3.textContent = translations[lang].topBtn3;
                 topBtn4.textContent = translations[lang].topBtn4;
+                topBtn4.textContent = translations[lang].introProject;
             }
 
             // Switch tab-pages function
