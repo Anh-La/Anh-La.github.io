@@ -41,12 +41,33 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
-            <!-- Navbar Brand-->
+            <!-- Language options-->
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
+                    Language
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0)" id="enFlag">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
+                            English
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0)" id="viFlag">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
+                            Vietnamese
+                        </a>
+                    </li>
+                </ul>
+            </div><!-- /. language options-->
+            <!-- Navbar Brand>
             <div class="text-center">
                 <a class="navbar-brand ps-3" href="login">
                     <img src="avatar.png" alt="Avatar" class="avatar">
                 </a>
-            </div>            
+            </div><!-- /.Navbar Brand-->
             <!-- Add Sidebar Toggle-->
             <!-- Navbar Search-->
             <div class="container-fluid">
@@ -82,15 +103,15 @@
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu"></div>
                 </nav>
-                </div><!-- /.Nav Sidebar elements-->
-            </div>
+                </div>
+            </div><!-- /.Nav Sidebar elements-->
             <!-- Sidebar content (main page)-->
             <div id="layoutSidenav_content">
                 <main>
                     <!-- Page Content -->
                     <div class="container-fluid px-4">
                         <!-- Page Content 1 -->
-                        <div id="Tax" class="container py-4 tabcontent">
+                        <div class="container py-4 tabcontent">
                             <!-- Welcome section >
                             <header class="pb-3 mb-4 border-bottom">
                                     <div class="d-flex align-items-center">
@@ -110,7 +131,7 @@
                         <!-- Page Heading -->
                         <h1 class="my-4 text-center"></h1>
                         <!-- Tax Projects -->       
-                        <div class="row">
+                        <div id="Tax" class="row">
                           <div id="carouselExampleDark" class="carousel carousel-dark slide">
                             <div class="carousel-inner">
                               <!-- Project One -->   
@@ -213,6 +234,23 @@
                               <span class="visually-hidden">Next</span>
                             </button>
                          </div> <!-- Carousel-slide --> 
+                            
+                            <!-- Personalised text -->
+                              <div class="d-flex w-100">         
+                                <form name="text_Marquee" class="flex-grow-1">
+                                    <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
+                                    value=" 
+                                        “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                        “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                        “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                        “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                        “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                        “Nói thì dễ, làm thì khó.”
+                                        “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                        " disabled />
+                                    </form>
+                                </div><!-- /.Personalised text -->
+                            
                         </div> <!-- /.row --> 
                             
                         <!-- Other tab pages -->
@@ -241,21 +279,12 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Anh La 2024</div>
-                              <!-- Personalised text -->
-                              <div class="d-flex w-100">         
-                                <form name="text_Marquee" class="flex-grow-1">
-                                    <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
-                                    value=" 
-                                        “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
-                                        “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
-                                        “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
-                                        “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
-                                        “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
-                                        “Nói thì dễ, làm thì khó.”
-                                        “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
-                                        " disabled />
-                                    </form>
-                                </div><!-- /.Personalised text -->
+                            <!-- Navbar Brand-->
+                                <div class="text-center">
+                                    <a class="navbar-brand ps-3" href="login">
+                                        <img src="avatar.png" alt="Avatar" class="avatar">
+                                    </a>
+                                </div><!-- /.Navbar Brand-->
                         </div>
                     </div>
                 </footer>
