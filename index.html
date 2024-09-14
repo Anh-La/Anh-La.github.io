@@ -28,7 +28,7 @@
               cursor: pointer;
               padding: 14px 16px;
               font-size: 17px;
-              width: 40%;
+              width: 25%;
             }
             
             .tablink:hover {
@@ -41,6 +41,11 @@
               color: white;
               display: none;
             }
+            
+            #Home {background-color: white;}
+            #News {background-color: white;}
+            #Contact {background-color: white;}
+            #About {background-color: white;}
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -56,10 +61,10 @@
 
             <div class="container-fluid">
                 <!-- Top buttons -->    
-                <button id="topBtn1" class="tablink" onclick="openPage('Macro')">Macro</button>
-                <button id="topBtn2" class="tablink" onclick="openPage('Tax')" id="defaultOpen">Tax</button>
-                <button id="topBtn3" class="tablink" onclick="openPage('Investing')">Investing</button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Tech')">Technology</button>
+                <button id="topBtn1" class="tablink" onclick="openPage('Macro', this, 'white')">Macro</button>
+                <button id="topBtn2" class="tablink" onclick="openPage('Tax', this, 'white')" id="defaultOpen">Tax</button>
+                <button id="topBtn3" class="tablink" onclick="openPage('Investing', this, 'white')">Investing</button>
+                <button id="topBtn4" class="tablink" onclick="openPage('Tech', this, 'white')">Technology</button>
                 <!--/. Top buttons -->
             </div>   
         </nav>
@@ -472,19 +477,27 @@
                 introProject.textContent = translations[lang].introProject;
             }
 
-           /// Switch tab-pages function
-            function openPage(pageName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablink");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].style.backgroundColor = "";
-                }
-                document.getElementById(pageName).style.display = "block";
+           function openPage(pageName, elmnt, color) {
+              // Hide all elements with class="tabcontent" by default */
+              var i, tabcontent, tablinks;
+              tabcontent = document.getElementsByClassName("tabcontent");
+              for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+              }
+            
+              // Remove the background color of all tablinks/buttons
+              tablinks = document.getElementsByClassName("tablink");
+              for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].style.backgroundColor = "";
+              }
+            
+              // Show the specific tab content
+              document.getElementById(pageName).style.display = "block";
+            
+              // Add the specific color to the button used to open the tab content
+              elmnt.style.backgroundColor = color;
             }
+            
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
 
