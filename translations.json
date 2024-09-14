@@ -3,12 +3,14 @@
     "topBtn1": "Macro",
     "topBtn2": "Tax",
     "topBtn3": "Investing",
-    "topBtn4": "Bitcoin"
+    "topBtn4": "Bitcoin",
+    "introProject": "I'm working on.."
   },
   "vi": {
     "topBtn1": "Vĩ mô",
     "topBtn2": "Thuế",
     "topBtn3": "Đầu tư",
-    "topBtn4": "Bitcoin"
+    "topBtn4": "Bitcoin",
+    "introProject": "Dự án đang thực hiện.."
   }
 }
