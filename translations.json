@@ -1,10 +1,14 @@
 {
   "en": {
-    "title": "Happy day!",
-    "content": "You are viewing in English."
+    "topBtn1": "Macro",
+    "topBtn2": "Tax",
+    "topBtn3": "Investing",
+    "topBtn4": "Bitcoin"
   },
   "vi": {
-    "title": "Một ngày vui nhé!",
-    "content": "Bạn đang xem bằng Tiếng Việt."
+    "topBtn1": "Vĩ mô",
+    "topBtn2": "Thuế",
+    "topBtn3": "Đầu tư",
+    "topBtn4": "Bitcoin"
   }
 }
