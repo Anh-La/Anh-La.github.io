@@ -37,25 +37,78 @@
               padding: 100px 20px;
               height: 100%;
             }
+
+            /* Basic styling for the dropdown */
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+    
+            .dropbtn {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+            }
+    
+            .dropbtn img {
+                margin-right: 8px;
+            }
+    
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+    
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+            }
+    
+            .dropdown-content a img {
+                margin-right: 8px;
+            }
+    
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+    
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
         </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
-            <!-- Language options-->
+            <!-- Language options -->
             <div class="dropdown">
-                <button class="dropbtn">Country Flags
-                    </button>
+                <button class="dropbtn">
+                    <img id="selectedFlag" src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Selected Flag" width="32" height="20">
+                    Select Language
+                </button>
                 <div class="dropdown-content">
-                    <a class="dropdown-item" href="javascript:void(0)" id="enFlag">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="changeFlag('https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg', 'English')">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
                         English
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)" id="viFlag">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="changeFlag('https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg', 'Vietnamese')">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
                         Vietnamese
                     </a>
                 </div>
-            </div><!-- /. language options-->
+            </div>
+            <!-- /. language options -->
             <!-- Navbar Brand>
             <div class="text-center">
                 <a class="navbar-brand ps-3" href="login">
@@ -328,6 +381,18 @@
             }
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
+
+            // Function to change the flag and text when a language is selected
+            function changeFlag(flagSrc, languageText) {
+                // Change the image in the button
+                document.getElementById('selectedFlag').src = flagSrc;
+        
+                // Optionally change the button text
+                document.querySelector('.dropbtn').textContent = languageText;
+        
+                // Keep the flag alongside the text
+                document.querySelector('.dropbtn').prepend(document.getElementById('selectedFlag'));
+            }
         </script>
     </body>
 </html>
