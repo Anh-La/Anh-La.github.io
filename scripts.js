@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', event => {
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     // Apply the sb-sidenav-toggled class by default
-    document.body.classList.add('sb-sidenav-toggled');
+    //document.body.classList.add('sb-sidenav-toggled');
     
     if (sidebarToggle) {
         // Persist sidebar toggle between refreshes
