@@ -38,64 +38,16 @@
               height: 100%;
             }
 
-            /* Basic styling for the dropdown */
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
-    
-            .dropbtn {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px;
-                font-size: 16px;
-                border: none;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-            }
-    
-            .dropbtn img {
-                margin-right: 8px;
-            }
-    
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-            }
-    
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-            }
-    
-            .dropdown-content a img {
-                margin-right: 8px;
-            }
-    
-            .dropdown-content a:hover {
-                background-color: #f1f1f1;
-            }
-    
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
+
         </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
             <!-- Language options -->
             <div class="dropdown">
-                <button class="dropbtn">
-                    <img id="selectedFlag" src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Selected Flag" width="32" height="20">
-                    Select Language
+                <button>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
+                        English
                 </button>
                 <div class="dropdown-content">
                     <a class="dropdown-item" href="javascript:void(0)" onclick="changeFlag('https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg', 'English')">
@@ -109,41 +61,25 @@
                 </div>
             </div>
             <!-- /. language options -->
-            <!-- Navbar Brand>
-            <div class="text-center">
-                <a class="navbar-brand ps-3" href="login">
-                    <img src="avatar.png" alt="Avatar" class="avatar">
-                </a>
-            </div><!-- /.Navbar Brand-->
-            <!-- Add Sidebar Toggle-->
-            <!-- Navbar Search-->
+
             <div class="container-fluid">
-                <!--Toggle button>
-                    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-                <!--/. toggle button-->
-                <!--Top buttons-->    
-                    <button id="topBtn1" class="tablink" onclick="openPage('Macro', this)">Macro</button>
-                    <button id="topBtn2" class="tablink" onclick="openPage('Tax', this)" id="defaultOpen">Tax</button>
-                    <button id="topBtn3" class="tablink" onclick="openPage('Investing', this)">Investing</button>
-                    <button id="topBtn4" class="tablink" onclick="openPage('Bitcoin', this)">Bitcoin</button>
-                <!--/. Top buttons-->
-                <!--Text in top bar>
-                <div class="justify-content-center text-white">
-                    <h1 style="font-size:2vw;"></h1>
-                    <p style="font-size:2vw;"></p>
-                </div><!--/.Text in top bar-->
-                <!-- Top navbar content RIGHT>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarText">
-                </div><!-- /.Top navbar content RIGHT-->
-              </div>   
+                <!-- Top buttons -->    
+                <button id="topBtn1" class="tablink" onclick="openPage('Macro', this)">Macro</button>
+                <button id="topBtn2" class="tablink" onclick="openPage('Tax', this)" id="defaultOpen">Tax</button>
+                <button id="topBtn3" class="tablink" onclick="openPage('Investing', this)">Investing</button>
+                <button id="topBtn4" class="tablink" onclick="openPage('Bitcoin', this)">Bitcoin</button>
+                <!--/. Top buttons -->
+            </div>   
         </nav>
         <!-- Sidebar-->
         <div id="layoutSidenav">
-            <div id="layoutSidenav_nav"><!-- Nav Sidebar elements> 
+            <div id="layoutSidenav_nav">
+                <!-- Nav Sidebar elements>
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu"></div>
                 </nav><!-- /.Nav Sidebar elements-->
-                </div>
+            </div>
+            
             <!-- Sidebar content (main page)-->
             <div id="layoutSidenav_content">
                 <main>
@@ -151,12 +87,6 @@
                     <div class="container-fluid px-4">
                         <!-- Page Content 1 -->
                         <div class="container py-4 tabcontent">
-                            <!-- Welcome section >
-                            <header class="pb-3 mb-4 border-bottom">
-                                    <div class="d-flex align-items-center">
-                                        <span class="fs-4"></span>
-                                </header>  <!-- /.Welcome section -->
-                            
                             <!-- Interest section -->
                             <div class="mb-4 bg-body-tertiary rounded-3">
                               <div class="container-fluid">
@@ -165,118 +95,83 @@
                               </div>
                             </div><!-- /.Interest section -->
                             <hr>
+                        
                         <!-- Projects section -->
-                        <div id="Tax" class="container">
-                        <!-- Page Heading -->
-                        <h1 class="my-4 text-center"></h1>
-                        <!-- Tax Projects -->       
-                        <div class="row">
-                          <div id="carouselExampleDark" class="carousel carousel-dark slide">
-                            <div class="carousel-inner">
-                              <!-- Project One -->   
-                              <div class="carousel-item active" data-bs-interval="1000">  
-                                <div class="row justify-content-md-center">
-                                  <div class="col-md-7 shadow-lg p-3 mb-5 bg-body rounded">
-                                    <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
-                                      <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
-                                    </a>
-                                  </div>
-                                <!-- Project One - Caption >
-                                  <div class="col-8 col-sm-6 col-md-3">
-                                      <div class="row carousel-caption d-block bg-light rounded w-md-50">
-                                          <h5 style="font-size:2vw;">Trusts & Small Business CGT Concession</h5>
-                                          <p style="font-size:1vw;">Practice Case Study 2024</p>
+                        <div class="container">
+                            <h1 class="my-4 text-center"></h1>
+                            <!-- Tax Projects -->       
+                            <div id="Tax" class="row">
+                                <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                    <div class="carousel-inner">
+                                        <!-- Project One -->   
+                                        <div class="carousel-item active" data-bs-interval="1000">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-7 shadow-lg p-3 mb-5 bg-body rounded">
+                                                    <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                      </div><!-- /.Project One - Caption -->
-                                </div>
-                              </div>
                         
-                              <!-- Project Two -->
-                              <div class="carousel-item" data-bs-interval="1000">
-                                <div class="row justify-content-md-center">
-                                  <div class="col-md-7">
-                                    <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
-                                      <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
-                                    </a>
-                                  </div>
-                                <!-- Project 2 - Caption >
-                                  <div class="col-8 col-sm-6 col-md-3">
-                                      <div class="row carousel-caption d-block bg-light rounded w-md-50">
-                                        <h5 style="font-size:2vw;">Corporate Tax</h5>
-                                        <p style="font-size:1vw;">Practice Case Study 2024</p>
-                                      </div>
-                                    </div><!-- /.Project 2 - Caption -->
-                                </div>
-                              </div>
+                                        <!-- Project Two -->
+                                        <div class="carousel-item" data-bs-interval="1000">
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-7">
+                                                    <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                         
-                              <!-- Project Three -->  
-                              <div class="carousel-item">
-                                <div class="row justify-content-md-center">
-                                  <div class="col-md-7"> 
-                                    <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
-                                      <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
-                                    </a>
-                                  </div>
-                                    <!-- Project 3 - Caption >
-                                    <div class="col-8 col-sm-6 col-md-3">
-                                      <div class="row carousel-caption d-block bg-light rounded w-md-50">
-                                          <h5 style="font-size:2vw;">Small business CGT</h5>
-                                          <p style="font-size:1vw;">Practice Case Study 2024</p>
-                                    </div>
-                                  </div><!-- /.Project 3 - Caption -->
-                                </div>
-                              </div>
+                                        <!-- Project Three -->  
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-7"> 
+                                                    <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                         
-                              <!-- Project Four -->   
-                              <div class="carousel-item" data-bs-interval="10000">  
-                                <div class="row justify-content-md-center">
-                                  <div class="col-md-7">
-                                    <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
-                                      <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
-                                    </a>
-                                  </div>
-                                    <!-- Project 4 - Caption >
-                                     <div class="col-8 col-sm-6 col-md-3">
-                                      <div class="row carousel-caption d-block bg-light rounded w-md-50">
-                                      <h5 style="font-size:2vw;">International Tax</h5>
-                                      <p style="font-size:1vw;">Practice Case Study 2024</p>
-                                    </div>
-                                  </div><!-- /.Project 4 - Caption -->
-                                </div>
-                              </div>
+                                        <!-- Project Four -->   
+                                        <div class="carousel-item" data-bs-interval="10000">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-7">
+                                                    <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                         
-                              <!-- Project Five -->   
-                              <div class="carousel-item">  
-                                <div class="row justify-content-md-center">
-                                  <div class="col-md-7">
-                                    <a href="https://anh.contact/GST-Practice-Case-Study-2024">
-                                      <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
-                                    </a>
-                                  </div>
-                                <!-- Project 5 - Caption >
-                                   <div class="col-8 col-sm-6 col-md-3">
-                                      <div class="row carousel-caption d-block bg-light rounded w-md-50">
-                                      <h5 style="font-size:2vw;">Goods and Services Tax</h5>
-                                      <p style="font-size:1vw;">Practice Case Study 2024</p>
-                                    </div>
-                                  </div><!-- /.Project 5 - Caption -->
-                                </div>
-                              </div>    
-                            </div>  <!-- Carousel-inner -->                                 
-                            <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Next</span>
-                            </button>
-                         </div> <!-- Carousel-slide -->  
-                        </div> <!-- /.row --> 
-                            
+                                        <!-- Project Five -->   
+                                        <div class="carousel-item">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-7">
+                                                    <a href="https://anh.contact/GST-Practice-Case-Study-2024">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                    </div>  <!-- Carousel-inner -->                                 
+                                    <!-- Carousel Controls -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div> <!-- Carousel-slide -->  
+                            </div> <!-- /.row --> 
+                        
                             <!-- Personalised text -->
-                              <div class="d-flex w-100">         
+                            <div class="d-flex w-100">         
                                 <form name="text_Marquee" class="flex-grow-1">
                                     <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
                                     value=" 
@@ -288,41 +183,40 @@
                                         “Nói thì dễ, làm thì khó.”
                                         “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
                                         " disabled />
-                                    </form>
-                                </div><!-- /.Personalised text -->
-                            
+                                </form>
+                            </div><!-- /.Personalised text -->
+                        </div> <!-- Tax tab page -->
+
                         <!-- Other tab pages -->
                         <div id="Macro" class="tabcontent">
-                          <h3>Macro</h3>
-                          <p>Some news this fine day!</p> 
+                            <h3>Macro</h3>
+                            <p>Some news this fine day!</p> 
                         </div>
                         
                         <div id="Investing" class="tabcontent">
-                          <h3>Investing</h3>
-                          <p>Get in touch, or swing by for a cup of coffee.</p>
+                            <h3>Investing</h3>
+                            <p>Get in touch, or swing by for a cup of coffee.</p>
                         </div>
                         
                         <div id="Bitcoin" class="tabcontent">
-                          <h3>Bitcoin</h3>
-                          <p>Who we are and what we do.</p>
+                            <h3>Bitcoin</h3>
+                            <p>Who we are and what we do.</p>
                         </div> <!-- /.Other tab pages -->
                         
-                            <hr>
-                            
-                      </div>
-                      <!-- /.container -->
+                        <hr> 
                     </div>
                 </main>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Anh La 2024</div>
                             <!-- Navbar Brand-->
-                                <div class="text-center">
-                                    <a class="navbar-brand ps-3" href="login">
-                                        <img src="avatar.png" alt="Avatar" class="avatar">
-                                    </a>
-                                </div><!-- /.Navbar Brand-->
+                            <div class="text-center">
+                                <a class="navbar-brand ps-3" href="login">
+                                    <img src="avatar.png" alt="Avatar" class="avatar">
+                                </a>
+                            </div><!-- /.Navbar Brand-->
                         </div>
                     </div>
                 </footer>
@@ -365,20 +259,21 @@
                 topBtn3.textContent = translations[lang].topBtn3;
                 topBtn4.textContent = translations[lang].topBtn4;
             }
+
             // Switch tab-pages function
-            function openPage(pageName,elmnt) {
-              var i, tabcontent, tablinks;
-              tabcontent = document.getElementsByClassName("tabcontent");
-              for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-              }
-              tablinks = document.getElementsByClassName("tablink");
-              for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].style.backgroundColor = "";
-              }
-              document.getElementById(pageName).style.display = "block";
-              //elmnt.style.backgroundColor = color;
+            function openPage(pageName, elmnt) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                }
+                document.getElementById(pageName).style.display = "block";
             }
+
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
 
