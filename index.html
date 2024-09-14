@@ -87,7 +87,7 @@
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Tax Projects -->       
                                 <div class="row">
-                                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                    <div id="carouselExampleTax" class="carousel carousel-dark slide">
                                         <div class="carousel-inner">
                                             <!-- Project One -->   
                                             <div class="carousel-item active" data-bs-interval="1000">  
@@ -146,11 +146,11 @@
                                         </div> <!-- Carousel-inner -->                                 
                                         
                                         <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Previous</span>
                                         </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
                                         </button>
@@ -165,7 +165,7 @@
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Projects -->       
                                 <div class="row">
-                                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                    <div id="carouselExampleMacro" class="carousel carousel-dark slide">
                                         <div class="carousel-inner">
                                             <!-- Project One -->   
                                             <div class="carousel-item active" data-bs-interval="1000">  
@@ -224,11 +224,11 @@
                                         </div> <!-- Carousel-inner -->                                 
                                         
                                         <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Previous</span>
                                         </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
                                         </button>
@@ -242,7 +242,7 @@
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Projects -->       
                                 <div class="row">
-                                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                    <div id="carouselExampleInvesting" class="carousel carousel-dark slide">
                                         <div class="carousel-inner">
                                             <!-- Project One -->   
                                             <div class="carousel-item active" data-bs-interval="1000">  
@@ -301,11 +301,11 @@
                                         </div> <!-- Carousel-inner -->                                 
                                         
                                         <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Previous</span>
                                         </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
                                         </button>
@@ -319,7 +319,7 @@
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Projects -->       
                                 <div class="row">
-                                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                                    <div id="carouselExampleTech" class="carousel carousel-dark slide">
                                         <div class="carousel-inner">
                                             <!-- Project One -->   
                                             <div class="carousel-item active" data-bs-interval="1000">  
@@ -378,11 +378,11 @@
                                         </div> <!-- Carousel-inner -->                                 
                                         
                                         <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Previous</span>
                                         </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
                                         </button>
@@ -467,19 +467,17 @@
                 introProject.textContent = translations[lang].introProject;
             }
 
-            // Switch tab-pages function
+           // Switch tab-pages function
             function openPage(pageName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
+                var tabcontent = document.getElementsByClassName("tabcontent");
+                for (var i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].classList.remove('active-tab');
                 }
-                tablinks = document.getElementsByClassName("tablink");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].style.backgroundColor = "";
-                }
-                document.getElementById(pageName).style.display = "block";
+                document.getElementById(pageName).classList.add('active-tab');
             }
+
+            // Open the default tab
+            document.getElementById("defaultOpen").click();
 
         </script>
     </body>
