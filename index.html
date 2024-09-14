@@ -52,10 +52,10 @@
 
             <div class="container-fluid">
                 <!-- Top buttons -->    
-                <button id="topBtn1" class="tablink" onclick="openPage('Macro', this)">Macro</button>
-                <button id="topBtn2" class="tablink" onclick="openPage('Tax', this)" id="defaultOpen">Tax</button>
-                <button id="topBtn3" class="tablink" onclick="openPage('Investing', this)">Investing</button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Bitcoin', this)">Bitcoin</button>
+                <button id="topBtn1" class="tablink" onclick="openPage('Macro')">Macro</button>
+                <button id="topBtn2" class="tablink" onclick="openPage('Tax')" id="defaultOpen">Tax</button>
+                <button id="topBtn3" class="tablink" onclick="openPage('Investing')">Investing</button>
+                <button id="topBtn4" class="tablink" onclick="openPage('Bitcoin')">Bitcoin</button>
                 <!--/. Top buttons -->
             </div>   
         </nav>
@@ -72,7 +72,7 @@
                     <!-- Page Content -->
                     <div class="container-fluid px-4">
                         <!-- Page Content 1 -->
-                        <div class="container py-4 tabcontent">
+                        <div class="container py-4">
                             <!-- Interest section -->
                             <div class="mb-4 bg-body-tertiary rounded-3">
                               <div class="container-fluid">
@@ -83,10 +83,10 @@
                             <hr>
                         
                             <!-- Projects section -->
-                            <div class="container">
+                            <div id="Tax" class="container tabcontent">
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Tax Projects -->       
-                                <div id="Tax" class="row">
+                                <div class="row">
                                     <div id="carouselExampleDark" class="carousel carousel-dark slide">
                                         <div class="carousel-inner">
                                             <!-- Project One -->   
@@ -157,21 +157,6 @@
                                     </div> <!-- Carousel-slide -->  
                                 </div> <!-- /.row --> 
                             
-                                <!-- Personalised text -->
-                                <div class="d-flex w-100">         
-                                    <form name="text_Marquee" class="flex-grow-1">
-                                        <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
-                                        value=" 
-                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
-                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
-                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
-                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
-                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
-                                            “Nói thì dễ, làm thì khó.”
-                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
-                                            " disabled />
-                                    </form>
-                                </div><!-- /.Personalised text -->
                             </div> <!-- Tax tab page -->
 
                             <!-- Other tab pages -->
@@ -198,12 +183,27 @@
                         <div class="container-fluid px-4">
                             <div class="d-flex align-items-center justify-content-between small">
                                 <div class="text-muted">Copyright &copy; Anh La 2024</div>
-                                <!-- Navbar Brand-->
+                                <!-- Personalised text -->
+                                <div class="d-flex w-100">         
+                                    <form name="text_Marquee" class="flex-grow-1">
+                                        <input name="text" class="form-control border-0 display-5" style="font-size:1vw; background-color: transparent; font-style: italic;"
+                                        value=" 
+                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                            “Nói thì dễ, làm thì khó.”
+                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                            " disabled />
+                                    </form>
+                                </div><!-- /.Personalised text -->
+                                <!-- Brand-->
                                 <div class="text-center">
                                     <a class="navbar-brand ps-3" href="login">
                                         <img src="avatar.png" alt="Avatar" class="avatar">
                                     </a>
-                                </div><!-- /.Navbar Brand-->
+                                </div><!-- /.Brand-->
                             </div>
                         </div>
                     </footer>
@@ -250,7 +250,7 @@
             }
 
             // Switch tab-pages function
-            function openPage(pageName, elmnt) {
+            function openPage(pageName) {
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
                 for (i = 0; i < tabcontent.length; i++) {
@@ -263,8 +263,6 @@
                 document.getElementById(pageName).style.display = "block";
             }
 
-            // Get the element with id="defaultOpen" and click on it
-            document.getElementById("defaultOpen").click();
         </script>
     </body>
 </html>
