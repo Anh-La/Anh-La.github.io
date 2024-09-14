@@ -66,16 +66,16 @@
                     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!--/. toggle button-->
                 <!--Top buttons-->    
-                    <button class="tablink" onclick="openPage('Home', this, 'red')">Home</button>
-                    <button class="tablink" onclick="openPage('News', this, 'green')" id="defaultOpen">News</button>
-                    <button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>
-                    <button class="tablink" onclick="openPage('About', this, 'orange')">About</button>
+                    <button id="topBtn1" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" onclick="openPage('Home', this, 'red')">Macro</button>
+                    <button id="topBtn2" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" onclick="openPage('News', this, 'green')" id="defaultOpen">Tax</button>
+                    <button id="topBtn3" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" onclick="openPage('Contact', this, 'blue')">Investing</button>
+                    <button id="topBtn4" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" onclick="openPage('About', this, 'orange')">Bitcoin</button>
                 <!--/. Top buttons-->
-                <!--Add text in top bar-->
+                <!--Text in top bar>
                 <div class="justify-content-center text-white">
-                    <h1 id="pageTitle" style="font-size:2vw;"></h1>
-                    <p id="pageContent" style="font-size:2vw;"> You are viewing in English.</p>
-                </div>
+                    <h1 style="font-size:2vw;"></h1>
+                    <p style="font-size:2vw;"></p>
+                </div><!--/.Text in top bar-->
                 <!-- Top navbar content -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarText">
                       <!-- Language Switcher with Flag Icons -->
@@ -287,8 +287,10 @@
             }
     
             // Elements to update
-            const pageTitle = document.getElementById("pageTitle");
-            const pageContent = document.getElementById("pageContent");
+            const topBtn1 = document.getElementById("topBtn1");
+            const topBtn2 = document.getElementById("topBtn2");
+            const topBtn3 = document.getElementById("topBtn3");
+            const topBtn4 = document.getElementById("topBtn4");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -302,8 +304,10 @@
             // Switch language function
             async function switchLanguage(lang) {
                 const translations = await fetchTranslations();
-                pageTitle.textContent = translations[lang].title;
-                pageContent.textContent = translations[lang].content;
+                topBtn1.textContent = translations[lang].title;
+                topBtn2.textContent = translations[lang].content;
+                topBtn3.textContent = translations[lang].title;
+                topBtn4.textContent = translations[lang].content;
             }
 
             function openPage(pageName,elmnt,color) {
