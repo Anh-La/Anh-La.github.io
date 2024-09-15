@@ -56,16 +56,16 @@
               cursor: pointer;
               outline: none;
               color: #fff;
-              background-color: #04AA6D;
+              background-color: White;
               border: none;
               border-radius: 15px;
               box-shadow: 0 9px #999;
             }
             
-            .btnIcon:hover {background-color: #3e8e41}
+            .btnIcon:hover {background-color: Blue}
             
             .btnIcon:active {
-              background-color: #3e8e41;
+              background-color: Blue;
               box-shadow: 0 5px #666;
               transform: translateY(4px);
             }
@@ -115,7 +115,7 @@
                             </div><!-- /.Interest section -->
                             <hr>
                             <!-- Button Icons section -->
-                            <div class="container-fluid tabcontent">
+                            <div class="container-fluid hidden">
                                 <button class="btnIcon">Tax</button>
                                 <button class="btnIcon">Finance</button>
                                 <button class="btnIcon">Real Estate</button>
@@ -529,12 +529,17 @@
 
            function openPage(pageName, elmnt, color) {
               // Hide all elements with class="tabcontent" by default */
-              var i, tabcontent, tablinks;
+              var i, tabcontent, tablinks, hidden;
               tabcontent = document.getElementsByClassName("tabcontent");
               for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
               }
-            
+                // Hide all elements with class="hidden" by default */
+              hidden = document.getElementsByClassName("hidden");
+              for (i = 0; i < hidden.length; i++) {
+                tabcontent[i].style.display = "none";
+              }
+               
               // Remove the background color of all tablinks/buttons
               tablinks = document.getElementsByClassName("tablink");
               for (i = 0; i < tablinks.length; i++) {
