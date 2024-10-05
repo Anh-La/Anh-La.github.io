@@ -1,822 +1,641 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Anh La</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="styles.css" rel="stylesheet"/>
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <style>
-            * {box-sizing: border-box;}
-            /* Set height of body and the document to 100% to enable "full page tabs" */
-            body, html {
-              height: 100%;
-              margin: 0;
-            }
-            
-            /* Style tab links */
-            .tablink {
-              background-color: inherit;
-              color: white;
-              float: left;
-              border: none;
-              outline: none;
-              cursor: pointer;
-              padding: 16px 16px;
-              font-size: 17px;
-              width: 25%;
-              height: 100%;
-            }
-            
-            .tablink:hover {
-              background-color: white;
-              color: blue;
-            }
-            
-            /* Style the tab content (and add height:100% for full page content) */
-            .tabcontent {
-              color: black;
-              display: none;
-              height: 100%;
-            }
-            
-            #Home {background-color: white;}
-            #News {background-color: white;}
-            #Contact {background-color: white;}
-            #About {background-color: white;}
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Anh La</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        * {box-sizing: border-box;}
+        body, html {
+          height: 100%;
+          margin: 0;
+        }
+        
+        /* Style tab links */
+        .tablink {
+          background-color: inherit;
+          color: white;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 16px 16px;
+          font-size: 17px;
+          width: 25%;
+        }
+        
+        .tablink:hover {
+          background-color: white;
+          color: blue;
+        }
+        
+        /* Style the tab content */
+        .tabcontent {
+          color: black;
+          display: none;
+        }
+        
+        .btnIcon {
+          padding: 15px 25px;
+          font-size: 24px;
+          text-align: center;
+          cursor: pointer;
+          outline: none;
+          color: #fff;
+          background-color: White;
+          border: none;
+          border-radius: 15px;
+          box-shadow: 0 9px #999;
+        }
+        
+        .btnIcon:hover {background-color: Blue}
+        
+        .btnIcon:active {
+          background-color: Blue;
+          box-shadow: 0 5px #666;
+          transform: translateY(4px);
+        }
 
-            .btnIcon {
-              padding: 15px 25px;
-              font-size: 24px;
-              text-align: center;
-              cursor: pointer;
-              outline: none;
-              color: #fff;
-              background-color: White;
-              border: none;
-              border-radius: 15px;
-              box-shadow: 0 9px #999;
-            }
-            
-            .btnIcon:hover {background-color: Blue}
-            
-            .btnIcon:active {
-              background-color: Blue;
-              box-shadow: 0 5px #666;
-              transform: translateY(4px);
-            }
-        </style>
-    </head>
-    <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
-            <!-- Language Switcher with Flag Icons -->
-            <a href="javascript:void(0)" class="m-2" id="enFlag">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
-            </a> 
-            <a href="javascript:void(0)" class="m-2" id="viFlag">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
-            </a>
-            <!-- /. language options -->
+        /* 3D card styles */
+        .card-3d {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
 
-            <div class="container-fluid">
-                <!-- Top buttons -->    
-                <button id="topBtn1" class="tablink" onclick="openPage('Macro', this, 'white')">Macro</button>
-                <button id="topBtn2" class="tablink" onclick="openPage('Tax', this, 'white')">Tax</button>
-                <button id="topBtn3" class="tablink" onclick="openPage('Investing', this, 'white')">Investing</button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Tech', this, 'white')">Technology</button>
-                <!--/. Top buttons -->
-            </div>   
-        </nav>
+        .card-3d .card {
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
 
-        <!-- Sidebar-->
-        <div id="layoutSidenav">
-            <!-- Sidebar menu >    
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                </nav>
-            </div> <!-- Added missing closing div -->
+        .card-3d .card:hover {
+            transform: rotateY(10deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
 
-            <!-- Sidebar content (main page)-->
-            <div id="layoutSidenav_content">
-                <main>
-                    <!-- Page Content -->
-                    <div class="container-fluid px-4">
-                        <!-- Page Content 1 -->
-                        <div class="container py-4">
-                            <!-- Interest section -->
-                            <div class="mb-4 bg-body-tertiary rounded-3">
-                              <div class="container-fluid">
-                                  <h1 id="introProject" class="display-5 fw-bold">I'm working on..</h1>
-                                    <p class="col-md-8 fs-4"></p>
-                              </div>
-                            </div><!-- /.Interest section -->
-                            <hr>
-                            <!-- Button Icons section>
-                            <div class="container-fluid">
-                                <button class="btnIcon"><a href="#" class="fa-solid fa-coins">Tax</a></button>
-                                <button class="btnIcon">Finance</button>
-                                <button class="btnIcon">Real Estate</button>
-                                <button class="btnIcon">Bitcoin</button>
-                                <button class="btnIcon">Ai</button>
-                            </div>
-                            <!-- /.Button Icons section -->
-                            <!-- Projects section -->
-                            <div id="Tax" class="container tabcontent">
-                                <h1 class="my-4 text-center"></h1>
-                                <!-- Tax Projects -->       
-                                <div class="row">
-                                    <div id="carouselExampleTax" class="carousel carousel-dark slide">
-                                        <div class="carousel-inner">
-                                            <!-- Project One -->   
-                                            <div class="carousel-item active" data-bs-interval="1000">  
-                                                <!-- Project One - image-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project One - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/Trusts/">Trust Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/tax-planning/">Tax Planning Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/structuring/">Structuring Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>    
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="#">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+        /* Remove margin constraints */
+        .no-sidebar {
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
+        <!-- Language Switcher with Flag Icons -->
+        <a href="javascript:void(0)" class="m-2" id="enFlag">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20">
+        </a> 
+        <a href="javascript:void(0)" class="m-2" id="viFlag">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20">
+        </a>
+        <!-- /. language options -->
+
+        <div class="container-fluid">
+            <!-- Top buttons -->    
+            <button id="topBtn1" class="tablink" onclick="openPage('Macro', this, 'white')">Macro</button>
+            <button id="topBtn2" class="tablink" onclick="openPage('Tax', this, 'white')">Tax</button>
+            <button id="topBtn3" class="tablink" onclick="openPage('Investing', this, 'white')">Investing</button>
+            <button id="topBtn4" class="tablink" onclick="openPage('Tech', this, 'white')">Technology</button>
+            <!--/. Top buttons -->
+        </div>   
+    </nav>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="no-sidebar">
+        <main>
+            <!-- Page Content -->
+            <div class="container-fluid px-4">
+                <!-- Page Content 1 -->
+                <div class="container-fluid py-4">
+                    <!-- Interest section -->
+                    <div class="mb-4 bg-body-tertiary rounded-3">
+                      <div class="container-fluid">
+                          <h1 id="introProject" class="display-5 fw-bold">I'm working on..</h1>
+                            <p class="col-md-8 fs-4"></p>
+                      </div>
+                    </div><!-- /.Interest section -->
+                    <hr>
+                    <!-- Projects section -->
+                    <!-- Tax Tab -->
+                    <div id="Tax" class="container-fluid tabcontent">
+                        <h1 class="my-4 text-center"></h1>
+                        <!-- Tax Projects -->       
+                        <div class="row">
+                            <div id="carouselExampleTax" class="carousel carousel-dark slide">
+                                <div class="carousel-inner">
+                                    <!-- Project One -->   
+                                    <div class="carousel-item active card-3d" data-bs-interval="1000">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="TrustSmallBusinessCGT2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/Trusts/">Trust Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/tax-planning/">Tax Planning Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/structuring/">Structuring Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>    
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Project Two -->
-                                            <div class="carousel-item" data-bs-interval="1000">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>  
-                                                <hr>
-                                                <!-- Project 2 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>      
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/Primary-Producer/">Primary Producer Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>  
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/GST-and-BAS/">Goods and Services Tax Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>  
-                                                          </li>  
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                                    <!-- Project Two -->
+                                    <div class="carousel-item card-3d" data-bs-interval="1000">
+                                        <div class="card">
+                                            <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="coporateTax2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>      
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/Primary-Producer/">Primary Producer Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>  
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/GST-and-BAS/">Goods and Services Tax Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>  
+                                                  </li>  
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Project Three -->  
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7"> 
-                                                        <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 3 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                             <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="https://accounting-tax.github.io/Clubs-and-Associations/">Non-profit organisations Tax Compliance Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/payroll/">Payroll Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>  
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                                    <!-- Project Three -->  
+                                    <div class="carousel-item card-3d">
+                                        <div class="card">
+                                            <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                     <a id='pro1Ln3' href="https://accounting-tax.github.io/companies/">Company Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="https://accounting-tax.github.io/Clubs-and-Associations/">Non-profit Organisations Tax Compliance Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/payroll/">Payroll Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>  
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Project Four -->   
-                                            <div class="carousel-item" data-bs-interval="10000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div> 
-                                                <hr>
-                                                <!-- Project 4 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="">International Tax guidance</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                                    <!-- Project Four -->   
+                                    <div class="carousel-item card-3d" data-bs-interval="10000">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="#">International Tax Guidance</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
-                                    
-                                            <!-- Project Five -->   
-                                            <div class="carousel-item">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/GST-Practice-Case-Study-2024">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 5 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                       <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/GST-and-BAS/">Goods and Services Tax Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>
-                                            </div>
-                                                <!-- Project 6 -->   
-                                            <div class="carousel-item">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="#">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smsf2024.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 6 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                       <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify basic tax issues and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://accounting-tax.github.io/GST-and-BAS/">Self Managed Superfund (SMSF) Tax Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>
-                                            </div><!-- /.Project 6 - content-->
-                               
-                                        </div> <!-- Carousel-inner -->                                 
-                                        
-                                        <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" style="align-items: flex-start" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" style="align-items: flex-start" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div> <!-- Carousel-slide -->  
-                                </div> <!-- /.row --> 
+                                        </div>
+                                    </div>
                             
-                            </div> <!-- Tax tab page -->
-
-                            <!-- Other tab pages -->
-                            <!-- Macro Page -->
-                            <div id="Macro" class="container tabcontent">
-                                <h1 class="my-4 text-center"></h1>
-                                <!-- Projects -->       
-                                <div class="row">
-                                    <div id="carouselExampleMacro" class="carousel carousel-dark slide">
-                                        <div class="carousel-inner">
-                                            <!-- Project One -->   
-                                            <div class="carousel-item active" data-bs-interval="1000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 1 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Summarise lessons via examples and applications from the finance revolution by technology and provide practical analysis framework for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="https://bitcoin-basic.github.io/digital-finance-CPA/">Digital finance CPA guidance</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                                    <!-- Project Five -->   
+                                    <div class="carousel-item card-3d">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/GST-Practice-Case-Study-2024">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                               <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://accounting-tax.github.io/GST-and-BAS/">Goods and Services Tax Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
-
-                                            <!-- Project Two -->
-                                            <div class="carousel-item" data-bs-interval="1000">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 2 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Summarise lessons via examples and applications and provide practical analysis framework for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="https://macro-econ.github.io/overview/">from Lyn Alden's overview</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                                        </div>
+                                    </div>
+                                    <!-- Project Six -->   
+                                    <div class="carousel-item card-3d">  
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smsf2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                               <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify basic tax issues and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Self Managed Superfund (SMSF) Tax Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div><!-- /.Project Six -->
+                       
+                                </div> <!-- Carousel-inner -->                                 
+                                
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" style="align-items: flex-start" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" style="align-items: flex-start" type="button" data-bs-target="#carouselExampleTax" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div> <!-- Carousel-slide -->  
+                        </div> <!-- /.row --> 
+                    
+                    </div> <!-- Tax tab page -->
 
-                                            <!-- Project Three -->  
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7"> 
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                 <hr>
-                                                <!-- Project 3 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                        <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Summarise lessons via examples and applications and provide practical analysis framework for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln3' href="https://macro-econ.github.io/luke-mikic/">from Luke mikic's overview</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>  
+                    <!-- Macro Tab -->
+                    <div id="Macro" class="container-fluid tabcontent">
+                        <h1 class="my-4 text-center"></h1>
+                        <!-- Macro Projects -->       
+                        <div class="row">
+                            <div id="carouselExampleMacro" class="carousel carousel-dark slide">
+                                <div class="carousel-inner">
+                                    <!-- Project One -->   
+                                    <div class="carousel-item active card-3d" data-bs-interval="1000">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/404/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Summarise lessons via examples and applications from the finance revolution by technology and provide practical analysis framework for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="https://bitcoin-basic.github.io/digital-finance-CPA/">Digital finance CPA guidance</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Project Four -->   
-                                            <div class="carousel-item" data-bs-interval="10000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                    <!-- Project Two -->
+                                    <div class="carousel-item card-3d" data-bs-interval="1000">
+                                        <div class="card">
+                                            <a href="https://anh.contact/404/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Summarise lessons via examples and applications and provide practical analysis framework for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="https://macro-econ.github.io/overview/">From Lyn Alden's overview</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Project Five -->   
-                                            <div class="carousel-item">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                        </div> <!-- Carousel-inner -->                                 
-                                        
-                                        <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div> <!-- Carousel-slide -->  
-                                </div> <!-- /.row --> 
-                            
-                            </div> <!-- Macro tab page -->
-                            
-                            <!-- Investing Page -->
-                            <div id="Investing" class="container tabcontent">
-                                <h1 class="my-4 text-center"></h1>
-                                <!-- Projects -->       
-                                <div class="row">
-                                    <div id="carouselExampleInvesting" class="carousel carousel-dark slide">
-                                        <div class="carousel-inner">
-                                            <!-- Project One -->   
-                                            <div class="carousel-item active" data-bs-interval="1000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="Financial-Planning.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 1 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                       <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify financial planning for individual and provide practical steps for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://digital-finance-pty-ltd.github.io/financial-planning/">Financial planning for individual Basic Guide</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>
-                                            </div><!-- /.Project 6 - content-->
-                                            <!-- Project Two -->
-                                            <div class="carousel-item" data-bs-interval="1000">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                    <!-- Project Three -->  
+                                    <div class="carousel-item card-3d">
+                                        <div class="card">
+                                            <a href="https://anh.contact/404/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Summarise lessons via examples and applications and provide practical analysis framework for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln3' href="https://macro-econ.github.io/luke-mikic/">From Luke Mikic's overview</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <!-- Add more projects as needed -->
+                                </div> <!-- Carousel-inner -->                                 
+                                
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleMacro" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div> <!-- Carousel-slide -->  
+                        </div> <!-- /.row --> 
+                    
+                    </div> <!-- Macro tab page -->
 
-                                            <!-- Project Three -->  
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7"> 
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
+                    <!-- Investing Tab -->
+                    <div id="Investing" class="container-fluid tabcontent">
+                        <h1 class="my-4 text-center"></h1>
+                        <!-- Investing Projects -->       
+                        <div class="row">
+                            <div id="carouselExampleInvesting" class="carousel carousel-dark slide">
+                                <div class="carousel-inner">
+                                    <!-- Project One -->   
+                                    <div class="carousel-item active card-3d" data-bs-interval="1000">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/404/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="Financial-Planning.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                               <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify financial planning for individuals and provide practical steps for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://digital-finance-pty-ltd.github.io/financial-planning/">Financial Planning for Individuals Basic Guide</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <!-- Add more projects as needed -->
+                                </div> <!-- Carousel-inner -->                                 
+                                
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div> <!-- Carousel-slide -->  
+                        </div> <!-- /.row --> 
+                    
+                    </div> <!-- Investing tab page -->
 
-                                            <!-- Project Four -->   
-                                            <div class="carousel-item" data-bs-interval="10000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
+                    <!-- Tech Tab -->
+                    <div id="Tech" class="container-fluid tabcontent">
+                        <h1 class="my-4 text-center"></h1>
+                        <!-- Tech Projects -->       
+                        <div class="row">
+                            <div id="carouselExampleTech" class="carousel carousel-dark slide">
+                                <div class="carousel-inner">
+                                    <!-- Project One -->   
+                                    <div class="carousel-item active card-3d" data-bs-interval="1000">  
+                                        <div class="card">
+                                            <a href="https://anh.contact/404/">
+                                                <img class="card-img-top img-fluid rounded mb-3 mb-md-0 d-block w-100" src="money.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                               <h5 id='pro1Ln1' class="card-title my-4">Objectives and outcomes:</h5>
+                                                <p id='pro1Ln2' class="card-text"> Simplify the role of Bitcoin in money evolution and provide practical application for normies</p>
+                                                <ul class="list-group">
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://bitcoin-basic.github.io/evolution-of-money/">The Role of Bitcoin in Evolution of Money Overview</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://bitcoin-basic.github.io/evolution-of-bitcoin/">Evolution of Bitcoin</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://bitcoin-basic.github.io/global-currency/">Bitcoin as a Global Currency</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://bitcoin-basic.github.io/Bitcoin-Usecases/">Bitcoin Practical Use Cases</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="https://bitcoin-basic.github.io/Bitcoin-Fallacies/">Bitcoin Fallacies</a>
+                                                    <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln4' href="#">Calculators</a>
+                                                    <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
+                                                  </li>
+                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a id='pro1Ln5' href="#">Guide Video</a>
+                                                    <span id='badgeVideo' class="badge bg-success rounded-pill">Video</span>
+                                                  </li>
+                                                </ul>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <!-- Add more projects as needed -->
+                                </div> <!-- Carousel-inner -->                                 
+                                
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div> <!-- Carousel-slide -->  
+                        </div> <!-- /.row --> 
+                    
+                    </div> <!-- Tech tab page -->
 
-                                            <!-- Project Five -->   
-                                            <div class="carousel-item">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                        </div> <!-- Carousel-inner -->                                 
-                                        
-                                        <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInvesting" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div> <!-- Carousel-slide -->  
-                                </div> <!-- /.row --> 
-                            
-                            </div> <!-- Investing tab page -->
-                            
-                            <!-- Tech Page -->
-                            <div id="Tech" class="container tabcontent">
-                                <h1 class="my-4 text-center"></h1>
-                                <!-- Projects -->       
-                                <div class="row">
-                                    <div id="carouselExampleTech" class="carousel carousel-dark slide">
-                                        <div class="carousel-inner">
-                                            <!-- Project One -->   
-                                            <div class="carousel-item active" data-bs-interval="1000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="money.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <!-- Project 1 - content-->
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-12">
-                                                       <h5 id='pro1Ln1' class="my-4">Objectives and outcomes:</h5>
-                                                        <p id='pro1Ln2'> Simplify the role of Bitcoin in money evolution and provide practical application for normies</p>
-                                                        <ul class="list-group">
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://bitcoin-basic.github.io/evolution-of-money/">The role of Bitcoin in evolution of money overview</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://bitcoin-basic.github.io/evolution-of-bitcoin/">Evolution of Bitcoin</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://bitcoin-basic.github.io/global-currency/">Bitcoin as a global currency</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://bitcoin-basic.github.io/Bitcoin-Usecases/">Bitcoin Practical Usecases</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="https://bitcoin-basic.github.io/Bitcoin-Fallacies/">Bitcoin Fallacies</a>
-                                                            <span id='badgeDoc' class="badge bg-primary rounded-pill">Document</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln4' href="">Calculators</a>
-                                                            <span id='badgePending' class="badge bg-danger rounded-pill">Pending</span>
-                                                          </li>
-                                                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <a id='pro1Ln5' href="">Guide Video</a>
-                                                            <span id='badgeVideo' class="badge bg-success rounded-pill">video</span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                </div>
-                                            </div><!-- /.Project 6 - content-->
-                                            </div>
-                                        
-
-                                            <!-- Project Two -->
-                                            <div class="carousel-item" data-bs-interval="1000">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Project Three -->  
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7"> 
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Project Four -->   
-                                            <div class="carousel-item" data-bs-interval="10000">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Project Five -->   
-                                            <div class="carousel-item">  
-                                                <div class="row justify-content-md-center">
-                                                    <div class="col-md-7">
-                                                        <a href="https://anh.contact/404/">
-                                                            <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="avatar.png" alt="">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                        </div> <!-- Carousel-inner -->                                 
-                                        
-                                        <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleTech" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div> <!-- Carousel-slide -->  
-                                </div> <!-- /.row --> 
-                            
-                            </div> <!-- Tech tab page -->
-                        </div>
-                    </main>
-
-                    <footer class="py-4 bg-light mt-auto">
-                        <div class="container-fluid px-4">
-                            <div class="d-flex align-items-center justify-content-between small">
-                                <div class="text-muted"> &copy; 2024 Anh La </div>
-                                <!-- Personalised text -->
-                                <div class="d-flex w-100">         
-                                    <form name="text_Marquee" class="flex-grow-1">
-                                        <input name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
-                                        value=" 
-                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
-                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
-                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
-                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
-                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
-                                            “Nói thì dễ, làm thì khó.”
-                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
-                                            " disabled />
-                                    </form>
-                                </div><!-- /.Personalised text -->
-                                <!-- Brand-->
-                                <div class="text-center">
-                                    <a class="navbar-brand ps-3" href="login">
-                                        <img src="avatar.png" alt="Avatar" class="avatar">
-                                    </a>
-                                </div><!-- /.Brand-->
-                            </div>
-                        </div>
-                    </footer>
                 </div>
-            </div> <!-- End of layoutSidenav_content -->
-        </div> <!-- End of layoutSidenav -->
+            </div>
+        </main>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="chart-area-demo.js"></script>
-        <script src="chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="scripts.js"></script>
-        <script>
-            // Fetch translations from the JSON file
-            async function fetchTranslations() {
-                const response = await fetch('translations.json');
-                const data = await response.json();
-                return data;
-            }
-    
-            // Elements to update
-            const topBtn1 = document.getElementById("topBtn1");
-            const topBtn2 = document.getElementById("topBtn2");
-            const topBtn3 = document.getElementById("topBtn3");
-            const topBtn4 = document.getElementById("topBtn4");
-            const introProject = document.getElementById("introProject");
-    
-            // Event listeners for flag clicks
-            document.getElementById("enFlag").addEventListener("click", function() {
-                switchLanguage('en');
-            });
-    
-            document.getElementById("viFlag").addEventListener("click", function() {
-                switchLanguage('vi');
-            });
-    
-            // Switch language function
-            async function switchLanguage(lang) {
-                const translations = await fetchTranslations();
-                topBtn1.textContent = translations[lang].topBtn1;
-                topBtn2.textContent = translations[lang].topBtn2;
-                topBtn3.textContent = translations[lang].topBtn3;
-                topBtn4.textContent = translations[lang].topBtn4;
-                introProject.textContent = translations[lang].introProject;
-            }
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted"> &copy; 2024 Anh La </div>
+                    <!-- Personalised text -->
+                    <div class="d-flex w-100">         
+                        <form name="text_Marquee" class="flex-grow-1">
+                            <input name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
+                            value=" 
+                                “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                “Nói thì dễ, làm thì khó.”
+                                “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                " disabled />
+                        </form>
+                    </div><!-- /.Personalised text -->
+                    <!-- Brand-->
+                    <div class="text-center">
+                        <a class="navbar-brand ps-3" href="login">
+                            <img src="avatar.png" alt="Avatar" class="avatar">
+                        </a>
+                    </div><!-- /.Brand-->
+                </div>
+            </div>
+        </footer>
+    </div> <!-- End of mainContent -->
 
-           function openPage(pageName, elmnt, color) {
-              // Hide all elements with class="tabcontent" by default */
-              var i, tabcontent, tablinks, hidden;
-              tabcontent = document.getElementsByClassName("tabcontent");
-              for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-              }
-              // Remove the background color of all tablinks/buttons
-              tablinks = document.getElementsByClassName("tablink");
-              for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].style.backgroundColor = "";
-                tablinks[i].style.color = ""; // Reset text color
-              }
-              // Show the specific tab content
-              document.getElementById(pageName).style.display = "block";
-              // Add the specific color to the button used to open the tab content
-              elmnt.style.backgroundColor = color;
-              elmnt.style.color = "blue";  // Set text color to blue
-            }
-            
-        // Get the element with id="defaultOpen" and click on it
-        document.getElementById("topBtn2").click();
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="chart-area-demo.js"></script>
+    <script src="chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="scripts.js"></script>
+    <script>
+        // Fetch translations from the JSON file
+        async function fetchTranslations() {
+            const response = await fetch('translations.json');
+            const data = await response.json();
+            return data;
+        }
 
-        </script>
-    </body>
+        // Elements to update
+        const topBtn1 = document.getElementById("topBtn1");
+        const topBtn2 = document.getElementById("topBtn2");
+        const topBtn3 = document.getElementById("topBtn3");
+        const topBtn4 = document.getElementById("topBtn4");
+        const introProject = document.getElementById("introProject");
+
+        // Event listeners for flag clicks
+        document.getElementById("enFlag").addEventListener("click", function() {
+            switchLanguage('en');
+        });
+
+        document.getElementById("viFlag").addEventListener("click", function() {
+            switchLanguage('vi');
+        });
+
+        // Switch language function
+        async function switchLanguage(lang) {
+            const translations = await fetchTranslations();
+            topBtn1.textContent = translations[lang].topBtn1;
+            topBtn2.textContent = translations[lang].topBtn2;
+            topBtn3.textContent = translations[lang].topBtn3;
+            topBtn4.textContent = translations[lang].topBtn4;
+            introProject.textContent = translations[lang].introProject;
+        }
+
+       function openPage(pageName, elmnt, color) {
+          // Hide all elements with class="tabcontent" by default */
+          var i, tabcontent, tablinks;
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+          // Remove the background color of all tablinks/buttons
+          tablinks = document.getElementsByClassName("tablink");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+            tablinks[i].style.color = ""; // Reset text color
+          }
+          // Show the specific tab content
+          document.getElementById(pageName).style.display = "block";
+          // Add the specific color to the button used to open the tab content
+          elmnt.style.backgroundColor = color;
+          elmnt.style.color = "blue";  // Set text color to blue
+        }
+        
+    // Get the element with id="topBtn2" and click on it
+    document.getElementById("topBtn2").click();
+
+    </script>
+</body>
 </html>
