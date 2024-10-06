@@ -877,68 +877,67 @@
                 introProject.textContent = translations[lang].introProject;
             }
         
-        //Tab pages set up
-           function openPage(pageName, elmnt, color) {
-              // Hide all elements with class="tabcontent" by default */
-              var i, tabcontent, tablinks, hidden;
-              tabcontent = document.getElementsByClassName("tabcontent");
-              for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-              }
-              // Remove the background color of all tablinks/buttons
-              tablinks = document.getElementsByClassName("tablink");
-              for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].style.backgroundColor = "";
-                tablinks[i].style.color = ""; // Reset text color
-              }
-              // Show the specific tab content
-              document.getElementById(pageName).style.display = "block";
-              // Add the specific color to the button used to open the tab content
-              elmnt.style.backgroundColor = color;
-              elmnt.style.color = "blue";  // Set text color to blue
+            //Tab pages set up
+            function openPage(pageName, elmnt, color) {
+                // Hide all elements with class="tabcontent" by default */
+                var i, tabcontent, tablinks, hidden;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                // Remove the background color of all tablinks/buttons
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                    tablinks[i].style.color = ""; // Reset text color
+                }
+                // Show the specific tab content
+                document.getElementById(pageName).style.display = "block";
+                // Add the specific color to the button used to open the tab content
+                elmnt.style.backgroundColor = color;
+                elmnt.style.color = "blue";  // Set text color to blue
             }
             
-        // Get the element with id="defaultOpen" and click on it
-        document.getElementById("topBtn1").click();
-
-            //Draggalbe sliders
+            // Get the default tab open
+            document.getElementById("topBtn1").click();
+    
+            // Draggable sliders
             let isDown = false;
             let startX;
             let scrollLeft;
             const slider = document.querySelector('.items');
             
             const end = () => {
-            	isDown = false;
-              slider.classList.remove('active');
+                isDown = false;
+                slider.classList.remove('active');
             }
             
             const start = (e) => {
-              isDown = true;
-              slider.classList.add('active');
-              startX = e.pageX || e.touches[0].pageX - slider.offsetLeft;
-              scrollLeft = slider.scrollLeft;	
+                isDown = true;
+                slider.classList.add('active');
+                startX = (e.pageX || e.touches[0].pageX) - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft; 
             }
             
             const move = (e) => {
-            	if(!isDown) return;
-            
-              e.preventDefault();
-              const x = e.pageX || e.touches[0].pageX - slider.offsetLeft;
-              const dist = (x - startX);
-              slider.scrollLeft = scrollLeft - dist;
+                if(!isDown) return;
+                e.preventDefault();
+                const x = (e.pageX || e.touches[0].pageX) - slider.offsetLeft;
+                const dist = x - startX;
+                slider.scrollLeft = scrollLeft - dist;
             }
             
             (() => {
-            	slider.addEventListener('mousedown', start);
-            	slider.addEventListener('touchstart', start);
-            
-            	slider.addEventListener('mousemove', move);
-            	slider.addEventListener('touchmove', move);
-            
-            	slider.addEventListener('mouseleave', end);
-            	slider.addEventListener('mouseup', end);
-            	slider.addEventListener('touchend', end);
-            })();         
+                if (slider) { // Check if slider exists
+                    slider.addEventListener('mousedown', start);
+                    slider.addEventListener('touchstart', start);
+                    slider.addEventListener('mousemove', move);
+                    slider.addEventListener('touchmove', move);
+                    slider.addEventListener('mouseleave', end);
+                    slider.addEventListener('mouseup', end);
+                    slider.addEventListener('touchend', end);
+                }
+            })(); 
         </script>
     </body>
 </html>
