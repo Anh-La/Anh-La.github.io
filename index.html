@@ -68,6 +68,110 @@
               box-shadow: 0 5px #666;
               transform: translateY(4px);
             }
+
+            ul {
+            	padding: 0;
+            }
+            
+            li {
+            	list-style: none;
+            }
+            
+            
+            main {
+            	max-width: 1200px;
+            	margin: 0 auto;
+            	padding: 50px 0;
+            
+            	h1 {
+            		margin-bottom: 50px;
+            	}
+            }
+            
+            .wrapper {
+            	position: relative;
+            	
+            	// Gradient side fade
+            
+            	&:before,
+            	&:after {
+            		position: absolute;
+            		top: 0;
+            		z-index: 1;
+            
+            		content: "";
+            		display: block;
+            		width: $margin;
+            		height: 100%;
+            	}
+            	
+            	&:before {
+            		left: 0;
+            		background: linear-gradient(90deg, $bg-color, transparent);
+            	}
+            	
+            	&:after {
+            		right: 0;
+            		background: linear-gradient(-90deg, $bg-color, transparent);
+            	}
+            }
+            
+            .items {
+            	position: relative;
+            	width: 100%;
+            	overflow: hidden;
+            	white-space: nowrap;
+            	font-size: 0;
+            	cursor: pointer;
+            	
+            	&.active {
+            		cursor: grab;
+            	}
+            }
+            
+            .item {
+            	display: inline-block;
+            	margin-left: $margin;
+            	user-select: none;
+            
+            	background: tomato;
+            	width: 50%;
+            	height: 130px;
+            	color: $bg-color;
+            	font-size: 33px;
+            	font-weight: bold;
+            	line-height: 130px;
+            	
+            	&:last-child {
+            		margin-right: $margin;
+            	}
+            }
+            
+            @media screen and (min-width: 500px) {
+            
+            	.item {
+            		width: 33%;	
+            	}
+            }
+            
+            @media screen and (min-width: 800px) {
+            
+            	.item {
+            		width: 25%;	
+            	}
+            }
+            
+            @media screen and (min-width: 1200px) {
+            	
+            	.wrapper {
+            		margin-left: -$margin;
+            	}
+            
+            	.item {
+            		width: 20%;	
+            	}
+            }
+
         </style>
     </head>
     <body class="sb-nav-fixed">
