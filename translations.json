@@ -1,16 +1,16 @@
 {
   "en": {
-    "topBtn1": "Macro",
-    "topBtn2": "Tax",
-    "topBtn3": "Investing",
-    "topBtn4": "Technology",
-    "introProject": "I'm working on.."
+    "topBtn1": "Home",
+    "topBtn2": "Videos",
+    "topBtn3": "Blog",
+    "topBtn4": "Podcast",
+    "introProject": "You're showing the latest.."
   },
   "vi": {
-    "topBtn1": "Vĩ mô",
-    "topBtn2": "Thuế",
-    "topBtn3": "Đầu tư",
-    "topBtn4": "Công nghệ",
-    "introProject": "Dự án đang thực hiện.."
+    "topBtn1": "Trang chủ",
+    "topBtn2": "Phim",
+    "topBtn3": "Bài viết",
+    "topBtn4": "Trò chuyện",
+    "introProject": "Bạn đang xem nội dung mới nhất.."
   }
 }
