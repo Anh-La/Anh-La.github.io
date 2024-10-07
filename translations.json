@@ -1,16 +1,16 @@
 {
   "en": {
     "topBtn1": "Home",
-    "topBtn2": "Videos",
+    "topBtn2": "Videos/Audio",
     "topBtn3": "Blog",
-    "topBtn4": "Podcast",
-    "introProject": "You're showing the latest.."
+    "topBtn4": "Charts",
+    "introProject": "The latest.."
   },
   "vi": {
     "topBtn1": "Trang chủ",
-    "topBtn2": "Phim",
+    "topBtn2": "Phim/Ghi âm",
     "topBtn3": "Bài viết",
-    "topBtn4": "Trò chuyện",
-    "introProject": "Bạn đang xem nội dung mới nhất.."
+    "topBtn4": "Đồ thị",
+    "introProject": "Nội dung mới nhất.."
   }
 }
