@@ -87,13 +87,20 @@
             		margin-bottom: 50px;
             	}
             }
+            /*Carousel Cards setting for big divices*/
+            @media screen and (min-width:568px){
             .cards-wrapper{
                 display: flex;
             }
             .card{
                 margin: 0.5em;
             }
-            
+            }
+            @media screen and (max-width:567px){
+            .card:not(:first-child){
+                display:none;
+            }
+            }
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -435,7 +442,7 @@
                                     <small>Videos</small>
                                   </h1>
                                     <!-- Card sliders 1 -->
-                                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                    <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
                                       <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <div class="cards-wrapper">
