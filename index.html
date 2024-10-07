@@ -88,90 +88,34 @@
             	}
             }
             
-            .wrapper {
-            	position: relative;
-            	
-            	// Gradient side fade
-            
-            	&:before,
-            	&:after {
-            		position: absolute;
-            		top: 0;
-            		z-index: 1;
-            
-            		content: "";
-            		display: block;
-            		width: $margin;
-            		height: 100%;
-            	}
-            	
-            	&:before {
-            		left: 0;
-            		background: linear-gradient(90deg, $bg-color, transparent);
-            	}
-            	
-            	&:after {
-            		right: 0;
-            		background: linear-gradient(-90deg, $bg-color, transparent);
-            	}
+            /*Carousel sliders 1*/        
+            .carousel-container {
+                overflow: hidden;
+                position: relative;
+                padding: 20px;
             }
             
-            .items {
-            	position: relative;
-            	width: 100%;
-            	overflow: hidden;
-            	white-space: nowrap;
-            	font-size: 0;
-            	cursor: pointer;
-            	
-            	&.active {
-            		cursor: grab;
-            	}
+            .carousel-wrapper {
+                display: flex;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
             }
             
-            .item {
-            	display: inline-block;
-            	margin-left: $margin;
-            	user-select: none;
-            
-            	background: tomato;
-            	width: 50%;
-            	height: 130px;
-            	color: $bg-color;
-            	font-size: 33px;
-            	font-weight: bold;
-            	line-height: 130px;
-            	
-            	&:last-child {
-            		margin-right: $margin;
-            	}
+            .carousel-wrapper::-webkit-scrollbar {
+                display: none; /* Safari and Chrome */
             }
             
-            @media screen and (min-width: 500px) {
-            
-            	.item {
-            		width: 33%;	
-            	}
+            .carousel-item {
+                flex: 0 0 auto;
+                width: 300px; /* Adjust as needed */
+                margin-right: 16px;
             }
             
-            @media screen and (min-width: 800px) {
-            
-            	.item {
-            		width: 25%;	
-            	}
+            .carousel-item:last-child {
+                margin-right: 0;
             }
-            
-            @media screen and (min-width: 1200px) {
-            	
-            	.wrapper {
-            		margin-left: -$margin;
-            	}
-            
-            	.item {
-            		width: 20%;	
-            	}
-            }
-
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -408,8 +352,7 @@
                                                             <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
                                                         </a>
                                                     </div>
-                                                </div>
-                                                <hr>
+                                                </div>            
                                                 <!-- Project Lyn Alden - content-->
                                                 <div class="row justify-content-md-center">
                                                     <div class="col-md-12">
@@ -419,7 +362,7 @@
                                                       </div>
                                                 </div>  
                                             </div>
-
+                                            <hr>
                                             <!-- Project Luke mikic -->  
                                             <div class="carousel-item">
                                                 <div class="row justify-content-md-center">
@@ -428,8 +371,7 @@
                                                             <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="macroecon1.jpeg" alt="">
                                                         </a>
                                                     </div>
-                                                </div>
-                                                 <hr>
+                                                </div>                                                
                                                 <!-- Project Luke mikic - content-->
                                                 <div class="row justify-content-md-center">
                                                     <div class="col-md-12">
@@ -439,6 +381,7 @@
                                                       </div>
                                                 </div>  
                                             </div>
+                                             <hr>
                                            <!-- Project Financial planning -->   
                                             <div class="carousel-item" data-bs-interval="1000">  
                                                 <div class="row justify-content-md-center">
@@ -447,8 +390,7 @@
                                                             <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="Financial-Planning.jpg" alt="">
                                                         </a>
                                                     </div>
-                                                </div>
-                                                <hr>
+                                                </div>                                                
                                                 <!-- Project Financial planning - content-->
                                                 <div class="row justify-content-md-center">
                                                     <div class="col-md-12">
@@ -458,6 +400,7 @@
                                                       </div>
                                                 </div>
                                             </div><!-- /.Project Financial planning - content-->
+                                            <hr>
                                             <!-- Project Bitcoin -->   
                                             <div class="carousel-item" data-bs-interval="1000">  
                                                 <div class="row justify-content-md-center">
@@ -466,8 +409,7 @@
                                                             <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="money.jpg" alt="">
                                                         </a>
                                                     </div>
-                                                </div>
-                                                <hr>
+                                                </div>                                                
                                                 <!-- Project Bitcoin - content-->
                                                 <div class="row justify-content-md-center">
                                                     <div class="col-md-12">
@@ -481,6 +423,7 @@
                                                       </div>
                                                 </div>
                                             </div><!-- /.Project Bitcoin - content-->
+                                            <hr>
                                         </div> <!-- Carousel-inner -->            
                                         <!-- Carousel Controls -->
                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleVideos" data-bs-slide="prev">
@@ -495,36 +438,10 @@
                                 </div> <!-- /.row --> 
                                 <!-- Investing Slide -->    
                                 <h1>Investing</h1>
-                                    <div class="wrapper">
-                                        <ul class="items">
-                                          <li class="item">0</li>
-                                          <li class="item">1</li>
-                                          <li class="item">2</li>
-                                          <li class="item">3</li>
-                                          <li class="item">4</li>
-                                          <li class="item">5</li>
-                                          <li class="item">6</li>
-                                          <li class="item">7</li>
-                                          <li class="item">8</li>
-                                          <li class="item">9</li>
-                                        </ul>
-                                    </div><!-- /.Investing Slide -->
+                                    <!-- /.Investing Slide -->
                                 <!-- Tax Slide -->    
-                                <h1>Investing</h1>
-                                    <div class="wrapper">
-                                        <ul class="items">
-                                          <li class="item">0</li>
-                                          <li class="item">1</li>
-                                          <li class="item">2</li>
-                                          <li class="item">3</li>
-                                          <li class="item">4</li>
-                                          <li class="item">5</li>
-                                          <li class="item">6</li>
-                                          <li class="item">7</li>
-                                          <li class="item">8</li>
-                                          <li class="item">9</li>
-                                        </ul>
-                                    </div><!-- /.Tax Slide -->
+                                <h1>Tax</h1>                                   
+                                    <!-- /.Tax Slide -->
                             </div> <!-- Videos tab page -->
 
                             <!-- Other tab pages -->
@@ -537,138 +454,37 @@
                                       <h1 class="my-4">Projects
                                         <small>Videos</small>
                                       </h1>
-                                    
-                                      <div class="row">
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                                                aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
-                                                dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+                                    <!-- Card sliders 1 -->
+                                      <div class="carousel-container">
+                                          <div class="carousel-wrapper">
+                                            <!-- Card 1 -->
+                                            <div class="carousel-item">
+                                              <div class="card h-100">
+                                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                                <div class="card-body">
+                                                  <h4 class="card-title">
+                                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
+                                                  </h4>
+                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                                                </div>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/bitcoin-model">Project Two</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                odio, gravida pellentesque urna varius vitae.</p>
+                                            <!-- Card 2 -->
+                                            <div class="carousel-item">
+                                              <div class="card h-100">
+                                                <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
+                                                <div class="card-body">
+                                                  <h4 class="card-title">
+                                                    <a href="https://anh.contact/bitcoin-model">Project Two</a>
+                                                  </h4>
+                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                                                </div>
+                                              </div>
                                             </div>
+                                            <!-- Add more cards as needed -->
                                           </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error
-                                                quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
-                                                perspiciatis mollitia recusandae vero vel quam!</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/tranh-cai-Bitcoin">Project Four</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                odio, gravida pellentesque urna varius vitae.</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/su-dung-Bitcoin">Project Five</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                odio, gravida pellentesque urna varius vitae.</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/dong-tien-chung">Project Six</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/21-lessons-by-Gigi">Project Six</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                          <div class="col-lg-4 col-sm-6 mb-4">
-                                          <div class="card h-100">
-                                            <a href="#"><img class="card-img-top" src="https://via.placeholder.com/700x400" alt=""></a>
-                                            <div class="card-body">
-                                              <h4 class="card-title">
-                                                <a href="https://anh.contact/gradually-then-suddenly-by-Parker-Lewis">Project Six</a>
-                                              </h4>
-                                              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <!-- /.row -->
-                                    
-                                      <!-- Pagination -->
-                                      <ul class="pagination justify-content-center">
-                                        <li class="page-item">
-                                          <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                          </a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link" href="#">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
-                                          </a>
-                                        </li>
-                                      </ul> 
+                                        </div><!-- /.Card sliders 1 -->
                                     </div><!-- /.container -->
-                                 
                             
                             </div> <!-- Home tab page -->
                             
@@ -917,43 +733,43 @@
             // Get the default tab open
             document.getElementById("topBtn1").click();
     
-            // Draggable sliders
+            // Draggable sliders 1
+            const carousel = document.querySelector('.carousel-wrapper');
             let isDown = false;
             let startX;
             let scrollLeft;
-            const slider = document.querySelector('.items');
             
-            const end = () => {
-                isDown = false;
-                slider.classList.remove('active');
-            }
+            // Mouse events
+            carousel.addEventListener('mousedown', (e) => {
+              isDown = true;
+              startX = e.pageX - carousel.offsetLeft;
+              scrollLeft = carousel.scrollLeft;
+            });
+            carousel.addEventListener('mouseleave', () => {
+              isDown = false;
+            });
+            carousel.addEventListener('mouseup', () => {
+              isDown = false;
+            });
+            carousel.addEventListener('mousemove', (e) => {
+              if (!isDown) return;
+              e.preventDefault();
+              const x = e.pageX - carousel.offsetLeft;
+              const walk = (x - startX) * 2; // Adjust scroll speed
+              carousel.scrollLeft = scrollLeft - walk;
+            });
             
-            const start = (e) => {
-                isDown = true;
-                slider.classList.add('active');
-                startX = (e.pageX || e.touches[0].pageX) - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft; 
-            }
-            
-            const move = (e) => {
-                if(!isDown) return;
-                e.preventDefault();
-                const x = (e.pageX || e.touches[0].pageX) - slider.offsetLeft;
-                const dist = x - startX;
-                slider.scrollLeft = scrollLeft - dist;
-            }
-            
-            (() => {
-                if (slider) { // Check if slider exists
-                    slider.addEventListener('mousedown', start);
-                    slider.addEventListener('touchstart', start);
-                    slider.addEventListener('mousemove', move);
-                    slider.addEventListener('touchmove', move);
-                    slider.addEventListener('mouseleave', end);
-                    slider.addEventListener('mouseup', end);
-                    slider.addEventListener('touchend', end);
-                }
-            })(); 
+            // Touch events
+            carousel.addEventListener('touchstart', (e) => {
+              startX = e.touches[0].pageX - carousel.offsetLeft;
+              scrollLeft = carousel.scrollLeft;
+            });
+            carousel.addEventListener('touchmove', (e) => {
+              const x = e.touches[0].pageX - carousel.offsetLeft;
+              const walk = (x - startX) * 2; // Adjust scroll speed
+              carousel.scrollLeft = scrollLeft - walk;
+            });
+
         </script>
     </body>
 </html>
