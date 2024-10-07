@@ -96,10 +96,6 @@
                 margin: 0.5em;
                 width: calc(100%/3);
             }
-            .image-wrapper{
-                height: 22vw;
-                margin: 0 auto;
-            }
             }
             @media screen and (max-width:567px){
             .card:not(:first-child){
@@ -128,7 +124,7 @@
                 <button id="topBtn1" class="tablink" onclick="openPage('Home', this, 'white')">Home</button>
                 <button id="topBtn2" class="tablink" onclick="openPage('Videos', this, 'white')">Videos</button>
                 <button id="topBtn3" class="tablink" onclick="openPage('Blog', this, 'white')">Blog</button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Podcast', this, 'white')">Charts</button>
+                <button id="topBtn4" class="tablink" onclick="openPage('Charts', this, 'white')">Charts</button>
                 <!--/. Top buttons -->
             </div>   
         </nav>
@@ -589,7 +585,11 @@
                                             <!-- Card 8 -->
                                             <div class="col-md-4 mb-4">
                                               <div class="card h-100">
-                                                <a href="#">                                                         <div class="image-wrapper">                                                          <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         </div>                                                     </a>
+                                                <a href="#">                                                         
+                                                    <div class="image-wrapper">                                                          
+                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
+                                                    </div>                                                     
+                                                </a>
                                                 <div class="card-body">
                                                   <h4 class="card-title">
                                                     <a href="https://anh.contact/gradually-then-suddenly-by-Parker-Lewis">Project Eight</a>
@@ -711,19 +711,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Pagination-->
-                                            <nav aria-label="Pagination">
-                                                <hr class="my-0" />
-                                                <ul class="pagination justify-content-center my-4">
-                                                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                                    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-                                                </ul>
-                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -732,7 +719,7 @@
                             </div> <!-- Blog tab page -->
                             
                             <!-- Podcast Page -->
-                            <div id="Podcast" class="container tabcontent">
+                            <div id="Charts" class="container tabcontent">
                                 <h1 class="my-4 text-center"></h1>
                                 <!-- Projects -->       
                                 <div class="row">
