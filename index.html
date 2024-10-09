@@ -87,20 +87,54 @@
             		margin-bottom: 50px;
             	}
             }
-            /*Carousel Cards setting for big divices*/
-            @media screen and (min-width:568px){
-            .cards-wrapper{
-                display: flex;
+            /* Carousel Cards setting for large devices */
+            @media screen and (min-width: 992px) {
+                .cards-wrapper {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: nowrap;
+                }
+                .card {
+                    margin: 0.5em;
+                    width: calc(100% / 3);
+                }
             }
-            .card{
-                margin: 0.5em;
-                width: calc(100%/3);
+            
+            /* Carousel Cards setting for medium devices */
+            @media screen and (min-width: 768px) and (max-width: 991px) {
+                .cards-wrapper {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: nowrap;
+                }
+                .card {
+                    margin: 0.5em;
+                    width: calc(100% / 2);
+                }
             }
+            
+            /* Carousel Cards setting for small devices */
+            @media screen and (max-width: 767px) {
+                .cards-wrapper {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: nowrap;
+                }
+                .card {
+                    margin: 0.5em;
+                    width: 100%;
+                }
             }
-            @media screen and (max-width:567px){
-            .card:not(:first-child){
-                display:none;
+            
+            /* Carousel control styles for better visibility */
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 5%;
             }
+            
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                background-size: 100%, 100%;
             }
            
         </style>
@@ -445,171 +479,164 @@
                                   </h1>
                                     <!-- Card sliders 1 -->
                                     <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                                      <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <div class="cards-wrapper">
-                                              <!-- Card 1 -->
-                                                <div class="col-md-4 mb-4">
-                                                  <div class="card h-100">
-                                                    <a href="#">
-                                                        <div class="image-wrapper">
-                                                         <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                        <div class="carousel-inner">
+                                            <!-- First Slide -->
+                                            <div class="carousel-item active">
+                                                <div class="cards-wrapper">
+                                                    <!-- Card 1 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur eum quasi sapiente nesciunt?</p>
+                                                            </div>
                                                         </div>
-                                                    </a>
-                                                    <div class="card-body">
-                                                      <h4 class="card-title">
-                                                        <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
-                                                      </h4>
-                                                      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                                                        aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
-                                                        dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
                                                     </div>
-                                                  </div>
+                                                    <!-- Card 2 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/bitcoin-model">Project Two</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Card 3 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error quod sed cumque.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <!-- Card 2 -->
-                                                <div class="col-md-4 mb-4">
-                                                  <div class="card h-100">
-                                                    <a href="#">                                                         
-                                                        <div class="image-wrapper">                                                          
-                                                            <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                        </div>                                                     
-                                                    </a>
-                                                    <div class="card-body">
-                                                      <h4 class="card-title">
-                                                        <a href="https://anh.contact/bitcoin-model">Project Two</a>
-                                                      </h4>
-                                                      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                        odio, gravida pellentesque urna varius vitae.</p>
+                                            </div>
+                                    
+                                            <!-- Second Slide -->
+                                            <div class="carousel-item">
+                                                <div class="cards-wrapper">
+                                                    <!-- Card 4 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/tranh-cai-Bitcoin">Project Four</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                  </div>
+                                                    <!-- Card 5 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/su-dung-Bitcoin">Project Five</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Card 6 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/dong-tien-chung">Project Six</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <!-- Card 3 -->
-                                                <div class="col-md-4 mb-4">
-                                                  <div class="card h-100">
-                                                    <a href="#">                                                         
-                                                        <div class="image-wrapper">                                                          
-                                                            <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                        </div>                                                     
-                                                    </a>
-                                                    <div class="card-body">
-                                                      <h4 class="card-title">
-                                                        <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
-                                                      </h4>
-                                                      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error
-                                                        quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
-                                                        perspiciatis mollitia recusandae vero vel quam!</p>
+                                            </div>
+                                    
+                                            <!-- Third Slide -->
+                                            <div class="carousel-item">
+                                                <div class="cards-wrapper">
+                                                    <!-- Card 7 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/21-lessons-by-Gigi">Project Seven</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident.</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                  </div>
+                                                    <!-- Card 8 -->
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card h-100">
+                                                            <a href="#">
+                                                                <div class="image-wrapper">
+                                                                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">
+                                                                    <a href="https://anh.contact/gradually-then-suddenly-by-Parker-Lewis">Project Eight</a>
+                                                                </h4>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="carousel-item">
-                                            <div class="cards-wrapper">
-                                          <!-- Card 4 -->
-                                            <div class="col-md-4 mb-4">
-                                              <div class="card h-100">
-                                                <a href="#">                                                         
-                                                    <div class="image-wrapper">                                                          
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                    </div>                                                     
-                                                </a>
-                                                <div class="card-body">
-                                                  <h4 class="card-title">
-                                                    <a href="https://anh.contact/tranh-cai-Bitcoin">Project Four</a>
-                                                  </h4>
-                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                    odio, gravida pellentesque urna varius vitae.</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <!-- Card 5 -->
-                                            <div class="col-md-4 mb-4">
-                                              <div class="card h-100">
-                                                <a href="#">                                                         
-                                                    <div class="image-wrapper">                                                          
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                    </div>                                                     
-                                                </a>
-                                                <div class="card-body">
-                                                  <h4 class="card-title">
-                                                    <a href="https://anh.contact/su-dung-Bitcoin">Project Five</a>
-                                                  </h4>
-                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                                    odio, gravida pellentesque urna varius vitae.</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <!-- Card 6 -->
-                                            <div class="col-md-4 mb-4">
-                                              <div class="card h-100">
-                                                <a href="#">                                                         
-                                                    <div class="image-wrapper">                                                          
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                    </div>                                                     
-                                                </a>
-                                                <div class="card-body">
-                                                  <h4 class="card-title">
-                                                    <a href="https://anh.contact/dong-tien-chung">Project Six</a>
-                                                  </h4>
-                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <div class="cards-wrapper">
-                                          <!-- Card 7 -->
-                                            <div class="col-md-4 mb-4">
-                                              <div class="card h-100">
-                                                <a href="#">                                                         
-                                                    <div class="image-wrapper">                                                          
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                    </div>                                                     
-                                                </a>
-                                                <div class="card-body">
-                                                  <h4 class="card-title">
-                                                    <a href="https://anh.contact/21-lessons-by-Gigi">Project Seven</a>
-                                                  </h4>
-                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <!-- Card 8 -->
-                                            <div class="col-md-4 mb-4">
-                                              <div class="card h-100">
-                                                <a href="#">                                                         
-                                                    <div class="image-wrapper">                                                          
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">                                                         
-                                                    </div>                                                     
-                                                </a>
-                                                <div class="card-body">
-                                                  <h4 class="card-title">
-                                                    <a href="https://anh.contact/gradually-then-suddenly-by-Parker-Lewis">Project Eight</a>
-                                                  </h4>
-                                                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                                                    suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                                                    nemo repellat fugiat excepturi! Nemo, esse.</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                      </div>
-                                        
-                                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                      </button>
-                                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                      </button>
+                                    
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
                                     </div><!-- /.Card sliders 1 -->
+
                                     </div><!-- /.container -->
                             
                             </div> <!-- Home tab page -->
