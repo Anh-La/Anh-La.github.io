@@ -99,14 +99,7 @@
           h1 {
             margin-bottom: 50px;
           }            
-          /* Common card styling */
-            .card-wrapper {
-                display: flex;
-            }
-            .card{
-                margin:0.5em;
-                width: calc(100%/3); 
-            }
+            
             /* Show only 1 card on small screens */
             @media screen and (max-width: 767px) {
                 /* Only show the first card */
@@ -118,8 +111,12 @@
             /* Show 3 cards on large screens */
             @media screen and (min-width: 992px) {
                 /* Show all cards */
-                .card {
-                    display: block;
+                .card-wrapper {
+                    display: flex;
+                }
+                .card{
+                    margin:0.5em;
+                    width: calc(100%/3); 
                 }
             }
 
