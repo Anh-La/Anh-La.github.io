@@ -101,8 +101,8 @@
           }            
             /* 1 card for small screens */
             @media (max-width: 568px) {
-                /* Only show the first card */
-                .card:not(:first-child) {
+                /* Only show the first .col-md-3, hide others */
+                .carousel-item .col-md-3:not(:first-child) {
                     display: none;
                 }
             }
