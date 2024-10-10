@@ -99,7 +99,7 @@
           h1 {
             margin-bottom: 50px;
           }
-            /* Common card styling */
+           /* Common card styling */
             .card-wrapper {
                 display: inline-block;
                 width: 100%;
@@ -118,6 +118,11 @@
             
             /* 2 cards for medium screens */
             @media (min-width: 768px) and (max-width: 991px) {
+                .carousel-inner {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
                 .card-wrapper {
                     width: 48%; /* Adjusted width to fit 2 cards */
                     margin: 1%;
@@ -126,13 +131,16 @@
             
             /* 3 cards for large screens */
             @media (min-width: 992px) {
+                .carousel-inner {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
                 .card-wrapper {
                     width: 30%; /* Adjusted width to fit 3 cards */
                     margin: 1%;
                 }
-            }
-
-            
+            }            
         </style>
     </head>
     <body class="sb-nav-fixed">
