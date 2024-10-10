@@ -102,55 +102,23 @@
           /* Common card styling */
             .card-wrapper {
                 display: flex;
-                width: 100%;
-                padding: 10px;
             }
-            
+            .card{
+                margin:0.5em;
+                width: calc(100%/3); 
+            }
             /* Show only 1 card on small screens */
-            @media (max-width: 767px) {
-                .carousel-inner {
-                    display: block;
-                }
-                .card-wrapper {
-                    width: 100%;
-                }
+            @media screen and (max-width: 767px) {
                 /* Only show the first card */
-                .card-wrapper .card:not(:first-child) {
+                .card:not(:first-child) {
                     display: none;
-                    margin: 0.5em;
-                }
-            }
-            
-            /* Show 2 cards on medium screens */
-            @media (min-width: 768px) and (max-width: 991px) {
-                .carousel-inner {
-                    display: flex;
-                    justify-content: center;
-                    flex-wrap: wrap;
-                }
-                .card-wrapper {
-                    width: 48%; /* Adjusted width to fit 2 cards */
-                    margin: 1%;
-                }
-                /* Show the first two cards */
-                .card-wrapper .card:nth-child(n+3) {
-                    display: none; /* Hide cards after the second */
                 }
             }
             
             /* Show 3 cards on large screens */
-            @media (min-width: 992px) {
-                .carousel-inner {
-                    display: flex;
-                    justify-content: center;
-                    flex-wrap: wrap;
-                }
-                .card-wrapper {
-                    width: 30%; /* Adjusted width to fit 3 cards */
-                    margin: 1%;
-                }
+            @media screen and (min-width: 992px) {
                 /* Show all cards */
-                .card-wrapper .card {
+                .card {
                     display: block;
                 }
             }
@@ -663,9 +631,7 @@
                                                             <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                                         </div>
                                                     </div>
-                                                
                                                 <!-- Card 6 -->
-                                                
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
