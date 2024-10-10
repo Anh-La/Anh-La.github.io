@@ -99,29 +99,61 @@
           h1 {
             margin-bottom: 50px;
           }            
-            /* 1 card for small screens */
-            @media (max-width: 568px) {
-                /* Only show the first .col-md-3, hide others */
-                .carousel-item .col-md-3:not(:first-child) {
+          /* Common card styling */
+            .card-wrapper {
+                display: inline-block;
+                width: 100%;
+                padding: 10px;
+            }
+            
+            /* Show only 1 card on small screens */
+            @media (max-width: 767px) {
+                .carousel-inner {
+                    display: block;
+                }
+                .card-wrapper {
+                    width: 100%;
+                }
+                /* Only show the first card */
+                .card-wrapper .card:not(:first-child) {
                     display: none;
                 }
             }
             
-            /* 2 cards for medium screens */
-            @media (min-width: 568px) and (max-width: 991px) {
+            /* Show 2 cards on medium screens */
+            @media (min-width: 768px) and (max-width: 991px) {
+                .carousel-inner {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+                .card-wrapper {
+                    width: 48%; /* Adjusted width to fit 2 cards */
+                    margin: 1%;
+                }
                 /* Show the first two cards */
                 .card-wrapper .card:nth-child(n+3) {
                     display: none; /* Hide cards after the second */
                 }
             }
             
-            /* 3 cards for large screens */
+            /* Show 3 cards on large screens */
             @media (min-width: 992px) {
+                .carousel-inner {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+                .card-wrapper {
+                    width: 30%; /* Adjusted width to fit 3 cards */
+                    margin: 1%;
+                }
                 /* Show all cards */
                 .card-wrapper .card {
                     display: block;
                 }
-            }            
+            }
+
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -557,7 +589,7 @@
                                             <!-- slide 1 -->
                                             <div class="carousel-item active">
                                                 <!-- Card 1 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                                <div class="card-wrapper">
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
@@ -569,9 +601,9 @@
                                                             <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                                 <!-- Card 2 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                    
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
@@ -583,9 +615,9 @@
                                                             <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                                 <!-- Card 3 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                                
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
@@ -604,7 +636,7 @@
                                             <!-- slide 2 -->
                                             <div class="carousel-item">
                                                 <!-- Card 4 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                                <div class="card-wrapper">
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
@@ -616,9 +648,9 @@
                                                             <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                                 <!-- Card 5 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                                
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
@@ -630,9 +662,9 @@
                                                             <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                                 <!-- Card 6 -->
-                                                <div class="col-md-3 mb-3 d-inline-block">
+                                                
                                                     <div class="card">
                                                         <a href="#">
                                                             <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
