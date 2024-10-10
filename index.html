@@ -98,10 +98,31 @@
     
           h1 {
             margin-bottom: 50px;
-          }            
-            
+          } 
+        /* normal card*/
+            .card{
+                border: none;
+                border-radius: 0;
+                box-shadow: 2px 6px 8px 0 rgba(22,22,26,0,18);
+            }
+            .carousel-inner{
+                padding: 1em;
+            }
+            .carousel-control-prev,.carousel-control-next{
+                background-color: #e1e1e1;
+                width: 6vh;
+                height: 6vh;
+                border-radius: 50%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .carousel-control-prev span,
+            .carousel-control-next span{
+                width: 1.5rem;
+                height: 1.5rem:
+            }
             /* Show only 1 card on small screens */
-            @media screen and (max-width: 767px) {
+            @media screen and (max-width: 567px) {
                 /* Only show the first card */
                 .card:not(:first-child) {
                     display: none;
@@ -109,7 +130,7 @@
             }
             
             /* Show 3 cards on large screens */
-            @media screen and (min-width: 992px) {
+            @media screen and (min-width: 568px) {
                 /* Show all cards */
                 .card-wrapper {
                     display: flex;
