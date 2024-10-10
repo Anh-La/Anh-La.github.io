@@ -107,17 +107,21 @@
             }
             
             /* 1 card for small screens */
-            @media (max-width: 767px) {
+            @media (max-width: 568px) {
                 .carousel-inner {
                     display: block;
                 }
                 .card-wrapper {
                     width: 100%;
                 }
+                /* Only show the first card */
+                .card-wrapper .card:not(:first-child) {
+                    display: none;
+                }
             }
             
             /* 2 cards for medium screens */
-            @media (min-width: 768px) and (max-width: 991px) {
+            @media (min-width: 568px) and (max-width: 991px) {
                 .carousel-inner {
                     display: flex;
                     justify-content: center;
@@ -126,6 +130,10 @@
                 .card-wrapper {
                     width: 48%; /* Adjusted width to fit 2 cards */
                     margin: 1%;
+                }
+                /* Show the first two cards */
+                .card-wrapper .card:nth-child(n+3) {
+                    display: none; /* Hide cards after the second */
                 }
             }
             
@@ -139,6 +147,10 @@
                 .card-wrapper {
                     width: 30%; /* Adjusted width to fit 3 cards */
                     margin: 1%;
+                }
+                /* Show all cards */
+                .card-wrapper .card {
+                    display: block;
                 }
             }            
         </style>
