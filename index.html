@@ -122,25 +122,39 @@
                 height: 1.5rem:
             }
             /* Show only 1 card on small screens */
-            @media screen and (max-width: 567px) {
-                /* Only show the first card */
-                .card:not(:first-child) {
-                    display: none;
-                }
-            }
-            
-            /* Show 3 cards on large screens */
-            @media screen and (min-width: 568px) {
-                /* Show all cards */
-                .card-wrapper {
-                    display: flex;
-                }
-                .card{
-                    margin:0.5em;
-                    width: calc(100%/3); 
-                }
-            }
-
+            @media (max-width: 767px) {
+        		.carousel-inner .carousel-item > div {
+        			display: none;
+        		}
+        		.carousel-inner .carousel-item > div:first-child {
+        			display: block;
+        		}
+        	}
+        
+        	.carousel-inner .carousel-item.active,
+        	.carousel-inner .carousel-item-next,
+        	.carousel-inner .carousel-item-prev {
+        		display: flex;
+        	}
+        
+        	/* medium and up screens */
+        	@media (min-width: 768px) {
+        
+        		.carousel-inner .carousel-item-end.active,
+        		.carousel-inner .carousel-item-next {
+        			transform: translateX(25%);
+        		}
+        
+        		.carousel-inner .carousel-item-start.active, 
+        		.carousel-inner .carousel-item-prev {
+        			transform: translateX(-25%);
+        		}
+        	}
+        
+        	.carousel-inner .carousel-item-end,
+        	.carousel-inner .carousel-item-start { 
+        		transform: translateX(0);
+        	}
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -939,7 +953,21 @@
             // Get the default tab open
             document.getElementById("topBtn1").click();
     
-            
+            // Card control in carousel slides
+            let items = document.querySelectorAll('.carousel .carousel-item')
+            		items.forEach((el) => {
+            			const minPerSlide = 4
+            			let next = el.nextElementSibling
+            			for (var i=1; i<minPerSlide; i++) {
+            				if (!next) {
+                        // wrap carousel by using first child
+                        next = items[0]
+                    }
+                    let cloneChild = next.cloneNode(true)
+                    el.appendChild(cloneChild.children[0])
+                    next = next.nextElementSibling
+                }
+            })
         </script>
     </body>
 </html>
