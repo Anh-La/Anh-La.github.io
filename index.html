@@ -1146,33 +1146,48 @@
             controlCarouselItemsById('carouselHomeControls2', 4);
 
             // Function to control cards (scroll effect) in carousel slides by carousel ID with jQuery
-            const.mulipleItemCarousel = document.querySelector('#carouselExampleBlogs');
+            $(document).ready(function () {
+                // Define the carousel element
+                const multipleItemCarousel = $('#carouselExampleBlogs'); // Use the correct jQuery selector for the carousel
+                
+                // Check if the screen width is greater than 576px
+                if (window.matchMedia("(min-width: 576px)").matches) {
+                    // Initialize the Bootstrap carousel with no interval (no automatic sliding)
+                    const carousel = new bootstrap.Carousel(multipleItemCarousel[0], {
+                        interval: false
+                    });
+            
+                    // Get the total width of the carousel content
+                    var carouselWidth = $('.carousel-inner')[0].scrollWidth;
+                    // Get the width of a single card (carousel item)
+                    var cardWidth = $('.carousel-item').outerWidth(true); // Use outerWidth(true) to account for margins
+                    var scrollPosition = 0;
+            
+                    // Next button click event
+                    $('.carousel-control-next').on('click', function () {
+                        // Check if the scroll position is within bounds
+                        if (scrollPosition < (carouselWidth - (cardWidth * 4))) {
+                            console.log('next');
+                            scrollPosition += cardWidth;
+                            $('.carousel-inner').animate({ scrollLeft: scrollPosition }, 600); // Animate the scroll to the new position
+                        }
+                    });
+            
+                    // Previous button click event
+                    $('.carousel-control-prev').on('click', function () {
+                        // Check if the scroll position is greater than 0
+                        if (scrollPosition > 0) {
+                            console.log('prev');
+                            scrollPosition -= cardWidth;
+                            $('.carousel-inner').animate({ scrollLeft: scrollPosition }, 600); // Animate the scroll to the new position
+                        }
+                    });
+                } else {
+                    // For smaller screens, enable the default Bootstrap sliding behavior
+                    multipleItemCarousel.addClass('slide');
+                }
+            });
 
-            if(window.matchMedia("(min-width:576px)").matches){
-                const carousel = new bootstrap.Carousel(myCarouselElement, {
-                    interval: false
-                })
-                var crouselWidth = $('.carousel-inner')[0].scrollWidth;
-                var cardWidth = $('.carousel-item')[0].width();
-                var scrollPosition = 0;
-    
-                $('.carousel-control-next').on('click', function(){
-                   if(scrollPosition < (carouselWidth -(cardWidth * 4))){
-                       console.log('next');
-                       scrollPosition = scrollPosition + cardWidth;
-                       $('.carousel-inner').animate({scrollLeft: scrollPosition},600);
-                   } 
-                });
-                $('.carousel-control-prev').on('click', function(){
-                   if(scrollPosition < (carouselWidth -(cardWidth * 4))){
-                       console.log('next');
-                       scrollPosition = scrollPosition - cardWidth;
-                       $('.carousel-inner').animate({scrollLeft: scrollPosition},600);
-                   } 
-                });
-            }else{
-                $(multipleItemCarousel).addClass('slide');                
-            }            
         </script>
     </body>
 </html>
