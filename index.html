@@ -1059,6 +1059,7 @@
         <script src="chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="scripts.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script>
             // Fetch translations from the JSON file
             async function fetchTranslations() {
@@ -1144,7 +1145,7 @@
             controlCarouselItemsById('carouselHomeControls1', 4);
             controlCarouselItemsById('carouselHomeControls2', 4);
 
-            // Function to control cards (scroll effect) in carousel slides by carousel ID
+            // Function to control cards (scroll effect) in carousel slides by carousel ID with jQuery
             const.mulipleItemCarousel = document.querySelector('#carouselExampleBlogs');
 
             if(window.matchMedia("(min-width:576px)").matches){
