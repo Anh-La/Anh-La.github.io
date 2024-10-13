@@ -432,7 +432,8 @@
                                       <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
                                         <tr>
                                           <td><img src="https://via.placeholder.com/50" alt="Luke Mikic"></td>
-                                          <td><a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" id=''>A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin) by Luke Mikic</a></td>
+                                          <td><a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" id='en'>A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin) - Luke Mikic</a></td>
+                                          <td><a href="https://macro-econ.github.io/luke-mikic/Tổng quan về Sự Sụp Đổ của Hệ Thống Truyền Thống và Giải Pháp Bitcoin.html" id='vi'>Tổng quan về Sự Sụp Đổ của Hệ Thống Truyền Thống và Giải Pháp Bitcoin - Luke Mikic</a></td>  
                                           <td style="text-align: right;"><button class="play-button">▶️</button></td>
                                         </tr>
                                         <tr>
@@ -1151,7 +1152,6 @@
             const topBtn2 = document.getElementById("topBtn2");
             const topBtn3 = document.getElementById("topBtn3");
             const topBtn4 = document.getElementById("topBtn4");
-            const introProject = document.getElementById("introProject");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -1169,9 +1169,26 @@
                 topBtn2.textContent = translations[lang].topBtn2;
                 topBtn3.textContent = translations[lang].topBtn3;
                 topBtn4.textContent = translations[lang].topBtn4;
-                introProject.textContent = translations[lang].introProject;
             }
+            
+            // Get references to the flag icons and the links
+            const enFlag = document.getElementById('enFlag');
+            const viFlag = document.getElementById('viFlag');
+            const enLink = document.getElementById('en');
+            const viLink = document.getElementById('vi');
         
+            // Function to show English link and hide Vietnamese link
+            enFlag.addEventListener('click', function() {
+                enLink.style.display = 'inline';
+                viLink.style.display = 'none';
+            });
+        
+            // Function to show Vietnamese link and hide English link
+            viFlag.addEventListener('click', function() {
+                enLink.style.display = 'none';
+                viLink.style.display = 'inline';
+            });
+            
             //Tab pages set up
             function openPage(pageName, elmnt, color) {
                 // Hide all elements with class="tabcontent" by default */
