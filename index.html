@@ -1177,6 +1177,12 @@
             const enLink = document.getElementById('en');
             const viLink = document.getElementById('vi');
         
+            // Function to set the default language (English)
+            window.onload = function() {
+                enLink.style.display = 'inline';
+                viLink.style.display = 'none';
+            };
+        
             // Function to show English link and hide Vietnamese link
             enFlag.addEventListener('click', function() {
                 enLink.style.display = 'inline';
