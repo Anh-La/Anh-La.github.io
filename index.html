@@ -7,8 +7,10 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Anh La</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="styles.css" rel="stylesheet"/>
+        <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style>
             * {
@@ -181,16 +183,16 @@
 
             <div class="container-fluid">
                 <!-- Top buttons -->
-                <button id="topBtn1" class="tablink" onclick="openPage('Home', this, 'white')">
+                <button id="topBtn1" class="tablink" onclick="openPage('Home', this)">
                   <i class="bi bi-house-door-fill"></i>
                 </button>
-                <button id="topBtn2" class="tablink" onclick="openPage('Records', this, 'white')">
+                <button id="topBtn2" class="tablink" onclick="openPage('Records', this)">
                   <i class="bi bi-file-play-fill"></i>
                 </button>
-                <button id="topBtn3" class="tablink" onclick="openPage('Blog', this, 'white')">
+                <button id="topBtn3" class="tablink" onclick="openPage('Blog', this)">
                   <i class="bi bi-pen-fill"></i>
                 </button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Charts', this, 'white')">
+                <button id="topBtn4" class="tablink" onclick="openPage('Charts', this)">
                   <i class="bi bi-graph-up-arrow"></i>
                 </button>
                 <!--/. Top buttons -->
@@ -1192,35 +1194,11 @@
                 topBtn3.textContent = translations[lang].topBtn3;
                 topBtn4.textContent = translations[lang].topBtn4;
             }
-            
-            // Get references to the flag icons and the links
-            const enFlag = document.getElementById('enFlag');
-            const viFlag = document.getElementById('viFlag');
-            const enLink = document.getElementById('en');
-            const viLink = document.getElementById('vi');
-        
-            // Function to set the default language (English)
-            window.onload = function() {
-                enLink.style.display = 'inline';
-                viLink.style.display = 'none';
-            };
-        
-            // Function to show English link and hide Vietnamese link
-            enFlag.addEventListener('click', function() {
-                enLink.style.display = 'inline';
-                viLink.style.display = 'none';
-            });
-        
-            // Function to show Vietnamese link and hide English link
-            viFlag.addEventListener('click', function() {
-                enLink.style.display = 'none';
-                viLink.style.display = 'inline';
-            });
-            
-            //Tab pages set up
-            function openPage(pageName, elmnt, color) {
-                // Hide all elements with class="tabcontent" by default */
-                var i, tabcontent, tablinks, hidden;
+                
+             // Tab pages setup
+            function openPage(pageName, elmnt) {
+                // Hide all elements with class="tabcontent" by default
+                var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
                 for (i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].style.display = "none";
@@ -1228,15 +1206,14 @@
                 // Remove the background color of all tablinks/buttons
                 tablinks = document.getElementsByClassName("tablink");
                 for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].style.backgroundColor = "";
-                    tablinks[i].style.color = ""; // Reset text color
+                    tablinks[i].classList.remove('active');
                 }
                 // Show the specific tab content
                 document.getElementById(pageName).style.display = "block";
-                // Add the specific color to the button used to open the tab content
-                elmnt.style.backgroundColor = color;
-                elmnt.style.color = "blue";  // Set text color to blue
+                // Add the active class to the current button
+                elmnt.classList.add('active');
             }
+
             
             // Get the default tab open
             document.getElementById("topBtn1").click();
