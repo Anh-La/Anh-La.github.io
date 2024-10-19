@@ -1129,26 +1129,16 @@
                     <footer class="py-4 mt-auto bg-light fixed-bottom">
                         <div class="container-fluid px-4">
                             <div class="d-flex align-items-center justify-content-between small">
-                                <div class="text-muted">
-                                <!-- Language Switcher with Flag Icons -->
-                                  <a href="javascript:void(0)" class="m-2" id="enFlag">
-                                    <img
-                                      src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg"
-                                      alt="English"
-                                      width="32"
-                                      height="20"
-                                    />
-                                  </a>
-                                  <a href="javascript:void(0)" class="m-2" id="viFlag">
-                                    <img
-                                      src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
-                                      alt="Vietnamese"
-                                      width="32"
-                                      height="20"
-                                    />
-                                  </a>
-                                  <!-- /. language options -->
-                                </div>
+                                <!-- Language Switcher with Toggle Switch -->
+                                <div class="ms-auto me-2">
+                                    <label class="language-switch">
+                                        <input type="checkbox" id="language-toggle">
+                                        <span class="slider">
+                                            <span class="flag-icon flag-icon-en"></span>
+                                            <span class="flag-icon flag-icon-vi"></span>
+                                        </span>
+                                    </label>
+                                </div><!-- /.Language Switcher with Toggle Switch -->
                                 
                             </div>
                         </div>
@@ -1165,25 +1155,35 @@
         <script src="scripts.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script>
-            // Function to switch between English and Vietnamese versions
-            function switchLanguage(lang) {
-                if (lang === 'en') {
-                    // Redirect to English version
-                    window.location.href = 'index.html';
-                } else if (lang === 'vi') {
-                    // Redirect to Vietnamese version
+            // Function to switch between languages
+            function switchLanguage() {
+                const languageToggle = document.getElementById('language-toggle');
+                if (languageToggle.checked) {
+                    // Switch to Vietnamese
                     window.location.href = 'index_vi.html';
+                } else {
+                    // Switch to English
+                    window.location.href = 'index.html';
                 }
             }
-    
-            // Event listeners for flag clicks
-            document.getElementById("enFlag").addEventListener("click", function() {
-                switchLanguage('en');
+            
+            // Event listener for the language toggle switch
+            document.getElementById('language-toggle').addEventListener('change', function() {
+                switchLanguage();
             });
-    
-            document.getElementById("viFlag").addEventListener("click", function() {
-                switchLanguage('vi');
-            });
+            
+            // On page load, set the correct state of the toggle switch
+            window.onload = function() {
+                const languageToggle = document.getElementById('language-toggle');
+                // Determine the current language based on the URL
+                if (window.location.href.includes('index_vi.html')) {
+                    languageToggle.checked = true;
+                } else {
+                    languageToggle.checked = false;
+                }
+                // Open the default tab
+                document.getElementById("homeTab").click();
+            };
                 
              // Tab pages setup
             function openPage(pageName, elmnt) {
