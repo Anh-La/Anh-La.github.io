@@ -171,16 +171,16 @@
             
             <div class="container-fluid">
                 <!-- Top buttons -->
-                <button id="topBtn1" class="tablink" onclick="openPage('Home', this)">
+                <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
                   <i class="bi bi-house-door-fill"></i>
                 </button>
-                <button id="topBtn2" class="tablink" onclick="openPage('Records', this)">
+                <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
                   <i class="bi bi-file-play-fill"></i>
                 </button>
-                <button id="topBtn3" class="tablink" onclick="openPage('Blog', this)">
+                <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
                   <i class="bi bi-pen-fill"></i>
                 </button>
-                <button id="topBtn4" class="tablink" onclick="openPage('Charts', this)">
+                <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
                   <i class="bi bi-graph-up-arrow"></i>
                 </button>
                 <!--/. Top buttons -->
@@ -200,7 +200,7 @@
                                   <!-- Personalised text -->
                                 <div class="d-flex w-100">         
                                     <form name="text_Marquee" class="flex-grow-1">
-                                        <input name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
+                                        <input id="quote" name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
                                         value=" 
                                             “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
                                             “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
@@ -284,8 +284,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-12 text-center">
                                                     <h5 id='pro1Ln1' class="my-4">Small business capital gain Tax Compliance Basic</h5>
-                                                    <p id='pro1Ln2'> Apply legal authorities like 
-                                                         to a hypothetical study case</p>
+                                                    <p id='pro1Ln2'> Apply legal authorities like to a hypothetical study case</p>
                                                   </div>
                                             </div>  
                                             <hr>
@@ -1174,10 +1173,7 @@
             }
     
             // Elements to update
-            const topBtn1 = document.getElementById("topBtn1");
-            const topBtn2 = document.getElementById("topBtn2");
-            const topBtn3 = document.getElementById("topBtn3");
-            const topBtn4 = document.getElementById("topBtn4");
+            const quote = document.getElementById("quote");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -1191,10 +1187,7 @@
             // Switch language function
             async function switchLanguage(lang) {
                 const translations = await fetchTranslations();
-                topBtn1.textContent = translations[lang].topBtn1;
-                topBtn2.textContent = translations[lang].topBtn2;
-                topBtn3.textContent = translations[lang].topBtn3;
-                topBtn4.textContent = translations[lang].topBtn4;
+                quote.textContent = translations[lang].quote;
             }
                 
              // Tab pages setup
@@ -1218,7 +1211,7 @@
 
             
             // Get the default tab open
-            document.getElementById("topBtn1").click();
+            document.getElementById("homeTab").click();
     
             // Function to control cards (stacking effect) in carousel slides by carousel ID
             function controlCarouselItemsById(carouselId, minPerSlide = 4) {
