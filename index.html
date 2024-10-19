@@ -242,9 +242,12 @@
                     <img src="avatar.png" alt="Avatar" class="avatar">
                 </a>
             </div><!-- /.Brand-->
-            
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+                <i class="fas fa-bars"></i>
+            </button><!-- /. Sidebar Toggle-->
+            <!-- Top buttons -->
             <div class="container-fluid">
-                <!-- Top buttons -->
                 <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
                   <i class="bi bi-house-door-fill"></i>
                 </button>
@@ -260,15 +263,21 @@
                 <!--/. Top buttons -->
               </div>
         </nav>
-            
-            <!-- Sidebar content (main page)-->
-            <div id="layoutSidenav_content" style="padding:20px;margin-top:30px;height:1500px;">
+        
+        <!-- Layout Sidenav -->
+        <div id="layoutSidenav">
+            <!-- Sidebar -->
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <!-- Empty Sidebar Content -->
+                    <!-- You can add your sidebar menu items here -->
+                </nav>
+            </div>
+            <!-- Main Content -->
+            <div id="layoutSidenav_content" style="padding:20px;margin-top:30px;">
                 <main>
-                    <!-- Page Content -->
-                    <div class="container-fluid px-4">
-                        <!-- Page Content 1 -->
+                        <!-- Interest section -->
                         <div class="container py-4">
-                            <!-- Interest section -->
                             <div class="mb-4 bg-body-tertiary rounded-3">
                               <div class="container-fluid">
                                   <!-- Personalised text -->
@@ -1243,8 +1252,6 @@
                             </div>
                         </div>
                     </footer>
-
-                </div>
             </div> <!-- End of layoutSidenav_content -->
         </div> <!-- End of layoutSidenav -->
 
