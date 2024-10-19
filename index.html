@@ -160,81 +160,8 @@
         	}
             
             /* Language Switch Styles */
-            .language-switch {
-                position: relative;
-                display: inline-block;
-                width: 60px;
-                height: 34px;
-            }
-            
-            .language-switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            
-            .language-switch .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ddd;
-                transition: 0.4s;
-                border-radius: 34px;
-            }
-            
-            .language-switch .slider:before {
-                position: absolute;
-                content: "";
-                height: 28px;
-                width: 28px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: 0.4s;
-                border-radius: 50%;
-            }
-            
-            .language-switch input:checked + .slider {
-                background-color: #2196F3;
-            }
-            
-            .language-switch input:focus + .slider {
-                box-shadow: 0 0 1px #2196F3;
-            }
-            
-            .language-switch input:checked + .slider:before {
-                transform: translateX(26px);
-            }
-            
-            /* Flag Icons */
-            .flag-icon {
-                position: absolute;
-                top: 3px;
-                width: 28px;
-                height: 28px;
-                background-size: cover;
-            }
-            
-            .flag-icon-en {
-                left: 3px;
-                background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg');
-            }
-            
-            .flag-icon-vi {
-                right: 3px;
-                background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg');
-            }
-            
-            /* Adjust flag opacity based on toggle state */
-            .language-switch input:not(:checked) ~ .slider .flag-icon-vi {
-                opacity: 0.5;
-            }
-            
-            .language-switch input:checked ~ .slider .flag-icon-en {
-                opacity: 0.5;
+            .dropdown-toggle::after {
+                display: none;
             }
 
         </style>
@@ -1208,16 +1135,24 @@
                     <footer class="py-4 mt-auto bg-light fixed-bottom">
                         <div class="container-fluid px-4">
                             <div class="d-flex align-items-center justify-content-between small">
-                                <!-- Language Switcher with Toggle Switch -->
-                                <div class="ms-auto me-2">
-                                    <label class="language-switch">
-                                        <input type="checkbox" id="language-toggle">
-                                        <span class="slider">
-                                            <span class="flag-icon flag-icon-en"></span>
-                                            <span class="flag-icon flag-icon-vi"></span>
-                                        </span>
-                                    </label>
-                                </div><!-- /.Language Switcher with Toggle Switch -->
+                                 <!-- Language Switcher with Dropdown -->
+                                <div class="ms-auto me-2 dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="#" id="enOption">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20"> English
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" id="viOption">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div><!-- /.Language Switcher -->
                                 
                             </div>
                         </div>
@@ -1235,30 +1170,36 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script>
             // Function to switch between languages
-            function switchLanguage() {
-                const languageToggle = document.getElementById('language-toggle');
-                if (languageToggle.checked) {
-                    // Switch to Vietnamese
-                    window.location.href = 'index_vi.html';
-                } else {
-                    // Switch to English
+            function switchLanguage(lang) {
+                if (lang === 'en') {
+                    // Redirect to English version
                     window.location.href = 'index.html';
+                } else if (lang === 'vi') {
+                    // Redirect to Vietnamese version
+                    window.location.href = 'index_vi.html';
                 }
             }
-            
-            // Event listener for the language toggle switch
-            document.getElementById('language-toggle').addEventListener('change', function() {
-                switchLanguage();
+    
+            // Event listeners for dropdown options
+            document.getElementById('enOption').addEventListener('click', function(e) {
+                e.preventDefault();
+                switchLanguage('en');
             });
-            
-            // On page load, set the correct state of the toggle switch
+    
+            document.getElementById('viOption').addEventListener('click', function(e) {
+                e.preventDefault();
+                switchLanguage('vi');
+            });
+    
+            // On page load, set the current language flag in the button
             window.onload = function() {
-                const languageToggle = document.getElementById('language-toggle');
-                // Determine the current language based on the URL
+                const currentLanguageFlag = document.getElementById('currentLanguageFlag');
                 if (window.location.href.includes('index_vi.html')) {
-                    languageToggle.checked = true;
+                    currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg';
+                    currentLanguageFlag.alt = 'Vietnamese';
                 } else {
-                    languageToggle.checked = false;
+                    currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg';
+                    currentLanguageFlag.alt = 'English';
                 }
                 // Open the default tab
                 document.getElementById("homeTab").click();
