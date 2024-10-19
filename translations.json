@@ -1,14 +1,8 @@
 {
   "en": {
-    "topBtn1": "Home",
-    "topBtn2": "Records",
-    "topBtn3": "Blogs",
-    "topBtn4": "Charts"
+    "quote": "Home"
   },
   "vi": {
-    "topBtn1": "Trang chủ",
-    "topBtn2": "Ghi hình/âm",
-    "topBtn3": "Bài viết",
-    "topBtn4": "Đồ thị"
+    "quote": "Trang chủ"
   }
 }
