@@ -1167,13 +1167,17 @@
         <script>
             // Fetch translations from the JSON file
             async function fetchTranslations() {
-                const response = await fetch('translations.json');
-                const data = await response.json();
-                return data;
+                try {
+                    const response = await fetch('translations.json');
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error fetching translations:', error);
+                }
             }
     
             // Elements to update
-            const quote = document.getElementById("quote");
+            const quoteElement = document.getElementById("quote");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -1187,8 +1191,21 @@
             // Switch language function
             async function switchLanguage(lang) {
                 const translations = await fetchTranslations();
-                quote.textContent = translations[lang].quote;
+                if (translations && translations[lang]) {
+                    // Replace newline characters with <br> for HTML display
+                    const quoteHtml = translations[lang].quote.replace(/\n/g, '<br>');
+                    quoteElement.innerHTML = quoteHtml;
+                } else {
+                    console.error('Translation not found for language:', lang);
+                }
             }
+    
+            // Set default language on page load
+            window.onload = function() {
+                switchLanguage('en');
+                // Open the default tab
+                document.getElementById("homeTab").click();
+            };
                 
              // Tab pages setup
             function openPage(pageName, elmnt) {
