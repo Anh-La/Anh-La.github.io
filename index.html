@@ -1165,19 +1165,16 @@
         <script src="scripts.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script>
-            // Fetch translations from the JSON file
-            async function fetchTranslations() {
-                try {
-                    const response = await fetch('translations.json');
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error('Error fetching translations:', error);
+            // Function to switch between English and Vietnamese versions
+            function switchLanguage(lang) {
+                if (lang === 'en') {
+                    // Redirect to English version
+                    window.location.href = 'index.html';
+                } else if (lang === 'vi') {
+                    // Redirect to Vietnamese version
+                    window.location.href = 'index_vi.html';
                 }
             }
-    
-            // Elements to update
-            const quoteElement = document.getElementById("quote");
     
             // Event listeners for flag clicks
             document.getElementById("enFlag").addEventListener("click", function() {
@@ -1187,25 +1184,6 @@
             document.getElementById("viFlag").addEventListener("click", function() {
                 switchLanguage('vi');
             });
-    
-            // Switch language function
-            async function switchLanguage(lang) {
-                const translations = await fetchTranslations();
-                if (translations && translations[lang]) {
-                    // Replace newline characters with <br> for HTML display
-                    const quoteHtml = translations[lang].quote.replace(/\n/g, '<br>');
-                    quoteElement.innerHTML = quoteHtml;
-                } else {
-                    console.error('Translation not found for language:', lang);
-                }
-            }
-    
-            // Set default language on page load
-            window.onload = function() {
-                switchLanguage('en');
-                // Open the default tab
-                document.getElementById("homeTab").click();
-            };
                 
              // Tab pages setup
             function openPage(pageName, elmnt) {
