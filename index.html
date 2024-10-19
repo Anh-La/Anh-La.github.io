@@ -158,6 +158,85 @@
         	.carousel-inner .carousel-item-start { 
         		transform: translateX(0);
         	}
+            
+            /* Language Switch Styles */
+            .language-switch {
+                position: relative;
+                display: inline-block;
+                width: 60px;
+                height: 34px;
+            }
+            
+            .language-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            
+            .language-switch .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ddd;
+                transition: 0.4s;
+                border-radius: 34px;
+            }
+            
+            .language-switch .slider:before {
+                position: absolute;
+                content: "";
+                height: 28px;
+                width: 28px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: 0.4s;
+                border-radius: 50%;
+            }
+            
+            .language-switch input:checked + .slider {
+                background-color: #2196F3;
+            }
+            
+            .language-switch input:focus + .slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+            
+            .language-switch input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+            
+            /* Flag Icons */
+            .flag-icon {
+                position: absolute;
+                top: 3px;
+                width: 28px;
+                height: 28px;
+                background-size: cover;
+            }
+            
+            .flag-icon-en {
+                left: 3px;
+                background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg');
+            }
+            
+            .flag-icon-vi {
+                right: 3px;
+                background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg');
+            }
+            
+            /* Adjust flag opacity based on toggle state */
+            .language-switch input:not(:checked) ~ .slider .flag-icon-vi {
+                opacity: 0.5;
+            }
+            
+            .language-switch input:checked ~ .slider .flag-icon-en {
+                opacity: 0.5;
+            }
+
         </style>
     </head>
     <body class="sb-nav-fixed">
