@@ -25,7 +25,11 @@
     <!-- Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
         <!-- Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Anh La</a>
+            <div class="text-center">
+                <a class="navbar-brand ps-3" href="login">
+                    <img src="avatar.png" alt="Avatar" class="avatar">
+                </a>
+            </div><!-- /.Brand-->
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -146,13 +150,13 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="#" id="enOption">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20"> English
+                                    <a class="dropdown-item" href="index_vi" id="viOption">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" id="viOption">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                    <a class="dropdown-item" href="index" id="enOption">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20"> English
                                     </a>
                                 </li>
                             </ul>
@@ -172,73 +176,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" crossorigin="anonymous"></script>
     <!-- Custom Scripts -->
     <script src="scripts.js"></script>
-    <script>
-        // Function to switch between languages
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                // Redirect to English version
-                window.location.href = 'charts.html';
-            } else if (lang === 'vi') {
-                // Redirect to Vietnamese version
-                window.location.href = 'charts_vi.html';
-            }
-        }
-
-        // Event listeners for dropdown options
-        document.getElementById('enOption').addEventListener('click', function (e) {
-            e.preventDefault();
-            switchLanguage('en');
-        });
-
-        document.getElementById('viOption').addEventListener('click', function (e) {
-            e.preventDefault();
-            switchLanguage('vi');
-        });
-
-        // On page load
-        window.onload = function () {
-            const currentLanguageFlag = document.getElementById('currentLanguageFlag');
-            if (window.location.href.includes('charts_vi.html')) {
-                currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg';
-                currentLanguageFlag.alt = 'Vietnamese';
-            } else {
-                currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg';
-                currentLanguageFlag.alt = 'English';
-            }
-            // Open the Charts tab
-            openPage('Charts', document.getElementById('chartTab'));
-        };
-
-        // Tab pages setup
-        function openPage(pageName, elmnt) {
-            // Hide all elements with class="tabcontent" by default
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            // Remove the background color of all tablinks/buttons
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove('active');
-            }
-            // Show the specific tab content
-            document.getElementById(pageName).style.display = "block";
-            // Add the active class to the current button
-            elmnt.classList.add('active');
-        }
-
-        // Sidebar toggle
-        document.addEventListener('DOMContentLoaded', function () {
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.body.classList.toggle('sb-sidenav-toggled');
-                });
-            }
-        });
-
+    <script
         // Chart.js Scripts
         // Area Chart Example
         var ctx = document.getElementById("myAreaChart");
