@@ -78,42 +78,6 @@ $(document).ready(function() {
   $('#dataTable').DataTable();
 });
 
-// Function to switch between languages
-function switchLanguage(lang) {
-    if (lang === 'en') {
-        // Redirect to English version
-        window.location.href = 'index.html';
-    } else if (lang === 'vi') {
-        // Redirect to Vietnamese version
-        window.location.href = 'index_vi.html';
-    }
-}
-
-// Event listeners for dropdown options
-document.getElementById('enOption').addEventListener('click', function(e) {
-    e.preventDefault();
-    switchLanguage('en');
-});
-
-document.getElementById('viOption').addEventListener('click', function(e) {
-    e.preventDefault();
-    switchLanguage('vi');
-});
-
-// On page load, set the current language flag in the button
-window.onload = function() {
-    const currentLanguageFlag = document.getElementById('currentLanguageFlag');
-    if (window.location.href.includes('index_vi.html')) {
-        currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg';
-        currentLanguageFlag.alt = 'Vietnamese';
-    } else {
-        currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg';
-        currentLanguageFlag.alt = 'English';
-    }
-    // Open the default tab
-    document.getElementById("homeTab").click();
-};
-    
  // Tab pages setup
 function openPage(pageName, elmnt) {
     // Hide all elements with class="tabcontent" by default
