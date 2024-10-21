@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Viewport for Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Page Title -->
+    <title>Charts - Anh La</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link href="styles.css" rel="stylesheet" />
+    <!-- Inline CSS (if any) -->
+    <style>
+        /* Add any custom styles here */
+    </style>
+</head>
+<body class="sb-nav-fixed">
+    <!-- Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
+        <!-- Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Anh La</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation Buttons -->
+        <div class="container-fluid">
+            <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
+                <i class="bi bi-house-door-fill"></i>
+            </button>
+            <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
+                <i class="bi bi-file-play-fill"></i>
+            </button>
+            <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
+                <i class="bi bi-pen-fill"></i>
+            </button>
+            <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
+                <i class="bi bi-graph-up-arrow"></i>
+            </button>
+        </div>
+    </nav>
+    <!-- Layout Sidenav -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <!-- Sidebar Content (Same as other pages) -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <!-- Tax Compliance -->
+                        <div class="sb-sidenav-menu-heading">Tax Compliance</div>
+                        <!-- Add your sidebar items here -->
+                        <!-- ... -->
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container py-4">
+                    <!-- Interest Section (Optional) -->
+                    <!-- ... -->
+                    <hr>
+                    <!-- Tab Content -->
+                    <!-- Home Tab -->
+                    <div id="Home" class="container tabcontent">
+                        <!-- Home page content -->
+                    </div>
+                    <!-- Records Tab -->
+                    <div id="Records" class="container tabcontent">
+                        <!-- Records page content -->
+                    </div>
+                    <!-- Blog Tab -->
+                    <div id="Blog" class="container tabcontent">
+                        <!-- Blog page content -->
+                    </div>
+                    <!-- Charts Tab -->
+                    <div id="Charts" class="container tabcontent" style="display: block;">
+                        <!-- Charts Page Content -->
+                        <div class="container-fluid px-4">
+                            <h1 class="mt-4">Charts</h1>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="#" onclick="openPage('Home', document.getElementById('homeTab'));">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Charts</li>
+                            </ol>
+                            <!-- Chart Content -->
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <!-- Area Chart Example -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-area me-1"></i>
+                                            Area Chart Example
+                                        </div>
+                                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <!-- Bar Chart Example -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Bar Chart Example
+                                        </div>
+                                        <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Additional Content -->
+                            <!-- ... -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- Footer -->
+            <footer class="py-4 mt-auto bg-light fixed-bottom">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center">
+                        <!-- Social Buttons -->
+                        <div class="d-flex flex-grow-1 justify-content-around">
+                            <!-- LinkedIn Button -->
+                            <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin-in fa-2x"></i>
+                            </a>
+                            <!-- GitHub Button -->
+                            <a href="https://github.com/Anh-La" role="button" class="social-button github" target="_blank" aria-label="GitHub">
+                                <i class="fab fa-github fa-2x"></i>
+                            </a>
+                            <!-- Twitter Button -->
+                            <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
+                                <i class="fab fa-twitter fa-2x"></i>
+                            </a>
+                        </div>
+                        <!-- Language Switcher with Dropdown -->
+                        <div class="dropdown ms-auto">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" id="enOption">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="English" width="32" height="20"> English
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" id="viOption">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.Language Switcher -->
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div> <!-- End of layoutSidenav -->
+    <!-- Scripts -->
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- FontAwesome JS -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" crossorigin="anonymous"></script>
+    <!-- Custom Scripts -->
+    <script src="scripts.js"></script>
+    <script>
+        // Function to switch between languages
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                // Redirect to English version
+                window.location.href = 'charts.html';
+            } else if (lang === 'vi') {
+                // Redirect to Vietnamese version
+                window.location.href = 'charts_vi.html';
+            }
+        }
+
+        // Event listeners for dropdown options
+        document.getElementById('enOption').addEventListener('click', function (e) {
+            e.preventDefault();
+            switchLanguage('en');
+        });
+
+        document.getElementById('viOption').addEventListener('click', function (e) {
+            e.preventDefault();
+            switchLanguage('vi');
+        });
+
+        // On page load
+        window.onload = function () {
+            const currentLanguageFlag = document.getElementById('currentLanguageFlag');
+            if (window.location.href.includes('charts_vi.html')) {
+                currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg';
+                currentLanguageFlag.alt = 'Vietnamese';
+            } else {
+                currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg';
+                currentLanguageFlag.alt = 'English';
+            }
+            // Open the Charts tab
+            openPage('Charts', document.getElementById('chartTab'));
+        };
+
+        // Tab pages setup
+        function openPage(pageName, elmnt) {
+            // Hide all elements with class="tabcontent" by default
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            // Remove the background color of all tablinks/buttons
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove('active');
+            }
+            // Show the specific tab content
+            document.getElementById(pageName).style.display = "block";
+            // Add the active class to the current button
+            elmnt.classList.add('active');
+        }
+
+        // Sidebar toggle
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.body.classList.toggle('sb-sidenav-toggled');
+                });
+            }
+        });
+
+        // Chart.js Scripts
+        // Area Chart Example
+        var ctx = document.getElementById("myAreaChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [{
+                    label: "Sessions",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(2,117,216,0.2)",
+                    borderColor: "rgba(2,117,216,1)",
+                    data: [1000, 2000, 1500, 3000, 2500, 4000],
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'month'
+                        },
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: 5000,
+                            stepSize: 1000
+                        },
+                    }],
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        // Bar Chart Example
+        var ctx = document.getElementById("myBarChart");
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Bitcoin", "Ethereum", "Litecoin", "Ripple", "Dash"],
+                datasets: [{
+                    label: "Price",
+                    backgroundColor: ["#007bff", "#dc3545", "#ffc107", "#28a745", "#17a2b8"],
+                    data: [40000, 2500, 150, 0.5, 200],
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'cryptocurrency'
+                        },
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: 50000,
+                            stepSize: 10000
+                        },
+                    }],
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+    </script>
+</body>
+</html>
