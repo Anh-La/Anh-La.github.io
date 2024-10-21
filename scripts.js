@@ -77,3 +77,137 @@ window.addEventListener('DOMContentLoaded', event => {
 $(document).ready(function() {
   $('#dataTable').DataTable();
 });
+
+// Function to switch between languages
+function switchLanguage(lang) {
+    if (lang === 'en') {
+        // Redirect to English version
+        window.location.href = 'index.html';
+    } else if (lang === 'vi') {
+        // Redirect to Vietnamese version
+        window.location.href = 'index_vi.html';
+    }
+}
+
+// Event listeners for dropdown options
+document.getElementById('enOption').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('en');
+});
+
+document.getElementById('viOption').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('vi');
+});
+
+// On page load, set the current language flag in the button
+window.onload = function() {
+    const currentLanguageFlag = document.getElementById('currentLanguageFlag');
+    if (window.location.href.includes('index_vi.html')) {
+        currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg';
+        currentLanguageFlag.alt = 'Vietnamese';
+    } else {
+        currentLanguageFlag.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg';
+        currentLanguageFlag.alt = 'English';
+    }
+    // Open the default tab
+    document.getElementById("homeTab").click();
+};
+    
+ // Tab pages setup
+function openPage(pageName, elmnt) {
+    // Hide all elements with class="tabcontent" by default
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    // Remove the background color of all tablinks/buttons
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove('active');
+    }
+    // Show the specific tab content
+    document.getElementById(pageName).style.display = "block";
+    // Add the active class to the current button
+    elmnt.classList.add('active');
+}
+
+
+// Get the default tab open
+document.getElementById("homeTab").click();
+
+// Function to control cards (stacking effect) in carousel slides by carousel ID
+function controlCarouselItemsById(carouselId, minPerSlide = 4) {
+    // Select the specific carousel using the given ID
+    let carousel = document.querySelector(`#${carouselId}`);
+    
+    // Get all carousel items within the specific carousel
+    let items = carousel.querySelectorAll('.carousel-item');
+    
+    // Apply the logic to clone and append extra cards to each carousel item
+    items.forEach((el) => {
+        let next = el.nextElementSibling;
+        for (let i = 1; i < minPerSlide; i++) {
+            if (!next) {
+                // Wrap around the carousel by using the first item if there is no next item
+                next = items[0];
+            }
+            let cloneChild = next.cloneNode(true);
+            el.appendChild(cloneChild.children[0]);
+            next = next.nextElementSibling;
+        }
+    });
+}
+
+// Apply the function to the specific carousels by passing the ID
+controlCarouselItemsById('carouselHomeControls1', 4);
+controlCarouselItemsById('carouselHomeControls2', 4);
+
+// Function to control cards (scroll effect) in specific carousel slides by their IDs with jQuery
+$(document).ready(function () {
+    // Array of specific carousel IDs
+    const carouselIds = ['#carouselBlogBitcoin', '#carouselBlogFinance', '#carouselBlogTax', '#carouselBlogInvesting'];
+
+    // Loop through each specific carousel by ID
+    carouselIds.forEach(function (carouselId) {
+        const carousel = $(carouselId); // Current carousel element
+
+        // Check if the screen width is greater than 576px
+        if (window.matchMedia("(min-width: 576px)").matches) {
+            // Initialize the Bootstrap carousel with no interval (no automatic sliding)
+            const bsCarousel = new bootstrap.Carousel(carousel[0], {
+                interval: false
+            });
+
+            // Get the total width of the current carousel content
+            var carouselWidth = carousel.find('.carousel-inner')[0].scrollWidth;
+            // Get the width of a single card (carousel item)
+            var cardWidth = carousel.find('.carousel-item').outerWidth(true); // Use outerWidth(true) to account for margins
+            var scrollPosition = 0;
+
+            // Next button click event
+            carousel.find('.carousel-control-next').on('click', function () {
+                // Check if the scroll position is within bounds
+                if (scrollPosition < (carouselWidth - (cardWidth * 4))) {
+                    console.log('next');
+                    scrollPosition += cardWidth;
+                    carousel.find('.carousel-inner').animate({ scrollLeft: scrollPosition }, 600); // Animate the scroll to the new position
+                }
+            });
+
+            // Previous button click event
+            carousel.find('.carousel-control-prev').on('click', function () {
+                // Check if the scroll position is greater than 0
+                if (scrollPosition > 0) {
+                    console.log('prev');
+                    scrollPosition -= cardWidth;
+                    carousel.find('.carousel-inner').animate({ scrollLeft: scrollPosition }, 600); // Animate the scroll to the new position
+                }
+            });
+        } else {
+            // For smaller screens, enable the default Bootstrap sliding behavior
+            carousel.addClass('slide');
+        }
+    });
+});
