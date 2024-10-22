@@ -19,6 +19,29 @@
     <!-- Inline CSS (if any) -->
     <style>
         /* Add any custom styles here */
+        .scrolling-text {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            position: relative;
+            width: 100%;
+        }
+        
+        .scrolling-text a {
+            display: inline-block;
+            position: relative;
+            animation: marquee 10s linear infinite;
+        }
+        
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -370,9 +393,11 @@
                                         <div class="d-flex align-items-center">
                                             <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Luke Mikic">
                                             <div class="card-body p-0">
-                                                <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="card-title h6 text-decoration-none">
-                                                    A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
-                                                </a>
+                                                <div class="scrolling-text">
+                                                    <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="card-title h6 text-decoration-none">
+                                                        A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
