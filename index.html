@@ -16,42 +16,42 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
-            <!-- Brand-->
-            <div class="text-center">
-                <a class="navbar-brand ps-3" href="login">
-                    <img src="avatar.png" alt="Avatar" class="avatar">
-                </a>
-            </div><!-- /.Brand-->
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
-                <i class="fas fa-bars"></i>
-            </button><!-- /. Sidebar Toggle-->
-            <!-- Top buttons -->
-            <div class="container-fluid">
-                <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
-                  <i class="bi bi-house-door-fill"></i>
-                </button>
-                <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
-                  <i class="bi bi-file-play-fill"></i>
-                </button>
-                <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
-                  <i class="bi bi-pen-fill"></i>
-                </button>
-                <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
-                  <i class="bi bi-graph-up-arrow"></i>
-                </button>
-                <!--/. Top buttons -->
-              </div>
-        </nav>
-        
-        <!-- Layout Sidenav -->
-        <div id="layoutSidenav">
-            <!-- Sidebar -->
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                     <div class="sb-sidenav-menu">
-                        <div class="nav">
+    <!-- Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
+        <!-- Brand-->
+        <div class="text-center">
+            <a class="navbar-brand ps-3" href="login">
+                <img src="avatar.png" alt="Avatar" class="avatar">
+            </a>
+        </div><!-- /.Brand-->
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation Buttons -->
+        <div class="container-fluid">
+            <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
+                <i class="bi bi-house-door-fill"></i>
+            </button>
+            <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
+                <i class="bi bi-file-play-fill"></i>
+            </button>
+            <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
+                <i class="bi bi-pen-fill"></i>
+            </button>
+            <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
+                <i class="bi bi-graph-up-arrow"></i>
+            </button>
+        </div>
+    </nav>
+    <!-- Layout Sidenav -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <!-- Sidebar Content (Same as other pages) -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
                             <!-- Build Wealth Content -->
                             <div class="sb-sidenav-menu-heading">Build Wealth</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
@@ -82,6 +82,36 @@
                                         <a class="nav-link" href="blog">International Tax</a>
                                     </nav>
                                 </div><!--Tax Compliance -->
+                            <!-- Investing Content -->
+                            <div class="sb-sidenav-menu-heading">Investing</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Traditional Finance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Base money</a>
+                                        <a class="nav-link" href="blog">Fiat money</a>
+                                        <a class="nav-link" href="blog">Residential property</a>
+                                        <a class="nav-link" href="blog">Commercial propert</a>
+                                        <a class="nav-link" href="blog">Equity</a>
+                                        <a class="nav-link" href="blogHome">Bonds</a>
+                                    </nav>
+                                </div><!--  Traditional Finance -->
+                                
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRE" aria-expanded="false" aria-controls="collapseRE">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                         Digital Finance
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseRE" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="blogHome">Crypto currency</a>
+                                            <a class="nav-link" href="blog">Bitcoin</a>
+                                        </nav>
+                                    </div><!-- Real asset -->
+                            
                             <!-- Bitcoin Content -->
                             <div class="sb-sidenav-menu-heading">Bitcoin</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
@@ -114,6 +144,7 @@
                                         <a class="nav-link" href="blog">Multi sig</a>
                                     </nav>
                                 </div><!-- /.Bitcoin -->
+                            
                             <!-- Nostr Content -->
                             <div class="sb-sidenav-menu-heading">Nostr</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
@@ -138,49 +169,19 @@
                                         <a class="nav-link" href="blogHome">Models</a>
                                     </nav>
                                 </div><!-- /. Ai -->
-                            <!-- Investing Content -->
-                            <div class="sb-sidenav-menu-heading">Investing</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Traditional Finance
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Base money</a>
-                                        <a class="nav-link" href="blog">Fiat money</a>
-                                        <a class="nav-link" href="blog">Residential property</a>
-                                        <a class="nav-link" href="blog">Commercial propert</a>
-                                        <a class="nav-link" href="blog">Equity</a>
-                                        <a class="nav-link" href="blogHome">Bonds</a>
-                                    </nav>
-                                </div><!--  Traditional Finance -->
-                                
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRE" aria-expanded="false" aria-controls="collapseRE">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                         Digital Finance
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseRE" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="blogHome">Crypto currency</a>
-                                            <a class="nav-link" href="blog">Bitcoin</a>
-                                            
-                                        </nav>
-                                    </div><!-- Real asset -->
-                            <!-- You can add your sidebar menu items here -->
-                        </div>
-                     </div>  
-                </nav>
-            </div>
-            <!-- Main Content -->
-            <div id="layoutSidenav_content">
-                <main>
-                        <!-- Interest section -->
-                        <div class="container py-4">
-                            <div class="mb-4 bg-body-tertiary rounded-3">
-                              <div class="container-fluid">
-                                  <!-- Personalised text -->
+                            <!-- You can add your sidebar menu items here -->                        
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container py-4">
+                    <!-- Interest section -->
+                        <div class="mb-4 bg-body-tertiary rounded-3">
+                          <div class="container-fluid">
+                              <!-- Personalised text -->
                                 <div class="d-flex w-100">         
                                     <form name="text_Marquee" class="flex-grow-1">
                                         <input id="quote" name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
@@ -195,319 +196,166 @@
                                             " disabled />
                                     </form>
                                 </div><!-- /.Personalised text -->
-                              </div>
-                            </div><!-- /.Interest section -->
-                            <hr>
-
-                            <!-- Home Page -->
-                            <div id="Home" class="container tabcontent">
-                                  <!-- Carousel 1 Heading -->
-                                  <h5 class="my-4">Videos <small></small></h5>
-                                
-                                <!-- Carousel Home Controls 1 -->
-                                <div id="carouselHomeControls1" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                                    <!-- Carousel Inner Start -->
-                                    <div class="carousel-inner">
-                                        <!-- slide 1 -->
-                                        <div class="carousel-item active">
-                                            <!-- Card 1 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
+                          </div>
+                        </div><!-- /.Interest section -->
+                    <hr>
+                    <!-- Tab Content -->
+                    <!-- Home Tab -->
+                    <div id="Home" class="container tabcontent">
+                        <!-- Page content-->
+                        <!-- Carousel Home Controls 1 -->
+                        <div id="carouselHomeControls1" class="carousel slide" data-bs-ride="carousel">
+                            <!-- Carousel Inner Start -->
+                            <div class="carousel-inner">
+                                <!-- slide 1 -->
+                                <div class="carousel-item active">
+                                    <!-- Card 1 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project One</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
                                             </div>
                                         </div>
-                                        <!--/. slide 1 -->
-                                
-                                        <!-- slide 2 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 2 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/bitcoin-model">Project Two</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 2 -->
-                                
-                                        <!-- slide 3 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 3 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 3 -->
-                                
-                                        <!-- slide 4 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 4 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/evolution-of-Bitcoin">Project Four</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 4 -->
-                                
-                                        <!-- slide 5 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 5 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/bitcoin-model">Project Five</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 5 -->
-                                
-                                        <!-- slide 6 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 6 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">
-                                                            <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Six</a>
-                                                        </h4>
-                                                        <p class="card-text">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 6 -->
                                     </div>
-                                    <!--/. Carousel Inner End -->
-                                
-                                    <!-- Carousel Controls -->
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
                                 </div>
-                                <!--/. Carousel End -->
-
-                                <!-- Carousel 2 Heading -->
-                                  <h5 class="my-4">Articles <small></small></h5>
-
-                                <!-- Carousel Home Controls 2 -->
-                                <div id="carouselHomeControls2" class="carousel slide" data-bs-ride="carousel">
-                                  <div class="carousel-inner">
-                                    <!-- Carousel item 1: Table 1 -->
-                                    <div class="carousel-item active">
-                                      <div class="container">
-                                        <div class="row justify-content-center">
-                                          <div class="col-md-4"> <!-- Apply col-md-4 to limit the table width -->
-                                            <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
-                                              <tr>
-                                                <td><a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" id='pro1Ln3'>A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Luke Mikic"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html/" id='pro1Ln3'>Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities Alden</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Lyn Alden"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/Primary-Producer/" id="pro1Ln5">Primary Producer Tax</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Primary Producer Tax"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/companies/" id="pro1Ln3">Company Tax</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Company Tax"></td>
-                                              </tr>
-                                            </table>
-                                          </div>
+                                <!--/. slide 1 -->
+                        
+                                <!-- slide 2 -->
+                                <div class="carousel-item">
+                                    <!-- Card 2 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/bitcoin-model">Project Two</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                
-                                    <!-- Carousel item 2: Table 2 -->
-                                    <div class="carousel-item">
-                                      <div class="container">
-                                        <div class="row justify-content-center">
-                                          <div class="col-md-4">
-                                            <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/GST-and-BAS/" id="pro1Ln5">Goods and Services Tax</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Goods and Services Tax"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/tax-planning/" id="pro1Ln5">Tax Planning</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Tax Planning"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/structuring/" id="pro1Ln5">Structuring</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Structuring"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/Clubs-and-Associations/" id="pro1Ln5">Non-profit organisations Tax</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Non-profit organisations Tax"></td>
-                                              </tr>
-                                            </table>
-                                          </div>
+                                </div>
+                                <!--/. slide 2 -->
+                        
+                                <!-- slide 3 -->
+                                <div class="carousel-item">
+                                    <!-- Card 3 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                
-                                    <!-- Carousel item 3: Table 3 -->
-                                    <div class="carousel-item">
-                                      <div class="container">
-                                        <div class="row justify-content-center">
-                                          <div class="col-md-4">
-                                            <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/payroll/" id="pro1Ln5">Payroll Basic Guide</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Payroll Basic Guide"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://accounting-tax.github.io/Trusts/" id="pro1Ln5">Trust Tax</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Trust Tax"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/digital-finance-CPA/" id="pro1Ln3">Digital finance CPA guidance</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Digital Finance CPA"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://digital-finance-pty-ltd.github.io/financial-planning/" id="pro1Ln5">Financial planning for individual</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Financial Planning"></td>
-                                              </tr>
-                                            </table>
-                                          </div>
+                                </div>
+                                <!--/. slide 3 -->
+                        
+                                <!-- slide 4 -->
+                                <div class="carousel-item">
+                                    <!-- Card 4 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project Four</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                
-                                    <!-- Carousel item 4: Table 4 -->
-                                    <div class="carousel-item">
-                                      <div class="container">
-                                        <div class="row justify-content-center">
-                                          <div class="col-md-4">
-                                            <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/evolution-of-money/" id="pro1Ln5">The role of Bitcoin in evolution of money</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Bitcoin Evolution of Money"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" id="pro1Ln5">Evolution of Bitcoin</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Evolution of Bitcoin"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/global-currency/" id="pro1Ln5">Bitcoin as a global currency</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Bitcoin as Global Currency"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/Bitcoin-Usecases/" id="pro1Ln5">Other Bitcoin Practical Use Cases</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Bitcoin Use Cases"></td>
-                                              </tr>
-                                            </table>
-                                          </div>
+                                </div>
+                                <!--/. slide 4 -->
+                        
+                                <!-- slide 5 -->
+                                <div class="carousel-item">
+                                    <!-- Card 5 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/bitcoin-model">Project Five</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                
-                                    <!-- Carousel item 5: Table 5 -->
-                                    <div class="carousel-item">
-                                      <div class="container">
-                                        <div class="row justify-content-center">
-                                          <div class="col-md-4">
-                                            <table border="0" cellspacing="0" cellpadding="10" style="width: 100%;">
-                                              <tr>
-                                                <td><a href="https://bitcoin-basic.github.io/Bitcoin-Fallacies/" id="pro1Ln5">Bitcoin Fallacies</a></td>
-                                                <td style="text-align: right;"><img src="https://via.placeholder.com/50" alt="Bitcoin Fallacies"></td>
-                                              </tr>
-                                            </table>
-                                          </div>
+                                </div>
+                                <!--/. slide 5 -->
+                        
+                                <!-- slide 6 -->
+                                <div class="carousel-item">
+                                    <!-- Card 6 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Six</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                
-                                  </div>                        
-                                  <!-- Carousel Controls -->
-                                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls2" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                  </button>
-                                  <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeControls2" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                  </button>
-                                </div><!--/. Carousel End -->
-                            </div><!-- /.container -->       
-                            </div> <!-- /.Home tab page -->
-                    
-                            <!-- Records Page-->
-                            <div id="Records" class="container tabcontent">
-                              <h1 class="my-4 text-center"></h1>
-                              <!-- Latest Projects row-->
+                                </div>
+                                <!--/. slide 6 -->
+                            </div>
+                            <!--/. Carousel Inner End -->
+                        
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <!--/. Carousel End -->
+                    </div><!-- /.Home Tab -->
+                    <!-- Records Tab -->
+                    <div id="Records" class="container tabcontent">
+                        <!-- Page content-->
                               <div class="row">
-                                <div id="carouselVideos" class="carousel carousel-dark slide">
+                                <div id="carouselVideos" class="carousel slide">
                                   <div class="carousel-inner">
                                     <!-- Videos Project -->
-                                    <div class="carousel-item active" data-bs-interval="1000">
+                                    <div class="carousel-item active" data-bs-interval="30000">
                                       <div class="row justify-content-md-center">
-                                        <div class="col-md-7">
+                                        <div class="col-md-6">
                                           <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
                                             <img
                                               class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="TrustSmallBusinessCGT2024.jpg"
+                                              src="700x300_TrustSmallBusinessCGT2024.jpg"
                                               alt=""
                                             />
                                           </a>
                                         </div>
-                                      </div>
-                                      <div class="row justify-content-md-center">
-                                        <div class="col-md-12">
-                                          <h5 id="pro1Ln1" class="my-4">Trust Tax Compliance Basic</h5>
-                                          <p id="pro1Ln2">
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Trust Tax Compliance Basic</h5>
+                                          <p>
                                             Apply legal authorities like                                          
                                             to a hypothetical study case
                                           </p>
@@ -517,22 +365,20 @@
                                     </div> <!-- /.Project Trust and small CGT concessions - content-->
                                     
                                     <!-- Project Corporate Videos -->
-                                    <div class="carousel-item" data-bs-interval="1000">
+                                    <div class="carousel-item" data-bs-interval="">
                                       <div class="row justify-content-md-center">
-                                        <div class="col-md-7">
+                                        <div class="col-md-6">
                                           <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
                                             <img
                                               class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="coporateTax2024.jpg"
+                                              src="700x300_coporateTax2024.jpg"
                                               alt=""
                                             />
                                           </a>
                                         </div>
-                                      </div>
-                                      <div class="row justify-content-md-center">
-                                        <div class="col-md-12 text-center">
-                                          <h5 id="pro1Ln1" class="my-4">Corporate Tax Compliance Basic</h5>
-                                          <p id="pro1Ln2">
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Corporate Tax Compliance Basic</h5>
+                                          <p>
                                             Apply legal authorities to a hypothetical study case                                           
                                           </p>
                                         </div>
@@ -543,36 +389,32 @@
                                         <!-- Project small CGT concessions -->  
                                         <div class="carousel-item">
                                             <div class="row justify-content-md-center">
-                                                <div class="col-md-7"> 
+                                                <div class="col-md-6"> 
                                                     <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smallbusiness2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smallbusiness2024.jpg" alt="">
                                                     </a>
                                                 </div>
-                                            </div>
-                                            <!-- Project small CGT concessions - content-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                    <h5 id='pro1Ln1' class="my-4">Small business capital gain Tax Compliance Basic</h5>
-                                                    <p id='pro1Ln2'> Apply legal authorities like to a hypothetical study case</p>
+                    
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">Small business capital gain Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like to a hypothetical study case</p>
                                                   </div>
                                             </div>  
                                             <hr>
                                         </div><!-- /.Project small CGT concessions -->
 
                                         <!-- Project international Videos -->   
-                                        <div class="carousel-item" data-bs-interval="10000">  
+                                        <div class="carousel-item" data-bs-interval="">  
                                             <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
+                                                <div class="col-md-6">
                                                     <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="internationalTax2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_internationalTax2024.jpg" alt="">
                                                     </a>
                                                 </div>
-                                            </div>                                                 
-                                            <!-- Project 4 - international Videos-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                    <h5 id='pro1Ln1' class="my-4">International Tax Compliance Basic</h5>
-                                                    <p id='pro1Ln2'> Apply legal authorities like 
+                        
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">International Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
                                                          to a hypothetical study case</p>
                                                   </div>
                                             </div>  
@@ -582,18 +424,14 @@
                                         <!-- Project GST -->   
                                         <div class="carousel-item">  
                                             <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
+                                                <div class="col-md-6">
                                                     <a href="https://anh.contact/GST-Practice-Case-Study-2024">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="GST2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_GST2024.jpg" alt="">
                                                     </a>
                                                 </div>
-                                            </div>                                                
-                                            <!-- Project GST - content-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                   <h5 id='pro1Ln1' class="my-4">Goods and Services Tax Compliance Basic</h5>
-                                                    <p id='pro1Ln2'> Apply legal authorities like 
-                                                         
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Goods and Services Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like                                                          
                                                          to a hypothetical study case</p>
                                                   </div>
                                             </div>
@@ -603,56 +441,32 @@
                                     <!-- Project SMSF -->   
                                         <div class="carousel-item">  
                                             <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
+                                                <div class="col-md-6">
                                                     <a href="#">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="smsf2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smsf2024.jpg" alt="">
                                                     </a>
                                                 </div>
-                                            </div>                                                
-                                            <!-- Project SMSF - content-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                   <h5 id='pro1Ln1' class="my-4">Self managed superfund Compliance Basic</h5>
-                                                    <p id='pro1Ln2'> Apply legal authorities like 
+                
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Self managed superfund Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
                                                          to a hypothetical study case</p>
                                                   </div>
                                             </div>
                                             <hr>
                                         </div><!-- /.Project SMSF - content-->
-                                             
-                                       <!-- Project Financial planning -->   
-                                        <div class="carousel-item" data-bs-interval="1000">  
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
-                                                    <a href="https://anh.contact/404/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="Financial-Planning.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>                                                
-                                            <!-- Project Financial planning - content-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                   <h5 id='pro1Ln1' class="my-4">Financial planning for individual</h5>
-                                                    <p id='pro1Ln2'> Simplify and provide practical steps for normies</p>
-                                                  </div>
-                                            </div>
-                                            <hr>
-                                        </div><!-- /.Project Financial planning - content-->
-                                            
+                                      
                                         <!-- Project Bitcoin -->   
-                                        <div class="carousel-item" data-bs-interval="1000">  
+                                        <div class="carousel-item" data-bs-interval="">  
                                             <div class="row justify-content-md-center">
-                                                <div class="col-md-7">
+                                                <div class="col-md-6">
                                                     <a href="https://anh.contact/404/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="money.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_money.jpg" alt="">
                                                     </a>
                                                 </div>
-                                            </div>                                                
-                                            <!-- Project Bitcoin - content-->
-                                            <div class="row justify-content-md-center">
-                                                <div class="col-md-12 text-center">
-                                                   <h5 id='pro1Ln1' class="my-4">Bitcoin as the base money in digital finance</h5>
-                                                    <p id='pro1Ln2'> Simplify and provide practical application for normies</p>
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Bitcoin as the base money in digital finance</h5>
+                                                    <p> Simplify and provide practical application for normies</p>
                                                   </div>
                                             </div>
                                             <hr>
@@ -660,136 +474,167 @@
                                             
                                         </div> <!-- Carousel-inner -->            
                                         <!-- Carousel Controls -->
-                                          <button
-                                            class="carousel-control-prev"
-                                            type="button"
-                                            data-bs-target="#carouselVideos"
-                                            data-bs-slide="prev"
-                                          >
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Previous</span>
-                                          </button>
-                                          <button
-                                            class="carousel-control-next"
-                                            type="button"
-                                            data-bs-target="#carouselVideos"
-                                            data-bs-slide="next"
-                                          >
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
-                                          </button>
+                                        </button>
                                     </div> <!-- Carousel-slides -->  
                                 </div> <!-- /.row --> 
-                                <hr>
-                                <!-- 3 columns list -->
-                                <div class="container mt-5">
-                                  <div class="row">
-                                    <div class="col-sm-4">
-                                      <h3>Column 1</h3>
-                                      <ul class="list-group list-group-flush list-group-numbered">
-                                          <li class="list-group-item">
-                                            <img src="https://via.placeholder.com/50" alt="Luke Mikic">
-                                            <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" id="en">A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin) - Luke Mikic</a>
-                                          </li>
-                                          <li class="list-group-item">
-                                            <img src="https://via.placeholder.com/50" alt="Lyn Alden">
-                                            <a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html/" id="pro1Ln3">Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities</a>
-                                          </li>
-                                          <li class="list-group-item">
-                                            <img src="https://via.placeholder.com/50" alt="Primary Producer Tax">
-                                            
-                                            <a href="https://accounting-tax.github.io/Primary-Producer/" id="pro1Ln5">Primary Producer Tax</a>
-                                          </li>
-                                          <li class="list-group-item">
-                                            <img src="https://via.placeholder.com/50" alt="Company Tax">
-                                            
-                                            <a href="https://accounting-tax.github.io/companies/" id="pro1Ln3">Company Tax</a>
-                                          </li>
-                                          <li class="list-group-item">
-                                            <img src="https://via.placeholder.com/50" alt="Goods and Services Tax">
-                                            
-                                            <a href="https://accounting-tax.github.io/GST-and-BAS/" id="pro1Ln5">Goods and Services Tax</a>
-                                          </li>
-                                        </ul>
+                            <hr>
+                        <!-- Column Cards -->
+                        <div class="container mt-5">
+                            <div class="row">
+                                <!-- Column 1 -->
+                                <div class="col-md-6">
+                                    <!-- Card 1 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Luke Mikic">
+                                            <div class="card-body p-0">
+                                                <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="card-title h6 text-decoration-none">
+                                                    A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                      <h3>Column 2</h3>
-                                          <ul class="list-group list-group-flush list-group-numbered">
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Tax Planning">
-                                                
-                                                <a href="https://accounting-tax.github.io/tax-planning/" id="pro1Ln5">Tax Planning</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Structuring">
-                                                
-                                                <a href="https://accounting-tax.github.io/structuring/" id="pro1Ln5">Structuring</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Non-profit Organisations Tax">
-                                                
-                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" id="pro1Ln5">Non-profit Organisations Tax</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Payroll Basic Guide">
-                                                
-                                                <a href="https://accounting-tax.github.io/payroll/" id="pro1Ln5">Payroll Basic Guide</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Trust Tax">
-                                                
-                                                <a href="https://accounting-tax.github.io/Trusts/" id="pro1Ln5">Trust Tax</a>
-                                              </li>
-                                            </ul>
+                                    <!-- Card 3 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Primary Producer Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="card-title h6 text-decoration-none">
+                                                    Primary Producer Tax
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                      <h3>Column 3</h3>        
-                                      <ul class="list-group list-group-flush list-group-numbered">
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Digital Finance CPA">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" id="pro1Ln3">Digital Finance CPA Guidance</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Financial Planning">
-                                                
-                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" id="pro1Ln5">Financial Planning for Individuals</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Bitcoin Evolution of Money">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" id="pro1Ln5">The Role of Bitcoin in Evolution of Money</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Evolution of Bitcoin">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" id="pro1Ln5">Evolution of Bitcoin</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Bitcoin as Global Currency">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/global-currency/" id="pro1Ln5">Bitcoin as a Global Currency</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Bitcoin Use Cases">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/Bitcoin-Usecases/" id="pro1Ln5">Other Bitcoin Practical Use Cases</a>
-                                              </li>
-                                              <li class="list-group-item">
-                                                <img src="https://via.placeholder.com/50" alt="Bitcoin Fallacies">
-                                                
-                                                <a href="https://bitcoin-basic.github.io/Bitcoin-Fallacies/" id="pro1Ln5">Bitcoin Fallacies</a>
-                                              </li>
-                                            </ul>
+                                    <!-- Card 5 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Goods and Services Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="card-title h6 text-decoration-none">
+                                                    Goods and Services Tax
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                  </div>
-                                </div> <!-- /.List -->
-                            </div> <!-- Videos tab page -->
-                            
-                            <!-- Blog Page -->
-                            <div id="Blog" class="container tabcontent">
-                                <h5 class="my-4 text-center"></h5>
-                                <!-- Page content-->
+                                    <!-- Card 7 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Structuring">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/structuring/" class="card-title h6 text-decoration-none">
+                                                    Structuring
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 9 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Digital Finance CPA">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="card-title h6 text-decoration-none">
+                                                    Digital Finance CPA Guidance
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 11 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Evolution of Bitcoin">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" class="card-title h6 text-decoration-none">
+                                                    Evolution of Bitcoin
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column 2 -->
+                                <div class="col-md-6">
+                                    <!-- Card 2 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Lyn Alden">
+                                            <div class="card-body p-0">
+                                                <a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html/" class="card-title h6 text-decoration-none">
+                                                    Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities - Lyn Alden
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 4 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Company Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/companies/" class="card-title h6 text-decoration-none">
+                                                    Company Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 6 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Tax Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/tax-planning/" class="card-title h6 text-decoration-none">
+                                                    Tax Planning
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 8 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Non-profit Organisations Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="card-title h6 text-decoration-none">
+                                                    Non-profit Organisations Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 10 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Financial Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="card-title h6 text-decoration-none">
+                                                    Financial Planning for Individuals
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 12 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Bitcoin Evolution of Money">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="card-title h6 text-decoration-none">
+                                                    The Role of Bitcoin in Evolution of Money
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.Column Cards -->
+
+    
+                        
+                    </div><!-- /.Records Tab -->
+                    <!-- Blog Tab -->
+                    <div id="Blog" class="container tabcontent">
+                        <!-- Page content-->
                                 <div class="container-fluid">
                                     <div class="row">
                                         <!-- Blog entries-->
@@ -853,315 +698,301 @@
                                                 </button>
                                             </div><!-- /.Featured blog post-->
                                             <hr>
-                                            
-                                            <!-- Investing Section -->
-                                            <h5 class="my-4 text-center">Investing</h5>
-                                            <div class="container">
-                                                <!-- Card 1 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Luke Mikic">
-                                                        </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="card-title h6 text-decoration-none">
+                                        </div><!-- /.Col end -->
+                                     </div><!-- /.Row end -->
+                                </div><!-- /.Container end --> 
+                                 <!-- Numbered List -->
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            <!-- Single Responsive Column -->
+                                            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                                                <ul class="list-group list-group-numbered">
+                                                    <!-- Item 1 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="text-decoration-none text-dark">
                                                                     A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">January 1, 2023</div>
+                                                            <p class="mb-0">An insightful analysis of how traditional financial systems are failing and how Bitcoin offers a potential solution.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 2 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Lyn Alden">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Luke Mikic" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html/" class="card-title h6 text-decoration-none">
-                                                                    Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities - Lyn Alden
+                                                    </li>
+                                                    <!-- Item 2 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html" class="text-decoration-none text-dark">
+                                                                    Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">January 2, 2023</div>
+                                                            <p class="mb-0">An in-depth look at economic factors affecting global markets, authored by Lyn Alden.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Australian Tax Section -->
-                                            <h5 class="my-4 text-center">Australian Tax</h5>
-                                            <div class="container">
-                                                <!-- Card 1 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Primary Producer Tax">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Lyn Alden" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 3 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="text-decoration-none text-dark">
                                                                     Primary Producer Tax
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">January 15, 2023</div>
+                                                            <p class="mb-0">Essential information on taxation for primary producers, including deductions and concessions.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 2 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Company Tax">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Primary Producer Tax" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/companies/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 4 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/companies/" class="text-decoration-none text-dark">
                                                                     Company Tax
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">February 5, 2023</div>
+                                                            <p class="mb-0">Comprehensive guide on company taxation in Australia, including recent updates and compliance requirements.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Additional Cards -->
-                                                <!-- Card 3 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Goods and Services Tax">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Company Tax" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 5 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="text-decoration-none text-dark">
                                                                     Goods and Services Tax
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">February 20, 2023</div>
+                                                            <p class="mb-0">Detailed information on GST compliance and reporting obligations for businesses.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 4 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Tax Planning">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Goods and Services Tax" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/tax-planning/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 6 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/tax-planning/" class="text-decoration-none text-dark">
                                                                     Tax Planning
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">February 28, 2023</div>
+                                                            <p class="mb-0">Strategies for effective tax planning to minimize liabilities and maximize benefits.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 5 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Structuring">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Tax Planning" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/structuring/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 7 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/structuring/" class="text-decoration-none text-dark">
                                                                     Structuring
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">March 10, 2023</div>
+                                                            <p class="mb-0">Strategies for effective business structuring to optimize tax outcomes and asset protection.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 6 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Non-profit Organisations Tax">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Structuring" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 8 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="text-decoration-none text-dark">
                                                                     Non-profit Organisations Tax
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">March 25, 2023</div>
+                                                            <p class="mb-0">Taxation guidelines and benefits for clubs and associations operating as non-profit entities.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Finance Section -->
-                                            <h5 class="my-4 text-center">Finance</h5>
-                                            <div class="container">
-                                                <!-- Card 1 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Digital Finance CPA">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Non-profit Organisations Tax" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 9 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="text-decoration-none text-dark">
                                                                     Digital Finance CPA Guidance
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">March 30, 2023</div>
+                                                            <p class="mb-0">Guidelines from CPA on navigating digital finance and cryptocurrency accounting.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 2 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Financial Planning">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Digital Finance CPA" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 10 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="text-decoration-none text-dark">
                                                                     Financial Planning for Individuals
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">April 5, 2023</div>
+                                                            <p class="mb-0">Comprehensive financial planning services tailored to individual needs and goals.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Bitcoin Section -->
-                                            <h5 class="my-4 text-center">Bitcoin</h5>
-                                            <div class="container">
-                                                <!-- Card 1 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Bitcoin Evolution of Money">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Financial Planning" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 11 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="text-decoration-none text-dark">
                                                                     The Role of Bitcoin in Evolution of Money
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">April 10, 2023</div>
+                                                            <p class="mb-0">An exploration of Bitcoin's place in the historical development of monetary systems.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 2 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Evolution of Bitcoin">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Evolution of Money" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 12 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" class="text-decoration-none text-dark">
                                                                     Evolution of Bitcoin
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">April 15, 2023</div>
+                                                            <p class="mb-0">Chronological analysis of Bitcoin's development and its impact on the financial world.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 3 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Bitcoin as Global Currency">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Evolution of Bitcoin" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://bitcoin-basic.github.io/global-currency/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 13 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/global-currency/" class="text-decoration-none text-dark">
                                                                     Bitcoin as a Global Currency
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">May 20, 2023</div>
+                                                            <p class="mb-0">Exploring the potential of Bitcoin to serve as a universal global currency.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Card 4 -->
-                                                <div class="card mb-3">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-2 text-end">
-                                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start" alt="Bitcoin Use Cases">
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin as Global Currency" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                        <div class="col-10">
-                                                            <div class="card-body">
-                                                                <a href="https://bitcoin-basic.github.io/Bitcoin-Usecases/" class="card-title h6 text-decoration-none">
+                                                    </li>
+                                                    <!-- Item 14 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/Bitcoin-Usecases/" class="text-decoration-none text-dark">
                                                                     Other Bitcoin Practical Use Cases
                                                                 </a>
-                                                            </div>
+                                                            </h2>
+                                                            <div class="small text-muted">May 30, 2023</div>
+                                                            <p class="mb-0">A look into various practical applications of Bitcoin beyond investment.</p>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div><!-- /.Bitcoin Section -->                        
-                            </div> <!-- Blog tab page -->
-                            
-                            <!-- Charts Page -->
-                            <div id="Charts" class="container tabcontent">
-                                <h5 class="my-4 text-center"></h5>
-                                <!-- Page content-->
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <!-- Blog entries-->
-                                        <div class="col-lg-12">
-                                            <!-- Featured blog post-->
-                                            <div id="carouselFeaturedCharts" class="carousel slide" data-bs-ride="carousel">
-                                                <!-- Carousel Inner -->
-                                                <div class="carousel-inner">
-                                                    <!-- Slide 1 -->
-                                                    <div class="carousel-item active">
-                                                        <div class="card">
-                                                            <a href="#!">
-                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="First slide">
-                                                            </a>
-                                                            <div class="card-body">
-                                                                <div class="small text-muted">January 1, 2023</div>
-                                                                <h2 class="card-title h4">First Chart Title</h2>
-                                                                <p class="card-text">Description of the first chart.</p>
-                                                                <a class="btn btn-primary" href="#!">View Chart →</a>
-                                                            </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Use Cases" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                    </div>
-                                                    <!-- Slide 2 -->
-                                                    <div class="carousel-item">
-                                                        <div class="card">
-                                                            <a href="#!">
-                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/5a5a5a.jpg" alt="Second slide">
-                                                            </a>
-                                                            <div class="card-body">
-                                                                <div class="small text-muted">January 2, 2023</div>
-                                                                <h2 class="card-title h4">Second Chart Title</h2>
-                                                                <p class="card-text">Description of the second chart.</p>
-                                                                <a class="btn btn-primary" href="#!">View Chart →</a>
-                                                            </div>
+                                                    </li>
+                                                    <!-- Item 15 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <h2 class="h6 mb-1">
+                                                                <a href="https://bitcoin-basic.github.io/bitcoin-mining/" class="text-decoration-none text-dark">
+                                                                    Bitcoin Mining Basics
+                                                                </a>
+                                                            </h2>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">An introduction to Bitcoin mining and how individuals can participate in the process.</p>
                                                         </div>
-                                                    </div>
-                                                    <!-- Slide 3 -->
-                                                    <div class="carousel-item">
-                                                        <div class="card">
-                                                            <a href="#!">
-                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/4a4a4a.jpg" alt="Third slide">
-                                                            </a>
-                                                            <div class="card-body">
-                                                                <div class="small text-muted">January 3, 2023</div>
-                                                                <h2 class="card-title h4">Third Chart Title</h2>
-                                                                <p class="card-text">Description of the third chart.</p>
-                                                                <a class="btn btn-primary" href="#!">View Chart →</a>
-                                                            </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
                                                         </div>
-                                                    </div>
-                                                </div>
-            
-                                                <!-- Carousel Controls -->
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselFeaturedCharts" data-bs-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Previous</span>
-                                                </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselFeaturedCharts" data-bs-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Next</span>
-                                                </button>
-                                            </div><!-- /.Featured chart carousel-->
-                                            <hr>
-            
-                                            <!-- Additional Chart Sections (if any) -->
-                                            <!-- Add any additional content here, ensuring proper div nesting -->
-            
-                                        </div> <!-- /.col-lg-12 -->
-                                    </div> <!-- /.row -->
-                                </div> <!-- /.container-fluid -->
-                            </div> <!-- /.Charts tab page -->
-            
-                        </div> <!-- /.container py-4 -->
-                    </main>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.Numbered List -->
 
+                    </div><!-- /.Blog Tab -->
+                    <!-- Charts Tab -->
+                    <div id="Charts" class="container tabcontent" style="display: block;">
+                        <!-- Charts Page Content -->
+                        <div class="container-fluid px-4">
+                            <!-- Chart Content with Carousel -->
+                            <div id="chartCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <!-- Carousel Indicators (Optional) -->
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#chartCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Area Chart"></button>
+                                    <button type="button" data-bs-target="#chartCarousel" data-bs-slide-to="1" aria-label="Bar Chart"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <!-- First Slide - Area Chart -->
+                                    <div class="carousel-item active">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-area me-1"></i>
+                                                Area Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Second Slide - Bar Chart -->
+                                    <div class="carousel-item">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-bar me-1"></i>
+                                                Bar Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Additional Slides (if any) -->
+                                </div>
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                            <!-- Additional Content -->
+                            <!-- ... -->
+                        </div>
+                    </div>
+                </div>
+            </main>
                     <footer class="py-4 mt-auto bg-light fixed-bottom">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center">
