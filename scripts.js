@@ -99,7 +99,7 @@ function openPage(pageName, elmnt) {
 
 
 // Get the default tab open
-document.getElementById("homeTab").click();
+document.getElementById("Home").click();
 
 // Function to control cards (stacking effect) in carousel slides by carousel ID
 function controlCarouselItemsById(carouselId, minPerSlide = 4) {
