@@ -177,12 +177,14 @@
         <!-- Main Content -->
         <div id="layoutSidenav_content">
             <main>
-                <div class="container py-4">
-                    <!-- Page Title and Breadcrumb -->
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Blog Post</li>
-                    </ol> 
+                 <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">CTA3 2024 - Case Study 2: Corporate Tax</li>
+                    </ol>
+                </nav><!-- /.Page Title and Breadcrumb -->
+                <div class="container py-4"> 
                     <!-- Tab Content -->
                     <!-- Home Tab -->
                     <div id="Home" class="container tabcontent">
@@ -612,14 +614,12 @@
                                 </div>
                             </div>
                         </div><!-- /.Column Cards -->
-
-    
                         
                     </div><!-- /.Records Tab -->
                     <!-- Blog Tab -->
                     <div id="Blog" class="container tabcontent">
                         <!-- Page content-->
-                                <div class="container-fluid">
+                                <div class="container mt-5">
                                     <div class="row">
                                         <!-- Blog entries-->
                                         <div class="col-lg-12">
@@ -629,7 +629,14 @@
                                                 <header class="mb-4">
                                                     <!-- Post Title -->
                                                     <h1 class="fw-bolder mb-1">CTA3 2024 - CS2 Practice Case Study: Corporate Tax</h1>
+                                                    <!-- Post meta content-->
+                                                    <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Anh La</div>
+                                                    <!-- Post categories-->
+                                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Australian Tax</a>
+                                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Coporate Tax</a>
                                                 </header>
+                                                <!-- Preview image figure-->
+                                                <figure class="mb-4"><img class="img-fluid rounded" src="700x300_coporateTax2024.jpg" alt="Coporate Tax 2024" /></figure>
                                                 <!-- Post Body -->
                                                 <section class="mb-5">
                                                     <!-- Background Summary -->
@@ -1151,27 +1158,8 @@
         <!-- jQuery (if needed) -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
         <script>
-            // Tab pages setup
-                function openPage(pageName, elmnt) {
-                    // Hide all elements with class="tabcontent" by default
-                    var i, tabcontent, tablinks;
-                    tabcontent = document.getElementsByClassName("tabcontent");
-                    for (i = 0; i < tabcontent.length; i++) {
-                        tabcontent[i].style.display = "none";
-                    }
-                    // Remove the background color of all tablinks/buttons
-                    tablinks = document.getElementsByClassName("tablink");
-                    for (i = 0; i < tablinks.length; i++) {
-                        tablinks[i].classList.remove('active');
-                    }
-                    // Show the specific tab content
-                    document.getElementById(pageName).style.display = "block";
-                    // Add the active class to the current button
-                    elmnt.classList.add('active');
-                }
-
             // Get the default tab open
-            document.getElementById("homeTab").click();
+            document.getElementById("blogTab").click();
         </script>
     </body>
 </html>
