@@ -1,42 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Meta Tags -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Viewport for Responsive Design -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Page Title -->
-    <title>Anh La</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Icons CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- FontAwesome CSS -->
-    <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
-    <!-- Custom Styles -->
-    <link href="styles.css" rel="stylesheet" />
-    <!-- Inline CSS (if any) -->
-    <style>
-        /* Add any custom styles here */
-    </style>
-</head>
-<body class="sb-nav-fixed">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Anh La</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="styles.css" rel="stylesheet"/>
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
     <!-- Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
-        <!-- Brand -->
+        <!-- Brand-->
         <div class="text-center">
             <a class="navbar-brand ps-3" href="login">
                 <img src="avatar.png" alt="Avatar" class="avatar">
             </a>
-        </div><!-- /.Brand -->
-        <!-- Sidebar Toggle -->
+        </div><!-- /.Brand-->
+        <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button>
         <!-- Top Navigation Buttons -->
         <div class="container-fluid">
-            <button id="homeTab" class="tablink" onclick="openPage('Home', this)">
+            <button id="homeTab" class="tablink active" onclick="openPage('Home', this)">
                 <i class="bi bi-house-door-fill"></i>
             </button>
             <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
@@ -55,128 +49,127 @@
         <!-- Sidebar -->
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <!-- Sidebar Content -->
+                <!-- Sidebar Content (Same as other pages) -->
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <!-- Build Wealth Content -->
-                        <div class="sb-sidenav-menu-heading">Build Wealth</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseWealth" aria-expanded="false" aria-controls="collapseWealth">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Financial Planning
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseWealth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Passive Income</a>
-                            </nav>
-                        </div><!-- /.Build Wealth Content -->
-
-                        <!-- Tax Compliance -->
-                        <div class="sb-sidenav-menu-heading">Tax Compliance</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Australian Tax
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseTax" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Individual Tax</a>
-                                <a class="nav-link" href="blog">Company Tax</a>
-                                <a class="nav-link" href="blog">Trust Tax</a>
-                                <a class="nav-link" href="blog">SMSF Tax</a>
-                                <a class="nav-link" href="blog">Partnership Tax</a>
-                                <a class="nav-link" href="blog">International Tax</a>
-                            </nav>
-                        </div><!-- Tax Compliance -->
-
-                        <!-- Investing Content -->
-                        <div class="sb-sidenav-menu-heading">Investing</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInvesting" aria-expanded="false" aria-controls="collapseInvesting">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Traditional Finance
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseInvesting" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Base money</a>
-                                <a class="nav-link" href="blog">Fiat money</a>
-                                <a class="nav-link" href="blog">Residential property</a>
-                                <a class="nav-link" href="blog">Commercial property</a>
-                                <a class="nav-link" href="blog">Equity</a>
-                                <a class="nav-link" href="blogHome">Bonds</a>
-                            </nav>
-                        </div><!-- Traditional Finance -->
-
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDigital" aria-expanded="false" aria-controls="collapseDigital">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Digital Finance
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseDigital" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Cryptocurrency</a>
-                                <a class="nav-link" href="blog">Bitcoin</a>
-                            </nav>
-                        </div><!-- Digital Finance -->
-
-                        <!-- Bitcoin Content -->
-                        <div class="sb-sidenav-menu-heading">Bitcoin</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoinBasic" aria-expanded="false" aria-controls="collapseBitcoinBasic">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Bitcoin Basic
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseBitcoinBasic" aria-labelledby="headingFive" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Bitcoin podcasts</a>
-                                <a class="nav-link" href="blog">Bitcoin analysis</a>
-                                <a class="nav-link" href="blog">Bitcoin mining</a>
-                                <a class="nav-link" href="blog">Bitcoin books</a>
-                                <a class="nav-link" href="blog">Bitcoin programming</a>
-                                <a class="nav-link" href="blog">Bitcoin models</a>
-                            </nav>
-                        </div>
-
-                        <!-- Bitcoin Intermediate -->
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoinIntermediate" aria-expanded="false" aria-controls="collapseBitcoinIntermediate">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Bitcoin Intermediate
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseBitcoinIntermediate" aria-labelledby="headingSix" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Lightning Network</a>
-                                <a class="nav-link" href="blog">Liquid Network</a>
-                                <a class="nav-link" href="blog">Ark Network</a>
-                                <a class="nav-link" href="blog">Multi-sig</a>
-                            </nav>
-                        </div><!-- /.Bitcoin Intermediate -->
-
-                        <!-- Nostr Content -->
-                        <div class="sb-sidenav-menu-heading">Nostr</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseNostr" aria-expanded="false" aria-controls="collapseNostr">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Nodes and Relays
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseNostr" aria-labelledby="headingSeven" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Freedom Network</a>
-                            </nav>
-                        </div><!-- /.Nostr -->
-
-                        <!-- AI Content -->
-                        <div class="sb-sidenav-menu-heading">Artificial Intelligence</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAI" aria-expanded="false" aria-controls="collapseAI">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Open Source AI
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseAI" aria-labelledby="headingEight" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="blogHome">Models</a>
-                            </nav>
-                        </div><!-- /.Artificial Intelligence -->
+                            <!-- Build Wealth Content -->
+                            <div class="sb-sidenav-menu-heading">Build Wealth</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Financial Planning
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBitcoin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Passive Income</a>
+                                    </nav>
+                                </div><!-- /.Build Wealth Content -->
+                            
+                            <!-- Tax Compliance -->
+                            <div class="sb-sidenav-menu-heading">Tax Compliance</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Australian Tax
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTax" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Individual Tax</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>
+                                        <a class="nav-link" href="blog">SMSF Tax</a>
+                                        <a class="nav-link" href="blog">Partnership Tax</a>
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!--Tax Compliance -->
+                            <!-- Investing Content -->
+                            <div class="sb-sidenav-menu-heading">Investing</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Traditional Finance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Base money</a>
+                                        <a class="nav-link" href="blog">Fiat money</a>
+                                        <a class="nav-link" href="blog">Residential property</a>
+                                        <a class="nav-link" href="blog">Commercial propert</a>
+                                        <a class="nav-link" href="blog">Equity</a>
+                                        <a class="nav-link" href="blogHome">Bonds</a>
+                                    </nav>
+                                </div><!--  Traditional Finance -->
+                                
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRE" aria-expanded="false" aria-controls="collapseRE">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                         Digital Finance
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseRE" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="blogHome">Crypto currency</a>
+                                            <a class="nav-link" href="blog">Bitcoin</a>
+                                        </nav>
+                                    </div><!-- Real asset -->
+                            
+                            <!-- Bitcoin Content -->
+                            <div class="sb-sidenav-menu-heading">Bitcoin</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Bitcoin Basic
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBitcoin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Bitcoin podcasts</a>
+                                        <a class="nav-link" href="blog">Bitcoin analysis</a>
+                                        <a class="nav-link" href="blog">Bitcoin mining</a>
+                                        <a class="nav-link" href="blog">Bitcoin books</a>
+                                        <a class="nav-link" href="blog">Bitcoin programing</a>
+                                        <a class="nav-link" href="blog">Bitcoin models</a>
+                                    </nav>
+                                </div>
+                            
+                            <!-- /.Bitcoin Advanced-->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Bitcoin Intermediate
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBitcoin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Lightning Network</a>
+                                        <a class="nav-link" href="blog">Liquid Network</a>
+                                        <a class="nav-link" href="blog">Ark Network</a>
+                                        <a class="nav-link" href="blog">Multi sig</a>
+                                    </nav>
+                                </div><!-- /.Bitcoin -->
+                            
+                            <!-- Nostr Content -->
+                            <div class="sb-sidenav-menu-heading">Nostr</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Node and other stuffs tranfferred via relays
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Free-dom Network</a>
+                                    </nav>
+                                </div><!-- /.Nostr -->
+                            <!-- Ai Content -->
+                            <div class="sb-sidenav-menu-heading">Artificial Intelligent</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Open source Ai
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Models</a>
+                                    </nav>
+                                </div><!-- /. Ai -->
+                            <!-- You can add your sidebar menu items here -->                        
                     </div>
                 </div>
             </nav>
@@ -184,525 +177,989 @@
         <!-- Main Content -->
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
-                    <!-- Page Title and Breadcrumb -->
-                    <h1 class="mt-4"></h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">CTA3 2024 - CS2 Practice Case Study: Corporate Tax</li>
-                    </ol> 
-                    <!-- Page Content -->
-                    <div class="container">
-                        <div class="row">
-                            <!-- Main Content -->
-                            <div class="col-lg-8">
-                                <!-- Post Content -->
-                                <article>
-                                    <!-- Post Header -->
-                                    <header class="mb-4">
-                                        <!-- Post Title -->
-                                        <h1 class="fw-bolder mb-1">CTA3 2024 - CS2 Practice Case Study: Corporate Tax</h1>
-                                    </header>
-                                    <!-- Post Body -->
-                                    <section class="mb-5">
-                                        <!-- Background Summary -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Background Summary:</h2>
-                                        <p>Smith Manufacturing &amp; Distribution Company Ltd (Smith): Founded in 1940, Smith initially produced guns during WWII and later transitioned to manufacturing steel parts for cars. Sam Smith, the original owner, distributed shares to his children. After Sam’s death, his son Fred took over, expanding the business and venturing into new markets, including a failed battery manufacturing venture that resulted in tax losses of $12 million. Family disagreements ensued, and Fred eventually bought out his siblings' shares. Smith’s performance improved with a projected turnover of $25 million for FY24. Fred plans to borrow $200,000 from the company in July 2024 to purchase a car.</p>
+                 <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">CTA3 2024 - Case Study 2: Corporate Tax</li>
+                    </ol>
+                </nav><!-- /.Page Title and Breadcrumb -->
+                <div class="container py-4"> 
+                    <!-- Tab Content -->
+                    <!-- Home Tab -->
+                    <div id="Home" class="container tabcontent">
+                        <!-- Page content-->
+                        <!-- Carousel Home Controls 1 -->
+                        <div id="carouselHomeControls1" class="carousel slide" data-bs-ride="carousel">
+                            <!-- Carousel Inner Start -->
+                            <div class="carousel-inner">
+                                <!-- slide 1 -->
+                                <div class="carousel-item active">
+                                    <!-- Card 1 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="CTA3 2024 - Case Study 2: Corporate Tax">
+                                                <img class="card-img-top" src="700x300_coporateTax2024.jpg" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="CTA3 2024 - Case Study 2: Corporate Tax">CTA3 2024 - Case Study 2: Corporate Tax</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 1 -->
+                        
+                                <!-- slide 2 -->
+                                <div class="carousel-item">
+                                    <!-- Card 2 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/bitcoin-model">Project Two</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 2 -->
+                        
+                                <!-- slide 3 -->
+                                <div class="carousel-item">
+                                    <!-- Card 3 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Three</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 3 -->
+                        
+                                <!-- slide 4 -->
+                                <div class="carousel-item">
+                                    <!-- Card 4 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/evolution-of-Bitcoin">Project Four</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 4 -->
+                        
+                                <!-- slide 5 -->
+                                <div class="carousel-item">
+                                    <!-- Card 5 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/bitcoin-model">Project Five</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 5 -->
+                        
+                                <!-- slide 6 -->
+                                <div class="carousel-item">
+                                    <!-- Card 6 -->
+                                    <div class="card-wrapper">
+                                        <div class="card">
+                                            <a href="#">
+                                                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="">
+                                            </a>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <a href="https://anh.contact/thuat-ngu-Bitcoin">Project Six</a>
+                                                </h4>
+                                                <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/. slide 6 -->
+                            </div>
+                            <!--/. Carousel Inner End -->
+                        
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <!--/. Carousel End -->
+                    </div><!-- /.Home Tab -->
+                    <!-- Records Tab -->
+                    <div id="Records" class="container tabcontent">
+                        <!-- Page content-->
+                              <div class="row">
+                                <div id="carouselVideos" class="carousel slide">
+                                  <div class="carousel-inner">
+                                    <!-- Videos Project -->
+                                    <div class="carousel-item active" data-bs-interval="30000">
+                                      <div class="row justify-content-md-center">
+                                        <div class="col-md-6">
+                                          <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
+                                            <img
+                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
+                                              src="700x300_TrustSmallBusinessCGT2024.jpg"
+                                              alt=""
+                                            />
+                                          </a>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Trust Tax Compliance Basic</h5>
+                                          <p>
+                                            Apply legal authorities like                                          
+                                            to a hypothetical study case
+                                          </p>
+                                        </div>
+                                      </div>
+                                        <hr>
+                                    </div> <!-- /.Project Trust and small CGT concessions - content-->
+                                    
+                                    <!-- Project Corporate Videos -->
+                                    <div class="carousel-item" data-bs-interval="">
+                                      <div class="row justify-content-md-center">
+                                        <div class="col-md-6">
+                                          <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
+                                            <img
+                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
+                                              src="700x300_coporateTax2024.jpg"
+                                              alt=""
+                                            />
+                                          </a>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Corporate Tax Compliance Basic</h5>
+                                          <p>
+                                            Apply legal authorities to a hypothetical study case                                           
+                                          </p>
+                                        </div>
+                                      </div>
+                                        <hr>
+                                    </div><!-- /.Project Coporate Videos -->
+                                    
+                                        <!-- Project small CGT concessions -->  
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6"> 
+                                                    <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smallbusiness2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                    
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">Small business capital gain Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like to a hypothetical study case</p>
+                                                  </div>
+                                            </div>  
+                                            <hr>
+                                        </div><!-- /.Project small CGT concessions -->
+
+                                        <!-- Project international Videos -->   
+                                        <div class="carousel-item" data-bs-interval="">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_internationalTax2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                        
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">International Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>  
+                                            <hr>
+                                        </div><!-- /.Project international Videos -->   
+                                
+                                        <!-- Project GST -->   
+                                        <div class="carousel-item">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="https://anh.contact/GST-Practice-Case-Study-2024">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_GST2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Goods and Services Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like                                                          
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>
+                                            <hr>
+                                        </div><!-- /.Project GST --> 
                                         
-                                        <!-- Questions -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Questions:</h2>
-                                        <ol>
-                                            <li><strong>Australian Tax Residency of Smith WOFE Ltd:</strong>
-                                                <ul>
-                                                    <li>Is Smith WOFE Ltd considered an Australian resident for tax purposes?</li>
-                                                    <li>What if the Chinese subsidiary is an Australian resident?</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Tax Loss Recoupment:</strong>
-                                                <ul>
-                                                    <li>Can Smith recoup its tax losses in the 2024 income year?</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Dividend Payment and Franking:</strong>
-                                                <ul>
-                                                    <li>Can Smith pay a dividend out of current year profits despite prior losses?</li>
-                                                    <li>If a dividend is paid, what is the franking rate?</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Debt Forgiveness Tax Consequences:</strong>
-                                                <ul>
-                                                    <li>What are the tax implications for both the sibling lenders and Smith following the forgiveness of the debt?</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>CGT and Income Tax Consequences of Share Sale:</strong>
-                                                <ul>
-                                                    <li>What are the CGT and income tax consequences for Fred and Smith if Fred sells his shares?</li>
-                                                    <li>Is the business goodwill considered a pre- or post-CGT asset?</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Tax Issues with Loan to Fred:</strong>
-                                                <ul>
-                                                    <li>Are there income tax issues related to the $200,000 loan made to Fred for purchasing a car?</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <!-- Suggested Solutions -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Suggested Solutions:</h2>
-            
-                                        <!-- Question 1 -->
-                                        <h3>Question 1: Australian Tax Residency of Smith WOFE Ltd</h3>
-                                        <p><strong>1. Corporate Residency Test:</strong> Smith WOFE Ltd is considered an Australian resident if it conducts business in Australia and has its central management and control (CMAC) in Australia, or if its voting power is controlled by Australian residents.</p>
-                                        <p><strong>2. Chinese Subsidiary Residency:</strong> If Smith WOFE Ltd has CMAC in Australia, it is likely an Australian resident for tax purposes. Dual residency issues might arise with the China-Australia Double Tax Agreement (DTA) and the Multilateral Instrument (MLI) affecting tax treatment and requiring mutual agreement procedures.</p>
-            
-                                        <!-- Question 2 -->
-                                        <h3>Question 2: Tax Loss Recoupment</h3>
-                                        <p><strong>1. Continuity of Ownership Test (COT):</strong> Smith failed the COT when Fred acquired shares from his siblings, necessitating satisfaction of the Business Continuity Test (BCT).</p>
-                                        <p><strong>2. Business Continuity Test (BCT):</strong> Smith must show that it continues to operate a similar business to recoup tax losses, verifying that business activities remain similar.</p>
-            
-                                        <!-- Question 3 -->
-                                        <h3>Question 3: Dividend Payment and Franking</h3>
-                                        <p><strong>1. Dividend Payment:</strong> Smith can pay a dividend if it meets the asset and liability requirements, fairness, and creditor protection criteria under section 254T of the Corporations Act.</p>
-                                        <p><strong>2. Franking of Dividends:</strong> A dividend can be paid out of current profits despite prior losses. Smith can frank dividends at a maximum rate of 25%, aligning with the benchmark rule and required reporting.</p>
-            
-                                        <!-- Question 4 -->
-                                        <h3>Question 4: Debt Forgiveness Tax Consequences</h3>
-                                        <p><strong>1. Commercial Debt Forgiveness:</strong> Under Division 245, the refinancing and debt forgiveness rules might apply. The value of shares issued in place of the debt should be compared with the market value to determine if any debt is forgiven.</p>
-                                        <p><strong>2. Siblings' Tax Consequences:</strong> Siblings will not realize a capital loss from the debt forgiveness due to market value adjustments.</p>
-            
-                                        <!-- Question 5 -->
-                                        <h3>Question 5: CGT and Income Tax Consequences of Share Sale</h3>
-                                        <p><strong>1. CGT Treatment:</strong> Fred’s sale of shares will involve CGT event A1 for post-CGT shares and CGT event K6 for pre-CGT shares. The business goodwill is considered a pre-CGT asset.</p>
-                                        <p><strong>2. Company Consequences:</strong> Smith faces no immediate tax consequences from Fred's share sale but must meet COT and BCT for further tax losses or adjustments.</p>
-            
-                                        <!-- Question 6 -->
-                                        <h3>Question 6: Tax Issues with Loan to Fred</h3>
-                                        <p><strong>1. Division 7A Implications:</strong> The $200,000 loan to Fred for purchasing a car is subject to Division 7A, deeming the loan as a dividend. Fred will include this as assessable income taxed at his marginal rate, and it is unfrankable.</p>
-            
-                                        <!-- Code of Professional Conduct -->
-                                        <h3>Code of Professional Conduct:</h3>
-                                        <p><strong>1. Ethical Issues:</strong> Advisors should avoid conflicts of interest, such as advising both Fred and the buyer, or manipulating financial records. They must also ensure they have the competence to handle due diligence tasks.</p>
-                                        <p><strong>2. Potential Consequences:</strong> Violations may result in sanctions from the Tax Practitioners Board (TPB), including written cautions, suspension, or termination of registration.</p>
-            
-                                        <!-- Late Breaking Facts -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Late Breaking Facts and Suggested Solutions:</h2>
-            
-                                        <h3>Late Breaking Facts:</h3>
-                                        <ol>
-                                            <li><strong>Refinanced Debt:</strong> Fred refinanced and repaid sibling loans using a bank loan in May 2023. Smith now owes Fred the principal and interest.</li>
-                                            <li><strong>Share Subscription:</strong> Fred converted the debt into equity by subscribing for new shares in Smith in July 2023.</li>
-                                            <li><strong>Dividend Payment:</strong> Smith paid a dividend on 1 July 2023 which was not fully franked but expected to be covered by future tax payments.</li>
-                                            <li><strong>Acquisition by Baker Co Ltd:</strong> Smith was acquired by Baker and joined its tax consolidated group with a deficit franking account. A portion of the sale proceeds was deferred based on future performance.</li>
-                                        </ol>
-            
-                                        <!-- Suggested Solutions -->
-                                        <h3>Suggested Solutions:</h3>
-            
-                                        <!-- Late Question 1 -->
-                                        <h4>Question 1: Deductibility of Refinanced Debt Costs</h4>
-                                        <p><strong>1. Interest Deductibility:</strong> Interest on the refinancing loan is deductible if incurred for income-producing purposes. Costs related to repaying the original sibling loans are also deductible.</p>
-                                        <p><strong>2. Expenses:</strong> Costs associated with discharging the mortgage (e.g., penalty interest) are deductible if the original loan was used for income-producing purposes.</p>
-            
-                                        <!-- Late Question 2 -->
-                                        <h4>Question 2: Commercial Debt Forgiveness</h4>
-                                        <p><strong>1. Debt Forgiveness Provisions:</strong> Division 245’s rules apply to the refinancing and share subscription. Compare the market value of the shares issued to determine if any debt amount is forgiven.</p>
-            
-                                        <!-- Late Question 3 -->
-                                        <h4>Question 3: Franking of Dividend and Deficit Consequences</h4>
-                                        <p><strong>1. Dividend Frankability:</strong> The dividend paid on 1 July 2023 is frankable as it is not unfrankable under section 202-45.</p>
-                                        <p><strong>2. Franking Account Deficit:</strong> Smith will be liable for franking deficit tax (FDT) if the franking account is in deficit at year-end or when joining a tax consolidated group. FDT can be offset against future tax liabilities, but excess offsets may not be refundable. The FDT may be reduced if the deficit was due to uncontrollable events.</p>
-            
-                                        <!-- Late Question 4 -->
-                                        <h4>Question 4: CGT Consequences and Structuring</h4>
-                                        <p><strong>1. Deferred Payment Arrangement:</strong> The deferred amount in the sale of Smith shares is included in capital proceeds at CGT event A1. If not received, it may reduce capital proceeds under section 116-45.</p>
-                                        <p><strong>2. Preferred Structuring:</strong> Using a look-through earnout right (LTER) could defer taxation until the cash is received. This approach may be beneficial but could result in immediate taxation if the LTER does not qualify.</p>
-            
-                                        <!-- Summary Tables -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Summary Tables:</h2>
-            
-                                        <!-- Table for Smith -->
-                                        <h3>Smith Manufacturing &amp; Distribution Company Ltd (Smith)</h3>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tax Issue</th>
-                                                    <th>Implications</th>
-                                                    <th>Suggested Solution</th>
-                                                    <th>Referred Tax Regulations</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Australian Tax Residency</td>
-                                                    <td>Determines if Smith WOFE Ltd is subject to Australian tax laws; affects double taxation and treaty benefits.</td>
-                                                    <td>Evaluate if Smith WOFE Ltd has central management and control in Australia or if its voting power is controlled by Australian residents. Consider implications of the DTA and MLI.</td>
-                                                    <td>Corporate Residency Test, DTA, MLI</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Tax Loss Recoupment</td>
-                                                    <td>Smith must pass Continuity of Ownership Test (COT) and Business Continuity Test (BCT) to recoup tax losses.</td>
-                                                    <td>Confirm if Smith satisfies COT and demonstrate continuity of similar business activities for BCT.</td>
-                                                    <td>Sections 165-12, 165-13, 165-15, 165-20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Dividend Payment and Franking</td>
-                                                    <td>Determines if dividends can be paid and franked despite prior losses and franking account status.</td>
-                                                    <td>Ensure compliance with asset and liability requirements for paying dividends. Frank dividends at the maximum rate of 25% if Smith is a base rate entity.</td>
-                                                    <td>Section 254T, Section 202-40, Section 202-45</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Debt Forgiveness</td>
-                                                    <td>Potential for taxable income or capital loss adjustments due to debt forgiveness.</td>
-                                                    <td>Apply Division 245 rules to determine if any part of the debt is forgiven based on the market value of shares issued.</td>
-                                                    <td>Division 245, Sections 245-36, 245-37</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>CGT and Income Tax on Share Sale</td>
-                                                    <td>Tax consequences for Smith regarding CGT treatment and impact on goodwill.</td>
-                                                    <td>Classify shares under CGT event A1 for post-CGT and K6 for pre-CGT. Determine goodwill classification as pre-CGT asset.</td>
-                                                    <td>Sections 104-10, 116-20, 116-45, CGT Event A1, K6</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Franking Account Deficit</td>
-                                                    <td>Impact of deficit in the franking account at the time of joining Baker’s tax consolidated group.</td>
-                                                    <td>Smith will be liable for franking deficit tax (FDT) which can be offset against future tax liabilities. Address any potential reduction in FDT offset due to control issues.</td>
-                                                    <td>Section 709-60</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-            
-                                        <!-- Table for Fred -->
-                                        <h3>Fred (Individual)</h3>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tax Issue</th>
-                                                    <th>Implications</th>
-                                                    <th>Suggested Solution</th>
-                                                    <th>Referred Tax Regulations</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Loan to Fred</td>
-                                                    <td>The loan is treated as a dividend affecting Fred’s taxable income.</td>
-                                                    <td>The loan is subject to Division 7A and is treated as a deemed dividend assessable to Fred at his marginal rate.</td>
-                                                    <td>Division 7A ITAA 1936</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Debt Forgiveness Tax Consequences</td>
-                                                    <td>No capital loss realization for Fred from forgiveness of debt by siblings.</td>
-                                                    <td>No specific tax impact for Fred from debt forgiveness as the debt was refinanced and repaid before forgiveness occurred.</td>
-                                                    <td>Division 245</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Share Subscription and CGT</td>
-                                                    <td>Tax implications related to converting debt into equity and potential CGT on share sale.</td>
-                                                    <td>Ensure proper valuation of shares to avoid any tax implications from the debt conversion. Tax implications will depend on the nature of the CGT events associated with the sale.</td>
-                                                    <td>Sections 104-10, 116-20, 116-45, CGT Event A1, K6</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-            
-                                        <!-- Table for Baker Co Ltd -->
-                                        <h3>Baker Co Ltd (Acquiring Company)</h3>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tax Issue</th>
-                                                    <th>Implications</th>
-                                                    <th>Suggested Solution</th>
-                                                    <th>Referred Tax Regulations</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Franking Account Deficit from Acquisition</td>
-                                                    <td>Smith’s franking deficit impacts Baker’s consolidated tax group.</td>
-                                                    <td>Baker must account for Smith’s franking deficit tax (FDT) and ensure it is included in their consolidated tax calculations.</td>
-                                                    <td>Section 709-60</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Deferred Sale Proceeds</td>
-                                                    <td>Impact on CGT and potential tax implications from deferred payment arrangement.</td>
-                                                    <td>Treat the deferred amount as capital proceeds under CGT event A1. Consider structuring as an earnout right to defer taxation if it meets the requirements.</td>
-                                                    <td>Sections 104-10, 118-I, TR 2007/D10</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-            
-                                        <!-- Implementation Steps -->
-                                        <h2 class="fw-bolder mb-4 mt-5">Implementation Steps:</h2>
-                                        <p>Here is a step-by-step guide for implementing the suggested solutions for each entity:</p>
-            
-                                        <!-- Implementation for Smith -->
-                                        <h3>1. Smith Manufacturing &amp; Distribution Company Ltd (Smith)</h3>
-            
-                                        <h4>1. Australian Tax Residency</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Review Central Management and Control (CMAC):</strong>
-                                                <ul>
-                                                    <li>Assess where the strategic decisions and control of Smith WOFE Ltd are made. Document the location of key decision-makers.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Evaluate Voting Power:</strong>
-                                                <ul>
-                                                    <li>Check if Australian residents control the voting power of Smith WOFE Ltd.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Consult on DTA and MLI Implications:</strong>
-                                                <ul>
-                                                    <li>Review the China-Australia Double Tax Agreement (DTA) and Multilateral Instrument (MLI) for residency and tax implications. Engage with tax advisors if needed.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>2. Tax Loss Recoupment</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Assess Continuity of Ownership Test (COT):</strong>
-                                                <ul>
-                                                    <li>Verify if Smith failed the COT on 1 March 2023 due to Fred’s share purchase.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Conduct Business Continuity Test (BCT):</strong>
-                                                <ul>
-                                                    <li>Prepare documentation showing that Smith continues to carry on a similar business in FY24. Gather financial and operational records to demonstrate business continuity.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>3. Dividend Payment and Franking</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Confirm Dividend Payment Compliance:</strong>
-                                                <ul>
-                                                    <li>Ensure that Smith meets asset and liability requirements under section 254T before paying dividends.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Determine Franking Rate:</strong>
-                                                <ul>
-                                                    <li>Calculate the franking credits available and ensure compliance with the base rate entity (BRE) rules. Apply a franking rate of up to 25%.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>4. Debt Forgiveness</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Apply Division 245 Rules:</strong>
-                                                <ul>
-                                                    <li>Review the debt forgiveness provisions under Division 245. Compare the market value of shares issued to the forgiven debt amount.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Adjust Financial Records:</strong>
-                                                <ul>
-                                                    <li>Adjust Smith’s financial records based on the findings. Ensure that any forgiven amounts are properly accounted for.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>5. CGT and Income Tax on Share Sale</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Classify CGT Events:</strong>
-                                                <ul>
-                                                    <li>Identify and record the shares under CGT event A1 for post-CGT and K6 for pre-CGT.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Document Goodwill Classification:</strong>
-                                                <ul>
-                                                    <li>Confirm the classification of business goodwill as pre-CGT. Update records accordingly.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>6. Franking Account Deficit</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Calculate Franking Deficit Tax (FDT):</strong>
-                                                <ul>
-                                                    <li>Determine the franking deficit tax liability based on the deficit in Smith’s franking account at the year-end or at the time of joining Baker’s tax consolidated group.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Offset FDT:</strong>
-                                                <ul>
-                                                    <li>Apply FDT as an offset against future tax liabilities and address any potential reduction in the offset due to control issues.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <!-- Implementation for Fred -->
-                                        <h3>2. Fred (Individual)</h3>
-            
-                                        <h4>1. Loan to Fred</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Apply Division 7A:</strong>
-                                                <ul>
-                                                    <li>Treat the $200,000 loan as a deemed dividend under Division 7A. Include the loan amount as assessable income in Fred’s tax return.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Tax Payment:</strong>
-                                                <ul>
-                                                    <li>Fred must pay tax on the deemed dividend at his marginal rate. Ensure proper reporting on Fred’s tax return.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>2. Debt Forgiveness Tax Consequences</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Review Debt Forgiveness:</strong>
-                                                <ul>
-                                                    <li>Confirm that the debt forgiveness by siblings was not taxable to Fred as it was refinanced and repaid prior to forgiveness.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>3. Share Subscription and CGT</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Document Share Conversion:</strong>
-                                                <ul>
-                                                    <li>Record the conversion of debt into equity and ensure proper valuation of shares issued.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Plan for CGT Implications:</strong>
-                                                <ul>
-                                                    <li>Prepare for CGT implications based on the nature of the shares and potential CGT events when Fred sells his shares.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <!-- Implementation for Baker Co Ltd -->
-                                        <h3>3. Baker Co Ltd (Acquiring Company)</h3>
-            
-                                        <h4>1. Franking Account Deficit from Acquisition</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Calculate FDT Liability:</strong>
-                                                <ul>
-                                                    <li>Determine the franking deficit tax (FDT) for Smith’s franking account deficit at the time of acquisition.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Include FDT in Consolidated Tax:</strong>
-                                                <ul>
-                                                    <li>Integrate the FDT liability into Baker’s consolidated tax calculations. Adjust future tax filings to account for this liability.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                        <h4>2. Deferred Sale Proceeds</h4>
-                                        <p><strong>Steps to Implement:</strong></p>
-                                        <ol>
-                                            <li><strong>Record Deferred Amounts:</strong>
-                                                <ul>
-                                                    <li>Include the deferred sale proceeds as capital proceeds under CGT event A1. Document the terms of deferral and any related conditions.</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Evaluate Earnout Right (LTER):</strong>
-                                                <ul>
-                                                    <li>Consider structuring the deferred payment as a look-through earnout right (LTER) if it meets the criteria. Review performance hurdles and implications if the LTER fails.</li>
-                                                </ul>
-                                            </li>
-                                        </ol>
-            
-                                    </section>
-                                </article>
-                            </div>
-                            <!-- Side Widgets -->
-                            <div class="col-lg-4">
-                                <!-- Search Widget -->
-                                <div class="card mb-4">
-                                    <div class="card-header">Search</div>
-                                    <div class="card-body">
-                                        <div class="input-group">
-                                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                                    <!-- Project SMSF -->   
+                                        <div class="carousel-item">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="#">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smsf2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Self managed superfund Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>
+                                            <hr>
+                                        </div><!-- /.Project SMSF - content-->
+                                      
+                                        <!-- Project Bitcoin -->   
+                                        <div class="carousel-item" data-bs-interval="">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="https://anh.contact/404/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_money.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Bitcoin as the base money in digital finance</h5>
+                                                    <p> Simplify and provide practical application for normies</p>
+                                                  </div>
+                                            </div>
+                                            <hr>
+                                        </div><!-- /.Project Bitcoin - content-->
+                                            
+                                        </div> <!-- Carousel-inner -->            
+                                        <!-- Carousel Controls -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div> <!-- Carousel-slides -->  
+                                </div> <!-- /.row --> 
+                            <hr>
+                        <!-- Column Cards -->
+                        <div class="container mt-5">
+                            <div class="row">
+                                <!-- Column 1 -->
+                                <div class="col-md-6">
+                                    <!-- Card 1 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Luke Mikic">
+                                            <div class="card-body p-0">
+                                                <a href="https://macro-econ.github.io/luke-mikic/A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin).html" class="card-title h6 text-decoration-none">
+                                                    A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Categories Widget -->
-                                <div class="card mb-4">
-                                    <div class="card-header">Categories</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <ul class="list-unstyled mb-0">
-                                                    <li><a href="#!">Corporate Tax</a></li>
-                                                    <li><a href="#!">Tax Residency</a></li>
-                                                    <li><a href="#!">CGT</a></li>
-                                                </ul>
+                                    <!-- Card 3 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Primary Producer Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="card-title h6 text-decoration-none">
+                                                    Primary Producer Tax
+                                                </a>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <ul class="list-unstyled mb-0">
-                                                    <li><a href="#!">Division 7A</a></li>
-                                                    <li><a href="#!">Franking Credits</a></li>
-                                                    <li><a href="#!">Tax Losses</a></li>
-                                                </ul>
+                                        </div>
+                                    </div>
+                                    <!-- Card 5 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Goods and Services Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="card-title h6 text-decoration-none">
+                                                    Goods and Services Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 7 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Structuring">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/structuring/" class="card-title h6 text-decoration-none">
+                                                    Structuring
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 9 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Digital Finance CPA">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="card-title h6 text-decoration-none">
+                                                    Digital Finance CPA Guidance
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 11 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Evolution of Bitcoin">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" class="card-title h6 text-decoration-none">
+                                                    Evolution of Bitcoin
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Side Widget -->
-                                <div class="card mb-4">
-                                    <div class="card-header">About</div>
-                                    <div class="card-body">
-                                        This case study explores various corporate tax issues, including tax residency, tax loss recoupment, dividend payments, debt forgiveness, CGT implications, and Division 7A considerations.
+                                <!-- Column 2 -->
+                                <div class="col-md-6">
+                                    <!-- Card 2 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Lyn Alden">
+                                            <div class="card-body p-0">
+                                                <a href="https://macro-econ.github.io/Lyn-Alden/Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities.html/" class="card-title h6 text-decoration-none">
+                                                    Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities - Lyn Alden
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 4 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Company Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/companies/" class="card-title h6 text-decoration-none">
+                                                    Company Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 6 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Tax Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/tax-planning/" class="card-title h6 text-decoration-none">
+                                                    Tax Planning
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 8 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Non-profit Organisations Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="card-title h6 text-decoration-none">
+                                                    Non-profit Organisations Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 10 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Financial Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="card-title h6 text-decoration-none">
+                                                    Financial Planning for Individuals
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 12 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Bitcoin Evolution of Money">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="card-title h6 text-decoration-none">
+                                                    The Role of Bitcoin in Evolution of Money
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div><!-- /.Column Cards -->
+                        
+                    </div><!-- /.Records Tab -->
+                    <!-- Blog Tab -->
+                    <div id="Blog" class="container tabcontent">
+                        <!-- Page content-->
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <!-- Blog entries-->
+                                        <div class="col-lg-12">
+                                            <!-- Post Content -->
+                                            <article>
+                                                <!-- Post Header -->
+                                                <header class="mb-4">
+                                                    <!-- Post Title -->
+                                                    <h1 class="fw-bolder mb-1">CTA3 2024 - CS2 Practice Case Study: Corporate Tax</h1>
+                                                    <!-- Post meta content-->
+                                                    <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Anh La</div>
+                                                    <!-- Post categories-->
+                                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Australian Tax</a>
+                                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Coporate Tax</a>
+                                                </header>
+                                                <!-- Preview image figure-->
+                                                <figure class="mb-4"><img class="img-fluid rounded" src="700x300_coporateTax2024.jpg" alt="Coporate Tax 2024" /></figure>
+                                                <!-- Post Body -->
+                                                <section class="mb-5">
+                                                    <!-- Background Summary -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Background Summary:</h2>
+                                                    <p>Smith Manufacturing &amp; Distribution Company Ltd (Smith): Founded in 1940, Smith initially produced guns during WWII and later transitioned to manufacturing steel parts for cars. Sam Smith, the original owner, distributed shares to his children. After Sam’s death, his son Fred took over, expanding the business and venturing into new markets, including a failed battery manufacturing venture that resulted in tax losses of $12 million. Family disagreements ensued, and Fred eventually bought out his siblings' shares. Smith’s performance improved with a projected turnover of $25 million for FY24. Fred plans to borrow $200,000 from the company in July 2024 to purchase a car.</p>
+                                                    
+                                                    <!-- Questions -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Questions:</h2>
+                                                    <ol>
+                                                        <li><strong>Australian Tax Residency of Smith WOFE Ltd:</strong>
+                                                            <ul>
+                                                                <li>Is Smith WOFE Ltd considered an Australian resident for tax purposes?</li>
+                                                                <li>What if the Chinese subsidiary is an Australian resident?</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Tax Loss Recoupment:</strong>
+                                                            <ul>
+                                                                <li>Can Smith recoup its tax losses in the 2024 income year?</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Dividend Payment and Franking:</strong>
+                                                            <ul>
+                                                                <li>Can Smith pay a dividend out of current year profits despite prior losses?</li>
+                                                                <li>If a dividend is paid, what is the franking rate?</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Debt Forgiveness Tax Consequences:</strong>
+                                                            <ul>
+                                                                <li>What are the tax implications for both the sibling lenders and Smith following the forgiveness of the debt?</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>CGT and Income Tax Consequences of Share Sale:</strong>
+                                                            <ul>
+                                                                <li>What are the CGT and income tax consequences for Fred and Smith if Fred sells his shares?</li>
+                                                                <li>Is the business goodwill considered a pre- or post-CGT asset?</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Tax Issues with Loan to Fred:</strong>
+                                                            <ul>
+                                                                <li>Are there income tax issues related to the $200,000 loan made to Fred for purchasing a car?</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <!-- Suggested Solutions -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Suggested Solutions:</h2>
+                        
+                                                    <!-- Question 1 -->
+                                                    <h3>Question 1: Australian Tax Residency of Smith WOFE Ltd</h3>
+                                                    <p><strong>1. Corporate Residency Test:</strong> Smith WOFE Ltd is considered an Australian resident if it conducts business in Australia and has its central management and control (CMAC) in Australia, or if its voting power is controlled by Australian residents.</p>
+                                                    <p><strong>2. Chinese Subsidiary Residency:</strong> If Smith WOFE Ltd has CMAC in Australia, it is likely an Australian resident for tax purposes. Dual residency issues might arise with the China-Australia Double Tax Agreement (DTA) and the Multilateral Instrument (MLI) affecting tax treatment and requiring mutual agreement procedures.</p>
+                        
+                                                    <!-- Question 2 -->
+                                                    <h3>Question 2: Tax Loss Recoupment</h3>
+                                                    <p><strong>1. Continuity of Ownership Test (COT):</strong> Smith failed the COT when Fred acquired shares from his siblings, necessitating satisfaction of the Business Continuity Test (BCT).</p>
+                                                    <p><strong>2. Business Continuity Test (BCT):</strong> Smith must show that it continues to operate a similar business to recoup tax losses, verifying that business activities remain similar.</p>
+                        
+                                                    <!-- Question 3 -->
+                                                    <h3>Question 3: Dividend Payment and Franking</h3>
+                                                    <p><strong>1. Dividend Payment:</strong> Smith can pay a dividend if it meets the asset and liability requirements, fairness, and creditor protection criteria under section 254T of the Corporations Act.</p>
+                                                    <p><strong>2. Franking of Dividends:</strong> A dividend can be paid out of current profits despite prior losses. Smith can frank dividends at a maximum rate of 25%, aligning with the benchmark rule and required reporting.</p>
+                        
+                                                    <!-- Question 4 -->
+                                                    <h3>Question 4: Debt Forgiveness Tax Consequences</h3>
+                                                    <p><strong>1. Commercial Debt Forgiveness:</strong> Under Division 245, the refinancing and debt forgiveness rules might apply. The value of shares issued in place of the debt should be compared with the market value to determine if any debt is forgiven.</p>
+                                                    <p><strong>2. Siblings' Tax Consequences:</strong> Siblings will not realize a capital loss from the debt forgiveness due to market value adjustments.</p>
+                        
+                                                    <!-- Question 5 -->
+                                                    <h3>Question 5: CGT and Income Tax Consequences of Share Sale</h3>
+                                                    <p><strong>1. CGT Treatment:</strong> Fred’s sale of shares will involve CGT event A1 for post-CGT shares and CGT event K6 for pre-CGT shares. The business goodwill is considered a pre-CGT asset.</p>
+                                                    <p><strong>2. Company Consequences:</strong> Smith faces no immediate tax consequences from Fred's share sale but must meet COT and BCT for further tax losses or adjustments.</p>
+                        
+                                                    <!-- Question 6 -->
+                                                    <h3>Question 6: Tax Issues with Loan to Fred</h3>
+                                                    <p><strong>1. Division 7A Implications:</strong> The $200,000 loan to Fred for purchasing a car is subject to Division 7A, deeming the loan as a dividend. Fred will include this as assessable income taxed at his marginal rate, and it is unfrankable.</p>
+                        
+                                                    <!-- Code of Professional Conduct -->
+                                                    <h3>Code of Professional Conduct:</h3>
+                                                    <p><strong>1. Ethical Issues:</strong> Advisors should avoid conflicts of interest, such as advising both Fred and the buyer, or manipulating financial records. They must also ensure they have the competence to handle due diligence tasks.</p>
+                                                    <p><strong>2. Potential Consequences:</strong> Violations may result in sanctions from the Tax Practitioners Board (TPB), including written cautions, suspension, or termination of registration.</p>
+                        
+                                                    <!-- Late Breaking Facts -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Late Breaking Facts and Suggested Solutions:</h2>
+                        
+                                                    <h3>Late Breaking Facts:</h3>
+                                                    <ol>
+                                                        <li><strong>Refinanced Debt:</strong> Fred refinanced and repaid sibling loans using a bank loan in May 2023. Smith now owes Fred the principal and interest.</li>
+                                                        <li><strong>Share Subscription:</strong> Fred converted the debt into equity by subscribing for new shares in Smith in July 2023.</li>
+                                                        <li><strong>Dividend Payment:</strong> Smith paid a dividend on 1 July 2023 which was not fully franked but expected to be covered by future tax payments.</li>
+                                                        <li><strong>Acquisition by Baker Co Ltd:</strong> Smith was acquired by Baker and joined its tax consolidated group with a deficit franking account. A portion of the sale proceeds was deferred based on future performance.</li>
+                                                    </ol>
+                        
+                                                    <!-- Suggested Solutions -->
+                                                    <h3>Suggested Solutions:</h3>
+                        
+                                                    <!-- Late Question 1 -->
+                                                    <h4>Question 1: Deductibility of Refinanced Debt Costs</h4>
+                                                    <p><strong>1. Interest Deductibility:</strong> Interest on the refinancing loan is deductible if incurred for income-producing purposes. Costs related to repaying the original sibling loans are also deductible.</p>
+                                                    <p><strong>2. Expenses:</strong> Costs associated with discharging the mortgage (e.g., penalty interest) are deductible if the original loan was used for income-producing purposes.</p>
+                        
+                                                    <!-- Late Question 2 -->
+                                                    <h4>Question 2: Commercial Debt Forgiveness</h4>
+                                                    <p><strong>1. Debt Forgiveness Provisions:</strong> Division 245’s rules apply to the refinancing and share subscription. Compare the market value of the shares issued to determine if any debt amount is forgiven.</p>
+                        
+                                                    <!-- Late Question 3 -->
+                                                    <h4>Question 3: Franking of Dividend and Deficit Consequences</h4>
+                                                    <p><strong>1. Dividend Frankability:</strong> The dividend paid on 1 July 2023 is frankable as it is not unfrankable under section 202-45.</p>
+                                                    <p><strong>2. Franking Account Deficit:</strong> Smith will be liable for franking deficit tax (FDT) if the franking account is in deficit at year-end or when joining a tax consolidated group. FDT can be offset against future tax liabilities, but excess offsets may not be refundable. The FDT may be reduced if the deficit was due to uncontrollable events.</p>
+                        
+                                                    <!-- Late Question 4 -->
+                                                    <h4>Question 4: CGT Consequences and Structuring</h4>
+                                                    <p><strong>1. Deferred Payment Arrangement:</strong> The deferred amount in the sale of Smith shares is included in capital proceeds at CGT event A1. If not received, it may reduce capital proceeds under section 116-45.</p>
+                                                    <p><strong>2. Preferred Structuring:</strong> Using a look-through earnout right (LTER) could defer taxation until the cash is received. This approach may be beneficial but could result in immediate taxation if the LTER does not qualify.</p>
+                        
+                                                    <!-- Summary Tables -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Summary Tables:</h2>
+                        
+                                                    <!-- Table for Smith -->
+                                                    <h3>Smith Manufacturing &amp; Distribution Company Ltd (Smith)</h3>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Tax Issue</th>
+                                                                <th>Implications</th>
+                                                                <th>Suggested Solution</th>
+                                                                <th>Referred Tax Regulations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Australian Tax Residency</td>
+                                                                <td>Determines if Smith WOFE Ltd is subject to Australian tax laws; affects double taxation and treaty benefits.</td>
+                                                                <td>Evaluate if Smith WOFE Ltd has central management and control in Australia or if its voting power is controlled by Australian residents. Consider implications of the DTA and MLI.</td>
+                                                                <td>Corporate Residency Test, DTA, MLI</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Tax Loss Recoupment</td>
+                                                                <td>Smith must pass Continuity of Ownership Test (COT) and Business Continuity Test (BCT) to recoup tax losses.</td>
+                                                                <td>Confirm if Smith satisfies COT and demonstrate continuity of similar business activities for BCT.</td>
+                                                                <td>Sections 165-12, 165-13, 165-15, 165-20</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Dividend Payment and Franking</td>
+                                                                <td>Determines if dividends can be paid and franked despite prior losses and franking account status.</td>
+                                                                <td>Ensure compliance with asset and liability requirements for paying dividends. Frank dividends at the maximum rate of 25% if Smith is a base rate entity.</td>
+                                                                <td>Section 254T, Section 202-40, Section 202-45</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Debt Forgiveness</td>
+                                                                <td>Potential for taxable income or capital loss adjustments due to debt forgiveness.</td>
+                                                                <td>Apply Division 245 rules to determine if any part of the debt is forgiven based on the market value of shares issued.</td>
+                                                                <td>Division 245, Sections 245-36, 245-37</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>CGT and Income Tax on Share Sale</td>
+                                                                <td>Tax consequences for Smith regarding CGT treatment and impact on goodwill.</td>
+                                                                <td>Classify shares under CGT event A1 for post-CGT and K6 for pre-CGT. Determine goodwill classification as pre-CGT asset.</td>
+                                                                <td>Sections 104-10, 116-20, 116-45, CGT Event A1, K6</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Franking Account Deficit</td>
+                                                                <td>Impact of deficit in the franking account at the time of joining Baker’s tax consolidated group.</td>
+                                                                <td>Smith will be liable for franking deficit tax (FDT) which can be offset against future tax liabilities. Address any potential reduction in FDT offset due to control issues.</td>
+                                                                <td>Section 709-60</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                        
+                                                    <!-- Table for Fred -->
+                                                    <h3>Fred (Individual)</h3>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Tax Issue</th>
+                                                                <th>Implications</th>
+                                                                <th>Suggested Solution</th>
+                                                                <th>Referred Tax Regulations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Loan to Fred</td>
+                                                                <td>The loan is treated as a dividend affecting Fred’s taxable income.</td>
+                                                                <td>The loan is subject to Division 7A and is treated as a deemed dividend assessable to Fred at his marginal rate.</td>
+                                                                <td>Division 7A ITAA 1936</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Debt Forgiveness Tax Consequences</td>
+                                                                <td>No capital loss realization for Fred from forgiveness of debt by siblings.</td>
+                                                                <td>No specific tax impact for Fred from debt forgiveness as the debt was refinanced and repaid before forgiveness occurred.</td>
+                                                                <td>Division 245</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Share Subscription and CGT</td>
+                                                                <td>Tax implications related to converting debt into equity and potential CGT on share sale.</td>
+                                                                <td>Ensure proper valuation of shares to avoid any tax implications from the debt conversion. Tax implications will depend on the nature of the CGT events associated with the sale.</td>
+                                                                <td>Sections 104-10, 116-20, 116-45, CGT Event A1, K6</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                        
+                                                    <!-- Table for Baker Co Ltd -->
+                                                    <h3>Baker Co Ltd (Acquiring Company)</h3>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Tax Issue</th>
+                                                                <th>Implications</th>
+                                                                <th>Suggested Solution</th>
+                                                                <th>Referred Tax Regulations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Franking Account Deficit from Acquisition</td>
+                                                                <td>Smith’s franking deficit impacts Baker’s consolidated tax group.</td>
+                                                                <td>Baker must account for Smith’s franking deficit tax (FDT) and ensure it is included in their consolidated tax calculations.</td>
+                                                                <td>Section 709-60</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Deferred Sale Proceeds</td>
+                                                                <td>Impact on CGT and potential tax implications from deferred payment arrangement.</td>
+                                                                <td>Treat the deferred amount as capital proceeds under CGT event A1. Consider structuring as an earnout right to defer taxation if it meets the requirements.</td>
+                                                                <td>Sections 104-10, 118-I, TR 2007/D10</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                        
+                                                    <!-- Implementation Steps -->
+                                                    <h2 class="fw-bolder mb-4 mt-5">Implementation Steps:</h2>
+                                                    <p>Here is a step-by-step guide for implementing the suggested solutions for each entity:</p>
+                        
+                                                    <!-- Implementation for Smith -->
+                                                    <h3>1. Smith Manufacturing &amp; Distribution Company Ltd (Smith)</h3>
+                        
+                                                    <h4>1. Australian Tax Residency</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Review Central Management and Control (CMAC):</strong>
+                                                            <ul>
+                                                                <li>Assess where the strategic decisions and control of Smith WOFE Ltd are made. Document the location of key decision-makers.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Evaluate Voting Power:</strong>
+                                                            <ul>
+                                                                <li>Check if Australian residents control the voting power of Smith WOFE Ltd.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Consult on DTA and MLI Implications:</strong>
+                                                            <ul>
+                                                                <li>Review the China-Australia Double Tax Agreement (DTA) and Multilateral Instrument (MLI) for residency and tax implications. Engage with tax advisors if needed.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>2. Tax Loss Recoupment</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Assess Continuity of Ownership Test (COT):</strong>
+                                                            <ul>
+                                                                <li>Verify if Smith failed the COT on 1 March 2023 due to Fred’s share purchase.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Conduct Business Continuity Test (BCT):</strong>
+                                                            <ul>
+                                                                <li>Prepare documentation showing that Smith continues to carry on a similar business in FY24. Gather financial and operational records to demonstrate business continuity.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>3. Dividend Payment and Franking</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Confirm Dividend Payment Compliance:</strong>
+                                                            <ul>
+                                                                <li>Ensure that Smith meets asset and liability requirements under section 254T before paying dividends.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Determine Franking Rate:</strong>
+                                                            <ul>
+                                                                <li>Calculate the franking credits available and ensure compliance with the base rate entity (BRE) rules. Apply a franking rate of up to 25%.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>4. Debt Forgiveness</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Apply Division 245 Rules:</strong>
+                                                            <ul>
+                                                                <li>Review the debt forgiveness provisions under Division 245. Compare the market value of shares issued to the forgiven debt amount.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Adjust Financial Records:</strong>
+                                                            <ul>
+                                                                <li>Adjust Smith’s financial records based on the findings. Ensure that any forgiven amounts are properly accounted for.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>5. CGT and Income Tax on Share Sale</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Classify CGT Events:</strong>
+                                                            <ul>
+                                                                <li>Identify and record the shares under CGT event A1 for post-CGT and K6 for pre-CGT.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Document Goodwill Classification:</strong>
+                                                            <ul>
+                                                                <li>Confirm the classification of business goodwill as pre-CGT. Update records accordingly.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>6. Franking Account Deficit</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Calculate Franking Deficit Tax (FDT):</strong>
+                                                            <ul>
+                                                                <li>Determine the franking deficit tax liability based on the deficit in Smith’s franking account at the year-end or at the time of joining Baker’s tax consolidated group.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Offset FDT:</strong>
+                                                            <ul>
+                                                                <li>Apply FDT as an offset against future tax liabilities and address any potential reduction in the offset due to control issues.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <!-- Implementation for Fred -->
+                                                    <h3>2. Fred (Individual)</h3>
+                        
+                                                    <h4>1. Loan to Fred</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Apply Division 7A:</strong>
+                                                            <ul>
+                                                                <li>Treat the $200,000 loan as a deemed dividend under Division 7A. Include the loan amount as assessable income in Fred’s tax return.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Tax Payment:</strong>
+                                                            <ul>
+                                                                <li>Fred must pay tax on the deemed dividend at his marginal rate. Ensure proper reporting on Fred’s tax return.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>2. Debt Forgiveness Tax Consequences</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Review Debt Forgiveness:</strong>
+                                                            <ul>
+                                                                <li>Confirm that the debt forgiveness by siblings was not taxable to Fred as it was refinanced and repaid prior to forgiveness.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>3. Share Subscription and CGT</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Document Share Conversion:</strong>
+                                                            <ul>
+                                                                <li>Record the conversion of debt into equity and ensure proper valuation of shares issued.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Plan for CGT Implications:</strong>
+                                                            <ul>
+                                                                <li>Prepare for CGT implications based on the nature of the shares and potential CGT events when Fred sells his shares.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <!-- Implementation for Baker Co Ltd -->
+                                                    <h3>3. Baker Co Ltd (Acquiring Company)</h3>
+                        
+                                                    <h4>1. Franking Account Deficit from Acquisition</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Calculate FDT Liability:</strong>
+                                                            <ul>
+                                                                <li>Determine the franking deficit tax (FDT) for Smith’s franking account deficit at the time of acquisition.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Include FDT in Consolidated Tax:</strong>
+                                                            <ul>
+                                                                <li>Integrate the FDT liability into Baker’s consolidated tax calculations. Adjust future tax filings to account for this liability.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                    <h4>2. Deferred Sale Proceeds</h4>
+                                                    <p><strong>Steps to Implement:</strong></p>
+                                                    <ol>
+                                                        <li><strong>Record Deferred Amounts:</strong>
+                                                            <ul>
+                                                                <li>Include the deferred sale proceeds as capital proceeds under CGT event A1. Document the terms of deferral and any related conditions.</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><strong>Evaluate Earnout Right (LTER):</strong>
+                                                            <ul>
+                                                                <li>Consider structuring the deferred payment as a look-through earnout right (LTER) if it meets the criteria. Review performance hurdles and implications if the LTER fails.</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ol>
+                        
+                                                </section>
+                                            </article>
+                
+                                            
+                                        </div><!-- /.Col end -->
+                                     </div><!-- /.Row end -->
+                                </div><!-- /.Container end --> 
+
+                    </div><!-- /.Blog Tab -->
+                    <!-- Charts Tab -->
+                    <div id="Charts" class="container tabcontent" style="display: block;">
+                        <!-- Charts Page Content -->
+                        <div class="container-fluid">
+                            <div class="row">
+                            <!-- Blog entries-->
+                            <div class="col-lg-12">
+                            <!-- Chart Content with Carousel -->
+                            <div id="chartCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <!-- First Slide - Area Chart -->
+                                    <div class="carousel-item active">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-area me-1"></i>
+                                                Area Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Second Slide - Bar Chart -->
+                                    <div class="carousel-item">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-bar me-1"></i>
+                                                Bar Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Additional Slides (if any) -->
+                                </div>
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                            <!-- Additional Content -->
+                            <!-- ... -->
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
             </main>
-
-            <!-- Footer -->
-            <footer class="py-4 mt-auto bg-light fixed-bottom">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-left">
-                        <!-- Social Buttons -->
-                        <div class="d-flex flex-grow-1 justify-content-around">
-                            <!-- LinkedIn Button -->
-                            <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
-                                <i class="fab fa-linkedin-in fa-2x"></i>
-                            </a>
-                            <!-- GitHub Button -->
-                            <a href="https://github.com/Anh-La" role="button" class="social-button github" target="_blank" aria-label="GitHub">
-                                <i class="fab fa-github fa-2x"></i>
-                            </a>
-                            <!-- Twitter Button -->
-                            <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
-                                <i class="fab fa-twitter fa-2x"></i>
-                            </a>
+                    <footer class="py-4 mt-auto bg-light fixed-bottom">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center">
+                            <!-- Social Buttons -->
+                            <div class="d-flex flex-grow-1 justify-content-around">
+                                <!-- LinkedIn Button -->
+                                <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in fa-2x"></i>
+                                </a>
+    
+                                <!-- GitHub Button -->
+                                <a href="https://github.com/Anh-La" role="button" class="social-button github" target="_blank" aria-label="GitHub">
+                                    <i class="fab fa-github fa-2x"></i>
+                                </a>
+    
+                                <!-- Twitter Button -->
+                                <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
+                                    <i class="fab fa-twitter fa-2x"></i>
+                                </a>
+                            </div>
+    
+                            <!-- Language Switcher with Dropdown -->
+                            <div class="dropdown ms-auto">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="index_vi" id="viOption">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.Language Switcher -->
                         </div>
-                        <!-- Language Switcher with Dropdown -->
-                        <div class="dropdown ms-auto">
-                            <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="index_vi" id="viOption">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Tiếng Việt" width="32" height="20"> Tiếng Việt
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.Language Switcher -->
                     </div>
-                </div>
-            </footer>
-        </div>
-    </div> <!-- End of layoutSidenav -->
-    <!-- Scripts -->
-    <!-- Bootstrap JS and Dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <!-- FontAwesome JS -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Custom Scripts -->
-    <script src="scripts.js"></script>
-</body>
+                </footer>
+            
+        </div> <!-- End of layoutSidenav_content -->
+    
+        <!-- Scripts -->
+        <!-- Bootstrap JS and Dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <!-- FontAwesome JS -->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Custom Scripts -->
+        <script src="scripts.js"></script>
+        <!-- jQuery (if needed) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+        <script>
+            // Get the default tab open
+            document.getElementById("blogTab").click();
+        </script>
+    </body>
 </html>
