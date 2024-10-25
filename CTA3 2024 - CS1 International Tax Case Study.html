@@ -9,7 +9,7 @@
         <title>Anh La</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="styles.css" rel="stylesheet"/>
+        <link href="assets/css/styles.css" rel="stylesheet"/>
         <!-- Add icon library -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
@@ -21,7 +21,7 @@
         <!-- Brand-->
         <div class="text-center">
             <a class="navbar-brand ps-3" href="login">
-                <img src="avatar.png" alt="Avatar" class="avatar">
+                <img src="assets/avatar.png" alt="Avatar" class="avatar">
             </a>
         </div><!-- /.Brand-->
         <!-- Sidebar Toggle-->
@@ -52,8 +52,8 @@
                 <!-- Sidebar Content (Same as other pages) -->
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                            <!-- Build Wealth Content -->
-                            <div class="sb-sidenav-menu-heading">Build Wealth</div>
+                            <!-- For Individual Content -->
+                            <div class="sb-sidenav-menu-heading">For Individual</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
                                     <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
                                     Financial Planning
@@ -62,28 +62,45 @@
                                 <div class="collapse" id="collapseBitcoin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="blogHome">Passive Income</a>
+                                        <a class="nav-link" href="blogHome">Individual Tax</a>
+                                        <a class="nav-link" href="blog">Partnership Tax</a>
+                                        <a class="nav-link" href="blog">SMSF Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>
                                     </nav>
-                                </div><!-- /.Build Wealth Content -->
+                                </div><!-- /.For Individual Content -->
                             
-                            <!-- Tax Compliance -->
-                            <div class="sb-sidenav-menu-heading">Tax Compliance</div>
+                            <!-- For Business Content -->
+                            <div class="sb-sidenav-menu-heading">For Business</div>
+                            <!-- For SME Business Content -->
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
                                     <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Australian Tax
+                                    SME
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="collapseTax" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Individual Tax</a>
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
                                         <a class="nav-link" href="blog">Company Tax</a>
-                                        <a class="nav-link" href="blog">Trust Tax</a>
-                                        <a class="nav-link" href="blog">SMSF Tax</a>
-                                        <a class="nav-link" href="blog">Partnership Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
                                         <a class="nav-link" href="blog">International Tax</a>
                                     </nav>
-                                </div><!--Tax Compliance -->
-                            <!-- Investing Content -->
-                            <div class="sb-sidenav-menu-heading">Investing</div>
+                                </div><!-- /.For SME Business Content -->
+                            <!-- For Large Business Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    SME
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTax" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!-- /.For large Business Content -->
+                            <!-- For Nation state Content -->
+                            <div class="sb-sidenav-menu-heading">Nation state</div>
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
                                     <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
                                     Traditional Finance
@@ -97,40 +114,34 @@
                                         <a class="nav-link" href="blog">Commercial propert</a>
                                         <a class="nav-link" href="blog">Equity</a>
                                         <a class="nav-link" href="blogHome">Bonds</a>
+                                        <a class="nav-link" href="blogHome">Crypto currency (Bitcoin)</a>
                                     </nav>
-                                </div><!--  Traditional Finance -->
-                                
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRE" aria-expanded="false" aria-controls="collapseRE">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                         Digital Finance
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseRE" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="blogHome">Crypto currency</a>
-                                            <a class="nav-link" href="blog">Bitcoin</a>
-                                        </nav>
-                                    </div><!-- Real asset -->
-                            
-                            <!-- Bitcoin Content -->
-                            <div class="sb-sidenav-menu-heading">Bitcoin</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
+                                </div><!-- /.For Nation state Content -->                       
+                            <!-- Technology Content -->
+                            <div class="sb-sidenav-menu-heading">Open source technology</div>
+                            <!-- Artificial Intelligent -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
                                     <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Bitcoin Basic
+                                    Artificial Intelligent
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="collapseBitcoin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Bitcoin podcasts</a>
-                                        <a class="nav-link" href="blog">Bitcoin analysis</a>
-                                        <a class="nav-link" href="blog">Bitcoin mining</a>
-                                        <a class="nav-link" href="blog">Bitcoin books</a>
-                                        <a class="nav-link" href="blog">Bitcoin programing</a>
-                                        <a class="nav-link" href="blog">Bitcoin models</a>
+                                        <a class="nav-link" href="blogHome">Artificial Intelligent</a>
                                     </nav>
-                                </div>
-                            
-                            <!-- /.Bitcoin Advanced-->
+                                </div><!-- /. Artificial Intelligent -->    
+                            <!-- Norstr -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Nostr - Node and other stuffs tranfferred via relays
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Nostr - Node and other stuffs tranfferred via relays</a>
+                                    </nav>
+                                </div><!-- /.Norstr -->
+                            <!-- Bitcoin -->
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBitcoin" aria-expanded="false" aria-controls="collapseBitcoin">
                                     <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
                                     Bitcoin Intermediate
@@ -142,33 +153,15 @@
                                         <a class="nav-link" href="blog">Liquid Network</a>
                                         <a class="nav-link" href="blog">Ark Network</a>
                                         <a class="nav-link" href="blog">Multi sig</a>
+                                        <a class="nav-link" href="blogHome">Bitcoin podcasts</a>
+                                        <a class="nav-link" href="blog">Bitcoin analysis</a>
+                                        <a class="nav-link" href="blog">Bitcoin mining</a>
+                                        <a class="nav-link" href="blog">Bitcoin books</a>
+                                        <a class="nav-link" href="blog">Bitcoin programing</a>
+                                        <a class="nav-link" href="blog">Bitcoin models</a>
                                     </nav>
                                 </div><!-- /.Bitcoin -->
-                            
-                            <!-- Nostr Content -->
-                            <div class="sb-sidenav-menu-heading">Nostr</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Node and other stuffs tranfferred via relays
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Free-dom Network</a>
-                                    </nav>
-                                </div><!-- /.Nostr -->
-                            <!-- Ai Content -->
-                            <div class="sb-sidenav-menu-heading">Artificial Intelligent</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTriFi" aria-expanded="false" aria-controls="collapseTriFi">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                                    Open source Ai
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseTriFi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="blogHome">Models</a>
-                                    </nav>
-                                </div><!-- /. Ai -->
+
                             <!-- You can add your sidebar menu items here -->                        
                     </div>
                 </div>
@@ -199,7 +192,7 @@
                                     <div class="card-wrapper">
                                         <div class="card">
                                             <a href="CTA3 2024 - Case Study 2: Corporate Tax">
-                                                <img class="card-img-top" src="700x300_coporateTax2024.jpg" alt="">
+                                                <img class="card-img-top" src="assets/700x300_coporateTax2024.jpg" alt="">
                                             </a>
                                             <div class="card-body">
                                                 <h4 class="card-title">
@@ -320,6 +313,37 @@
                             </button>
                         </div>
                         <!--/. Carousel End -->
+                        <!-- Related Projects Row -->
+                        <h3 class="my-4">Related Projects</h3>
+                      
+                        <div class="row">
+                      
+                          <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
+                                  <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="">
+                                </a>
+                          </div>
+                      
+                          <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
+                                  <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="">
+                                </a>
+                          </div>
+                      
+                          <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
+                                  <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="">
+                                </a>
+                          </div>
+                      
+                          <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
+                                  <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="">
+                                </a>
+                          </div>
+                      
+                        </div>
+                        <!-- /.row -->
                     </div><!-- /.Home Tab -->
                     <!-- Records Tab -->
                     <div id="Records" class="container tabcontent">
@@ -334,7 +358,7 @@
                                           <a href="https://anh.contact/Trusts-and-Small-Business-CGT-Concession-Practice-Case-Study.html/">
                                             <img
                                               class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="700x300_TrustSmallBusinessCGT2024.jpg"
+                                              src="assets/700x300_TrustSmallBusinessCGT2024.jpg"
                                               alt=""
                                             />
                                           </a>
@@ -357,7 +381,7 @@
                                           <a href="https://anh.contact/Corporate-Tax-Practice-Case-Study/">
                                             <img
                                               class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="700x300_coporateTax2024.jpg"
+                                              src="assets/700x300_coporateTax2024.jpg"
                                               alt=""
                                             />
                                           </a>
@@ -377,7 +401,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-6"> 
                                                     <a href="https://anh.contact/Small-business-CGT-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smallbusiness2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smallbusiness2024.jpg" alt="">
                                                     </a>
                                                 </div>
                     
@@ -394,7 +418,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-6">
                                                     <a href="https://anh.contact/International-Tax-Practice-Case-Study/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_internationalTax2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_internationalTax2024.jpg" alt="">
                                                     </a>
                                                 </div>
                         
@@ -412,7 +436,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-6">
                                                     <a href="https://anh.contact/GST-Practice-Case-Study-2024">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_GST2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_GST2024.jpg" alt="">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-6 text-right">
@@ -429,7 +453,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-6">
                                                     <a href="#">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_smsf2024.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smsf2024.jpg" alt="">
                                                     </a>
                                                 </div>
                 
@@ -447,7 +471,7 @@
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-6">
                                                     <a href="https://anh.contact/404/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="700x300_money.jpg" alt="">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_money.jpg" alt="">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-6 text-right">
@@ -636,7 +660,7 @@
                                                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Internaltional Tax</a>
                                                 </header>
                                                 <!-- Preview image figure-->
-                                                <figure class="mb-4"><img class="img-fluid rounded" src="700x300_coporateTax2024.jpg" alt="Coporate Tax 2024" /></figure>
+                                                <figure class="mb-4"><img class="img-fluid rounded" src="assets/700x300_coporateTax2024.jpg" alt="Coporate Tax 2024" /></figure>
                                                 <!-- Post Body -->
                                                 <section class="mb-5">
                                                     <!-- Background Summary -->
@@ -907,7 +931,7 @@
         <!-- FontAwesome JS -->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Custom Scripts -->
-        <script src="scripts.js"></script>
+        <script src="assets/js/scripts.js"></script>
         <!-- jQuery (if needed) -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
         <script>
