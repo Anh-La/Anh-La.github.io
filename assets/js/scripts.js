@@ -126,7 +126,7 @@ function controlCarouselItemsById(carouselId, minPerSlide = 4) {
 
 // Apply the function to the specific carousels by passing the ID
 controlCarouselItemsById('carouselHomeControls1', 4);
-controlCarouselItemsById('carouselHomeControls2', 4);
+controlCarouselItemsById('relatedProjectsCarousel', 4);
 
 // Function to control cards (scroll effect) in specific carousel slides by their IDs with jQuery
 $(document).ready(function () {
