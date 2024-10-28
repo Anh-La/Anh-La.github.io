@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head content -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Swimming With Sharks: How to Bulletproof Your Finances for a Certain Future" />
+    <meta name="author" content="Anh La" />
+    <title>Swimming With Sharks: How to Bulletproof Your Finances for a Certain Future</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/styles.css" rel="stylesheet"/>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- FontAwesome CSS and JS -->
+    <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+    <!-- Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
+        <!-- Brand-->
+        <div class="text-center">
+            <a class="navbar-brand ps-3" href="login">
+                <img src="../../assets/avatar.png" alt="Avatar" class="avatar">
+            </a>
+        </div><!-- /.Brand-->
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation Buttons -->
+        <div class="container-fluid">
+            <button id="homeTab" class="tablink active" onclick="openPage('Home', this)">
+                <i class="bi bi-house-door-fill"></i>
+            </button>
+            <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
+                <i class="bi bi-file-play-fill"></i>
+            </button>
+            <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
+                <i class="bi bi-pen-fill"></i>
+            </button>
+            <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
+                <i class="bi bi-graph-up-arrow"></i>
+            </button>
+        </div>
+    </nav>
+    <!-- Layout Sidenav -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <!-- Sidebar Content -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <!-- For Individual Content -->
+                        <!-- ... (sidebar content remains the same) ... -->
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">            
+            <main>
+                <div class="container py-4"> 
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">How to Bulletproof Your Finances for a Certain Future</li>
+                        </ol>
+                    </nav><!-- /.Page Title and Breadcrumb -->
+                    <!-- Post Header -->
+                    <header class="mb-4">
+                        <!-- Post Title -->
+                        <h1 class="fw-bolder mb-1">Swimming With Sharks: How to Bulletproof Your Finances for a Certain Future</h1>
+                        <!-- Post meta content-->
+                        <div class="text-muted fst-italic mb-2">Posted on January 1, 2024 by Anh La</div>
+                        <!-- Post categories-->
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Personal Finance</a>
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Financial Planning</a>
+                    </header>
+                    <!-- Tab Content -->
+                    <!-- Home Tab -->
+                    <div id="Home" class="container tabcontent">
+                        <!-- Page content-->
+                        <!-- Portfolio Item Row -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <img class="img-fluid" src="../../assets/700x300_swimming_with_sharks.jpg" alt="Swimming With Sharks Book Cover">
+                            </div>
+                            <div class="col-md-4">
+                                <h3 class="my-3">Book Description</h3>
+                                <p>"Swimming With Sharks: How to Bulletproof Your Finances for a Certain Future" is a guide for individuals seeking to safeguard their finances in an uncertain financial world. It provides straightforward, actionable advice on managing personal finances without falling victim to common pitfalls in the financial services industry.</p>
+                                <h3 class="my-3">Key Topics</h3>
+                                <ul>
+                                    <li>Understanding Financial Sharks</li>
+                                    <li>Building a Strong Financial Foundation</li>
+                                    <li>Investing Wisely</li>
+                                    <li>Avoiding Common Financial Traps</li>
+                                    <li>Navigating Financial Advice</li>
+                                    <li>Protecting Your Wealth</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        <!-- Related Projects Carousel -->
+                        <h3 class="my-4">Related Books</h3>
+                        <div id="relatedProjectsCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <!-- Carousel Item 1 -->
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        <!-- Book 1 -->
+                                        <div class="col-md-3 col-sm-6 mb-4">
+                                            <a href="book1.html">
+                                                <img class="img-fluid" src="../../assets/700x300_financial_freedom.jpg" alt="Financial Freedom">
+                                            </a>
+                                        </div>
+                                        <!-- Book 2 -->
+                                        <div class="col-md-3 col-sm-6 mb-4">
+                                            <a href="book2.html">
+                                                <img class="img-fluid" src="../../assets/700x300_investing_basics.jpg" alt="Investing Basics">
+                                            </a>
+                                        </div>
+                                        <!-- Book 3 -->
+                                        <div class="col-md-3 col-sm-6 mb-4">
+                                            <a href="book3.html">
+                                                <img class="img-fluid" src="../../assets/700x300_wealth_management.jpg" alt="Wealth Management">
+                                            </a>
+                                        </div>
+                                        <!-- Book 4 -->
+                                        <div class="col-md-3 col-sm-6 mb-4">
+                                            <a href="book4.html">
+                                                <img class="img-fluid" src="../../assets/700x300_financial_planning.jpg" alt="Financial Planning">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Additional carousel items can be added here -->
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#relatedProjectsCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#relatedProjectsCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div><!-- /.Related Projects Carousel -->
+                    </div><!-- /.Home Tab -->
+                    <!-- Records Tab -->
+                    <div id="Records" class="container tabcontent">
+                        <!-- Page content-->
+                        <!-- Similar content as before -->
+                    </div><!-- /.Records Tab -->
+                    <!-- Blog Tab -->
+                    <div id="Blog" class="container tabcontent">
+                        <!-- Blog Content -->
+                        <div class="container mt-5">
+                            <div class="row">
+                                <!-- Blog entries-->
+                                <div class="col-lg-12">
+                                    <!-- Post Content -->
+                                    <article>
+                                        <!-- Post Body -->
+                                        <section class="mb-5">
+                                            <!-- Image -->
+                                            <div class="col-md-8">
+                                                <img class="img-fluid" src="../../assets/700x300_swimming_with_sharks.jpg" alt="Swimming With Sharks Book Cover">
+                                            </div>
+                                            <!-- Content -->
+                                            <h2 class="fw-bolder mb-4 mt-5">Swimming With Sharks: How to Bulletproof Your Finances for a Certain Future</h2>
+                                            <h3 class="fst-italic mb-4">(Without Being Eaten Alive by the Financial Services Industry)</h3>
+                                            <h4>By Daniel Brammall</h4>
+                                            <!-- Chapter Summaries -->
+                                            <hr>
+                                            <h3>1. Introduction</h3>
+                                            <ul>
+                                                <li>This book aims to provide a guide for individuals seeking to safeguard their finances in an uncertain financial world.</li>
+                                                <li>It is designed for time-poor individuals who want straightforward, actionable advice on managing their personal finances without falling victim to pitfalls commonly seen in the financial services industry.</li>
+                                            </ul>
+                                            <h3>2. The Financial Sharks</h3>
+                                            <ul>
+                                                <li><strong>Who are the Sharks?</strong> The financial services industry, including banks, financial advisors, and product providers, can sometimes work more for their benefit than for the client’s.</li>
+                                                <li><strong>Hidden Fees and Costs:</strong> Many financial products carry hidden fees that are not always obvious, resulting in diminished returns.</li>
+                                                <li><strong>Conflicts of Interest:</strong> Financial advisors may prioritize products that earn them commissions, rather than focusing on what is truly best for the client.</li>
+                                            </ul>
+                                            <h3>3. Bulletproofing Your Finances</h3>
+                                            <ul>
+                                                <li><strong>Step 1: Understand the Basics</strong>
+                                                    <ul>
+                                                        <li>Take control of your financial education. Understand the difference between assets, liabilities, investments, and debt.</li>
+                                                        <li>Avoid overly complex financial products that you do not fully understand.</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>Step 2: Build a Strong Financial Foundation</strong>
+                                                    <ul>
+                                                        <li><strong>Emergency Fund:</strong> Establish an emergency fund with at least three to six months of living expenses.</li>
+                                                        <li><strong>Debt Management:</strong> Focus on paying down high-interest debts, such as credit cards, before engaging in more complex investments.</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>Step 3: Invest Wisely</strong>
+                                                    <ul>
+                                                        <li><strong>Diversification:</strong> Spread your investments across different asset classes to reduce risk.</li>
+                                                        <li><strong>Long-Term Focus:</strong> Invest with a long-term perspective rather than trying to time the market or chase short-term gains.</li>
+                                                        <li><strong>Low-Cost Investments:</strong> Opt for low-cost index funds or ETFs to minimize fees and ensure greater returns over time.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <h3>4. Avoiding Common Financial Traps</h3>
+                                            <ul>
+                                                <li><strong>Financial Products to Watch Out For:</strong>
+                                                    <ul>
+                                                        <li>High-fee mutual funds, complex insurance products, and managed funds with high commissions.</li>
+                                                        <li>Always ask financial advisors about their fee structures and whether they are paid commissions for recommending certain products.</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>Retirement Planning:</strong>
+                                                    <ul>
+                                                        <li>Ensure that you are contributing enough to your retirement accounts (e.g., superannuation) and consider strategies like salary sacrifice to boost contributions.</li>
+                                                        <li>Avoid withdrawing from retirement funds early, as it can have long-term impacts on your financial security.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <h3>5. Navigating Financial Advice</h3>
+                                            <ul>
+                                                <li><strong>DIY Financial Management:</strong>
+                                                    <ul>
+                                                        <li>With the right tools and knowledge, many people can manage their finances without relying heavily on external advisors.</li>
+                                                        <li>Learn how to read financial statements, and use online tools and resources for budgeting, tax preparation, and investment management.</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>Choosing the Right Financial Advisor:</strong>
+                                                    <ul>
+                                                        <li>Look for advisors who offer fee-for-service models rather than commission-based compensation.</li>
+                                                        <li>Ensure they have the right qualifications and experience, and that they are working in your best interest (fiduciary duty).</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <h3>6. Protecting Your Wealth</h3>
+                                            <ul>
+                                                <li><strong>Insurance:</strong>
+                                                    <ul>
+                                                        <li>Ensure you have adequate insurance coverage for your home, health, and income protection.</li>
+                                                        <li>Avoid policies with excessive premiums or unnecessary riders.</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>Estate Planning:</strong>
+                                                    <ul>
+                                                        <li>Create a will and ensure that your estate plan is up-to-date to protect your assets and ensure they are distributed according to your wishes.</li>
+                                                        <li>Consider setting up trusts if necessary, to manage wealth transfer and protect against taxes.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <h3>7. Conclusion</h3>
+                                            <ul>
+                                                <li><strong>Taking Control:</strong> The ultimate goal of the book is to empower individuals to take control of their financial future by educating themselves, avoiding financial traps, and seeking the right advice when necessary.</li>
+                                                <li><strong>Final Thoughts:</strong> Financial success is achieved by understanding the basics, being wary of the sharks in the financial industry, and making informed decisions about your money.</li>
+                                            </ul>
+                                        </section>
+                                    </article>
+                                </div><!-- /.Col end -->
+                            </div><!-- /.Row end -->
+                        </div><!-- /.Container end --> 
+                    </div><!-- /.Blog Tab -->
+                    <!-- Charts Tab -->
+                    <div id="Charts" class="container tabcontent">
+                        <!-- Charts Page Content -->
+                        <!-- (Content remains the same) -->
+                    </div><!-- /.Charts Tab -->
+                </div>
+            </main>
+            <footer class="py-4 mt-auto bg-light fixed-bottom">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center">
+                        <!-- Social Buttons -->
+                        <div class="d-flex flex-grow-1 justify-content-around">
+                            <!-- LinkedIn Button -->
+                            <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin-in fa-2x"></i>
+                            </a>
+                            <!-- GitHub Button -->
+                            <a href="https://github.com/Anh-La" role="button" class="social-button github" target="_blank" aria-label="GitHub">
+                                <i class="fab fa-github fa-2x"></i>
+                            </a>
+                            <!-- Twitter Button -->
+                            <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
+                                <i class="fab fa-twitter fa-2x"></i>
+                            </a>
+                        </div>
+                        <!-- Language Switcher with Dropdown -->
+                        <div class="dropdown ms-auto">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="../../index_vi.html" id="viOption">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.Language Switcher -->
+                    </div>
+                </div>
+            </footer>
+        </div> <!-- End of layoutSidenav_content -->
+    </div> <!-- End of layoutSidenav -->
+    <!-- Scripts -->
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- FontAwesome JS -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Custom Scripts -->
+    <script src="../../assets/js/scripts.js"></script>
+    <!-- jQuery (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        // Get the default tab open
+        document.getElementById("blogTab").click();
+    </script>
+</body>
+</html>
+
