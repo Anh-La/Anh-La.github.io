@@ -18,36 +18,10 @@
             /* normal card */
             .card {
                 margin: 0 .5em;
-                display: flex;
-                flex-direction: column;
             }
-            
-            /* Card wrapper to fill the height */
-            .card-wrapper {
-                height: 100%;
-            }
-            
-            /* Card body to use flex layout */
-            .card-body {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-            }
-            
-            /* Card text to grow and fill space */
-            .card-text {
-                flex-grow: 1;
-            }
-            
-            /* Optional: Ensure images fit within the card */
-            .card-img-top, .img-fluid {
-                width: 100%;
-                height: auto;
-            }
-            /*
             .carousel-inner{
-                    padding: 1em;
-            }*/
+                    padding: 0 .5em;
+            }
             .carousel-control-prev,.carousel-control-next{
                     background-color: #e1e1e1;
                     width: 6vh;
@@ -292,128 +266,129 @@
                     <!-- Home Tab -->
                     <div id="Home" class="container tabcontent">
                         <!-- Page content-->
-                        <div class="row"><!-- row 1-->
+                        <!-- row 1-->
+                        <div class="row">
                             <div class="col-lg-6">
                                 <!-- Carousel Home Controls 1 -->
                                 <div id="carouselHomeControls1" class="carousel slide" data-bs-ride="carousel">
                                     <!-- Carousel Inner Start -->
                                     <div class="carousel-inner">
-                                        <!-- Slide 1 -->
+                                        <!-- slide 1 -->
                                         <div class="carousel-item active">
                                             <!-- Card 1 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
                                                     <a href="Tax/CTA3/Corporate_Tax_Case">
-                                                        <img class="card-img-top" src="assets/700x300_coporateTax2024.jpg" alt="Corporate Tax Case">
+                                                        <img class="card-img-top" src="assets/700x300_coporateTax2024.jpg" alt="">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
                                                             <a href="Tax/CTA3/Corporate_Tax_Case">CTA3 2024 - CS2: Corporate Tax</a>
                                                         </h4>
-                                                        <p class="card-text">Explore the complexities of corporate taxation, including tax consolidation, franking credits, and dividend imputation.</p>
+                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 1 -->
-                        
-                                        <!-- Slide 2 -->
+                                        <!--/. slide 1 -->
+                                
+                                        <!-- slide 2 -->
                                         <div class="carousel-item">
                                             <!-- Card 2 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
                                                     <a href="Tax/CTA3/International_Tax_Case">
-                                                        <img class="card-img-top" src="assets/700x300_internationalTax2024.jpg" alt="International Tax Case">
+                                                        <img class="card-img-top" src="assets/700x300_internationalTax2024.jpg" alt="">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
-                                                            <a href="Tax/CTA3/International_Tax_Case">CTA3 2024 - CS1: International Tax Case</a>
+                                                            <a href="Tax/CTA3/International_Tax_Case">International Tax Case</a>
                                                         </h4>
-                                                        <p class="card-text">This case study examines complex international tax issues faced by SkyNet Ltd, including permanent establishment, income attribution, and expense treatment.</p>
+                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 2 -->
-                        
-                                        <!-- Slide 3 -->
+                                        <!--/. slide 2 -->
+                                
+                                        <!-- slide 3 -->
                                         <div class="carousel-item">
                                             <!-- Card 3 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="Tax/CTA3/Small_Business_CGT_Case.html">
-                                                        <img class="card-img-top" src="assets/700x300_smallbusiness2024.jpg" alt="Small Business CGT Case">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
+                                                    <a href="#">
+                                                        <img class="img-fluid" src="assets/700x300_smallbusiness2024.jpg" alt="Small Business CGT Case">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
-                                                            <a href="Tax/CTA3/Small_Business_CGT_Case.html">CTA3 2024 - CS3: Small Business CGT Case</a>
+                                                            <a href="Tax/CTA3/Small_Business_CGT_Case.html">Small Business CGT Case</a>
                                                         </h4>
-                                                        <p class="card-text">Delve into issues related to small business CGT concessions and their application in various scenarios.</p>
+                                                        <p class="card-text flex-grow-1">This case study examines complex international tax issues faced by SkyNet Ltd, including permanent establishment, income attribution, expense treatment, repatriation of funds, and implications of relocating operations to Singapore.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 3 -->
-                        
-                                        <!-- Slide 4 -->
+                                        <!--/. slide 3 -->
+                                
+                                        <!-- slide 4 -->
                                         <div class="carousel-item">
                                             <!-- Card 4 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="Tax/CTA3/GST_Case.html">
-                                                        <img class="card-img-top" src="assets/700x300_GST2024.jpg" alt="GST Case">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
+                                                    <a href="#">
+                                                        <img class="img-fluid" src="assets/700x300_GST2024.jpg" alt="GST Case">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
-                                                            <a href="Tax/CTA3/GST_Case.html">CTA3 2024 - CS4: GST Case</a>
+                                                            <a href="Tax/CTA3/GST_Case.html">GST Case</a>
                                                         </h4>
-                                                        <p class="card-text">Understand the GST implications of acquiring assets versus shares, and the impact on Input Tax Credit claims.</p>
+                                                        <p class="card-text flex-grow-1">This case study explores the GST implications of acquiring assets versus shares, focusing on the potential for treating the acquisition as a GST-free going concern and the impact on Input Tax Credit (ITC) and Reduced Input Tax Credit (RITC) claims.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 4 -->
-                        
-                                        <!-- Slide 5 -->
+                                        <!--/. slide 4 -->
+                                
+                                        <!-- slide 5 -->
                                         <div class="carousel-item">
                                             <!-- Card 5 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
-                                                        <img class="card-img-top" src="assets/700x300_TrustSmallBusinessCGT2024.jpg" alt="Trusts and Small Business CGT Concessions">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
+                                                    <a href="#">
+                                                        <img class="img-fluid" src="assets/700x300_TrustSmallBusinessCGT2024.jpg" alt="Trusts and Small Business CGT Concessions">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
-                                                            <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">CTA3 2024 - CS5: Trusts and Small Business CGT Concessions</a>
+                                                            <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">Trusts and Small Business CGT Concessions</a>
                                                         </h4>
-                                                        <p class="card-text">Explore the complexities of trusts and the application of Small Business CGT Concessions under Australian tax law.</p>
+                                                        <p class="card-text flex-grow-1">This case study explores the complexities of trusts and the application of Small Business CGT Concessions under Australian tax law. It examines the situations of Arthur Jones, the William Family Trust, and other related parties in the context of asset sales and tax implications.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 5 -->
-                        
-                                        <!-- Slide 6 -->
+                                        <!--/. slide 5 -->
+                                
+                                        <!-- slide 6 -->
                                         <div class="carousel-item">
                                             <!-- Card 6 -->
-                                            <div class="card-wrapper">
-                                                <div class="card">
-                                                    <a href="Finance/FinancialPlanning/How_to_Bulletproof_Your_Finances_for_a_Certain_Future.html">
-                                                        <img class="card-img-top" src="assets/700x300_Financial-Planning.jpg" alt="How to Bulletproof Your Finances for a Certain Future">
+                                            <div class="card-wrapper h-100">
+                                                <div class="card h-100">
+                                                    <a href="#">
+                                                        <img class="card-img-top" src="assets/700x300_Financial-Planning.jpg" alt="">
                                                     </a>
-                                                    <div class="card-body">
+                                                    <div class="card-body d-flex flex-column">
                                                         <h4 class="card-title">
                                                             <a href="Finance/FinancialPlanning/How_to_Bulletproof_Your_Finances_for_a_Certain_Future.html">How to Bulletproof Your Finances for a Certain Future</a>
                                                         </h4>
-                                                        <p class="card-text">A guide providing actionable advice on managing personal finances effectively.</p>
+                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.Slide 6 -->
+                                        <!--/. slide 6 -->
                                     </div>
-                                    <!-- /.Carousel Inner End -->
-                        
+                                    <!--/. Carousel Inner End -->
+                                
                                     <!-- Carousel Controls -->
                                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -424,38 +399,30 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                                <!-- /.Carousel End -->
+                                <!--/. Carousel End -->
                             </div>
                             <!-- Other cards -->
-                            <div class="col-lg-3">
-                                <!-- Blog Post 1 -->
-                                <div class="card-wrapper">
-                                    <div class="card mb-4">
-                                        <a href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">
-                                            <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="FRM Study Guide 2022">
-                                        </a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">March 10, 2023</div>
-                                            <h2 class="card-title h4">Key Lessons from FRM Study Guide 2022</h2>
-                                            <p class="card-text">An overview of essential concepts from the FRM Study Guide 2022 by GARP.</p>
-                                            <a class="btn btn-primary" href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">Read more →</a>
-                                        </div>
+                            <div class="col-lg-3 d-flex">
+                                <!-- Blog post-->
+                                <div class="card mb-4 flex-fill">
+                                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
+                                        <a class="btn btn-primary mt-auto" href="#!">Read more →</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <!-- Blog Post 2 -->
-                                <div class="card-wrapper">
-                                    <div class="card mb-4">
-                                        <a href="Blog/Swimming_With_Sharks.html">
-                                            <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="Swimming With Sharks">
-                                        </a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">April 5, 2023</div>
-                                            <h2 class="card-title h4">Swimming With Sharks: Bulletproof Your Finances</h2>
-                                            <p class="card-text">Key insights from Daniel Brammall's book on safeguarding your finances.</p>
-                                            <a class="btn btn-primary" href="Blog/Swimming_With_Sharks.html">Read more →</a>
-                                        </div>
+                            <div class="col-lg-3 d-flex">
+                                <!-- Blog post-->
+                                <div class="card mb-4 flex-fill">
+                                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
+                                        <a class="btn btn-primary mt-auto" href="#!">Read more →</a>
                                     </div>
                                 </div>
                             </div>
@@ -497,43 +464,148 @@
                                 </div>
                             </div>
                             <!-- /.Other cards -->
-                        <div class="col-lg-6">
-                            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                  <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/RCAhiGJsUUE/1920x1080')">
-                                    <div class="carousel-caption">
-                                      <h5>First slide label</h5>
-                                      <p>Some representative placeholder content for the first slide.</p>
-                                    </div>
-                                  </div>
-                                  <div class="carousel-item" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1920x1080')">
-                                    <div class="carousel-caption">
-                                      <h5>Second slide label</h5>
-                                      <p>Some representative placeholder content for the second slide.</p>
-                                    </div>
-                                  </div>
-                                  <div class="carousel-item" style="background-image: url('https://source.unsplash.com/lHGeqh3XhRY/1920x1080')">
-                                    <div class="carousel-caption">
-                                      <h5>Third slide label</h5>
-                                      <p>Some representative placeholder content for the third slide.</p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Next</span>
-                                </button>
-                              </div>
-                        </div>
+                            <div class="col-lg-6">
+                                <div id="carouselVideos" class="carousel slide">
+                                  <div class="carousel-inner">
+                                    <!-- Videos Project -->
+                                    <div class="carousel-item active" data-bs-interval="30000">
+                                      <div class="row justify-content-md-center">
+                                        <div class="col-md-6">
+                                          <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
+                                            <img
+                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
+                                              src="assets/700x300_TrustSmallBusinessCGT2024.jpg"
+                                              alt=""
+                                            />
+                                          </a>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Trust Tax Compliance Basic</h5>
+                                          <p>
+                                            Apply legal authorities like                                          
+                                            to a hypothetical study case
+                                          </p>
+                                        </div>
+                                      </div>
+                                        <hr>
+                                    </div> <!-- /.Project Trust and small CGT concessions - content-->
+                                    
+                                    <!-- Project Corporate Videos -->
+                                    <div class="carousel-item" data-bs-interval="">
+                                      <div class="row justify-content-md-center">
+                                        <div class="col-md-6">
+                                          <a href="Tax/CTA3/Corporate_Tax_Case.html">
+                                            <img
+                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
+                                              src="assets/700x300_coporateTax2024.jpg"
+                                              alt=""
+                                            />
+                                          </a>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                          <h5 class="my-4">Corporate Tax Compliance Basic</h5>
+                                          <p>
+                                            Apply legal authorities to a hypothetical study case                                           
+                                          </p>
+                                        </div>
+                                      </div>
+                                        <hr>
+                                    </div><!-- /.Project Coporate Videos -->
+                                    
+                                        <!-- Project small CGT concessions -->  
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6"> 
+                                                    <a href="Tax/CTA3/Small_Business_CGT_Case.html">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smallbusiness2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                    
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">Small business capital gain Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like to a hypothetical study case</p>
+                                                  </div>
+                                            </div>  
+                                            <hr>
+                                        </div><!-- /.Project small CGT concessions -->
+
+                                        <!-- Project international Videos -->   
+                                        <div class="carousel-item" data-bs-interval="">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="Tax/CTA3/International_Tax_Case.html">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_internationalTax2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                        
+                                                <div class="col-md-6 text-right">
+                                                    <h5 class="my-4">International Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>  
+                                            <hr>
+                                        </div><!-- /.Project international Videos -->   
+                                
+                                        <!-- Project GST -->   
+                                        <div class="carousel-item">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="Tax/CTA3/GST_Case.html">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_GST2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Goods and Services Tax Compliance Basic</h5>
+                                                    <p > Apply legal authorities like                                                          
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>
+                                            <hr>
+                                        </div><!-- /.Project GST --> 
+                                        
+                                    <!-- Project SMSF -->   
+                                        <div class="carousel-item">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="#">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smsf2024.jpg" alt="">
+                                                    </a>
+                                                </div>
+                
+                                                <div class="col-md-6 text-right">
+                                                   <h5 class="my-4">Self managed superfund Compliance Basic</h5>
+                                                    <p > Apply legal authorities like 
+                                                         to a hypothetical study case</p>
+                                                  </div>
+                                            </div>
+                                            <hr>
+                                        </div><!-- /.Project SMSF - content-->
+                                      
+                                        <!-- Project Bitcoin -->   
+                                        <div class="carousel-item" data-bs-interval="">  
+                                            <div class="row justify-content-md-center">
+                                                <div class="col-md-6">
+                                                    <a href="https://anh.contact/404/">
+                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_money.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                                </div>
+                                            <hr>
+                                        </div><!-- /.Project Bitcoin - content-->
+                                            
+                                        </div> <!-- Carousel-inner -->            
+                                        <!-- Carousel Controls -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div> <!-- Carousel-slides -->
+                            </div>
                     </div><!-- /.row 2-->
                     </div><!-- /.Home Tab -->
                     <!-- Records Tab -->
