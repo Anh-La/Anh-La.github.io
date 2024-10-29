@@ -20,7 +20,8 @@
                 margin: 0 .5em;
             }
             .carousel-inner{
-                    padding: 0 .5em;
+                margin: 0 .5em;
+                padding: 1em;
             }
             .carousel-control-prev,.carousel-control-next{
                     background-color: #e1e1e1;
@@ -266,129 +267,40 @@
                     <!-- Home Tab -->
                     <div id="Home" class="container tabcontent">
                         <!-- Page content-->
-                        <!-- row 1-->
+                        <!-- Row 1 -->
                         <div class="row">
+                            <!-- Carousel Column -->
                             <div class="col-lg-6">
-                                <!-- Carousel Home Controls 1 -->
+                                <!-- Carousel -->
                                 <div id="carouselHomeControls1" class="carousel slide" data-bs-ride="carousel">
                                     <!-- Carousel Inner Start -->
                                     <div class="carousel-inner">
-                                        <!-- slide 1 -->
+                                        <!-- Slide 1 -->
                                         <div class="carousel-item active">
                                             <!-- Card 1 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="Tax/CTA3/Corporate_Tax_Case">
-                                                        <img class="card-img-top" src="assets/700x300_coporateTax2024.jpg" alt="">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Tax/CTA3/Corporate_Tax_Case">CTA3 2024 - CS2: Corporate Tax</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="Tax/CTA3/Corporate_Tax_Case">
+                                                    <img
+                                                        class="card-img-top"
+                                                        src="assets/700x300_coporateTax2024.jpg"
+                                                        alt="Corporate Tax Case"
+                                                        style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                                    >
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/Corporate_Tax_Case">CTA3 2024 - CS2: Corporate Tax</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Explore the complexities of corporate taxation, including tax consolidation, franking credits, and dividend imputation.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--/. slide 1 -->
-                                
-                                        <!-- slide 2 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 2 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="Tax/CTA3/International_Tax_Case">
-                                                        <img class="card-img-top" src="assets/700x300_internationalTax2024.jpg" alt="">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Tax/CTA3/International_Tax_Case">International Tax Case</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 2 -->
-                                
-                                        <!-- slide 3 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 3 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="#">
-                                                        <img class="img-fluid" src="assets/700x300_smallbusiness2024.jpg" alt="Small Business CGT Case">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Tax/CTA3/Small_Business_CGT_Case.html">Small Business CGT Case</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">This case study examines complex international tax issues faced by SkyNet Ltd, including permanent establishment, income attribution, expense treatment, repatriation of funds, and implications of relocating operations to Singapore.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 3 -->
-                                
-                                        <!-- slide 4 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 4 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="#">
-                                                        <img class="img-fluid" src="assets/700x300_GST2024.jpg" alt="GST Case">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Tax/CTA3/GST_Case.html">GST Case</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">This case study explores the GST implications of acquiring assets versus shares, focusing on the potential for treating the acquisition as a GST-free going concern and the impact on Input Tax Credit (ITC) and Reduced Input Tax Credit (RITC) claims.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 4 -->
-                                
-                                        <!-- slide 5 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 5 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="#">
-                                                        <img class="img-fluid" src="assets/700x300_TrustSmallBusinessCGT2024.jpg" alt="Trusts and Small Business CGT Concessions">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">Trusts and Small Business CGT Concessions</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">This case study explores the complexities of trusts and the application of Small Business CGT Concessions under Australian tax law. It examines the situations of Arthur Jones, the William Family Trust, and other related parties in the context of asset sales and tax implications.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 5 -->
-                                
-                                        <!-- slide 6 -->
-                                        <div class="carousel-item">
-                                            <!-- Card 6 -->
-                                            <div class="card-wrapper h-100">
-                                                <div class="card h-100">
-                                                    <a href="#">
-                                                        <img class="card-img-top" src="assets/700x300_Financial-Planning.jpg" alt="">
-                                                    </a>
-                                                    <div class="card-body d-flex flex-column">
-                                                        <h4 class="card-title">
-                                                            <a href="Finance/FinancialPlanning/How_to_Bulletproof_Your_Finances_for_a_Certain_Future.html">How to Bulletproof Your Finances for a Certain Future</a>
-                                                        </h4>
-                                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/. slide 6 -->
+                                        <!-- /.Slide 1 -->
+                                        <!-- Additional slides as needed -->
                                     </div>
                                     <!--/. Carousel Inner End -->
-                                
                                     <!-- Carousel Controls -->
                                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -401,178 +313,158 @@
                                 </div>
                                 <!--/. Carousel End -->
                             </div>
-                            <!-- Other cards -->
-                            <div class="col-lg-3 d-flex">
-                                <!-- Blog post-->
-                                <div class="card mb-4 flex-fill">
-                                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="small text-muted">January 1, 2023</div>
-                                        <h2 class="card-title h4">Post Title</h2>
-                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                        <a class="btn btn-primary mt-auto" href="#!">Read more →</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 d-flex">
-                                <!-- Blog post-->
-                                <div class="card mb-4 flex-fill">
-                                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="small text-muted">January 1, 2023</div>
-                                        <h2 class="card-title h4">Post Title</h2>
-                                        <p class="card-text flex-grow-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                        <a class="btn btn-primary mt-auto" href="#!">Read more →</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.Other cards -->
-                        </div>
-                        <!-- /.row 1-->
-                    <div class="row"><!-- row 2-->
-                        <!-- Other cards -->
+                            <!-- Other Cards -->
                             <div class="col-lg-3">
                                 <!-- Blog Post 1 -->
-                                <div class="card-wrapper">
-                                    <div class="card mb-4">
-                                        <a href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">
-                                            <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="FRM Study Guide 2022">
-                                        </a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">March 10, 2023</div>
-                                            <h2 class="card-title h4">Key Lessons from FRM Study Guide 2022</h2>
-                                            <p class="card-text">An overview of essential concepts from the FRM Study Guide 2022 by GARP.</p>
-                                            <a class="btn btn-primary" href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">Read more →</a>
-                                        </div>
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="#!">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Post Title"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.
+                                        </p>
+                                        <a class="btn btn-primary" href="#!" style="align-self: flex-start; margin-top: auto;">Read more →</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <!-- Blog Post 2 -->
-                                <div class="card-wrapper">
-                                    <div class="card mb-4">
-                                        <a href="Blog/Swimming_With_Sharks.html">
-                                            <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="Swimming With Sharks">
-                                        </a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">April 5, 2023</div>
-                                            <h2 class="card-title h4">Swimming With Sharks: Bulletproof Your Finances</h2>
-                                            <p class="card-text">Key insights from Daniel Brammall's book on safeguarding your finances.</p>
-                                            <a class="btn btn-primary" href="Blog/Swimming_With_Sharks.html">Read more →</a>
-                                        </div>
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="#!">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Post Title"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.
+                                        </p>
+                                        <a class="btn btn-primary" href="#!" style="align-self: flex-start; margin-top: auto;">Read more →</a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.Other cards -->
-                            <div class="col-lg-6">
-                                <div id="carouselVideos" class="carousel slide">
-                                  <div class="carousel-inner">
-                                    <!-- Videos Project -->
-                                    <div class="carousel-item active" data-bs-interval="30000">
-                                      <div class="row justify-content-md-center">
-                                        <div class="col-md-6">
-                                          <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
-                                            <img
-                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="assets/700x300_TrustSmallBusinessCGT2024.jpg"
-                                              alt=""
-                                            />
-                                          </a>
-                                        </div>
-                                        
-                                      </div>
-                                        <hr>
-                                    </div> <!-- /.Project Trust and small CGT concessions - content-->
-                                    
-                                    <!-- Project Corporate Videos -->
-                                    <div class="carousel-item" data-bs-interval="">
-                                      <div class="row justify-content-md-center">
-                                        
-                                          <a href="Tax/CTA3/Corporate_Tax_Case.html">
-                                            <img
-                                              class="img-fluid rounded mb-3 mb-md-0 d-block w-100"
-                                              src="assets/700x300_coporateTax2024.jpg"
-                                              alt=""
-                                            />
-                                          </a>
-                                                                                
-                                      </div>
-                                        
-                                    </div><!-- /.Project Coporate Videos -->
-                                    
-                                        <!-- Project small CGT concessions -->  
-                                        <div class="carousel-item">
-                                            <div class="row justify-content-md-center">
-                                                
-                                                    <a href="Tax/CTA3/Small_Business_CGT_Case.html">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smallbusiness2024.jpg" alt="">
-                                                    </a>
-                                                
-                                            </div>  
-                                            
-                                        </div><!-- /.Project small CGT concessions -->
-
-                                        <!-- Project international Videos -->   
-                                        <div class="carousel-item" data-bs-interval="">  
-                                            <div class="row justify-content-md-center">
-                                                
-                                                    <a href="Tax/CTA3/International_Tax_Case.html">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_internationalTax2024.jpg" alt="">
-                                                    </a>
-                                                
-                                            </div>  
-                                            
-                                        </div><!-- /.Project international Videos -->   
-                                
-                                        <!-- Project GST -->   
-                                        <div class="carousel-item">  
-                                            <div class="row justify-content-md-center">
-                                                
-                                                    <a href="Tax/CTA3/GST_Case.html">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_GST2024.jpg" alt="">
-                                                    </a>
-                                                
-                                            </div>
-                                            
-                                        </div><!-- /.Project GST --> 
-                                        
-                                    <!-- Project SMSF -->   
-                                        <div class="carousel-item">  
-                                            <div class="row justify-content-md-center">
-                                                
-                                                    <a href="#">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smsf2024.jpg" alt="">
-                                                    </a>
-                                                
-                                            </div>
-                                            
-                                        </div><!-- /.Project SMSF - content-->
-                                      
-                                        <!-- Project Bitcoin -->   
-                                        <div class="carousel-item" data-bs-interval="">  
-                                            <div class="row justify-content-md-center">
-                                                
-                                                    <a href="https://anh.contact/404/">
-                                                        <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_money.jpg" alt="">
-                                                    </a>
-                                                
-                                                </div>
-                                            
-                                        </div><!-- /.Project Bitcoin - content-->
-                                            
-                                        </div> <!-- Carousel-inner -->            
-                                        <!-- Carousel Controls -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div> <!-- Carousel-slides -->
+                            <!-- /.Other Cards -->
+                        </div>
+                        <!-- /.Row 1 -->
+                
+                        <!-- Row 2 -->
+                        <div class="row">
+                            <!-- Other Cards -->
+                            <div class="col-lg-3">
+                                <!-- Blog Post 3 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="FRM Study Guide 2022"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">March 10, 2023</div>
+                                        <h2 class="card-title h4">Key Lessons from FRM Study Guide 2022</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            An overview of essential concepts from the FRM Study Guide 2022 by GARP.
+                                        </p>
+                                        <a class="btn btn-primary" href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
                             </div>
-                    </div><!-- /.row 2-->
+                            <div class="col-lg-3">
+                                <!-- Blog Post 4 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="Blog/Swimming_With_Sharks.html">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Swimming With Sharks"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">April 5, 2023</div>
+                                        <h2 class="card-title h4">Swimming With Sharks: Bulletproof Your Finances</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Key insights from Daniel Brammall's book on safeguarding your finances.
+                                        </p>
+                                        <a class="btn btn-primary" href="Blog/Swimming_With_Sharks.html" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Carousel Column -->
+                            <div class="col-lg-6">
+                                <!-- Carousel Videos -->
+                                <div id="carouselVideos" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <!-- Video Slide 1 -->
+                                        <div class="carousel-item active">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_TrustSmallBusinessCGT2024.jpg"
+                                                    alt="Trusts and Small Business CGT Concessions"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 1 -->
+                                        <!-- Video Slide 2 -->
+                                        <div class="carousel-item">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Corporate_Tax_Case.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_coporateTax2024.jpg"
+                                                    alt="Corporate Tax Case"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 2 -->
+                                        <!-- Video Slide 3 -->
+                                        <div class="carousel-item">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Small_Business_CGT_Case.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_smallbusiness2024.jpg"
+                                                    alt="Small Business CGT Case"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 3 -->
+                                        <!-- Add additional slides as needed -->
+                                    </div>
+                                    <!-- Carousel Controls -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <!-- /.Carousel Videos End -->
+                            </div>
+                        </div>
+                        <!-- /.Row 2 -->
                     </div><!-- /.Home Tab -->
                     <!-- Records Tab -->
                     <div id="Records" class="container tabcontent">
