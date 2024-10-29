@@ -14,6 +14,66 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            /* normal card*/
+            .card{
+                    margin: 0 .5em;
+                    /*border: none;
+                    border-radius: 0;
+                    box-shadow: 2px 6px 8px 0 rgba(22,22,26,0,18);*/
+            }
+            .carousel-inner{
+                    padding: 1em;
+            }
+            .carousel-control-prev,.carousel-control-next{
+                    background-color: #e1e1e1;
+                    width: 6vh;
+                    height: 6vh;
+                    border-radius: 50%;
+                    top: 50%;
+                    transform: translateY(-50%);
+            }
+            .carousel-control-prev span,
+            .carousel-control-next span{
+                    width: 1.5rem;
+                    height: 1.5rem;
+            }
+            /* Show only 1 card on small screens */
+            @media (max-width: 767px) {
+                    .carousel-inner .carousel-item > div {
+                            display: none;
+                    }
+                    .carousel-inner .carousel-item > div:first-child {
+                            display: block;
+                    }
+            }
+            
+            .carousel-inner .carousel-item.active,
+            .carousel-inner .carousel-item-next,
+            .carousel-inner .carousel-item-prev {
+                    display: flex;
+            }
+            
+            /* medium and up screens */
+            @media (min-width: 768px) {
+            
+                    .carousel-inner .carousel-item-end.active,
+                    .carousel-inner .carousel-item-next {
+                            transform: translateX(25%);
+                    }
+            
+                    .carousel-inner .carousel-item-start.active, 
+                    .carousel-inner .carousel-item-prev {
+                            transform: translateX(-25%);
+                    }
+            }
+            
+            .carousel-inner .carousel-item-end,
+            .carousel-inner .carousel-item-start { 
+                    transform: translateX(0);
+            }
+
+        </style>
     </head>
     <body class="sb-nav-fixed">
     <!-- Navigation Bar -->
