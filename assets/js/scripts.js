@@ -131,7 +131,7 @@ controlCarouselItemsById('relatedProjectsCarousel', 4);
 // Function to control cards (scroll effect) in specific carousel slides by their IDs with jQuery
 $(document).ready(function () {
     // Array of specific carousel IDs
-    const carouselIds = ['#carouselBlogBitcoin', '#carouselBlogFinance', '#carouselBlogTax', '#carouselBlogInvesting'];
+    const carouselIds = ['#carouselVideos', '#carouselBlogInvesting'];
 
     // Loop through each specific carousel by ID
     carouselIds.forEach(function (carouselId) {
