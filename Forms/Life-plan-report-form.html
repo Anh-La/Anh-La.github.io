@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifePlan – Client Report Form</title>
+</head>
+<body>
+    <h1>LifePlan – Client Report</h1>
+    <form action="/submit" method="post">
+        <h2>Client Information</h2>
+        <p><label for="clientName">Client Name:</label>
+            <input type="text" id="clientName" name="clientName" value="[John and Mary Smith]"></p>
+        <p><label for="reportDate">Report Date:</label>
+            <input type="text" id="reportDate" name="reportDate" value="[June 2012]"></p>
+
+        <h2>Your Current Financial Situation</h2>
+        <p><strong>Assets</strong></p>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Asset</th>
+                <th>Amount</th>
+                <th>Owner</th>
+            </tr>
+            <tr>
+                <td>Family Home</td>
+                <td><input type="text" name="familyHomeAmount"></td>
+                <td><input type="text" name="familyHomeOwner"></td>
+            </tr>
+            <tr>
+                <td>Investment Property</td>
+                <td><input type="text" name="investmentPropertyAmount"></td>
+                <td><input type="text" name="investmentPropertyOwner"></td>
+            </tr>
+            <tr>
+                <td>Business</td>
+                <td><input type="text" name="businessAmount"></td>
+                <td><input type="text" name="businessOwner"></td>
+            </tr>
+            <tr>
+                <td>Superannuation (John)</td>
+                <td><input type="text" name="superJohnAmount"></td>
+                <td>John</td>
+            </tr>
+            <tr>
+                <td>Superannuation (Mary)</td>
+                <td><input type="text" name="superMaryAmount"></td>
+                <td>Mary</td>
+            </tr>
+            <tr>
+                <td>Cash at Bank</td>
+                <td><input type="text" name="cashBankAmount"></td>
+                <td>Joint</td>
+            </tr>
+            <tr>
+                <td>Shares & Managed Funds</td>
+                <td><input type="text" name="sharesAmount"></td>
+                <td>Family Trust</td>
+            </tr>
+        </table>
+
+        <p><strong>Liabilities</strong></p>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Liability</th>
+                <th>Amount</th>
+                <th>Owner</th>
+            </tr>
+            <tr>
+                <td>Home Loan</td>
+                <td><input type="text" name="homeLoanAmount"></td>
+                <td><input type="text" name="homeLoanOwner"></td>
+            </tr>
+            <tr>
+                <td>Investment Property Loan</td>
+                <td><input type="text" name="investmentLoanAmount"></td>
+                <td><input type="text" name="investmentLoanOwner"></td>
+            </tr>
+            <tr>
+                <td>Business Loan</td>
+                <td><input type="text" name="businessLoanAmount"></td>
+                <td><input type="text" name="businessLoanOwner"></td>
+            </tr>
+            <tr>
+                <td>Credit Cards</td>
+                <td><input type="text" name="creditCardAmount"></td>
+                <td><input type="text" name="creditCardOwner"></td>
+            </tr>
+        </table>
+
+        <h2>Annual Income</h2>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Income Source</th>
+                <th>Amount</th>
+                <th>Owner</th>
+            </tr>
+            <tr>
+                <td>Employment (John)</td>
+                <td><input type="text" name="employmentJohnAmount"></td>
+                <td>John</td>
+            </tr>
+            <tr>
+                <td>Employment (Mary)</td>
+                <td><input type="text" name="employmentMaryAmount"></td>
+                <td>Mary</td>
+            </tr>
+            <tr>
+                <td>Business Profits</td>
+                <td><input type="text" name="businessProfitsAmount"></td>
+                <td>Family Trust</td>
+            </tr>
+        </table>
+
+        <h2>Key Assumptions</h2>
+        <p><label for="employmentIncrease">Annual Employment Income Increase:</label>
+            <input type="text" id="employmentIncrease" name="employmentIncrease" value="3%"></p>
+        <p><label for="propertyGrowth">Property Growth Rate:</label>
+            <input type="text" id="propertyGrowth" name="propertyGrowth" value="5%"></p>
+        <p><label for="sharesGrowth">Shares Growth Rate:</label>
+            <input type="text" id="sharesGrowth" name="sharesGrowth" value="7%"></p>
+        <p><label for="incomeReturn">Income Return from Shares:</label>
+            <input type="text" id="incomeReturn" name="incomeReturn" value="4%"></p>
+
+        <h2>Recommended Action Steps</h2>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Key Area</th>
+                <th>Recommended Action</th>
+            </tr>
+            <tr>
+                <td>Debt Reduction</td>
+                <td><input type="text" name="debtReductionAction" value="Request a Free Loan Review..."></td>
+            </tr>
+            <tr>
+                <td>Invest for Growth</td>
+                <td><input type="text" name="investGrowthAction" value="Request our advice about Property Investments..."></td>
+            </tr>
+            <tr>
+                <td>Supercharge Superannuation</td>
+                <td><input type="text" name="superchargeAction" value="Seek advice about Self-Managed Superannuation Fund..."></td>
+            </tr>
+            <tr>
+                <td>Income Protection</td>
+                <td><input type="text" name="incomeProtectionAction" value="Request advice about Income Protection Insurance..."></td>
+            </tr>
+            <tr>
+                <td>Family Protection</td>
+                <td><input type="text" name="familyProtectionAction" value="Request advice about Life / TPD / Trauma Insurance..."></td>
+            </tr>
+            <tr>
+                <td>Estate Planning</td>
+                <td><input type="text" name="estatePlanningAction" value="Meet with an Estate Planning Lawyer..."></td>
+            </tr>
+            <tr>
+                <td>Manage Personal Finances</td>
+                <td><input type="text" name="personalFinanceAction" value="Use Xero Personal for personal cash flow..."></td>
+            </tr>
+        </table>
+
+        <p><button type="submit">Submit LifePlan</button></p>
+    </form>
+</body>
+</html>
