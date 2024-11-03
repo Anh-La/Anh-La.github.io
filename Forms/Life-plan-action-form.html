@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifePlan – Action Plan Form</title>
+</head>
+<body>
+    <h1>LifePlan – Action Plan</h1>
+    <form action="/submit" method="post">
+        <p><label for="month">Month:</label>
+            <input type="text" id="month" name="month"></p>
+        <p><label for="year">Year:</label>
+            <input type="text" id="year" name="year"></p>
+
+        <h2>Client Information</h2>
+        <p><label for="clientName">Client Name:</label>
+            <input type="text" id="clientName" name="clientName"></p>
+        <p><label for="financialPlanner">Financial Planner:</label>
+            <input type="text" id="financialPlanner" name="financialPlanner"></p>
+        <p><label for="jobType">Job Type:</label>
+            <input type="text" id="jobType" name="jobType"></p>
+        <p><label for="accountant">Accountant:</label>
+            <input type="text" id="accountant" name="accountant"></p>
+
+        <p>Set out below is the agreed set of actions to achieve your Projected Income Stream outlined in your LifePlan.</p>
+
+        <h2>Action Plan</h2>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Key Area</th>
+                <th>Action</th>
+                <th>Responsibility</th>
+                <th>Due Date</th>
+            </tr>
+            <tr>
+                <td>Debt Reduction</td>
+                <td>Request a Free Loan Review to ensure you have the best loan with the lowest fees for your circumstances. Commence a debt reduction strategy.</td>
+                <td><input type="text" name="debtReductionResponsibility"></td>
+                <td><input type="date" name="debtReductionDueDate"></td>
+            </tr>
+            <tr>
+                <td>Invest for Growth</td>
+                <td>Request our advice about Property Investments, Share Investments, and Managed Fund Investments.</td>
+                <td><input type="text" name="investForGrowthResponsibility"></td>
+                <td><input type="date" name="investForGrowthDueDate"></td>
+            </tr>
+            <tr>
+                <td>Supercharge your Superannuation</td>
+                <td>Seek advice about the establishment of a Self-Managed Superannuation Fund.</td>
+                <td><input type="text" name="superchargeSuperResponsibility"></td>
+                <td><input type="date" name="superchargeSuperDueDate"></td>
+            </tr>
+            <tr>
+                <td>Protect your Greatest Asset – Your Income</td>
+                <td>Request advice about how Income Protection Insurance will protect your family’s lifestyle.</td>
+                <td><input type="text" name="incomeProtectionResponsibility"></td>
+                <td><input type="date" name="incomeProtectionDueDate"></td>
+            </tr>
+            <tr>
+                <td>Protect Your Family’s Lifestyle</td>
+                <td>Request advice about how Life / TPD / Trauma Insurance will provide financial assistance for your family if you or your partner / spouse were to die.</td>
+                <td><input type="text" name="familyProtectionResponsibility"></td>
+                <td><input type="date" name="familyProtectionDueDate"></td>
+            </tr>
+            <tr>
+                <td>Estate Planning</td>
+                <td>Meet with one of our expert Estate Planning Lawyers to prepare / update your Wills and Powers of Attorney.</td>
+                <td><input type="text" name="estatePlanningResponsibility"></td>
+                <td><input type="date" name="estatePlanningDueDate"></td>
+            </tr>
+            <tr>
+                <td>Manage your Personal Finances</td>
+                <td>Use Xero Personal to manage your personal cash flow.</td>
+                <td><input type="text" name="personalFinanceResponsibility"></td>
+                <td><input type="date" name="personalFinanceDueDate"></td>
+            </tr>
+        </table>
+
+        <h2>Completed Actions</h2>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tr>
+                <th>Action</th>
+                <th>Responsibility</th>
+                <th>Date Completed</th>
+            </tr>
+            <tr>
+                <td><input type="text" name="completedAction1"></td>
+                <td><input type="text" name="completedResponsibility1"></td>
+                <td><input type="date" name="completedDate1"></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="completedAction2"></td>
+                <td><input type="text" name="completedResponsibility2"></td>
+                <td><input type="date" name="completedDate2"></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="completedAction3"></td>
+                <td><input type="text" name="completedResponsibility3"></td>
+                <td><input type="date" name="completedDate3"></td>
+            </tr>
+        </table>
+
+        <p>Should you have any concerns regarding the accuracy or content of information contained in this report or the support you are receiving, please feel free to contact your [Partner/Accountant] or [Financial Planner] at your earliest convenience.</p>
+        
+        <p><button type="submit">Submit Action Plan</button></p>
+    </form>
+</body>
+</html>
