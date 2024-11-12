@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Anh La</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="assets/css/styles.css" rel="stylesheet"/>
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            /* normal card */
+            .card {
+                margin: 0 .5em;
+            }
+            .carousel-inner{
+                margin: 0 .5em;
+                padding: 1em;
+            }
+            .carousel-control-prev,.carousel-control-next{
+                    background-color: #e1e1e1;
+                    width: 6vh;
+                    height: 6vh;
+                    border-radius: 50%;
+                    top: 50%;
+                    transform: translateY(-50%);
+            }
+            .carousel-control-prev span,
+            .carousel-control-next span{
+                    width: 1.5rem;
+                    height: 1.5rem;
+            }
+            /* Show only 1 card on small screens */
+            @media (max-width: 767px) {
+                    .carousel-inner .carousel-item > div {
+                            display: none;
+                    }
+                    .carousel-inner .carousel-item > div:first-child {
+                            display: block;
+                    }
+            }
+            
+            .carousel-inner .carousel-item.active,
+            .carousel-inner .carousel-item-next,
+            .carousel-inner .carousel-item-prev {
+                    display: flex;
+            }
+            
+            /* medium and up screens */
+            @media (min-width: 768px) {
+            
+                    .carousel-inner .carousel-item-end.active,
+                    .carousel-inner .carousel-item-next {
+                            transform: translateX(25%);
+                    }
+            
+                    .carousel-inner .carousel-item-start.active, 
+                    .carousel-inner .carousel-item-prev {
+                            transform: translateX(-25%);
+                    }
+            }
+            
+            .carousel-inner .carousel-item-end,
+            .carousel-inner .carousel-item-start { 
+                    transform: translateX(0);
+            }
+
+        </style>
+    </head>
+    <body class="sb-nav-fixed">
+    <!-- Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-primary">
+        <!-- Avatar -->
+        <div class="text-center">
+            <a class="navbar-brand ps-3" href="login">
+                <img src="assets/avatar.png" alt="Avatar" class="avatar">
+            </a>
+        </div><!-- /.Avatar-->
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index">Anh La</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation Buttons -->
+        <div class="container-fluid">
+            <button id="homeTab" class="tablink active" onclick="openPage('Home', this)">
+                <i class="bi bi-house-door-fill"></i>
+            </button>
+            <button id="recordTab" class="tablink" onclick="openPage('Records', this)">
+                <i class="bi bi-file-play-fill"></i>
+            </button>
+            <button id="blogTab" class="tablink" onclick="openPage('Blog', this)">
+                <i class="bi bi-pen-fill"></i>
+            </button>
+            <button id="chartTab" class="tablink" onclick="openPage('Charts', this)">
+                <i class="bi bi-graph-up-arrow"></i>
+            </button>
+        </div>
+    </nav>
+    <!-- Layout Sidenav -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <!-- Sidebar Content (Same as other pages) -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                            <!-- For Individual Content -->
+                            <div class="sb-sidenav-menu-heading">For Individual</div>
+                            <!-- Financial Planning Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIndividual1" aria-expanded="false" aria-controls="collapseIndividual1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Financial Planning
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseIndividual1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Budgeting</a>
+                                        <a class="nav-link" href="blogHome">Structuring</a>
+                                    </nav>
+                                </div><!-- /.Financial Planning Content -->
+                                <!-- /.Tax Planning Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIndividual2" aria-expanded="false" aria-controls="collapseIndividual2">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                        Tax Planning
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseIndividual2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">                        
+                                            <a class="nav-link" href="blogHome">Individual Tax</a>
+                                            <a class="nav-link" href="blog">Partnership Tax</a>
+                                            <a class="nav-link" href="blog">SMSF Tax</a>
+                                            <a class="nav-link" href="blog">Trust Tax</a>
+                                        </nav>
+                                    </div><!-- /.Tax Planning Content -->
+                            <!-- For Business Content -->
+                            <div class="sb-sidenav-menu-heading">For Business</div>
+                            <!-- For SME Business Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBusiness1" aria-expanded="false" aria-controls="collapseBusiness1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Small and Medium Business
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBusiness1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!-- /.For SME Business Content -->
+                            <!-- For Large Business Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBusiness2" aria-expanded="false" aria-controls="collapseBusiness2">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Large Business
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBusiness2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!-- /.For large Business Content -->
+                            <!-- For Nation state Content -->
+                            <div class="sb-sidenav-menu-heading">Nation state</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseNation1" aria-expanded="false" aria-controls="collapseNation1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Traditional Finance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseNation1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Base money</a>
+                                        <a class="nav-link" href="blog">Fiat money</a>
+                                        <a class="nav-link" href="blog">Residential property</a>
+                                        <a class="nav-link" href="blog">Commercial propert</a>
+                                        <a class="nav-link" href="blog">Equity</a>
+                                        <a class="nav-link" href="blogHome">Bonds</a>
+                                        <a class="nav-link" href="blogHome">Crypto currency (Bitcoin)</a>
+                                    </nav>
+                                </div><!-- /.For Nation state Content -->                       
+                            <!-- Technology Content -->
+                            <div class="sb-sidenav-menu-heading">Open source technology</div>
+                            <!-- Artificial Intelligent -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech1" aria-expanded="false" aria-controls="collapseTech1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Artificial Intelligent
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Artificial Intelligent</a>
+                                    </nav>
+                                </div><!-- /. Artificial Intelligent -->    
+                            <!-- Norstr -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech2" aria-expanded="false" aria-controls="collapseTech2">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Nostr - Node and other stuffs tranfferred via relays
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Nostr - Node and other stuffs tranfferred via relays</a>
+                                    </nav>
+                                </div><!-- /.Norstr -->
+                            <!-- Bitcoin -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech3" aria-expanded="false" aria-controls="collapseTech3">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Bitcoin
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Lightning Network</a>
+                                        <a class="nav-link" href="blog">Liquid Network</a>
+                                        <a class="nav-link" href="blog">Ark Network</a>
+                                        <a class="nav-link" href="blog">Multi sig</a>
+                                        <a class="nav-link" href="blog">Onchain analysis</a>
+                                        <a class="nav-link" href="blogHome">Bitcoin podcasts</a>                                        
+                                        <a class="nav-link" href="blog">Bitcoin mining</a>
+                                        <a class="nav-link" href="blog">Bitcoin books</a>
+                                        <a class="nav-link" href="blog">Bitcoin programing</a>
+                                        <a class="nav-link" href="blog">Bitcoin models</a>
+                                    </nav>
+                                </div><!-- /.Bitcoin -->
+
+                            <!-- You can add your sidebar menu items here -->
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container py-4">
+                    <!-- Interest section -->
+                        <div class="mb-4 bg-body-tertiary rounded-3">
+                          <div class="container-fluid">
+                              <!-- Personalised text -->
+                                <div class="d-flex w-100">         
+                                    <form name="text_Marquee" class="flex-grow-1">
+                                        <input id="quote" name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
+                                        value=" 
+                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                            “Nói thì dễ, làm thì khó.”
+                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                            " disabled />
+                                    </form>
+                                </div><!-- /.Personalised text -->
+                          </div>
+                        </div><!-- /.Interest section -->
+                    <hr>
+                    <!-- Tab Content -->
+                    <!-- Home Tab -->
+                    <div id="Home" class="container tabcontent">
+                        <!-- Page content-->
+                        <!-- Row 1 -->
+                        <div class="row">
+                            <!-- Carousel Column -->
+                            <div class="col-lg-6">
+                                <!-- Carousel -->
+                                <div id="carouselHomeControls1" class="carousel slide" data-bs-ride="carousel">
+                                    <!-- Carousel Inner Start -->
+                                    <div class="carousel-inner">
+                                        <!-- Slide 1 -->
+                                        <div class="carousel-item active">
+                                            <!-- Card 1 -->
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="Tax/CTA3/Corporate_Tax_Case">
+                                                    <img
+                                                        class="card-img-top"
+                                                        src="assets/700x300_coporateTax2024.jpg"
+                                                        alt="Corporate Tax Case"
+                                                        style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                                    >
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/Corporate_Tax_Case">Corporate Tax Case</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Explore the complexities of corporate taxation, including tax consolidation, franking credits, and dividend imputation.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.Slide 1 -->
+                                         <!-- Slide 2 -->
+                                        <div class="carousel-item">
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="Tax/CTA3/International_Tax_Case">
+                                                    <img class="card-img-top" src="assets/700x300_internationalTax2024.jpg" alt="International Tax Case" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/International_Tax_Case">International Tax Case</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Dive into global taxation issues with a focus on cross-border challenges and regulatory implications.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/. Slide 2 -->
+                                
+                                        <!-- Slide 3 -->
+                                        <div class="carousel-item">
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="#">
+                                                    <img class="card-img-top" src="assets/700x300_smallbusiness2024.jpg" alt="Small Business CGT Case" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/Small_Business_CGT_Case.html">Small Business CGT Case</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Examine tax concessions available for small businesses, with a focus on CGT and its strategic applications.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/. Slide 3 -->
+                                
+                                        <!-- Slide 4 -->
+                                        <div class="carousel-item">
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="#">
+                                                    <img class="card-img-top" src="assets/700x300_GST2024.jpg" alt="GST Case" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/GST_Case.html">GST Case</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Delve into the GST treatment for different acquisition methods and the potential tax credits.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/. Slide 4 -->
+                                
+                                        <!-- Slide 5 -->
+                                        <div class="carousel-item">
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="#">
+                                                    <img class="card-img-top" src="assets/700x300_TrustSmallBusinessCGT2024.jpg" alt="Trusts and Small Business CGT Concessions" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">Trusts and Small Business CGT Concessions</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Explore how trusts interact with small business CGT concessions under Australian tax law.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/. Slide 5 -->
+                                
+                                        <!-- Slide 6 -->
+                                        <div class="carousel-item">
+                                            <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                                <a href="#">
+                                                    <img class="card-img-top" src="assets/700x300_Financial-Planning.jpg" alt="Financial Planning" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
+                                                </a>
+                                                <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                    <h4 class="card-title">
+                                                        <a href="Finance/FinancialPlanning/How_to_Bulletproof_Your_Finances_for_a_Certain_Future.html">How to Bulletproof Your Finances for a Certain Future</a>
+                                                    </h4>
+                                                    <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                                        Tips and strategies to secure your finances in uncertain economic times.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/. Slide 6 -->
+                                        <!-- Additional slides as needed -->
+                                    </div>
+                                    <!--/. Carousel Inner End -->
+                                    <!-- Carousel Controls -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselHomeControls1" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <!--/. Carousel End -->
+                            </div>
+                            <!-- Other Cards -->
+                            <div class="col-lg-3">
+                                <!-- Blog Post 1 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="#!">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Post Title"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.
+                                        </p>
+                                        <a class="btn btn-primary" href="#!" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <!-- Blog Post 2 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="#!">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Post Title"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">January 1, 2023</div>
+                                        <h2 class="card-title h4">Post Title</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.
+                                        </p>
+                                        <a class="btn btn-primary" href="#!" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.Other Cards -->
+                        </div>
+                        <!-- /.Row 1 -->
+                
+                        <!-- Row 2 -->
+                        <div class="row">
+                            <!-- Other Cards -->
+                            <div class="col-lg-3">
+                                <!-- Blog Post 3 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="FRM Study Guide 2022"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">March 10, 2023</div>
+                                        <h2 class="card-title h4">Key Lessons from FRM Study Guide 2022</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            An overview of essential concepts from the FRM Study Guide 2022 by GARP.
+                                        </p>
+                                        <a class="btn btn-primary" href="Blog/Key_Lessons_from_FRM_Study_Guide_2022.html" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <!-- Blog Post 4 -->
+                                <div class="card" style="height: 400px; overflow: hidden; display: flex; flex-direction: column; margin: 0.5em;">
+                                    <a href="Blog/Swimming_With_Sharks.html">
+                                        <img
+                                            class="card-img-top"
+                                            src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                                            alt="Swimming With Sharks"
+                                            style="width: 100%; height: auto; max-height: 200px; object-fit: cover;"
+                                        >
+                                    </a>
+                                    <div class="card-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                                        <div class="small text-muted">April 5, 2023</div>
+                                        <h2 class="card-title h4">Swimming With Sharks: Bulletproof Your Finances</h2>
+                                        <p class="card-text" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            Key insights from Daniel Brammall's book on safeguarding your finances.
+                                        </p>
+                                        <a class="btn btn-primary" href="Blog/Swimming_With_Sharks.html" style="align-self: flex-start; margin-top: auto;">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Carousel Column -->
+                            <div class="col-lg-6">
+                                <!-- Carousel Videos -->
+                                <div id="carouselVideos" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <!-- Video Slide 1 -->
+                                        <div class="carousel-item active">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_TrustSmallBusinessCGT2024.jpg"
+                                                    alt="Trusts and Small Business CGT Concessions"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 1 -->
+                                        <!-- Video Slide 2 -->
+                                        <div class="carousel-item">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Corporate_Tax_Case.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_coporateTax2024.jpg"
+                                                    alt="Corporate Tax Case"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 2 -->
+                                        <!-- Video Slide 3 -->
+                                        <div class="carousel-item">
+                                            <!-- Image directly inside carousel-item -->
+                                            <a href="Tax/CTA3/Small_Business_CGT_Case.html">
+                                                <img
+                                                    class="img-fluid"
+                                                    src="assets/700x300_smallbusiness2024.jpg"
+                                                    alt="Small Business CGT Case"
+                                                    style="width: 100%; height: 400px; object-fit: cover;"
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- /.Video Slide 3 -->
+                                        <!-- Add additional slides as needed -->
+                                    </div>
+                                    <!-- Carousel Controls -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <!-- /.Carousel Videos End -->
+                            </div>
+                        </div>
+                        <!-- /.Row 2 -->
+                    </div><!-- /.Home Tab -->
+                    <!-- Records Tab -->
+                    <div id="Records" class="container tabcontent">
+                        <!-- Page content-->
+                          <div class="row">
+                            <div id="carouselVideos" class="carousel slide" data-bs-ride="carousel">
+                                <!-- Carousel Indicators -->
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                                    <button type="button" data-bs-target="#carouselVideos" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                                </div>
+                        
+                                <!-- Carousel Inner Start -->
+                                <div class="carousel-inner">
+                        
+                                    <!-- Slide 1: Trust Tax Compliance Basic -->
+                                    <div class="carousel-item active" data-bs-interval="30000">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="Tax/CTA3/Trusts_and_Small_Business_CGT_Concessions.html">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_TrustSmallBusinessCGT2024.jpg" alt="Trust Tax Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                            <nav>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                    <button class="nav-link active" id="nav-upnext-tab" data-bs-toggle="tab" data-bs-target="#nav-upnext" type="button" role="tab" aria-controls="nav-upnext" aria-selected="true">Up Next</button>
+                                                    <button class="nav-link" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#nav-details" type="button" role="tab" aria-controls="nav-details" aria-selected="false">Details</button>
+                                                    <button class="nav-link" id="nav-related-tab" data-bs-toggle="tab" data-bs-target="#nav-related" type="button" role="tab" aria-controls="nav-related" aria-selected="false">Related</button>
+                                                </div>
+                                            </nav>
+                                            <div class="tab-content" id="nav-tabContent">
+                                                <div class="tab-pane fade show active" id="nav-upnext" role="tabpanel" aria-labelledby="nav-upnext-tab" tab../../index="0">
+                                                    <!-- Column Cards -->
+                                                    <div class="container mt-5">
+                                                        <div class="row">
+                                                            <!-- Card 1 -->
+                                                            <div class="card mb-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://via.placeholder.com/60" class="img-fluid rounded-start me-3" alt="Primary Producer Tax">
+                                                                    <div class="card-body p-0">
+                                                                        <a href="primary_producer_tax.html" class="card-title h6 text-decoration-none">
+                                                                            Primary Producer Tax
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Card 2 -->
+                                                            <div class="card mb-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://via.placeholder.com/60" class="img-fluid rounded-start me-3" alt="Goods and Services Tax">
+                                                                    <div class="card-body p-0">
+                                                                        <a href="gst.html" class="card-title h6 text-decoration-none">
+                                                                            Goods and Services Tax
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Card 3 -->
+                                                            <div class="card mb-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://via.placeholder.com/60" class="img-fluid rounded-start me-3" alt="Structuring">
+                                                                    <div class="card-body p-0">
+                                                                        <a href="structuring.html" class="card-title h6 text-decoration-none">
+                                                                            Structuring
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <!-- Card 4 -->
+                                                            <div class="card mb-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://via.placeholder.com/60" class="img-fluid rounded-start me-3" alt="Company Tax">
+                                                                    <div class="card-body p-0">
+                                                                        <a href="company_tax.html" class="card-title h6 text-decoration-none">
+                                                                            Company Tax
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                                             
+                                                       </div>
+                                                    </div><!-- /.Column Cards -->
+                                                </div>
+                                                <div class="tab-pane fade" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tab../../index="0">
+                                                    <!-- Details content -->
+                                                    <p>Understand essential compliance practices for trusts, covering key reporting and tax obligations.</p>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav-related" role="tabpanel" aria-labelledby="nav-related-tab" tab../../index="0">
+                                                    <!-- Related content -->
+                                                    <p>Related projects and resources will be listed here.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 2: Corporate Tax Compliance Basic -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="Tax/CTA3/Corporate_Tax_Case.html">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_coporateTax2024.jpg" alt="Corporate Tax Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">Corporate Tax Compliance Basic</h5>
+                                                <p>Dive into corporate tax compliance fundamentals, including tax rates, deductions, and consolidation rules.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 3: Small Business CGT Compliance Basic -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="Tax/CTA3/Small_Business_CGT_Case.html">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smallbusiness2024.jpg" alt="Small Business CGT Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">Small Business CGT Compliance Basic</h5>
+                                                <p>Explore CGT concessions for small businesses, maximizing tax benefits while staying compliant.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 4: International Tax Compliance Basic -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="Tax/CTA3/International_Tax_Case.html">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_internationalTax2024.jpg" alt="International Tax Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">International Tax Compliance Basic</h5>
+                                                <p>Learn about international tax obligations and strategies to navigate global tax regulations effectively.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 5: Goods and Services Tax Compliance Basic -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="Tax/CTA3/GST_Case.html">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_GST2024.jpg" alt="Goods and Services Tax Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">Goods and Services Tax Compliance Basic</h5>
+                                                <p>Gain insights into GST compliance essentials, including registration, reporting, and claiming credits.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 6: Self-Managed Superfund Compliance Basic -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="#">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_smsf2024.jpg" alt="Self Managed Superfund Compliance Basic">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">Self Managed Superfund Compliance Basic</h5>
+                                                <p>Master the key compliance requirements for managing self-managed super funds (SMSFs) effectively.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                    <!-- Slide 7: Bitcoin as Base Money in Digital Finance -->
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-md-6">
+                                                <a href="https://anh.contact/404/">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0 d-block w-100" src="assets/700x300_money.jpg" alt="Bitcoin as Base Money in Digital Finance">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <h5 class="my-4">Bitcoin as the Base Money in Digital Finance</h5>
+                                                <p>Explore Bitcoin’s role in the evolving digital finance landscape as a potential base currency.</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                        
+                                </div> <!-- /.carousel-inner -->
+                        
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideos" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselVideos" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div> <!-- /.carousel -->
+                        </div> <!-- /.row -->
+                            <hr>
+                        <!-- Column Cards -->
+                        <div class="container mt-5">
+                            <div class="row">
+                                <!-- Column 1 -->
+                                <div class="col-md-6">
+                                    <!-- Card 3 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Primary Producer Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="card-title h6 text-decoration-none">
+                                                    Primary Producer Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 5 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Goods and Services Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="card-title h6 text-decoration-none">
+                                                    Goods and Services Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 7 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Structuring">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/structuring/" class="card-title h6 text-decoration-none">
+                                                    Structuring
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 9 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Digital Finance CPA">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="card-title h6 text-decoration-none">
+                                                    Digital Finance CPA Guidance
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 11 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Evolution of Bitcoin">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-bitcoin/" class="card-title h6 text-decoration-none">
+                                                    Evolution of Bitcoin
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column 2 -->
+                                <div class="col-md-6">
+                                    <!-- Card 4 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Company Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/companies/" class="card-title h6 text-decoration-none">
+                                                    Company Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 6 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Tax Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/tax-planning/" class="card-title h6 text-decoration-none">
+                                                    Tax Planning
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 8 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Non-profit Organisations Tax">
+                                            <div class="card-body p-0">
+                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="card-title h6 text-decoration-none">
+                                                    Non-profit Organisations Tax
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 10 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Financial Planning">
+                                            <div class="card-body p-0">
+                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="card-title h6 text-decoration-none">
+                                                    Financial Planning for Individuals
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 12 -->
+                                    <div class="card mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="img-fluid rounded-start me-3" alt="Bitcoin Evolution of Money">
+                                            <div class="card-body p-0">
+                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="card-title h6 text-decoration-none">
+                                                    The Role of Bitcoin in Evolution of Money
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.Column Cards -->
+
+    
+                        
+                    </div><!-- /.Records Tab -->
+                    <!-- Blog Tab -->
+                    <div id="Blog" class="container tabcontent">
+                        <!-- Page content-->
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <!-- Blog entries-->
+                                        <div class="col-lg-12">
+                                            <!-- Featured blog post-->
+                                            <div id="carouselFeaturedBlogs" class="carousel slide" data-bs-ride="carousel">
+                                                <!-- Carousel Inner -->
+                                                <div class="carousel-inner">
+                                                    <!-- Slide 1 -->
+                                                    <div class="carousel-item active">
+                                                        <div class="card">
+                                                            <a href="Investing/Ray-Dalio/How-the-Economic-Machine-Works---Leveragings-and-Deleveragings">
+                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="First slide">
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <div class="small text-muted">January 1, 2023</div>
+                                                                <h2 class="card-title h4">How the Economic Machine Works – Leveragings and Deleveragings</h2>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.</p>
+                                                                <a class="btn btn-primary" href="Investing/Ray-Dalio/How-the-Economic-Machine-Works---Leveragings-and-Deleveragings">Read more →</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Slide 2 -->
+                                                    <div class="carousel-item">
+                                                        <div class="card">
+                                                            <a href="Finance/Financial-Programming/Introduction-to-Financial-Programming-and-Policies-(FPP)">
+                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/5a5a5a.jpg" alt="Second slide">
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <div class="small text-muted">January 2, 2023</div>
+                                                                <h2 class="card-title h4">Introduction to Financial Programming and Policies (FPP)</h2>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos cum ex quis soluta, a laboriosam.</p>
+                                                                <a class="btn btn-primary" href="Finance/Financial-Programming/Introduction-to-Financial-Programming-and-Policies-(FPP)">Read more →</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Slide 3 -->
+                                                    <div class="carousel-item">
+                                                        <div class="card">
+                                                            <a href="Finance/RiskManagement/Financial_Risk_Management.html">
+                                                                <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/4a4a4a.jpg" alt="Third slide">
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <div class="small text-muted">January 3, 2023</div>
+                                                                <h2 class="card-title h4">Financial Risk Management</h2>
+                                                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta expedita corporis animi vero voluptate voluptatibus possimus.</p>
+                                                                <a class="btn btn-primary" href="Finance/RiskManagement/Financial_Risk_Management.html">Read more →</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        
+                                                <!-- Carousel Controls -->
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselFeaturedBlogs" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselFeaturedBlogs" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
+                                            </div><!-- /.Featured blog post-->
+                                            <hr>
+                                        </div><!-- /.Col end -->
+                                     </div><!-- /.Row end -->
+                                </div><!-- /.Container end --> 
+                                 <!-- Numbered List -->
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            <!-- Single Responsive Column -->
+                                            <div class="col-lg-12">
+                                                <ul class="list-group list-group-flush list-group-numbered">
+                                                    <!-- Item 1 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/luke-mikic/A-Brief-Overview-of-the-Fall-of-the-Traditional-System-and-Potential-Fix-(Bitcoin)" class="text-decoration-none text-dark">
+                                                                    A Brief Overview of the Fall of the Traditional System and Potential Fix (Bitcoin)
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">January 1, 2023</div>
+                                                            <p class="mb-0">An insightful analysis of how traditional financial systems are failing and how Bitcoin offers a potential solution.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Luke Mikic" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 2 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Lyn-Alden/Comprehensive-Overview-of-Debt-Inflation-Wealth-Inequality-Market-Risks-and-Energy-Opportunities" class="text-decoration-none text-dark">
+                                                                    Comprehensive Overview of Debt, Inflation, Wealth Inequality, Market Risks, and Energy Opportunities
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">January 2, 2023</div>
+                                                            <p class="mb-0">An in-depth look at economic factors affecting global markets, authored by Lyn Alden.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Lyn Alden" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 3 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/Primary-Producer/" class="text-decoration-none text-dark">
+                                                                    Primary Producer Tax
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">January 15, 2023</div>
+                                                            <p class="mb-0">Essential information on taxation for primary producers, including deductions and concessions.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Primary Producer Tax" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 4 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/companies/" class="text-decoration-none text-dark">
+                                                                    Company Tax
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">February 5, 2023</div>
+                                                            <p class="mb-0">Comprehensive guide on company taxation in Australia, including recent updates and compliance requirements.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Company Tax" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 5 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/GST-and-BAS/" class="text-decoration-none text-dark">
+                                                                    Goods and Services Tax
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">February 20, 2023</div>
+                                                            <p class="mb-0">Detailed information on GST compliance and reporting obligations for businesses.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Goods and Services Tax" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 6 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/tax-planning/" class="text-decoration-none text-dark">
+                                                                    Tax Planning
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">February 28, 2023</div>
+                                                            <p class="mb-0">Strategies for effective tax planning to minimize liabilities and maximize benefits.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Tax Planning" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 7 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/structuring/" class="text-decoration-none text-dark">
+                                                                    Structuring
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">March 10, 2023</div>
+                                                            <p class="mb-0">Strategies for effective business structuring to optimize tax outcomes and asset protection.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Structuring" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 8 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://accounting-tax.github.io/Clubs-and-Associations/" class="text-decoration-none text-dark">
+                                                                    Non-profit Organisations Tax
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">March 25, 2023</div>
+                                                            <p class="mb-0">Taxation guidelines and benefits for clubs and associations operating as non-profit entities.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Non-profit Organisations Tax" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 9 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://bitcoin-basic.github.io/digital-finance-CPA/" class="text-decoration-none text-dark">
+                                                                    Digital Finance CPA Guidance
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">March 30, 2023</div>
+                                                            <p class="mb-0">Guidelines from CPA on navigating digital finance and cryptocurrency accounting.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Digital Finance CPA" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 10 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://digital-finance-pty-ltd.github.io/financial-planning/" class="text-decoration-none text-dark">
+                                                                    Financial Planning for Individuals
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">April 5, 2023</div>
+                                                            <p class="mb-0">Comprehensive financial planning services tailored to individual needs and goals.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Financial Planning" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 11 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="https://bitcoin-basic.github.io/evolution-of-money/" class="text-decoration-none text-dark">
+                                                                    The Role of Bitcoin in Evolution of Money
+                                                                </a>
+                                                            </div>
+                                                            <div class="small text-muted">April 10, 2023</div>
+                                                            <p class="mb-0">An exploration of Bitcoin's place in the historical development of monetary systems.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Evolution of Money" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 12 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Bitcoin/For-Institutions" class="text-decoration-none text-dark">Bitcoin for institutions</a>
+                                                            </div>
+                                                            <div class="small text-muted">April 15, 2023</div>
+                                                            <p class="mb-0">Practial guide for institutions to adopt Bitcoin</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Evolution of Bitcoin" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 13 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Bitcoin/Power-law-model" class="text-decoration-none text-dark">Bitcoin analysis - Power law model</a>
+                                                            </div>
+                                                            <div class="small text-muted">May 20, 2023</div>
+                                                            <p class="mb-0">Bitcoin analysis - Power law model.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin as Global Currency" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 14 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Bitcoin/S2F-model" class="text-decoration-none text-dark">Bitcoin analysis - S2F model</a>                                                               
+        
+                                                            </div>
+                                                            <div class="small text-muted">May 30, 2023</div>
+                                                            <p class="mb-0">Bitcoin analysis - S2F model.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Use Cases" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 15 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Bitcoin/analysis-framework" class="text-decoration-none text-dark">Bitcoin analysis framework</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin analysis framework.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 16 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Bitcoin/bitcoin24-model" class="text-decoration-none text-dark">Bitcoin analysis - Bitcoin24 model</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin analysis - Bitcoin24 model.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 17 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Ray-Dalio/How-the-Economic-Machine-Works---Leveragings-and-Deleveragings" class="text-decoration-none text-dark">Key Lessons from How the Economic Machine Works – Leveragings and Deleveragings by Ray Dalio</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Key Lessons from How the Economic Machine Works – Leveragings and Deleveragings.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 18 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Investing/Market-cycles/Benner-cycles" class="text-decoration-none text-dark">Market cycles - Benner-cycles</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Key Lessons Market cycles - Benner-cycles.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 19 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/Challenges" class="text-decoration-none text-dark">Bitcoin's Challenges</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin's Challenges.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    
+                                                    <!-- Item 20 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/Criticisms" class="text-decoration-none text-dark">Bitcoin's Criticisms</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin's Criticisms.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 21 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/Events" class="text-decoration-none text-dark">Bitcoin's Events</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin's Events.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 22 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/Use-Cases" class="text-decoration-none text-dark">Bitcoin's Use-Cases</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin's Use-Cases.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 23 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/off-chain-solutions" class="text-decoration-none text-dark">Bitcoin's off-chain-solutions</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin's off-chain-solutions.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 24 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Bitcoin/Study-Cases/MicroStrategy" class="text-decoration-none text-dark">Bitcoin Study Cases - MicroStrategy</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Bitcoin Study Cases - MicroStrategy.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 25 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Finance/Basic-Economics" class="text-decoration-none text-dark">Finance Basic - Economics</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Finance Basic - Economics.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 26 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Finance/Fiat-Money" class="text-decoration-none text-dark">Finance Basic - Fiat-Money</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Finance Basic - Fiat-Money.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 27 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Finance/Market-Analysis/Financial-Market-Analysis-(FMAx)" class="text-decoration-none text-dark">Finance Basic - Market-Analysis</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Finance Basic - Market-Analysis.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- Item 28 -->
+                                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                        <div class="ms-2 me-auto">
+                                                            <div class="fw-bold">
+                                                                <a href="Finance/Financial-Programming/Introduction-to-Financial-Programming-and-Policies-(FPP)" class="text-decoration-none text-dark">Finance Basic - Financial Programming</a>                                                                   
+                                                                
+                                                            </div>
+                                                            <div class="small text-muted">June 5, 2023</div>
+                                                            <p class="mb-0">Finance Basic - Financial Programming.</p>
+                                                        </div>
+                                                        <div>
+                                                            <img src="https://via.placeholder.com/60" alt="Bitcoin Mining" class="rounded" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </li>
+                                                    <!-- add more items -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.Numbered List -->
+
+                    </div><!-- /.Blog Tab -->
+                    <!-- Charts Tab -->
+                    <div id="Charts" class="container tabcontent" style="display: block;">
+                        <!-- Charts Page Content -->
+                        <div class="container-fluid">
+                            <div class="row"><!-- Row 1-->
+                            <div class="col-lg-12 d-flex justify-content-center mt-5" style="display: flex; justify-content: center; margin-top: 2rem;">
+                            <!-- Chart Content with Carousel -->
+                            <div id="chartCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 600px; width: 100%;">
+                                <div class="carousel-inner">
+                                    <!-- First Slide - Area Chart -->
+                                    <div class="carousel-item active">
+                                        <div class="card text-center" style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin: 0 auto; border-radius: 8px; overflow: hidden;">
+                                            <div class="card-body">
+                                                <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header" style="font-weight: bold; background-color: #f8f9fa; color: #333;">
+                                                <i class="fas fa-chart-area me-1"></i>
+                                                Area Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <!-- Second Slide - Bar Chart -->
+                                    <div class="carousel-item">
+                                        <div class="card text-center" style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin: 0 auto; border-radius: 8px; overflow: hidden;">
+                                            <div class="card-body">
+                                                <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                            </div>
+                                            <div class="card-header" style="font-weight: bold; background-color: #f8f9fa; color: #333;">
+                                                <i class="fas fa-chart-bar me-1"></i>
+                                                Bar Chart Example
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Additional Slides (if any) -->
+                                </div>
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#chartCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#chartCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div><!-- /.Carousel -->
+                            </div><!-- /. column -->
+                        </div><!-- /. row -->
+                                <!-- Additional Content -->
+                                <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-primary text-white mb-4">
+                                        <div class="card-body">Primary Card</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="#">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-warning text-white mb-4">
+                                        <div class="card-body">Warning Card</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="#">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-success text-white mb-4">
+                                        <div class="card-body">Success Card</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="#">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-danger text-white mb-4">
+                                        <div class="card-body">Danger Card</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="#">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-area me-1"></i>
+                                            Area Chart Example
+                                        </div>
+                                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Bar Chart Example
+                                        </div>
+                                        <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                            </div><!-- /.Additional Content -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+                    <footer class="py-4 mt-auto bg-light fixed-bottom">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center">
+                            <!-- Social Buttons -->
+                            <div class="d-flex flex-grow-1 justify-content-around">
+                                <!-- LinkedIn Button -->
+                                <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in fa-2x"></i>
+                                </a>
+    
+                                <!-- GitHub Button -->
+                                <a href="https://github.com/" role="button" class="social-button github" target="_blank" aria-label="GitHub">
+                                    <i class="fab fa-github fa-2x"></i>
+                                </a>
+    
+                                <!-- Twitter Button -->
+                                <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
+                                    <i class="fab fa-twitter fa-2x"></i>
+                                </a>
+                            </div>
+    
+                            <!-- Language Switcher with Dropdown -->
+                            <div class="dropdown ms-auto">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="vn/index" id="viOption">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.Language Switcher -->
+                        </div>
+                    </div>
+                </footer>
+            
+        </div> <!-- End of layoutSidenav_content -->
+    
+        <!-- Scripts -->
+        <!-- Bootstrap JS and Dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <!-- FontAwesome JS -->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Custom Scripts -->
+        <script src="assets/js/scripts.js"></script>
+        <script src="assets/js/chart-area-demo.js"></script>
+        <script src="assets/js/chart-bar-demo.js"></script>
+        <!-- jQuery (if needed) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+        <script>
+            // Get the default tab open
+            document.getElementById("homeTab").click();
+            //chart area
+            // Set new default font family and font color to mimic Bootstrap's default styling
+            Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+            Chart.defaults.global.defaultFontColor = '#292b2c';
+            
+            // Area Chart Example
+            var ctx = document.getElementById("myAreaChart");
+            var myLineChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+                datasets: [{
+                  label: "Sessions",
+                  lineTension: 0.3,
+                  backgroundColor: "rgba(2,117,216,0.2)",
+                  borderColor: "rgba(2,117,216,1)",
+                  pointRadius: 5,
+                  pointBackgroundColor: "rgba(2,117,216,1)",
+                  pointBorderColor: "rgba(255,255,255,0.8)",
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                  pointHitRadius: 50,
+                  pointBorderWidth: 2,
+                  data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+                }],
+              },
+              options: {
+                scales: {
+                  xAxes: [{
+                    time: {
+                      unit: 'date'
+                    },
+                    gridLines: {
+                      display: false
+                    },
+                    ticks: {
+                      maxTicksLimit: 7
+                    }
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      min: 0,
+                      max: 40000,
+                      maxTicksLimit: 5
+                    },
+                    gridLines: {
+                      color: "rgba(0, 0, 0, .125)",
+                    }
+                  }],
+                },
+                legend: {
+                  display: false
+                }
+              }
+            });
+        </script>
+    </body>
+</html>
