@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Anh La</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="assets/css/styles.css" rel="stylesheet"/>
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+    <!-- Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-secondary">
+        <!-- Avatar -->
+        <div class="text-center">
+            <a class="navbar-brand ps-3" href="login">
+                <img src="assets/avatar.png" alt="Avatar" class="avatar">
+            </a>
+        </div><!-- /.Avatar-->
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index">Anh La</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation Buttons -->
+        <div class="container-fluid">
+          <a href="index" id="homeTab" class="tablink active"> 
+            <i class="bi bi-house-door-fill" aria-label="Home"></i> 
+          </a>
+          <a href="records" id="recordTab" class="tablink">
+            <i class="bi bi-file-play-fill" aria-label="Records"></i> 
+          </a>
+          <a href="blogs" id="blogTab" class="tablink">
+            <i class="bi bi-pen-fill" aria-label="Blog"></i>
+          </a>
+          <a href="charts" id="chartTab" class="tablink">
+            <i class="bi bi-graph-up-arrow" aria-label="Charts"></i> 
+          </a>
+        </div>
+    </nav>
+    <!-- Layout Sidenav -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <!-- Sidebar Content (Same as other pages) -->
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                            <!-- For Individual Content -->
+                            <div class="sb-sidenav-menu-heading">For Individual</div>
+                            <!-- Financial Planning Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIndividual1" aria-expanded="false" aria-controls="collapseIndividual1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Financial Planning
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseIndividual1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Budgeting</a>
+                                        <a class="nav-link" href="blogHome">Structuring</a>
+                                    </nav>
+                                </div><!-- /.Financial Planning Content -->
+                                <!-- /.Tax Planning Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIndividual2" aria-expanded="false" aria-controls="collapseIndividual2">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                        Tax Planning
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseIndividual2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">                        
+                                            <a class="nav-link" href="blogHome">Individual Tax</a>
+                                            <a class="nav-link" href="blog">Partnership Tax</a>
+                                            <a class="nav-link" href="blog">SMSF Tax</a>
+                                            <a class="nav-link" href="blog">Trust Tax</a>
+                                        </nav>
+                                    </div><!-- /.Tax Planning Content -->
+                            <!-- For Business Content -->
+                            <div class="sb-sidenav-menu-heading">For Business</div>
+                            <!-- For SME Business Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBusiness1" aria-expanded="false" aria-controls="collapseBusiness1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Small and Medium Business
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBusiness1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!-- /.For SME Business Content -->
+                            <!-- For Large Business Content -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBusiness2" aria-expanded="false" aria-controls="collapseBusiness2">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Large Business
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseBusiness2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Financial Analysis</a>
+                                        <a class="nav-link" href="blog">Company Tax</a>
+                                        <a class="nav-link" href="blog">Trust Tax</a>                                        
+                                        <a class="nav-link" href="blog">International Tax</a>
+                                    </nav>
+                                </div><!-- /.For large Business Content -->
+                            <!-- For Nation state Content -->
+                            <div class="sb-sidenav-menu-heading">Nation state</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseNation1" aria-expanded="false" aria-controls="collapseNation1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Traditional Finance
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseNation1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Base money</a>
+                                        <a class="nav-link" href="blog">Fiat money</a>
+                                        <a class="nav-link" href="blog">Residential property</a>
+                                        <a class="nav-link" href="blog">Commercial propert</a>
+                                        <a class="nav-link" href="blog">Equity</a>
+                                        <a class="nav-link" href="blogHome">Bonds</a>
+                                        <a class="nav-link" href="blogHome">Crypto currency (Bitcoin)</a>
+                                    </nav>
+                                </div><!-- /.For Nation state Content -->                       
+                            <!-- Technology Content -->
+                            <div class="sb-sidenav-menu-heading">Open source technology</div>
+                            <!-- Artificial Intelligent -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech1" aria-expanded="false" aria-controls="collapseTech1">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Artificial Intelligent
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Artificial Intelligent</a>
+                                    </nav>
+                                </div><!-- /. Artificial Intelligent -->    
+                            <!-- Norstr -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech2" aria-expanded="false" aria-controls="collapseTech2">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Nostr - Node and other stuffs tranfferred via relays
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Nostr - Node and other stuffs tranfferred via relays</a>
+                                    </nav>
+                                </div><!-- /.Norstr -->
+                            <!-- Bitcoin -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTech3" aria-expanded="false" aria-controls="collapseTech3">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                    Bitcoin
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTech3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="blogHome">Lightning Network</a>
+                                        <a class="nav-link" href="blog">Liquid Network</a>
+                                        <a class="nav-link" href="blog">Ark Network</a>
+                                        <a class="nav-link" href="blog">Multi sig</a>
+                                        <a class="nav-link" href="blog">Onchain analysis</a>
+                                        <a class="nav-link" href="blogHome">Bitcoin podcasts</a>                                        
+                                        <a class="nav-link" href="blog">Bitcoin mining</a>
+                                        <a class="nav-link" href="blog">Bitcoin books</a>
+                                        <a class="nav-link" href="blog">Bitcoin programing</a>
+                                        <a class="nav-link" href="blog">Bitcoin models</a>
+                                    </nav>
+                                </div><!-- /.Bitcoin -->
+
+                            <!-- You can add your sidebar menu items here -->
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container py-4">
+                    <!-- Interest section -->
+                        <div class="mb-4 bg-body-tertiary rounded-3">
+                          <div class="container-fluid">
+                              <!-- Personalised text -->
+                                <div class="d-flex w-100">         
+                                    <form name="text_Marquee" class="flex-grow-1">
+                                        <input id="quote" name="text" class="form-control border-0 display-5" style="font-size: inherit ; background-color: transparent; font-style: italic;"
+                                        value=" 
+                                            “the happiest people discover their own nature and match their life to it.” ― Ray Dalio
+                                            “Tất cả suy nghĩ, lời nói, hành động của bạn đều mang dấu ấn của riêng bạn.” - Thich Nhất Hạnh
+                                            “Persistence is very important. You should not give up unless you are forced to give up.” ― Elon Musk
+                                            “Không có gì quý hơn độc lập, tự do.” - Hồ Chí Minh
+                                            “Truth - more precisely, an accurate understanding of reality - is the essential foundation for producing good outcomes.” ― Ray Dalio
+                                            “Nói thì dễ, làm thì khó.”
+                                            “Being an entrepreneur is like eating glass and staring into the abyss of death.” ― Elon Musk
+                                            " disabled />
+                                    </form>
+                                </div><!-- /.Personalised text -->
+                          </div>
+                        </div><!-- /.Interest section -->
+                    <hr>
+                    <!-- Tab Content -->
+                    Index page!
+                    
+                        </div>
+                </main>
+            
+                    <footer class="py-4 mt-auto bg-white">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center">
+                            <!-- Social Buttons -->
+                            <div class="d-flex flex-grow-1 justify-content-around">
+                                <!-- LinkedIn Button -->
+                                <a href="https://www.linkedin.com/in/anh-la-cpa" role="button" class="social-button linkedin" target="_blank" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in fa-2x"></i>
+                                </a>
+    
+                                <!-- GitHub Button -->
+                                <a href="https://github.com/" role="button" class="social-button github" target="_blank" aria-label="GitHub">
+                                    <i class="fab fa-github fa-2x"></i>
+                                </a>
+    
+                                <!-- Twitter Button -->
+                                <a href="https://twitter.com/AnhContact" role="button" class="social-button twitter" target="_blank" aria-label="Twitter">
+                                    <i class="fab fa-twitter fa-2x"></i>
+                                </a>
+                            </div>
+    
+                            <!-- Language Switcher with Dropdown -->
+                            <div class="dropdown ms-auto">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="vn/index" id="viOption">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="Vietnamese" width="32" height="20"> Vietnamese
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.Language Switcher -->
+                        </div>
+                    </div>
+                </footer>
+            
+        </div> <!-- End of layoutSidenav_content -->
+    
+        <!-- Scripts -->
+        <!-- Bootstrap JS and Dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <!-- FontAwesome JS -->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Custom Scripts -->
+        <script src="assets/js/scripts.js"></script>
+        <script src="assets/js/chart-area-demo.js"></script>
+        <script src="assets/js/chart-bar-demo.js"></script>
+        <!-- jQuery (if needed) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+        
+    </body>
+</html>
