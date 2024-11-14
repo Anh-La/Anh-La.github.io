@@ -74,9 +74,9 @@ window.addEventListener('DOMContentLoaded', event => {
 
 //data tables
 // Call the dataTables jQuery plugin
-$(document).ready(function() {
-  $('#dataTable').DataTable();
-});
+//$(document).ready(function() {
+  //$('#dataTable').DataTable();
+//});
 
  // Tab pages setup
 //function openPage(pageName, elmnt) {
