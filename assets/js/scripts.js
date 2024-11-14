@@ -99,7 +99,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 
 // Get the default tab open
-document.getElementById("homeTab").click();
+//document.getElementById("homeTab").click();
 
 // Function to control cards (stacking effect) in carousel slides by carousel ID
 function controlCarouselItemsById(carouselId, minPerSlide = 4) {
