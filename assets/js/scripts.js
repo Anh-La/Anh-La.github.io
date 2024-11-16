@@ -72,12 +72,6 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 
-//data tables
-// Call the dataTables jQuery plugin
-//$(document).ready(function() {
-  //$('#dataTable').DataTable();
-//});
-
  // Tab pages setup
 //function openPage(pageName, elmnt) {
     // Hide all elements with class="tabcontent" by default
