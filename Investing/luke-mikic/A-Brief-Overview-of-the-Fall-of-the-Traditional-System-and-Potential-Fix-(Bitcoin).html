@@ -16,6 +16,50 @@
         <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
+    <style>
+        .carousel-indicators{
+            top:50px;
+            width:75%;
+            margin-left:14%;
+            position:static;
+            margin-bottom:40px;
+        }
+        .carousel-indicators button{
+            test-indent:0!important;
+            background:0 0;
+            border:none;
+            margin:0!important;
+            postion:relative;
+            width:25%!important;
+        }
+        .carousel-indicators button:before{
+            position:absolute;
+            content:"";
+            border-top:1px solid #c8cbd0;
+            width:100%;
+            left:0;
+        }
+        .carousel-indicators button h4{
+            margin-top:-41px;
+            position:absolute;
+            left:52%;
+            transform:translatex(-50%);
+        }
+        .carousel-indicators button i{
+            margin-top:-8px;
+            position:absolute;
+        }
+        .carousel-indicators button.active i{
+            color:#2ecc71;
+        }
+        .carousel-indicators button.active h4{
+            color:#2ecc71;
+            font-size:34px;
+            position:absolute;
+            text-align:center;
+            margin-top:-49px;
+        }
+    </style>
     <body>
         <!-- Page content-->
         <div class="container mt-5">
@@ -45,11 +89,12 @@
                         <figure class="mb-4"><img class="img-fluid rounded" src="" alt="Bitcoin" /></figure-->
                         <!-- Post content-->
                         <section class="mb-5">
-                            <div id="contentCarousel" class="carousel carousel-dark slide">
+                            <div id="contentCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><h4>1970</h4></button>
+                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"><h4>Post 1970</h4></button>
+                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"><h4>Present</h4></button>
+                                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 4"><h4>Future</h4></button>
                                   </div>
                                 <div class="carousel-inner">
                                   <!-- Item 1 -->
