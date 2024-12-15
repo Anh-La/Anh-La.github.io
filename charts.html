@@ -19,13 +19,17 @@
             main{
                 margin: 0;    
             }
+            .img-fluid {
+              height: 32px;  /* Adjust height to match Twitter icon size */
+              width: 32px;   /* Adjust width to match Twitter icon size */
+            }
         </style>
     </head>
     <body class="sb-nav-fixed">
     <!-- Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-secondary">
         <!-- Language Switcher with Dropdown -->
-        <div class="dropright ms-auto">
+        <div class="dropleft ms-auto">
             <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" alt="Current Language" width="32" height="20" id="currentLanguageFlag">
             </button>
@@ -808,8 +812,8 @@
                                     <i class="fab fa-twitter fa-2x"></i>
                                 </a>
                                 <!-- Avatar -->
-                                <a href="login" role="button" class="">
-                                    <img src="assets/images/avatar.png" alt="Avatar" class="avatar">
+                                <a href="login" role="button">
+                                    <img src="assets/images/avatar.png" alt="Avatar" class="avatar image-fluid">
                                 </a>
                                 <!-- /.Avatar-->
                             </div>
