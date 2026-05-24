@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wealth Builder · Personal Investment Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:       #0a0c10;
+    --surface:  #111318;
+    --card:     #161920;
+    --border:   #232730;
+    --accent:   #c8a96e;
+    --accent2:  #5c9eff;
+    --accent3:  #4ecb8a;
+    --accent4:  #e06b6b;
+    --text:     #e8e3d8;
+    --muted:    #7a7f8e;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'Manrope', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+    --radius: 12px;
+    --shadow: 0 4px 32px rgba(0,0,0,0.5);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  #app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: baseline; gap: 10px; }
+  .logo-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .last-updated { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+  .btn { 
+    padding: 7px 16px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-size: 12px; font-family: var(--font-body);
+    cursor: pointer; transition: all 0.15s; font-weight: 500;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-accent { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+  .btn-accent:hover { background: #d4b87a; color: #000; border-color: #d4b87a; }
+
+  /* ── Nav tabs ── */
+  nav {
+    display: flex; gap: 2px; padding: 0 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 13px 20px; font-size: 13px; font-weight: 500; color: var(--muted);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── Main layout ── */
+  main { flex: 1; padding: 32px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+  /* ── Section pages ── */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Typography ── */
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 28px; color: var(--accent); margin-bottom: 4px; font-style: italic;
+  }
+  .page-sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+  h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; letter-spacing: 0.3px; }
+  .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 4px; }
+
+  /* ── Grid helpers ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .card-sm { padding: 16px; }
+
+  /* ── KPI tiles ── */
+  .kpi { 
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px;
+    position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .kpi.gold::before { background: var(--accent); }
+  .kpi.blue::before { background: var(--accent2); }
+  .kpi.green::before { background: var(--accent3); }
+  .kpi.red::before { background: var(--accent4); }
+  .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 6px; }
+  .kpi-value { font-family: var(--font-mono); font-size: 24px; font-weight: 500; color: var(--text); }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .kpi-delta { font-size: 12px; margin-top: 6px; font-weight: 600; }
+  .kpi-delta.pos { color: var(--accent3); }
+  .kpi-delta.neg { color: var(--accent4); }
+
+  /* ── Progress bars ── */
+  .progress-wrap { margin-bottom: 14px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .progress-label { font-size: 12px; font-weight: 600; }
+  .progress-val { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .progress-bar {
+    height: 6px; background: var(--border); border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 99px; transition: width 0.6s ease;
+  }
+
+  /* ── Table ── */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--muted); font-weight: 600;
+  }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .td-mono { font-family: var(--font-mono); }
+  .td-green { color: var(--accent3); font-weight: 600; }
+  .td-red { color: var(--accent4); font-weight: 600; }
+  .td-gold { color: var(--accent); font-weight: 600; }
+  .td-muted { color: var(--muted); font-size: 12px; }
+
+  /* ── Form elements ── */
+  .form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
+  label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  input, select, textarea {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 9px 12px;
+    font-family: var(--font-body); font-size: 13px;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--accent);
+  }
+  input[type="number"] { font-family: var(--font-mono); }
+  select option { background: var(--surface); }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge-gold { background: rgba(200,169,110,0.15); color: var(--accent); border: 1px solid rgba(200,169,110,0.3); }
+  .badge-blue { background: rgba(92,158,255,0.15); color: var(--accent2); border: 1px solid rgba(92,158,255,0.3); }
+  .badge-green { background: rgba(78,203,138,0.15); color: var(--accent3); border: 1px solid rgba(78,203,138,0.3); }
+  .badge-red { background: rgba(224,107,107,0.15); color: var(--accent4); border: 1px solid rgba(224,107,107,0.3); }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* ── Section spacing ── */
+  .section { margin-bottom: 32px; }
+
+  /* ── Alert ── */
+  .alert {
+    padding: 12px 16px; border-radius: 8px; font-size: 13px;
+    border-left: 3px solid; margin-bottom: 20px;
+  }
+  .alert-warn { background: rgba(200,169,110,0.08); border-color: var(--accent); color: var(--text); }
+  .alert-info { background: rgba(92,158,255,0.08); border-color: var(--accent2); color: var(--text); }
+  .alert-success { background: rgba(78,203,138,0.08); border-color: var(--accent3); color: var(--text); }
+
+  /* ── Chart container ── */
+  .chart-wrap { position: relative; }
+
+  /* ── Donut legend ── */
+  .donut-legend { display: flex; flex-direction: column; gap: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-name { flex: 1; color: var(--text); }
+  .legend-pct { font-family: var(--font-mono); color: var(--muted); font-size: 11px; }
+
+  /* ── Debt countdown ── */
+  .debt-card { 
+    background: linear-gradient(135deg, rgba(224,107,107,0.08), rgba(10,12,16,0));
+    border: 1px solid rgba(224,107,107,0.25); border-radius: var(--radius); padding: 20px;
+  }
+
+  /* ── FI countdown ring ── */
+  .fi-ring { text-align: center; padding: 20px; }
+  .fi-years { font-family: var(--font-display); font-size: 64px; color: var(--accent); line-height: 1; }
+  .fi-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* ── Sticky save indicator ── */
+  #save-toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--accent3); color: #000; padding: 10px 20px; border-radius: 8px;
+    font-weight: 700; font-size: 13px;
+    transform: translateY(80px); transition: transform 0.3s;
+    pointer-events: none;
+  }
+  #save-toast.show { transform: translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    main { padding: 20px 16px; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    header { padding: 14px 16px; }
+    nav { padding: 0 16px; }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .logo-sub { display: none; }
+  }
+
+  /* ── Specific overrides ── */
+  .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); font-size: 13px; }
+  .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
+
+  .add-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: 1px dashed var(--border); border-radius: 8px;
+    color: var(--muted); cursor: pointer; padding: 10px 16px;
+    font-size: 13px; font-family: var(--font-body); width: 100%;
+    transition: all 0.15s; margin-top: 8px;
+  }
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="app">
+
+<header>
+  <div class="logo">
+    <span class="logo-title">Wealth Builder</span>
+    <span class="logo-sub">Personal Investment Strategy</span>
+  </div>
+  <div class="header-right">
+    <span class="last-updated" id="last-updated-label"></span>
+    <button class="btn" onclick="exportData()">↓ Export</button>
+    <button class="btn btn-accent" onclick="saveAll()">Save</button>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard">📊 Dashboard</div>
+  <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio">💼 Portfolio</div>
+  <div class="tab" onclick="showPage('cashflow')" id="tab-cashflow">💸 Cashflow</div>
+  <div class="tab" onclick="showPage('debt')" id="tab-debt">🧹 Debt Tracker</div>
+  <div class="tab" onclick="showPage('retirement')" id="tab-retirement">🏦 Retirement Fund</div>
+  <div class="tab" onclick="showPage('projections')" id="tab-projections">📈 Projections</div>
+  <div class="tab" onclick="showPage('resources')" id="tab-resources">📖 Resources</div>
+  <div class="tab" onclick="showPage('settings')" id="tab-settings">⚙️ Settings</div>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="page-title">Overview</div>
+  <div class="page-sub">Net wealth snapshot · Updated in real time</div>
+
+  <div class="grid-4 section" id="kpi-row"></div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Portfolio Allocation vs Target</h3>
+      <div style="display:flex;gap:24px;align-items:center">
+        <div style="width:180px;height:180px;flex-shrink:0" class="chart-wrap">
+          <canvas id="donut-chart"></canvas>
+        </div>
+        <div class="donut-legend" id="donut-legend" style="flex:1"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Financial Independence Progress</h3>
+      <div class="fi-ring">
+        <div class="fi-years" id="fi-years-left">—</div>
+        <div class="fi-label">years to FI target (age 48–49)</div>
+      </div>
+      <div id="fi-progress-bars"></div>
+    </div>
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Monthly Cashflow Summary</h3>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="cashflow-bar"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Debt Paydown Status</h3>
+      <div id="debt-summary-panel"></div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Annual Action Roadmap</h3>
+    <div class="tbl-wrap" id="roadmap-table"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PORTFOLIO
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-portfolio">
+  <div class="page-title">Portfolio Holdings</div>
+  <div class="page-sub">Personal + Retirement combined · Add, edit or remove holdings</div>
+
+  <div class="alert alert-info">
+    💡 Target allocation: STRC 25% · SATA 15% · US ETFs 20% · Commercial RE 15% · Bitcoin 10% · Gold 10% · Cash 5%
+  </div>
+
+  <div class="section">
+    <div class="form-row" id="add-holding-form">
+      <div class="form-group">
+        <label>Asset Name</label>
+        <input id="h-name" placeholder="e.g. STRC, VOO, Bitcoin…">
+      </div>
+      <div class="form-group" style="max-width:140px">
+        <label>Category</label>
+        <select id="h-cat">
+          <option value="STRC">STRC</option>
+          <option value="SATA">SATA</option>
+          <option value="US ETF">US ETF</option>
+          <option value="Commercial RE">Commercial RE</option>
+          <option value="Bitcoin">Bitcoin</option>
+          <option value="Gold">Gold</option>
+          <option value="Cash">Cash</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group" style="max-width:130px">
+        <label>Account</label>
+        <select id="h-account">
+          <option value="Personal">Personal</option>
+          <option value="Retirement">Retirement</option>
+        </select>
+      </div>
+      <div class="form-group" style="max-width:130px">
+        <label>Units / Qty</label>
+        <input type="number" id="h-qty" placeholder="0" step="any">
+      </div>
+      <div class="form-group" style="max-width:140px">
+        <label>Price (A$)</label>
+        <input type="number" id="h-price" placeholder="0.00" step="any">
+      </div>
+      <div class="form-group" style="max-width:130px">
+        <label>Cost Base (A$)</label>
+        <input type="number" id="h-cost" placeholder="0.00" step="any">
+      </div>
+      <div class="form-group" style="max-width:100px">
+        <label>DRIP?</label>
+        <select id="h-drip">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="form-group" style="max-width:80px;justify-content:flex-end">
+        <label>&nbsp;</label>
+        <button class="btn btn-accent" onclick="addHolding()">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="tbl-wrap">
+      <table id="holdings-table">
+        <thead>
+          <tr>
+            <th>Asset</th><th>Category</th><th>Account</th>
+            <th>Units</th><th>Price</th><th>Value</th>
+            <th>Cost Base</th><th>Gain/Loss</th><th>%Portfolio</th>
+            <th>DRIP</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="holdings-tbody"></tbody>
+        <tfoot id="holdings-tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h3>Target vs Actual Allocation</h3>
+      <div id="allocation-bars"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     CASHFLOW
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-cashflow">
+  <div class="page-title">Cashflow Analysis</div>
+  <div class="page-sub">Monthly income, expenses, and investment surplus</div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Income</h3>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Net Monthly Salary (after tax)</label>
+        <input type="number" id="cf-salary" placeholder="5500" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Salary Sacrifice to Retirement (A$/mo)</label>
+        <input type="number" id="cf-ss" placeholder="1828" step="any">
+      </div>
+      <div class="form-group">
+        <label>Other Income (dividends, rent, etc.)</label>
+        <input type="number" id="cf-other" placeholder="0" step="any">
+      </div>
+    </div>
+    <div class="card">
+      <h3>Fixed Expenses</h3>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Weekly Rent (A$)</label>
+          <input type="number" id="exp-rent" placeholder="410" step="any">
+        </div>
+        <div class="form-group">
+          <label>Weekly Groceries</label>
+          <input type="number" id="exp-groceries" placeholder="150" step="any">
+        </div>
+        <div class="form-group">
+          <label>Weekly Car Fuel</label>
+          <input type="number" id="exp-fuel" placeholder="60" step="any">
+        </div>
+        <div class="form-group">
+          <label>Weekly Electricity</label>
+          <input type="number" id="exp-electricity" placeholder="40" step="any">
+        </div>
+        <div class="form-group">
+          <label>Weekly Transport</label>
+          <input type="number" id="exp-transport" placeholder="17" step="any">
+        </div>
+        <div class="form-group">
+          <label>Fortnightly Gym</label>
+          <input type="number" id="exp-gym" placeholder="90" step="any">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Child Support & Quarterly Expenses</h3>
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Basketball (quarterly)</label>
+        <input type="number" id="exp-bball" placeholder="200" step="any">
+      </div>
+      <div class="form-group">
+        <label>School Fees (quarterly)</label>
+        <input type="number" id="exp-school" placeholder="550" step="any">
+      </div>
+      <div class="form-group">
+        <label>Weekly Play Activities</label>
+        <input type="number" id="exp-play" placeholder="50" step="any">
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Investment Contributions</h3>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Monthly Personal Contributions (A$)</label>
+        <input type="number" id="cf-invest" placeholder="2000" step="any">
+      </div>
+      <div class="form-group">
+        <label>Monthly Debt Repayment (A$)</label>
+        <input type="number" id="cf-debt-repay" placeholder="500" step="any">
+      </div>
+    </div>
+  </div>
+
+  <div class="card section" id="cf-summary-card">
+    <h3>Monthly Summary</h3>
+    <div id="cf-summary"></div>
+  </div>
+
+  <div class="card section">
+    <h3>Expense Inflation Projection (5% p.a. Sydney CPI)</h3>
+    <div class="tbl-wrap" id="cf-inflation-table"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     DEBT TRACKER
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-debt">
+  <div class="page-title">Debt Tracker</div>
+  <div class="page-sub">Clear debts to accelerate financial independence</div>
+
+  <div class="alert alert-warn">
+    ⚠️ Priority: Pay off credit card (A$4,195 high-interest) first, then prepayment liability (A$4,855). Clearing ~A$9,050 frees up significant monthly cashflow.
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Add / Update Debt</h3>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Debt Name</label>
+        <input id="d-name" placeholder="e.g. Credit Card, Prepayment Liability">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Type</label>
+        <select id="d-type">
+          <option value="Credit Card">Credit Card</option>
+          <option value="Prepayment Liability">Prepayment Liability</option>
+          <option value="Personal Loan">Personal Loan</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Original Balance (A$)</label>
+        <input type="number" id="d-original" placeholder="0" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Current Balance (A$)</label>
+        <input type="number" id="d-balance" placeholder="0" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Interest Rate (% p.a.)</label>
+        <input type="number" id="d-rate" placeholder="20" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Monthly Payment (A$)</label>
+        <input type="number" id="d-payment" placeholder="500" step="any">
+      </div>
+      <button class="btn btn-accent" style="width:100%" onclick="addDebt()">+ Add Debt</button>
+    </div>
+
+    <div>
+      <div class="kpi red" style="margin-bottom:16px">
+        <div class="kpi-label">Total Debt Outstanding</div>
+        <div class="kpi-value" id="total-debt-kpi">A$0</div>
+        <div class="kpi-sub" id="debt-payoff-date">Est. payoff: —</div>
+      </div>
+      <div class="card">
+        <h3>Monthly Interest Cost</h3>
+        <div class="kpi-value td-red" id="monthly-interest-kpi" style="font-size:20px;font-family:var(--font-mono)">A$0</div>
+        <div class="kpi-sub">Cleared = more investable cashflow</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="tbl-wrap">
+      <table id="debt-table">
+        <thead>
+          <tr>
+            <th>Debt</th><th>Type</th><th>Original</th><th>Current Balance</th>
+            <th>Rate</th><th>Monthly Payment</th><th>Payoff In</th><th>Progress</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="debt-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Amortisation Schedule</h3>
+    <div class="chart-wrap" style="height:200px">
+      <canvas id="debt-chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     RETIREMENT FUND
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-retirement">
+  <div class="page-title">Retirement Fund Tracker</div>
+  <div class="page-sub">Retirement / Pension Account · Contributions & balance growth</div>
+
+  <div class="grid-4 section" id="retirement-kpis"></div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Retirement Configuration</h3>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Current Retirement Balance (A$)</label>
+        <input type="number" id="retirement-balance" placeholder="0" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Monthly Salary Sacrifice (A$)</label>
+        <input type="number" id="retirement-ss" placeholder="1828" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Annual Concessional Cap (A$)</label>
+        <input type="number" id="retirement-cap" placeholder="32500" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Expected Annual Return (%)</label>
+        <input type="number" id="retirement-return" placeholder="8" step="any">
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Target Balance by Age 60 (A$)</label>
+        <input type="number" id="retirement-target" placeholder="1650000" step="any">
+      </div>
+      <button class="btn btn-accent" style="width:100%" onclick="calcRetirement()">Recalculate</button>
+    </div>
+
+    <div class="card">
+      <h3>Retirement Growth Projection to Age 60</h3>
+      <div class="chart-wrap" style="height:220px">
+        <canvas id="retirement-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Retirement Holdings (from Portfolio)</h3>
+    <div class="tbl-wrap" id="retirement-holdings-table"></div>
+  </div>
+
+  <div class="card section">
+    <h3>Compliance Notes</h3>
+    <div class="alert alert-info">
+      📋 <strong>Commercial Real Estate in Retirement Account:</strong> May acquire business real property provided it meets regulatory requirements, arm's length rules, and is used for the sole purpose of providing retirement benefits.
+    </div>
+    <div class="alert alert-warn">
+      📋 <strong>Contribution Caps:</strong> Maximise concessional contributions. Check local tax authority rules for carry-forward and limits.
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PROJECTIONS
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-projections">
+  <div class="page-title">Growth Projections</div>
+  <div class="page-sub">18-year strategy horizon · Conservative, Base & Optimistic scenarios</div>
+
+  <div class="card section">
+    <h3>Projection Inputs</h3>
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Current Total Portfolio (A$)</label>
+        <input type="number" id="proj-start" placeholder="0" step="any">
+      </div>
+      <div class="form-group">
+        <label>Monthly Investment (A$)</label>
+        <input type="number" id="proj-monthly" placeholder="2000" step="any">
+      </div>
+      <div class="form-group">
+        <label>Annual Wage Growth (%)</label>
+        <input type="number" id="proj-wage" placeholder="3.5" step="any">
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn btn-accent" onclick="calcProjections()">Run Projections</button>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="chart-wrap" style="height:300px">
+      <canvas id="proj-chart"></canvas>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="tbl-wrap" id="proj-table"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     RESOURCES
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-resources">
+  <div class="page-title">Resources & Tools</div>
+  <div class="page-sub">Curated investing guides, tax tips, and AI prompts for wealth building</div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>📚 Investing Resources</h3>
+      <ul style="line-height:1.7; padding-left:20px; margin-bottom:16px">
+        <li><a href="https://www.bogleheads.org/wiki/Getting_started" target="_blank" style="color:var(--accent2)">Bogleheads Guide to Investing</a> - Low-cost index investing</li>
+        <li><a href="https://www.investopedia.com/" target="_blank" style="color:var(--accent2)">Investopedia</a> - Comprehensive financial education</li>
+        <li><a href="https://www.morningstar.com/" target="_blank" style="color:var(--accent2)">Morningstar</a> - Fund and ETF analysis</li>
+      </ul>
+      <div class="alert alert-info">
+        Focus on low-fee ETFs, dollar-cost averaging, and long-term compounding.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💰 Tax Planning Tips</h3>
+      <ul style="line-height:1.7; padding-left:20px">
+        <li>Maximise retirement account contributions (salary sacrifice where available)</li>
+        <li>Track cost basis for capital gains tax</li>
+        <li>Consider tax-advantaged accounts for dividends and growth assets</li>
+        <li>Review tax deductions for investment expenses</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>🤖 AI Prompts for Wealth Strategy</h3>
+    <p style="margin-bottom:12px; color:var(--muted)">Copy these prompts to use with Grok or ChatGPT for personalized advice based on this app's data.</p>
+    
+    <div style="background:var(--surface); padding:16px; border-radius:8px; margin-bottom:16px">
+      <strong>Prompt 1: Portfolio Review</strong><br>
+      <code style="white-space:pre-wrap; font-size:12px">Analyze my current portfolio from Wealth Builder app: [paste allocation summary here]. Suggest rebalancing to match targets: STRC 25%, etc. Consider my age [age] and FI goal at [fi-age].</code>
+    </div>
+    
+    <div style="background:var(--surface); padding:16px; border-radius:8px; margin-bottom:16px">
+      <strong>Prompt 2: Cashflow Optimization</strong><br>
+      <code style="white-space:pre-wrap; font-size:12px">My monthly surplus is A$[surplus]. Expenses include rent A$[rent], etc. Suggest 3 ways to increase savings rate by 15% while maintaining lifestyle.</code>
+    </div>
+    
+    <div style="background:var(--surface); padding:16px; border-radius:8px">
+      <strong>Prompt 3: Projection Scenario</strong><br>
+      <code style="white-space:pre-wrap; font-size:12px">Project my net worth in 5 years with monthly investments of A$[monthly], 7% annual return, starting from A$[portfolio]. Include inflation at 5%.</code>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>🔗 Useful Tools</h3>
+    <div class="grid-3">
+      <div style="padding:12px;border:1px solid var(--border);border-radius:8px">
+        <strong>Portfolio Visualizer</strong><br>
+        <a href="https://www.portfoliovisualizer.com/" target="_blank" style="color:var(--accent)">Backtesting tool</a>
+      </div>
+      <div style="padding:12px;border:1px solid var(--border);border-radius:8px">
+        <strong>Compound Interest Calculator</strong><br>
+        <a href="https://www.investor.gov/additional-resources/free-financial-planning-tools/compound-interest-calculator" target="_blank" style="color:var(--accent)">Future value projections</a>
+      </div>
+      <div style="padding:12px;border:1px solid var(--border);border-radius:8px">
+        <strong>Tax Estimator (AU)</strong><br>
+        <a href="https://www.ato.gov.au/" target="_blank" style="color:var(--accent)">Australian Tax Office</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SETTINGS
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-settings">
+  <div class="page-title">Settings & Profile</div>
+  <div class="page-sub">Configure strategy parameters</div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Investor Profile</h3>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Name</label>
+        <input id="s-name" placeholder="Your name">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Current Age</label>
+        <input type="number" id="s-age" placeholder="42">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>FI Target Age</label>
+        <input type="number" id="s-fi-age" placeholder="48">
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Risk Profile</label>
+        <select id="s-risk">
+          <option value="Conservative">Conservative (30/70)</option>
+          <option value="Balanced" selected>Balanced (50/50)</option>
+          <option value="Balanced-Growth" selected>Balanced-Growth (65/35)</option>
+          <option value="Growth">Growth (80/20)</option>
+          <option value="Aggressive">Aggressive (95/5)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Inflation Assumption (% p.a.)</label>
+        <input type="number" id="s-inflation" placeholder="5" step="0.1">
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Emergency Fund Target (A$)</label>
+        <input type="number" id="s-emergency" placeholder="28000">
+      </div>
+      <button class="btn btn-accent" onclick="saveSettings()">Save Settings</button>
+    </div>
+
+    <div class="card">
+      <h3>Target Allocations (%)</h3>
+      <div id="target-alloc-form"></div>
+      <button class="btn btn-accent" style="margin-top:16px;width:100%" onclick="saveTargets()">Save Targets</button>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Data Management</h3>
+    <div class="form-row">
+      <button class="btn" onclick="exportData()">↓ Export JSON backup</button>
+      <button class="btn" onclick="document.getElementById('import-file').click()">↑ Import JSON</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn" style="color:var(--accent4);border-color:var(--accent4)" onclick="clearAll()">⚠ Clear All Data</button>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<div id="save-toast">✓ Saved</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const DEFAULT_STATE = {
+  settings: {
+    name: 'Investor',
+    age: 42,
+    fiAge: 48,
+    risk: 'Balanced-Growth',
+    inflation: 5,
+    emergency: 28000
+  },
+  targets: {
+    'STRC': 25,
+    'SATA': 15,
+    'US ETF': 20,
+    'Commercial RE': 15,
+    'Bitcoin': 10,
+    'Gold': 10,
+    'Cash': 5
+  },
+  holdings: [
+    { id: 1, name: 'STRC', cat: 'STRC', account: 'Personal', qty: 55, price: 0, cost: 0, drip: 'Yes' },
+    { id: 2, name: 'STRC (Retirement)', cat: 'STRC', account: 'Retirement', qty: 552, price: 0, cost: 0, drip: 'Yes' },
+    { id: 3, name: 'Bitcoin (Personal)', cat: 'Bitcoin', account: 'Personal', qty: 0.05, price: 0, cost: 0, drip: 'No' },
+    { id: 4, name: 'Bitcoin (Retirement)', cat: 'Bitcoin', account: 'Retirement', qty: 0.1, price: 0, cost: 0, drip: 'No' },
+    { id: 5, name: 'Gold Shares', cat: 'Gold', account: 'Personal', qty: 0, price: 0, cost: 0, drip: 'No' },
+    { id: 6, name: 'US Shares (Retirement)', cat: 'US ETF', account: 'Retirement', qty: 0, price: 0, cost: 0, drip: 'Yes' },
+  ],
+  debts: [
+    { id: 1, name: 'Credit Card', type: 'Credit Card', original: 4195, balance: 4195, rate: 20, payment: 500 },
+    { id: 2, name: 'Prepayment Liability', type: 'Prepayment Liability', original: 4855, balance: 4855, rate: 0, payment: 300 }
+  ],
+  cashflow: {
+    salary: 5500,
+    ss: 1828,
+    other: 0,
+    rent: 410,
+    groceries: 150,
+    fuel: 60,
+    electricity: 40,
+    transport: 17,
+    gym: 90,
+    bball: 200,
+    school: 550,
+    play: 50,
+    invest: 2000,
+    debtRepay: 500
+  },
+  retirement: {
+    balance: 0,
+    ss: 1828,
+    cap: 32500,
+    returnPct: 8,
+    target: 1650000
+  },
+  projections: {
+    start: 0,
+    monthly: 2000,
+    wage: 3.5
+  },
+  lastUpdated: null
+};
+
+let S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+let donutChart = null, cashflowBarChart = null, debtChartInst = null, retirementChartInst = null, projChartInst = null;
+
+// ═══════════════════════════════════════════════════════════
+//  LOAD / SAVE
+// ═══════════════════════════════════════════════════════════
+function loadState() {
+  try {
+    const raw = localStorage.getItem('wealthbuilder_v2');
+    if (raw) S = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), JSON.parse(raw));
+  } catch(e) {}
+}
+
+function saveAll() {
+  // Collect all form inputs before saving
+  collectCashflow();
+  collectRetirement();
+  collectProjections();
+  collectSettings();
+  S.lastUpdated = new Date().toISOString();
+  localStorage.setItem('wealthbuilder_v2', JSON.stringify(S));
+  const t = document.getElementById('save-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+  updateLastUpdated();
+  refreshAll();
+}
+
+function updateLastUpdated() {
+  const el = document.getElementById('last-updated-label');
+  if (S.lastUpdated) {
+    const d = new Date(S.lastUpdated);
+    el.textContent = 'Saved ' + d.toLocaleString('en-AU', { dateStyle: 'short', timeStyle: 'short' });
+  }
+}
+
+function exportData() {
+  collectCashflow(); collectRetirement(); collectProjections(); collectSettings();
+  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'wealth-builder-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      S = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), JSON.parse(ev.target.result));
+      localStorage.setItem('wealthbuilder_v2', JSON.stringify(S));
+      populateForms();
+      refreshAll();
+      alert('Data imported successfully!');
+    } catch(err) { alert('Invalid file.'); }
+  };
+  r.readAsText(file);
+}
+
+function clearAll() {
+  if (!confirm('Clear ALL data? This cannot be undone.')) return;
+  S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  localStorage.removeItem('wealthbuilder_v2');
+  populateForms();
+  refreshAll();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  refreshPage(id);
+}
+
+function refreshPage(id) {
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'portfolio') renderPortfolio();
+  if (id === 'cashflow') renderCashflow();
+  if (id === 'debt') renderDebt();
+  if (id === 'retirement') renderRetirement();
+  if (id === 'projections') renderProjections();
+  if (id === 'resources') renderResources();
+  if (id === 'settings') renderSettings();
+}
+
+function refreshAll() { refreshPage(currentPage()); }
+function currentPage() {
+  const p = document.querySelector('.page.active');
+  return p ? p.id.replace('page-', '') : 'dashboard';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FORMATTERS
+// ═══════════════════════════════════════════════════════════
+const fmt = (n, d=0) => 'A$' + Number(n || 0).toLocaleString('en-AU', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtPct = (n, d=1) => Number(n || 0).toFixed(d) + '%';
+const fmtNum = (n, d=2) => Number(n || 0).toLocaleString('en-AU', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+// ═══════════════════════════════════════════════════════════
+//  PORTFOLIO HELPERS
+// ═══════════════════════════════════════════════════════════
+function totalValue(h) { return (h.qty || 0) * (h.price || 0); }
+function totalPortfolioValue() { return S.holdings.reduce((s, h) => s + totalValue(h), 0); }
+
+function allocationByCategory() {
+  const map = {};
+  const total = totalPortfolioValue();
+  S.holdings.forEach(h => {
+    const v = totalValue(h);
+    map[h.cat] = (map[h.cat] || 0) + v;
+  });
+  const result = {};
+  Object.keys(map).forEach(k => { result[k] = total > 0 ? (map[k] / total * 100) : 0; });
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CASHFLOW HELPERS
+// ═══════════════════════════════════════════════════════════
+function calcMonthlyExpenses(cf) {
+  const weekly = (n) => (cf[n] || 0) * 52 / 12;
+  const fortnightly = (n) => (cf[n] || 0) * 26 / 12;
+  const quarterly = (n) => (cf[n] || 0) / 3;
+  return (
+    weekly('rent') + weekly('groceries') + weekly('fuel') +
+    weekly('electricity') + weekly('transport') + weekly('play') +
+    fortnightly('gym') +
+    quarterly('bball') + quarterly('school')
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HOLDINGS CRUD
+// ═══════════════════════════════════════════════════════════
+function addHolding() {
+  const name  = document.getElementById('h-name').value.trim();
+  const cat   = document.getElementById('h-cat').value;
+  const acct  = document.getElementById('h-account').value;
+  const qty   = parseFloat(document.getElementById('h-qty').value) || 0;
+  const price = parseFloat(document.getElementById('h-price').value) || 0;
+  const cost  = parseFloat(document.getElementById('h-cost').value) || 0;
+  const drip  = document.getElementById('h-drip').value;
+  if (!name) return;
+  S.holdings.push({ id: Date.now(), name, cat, account: acct, qty, price, cost, drip });
+  ['h-name','h-qty','h-price','h-cost'].forEach(id => document.getElementById(id).value = '');
+  renderPortfolio();
+}
+
+function removeHolding(id) {
+  S.holdings = S.holdings.filter(h => h.id !== id);
+  renderPortfolio();
+}
+
+function updateHoldingPrice(id, val) {
+  const h = S.holdings.find(h => h.id === id);
+  if (h) h.price = parseFloat(val) || 0;
+  renderPortfolio();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DEBT CRUD
+// ═══════════════════════════════════════════════════════════
+function addDebt() {
+  const name    = document.getElementById('d-name').value.trim();
+  const type    = document.getElementById('d-type').value;
+  const original = parseFloat(document.getElementById('d-original').value) || 0;
+  const balance = parseFloat(document.getElementById('d-balance').value) || 0;
+  const rate    = parseFloat(document.getElementById('d-rate').value) || 0;
+  const payment = parseFloat(document.getElementById('d-payment').value) || 0;
+  if (!name) return;
+  S.debts.push({ id: Date.now(), name, type, original, balance, rate, payment });
+  ['d-name','d-original','d-balance','d-rate','d-payment'].forEach(id => document.getElementById(id).value = '');
+  renderDebt();
+}
+
+function removeDebt(id) {
+  S.debts = S.debts.filter(d => d.id !== id);
+  renderDebt();
+}
+
+function updateDebtBalance(id, val) {
+  const d = S.debts.find(d => d.id === id);
+  if (d) d.balance = parseFloat(val) || 0;
+  renderDebt();
+}
+
+function monthsToPayoff(balance, rate, payment) {
+  if (payment <= 0) return 999;
+  const r = rate / 100 / 12;
+  if (r === 0) return Math.ceil(balance / payment);
+  if (payment <= balance * r) return 999;
+  return Math.ceil(-Math.log(1 - (balance * r) / payment) / Math.log(1 + r));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  COLLECT FORM DATA
+// ═══════════════════════════════════════════════════════════
+function collectCashflow() {
+  const g = id => parseFloat(document.getElementById(id)?.value) || 0;
+  S.cashflow = {
+    salary: g('cf-salary'), ss: g('cf-ss'), other: g('cf-other'),
+    rent: g('exp-rent'), groceries: g('exp-groceries'), fuel: g('exp-fuel'),
+    electricity: g('exp-electricity'), transport: g('exp-transport'), gym: g('exp-gym'),
+    bball: g('exp-bball'), school: g('exp-school'), play: g('exp-play'),
+    invest: g('cf-invest'), debtRepay: g('cf-debt-repay')
+  };
+}
+
+function collectRetirement() {
+  const g = id => parseFloat(document.getElementById(id)?.value) || 0;
+  S.retirement = {
+    balance: g('retirement-balance'), ss: g('retirement-ss'), cap: g('retirement-cap'),
+    returnPct: g('retirement-return'), target: g('retirement-target')
+  };
+}
+
+function collectProjections() {
+  const g = id => parseFloat(document.getElementById(id)?.value) || 0;
+  S.projections = { start: g('proj-start'), monthly: g('proj-monthly'), wage: g('proj-wage') };
+}
+
+function collectSettings() {
+  S.settings = {
+    name: document.getElementById('s-name')?.value || S.settings.name,
+    age: parseInt(document.getElementById('s-age')?.value) || S.settings.age,
+    fiAge: parseInt(document.getElementById('s-fi-age')?.value) || S.settings.fiAge,
+    risk: document.getElementById('s-risk')?.value || S.settings.risk,
+    inflation: parseFloat(document.getElementById('s-inflation')?.value) || S.settings.inflation,
+    emergency: parseFloat(document.getElementById('s-emergency')?.value) || S.settings.emergency
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  POPULATE FORMS FROM STATE
+// ═══════════════════════════════════════════════════════════
+function populateForms() {
+  const s = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+  const cf = S.cashflow;
+  s('cf-salary', cf.salary); s('cf-ss', cf.ss); s('cf-other', cf.other);
+  s('exp-rent', cf.rent); s('exp-groceries', cf.groceries); s('exp-fuel', cf.fuel);
+  s('exp-electricity', cf.electricity); s('exp-transport', cf.transport); s('exp-gym', cf.gym);
+  s('exp-bball', cf.bball); s('exp-school', cf.school); s('exp-play', cf.play);
+  s('cf-invest', cf.invest); s('cf-debt-repay', cf.debtRepay);
+
+  const sm = S.retirement;
+  s('retirement-balance', sm.balance); s('retirement-ss', sm.ss); s('retirement-cap', sm.cap);
+  s('retirement-return', sm.returnPct); s('retirement-target', sm.target);
+
+  const pr = S.projections;
+  s('proj-start', pr.start); s('proj-monthly', pr.monthly); s('proj-wage', pr.wage);
+
+  const st = S.settings;
+  s('s-name', st.name); s('s-age', st.age); s('s-fi-age', st.fiAge);
+  s('s-risk', st.risk); s('s-inflation', st.inflation); s('s-emergency', st.emergency);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER DASHBOARD
+// ═══════════════════════════════════════════════════════════
+function renderDashboard() {
+  collectCashflow();
+  const totalPV = totalPortfolioValue();
+  const cf = S.cashflow;
+  const monthlyExp = calcMonthlyExpenses(cf);
+  const totalDebt = S.debts.reduce((s, d) => s + (d.balance || 0), 0);
+  const netWorth = totalPV - totalDebt;
+  const surplus = cf.salary - monthlyExp - cf.invest - cf.debtRepay;
+  const fiYearsLeft = Math.max(0, S.settings.fiAge - S.settings.age);
+  const emergencyFunded = ((S.holdings.filter(h=>h.cat==='Cash').reduce((s,h)=>s+totalValue(h),0)) / S.settings.emergency * 100);
+
+  // KPI row
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi gold">
+      <div class="kpi-label">Total Portfolio Value</div>
+      <div class="kpi-value">${fmt(totalPV)}</div>
+      <div class="kpi-sub">Personal + Retirement</div>
+    </div>
+    <div class="kpi ${netWorth >= 0 ? 'green' : 'red'}">
+      <div class="kpi-label">Net Worth</div>
+      <div class="kpi-value">${fmt(netWorth)}</div>
+      <div class="kpi-sub">Portfolio minus debts</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Monthly Surplus</div>
+      <div class="kpi-value">${fmt(surplus)}</div>
+      <div class="kpi-sub">After expenses + investments</div>
+      <div class="kpi-delta ${surplus>=0?'pos':'neg'}">${surplus>=0?'▲ Positive':'▼ Deficit'}</div>
+    </div>
+    <div class="kpi ${totalDebt > 0 ? 'red' : 'green'}">
+      <div class="kpi-label">Total Debt</div>
+      <div class="kpi-value">${fmt(totalDebt)}</div>
+      <div class="kpi-sub">${totalDebt > 0 ? 'Priority: pay off ASAP' : '✓ Debt free'}</div>
+    </div>
+  `;
+
+  // FI years left
+  document.getElementById('fi-years-left').textContent = fiYearsLeft;
+
+  // FI progress bars
+  const progressBars = [
+    { label: 'Retirement Target Progress', pct: Math.min(100, totalPV / S.retirement.target * 100), color: 'var(--accent)' },
+    { label: 'Emergency Fund', pct: Math.min(100, emergencyFunded), color: 'var(--accent2)' },
+    { label: 'Debt Clearance', pct: Math.min(100, 100 - (totalDebt / (S.debts.reduce((s,d)=>s+(d.original||0),0)||1) * 100)), color: 'var(--accent3)' },
+  ];
+  document.getElementById('fi-progress-bars').innerHTML = progressBars.map(b => `
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <span class="progress-label">${b.label}</span>
+        <span class="progress-val">${b.pct.toFixed(0)}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${b.pct}%;background:${b.color}"></div></div>
+    </div>
+  `).join('');
+
+  // Donut chart
+  const alloc = allocationByCategory();
+  const cats = Object.keys(S.targets);
+  const COLORS = ['#c8a96e','#5c9eff','#4ecb8a','#e06b6b','#f59e0b','#a78bfa','#64748b'];
+
+  if (donutChart) donutChart.destroy();
+  const ctx = document.getElementById('donut-chart').getContext('2d');
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: cats,
+      datasets: [{
+        data: cats.map(c => alloc[c]?.toFixed(1) || 0),
+        backgroundColor: COLORS,
+        borderWidth: 0,
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      cutout: '70%'
+    }
+  });
+
+  document.getElementById('donut-legend').innerHTML = cats.map((c, i) => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${COLORS[i]}"></div>
+      <span class="legend-name">${c}</span>
+      <span class="legend-pct">${(alloc[c]||0).toFixed(1)}% (tgt ${S.targets[c]}%)</span>
+    </div>
+  `).join('');
+
+  // Cashflow bar
+  const income = cf.salary + cf.other;
+  const expTotal = monthlyExp;
+  const investTotal = cf.invest + cf.ss;
+  const debtPay = cf.debtRepay;
+
+  if (cashflowBarChart) cashflowBarChart.destroy();
+  const ctx2 = document.getElementById('cashflow-bar').getContext('2d');
+  cashflowBarChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Income','Living Expenses','Investments','Retirement SS','Debt Repay','Surplus'],
+      datasets: [{
+        data: [income, expTotal, cf.invest, cf.ss, debtPay, Math.max(0,surplus)],
+        backgroundColor: ['#4ecb8a','#e06b6b','#c8a96e','#5c9eff','#f59e0b','#64748b'],
+        borderRadius: 4, borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7a7f8e', font: { size: 10 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7a7f8e', font: { size: 10 },
+          callback: v => 'A$' + (v/1000).toFixed(0) + 'k'
+        }}
+      }
+    }
+  });
+
+  // Debt summary panel
+  const totalOriginal = S.debts.reduce((s,d) => s + (d.original||0), 0);
+  const totalCurrent  = S.debts.reduce((s,d) => s + (d.balance||0), 0);
+  const paidOff = totalOriginal - totalCurrent;
+  document.getElementById('debt-summary-panel').innerHTML = S.debts.length === 0 
+    ? '<div class="empty-state"><div class="icon">✓</div>No debts recorded</div>'
+    : S.debts.map(d => {
+        const paid = Math.min(100, ((d.original - d.balance) / (d.original||1)) * 100);
+        const months = monthsToPayoff(d.balance, d.rate, d.payment);
+        return `<div class="progress-wrap">
+          <div class="progress-header">
+            <span class="progress-label">${d.name}</span>
+            <span class="progress-val">${fmt(d.balance)} left · ${months < 999 ? months + ' mo' : '∞'}</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${paid}%;background:var(--accent4)"></div></div>
+        </div>`;
+      }).join('') + `<div style="margin-top:16px;font-size:12px;color:var(--muted)">
+        Total repaid: <span style="color:var(--accent3);font-weight:700">${fmt(paidOff)}</span> of ${fmt(totalOriginal)}
+      </div>`;
+
+  // Roadmap table
+  const roadmapData = [
+    { phase: 'Phase 1', timeframe: 'Months 1–6 (Now)', priority: 'Debt Clearance', action: 'Aggressively pay off credit card (A$4,195). Maintain minimum on prepayment liability.', status: '🎯 Priority' },
+    { phase: 'Phase 2', timeframe: 'Months 7–12', priority: 'Debt-Free', action: 'Pay off prepayment liability (A$4,855). Begin full STRC/SATA allocation ramp-up. Emergency fund top-up.', status: '⏳ Next' },
+    { phase: 'Phase 3', timeframe: 'Year 2', priority: 'STRC / SATA Growth', action: 'Full DRIP compounding on STRC (25%) and SATA (15%). Increase US ETF via Retirement. Add Gold position.', status: '📅 Planned' },
+    { phase: 'Phase 4', timeframe: 'Years 3–4', priority: 'Commercial RE Acquisition', action: 'Retirement acquires boutique hotel or café property. Rental income + capital growth. Review IPS.', status: '📅 Planned' },
+    { phase: 'Phase 5', timeframe: 'Years 5–6', priority: 'FI Approach', action: 'Portfolio at 70%+ of FI target. Reduce equity risk. Lock in dividend income streams.', status: '📅 Planned' },
+    { phase: 'Phase 6', timeframe: 'Age 48–49', priority: 'Financial Independence', action: 'Total portfolio income ≥ living expenses. Retirement grows to A$1.65M by age 60.', status: '🏆 Goal' },
+  ];
+  document.getElementById('roadmap-table').innerHTML = `<table>
+    <thead><tr><th>Phase</th><th>Timeframe</th><th>Priority</th><th>Key Action</th><th>Status</th></tr></thead>
+    <tbody>${roadmapData.map(r => `<tr>
+      <td class="td-gold">${r.phase}</td>
+      <td class="td-mono td-muted">${r.timeframe}</td>
+      <td style="font-weight:600">${r.priority}</td>
+      <td>${r.action}</td>
+      <td>${r.status}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER PORTFOLIO
+// ═══════════════════════════════════════════════════════════
+function renderPortfolio() {
+  const total = totalPortfolioValue();
+  const tbody = document.getElementById('holdings-tbody');
+  const tfoot = document.getElementById('holdings-tfoot');
+
+  if (S.holdings.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="icon">📂</div>No holdings added yet</div></td></tr>`;
+    tfoot.innerHTML = '';
+    return;
+  }
+
+  tbody.innerHTML = S.holdings.map(h => {
+    const val = totalValue(h);
+    const gain = val - (h.cost || 0);
+    const gainPct = h.cost > 0 ? (gain / h.cost * 100) : 0;
+    const portPct = total > 0 ? (val / total * 100) : 0;
+    return `<tr>
+      <td style="font-weight:600">${h.name}</td>
+      <td><span class="badge badge-gold">${h.cat}</span></td>
+      <td><span class="badge ${h.account==='Retirement'?'badge-blue':'badge-green'}">${h.account}</span></td>
+      <td class="td-mono">${fmtNum(h.qty, 4)}</td>
+      <td class="td-mono">
+        <input type="number" value="${h.price}" step="any"
+          style="width:100px;font-family:var(--font-mono);font-size:12px;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text)"
+          onchange="updateHoldingPrice(${h.id}, this.value)"
+          placeholder="0.00">
+      </td>
+      <td class="td-mono td-gold">${fmt(val)}</td>
+      <td class="td-mono td-muted">${fmt(h.cost)}</td>
+      <td class="td-mono ${gain >= 0 ? 'td-green' : 'td-red'}">${gain >= 0 ? '+' : ''}${fmt(gain)} (${gainPct >= 0?'+':''}${gainPct.toFixed(1)}%)</td>
+      <td class="td-mono">${portPct.toFixed(1)}%</td>
+      <td>${h.drip === 'Yes' ? '<span class="badge badge-green">DRIP ✓</span>' : '<span class="badge" style="background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border)">No</span>'}</td>
+      <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeHolding(${h.id})">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  const totalCost = S.holdings.reduce((s,h) => s + (h.cost||0), 0);
+  const totalGain = total - totalCost;
+  tfoot.innerHTML = `<tr style="background:rgba(200,169,110,0.05)">
+    <td colspan="5" style="font-weight:700;color:var(--accent)">TOTAL</td>
+    <td class="td-mono td-gold" style="font-weight:700">${fmt(total)}</td>
+    <td class="td-mono">${fmt(totalCost)}</td>
+    <td class="td-mono ${totalGain>=0?'td-green':'td-red'}" style="font-weight:700">${totalGain>=0?'+':''}${fmt(totalGain)}</td>
+    <td class="td-mono">100%</td>
+    <td colspan="2"></td>
+  </tr>`;
+
+  // Allocation bars
+  const alloc = allocationByCategory();
+  const COLORS = { 'STRC':'#c8a96e','SATA':'#5c9eff','US ETF':'#4ecb8a','Commercial RE':'#e06b6b','Bitcoin':'#f59e0b','Gold':'#a78bfa','Cash':'#64748b','Other':'#94a3b8' };
+  document.getElementById('allocation-bars').innerHTML = Object.entries(S.targets).map(([cat, tgt]) => {
+    const actual = alloc[cat] || 0;
+    const diff = actual - tgt;
+    const color = COLORS[cat] || '#64748b';
+    return `<div class="progress-wrap">
+      <div class="progress-header">
+        <span class="progress-label">${cat}</span>
+        <span class="progress-val" style="color:${diff>2?'var(--accent3)':diff<-2?'var(--accent4)':'var(--muted)'}">
+          ${actual.toFixed(1)}% actual vs ${tgt}% target ${diff>=0?'(+'+diff.toFixed(1)+'%)':'('+diff.toFixed(1)+'%)'}
+        </span>
+      </div>
+      <div class="progress-bar" style="height:8px">
+        <div class="progress-fill" style="width:${Math.min(100,actual/tgt*100)}%;background:${color}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER CASHFLOW
+// ═══════════════════════════════════════════════════════════
+function renderCashflow() {
+  populateForms();
+  collectCashflow();
+  const cf = S.cashflow;
+
+  const weeklyToMonthly = w => w * 52 / 12;
+  const fortnightlyToMonthly = f => f * 26 / 12;
+  const quarterlyToMonthly = q => q / 3;
+
+  const items = [
+    { label: 'Rent (weekly A$'+cf.rent+')', monthly: weeklyToMonthly(cf.rent) },
+    { label: 'Groceries (weekly A$'+cf.groceries+')', monthly: weeklyToMonthly(cf.groceries) },
+    { label: 'Car Fuel (weekly A$'+cf.fuel+')', monthly: weeklyToMonthly(cf.fuel) },
+    { label: 'Electricity (weekly A$'+cf.electricity+')', monthly: weeklyToMonthly(cf.electricity) },
+    { label: 'Transport (weekly A$'+cf.transport+')', monthly: weeklyToMonthly(cf.transport) },
+    { label: 'Play Activities (weekly A$'+cf.play+')', monthly: weeklyToMonthly(cf.play) },
+    { label: 'Gym (fortnightly A$'+cf.gym+')', monthly: fortnightlyToMonthly(cf.gym) },
+    { label: 'Basketball (quarterly A$'+cf.bball+')', monthly: quarterlyToMonthly(cf.bball) },
+    { label: 'School Fees (quarterly A$'+cf.school+')', monthly: quarterlyToMonthly(cf.school) },
+  ];
+  const monthlyExp = items.reduce((s,i) => s + i.monthly, 0);
+  const totalIncome = cf.salary + cf.other;
+  const totalOut = monthlyExp + cf.invest + cf.ss + cf.debtRepay;
+  const surplus = totalIncome - totalOut;
+
+  document.getElementById('cf-summary').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div>
+        <div class="label">Total Monthly Income</div>
+        <div style="font-family:var(--font-mono);font-size:22px;color:var(--accent3)">${fmt(totalIncome)}</div>
+      </div>
+      <div>
+        <div class="label">Total Monthly Outgoings</div>
+        <div style="font-family:var(--font-mono);font-size:22px;color:var(--accent4)">${fmt(totalOut)}</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div class="label">Net Monthly Surplus</div>
+        <div style="font-family:var(--font-mono);font-size:28px;color:${surplus>=0?'var(--accent3)':'var(--accent4)'}">${fmt(surplus)}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="label">Living Expenses Only</div>
+        <div style="font-family:var(--font-mono);font-size:18px">${fmt(monthlyExp)}</div>
+        <div style="font-size:11px;color:var(--muted)">~A${Math.round(monthlyExp)} / month baseline</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <table style="font-size:12px">
+      <thead><tr><th>Expense</th><th>Monthly Equiv.</th></tr></thead>
+      <tbody>
+        ${items.map(i => `<tr><td>${i.label}</td><td class="td-mono">${fmt(i.monthly, 0)}</td></tr>`).join('')}
+        <tr style="background:rgba(255,255,255,0.03)"><td style="font-weight:700">Subtotal Living Expenses</td><td class="td-mono td-gold" style="font-weight:700">${fmt(monthlyExp)}</td></tr>
+        <tr><td>Personal Investments</td><td class="td-mono td-gold">+${fmt(cf.invest)}</td></tr>
+        <tr><td>Salary Sacrifice (Retirement)</td><td class="td-mono td-blue">+${fmt(cf.ss)}</td></tr>
+        <tr><td>Debt Repayment</td><td class="td-mono td-red">+${fmt(cf.debtRepay)}</td></tr>
+      </tbody>
+    </table>
+  `;
+
+  // Inflation table
+  const rows = [];
+  for (let yr = 0; yr <= 6; yr++) {
+    const factor = Math.pow(1 + (S.settings.inflation || 5) / 100, yr);
+    rows.push({ yr, exp: monthlyExp * factor, invest: cf.invest * Math.pow(1.035, yr) });
+  }
+  document.getElementById('cf-inflation-table').innerHTML = `<table>
+    <thead><tr><th>Year</th><th>Age</th><th>Monthly Expenses (inflated)</th><th>Monthly Investment (wage-grown)</th><th>Surplus</th></tr></thead>
+    <tbody>${rows.map(r => {
+      const income = cf.salary * Math.pow(1.035, r.yr);
+      const sur = income - r.exp - r.invest;
+      return `<tr>
+        <td>Year ${r.yr === 0 ? '0 (Now)' : r.yr}</td>
+        <td>${S.settings.age + r.yr}</td>
+        <td class="td-mono">${fmt(r.exp)}</td>
+        <td class="td-mono td-gold">${fmt(r.invest)}</td>
+        <td class="td-mono ${sur>=0?'td-green':'td-red'}">${fmt(sur)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER DEBT
+// ═══════════════════════════════════════════════════════════
+function renderDebt() {
+  const totalDebt = S.debts.reduce((s,d) => s + (d.balance||0), 0);
+  const totalInterest = S.debts.reduce((s,d) => s + (d.balance||0) * (d.rate||0) / 100 / 12, 0);
+
+  document.getElementById('total-debt-kpi').textContent = fmt(totalDebt);
+  document.getElementById('monthly-interest-kpi').textContent = fmt(totalInterest);
+
+  // Payoff date estimate
+  const maxMonths = S.debts.reduce((m,d) => Math.max(m, monthsToPayoff(d.balance, d.rate, d.payment)), 0);
+  if (maxMonths < 999) {
+    const d = new Date(); d.setMonth(d.getMonth() + maxMonths);
+    document.getElementById('debt-payoff-date').textContent = 'Est. all debts cleared: ' + d.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
+  }
+
+  const tbody = document.getElementById('debt-tbody');
+  if (S.debts.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="icon">✅</div>No debts — great!</div></td></tr>`;
+  } else {
+    tbody.innerHTML = S.debts.map(d => {
+      const months = monthsToPayoff(d.balance, d.rate, d.payment);
+      const paidPct = d.original > 0 ? Math.min(100, (d.original - d.balance) / d.original * 100) : 0;
+      return `<tr>
+        <td style="font-weight:600">${d.name}</td>
+        <td><span class="badge badge-red">${d.type}</span></td>
+        <td class="td-mono">${fmt(d.original)}</td>
+        <td class="td-mono">
+          <input type="number" value="${d.balance}" step="any"
+            style="width:110px;font-family:var(--font-mono);font-size:12px;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text)"
+            onchange="updateDebtBalance(${d.id}, this.value)">
+        </td>
+        <td class="td-mono ${d.rate > 10 ? 'td-red' : ''}">${d.rate}%</td>
+        <td class="td-mono">${fmt(d.payment)}</td>
+        <td class="td-mono ${months < 12 ? 'td-green' : ''}">${months < 999 ? months + ' months' : '∞'}</td>
+        <td style="min-width:120px">
+          <div class="progress-bar"><div class="progress-fill" style="width:${paidPct}%;background:var(--accent3)"></div></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px">${paidPct.toFixed(0)}% repaid</div>
+        </td>
+        <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeDebt(${d.id})">✕</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Amortisation chart
+  const months = Math.min(48, S.debts.length > 0 ? 
+    Math.max(...S.debts.map(d => monthsToPayoff(d.balance, d.rate, d.payment)).filter(m => m < 999)) + 3
+    : 24);
+  
+  const labels = Array.from({length: months}, (_,i) => 'M' + (i+1));
+  const datasets = S.debts.map((d, idx) => {
+    const COLORS_D = ['#e06b6b','#f59e0b','#5c9eff','#a78bfa'];
+    let bal = d.balance;
+    const data = [bal];
+    for (let m = 0; m < months - 1; m++) {
+      const interest = bal * (d.rate / 100 / 12);
+      bal = Math.max(0, bal + interest - d.payment);
+      data.push(bal);
+    }
+    return { label: d.name, data, borderColor: COLORS_D[idx % COLORS_D.length], backgroundColor: 'transparent', tension: 0.3, borderWidth: 2 };
+  });
+
+  if (debtChartInst) debtChartInst.destroy();
+  const ctx = document.getElementById('debt-chart').getContext('2d');
+  debtChartInst = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#7a7f8e', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#7a7f8e', font: { size: 10 }, maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#7a7f8e', font: { size: 10 }, callback: v => 'A$' + v.toLocaleString() }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER RETIREMENT
+// ═══════════════════════════════════════════════════════════
+function calcRetirement() { collectRetirement(); renderRetirement(); }
+
+function renderRetirement() {
+  populateForms();
+  const sm = S.retirement;
+  const currentAge = S.settings.age;
+  const yearsTo60 = Math.max(0, 60 - currentAge);
+  const annualContrib = sm.ss * 12;
+  const r = (sm.returnPct || 8) / 100;
+
+  // Project balance to 60
+  let bal = sm.balance || 0;
+  const projData = [{ age: currentAge, balance: bal }];
+  for (let yr = 1; yr <= yearsTo60; yr++) {
+    bal = bal * (1 + r) + annualContrib;
+    projData.push({ age: currentAge + yr, balance: bal });
+  }
+  const projBalance60 = bal;
+  const shortfall = sm.target - projBalance60;
+
+  document.getElementById('retirement-kpis').innerHTML = `
+    <div class="kpi blue">
+      <div class="kpi-label">Current Retirement Balance</div>
+      <div class="kpi-value">${fmt(sm.balance)}</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label">Annual Contributions</div>
+      <div class="kpi-value">${fmt(annualContrib)}</div>
+      <div class="kpi-sub">Cap: ${fmt(sm.cap)}</div>
+    </div>
+    <div class="kpi ${projBalance60 >= sm.target ? 'green' : 'red'}">
+      <div class="kpi-label">Projected Balance at 60</div>
+      <div class="kpi-value">${fmt(projBalance60)}</div>
+      <div class="kpi-sub">Target: ${fmt(sm.target)}</div>
+    </div>
+    <div class="kpi ${shortfall <= 0 ? 'green' : 'red'}">
+      <div class="kpi-label">${shortfall <= 0 ? 'Surplus vs Target' : 'Shortfall vs Target'}</div>
+      <div class="kpi-value">${fmt(Math.abs(shortfall))}</div>
+      <div class="kpi-sub">${shortfall <= 0 ? '✓ On track' : 'Increase contributions'}</div>
+    </div>
+  `;
+
+  // Retirement chart
+  if (retirementChartInst) retirementChartInst.destroy();
+  const ctx = document.getElementById('retirement-chart').getContext('2d');
+  retirementChartInst = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: projData.map(d => 'Age ' + d.age),
+      datasets: [
+        { label: 'Retirement Balance', data: projData.map(d => d.balance), borderColor: '#5c9eff', backgroundColor: 'rgba(92,158,255,0.1)', fill: true, tension: 0.3, borderWidth: 2 },
+        { label: 'Target', data: projData.map(() => sm.target), borderColor: '#c8a96e', borderDash: [5,5], borderWidth: 1.5, pointRadius: 0 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#7a7f8e', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#7a7f8e', font: { size: 10 }, maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#7a7f8e', font: { size: 10 }, callback: v => 'A$' + (v/1e6).toFixed(1) + 'M' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // Retirement holdings
+  const retirementHoldings = S.holdings.filter(h => h.account === 'Retirement');
+  document.getElementById('retirement-holdings-table').innerHTML = retirementHoldings.length === 0
+    ? '<div class="empty-state"><div class="icon">📂</div>No Retirement holdings — add them in Portfolio</div>'
+    : `<table><thead><tr><th>Asset</th><th>Category</th><th>Units</th><th>Price</th><th>Value</th><th>DRIP</th></tr></thead><tbody>
+      ${retirementHoldings.map(h => `<tr>
+        <td style="font-weight:600">${h.name}</td>
+        <td><span class="badge badge-blue">${h.cat}</span></td>
+        <td class="td-mono">${fmtNum(h.qty, 4)}</td>
+        <td class="td-mono">${fmt(h.price)}</td>
+        <td class="td-mono td-gold">${fmt(totalValue(h))}</td>
+        <td>${h.drip === 'Yes' ? '<span class="badge badge-green">DRIP ✓</span>' : '—'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER PROJECTIONS
+// ═══════════════════════════════════════════════════════════
+function calcProjections() { collectProjections(); renderProjections(); }
+
+function renderProjections() {
+  populateForms();
+  const pr = S.projections;
+  const currentAge = S.settings.age;
+  const years = 18;
+  const scenarios = [
+    { label: 'Conservative', return: 5, color: '#5c9eff' },
+    { label: 'Base', return: 8, color: '#c8a96e' },
+    { label: 'Optimistic', return: 11, color: '#4ecb8a' }
+  ];
+
+  const datasets = scenarios.map(sc => {
+    let bal = pr.start || 0;
+    let monthly = pr.monthly || 2000;
+    const data = [bal];
+    for (let yr = 1; yr <= years; yr++) {
+      const annual = monthly * 12;
+      bal = bal * (1 + sc.return / 100) + annual;
+      monthly *= (1 + (pr.wage || 3.5) / 100);
+      data.push(bal);
+    }
+    return { label: sc.label + ' (' + sc.return + '%)', data, borderColor: sc.color, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2 };
+  });
+
+  const labels = Array.from({length: years + 1}, (_,i) => 'Age ' + (currentAge + i));
+
+  if (projChartInst) projChartInst.destroy();
+  const ctx = document.getElementById('proj-chart').getContext('2d');
+  projChartInst = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#7a7f8e', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#7a7f8e', font: { size: 10 }, maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#7a7f8e', font: { size: 10 }, callback: v => 'A$' + (v >= 1e6 ? (v/1e6).toFixed(1)+'M' : (v/1e3).toFixed(0)+'k') }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // Table
+  const tableRows = [];
+  for (let yr = 0; yr <= years; yr++) {
+    const row = { yr, age: currentAge + yr };
+    let monthly = pr.monthly || 2000;
+    scenarios.forEach(sc => {
+      let bal = pr.start || 0;
+      let m = monthly;
+      for (let y = 1; y <= yr; y++) { bal = bal * (1 + sc.return/100) + m * 12; m *= 1.035; }
+      row[sc.label] = bal;
+    });
+    tableRows.push(row);
+  }
+
+  document.getElementById('proj-table').innerHTML = `<table>
+    <thead><tr><th>Year</th><th>Age</th><th>Conservative (5%)</th><th>Base (8%)</th><th>Optimistic (11%)</th><th>FI Target?</th></tr></thead>
+    <tbody>${tableRows.map(r => {
+      const fiAge = S.settings.fiAge;
+      const isFI = r.age >= fiAge;
+      return `<tr ${isFI ? "style='background:rgba(78,203,138,0.05)'" : ''}>
+        <td>Y${r.yr}</td>
+        <td class="td-mono ${isFI ? 'td-gold' : ''}" style="${isFI?'font-weight:700':''}">${r.age}${isFI ? ' 🏆' : ''}</td>
+        <td class="td-mono td-blue">${fmt(r['Conservative'])}</td>
+        <td class="td-mono td-gold">${fmt(r['Base'])}</td>
+        <td class="td-mono td-green">${fmt(r['Optimistic'])}</td>
+        <td style="font-size:12px;color:var(--muted)">${isFI ? '<span class="badge badge-green">FI Zone</span>' : ''}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function renderResources() {
+  // Static page - no dynamic update needed
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER SETTINGS
+// ═══════════════════════════════════════════════════════════
+function renderSettings() {
+  populateForms();
+  const cats = Object.keys(S.targets);
+  document.getElementById('target-alloc-form').innerHTML = cats.map(cat => `
+    <div class="form-group" style="margin-bottom:10px">
+      <label>${cat} Target (%)</label>
+      <input type="number" id="tgt-${cat.replace(/\s+/g,'-')}" value="${S.targets[cat]}" step="0.5" min="0" max="100">
+    </div>
+  `).join('') + `<div style="margin-top:12px;font-size:12px;color:var(--muted)" id="tgt-sum">
+    Total: ${Object.values(S.targets).reduce((s,v)=>s+v,0)}% (must equal 100%)
+  </div>`;
+}
+
+function saveTargets() {
+  const cats = Object.keys(S.targets);
+  cats.forEach(cat => {
+    const el = document.getElementById('tgt-' + cat.replace(/\s+/g,'-'));
+    if (el) S.targets[cat] = parseFloat(el.value) || 0;
+  });
+  const sum = Object.values(S.targets).reduce((s,v)=>s+v,0);
+  document.getElementById('tgt-sum').textContent = 'Total: ' + sum + '% ' + (Math.abs(sum-100) < 0.1 ? '✓' : '⚠ Should equal 100%');
+  saveAll();
+}
+
+function saveSettings() {
+  collectSettings();
+  saveAll();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+loadState();
+updateLastUpdated();
+populateForms();
+renderDashboard();
+
+// Auto-save on input changes in cashflow fields
+document.querySelectorAll('#page-cashflow input, #page-cashflow select').forEach(el => {
+  el.addEventListener('change', () => { collectCashflow(); renderCashflow(); });
+});
+</script>
+</body>
+</html>
