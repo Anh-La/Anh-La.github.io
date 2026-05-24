@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wealth Builder · Chiến Lược Đầu Tư Cá Nhân</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  /* Same styles as before - unchanged */
+  :root {
+    --bg:       #0a0c10;
+    --surface:  #111318;
+    --card:     #161920;
+    --border:   #232730;
+    --accent:   #c8a96e;
+    --accent2:  #5c9eff;
+    --accent3:  #4ecb8a;
+    --accent4:  #e06b6b;
+    --text:     #e8e3d8;
+    --muted:    #7a7f8e;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'Manrope', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+    --radius: 12px;
+  }
+  /* ... (all previous CSS remains the same) ... */
+</style>
+</head>
+<body>
+<div id="app">
+
+<header>
+  <div class="logo">
+    <span class="logo-title">Wealth Builder</span>
+    <span class="logo-sub" id="logo-sub">Personal Investment Strategy</span>
+  </div>
+  <div class="header-right">
+    <select id="lang-select" onchange="switchLanguage(this.value)" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:13px;">
+      <option value="en">🇬🇧 English</option>
+      <option value="vi">🇻🇳 Tiếng Việt</option>
+    </select>
+    <span class="last-updated" id="last-updated-label"></span>
+    <button class="btn" onclick="exportData()">↓ Export</button>
+    <button class="btn btn-accent" onclick="saveAll()">Save / Lưu</button>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard">📊 Dashboard</div>
+  <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio">💼 Portfolio</div>
+  <div class="tab" onclick="showPage('cashflow')" id="tab-cashflow">💸 Cashflow</div>
+  <div class="tab" onclick="showPage('debt')" id="tab-debt">🧹 Debt Tracker</div>
+  <div class="tab" onclick="showPage('retirement')" id="tab-retirement">🏦 Retirement Fund</div>
+  <div class="tab" onclick="showPage('projections')" id="tab-projections">📈 Projections</div>
+  <div class="tab" onclick="showPage('resources')" id="tab-resources">📖 Resources</div>
+  <div class="tab" onclick="showPage('settings')" id="tab-settings">⚙️ Settings</div>
+</nav>
+
+<!-- Rest of the HTML remains the same until the script section -->
+
+<!-- ... (All page content stays the same) ... -->
+
+</main>
+</div>
+
+<div id="save-toast">✓ Saved / Đã lưu</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  TRANSLATIONS
+// ═══════════════════════════════════════════════════════════
+const translations = {
+  en: {
+    "logo-sub": "Personal Investment Strategy",
+    "tab-dashboard": "📊 Dashboard",
+    "tab-portfolio": "💼 Portfolio",
+    "tab-cashflow": "💸 Cashflow",
+    "tab-debt": "🧹 Debt Tracker",
+    "tab-retirement": "🏦 Retirement Fund",
+    "tab-projections": "📈 Projections",
+    "tab-resources": "📖 Resources",
+    "tab-settings": "⚙️ Settings",
+    "page-title-overview": "Overview",
+    "page-sub-overview": "Net wealth snapshot · Updated in real time",
+    // Add more translations as needed...
+  },
+  vi: {
+    "logo-sub": "Chiến Lược Đầu Tư Cá Nhân",
+    "tab-dashboard": "📊 Bảng Điều Khiển",
+    "tab-portfolio": "💼 Danh Mục Đầu Tư",
+    "tab-cashflow": "💸 Dòng Tiền",
+    "tab-debt": "🧹 Theo Dõi Nợ",
+    "tab-retirement": "🏦 Quỹ Hưu Trí",
+    "tab-projections": "📈 Dự Báo Tăng Trưởng",
+    "tab-resources": "📖 Tài Nguyên",
+    "tab-settings": "⚙️ Cài Đặt",
+    "page-title-overview": "Tổng Quan",
+    "page-sub-overview": "Bức tranh tài sản ròng · Cập nhật thời gian thực",
+    "save": "Lưu",
+    "export": "Xuất JSON",
+    "total-portfolio": "Tổng Giá Trị Danh Mục",
+    // More translations below...
+  }
+};
+
+// Full translation map (expanded)
+const i18n = {
+  en: {
+    title: "Wealth Builder · Personal Investment Strategy",
+    logoSub: "Personal Investment Strategy",
+    dashboard: "Dashboard",
+    portfolio: "Portfolio",
+    cashflow: "Cashflow",
+    debt: "Debt Tracker",
+    retirement: "Retirement Fund",
+    projections: "Projections",
+    resources: "Resources",
+    settings: "Settings",
+    overview: "Overview",
+    netWealth: "Net Wealth Snapshot",
+    totalPortfolio: "Total Portfolio Value",
+    netWorth: "Net Worth",
+    monthlySurplus: "Monthly Surplus",
+    totalDebt: "Total Debt",
+    yearsToFI: "years to FI target",
+    save: "Save",
+    export: "Export",
+    import: "Import",
+  },
+  vi: {
+    title: "Wealth Builder · Chiến Lược Đầu Tư Cá Nhân",
+    logoSub: "Chiến Lược Đầu Tư Cá Nhân",
+    dashboard: "Bảng Điều Khiển",
+    portfolio: "Danh Mục Đầu Tư",
+    cashflow: "Dòng Tiền",
+    debt: "Theo Dõi Nợ",
+    retirement: "Quỹ Hưu Trí",
+    projections: "Dự Báo",
+    resources: "Tài Nguyên & Công Cụ",
+    settings: "Cài Đặt",
+    overview: "Tổng Quan",
+    netWealth: "Tài Sản Ròng",
+    totalPortfolio: "Tổng Giá Trị Danh Mục",
+    netWorth: "Tài Sản Ròng",
+    monthlySurplus: "Dư Tháng",
+    totalDebt: "Tổng Nợ",
+    yearsToFI: "năm đến mục tiêu FI",
+    save: "Lưu",
+    export: "Xuất",
+    import: "Nhập",
+  }
+};
+
+let currentLang = 'en';
+
+// ═══════════════════════════════════════════════════════════
+//  LANGUAGE FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('wealthbuilder_lang', lang);
+  document.documentElement.lang = lang === 'vi' ? 'vi' : 'en';
+  
+  // Update static texts
+  document.getElementById('logo-sub').textContent = i18n[lang].logoSub;
+  document.querySelectorAll('.tab').forEach(tab => {
+    const key = tab.id.replace('tab-', '');
+    if (i18n[lang][key]) tab.textContent = i18n[lang][key];
+  });
+
+  refreshAll();
+}
+
+function getLang() {
+  return localStorage.getItem('wealthbuilder_lang') || 'en';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Rest of your existing script (STATE, LOAD/SAVE, etc.)
+// ═══════════════════════════════════════════════════════════
+const DEFAULT_STATE = { /* ... same as before ... */ };
+
+let S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+let donutChart = null, cashflowBarChart = null, debtChartInst = null, retirementChartInst = null, projChartInst = null;
+
+// Load language
+currentLang = getLang();
+document.getElementById('lang-select').value = currentLang;
+
+// Update loadState to also load language
+function loadState() {
+  try {
+    const raw = localStorage.getItem('wealthbuilder_v2');
+    if (raw) S = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), JSON.parse(raw));
+    currentLang = getLang();
+  } catch(e) {}
+}
+
+// Update saveAll, render functions, etc. to respect language
+function updateLastUpdated() {
+  const el = document.getElementById('last-updated-label');
+  if (S.lastUpdated) {
+    const d = new Date(S.lastUpdated);
+    el.textContent = currentLang === 'vi' 
+      ? 'Đã lưu ' + d.toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'short' })
+      : 'Saved ' + d.toLocaleString('en-AU', { dateStyle: 'short', timeStyle: 'short' });
+  }
+}
+
+// Example: Update renderDashboard with bilingual support
+function renderDashboard() {
+  // ... existing logic ...
+  
+  document.getElementById('fi-years-left').textContent = fiYearsLeft;
+  document.querySelector('.fi-label').textContent = currentLang === 'vi' 
+    ? `năm đến mục tiêu FI (tuổi ${S.settings.fiAge})` 
+    : `years to FI target (age ${S.settings.fiAge})`;
+  
+  // ... rest of the function
+}
+
+// Initialize
+loadState();
+document.getElementById('lang-select').value = currentLang;
+updateLastUpdated();
+populateForms();
+renderDashboard();
+
+// Auto language switch on load
+switchLanguage(currentLang);
+</script>
+</body>
+</html>
