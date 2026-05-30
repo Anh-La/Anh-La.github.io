@@ -3,24 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wealth Apps</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  body{background:#0a0c10;color:#e8e3d8;font-family:Manrope,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .wrap{max-width:520px;width:100%}
-  h1{font-family:'DM Serif Display',serif;color:#c8a96e;font-style:italic;margin-bottom:8px}
-  p{color:#7a7f8e;font-size:14px;margin-bottom:32px}
-  a{display:block;padding:20px 24px;border:1px solid #232730;border-radius:12px;background:#161920;color:#e8e3d8;text-decoration:none;margin-bottom:12px;transition:border-color .15s}
-  a:hover{border-color:#c8a96e}
-  a strong{display:block;color:#c8a96e;font-size:16px;margin-bottom:4px}
-  a span{font-size:13px;color:#7a7f8e}
-</style>
-</head>
-<body><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wealth Hub · Calculators & Models</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -134,11 +116,11 @@
   </header>
 
   <div class="app-strip">
-    <a class="app-card personal" href="wealth/individual/wealth-builder.html">
+    <a class="app-card personal" href="wealth-builder.html">
       <span class="icon">💼</span>
       <div><strong data-i18n="appPersonal">Wealth Builder</strong><span data-i18n="appPersonalSub">Personal · taxable portfolio, cashflow, debt, FI</span></div>
     </a>
-    <a class="app-card smsf" href="wealth/corporate/smsf.html">
+    <a class="app-card smsf" href="smsf.html">
       <span class="icon">🏛️</span>
       <div><strong data-i18n="appSmsf">Super Steward</strong><span data-i18n="appSmsfSub">SMSF · caps, compliance, fund growth</span></div>
     </a>
@@ -211,7 +193,7 @@ const CALCULATORS = [
     id: 'personal_dashboard', category: 'overview', app: 'personal',
     tab: 'dashboard', en: 'Net Worth Dashboard', vi: 'Bảng Tài Sản Ròng',
     models: ['Net worth', 'Portfolio value', 'Monthly surplus', 'Debt total'],
-    href: 'individual/wealth-builder.html#dashboard',
+    href: 'wealth-builder.html#dashboard',
     videoKey: 'personal_dashboard',
     guide: {
       en: 'Enter latest prices on the Portfolio tab first, then review KPIs here. Update cashflow monthly so surplus reflects reality.',
@@ -222,7 +204,7 @@ const CALCULATORS = [
     id: 'personal_allocation', category: 'overview', app: 'personal',
     tab: 'dashboard', en: 'Allocation vs Target', vi: 'Phân bổ so mục tiêu',
     models: ['Donut chart', 'Category drift', 'IPS targets'],
-    href: 'individual/wealth-builder.html#dashboard',
+    href: 'wealth-builder.html#dashboard',
     videoKey: 'personal_allocation',
     guide: {
       en: 'Rebalance when any category drifts more than ±2% from target. Set targets in Settings to match your IPS.',
@@ -233,7 +215,7 @@ const CALCULATORS = [
     id: 'personal_fi', category: 'growth', app: 'personal',
     tab: 'dashboard', en: 'FI Progress Tracker', vi: 'Theo dõi tiến độ ĐLTC',
     models: ['Years to FI', 'FI portfolio %', 'Emergency fund %', 'Debt clearance %'],
-    href: 'individual/wealth-builder.html#dashboard',
+    href: 'wealth-builder.html#dashboard',
     videoKey: 'personal_fi',
     guide: {
       en: 'Set FI target portfolio and age in Settings. Fund emergency cash category before aggressive growth bets.',
@@ -244,7 +226,7 @@ const CALCULATORS = [
     id: 'personal_cashflow', category: 'cashflow', app: 'personal',
     tab: 'cashflow', en: 'Monthly Cashflow Model', vi: 'Mô hình dòng tiền tháng',
     models: ['Income vs expenses', 'Invest surplus', 'Living cost baseline'],
-    href: 'individual/wealth-builder.html#cashflow',
+    href: 'wealth-builder.html#cashflow',
     videoKey: 'personal_cashflow',
     guide: {
       en: 'Use net salary after tax. Convert weekly costs automatically — focus on surplus, not gross income.',
@@ -255,7 +237,7 @@ const CALCULATORS = [
     id: 'personal_inflation', category: 'cashflow', app: 'personal',
     tab: 'cashflow', en: 'Expense Inflation (6yr)', vi: 'Lạm phát chi phí (6 năm)',
     models: ['CPI on expenses', 'Wage growth on investing', 'Surplus by year'],
-    href: 'individual/wealth-builder.html#cashflow',
+    href: 'wealth-builder.html#cashflow',
     videoKey: 'personal_inflation',
     guide: {
       en: 'Default 5% Sydney CPI — adjust in Settings if your rent or school fees grow faster.',
@@ -266,7 +248,7 @@ const CALCULATORS = [
     id: 'personal_debt', category: 'debt', app: 'personal',
     tab: 'debt', en: 'Debt Payoff & Interest', vi: 'Trả nợ & Lãi suất',
     models: ['Avalanche priority', 'Months to payoff', 'Monthly interest cost', 'Amortisation curves'],
-    href: 'individual/wealth-builder.html#debt',
+    href: 'wealth-builder.html#debt',
     videoKey: 'personal_debt',
     guide: {
       en: 'Attack highest rate first. Once a debt is cleared, roll its payment into the next — do not inflate lifestyle.',
@@ -277,7 +259,7 @@ const CALCULATORS = [
     id: 'personal_portfolio', category: 'invest', app: 'personal',
     tab: 'portfolio', en: 'Holdings & Cost Base', vi: 'Danh mục & Giá vốn',
     models: ['Position value', 'Gain/loss', 'DRIP flag', 'Allocation bars'],
-    href: 'individual/wealth-builder.html#portfolio',
+    href: 'wealth-builder.html#portfolio',
     videoKey: 'personal_portfolio',
     guide: {
       en: 'Update prices regularly for accurate net worth. Record cost base for CGT — especially crypto and ETFs.',
@@ -288,7 +270,7 @@ const CALCULATORS = [
     id: 'personal_projections', category: 'growth', app: 'personal',
     tab: 'projections', en: 'FI Scenario Projections', vi: 'Dự báo kịch bản ĐLTC',
     models: ['5% / 8% / 11% returns', 'Wage-linked contributions', 'FI age marker'],
-    href: 'individual/wealth-builder.html#projections',
+    href: 'wealth-builder.html#projections',
     videoKey: 'personal_projections',
     guide: {
       en: 'Run all three scenarios. Base case 8% is long-run equities — use Conservative if you are debt-heavy.',
@@ -299,7 +281,7 @@ const CALCULATORS = [
     id: 'personal_settings', category: 'planning', app: 'personal',
     tab: 'settings', en: 'Strategy Settings', vi: 'Cài đặt chiến lược',
     models: ['FI age & target', 'Risk profile', 'Target allocation %', 'Export/import JSON'],
-    href: 'individual/wealth-builder.html#settings',
+    href: 'wealth-builder.html#settings',
     videoKey: 'personal_settings',
     guide: {
       en: 'Export JSON monthly as backup. Targets should sum to 100% before you rely on allocation charts.',
@@ -310,7 +292,7 @@ const CALCULATORS = [
     id: 'personal_lifeplan', category: 'planning', app: 'personal',
     tab: 'settings', en: 'Life Plan Forms', vi: 'Biểu mẫu Life Plan',
     models: ['Client report', 'Action plan'],
-    href: 'individual/Forms/Life-plan-report-form.html',
+    href: 'wealth-builder.html#settings',
     videoKey: 'personal_lifeplan',
     guide: {
       en: 'Use the report form for snapshots; action form for annual goals. Align numbers with Wealth Builder exports.',
@@ -321,7 +303,7 @@ const CALCULATORS = [
     id: 'smsf_dashboard', category: 'overview', app: 'smsf',
     tab: 'dashboard', en: 'Fund Overview KPIs', vi: 'KPI tổng quan quỹ',
     models: ['Fund balance', 'Annual contributions', 'Cap used %', 'Projected at 60'],
-    href: 'smsf/smsf-fund-manager.html#dashboard',
+    href: 'smsf.html#dashboard',
     videoKey: 'smsf_dashboard',
     guide: {
       en: 'Sync fund balance and holdings before trustee meetings. Cap % turns red if concessional contributions exceed limit.',
@@ -332,7 +314,7 @@ const CALCULATORS = [
     id: 'smsf_allocation', category: 'invest', app: 'smsf',
     tab: 'dashboard', en: 'Fund Asset Allocation', vi: 'Phân bổ tài sản quỹ',
     models: ['IPS donut', 'Listed vs alternatives', 'Commercial RE slot'],
-    href: 'smsf/smsf-fund-manager.html#dashboard',
+    href: 'smsf.html#dashboard',
     videoKey: 'smsf_allocation',
     guide: {
       en: 'Document IPS changes in trustee minutes. Property often sits under Commercial RE — confirm sole purpose test.',
@@ -343,7 +325,7 @@ const CALCULATORS = [
     id: 'smsf_contributions', category: 'super', app: 'smsf',
     tab: 'contributions', en: 'Contribution Stack', vi: 'Cơ cấu đóng góp',
     models: ['Salary sacrifice', 'Employer SG', 'Voluntary concessional', 'Growth to preservation'],
-    href: 'smsf/smsf-fund-manager.html#contributions',
+    href: 'smsf.html#contributions',
     videoKey: 'smsf_contributions',
     guide: {
       en: 'Stack SG + sacrifice + voluntary, then check total against cap before 30 June. Leave headroom for unexpected SG.',
@@ -354,18 +336,18 @@ const CALCULATORS = [
     id: 'smsf_caps', category: 'super', app: 'smsf',
     tab: 'contributions', en: 'Concessional Cap Monitor', vi: 'Giám sát hạn mức ưu đãi',
     models: ['FY table', 'Cap headroom', 'Non-concessional note'],
-    href: 'smsf/smsf-fund-manager.html#contributions',
+    href: 'smsf.html#contributions',
     videoKey: 'smsf_caps',
     guide: {
-      en: 'FY2026–27 concessional cap A$32,500. Carry-forward may apply if TSB under A$500k — confirm with your accountant.',
-      vi: 'Hạn mức ưu đãi A$32.500. Có thể chuyển hạn mức chưa dùng nếu TSB dưới A$500k — hỏi kế toán.'
+      en: 'FY2026–27 concessional cap $32,500. Carry-forward may apply if TSB under $500k — confirm with your accountant.',
+      vi: 'Hạn mức ưu đãi $32.500. Có thể chuyển hạn mức chưa dùng nếu TSB dưới $500k — hỏi kế toán.'
     }
   },
   {
     id: 'smsf_compliance', category: 'compliance', app: 'smsf',
     tab: 'compliance', en: 'Compliance Checklist', vi: 'Danh sách tuân thủ',
     models: ['Sole purpose', 'Audit & minutes', 'Valuations', 'ATO return'],
-    href: 'smsf/smsf-fund-manager.html#compliance',
+    href: 'smsf.html#compliance',
     videoKey: 'smsf_compliance',
     guide: {
       en: 'Tick items as completed each quarter. Missing minutes or valuations are common ATO audit triggers.',
@@ -376,7 +358,7 @@ const CALCULATORS = [
     id: 'smsf_inhouse', category: 'compliance', app: 'smsf',
     tab: 'compliance', en: 'In-House Asset (5%)', vi: 'Tài sản nội bộ (5%)',
     models: ['Related-party value', '5% limit bar', 'Breach warning'],
-    href: 'smsf/smsf-fund-manager.html#compliance',
+    href: 'smsf.html#compliance',
     videoKey: 'smsf_inhouse',
     guide: {
       en: 'Measure related-party assets at 30 June market value. Includes certain loans and lease arrangements.',
@@ -387,7 +369,7 @@ const CALCULATORS = [
     id: 'smsf_portfolio', category: 'invest', app: 'smsf',
     tab: 'portfolio', en: 'SMSF Holdings Register', vi: 'Sổ đăng ký tài sản SMSF',
     models: ['Fund positions', 'Cost base', 'IPS vs actual'],
-    href: 'smsf/smsf-fund-manager.html#portfolio',
+    href: 'smsf.html#portfolio',
     videoKey: 'smsf_portfolio',
     guide: {
       en: 'Hold assets in fund name only. Separate portfolio from personal Wealth Builder — never mix accounts.',
@@ -398,7 +380,7 @@ const CALCULATORS = [
     id: 'smsf_projections', category: 'growth', app: 'smsf',
     tab: 'projections', en: 'Fund Growth Scenarios', vi: 'Kịch bản tăng trưởng quỹ',
     models: ['To preservation age', '3 return scenarios', 'Target balance flag'],
-    href: 'smsf/smsf-fund-manager.html#projections',
+    href: 'smsf.html#projections',
     videoKey: 'smsf_projections',
     guide: {
       en: 'Model contributions as stable unless you have a signed salary sacrifice agreement. Review 5 years before pension phase.',
@@ -409,7 +391,7 @@ const CALCULATORS = [
     id: 'smsf_settings', category: 'planning', app: 'smsf',
     tab: 'settings', en: 'Fund & IPS Settings', vi: 'Cài đặt quỹ & IPS',
     models: ['Fund name', 'Member age', 'Preservation age', 'IPS targets'],
-    href: 'smsf/smsf-fund-manager.html#settings',
+    href: 'smsf.html#settings',
     videoKey: 'smsf_settings',
     guide: {
       en: 'Match preservation age to your birth year rules. Export data before each financial year rollover.',
@@ -532,14 +514,5 @@ function render(){
 
 render();
 </script>
-</body>
-</html>
-
-<div class="wrap">
-  <h1>Wealth Apps</h1>
-  <p>Two separate tools — personal investments outside super, and your complying SMSF.</p>
-  <a href="wealth/individual/wealth-builder.html"><strong>Wealth Builder</strong><span>Personal investment strategy · Portfolio, cashflow, debt, FI projections</span></a>
-  <a href="wealth/corporate/smsf.html"><strong>Super Steward</strong><span>SMSF fund strategy · Contributions, compliance, fund projections</span></a>
-</div>
 </body>
 </html>
