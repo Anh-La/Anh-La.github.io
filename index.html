@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Traditional Finance Tools · Calculators & Models</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,8 +31,19 @@
   .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
   .btn-accent:hover{background:#d4b87a;border-color:#d4b87a;color:#000}
 
-  .app-strip{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
-  @media(max-width:640px){.app-strip{grid-template-columns:1fr}}
+  .app-strip-wrap{margin-bottom:32px}
+  .app-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .app-strip-dots{display:none}
+  @media(max-width:768px){
+    .app-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;gap:12px;margin:0 -24px;padding:4px 24px 8px;scrollbar-width:none;overscroll-behavior-x:contain}
+    .app-strip::-webkit-scrollbar{display:none}
+    .app-card{flex:0 0 min(88vw,340px);scroll-snap-align:center;scroll-snap-stop:always}
+    .app-card:hover{transform:none}
+    .app-strip-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px}
+    .app-strip-dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:var(--border);cursor:pointer;transition:background .2s,transform .2s}
+    .app-strip-dot.active{background:var(--accent);transform:scale(1.15)}
+    .app-strip-dot:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+  }
   .app-card{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
   .app-card:hover{border-color:var(--accent);transform:translateY(-2px)}
   .app-card .icon{font-size:28px;line-height:1}
@@ -121,19 +128,22 @@
     </div>
   </header>
 
-  <div class="app-strip" style="grid-template-columns:1fr 1fr 1fr">
-    <a class="app-card personal" href="wealth-builder.html">
-      <span class="icon">💼</span>
-      <div><strong data-i18n="appPersonal">Financial Planner</strong><span data-i18n="appPersonalSub">Personal · cashflow, budget, tax, debt & freedom planning</span></div>
-    </a>
-    <a class="app-card smsf" href="smsf.html">
-      <span class="icon">🏛️</span>
-      <div><strong data-i18n="appSmsf">Super Steward</strong><span data-i18n="appSmsfSub">Superannuation · caps, compliance, fund growth & fire-up</span></div>
-    </a>
-    <a class="app-card analysis" href="analysis.html">
-      <span class="icon">📊</span>
-      <div><strong data-i18n="appAnalysis">Analysis & Planning</strong><span data-i18n="appAnalysisSub">Accounting, tax & investing · reports, ratios & strategy</span></div>
-    </a>
+  <div class="app-strip-wrap">
+    <div class="app-strip" id="app-strip" role="region" aria-label="Apps">
+      <a class="app-card personal" href="wealth-builder.html">
+        <span class="icon">💼</span>
+        <div><strong data-i18n="appPersonal">Financial Planner</strong><span data-i18n="appPersonalSub">Personal · cashflow, budget, tax, debt & freedom planning</span></div>
+      </a>
+      <a class="app-card smsf" href="smsf.html">
+        <span class="icon">🏛️</span>
+        <div><strong data-i18n="appSmsf">Super Steward</strong><span data-i18n="appSmsfSub">Superannuation · caps, compliance, fund growth & fire-up</span></div>
+      </a>
+      <a class="app-card analysis" href="analysis.html">
+        <span class="icon">📊</span>
+        <div><strong data-i18n="appAnalysis">Analysis & Planning</strong><span data-i18n="appAnalysisSub">Accounting, tax & investing · reports, ratios & strategy</span></div>
+      </a>
+    </div>
+    <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
   </div>
 
   <p class="filter-hint" data-i18n="filterHint">Filter by category, or browse all tools below.</p>
@@ -715,7 +725,53 @@ function render(){
 }
 
 render();
+
+(function initAppStripCarousel() {
+  const strip = document.getElementById('app-strip');
+  const dotsEl = document.getElementById('app-strip-dots');
+  if (!strip || !dotsEl) return;
+
+  const cards = [...strip.querySelectorAll('.app-card')];
+  if (!cards.length) return;
+
+  dotsEl.innerHTML = cards.map((_, i) =>
+    `<button type="button" class="app-strip-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Go to app ${i + 1}"></button>`
+  ).join('');
+
+  const dots = [...dotsEl.querySelectorAll('.app-strip-dot')];
+
+  function setActiveDot(index) {
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+  }
+
+  function scrollToCard(index) {
+    const card = cards[index];
+    if (!card) return;
+    const offset = card.offsetLeft - strip.offsetLeft - (strip.clientWidth - card.offsetWidth) / 2;
+    strip.scrollTo({ left: offset, behavior: 'smooth' });
+    setActiveDot(index);
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => scrollToCard(Number(dot.dataset.index)));
+  });
+
+  let scrollTimer;
+  strip.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const center = strip.scrollLeft + strip.clientWidth / 2;
+      let nearest = 0;
+      let minDist = Infinity;
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft - strip.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(center - cardCenter);
+        if (dist < minDist) { minDist = dist; nearest = i; }
+      });
+      setActiveDot(nearest);
+    }, 60);
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
-
