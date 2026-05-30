@@ -3,14 +3,14 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wealth Builder · Personal Investment Strategy</title>
+  <title>Financial Planner · Personal Finance & Planning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;
-      --accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;
+      --accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--accent5:#b67fff;
       --text:#e8e3d8;--muted:#7a7f8e;
       --font-display:'DM Serif Display',Georgia,serif;
       --font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;
@@ -34,6 +34,9 @@
     .btn:hover{border-color:var(--accent);color:var(--accent)}
     .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
     .btn-accent:hover{background:#d4b87a;border-color:#d4b87a;color:#000}
+    .back-link{font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;letter-spacing:.5px;transition:color .15s}
+    .back-link:hover{color:var(--accent)}
+    .hub-badge{font-size:10px;background:rgba(78,203,138,.12);color:var(--accent3);border:1px solid rgba(78,203,138,.25);padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
     nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
     .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;
       white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
@@ -111,8 +114,10 @@
   <div id="app">
   <header>
     <div class="logo">
-      <span class="logo-title" data-i18n="appTitle">Wealth Builder</span>
-      <span class="logo-sub" data-i18n="appSub">Personal Investment Strategy</span>
+      <a href="index.html" class="back-link" title="Back to Traditional Finance Tools">← Hub</a>
+      <span class="logo-title" data-i18n="appTitle">Financial Planner</span>
+      <span class="logo-sub" data-i18n="appSub">Personal Finance & Planning</span>
+      <span class="hub-badge">Personal</span>
     </div>
     <div class="header-right">
       <span class="last-updated" id="last-updated-label"></span>
@@ -125,7 +130,8 @@
     <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard" data-i18n="tabDashboard">📊 Dashboard</div>
     <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio" data-i18n="tabPortfolio">💼 Portfolio</div>
     <div class="tab" onclick="showPage('cashflow')" id="tab-cashflow" data-i18n="tabCashflow">💸 Cashflow</div>
-    <div class="tab" onclick="showPage('debt')" id="tab-debt" data-i18n="tabDebt">🧹 Debt Tracker</div>
+    <div class="tab" onclick="showPage('debt')" id="tab-debt" data-i18n="tabDebt">🧹 Debt & Loans</div>
+    <div class="tab" onclick="showPage('tax')" id="tab-tax" data-i18n="tabTax">🧾 Tax & Documents</div>
     <div class="tab" onclick="showPage('projections')" id="tab-projections" data-i18n="tabProjections">📈 Projections</div>
     <div class="tab" onclick="showPage('settings')" id="tab-settings" data-i18n="tabSettings">⚙️ Settings</div>
   </nav>
@@ -133,7 +139,7 @@
 
   <div class="page active" id="page-dashboard">
     <div class="page-title" data-i18n="dashTitle">Overview</div>
-    <div class="page-sub" data-i18n="dashSub">Personal net wealth · Outside super</div>
+    <div class="page-sub" data-i18n="dashSub">Your financial life on one screen · cashflow, debt, portfolio & planning</div>
     <div class="grid-4 section" id="kpi-row"></div>
     <div class="grid-2 section">
       <div class="card">
@@ -144,10 +150,10 @@
         </div>
       </div>
       <div class="card">
-        <h3 data-i18n="dashFI">Financial Independence Progress</h3>
+        <h3 data-i18n="dashFI">Financial Freedom Progress</h3>
         <div class="fi-ring">
           <div class="fi-years" id="fi-years-left">—</div>
-          <div class="fi-label" data-i18n="dashFIYearSub">years to FI target</div>
+          <div class="fi-label" data-i18n="dashFIYearSub">years to freedom target</div>
         </div>
         <div id="fi-progress-bars"></div>
       </div>
@@ -170,7 +176,7 @@
 
   <div class="page" id="page-portfolio">
     <div class="page-title" data-i18n="portTitle">Personal Portfolio</div>
-    <div class="page-sub" data-i18n="portSub">Taxable & personal accounts · Track holdings outside super</div>
+    <div class="page-sub" data-i18n="portSub">Taxable & personal accounts · Holdings, cost base & allocation</div>
     <div class="alert alert-info" data-i18n="portAlert">💡 Target: STRC 25% · SATA 15% · US ETFs 20% · Commercial RE 15% · Bitcoin 10% · Gold 10% · Cash 5%</div>
     <div class="section">
       <div class="form-row" id="add-holding-form">
@@ -236,9 +242,9 @@
   </div>
 
   <div class="page" id="page-debt">
-    <div class="page-title" data-i18n="debtTitle">Debt Tracker</div>
-    <div class="page-sub" data-i18n="debtSub">Clear personal debts to accelerate FI</div>
-    <div class="alert alert-warn" data-i18n="debtAlert">⚠️ Pay high-interest debt first to free monthly cashflow for investing.</div>
+    <div class="page-title" data-i18n="debtTitle">Debt & Loans</div>
+    <div class="page-sub" data-i18n="debtSub">Payoff tracker, loan analyser & interest cost optimiser</div>
+    <div class="alert alert-warn" data-i18n="debtAlert">⚠️ Pay high-interest debt first. Once cleared, roll repayments into investing — never inflate lifestyle.</div>
     <div class="grid-2 section">
       <div class="card">
         <h3 data-i18n="debtAddUpdate">Add / Update Debt</h3>
@@ -272,11 +278,103 @@
       </tr></thead><tbody id="debt-tbody"></tbody></table></div>
     </div>
     <div class="card section"><h3 data-i18n="debtAmort">Amortisation Schedule</h3><div class="chart-wrap" style="height:200px"><canvas id="debt-chart"></canvas></div></div>
+    <div class="card section">
+      <h3 data-i18n="loanAnalyserTitle">Better Loan Analyser</h3>
+      <div class="page-sub" style="margin-bottom:16px" data-i18n="loanAnalyserSub">Compare your current rate against a lower rate — see exactly how much you could save.</div>
+      <div class="grid-3">
+        <div class="form-group"><label data-i18n="loanBalance">Loan Balance ($)</label><input type="number" id="la-balance" step="any" placeholder="20000"></div>
+        <div class="form-group"><label data-i18n="loanCurrentRate">Current Rate (% p.a.)</label><input type="number" id="la-current-rate" step="any" placeholder="19.99"></div>
+        <div class="form-group"><label data-i18n="loanNewRate">Better Rate (% p.a.)</label><input type="number" id="la-new-rate" step="any" placeholder="9.99"></div>
+        <div class="form-group"><label data-i18n="loanTerm">Term (months)</label><input type="number" id="la-term" step="any" placeholder="36"></div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="calcLoan()" data-i18n="btnCalcLoan">Compare Rates</button></div>
+      </div>
+      <div id="loan-analyser-result" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-tax">
+    <div class="page-title" data-i18n="taxTitle">Tax & Documents</div>
+    <div class="page-sub" data-i18n="taxSub">Effortless tax return prep · Secure document vault</div>
+
+    <div class="card section">
+      <h3 data-i18n="taxReturnTitle">Tax Return Preparation</h3>
+      <div class="alert alert-info" data-i18n="taxReturnAlert">💡 No more hours sorting tax receipts. Collate all income, deductions and receipts here — ready for your accountant.</div>
+      <div class="grid-2">
+        <div>
+          <h3 data-i18n="taxIncomeHeading" style="margin-bottom:12px">Income</h3>
+          <div class="form-group"><label data-i18n="taxSalaryIncome">Salary / Wages ($)</label><input type="number" id="tax-salary" step="any"></div>
+          <div class="form-group"><label data-i18n="taxInterestIncome">Interest Income ($)</label><input type="number" id="tax-interest" step="any"></div>
+          <div class="form-group"><label data-i18n="taxDividendIncome">Dividends ($)</label><input type="number" id="tax-dividends" step="any"></div>
+          <div class="form-group"><label data-i18n="taxRentalIncome">Rental Income ($)</label><input type="number" id="tax-rental" step="any"></div>
+          <div class="form-group"><label data-i18n="taxOtherIncome">Other Income ($)</label><input type="number" id="tax-other-income" step="any"></div>
+        </div>
+        <div>
+          <h3 data-i18n="taxDeductionsHeading" style="margin-bottom:12px">Deductions</h3>
+          <div class="form-group"><label data-i18n="taxWorkExpenses">Work-Related Expenses ($)</label><input type="number" id="tax-work-exp" step="any"></div>
+          <div class="form-group"><label data-i18n="taxHomeOffice">Home Office ($)</label><input type="number" id="tax-home-office" step="any"></div>
+          <div class="form-group"><label data-i18n="taxVehicle">Vehicle / Travel ($)</label><input type="number" id="tax-vehicle" step="any"></div>
+          <div class="form-group"><label data-i18n="taxInvestmentFees">Investment & Accounting Fees ($)</label><input type="number" id="tax-inv-fees" step="any"></div>
+          <div class="form-group"><label data-i18n="taxDonations">Donations ($)</label><input type="number" id="tax-donations" step="any"></div>
+          <div class="form-group"><label data-i18n="taxOtherDeductions">Other Deductions ($)</label><input type="number" id="tax-other-ded" step="any"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><button class="btn btn-accent" onclick="calcTax()" data-i18n="btnCalcTax">Calculate Summary</button></div>
+      <div id="tax-summary" style="margin-top:20px"></div>
+    </div>
+
+    <div class="card section">
+      <h3 data-i18n="taxReceiptsTitle">Tax Receipt Log</h3>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="receiptDate">Date</label><input type="date" id="rcpt-date"></div>
+        <div class="form-group" style="flex:2"><label data-i18n="receiptDesc">Description</label><input id="rcpt-desc" placeholder="e.g. Laptop repair — work use"></div>
+        <div class="form-group"><label data-i18n="receiptAmount">Amount ($)</label><input type="number" id="rcpt-amount" step="any"></div>
+        <div class="form-group"><label data-i18n="receiptCategory">Category</label>
+          <select id="rcpt-cat"><option>Work Expenses</option><option>Home Office</option><option>Vehicle</option><option>Investment</option><option>Donation</option><option>Other</option></select>
+        </div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="addReceipt()" data-i18n="btnAddReceipt">+ Add</button></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table><thead><tr>
+          <th data-i18n="receiptTableDate">Date</th>
+          <th data-i18n="receiptTableDesc">Description</th>
+          <th data-i18n="receiptTableCat">Category</th>
+          <th data-i18n="receiptTableAmount">Amount</th>
+          <th></th>
+        </tr></thead><tbody id="receipts-tbody"></tbody>
+        <tfoot id="receipts-tfoot"></tfoot></table>
+      </div>
+    </div>
+
+    <div class="card section">
+      <h3 data-i18n="vaultTitle">Document Vault</h3>
+      <div class="alert alert-info" data-i18n="vaultAlert">🔒 Save details of your important documents here — accessible anytime by you and your financial advisor.</div>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="vaultDocType">Document Type</label>
+          <select id="vault-type">
+            <option>Will</option><option>Insurance Policy</option><option>Power of Attorney</option>
+            <option>Loan Document</option><option>Tax Receipt</option><option>Property Title</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:2"><label data-i18n="vaultDocName">Document Name / Reference</label><input id="vault-name" placeholder="e.g. ANZ Home Loan — Settlement Docs"></div>
+        <div class="form-group"><label data-i18n="vaultDocDate">Date</label><input type="date" id="vault-date"></div>
+        <div class="form-group" style="flex:2"><label data-i18n="vaultDocNotes">Notes / Location</label><input id="vault-notes" placeholder="e.g. Stored with solicitor — Smith & Co"></div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="addVaultDoc()" data-i18n="btnAddVault">+ Add</button></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table><thead><tr>
+          <th data-i18n="vaultTableType">Type</th>
+          <th data-i18n="vaultTableName">Name / Reference</th>
+          <th data-i18n="vaultTableDate">Date</th>
+          <th data-i18n="vaultTableNotes">Notes</th>
+          <th></th>
+        </tr></thead><tbody id="vault-tbody"></tbody></table>
+      </div>
+    </div>
   </div>
 
   <div class="page" id="page-projections">
-    <div class="page-title" data-i18n="projTitle">Personal Growth Projections</div>
-    <div class="page-sub" data-i18n="projSub">Outside-super portfolio · To FI target age</div>
+    <div class="page-title" data-i18n="projTitle">Freedom Plan Projections</div>
+    <div class="page-sub" data-i18n="projSub">How much you'll need · How much you'll have · How to get there</div>
     <div class="card section">
       <h3 data-i18n="projInputs">Projection Inputs</h3>
       <div class="grid-3">
@@ -292,14 +390,14 @@
 
   <div class="page" id="page-settings">
     <div class="page-title" data-i18n="settingsTitle">Settings & Profile</div>
-    <div class="page-sub" data-i18n="settingsSub">Personal strategy parameters</div>
+    <div class="page-sub" data-i18n="settingsSub">Strategy parameters, risk profile & data management</div>
     <div class="grid-2 section">
       <div class="card">
         <h3 data-i18n="settingsProfile">Investor Profile</h3>
         <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsName">Name</label><input id="s-name"></div>
         <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsAge">Current Age</label><input type="number" id="s-age"></div>
-        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFIAge">FI Target Age</label><input type="number" id="s-fi-age"></div>
-        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFITarget">FI Portfolio Target ($)</label><input type="number" id="s-fi-target" step="any"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFIAge">Freedom Target Age</label><input type="number" id="s-fi-age"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFITarget">Freedom Portfolio Target ($)</label><input type="number" id="s-fi-target" step="any"></div>
         <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsRisk">Risk Profile</label>
           <select id="s-risk"><option>Conservative</option><option>Balanced</option><option selected>Balanced-Growth</option><option>Growth</option><option>Aggressive</option></select>
         </div>
