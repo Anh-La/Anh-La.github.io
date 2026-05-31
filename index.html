@@ -1,777 +1,434 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traditional Finance Tools · Calculators & Models</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;
-    --accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--accent5:#b67fff;
-    --text:#e8e3d8;--muted:#7a7f8e;
-    --font-display:'DM Serif Display',Georgia,serif;
-    --font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;
-    --radius:12px;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
-  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
-  .shell{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:28px 24px 64px}
-
-  header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
-  .brand h1{font-family:var(--font-display);font-size:clamp(28px,4vw,36px);color:var(--accent);font-style:italic;font-weight:400}
-  .brand p{color:var(--muted);font-size:13px;margin-top:6px;max-width:480px}
-  .header-actions{display:flex;gap:10px;flex-wrap:wrap}
-  .btn{padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;font-family:var(--font-body);cursor:pointer;font-weight:500;transition:all .15s}
-  .btn:hover{border-color:var(--accent);color:var(--accent)}
-  .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
-  .btn-accent:hover{background:#d4b87a;border-color:#d4b87a;color:#000}
-
-  .app-strip-wrap{margin-bottom:32px}
-  .app-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .app-strip-dots{display:none}
-  @media(max-width:768px){
-    .app-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;gap:12px;margin:0 -24px;padding:4px 24px 8px;scrollbar-width:none;overscroll-behavior-x:contain}
-    .app-strip::-webkit-scrollbar{display:none}
-    .app-card{flex:0 0 min(88vw,340px);scroll-snap-align:center;scroll-snap-stop:always}
-    .app-card:hover{transform:none}
-    .app-strip-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px}
-    .app-strip-dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:var(--border);cursor:pointer;transition:background .2s,transform .2s}
-    .app-strip-dot.active{background:var(--accent);transform:scale(1.15)}
-    .app-strip-dot:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
-  }
-  .app-card{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
-  .app-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .app-card .icon{font-size:28px;line-height:1}
-  .app-card strong{display:block;color:var(--accent);font-size:15px;margin-bottom:2px}
-  .app-card span{font-size:12px;color:var(--muted)}
-  .app-card.personal{border-top:2px solid var(--accent3)}
-  .app-card.smsf{border-top:2px solid var(--accent2)}
-  .app-card.analysis{border-top:2px solid var(--accent5)}
-
-  .layout{display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:start}
-  @media(max-width:800px){.layout{grid-template-columns:1fr}}
-  .sidebar{position:sticky;top:24px}
-  @media(max-width:800px){.sidebar{position:static;display:flex;flex-wrap:wrap;gap:8px}}
-  .cat-nav{display:flex;flex-direction:column;gap:4px}
-  @media(max-width:800px){.cat-nav{flex-direction:row;flex-wrap:wrap}}
-  .cat-btn{text-align:left;padding:10px 14px;border:none;border-radius:8px;background:transparent;color:var(--muted);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-  @media(max-width:800px){.cat-btn{border-left:none;border-bottom:2px solid transparent;padding:8px 12px}}
-  .cat-btn:hover{color:var(--text);background:rgba(255,255,255,.03)}
-  .cat-btn.active{color:var(--accent);background:rgba(200,169,110,.08);border-left-color:var(--accent)}
-  @media(max-width:800px){.cat-btn.active{border-bottom-color:var(--accent)}}
-
-  .section{margin-bottom:40px;scroll-margin-top:24px}
-  .section-head{margin-bottom:18px}
-  .section-head h2{font-family:var(--font-display);font-size:22px;color:var(--text);font-style:italic;font-weight:400}
-  .section-head p{font-size:12px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1.2px}
-
-  .calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-  .calc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:12px}
-  .calc-card.hidden{display:none}
-  .calc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .calc-title{font-size:15px;font-weight:700;color:var(--text)}
-  .calc-app{font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:4px;font-weight:700;white-space:nowrap}
-  .calc-app.personal{background:rgba(78,203,138,.12);color:var(--accent3);border:1px solid rgba(78,203,138,.25)}
-  .calc-app.smsf{background:rgba(92,158,255,.12);color:var(--accent2);border:1px solid rgba(92,158,255,.25)}
-  .calc-app.analysis{background:rgba(182,127,255,.12);color:var(--accent5);border:1px solid rgba(182,127,255,.25)}
-
-  .models{display:flex;flex-wrap:wrap;gap:6px}
-  .model-tag{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;background:var(--surface);color:var(--muted);border:1px solid var(--border)}
-
-  .guide-written{font-size:13px;color:var(--muted);line-height:1.55;border-left:2px solid var(--border);padding-left:12px}
-  .guide-written strong{color:var(--text);font-weight:600;display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.8px}
-
-  .calc-actions{display:flex;gap:8px;margin-top:auto;padding-top:4px}
-  .calc-actions .btn{flex:1;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-  .calc-actions .btn-play{flex:0 0 auto;min-width:44px;padding:8px 12px}
-
-  .video-strip{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:border-color .15s}
-  .video-strip:hover{border-color:var(--accent2)}
-  .video-thumb{width:72px;height:40px;border-radius:4px;background:linear-gradient(135deg,#1a2030,#2a3548);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
-  .video-meta{font-size:12px}
-  .video-meta span{display:block;color:var(--muted);font-size:11px}
-
-  .modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.75);backdrop-filter:blur(6px)}
-  .modal.open{display:flex}
-  .modal-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);max-width:720px;width:100%;overflow:hidden}
-  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
-  .modal-head h3{font-size:15px}
-  .modal-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
-  .modal-close:hover{color:var(--text)}
-  .modal-body{padding:0}
-  .modal-body .ratio{position:relative;padding-bottom:56.25%;height:0;background:#000}
-  .modal-body iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-  .modal-foot{padding:14px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
-  .modal-placeholder{padding:40px 24px;text-align:center;color:var(--muted)}
-  .modal-placeholder a{color:var(--accent2)}
-
-  .filter-hint{font-size:12px;color:var(--muted);margin-bottom:20px}
-  .empty-filter{display:none;text-align:center;padding:48px;color:var(--muted)}
-  .empty-filter.show{display:block}
-</style>
-</head>
-<body>
-<div class="shell">
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Planner · Personal Finance & Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    :root {
+      --bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;
+      --accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--accent5:#b67fff;
+      --text:#e8e3d8;--muted:#7a7f8e;
+      --font-display:'DM Serif Display',Georgia,serif;
+      --font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;
+      --radius:12px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
+    #app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+    header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;
+      background:rgba(10,12,16,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+    .logo{display:flex;align-items:baseline;gap:10px}
+    .logo-title{font-family:var(--font-display);font-size:22px;color:var(--accent);letter-spacing:-.3px}
+    .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:600}
+    .header-right{display:flex;align-items:center;gap:16px}
+    .last-updated{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+    .btn{padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);
+      font-size:12px;font-family:var(--font-body);cursor:pointer;transition:all .15s;font-weight:500}
+    .btn:hover{border-color:var(--accent);color:var(--accent)}
+    .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+    .btn-accent:hover{background:#d4b87a;border-color:#d4b87a;color:#000}
+    .back-link{font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;letter-spacing:.5px;transition:color .15s}
+    .back-link:hover{color:var(--accent)}
+    .hub-badge{font-size:10px;background:rgba(78,203,138,.12);color:var(--accent3);border:1px solid rgba(78,203,138,.25);padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+    nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
+    .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;
+      white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
+    .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    main{flex:1;padding:32px;max-width:1400px;margin:0 auto;width:100%}
+    .page{display:none}.page.active{display:block;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .page-title{font-family:var(--font-display);font-size:28px;color:var(--accent);margin-bottom:4px;font-style:italic}
+    .page-sub{color:var(--muted);font-size:13px;margin-bottom:28px}
+    h3{font-size:14px;font-weight:700;margin-bottom:12px}
+    .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+    .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden}
+    .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+    .kpi.gold::before{background:var(--accent)}.kpi.blue::before{background:var(--accent2)}
+    .kpi.green::before{background:var(--accent3)}.kpi.red::before{background:var(--accent4)}
+    .kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:6px}
+    .kpi-value{font-family:var(--font-mono);font-size:24px;font-weight:500}
+    .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+    .kpi-delta{font-size:12px;margin-top:6px;font-weight:600}
+    .kpi-delta.pos{color:var(--accent3)}.kpi-delta.neg{color:var(--accent4)}
+    .progress-wrap{margin-bottom:14px}
+    .progress-header{display:flex;justify-content:space-between;margin-bottom:5px}
+    .progress-label{font-size:12px;font-weight:600}
+    .progress-val{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+    .progress-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+    .progress-fill{height:100%;border-radius:99px;transition:width .6s ease}
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;
+      letter-spacing:1.2px;color:var(--muted);font-weight:600}
+    td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(255,255,255,.02)}
+    .td-mono{font-family:var(--font-mono)}.td-green{color:var(--accent3);font-weight:600}
+    .td-red{color:var(--accent4);font-weight:600}.td-gold{color:var(--accent);font-weight:600}
+    .td-muted{color:var(--muted);font-size:12px}
+    .form-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+    .form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:140px}
+    label{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+    input,select,textarea{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);
+      padding:9px 12px;font-family:var(--font-body);font-size:13px}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+    input[type=number]{font-family:var(--font-mono)}
+    .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase}
+    .badge-gold{background:rgba(200,169,110,.15);color:var(--accent);border:1px solid rgba(200,169,110,.3)}
+    .badge-green{background:rgba(78,203,138,.15);color:var(--accent3);border:1px solid rgba(78,203,138,.3)}
+    .badge-red{background:rgba(224,107,107,.15);color:var(--accent4);border:1px solid rgba(224,107,107,.3)}
+    .divider{height:1px;background:var(--border);margin:24px 0}
+    .section{margin-bottom:32px}
+    .alert{padding:12px 16px;border-radius:8px;font-size:13px;border-left:3px solid;margin-bottom:20px}
+    .alert-warn{background:rgba(200,169,110,.08);border-color:var(--accent)}
+    .alert-info{background:rgba(92,158,255,.08);border-color:var(--accent2)}
+    .chart-wrap{position:relative}
+    .donut-legend{display:flex;flex-direction:column;gap:8px}
+    .legend-item{display:flex;align-items:center;gap:10px;font-size:12px}
+    .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .legend-name{flex:1}.legend-pct{font-family:var(--font-mono);color:var(--muted);font-size:11px}
+    .fi-ring{text-align:center;padding:20px}
+    .fi-years{font-family:var(--font-display);font-size:64px;color:var(--accent);line-height:1}
+    .fi-label{font-size:13px;color:var(--muted);margin-top:6px}
+    #save-toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--accent3);color:#000;
+      padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;transform:translateY(80px);transition:transform .3s;pointer-events:none}
+    #save-toast.show{transform:translateY(0)}
+    .empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+    .empty-state .icon{font-size:32px;margin-bottom:12px}
+    @media(max-width:900px){main{padding:20px 16px}.grid-4,.grid-3{grid-template-columns:1fr 1fr}header,nav{padding-left:16px;padding-right:16px}}
+    @media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.logo-sub{display:none}}
+  </style>
+  </head>
+  <body>
+  <div id="app">
   <header>
-    <div class="brand">
-      <h1 data-i18n="hubTitle">Traditional Finance Tools</h1>
-      <p data-i18n="hubSub">Everything you need to simplify your financial life — open the right calculator, read the quick guide, watch the walkthrough.</p>
+    <div class="logo">
+      <a href="index.html" class="back-link" title="Back to Traditional Finance Tools">← Hub</a>
+      <span class="logo-title" data-i18n="appTitle">Financial Planner</span>
+      <span class="logo-sub" data-i18n="appSub">Personal Finance & Planning</span>
+      <span class="hub-badge">Personal</span>
     </div>
-    <div class="header-actions">
-      <button class="btn" type="button" onclick="toggleLang()" data-i18n="langBtn">🌐 Tiếng Việt</button>
-      <button class="btn" type="button" onclick="filterCat('all')" data-i18n="showAll">Show all</button>
+    <div class="header-right">
+      <span class="last-updated" id="last-updated-label"></span>
+      <button class="btn" onclick="toggleLanguage()" data-i18n="btnLangToggle">🌐 Tiếng Việt</button>
+      <button class="btn" onclick="exportData()" data-i18n="btnExport">↓ Export</button>
+      <button class="btn" onclick="exportClientReport()" data-i18n="btnReport">📄 Client Report</button>
+      <button class="btn btn-accent" onclick="saveAll()" data-i18n="btnSave">Save</button>
     </div>
   </header>
+  <nav>
+    <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard" data-i18n="tabDashboard">📊 Dashboard</div>
+    <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio" data-i18n="tabPortfolio">💼 Portfolio</div>
+    <div class="tab" onclick="showPage('cashflow')" id="tab-cashflow" data-i18n="tabCashflow">💸 Cashflow</div>
+    <div class="tab" onclick="showPage('debt')" id="tab-debt" data-i18n="tabDebt">🧹 Debt & Loans</div>
+    <div class="tab" onclick="showPage('tax')" id="tab-tax" data-i18n="tabTax">🧾 Tax & Documents</div>
+    <div class="tab" onclick="showPage('projections')" id="tab-projections" data-i18n="tabProjections">📈 Projections</div>
+    <div class="tab" onclick="showPage('settings')" id="tab-settings" data-i18n="tabSettings">⚙️ Settings</div>
+  </nav>
+  <main>
 
-  <div class="app-strip-wrap">
-    <div class="app-strip" id="app-strip" role="region" aria-label="Apps">
-      <a class="app-card personal" href="wealth-builder.html">
-        <span class="icon">💼</span>
-        <div><strong data-i18n="appPersonal">Financial Planner</strong><span data-i18n="appPersonalSub">Personal · cashflow, budget, tax, debt & freedom planning</span></div>
-      </a>
-      <a class="app-card smsf" href="smsf.html">
-        <span class="icon">🏛️</span>
-        <div><strong data-i18n="appSmsf">Super Steward</strong><span data-i18n="appSmsfSub">Superannuation · caps, compliance, fund growth & fire-up</span></div>
-      </a>
-      <a class="app-card analysis" href="analysis.html">
-        <span class="icon">📊</span>
-        <div><strong data-i18n="appAnalysis">Analysis & Planning</strong><span data-i18n="appAnalysisSub">Accounting, tax & investing · reports, ratios & strategy</span></div>
-      </a>
+  <div class="page active" id="page-dashboard">
+    <div class="page-title" data-i18n="dashTitle">Overview</div>
+    <div class="page-sub" data-i18n="dashSub">Your financial life on one screen · cashflow, debt, portfolio & planning</div>
+    <div class="grid-4 section" id="kpi-row"></div>
+    <div class="grid-2 section">
+      <div class="card">
+        <h3 data-i18n="dashAlloc">Portfolio Allocation vs Target</h3>
+        <div style="display:flex;gap:24px;align-items:center">
+          <div style="width:180px;height:180px;flex-shrink:0" class="chart-wrap"><canvas id="donut-chart"></canvas></div>
+          <div class="donut-legend" id="donut-legend" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="dashFI">Financial Freedom Progress</h3>
+        <div class="fi-ring">
+          <div class="fi-years" id="fi-years-left">—</div>
+          <div class="fi-label" data-i18n="dashFIYearSub">years to freedom target</div>
+        </div>
+        <div id="fi-progress-bars"></div>
+      </div>
     </div>
-    <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
+    <div class="grid-2 section">
+      <div class="card">
+        <h3 data-i18n="dashCashflow">Monthly Cashflow Summary</h3>
+        <div class="chart-wrap" style="height:180px"><canvas id="cashflow-bar"></canvas></div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="dashDebt">Debt Paydown Status</h3>
+        <div id="debt-summary-panel"></div>
+      </div>
+    </div>
+    <div class="card section">
+      <h3 data-i18n="dashRoadmap">Personal Action Roadmap</h3>
+      <div class="tbl-wrap" id="roadmap-table"></div>
+    </div>
   </div>
 
-  <p class="filter-hint" data-i18n="filterHint">Filter by category, or browse all tools below.</p>
+  <div class="page" id="page-portfolio">
+    <div class="page-title" data-i18n="portTitle">Personal Portfolio</div>
+    <div class="page-sub" data-i18n="portSub">Taxable & personal accounts · Holdings, cost base & allocation</div>
+    <div class="alert alert-info" data-i18n="portAlert">💡 Target: STRC 25% · SATA 15% · US ETFs 20% · Commercial RE 15% · Bitcoin 10% · Gold 10% · Cash 5%</div>
+    <div class="section">
+      <div class="form-row" id="add-holding-form">
+        <div class="form-group"><label data-i18n="portAssetName">Asset Name</label><input id="h-name" placeholder="e.g. STRC, VOO…"></div>
+        <div class="form-group" style="max-width:140px"><label data-i18n="portCategory">Category</label>
+          <select id="h-cat"><option>STRC</option><option>SATA</option><option>US ETF</option><option>Commercial RE</option><option>Bitcoin</option><option>Gold</option><option>Cash</option><option>Other</option></select>
+        </div>
+        <div class="form-group" style="max-width:130px"><label data-i18n="portUnits">Units / Qty</label><input type="number" id="h-qty" step="any"></div>
+        <div class="form-group" style="max-width:140px"><label data-i18n="portPrice">Price ($)</label><input type="number" id="h-price" step="any"></div>
+        <div class="form-group" style="max-width:130px"><label data-i18n="portCostBase">Cost Base ($)</label><input type="number" id="h-cost" step="any"></div>
+        <div class="form-group" style="max-width:100px"><label data-i18n="portDrip">DRIP?</label><select id="h-drip"><option>Yes</option><option>No</option></select></div>
+        <div class="form-group" style="max-width:80px"><label>&nbsp;</label><button class="btn btn-accent" onclick="addHolding()" data-i18n="btnAdd">+ Add</button></div>
+      </div>
+    </div>
+    <div class="card section">
+      <div class="tbl-wrap"><table><thead><tr>
+        <th data-i18n="portTableAsset">Asset</th><th data-i18n="portTableCat">Category</th><th data-i18n="portTableUnits">Units</th>
+        <th data-i18n="portTablePrice">Price</th><th data-i18n="portTableValue">Value</th><th data-i18n="portTableCost">Cost Base</th>
+        <th data-i18n="portTableGain">Gain/Loss</th><th data-i18n="portTablePct">%Portfolio</th><th data-i18n="portTableDrip">DRIP</th><th></th>
+      </tr></thead><tbody id="holdings-tbody"></tbody><tfoot id="holdings-tfoot"></tfoot></table></div>
+    </div>
+    <div class="card section"><h3 data-i18n="portTargetVsActual">Target vs Actual Allocation</h3><div id="allocation-bars"></div></div>
+  </div>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <nav class="cat-nav" id="cat-nav" aria-label="Categories"></nav>
-    </aside>
+  <div class="page" id="page-cashflow">
+    <div class="page-title" data-i18n="cfTitle">Cashflow Analysis</div>
+    <div class="page-sub" data-i18n="cfSub">Personal income, living costs & investable surplus</div>
+    <div class="grid-2 section">
+      <div class="card">
+        <h3 data-i18n="cfIncome">Income</h3>
+        <div class="form-group" style="margin-bottom:12px"><label data-i18n="cfSalaryLabel">Net Monthly Salary (after tax)</label><input type="number" id="cf-salary" placeholder="5500" step="any"></div>
+        <div class="form-group"><label data-i18n="cfOtherLabel">Other Income (dividends, rent)</label><input type="number" id="cf-other" step="any"></div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="cfFixedExp">Fixed Expenses</h3>
+        <div class="grid-2">
+          <div class="form-group"><label data-i18n="cfRent">Weekly Rent ($)</label><input type="number" id="exp-rent" placeholder="410" step="any"></div>
+          <div class="form-group"><label data-i18n="cfGroceries">Weekly Groceries</label><input type="number" id="exp-groceries" step="any"></div>
+          <div class="form-group"><label data-i18n="cfFuel">Weekly Car Fuel</label><input type="number" id="exp-fuel" step="any"></div>
+          <div class="form-group"><label data-i18n="cfElec">Weekly Electricity</label><input type="number" id="exp-electricity" step="any"></div>
+          <div class="form-group"><label data-i18n="cfTransport">Weekly Transport</label><input type="number" id="exp-transport" step="any"></div>
+          <div class="form-group"><label data-i18n="cfGym">Fortnightly Gym</label><input type="number" id="exp-gym" step="any"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card section">
+      <h3 data-i18n="cfChildSupport">Child Support & Quarterly Expenses</h3>
+      <div class="grid-3">
+        <div class="form-group"><label data-i18n="cfBball">Basketball (quarterly)</label><input type="number" id="exp-bball" step="any"></div>
+        <div class="form-group"><label data-i18n="cfSchool">School Fees (quarterly)</label><input type="number" id="exp-school" step="any"></div>
+        <div class="form-group"><label data-i18n="cfPlay">Weekly Play Activities</label><input type="number" id="exp-play" step="any"></div>
+      </div>
+    </div>
+    <div class="card section">
+      <h3 data-i18n="cfInvestContrib">Investment Contributions</h3>
+      <div class="grid-2">
+        <div class="form-group"><label data-i18n="cfMonthlyContrib">Monthly Personal Investments ($)</label><input type="number" id="cf-invest" placeholder="2000" step="any"></div>
+        <div class="form-group"><label data-i18n="cfDebtRepay">Monthly Debt Repayment ($)</label><input type="number" id="cf-debt-repay" step="any"></div>
+      </div>
+    </div>
+    <div class="card section"><h3 data-i18n="cfMonthlySummary">Monthly Summary</h3><div id="cf-summary"></div></div>
+    <div class="card section"><h3 data-i18n="cfInflation">Expense Inflation Projection</h3><div class="tbl-wrap" id="cf-inflation-table"></div></div>
+  </div>
 
-    <div class="main">
-      <div id="sections"></div>
-      <div class="empty-filter" id="empty-filter" data-i18n="emptyFilter">No tools in this category.</div>
+  <div class="page" id="page-debt">
+    <div class="page-title" data-i18n="debtTitle">Debt & Loans</div>
+    <div class="page-sub" data-i18n="debtSub">Payoff tracker, loan analyser & interest cost optimiser</div>
+    <div class="alert alert-warn" data-i18n="debtAlert">⚠️ Pay high-interest debt first. Once cleared, roll repayments into investing — never inflate lifestyle.</div>
+    <div class="grid-2 section">
+      <div class="card">
+        <h3 data-i18n="debtAddUpdate">Add / Update Debt</h3>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="debtName">Debt Name</label><input id="d-name"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="debtType">Type</label>
+          <select id="d-type"><option>Credit Card</option><option>Personal Loan</option><option>Prepayment Liability</option><option>Other</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="debtOriginal">Original Balance ($)</label><input type="number" id="d-original" step="any"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="debtCurrent">Current Balance ($)</label><input type="number" id="d-balance" step="any"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="debtRate">Interest Rate (% p.a.)</label><input type="number" id="d-rate" step="any"></div>
+        <div class="form-group" style="margin-bottom:16px"><label data-i18n="debtPayment">Monthly Payment ($)</label><input type="number" id="d-payment" step="any"></div>
+        <button class="btn btn-accent" style="width:100%" onclick="addDebt()" data-i18n="btnAddDebt">+ Add Debt</button>
+      </div>
+      <div>
+        <div class="kpi red" style="margin-bottom:16px">
+          <div class="kpi-label" data-i18n="debtTotalOutstanding">Total Debt Outstanding</div>
+          <div class="kpi-value" id="total-debt-kpi">$0</div>
+          <div class="kpi-sub" id="debt-payoff-date"></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="debtMonthlyInterest">Monthly Interest Cost</h3>
+          <div class="kpi-value td-red" id="monthly-interest-kpi" style="font-size:20px;font-family:var(--font-mono)">$0</div>
+        </div>
+      </div>
+    </div>
+    <div class="card section">
+      <div class="tbl-wrap"><table><thead><tr>
+        <th data-i18n="debtTableDebt">Debt</th><th data-i18n="debtTableType">Type</th><th data-i18n="debtTableOriginal">Original</th>
+        <th data-i18n="debtTableCurrent">Balance</th><th data-i18n="debtTableRate">Rate</th><th data-i18n="debtTablePayment">Payment</th>
+        <th data-i18n="debtTablePayoffIn">Payoff</th><th data-i18n="debtTableProgress">Progress</th><th></th>
+      </tr></thead><tbody id="debt-tbody"></tbody></table></div>
+    </div>
+    <div class="card section"><h3 data-i18n="debtAmort">Amortisation Schedule</h3><div class="chart-wrap" style="height:200px"><canvas id="debt-chart"></canvas></div></div>
+    <div class="card section">
+      <h3 data-i18n="loanAnalyserTitle">Better Loan Analyser</h3>
+      <div class="page-sub" style="margin-bottom:16px" data-i18n="loanAnalyserSub">Compare your current rate against a lower rate — see exactly how much you could save.</div>
+      <div class="grid-3">
+        <div class="form-group"><label data-i18n="loanBalance">Loan Balance ($)</label><input type="number" id="la-balance" step="any" placeholder="20000"></div>
+        <div class="form-group"><label data-i18n="loanCurrentRate">Current Rate (% p.a.)</label><input type="number" id="la-current-rate" step="any" placeholder="19.99"></div>
+        <div class="form-group"><label data-i18n="loanNewRate">Better Rate (% p.a.)</label><input type="number" id="la-new-rate" step="any" placeholder="9.99"></div>
+        <div class="form-group"><label data-i18n="loanTerm">Term (months)</label><input type="number" id="la-term" step="any" placeholder="36"></div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="calcLoan()" data-i18n="btnCalcLoan">Compare Rates</button></div>
+      </div>
+      <div id="loan-analyser-result" style="margin-top:16px"></div>
     </div>
   </div>
-</div>
 
-<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 id="modal-title">Video guide</h3>
-      <button class="modal-close" type="button" onclick="closeVideo()" aria-label="Close">&times;</button>
+  <div class="page" id="page-tax">
+    <div class="page-title" data-i18n="taxTitle">Tax & Documents</div>
+    <div class="page-sub" data-i18n="taxSub">Effortless tax return prep · Secure document vault</div>
+
+    <div class="card section">
+      <h3 data-i18n="taxReturnTitle">Tax Return Preparation</h3>
+      <div class="alert alert-info" data-i18n="taxReturnAlert">💡 No more hours sorting tax receipts. Collate all income, deductions and receipts here — ready for your accountant.</div>
+      <div class="grid-2">
+        <div>
+          <h3 data-i18n="taxIncomeHeading" style="margin-bottom:12px">Income</h3>
+          <div class="form-group"><label data-i18n="taxSalaryIncome">Salary / Wages ($)</label><input type="number" id="tax-salary" step="any"></div>
+          <div class="form-group"><label data-i18n="taxInterestIncome">Interest Income ($)</label><input type="number" id="tax-interest" step="any"></div>
+          <div class="form-group"><label data-i18n="taxDividendIncome">Dividends ($)</label><input type="number" id="tax-dividends" step="any"></div>
+          <div class="form-group"><label data-i18n="taxRentalIncome">Rental Income ($)</label><input type="number" id="tax-rental" step="any"></div>
+          <div class="form-group"><label data-i18n="taxOtherIncome">Other Income ($)</label><input type="number" id="tax-other-income" step="any"></div>
+        </div>
+        <div>
+          <h3 data-i18n="taxDeductionsHeading" style="margin-bottom:12px">Deductions</h3>
+          <div class="form-group"><label data-i18n="taxWorkExpenses">Work-Related Expenses ($)</label><input type="number" id="tax-work-exp" step="any"></div>
+          <div class="form-group"><label data-i18n="taxHomeOffice">Home Office ($)</label><input type="number" id="tax-home-office" step="any"></div>
+          <div class="form-group"><label data-i18n="taxVehicle">Vehicle / Travel ($)</label><input type="number" id="tax-vehicle" step="any"></div>
+          <div class="form-group"><label data-i18n="taxInvestmentFees">Investment & Accounting Fees ($)</label><input type="number" id="tax-inv-fees" step="any"></div>
+          <div class="form-group"><label data-i18n="taxDonations">Donations ($)</label><input type="number" id="tax-donations" step="any"></div>
+          <div class="form-group"><label data-i18n="taxOtherDeductions">Other Deductions ($)</label><input type="number" id="tax-other-ded" step="any"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><button class="btn btn-accent" onclick="calcTax()" data-i18n="btnCalcTax">Calculate Summary</button></div>
+      <div id="tax-summary" style="margin-top:20px"></div>
     </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot" id="modal-foot"></div>
+
+    <div class="card section">
+      <h3 data-i18n="taxReceiptsTitle">Tax Receipt Log</h3>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="receiptDate">Date</label><input type="date" id="rcpt-date"></div>
+        <div class="form-group" style="flex:2"><label data-i18n="receiptDesc">Description</label><input id="rcpt-desc" placeholder="e.g. Laptop repair — work use"></div>
+        <div class="form-group"><label data-i18n="receiptAmount">Amount ($)</label><input type="number" id="rcpt-amount" step="any"></div>
+        <div class="form-group"><label data-i18n="receiptCategory">Category</label>
+          <select id="rcpt-cat"><option>Work Expenses</option><option>Home Office</option><option>Vehicle</option><option>Investment</option><option>Donation</option><option>Other</option></select>
+        </div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="addReceipt()" data-i18n="btnAddReceipt">+ Add</button></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table><thead><tr>
+          <th data-i18n="receiptTableDate">Date</th>
+          <th data-i18n="receiptTableDesc">Description</th>
+          <th data-i18n="receiptTableCat">Category</th>
+          <th data-i18n="receiptTableAmount">Amount</th>
+          <th></th>
+        </tr></thead><tbody id="receipts-tbody"></tbody>
+        <tfoot id="receipts-tfoot"></tfoot></table>
+      </div>
+    </div>
+
+    <div class="card section">
+      <h3 data-i18n="vaultTitle">Document Vault</h3>
+      <div class="alert alert-info" data-i18n="vaultAlert">🔒 Save details of your important documents here — accessible anytime by you and your financial advisor.</div>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="vaultDocType">Document Type</label>
+          <select id="vault-type">
+            <option>Will</option><option>Insurance Policy</option><option>Power of Attorney</option>
+            <option>Loan Document</option><option>Tax Receipt</option><option>Property Title</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:2"><label data-i18n="vaultDocName">Document Name / Reference</label><input id="vault-name" placeholder="e.g. ANZ Home Loan — Settlement Docs"></div>
+        <div class="form-group"><label data-i18n="vaultDocDate">Date</label><input type="date" id="vault-date"></div>
+        <div class="form-group" style="flex:2"><label data-i18n="vaultDocNotes">Notes / Location</label><input id="vault-notes" placeholder="e.g. Stored with solicitor — Smith & Co"></div>
+        <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="addVaultDoc()" data-i18n="btnAddVault">+ Add</button></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table><thead><tr>
+          <th data-i18n="vaultTableType">Type</th>
+          <th data-i18n="vaultTableName">Name / Reference</th>
+          <th data-i18n="vaultTableDate">Date</th>
+          <th data-i18n="vaultTableNotes">Notes</th>
+          <th></th>
+        </tr></thead><tbody id="vault-tbody"></tbody></table>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-/* Replace videoId values with your YouTube IDs (e.g. from Loom or your channel) */
-const VIDEO_IDS = {
-  personal_dashboard: 'placeholder',
-  personal_allocation: 'placeholder',
-  personal_fi: 'placeholder',
-  personal_cashflow: 'placeholder',
-  personal_inflation: 'placeholder',
-  personal_debt: 'placeholder',
-  personal_loan: 'placeholder',
-  personal_portfolio: 'placeholder',
-  personal_projections: 'placeholder',
-  personal_tax: 'placeholder',
-  personal_vault: 'placeholder',
-  personal_settings: 'placeholder',
-  personal_lifeplan: 'placeholder',
-  smsf_dashboard: 'placeholder',
-  smsf_allocation: 'placeholder',
-  smsf_contributions: 'placeholder',
-  smsf_caps: 'placeholder',
-  smsf_compliance: 'placeholder',
-  smsf_inhouse: 'placeholder',
-  smsf_portfolio: 'placeholder',
-  smsf_projections: 'placeholder',
-  smsf_settings: 'placeholder',
-  analysis_pl: 'placeholder',
-  analysis_balancesheet: 'placeholder',
-  analysis_ratios: 'placeholder',
-  analysis_breakeven: 'placeholder',
-  analysis_cgt: 'placeholder',
-  analysis_division7a: 'placeholder',
-  analysis_gst: 'placeholder',
-  analysis_depreciation: 'placeholder',
-  analysis_etf_compare: 'placeholder',
-  analysis_dividend: 'placeholder',
-  analysis_rebalance: 'placeholder',
-  analysis_annual_review: 'placeholder'
-};
-
-let LANG = localStorage.getItem('finance_tools_lang') || 'en';
-
-const CATEGORIES = [
-  { id: 'overview', en: 'Overview & KPIs', vi: 'Tổng quan & KPI' },
-  { id: 'cashflow', en: 'Cashflow & Budget', vi: 'Dòng tiền & Ngân sách' },
-  { id: 'debt', en: 'Debt & Loans', vi: 'Nợ & Khoản vay' },
-  { id: 'tax', en: 'Tax & Documents', vi: 'Thuế & Hồ sơ' },
-  { id: 'accounting', en: 'Accounting & Reports', vi: 'Kế toán & Báo cáo' },
-  { id: 'taxanalysis', en: 'Tax Analysis', vi: 'Phân tích Thuế' },
-  { id: 'invest', en: 'Portfolio & Allocation', vi: 'Danh mục & Phân bổ' },
-  { id: 'investing', en: 'Investing Analysis', vi: 'Phân tích Đầu tư' },
-  { id: 'growth', en: 'Projections & Freedom', vi: 'Dự báo & Kế hoạch' },
-  { id: 'super', en: 'Super & Contributions', vi: 'Super & Đóng góp' },
-  { id: 'compliance', en: 'SMSF Compliance', vi: 'Tuân thủ SMSF' },
-  { id: 'planning', en: 'Planning & Settings', vi: 'Kế hoạch & Cài đặt' }
-];
-
-const CALCULATORS = [
-  {
-    id: 'personal_dashboard', category: 'overview', app: 'personal',
-    tab: 'dashboard', en: 'Financial Life Dashboard', vi: 'Bảng Tổng Quan Tài Chính',
-    models: ['Net worth', 'Portfolio value', 'Monthly surplus', 'Debt total'],
-    href: 'wealth-builder.html#dashboard',
-    videoKey: 'personal_dashboard',
-    guide: {
-      en: 'See your entire financial life on one screen — all your banks, loans and credit cards. Enter latest prices on the Portfolio tab first, then review KPIs here. Update cashflow monthly so surplus reflects reality.',
-      vi: 'Xem toàn bộ tài chính trên một màn hình. Nhập giá mới nhất ở tab Danh mục trước, rồi xem KPI tại đây. Cập nhật dòng tiền hàng tháng.'
-    }
-  },
-  {
-    id: 'personal_allocation', category: 'overview', app: 'personal',
-    tab: 'dashboard', en: 'Allocation vs Target', vi: 'Phân bổ so mục tiêu',
-    models: ['Donut chart', 'Category drift', 'IPS targets'],
-    href: 'wealth-builder.html#dashboard',
-    videoKey: 'personal_allocation',
-    guide: {
-      en: 'Rebalance when any category drifts more than ±2% from target. Set targets in Settings to match your IPS.',
-      vi: 'Tái cân bằng khi lệch quá ±2% so mục tiêu. Đặt mục tiêu trong Cài đặt.'
-    }
-  },
-  {
-    id: 'personal_fi', category: 'growth', app: 'personal',
-    tab: 'dashboard', en: 'Financial Freedom Tracker', vi: 'Theo dõi Tự do Tài chính',
-    models: ['Years to freedom', 'Freedom portfolio %', 'Emergency fund %', 'Debt clearance %'],
-    href: 'wealth-builder.html#dashboard',
-    videoKey: 'personal_fi',
-    guide: {
-      en: 'Set your freedom target portfolio and age in Settings. Fund emergency cash category before aggressive growth bets. A Beautiful Financial Future starts with knowing your number.',
-      vi: 'Đặt mục tiêu danh mục và tuổi tự do trong Cài đặt. Ưu tiên quỹ khẩn cấp trước khi tăng rủi ro.'
-    }
-  },
-  {
-    id: 'personal_cashflow', category: 'cashflow', app: 'personal',
-    tab: 'cashflow', en: 'Real-Time Cashflow Model', vi: 'Mô hình dòng tiền thực tế',
-    models: ['Income vs expenses', 'Invest surplus', 'Living cost baseline'],
-    href: 'wealth-builder.html#cashflow',
-    videoKey: 'personal_cashflow',
-    guide: {
-      en: 'Login anytime, anywhere to see where your money comes and goes — iOS and Android compatible. Use net salary after tax. Convert weekly costs automatically — focus on surplus, not gross income.',
-      vi: 'Dùng lương ròng sau thuế. Chi phí tuần được quy đổi tự động — tập trung vào thặng dư.'
-    }
-  },
-  {
-    id: 'personal_inflation', category: 'cashflow', app: 'personal',
-    tab: 'cashflow', en: 'Expense Inflation (6yr)', vi: 'Lạm phát chi phí (6 năm)',
-    models: ['CPI on expenses', 'Wage growth on investing', 'Surplus by year'],
-    href: 'wealth-builder.html#cashflow',
-    videoKey: 'personal_inflation',
-    guide: {
-      en: 'Default 5% Sydney CPI — adjust in Settings if your rent or school fees grow faster.',
-      vi: 'Mặc định CPI 5% — chỉnh trong Cài đặt nếu thuê nhà hoặc học phí tăng nhanh hơn.'
-    }
-  },
-  {
-    id: 'personal_debt', category: 'debt', app: 'personal',
-    tab: 'debt', en: 'Debt Payoff & Interest', vi: 'Trả nợ & Lãi suất',
-    models: ['Avalanche priority', 'Months to payoff', 'Monthly interest cost', 'Amortisation curves'],
-    href: 'wealth-builder.html#debt',
-    videoKey: 'personal_debt',
-    guide: {
-      en: 'Attack highest rate first. Once a debt is cleared, roll its payment into the next — do not inflate lifestyle.',
-      vi: 'Ưu tiên lãi suất cao nhất. Khi xong một khoản, chuyển khoản trả sang khoản tiếp — đừng tăng chi tiêu.'
-    }
-  },
-  {
-    id: 'personal_loan', category: 'debt', app: 'personal',
-    tab: 'debt', en: 'Better Loan Analyser', vi: 'Phân tích vay lãi thấp hơn',
-    models: ['Credit card comparison', 'Lower rate savings', 'Refinance calculator', 'Break-even timeline'],
-    href: 'wealth-builder.html#debt',
-    videoKey: 'personal_loan',
-    guide: {
-      en: 'Analyse your credit cards and loans to save big $ with a lower interest rate. Enter your current rate and balance — see exactly how much you could save over the life of the loan.',
-      vi: 'Phân tích thẻ tín dụng và khoản vay để tiết kiệm lớn với lãi suất thấp hơn. Nhập lãi suất và số dư hiện tại.'
-    }
-  },
-  {
-    id: 'personal_portfolio', category: 'invest', app: 'personal',
-    tab: 'portfolio', en: 'Holdings & Cost Base', vi: 'Danh mục & Giá vốn',
-    models: ['Position value', 'Gain/loss', 'DRIP flag', 'Allocation bars'],
-    href: 'wealth-builder.html#portfolio',
-    videoKey: 'personal_portfolio',
-    guide: {
-      en: 'Update prices regularly for accurate net worth. Record cost base for CGT — especially crypto and ETFs.',
-      vi: 'Cập nhật giá thường xuyên. Ghi giá vốn cho thuế CGT — đặc biệt crypto và ETF.'
-    }
-  },
-  {
-    id: 'personal_projections', category: 'growth', app: 'personal',
-    tab: 'projections', en: 'Freedom Plan Scenarios', vi: 'Kịch bản Kế hoạch Tự do',
-    models: ['5% / 8% / 11% returns', 'Wage-linked contributions', 'Freedom age marker'],
-    href: 'wealth-builder.html#projections',
-    videoKey: 'personal_projections',
-    guide: {
-      en: 'Run all three scenarios. Base case 8% is long-run equities — use Conservative if you are debt-heavy. Estimate how much $ you will need and how to get there for a Beautiful Financial Future.',
-      vi: 'Chạy cả ba kịch bản. 8% là kỳ vọng dài hạn — dùng Thận trọng nếu còn nhiều nợ.'
-    }
-  },
-  {
-    id: 'personal_tax', category: 'tax', app: 'personal',
-    tab: 'tax', en: 'Effortless Tax Return Prep', vi: 'Chuẩn bị khai thuế dễ dàng',
-    models: ['Income summary', 'Deduction tracker', 'Tax receipt log', 'Return estimate'],
-    href: 'wealth-builder.html#tax',
-    videoKey: 'personal_tax',
-    guide: {
-      en: 'No more hours spent sorting through tax receipts. This tool collates all tax return information needed for your individual tax return — income, deductions, and receipts in one place, ready for your accountant.',
-      vi: 'Không còn mất giờ phân loại biên lai thuế. Công cụ tổng hợp toàn bộ thông tin khai thuế cá nhân — thu nhập, khấu trừ, biên lai, sẵn sàng cho kế toán.'
-    }
-  },
-  {
-    id: 'personal_vault', category: 'tax', app: 'personal',
-    tab: 'vault', en: 'Document Vault', vi: 'Kho Lưu Trữ Hồ Sơ',
-    models: ['Wills & estate docs', 'Insurance documents', 'Powers of attorney', 'Loan & tax receipts'],
-    href: 'wealth-builder.html#vault',
-    videoKey: 'personal_vault',
-    guide: {
-      en: 'Save your Wills, Insurance Documents, Powers of Attorney, Loan Documents and Tax Receipts securely in the cloud — accessible anytime, anywhere by you and your financial advisor.',
-      vi: 'Lưu Di chúc, Hồ sơ Bảo hiểm, Ủy quyền, Hợp đồng Vay và Biên lai Thuế trên đám mây — truy cập mọi lúc, mọi nơi.'
-    }
-  },
-  {
-    id: 'personal_settings', category: 'planning', app: 'personal',
-    tab: 'settings', en: 'Strategy Settings', vi: 'Cài đặt chiến lược',
-    models: ['Freedom age & target', 'Risk profile', 'Target allocation %', 'Export/import JSON'],
-    href: 'wealth-builder.html#settings',
-    videoKey: 'personal_settings',
-    guide: {
-      en: 'Export JSON monthly as backup. Targets should sum to 100% before you rely on allocation charts.',
-      vi: 'Xuất JSON hàng tháng để sao lưu. Tổng phân bổ mục tiêu phải bằng 100%.'
-    }
-  },
-  {
-    id: 'personal_lifeplan', category: 'planning', app: 'personal',
-    tab: 'settings', en: 'Life Plan Forms', vi: 'Biểu mẫu Life Plan',
-    models: ['Client report', 'Action plan'],
-    href: 'wealth-builder.html#settings',
-    videoKey: 'personal_lifeplan',
-    guide: {
-      en: 'Use the report form for snapshots; action form for annual goals. Align numbers with Financial Planner exports.',
-      vi: 'Dùng form báo cáo cho ảnh chụp tài chính; form hành động cho mục tiêu năm. Đồng bộ số liệu với Financial Planner.'
-    }
-  },
-  {
-    id: 'smsf_dashboard', category: 'overview', app: 'smsf',
-    tab: 'dashboard', en: 'Fund Overview KPIs', vi: 'KPI tổng quan quỹ',
-    models: ['Fund balance', 'Annual contributions', 'Cap used %', 'Projected at 60'],
-    href: 'smsf.html#dashboard',
-    videoKey: 'smsf_dashboard',
-    guide: {
-      en: 'Sync fund balance and holdings before trustee meetings. Cap % turns red if concessional contributions exceed limit.',
-      vi: 'Đồng bộ số dư và danh mục trước họp ủy thác. % hạn mức đỏ nếu vượt đóng góp ưu đãi.'
-    }
-  },
-  {
-    id: 'smsf_allocation', category: 'invest', app: 'smsf',
-    tab: 'dashboard', en: 'Fund Asset Allocation', vi: 'Phân bổ tài sản quỹ',
-    models: ['IPS donut', 'Listed vs alternatives', 'Commercial RE slot'],
-    href: 'smsf.html#dashboard',
-    videoKey: 'smsf_allocation',
-    guide: {
-      en: 'Document IPS changes in trustee minutes. Property often sits under Commercial RE — confirm sole purpose test.',
-      vi: 'Ghi thay đổi IPS trong biên bản ủy thác. BĐS thường nằm Commercial RE — xác nhận mục đích duy nhất.'
-    }
-  },
-  {
-    id: 'smsf_contributions', category: 'super', app: 'smsf',
-    tab: 'contributions', en: 'Contribution Stack', vi: 'Cơ cấu đóng góp',
-    models: ['Salary sacrifice', 'Employer SG', 'Voluntary concessional', 'Growth to preservation'],
-    href: 'smsf.html#contributions',
-    videoKey: 'smsf_contributions',
-    guide: {
-      en: 'Stack SG + sacrifice + voluntary, then check total against cap before 30 June. Leave headroom for unexpected SG.',
-      vi: 'Cộng SG + hy sinh lương + tự nguyện, đối chiếu hạn mức trước 30/6. Giữ biên an toàn cho SG phát sinh.'
-    }
-  },
-  {
-    id: 'smsf_caps', category: 'super', app: 'smsf',
-    tab: 'contributions', en: 'Concessional Cap Monitor', vi: 'Giám sát hạn mức ưu đãi',
-    models: ['FY table', 'Cap headroom', 'Non-concessional note'],
-    href: 'smsf.html#contributions',
-    videoKey: 'smsf_caps',
-    guide: {
-      en: 'FY2026–27 concessional cap $32,500. Carry-forward may apply if TSB under $500k — confirm with your accountant. Our Super Fire-Up review traces lost super and recommends better options for your future.',
-      vi: 'Hạn mức ưu đãi $32.500. Có thể chuyển hạn mức chưa dùng nếu TSB dưới $500k — hỏi kế toán.'
-    }
-  },
-  {
-    id: 'smsf_compliance', category: 'compliance', app: 'smsf',
-    tab: 'compliance', en: 'Compliance Checklist', vi: 'Danh sách tuân thủ',
-    models: ['Sole purpose', 'Audit & minutes', 'Valuations', 'ATO return'],
-    href: 'smsf.html#compliance',
-    videoKey: 'smsf_compliance',
-    guide: {
-      en: 'Tick items as completed each quarter. Missing minutes or valuations are common ATO audit triggers.',
-      vi: 'Đánh dấu từng mục mỗi quý. Thiếu biên bản hoặc định giá là lỗi thường gặp khi kiểm tra.'
-    }
-  },
-  {
-    id: 'smsf_inhouse', category: 'compliance', app: 'smsf',
-    tab: 'compliance', en: 'In-House Asset (5%)', vi: 'Tài sản nội bộ (5%)',
-    models: ['Related-party value', '5% limit bar', 'Breach warning'],
-    href: 'smsf.html#compliance',
-    videoKey: 'smsf_inhouse',
-    guide: {
-      en: 'Measure related-party assets at 30 June market value. Includes certain loans and lease arrangements.',
-      vi: 'Đo tài sản bên liên quan theo giá thị trường 30/6. Bao gồm một số khoản cho vay và thuê.'
-    }
-  },
-  {
-    id: 'smsf_portfolio', category: 'invest', app: 'smsf',
-    tab: 'portfolio', en: 'SMSF Holdings Register', vi: 'Sổ đăng ký tài sản SMSF',
-    models: ['Fund positions', 'Cost base', 'IPS vs actual'],
-    href: 'smsf.html#portfolio',
-    videoKey: 'smsf_portfolio',
-    guide: {
-      en: 'Hold assets in fund name only. Separate portfolio from personal Financial Planner — never mix accounts.',
-      vi: 'Tài sản đứng tên quỹ. Tách khỏi Financial Planner cá nhân — không trộn tài khoản.'
-    }
-  },
-  {
-    id: 'smsf_projections', category: 'growth', app: 'smsf',
-    tab: 'projections', en: 'Fund Growth Scenarios', vi: 'Kịch bản tăng trưởng quỹ',
-    models: ['To preservation age', '3 return scenarios', 'Target balance flag'],
-    href: 'smsf.html#projections',
-    videoKey: 'smsf_projections',
-    guide: {
-      en: 'Model contributions as stable unless you have a signed salary sacrifice agreement. Review 5 years before pension phase.',
-      vi: 'Giả định đóng góp ổn định trừ khi có thỏa thuận hy sinh lương. Rà soát 5 năm trước giai đoạn hưu.'
-    }
-  },
-  {
-    id: 'smsf_settings', category: 'planning', app: 'smsf',
-    tab: 'settings', en: 'Fund & IPS Settings', vi: 'Cài đặt quỹ & IPS',
-    models: ['Fund name', 'Member age', 'Preservation age', 'IPS targets'],
-    href: 'smsf.html#settings',
-    videoKey: 'smsf_settings',
-    guide: {
-      en: 'Match preservation age to your birth year rules. Export data before each financial year rollover.',
-      vi: 'Tuổi bảo lưu theo năm sinh. Xuất dữ liệu trước khi chuyển năm tài chính.'
-    }
-  },
-
-  /* ── ACCOUNTING & REPORTS ── */
-  {
-    id: 'analysis_pl', category: 'accounting', app: 'analysis',
-    tab: 'pl', en: 'Profit & Loss Statement', vi: 'Báo cáo Lãi & Lỗ',
-    models: ['Revenue', 'COGS', 'Gross margin', 'EBITDA', 'Net profit'],
-    href: 'analysis.html#pl',
-    videoKey: 'analysis_pl',
-    guide: {
-      en: 'Build a structured P&L from income and expense categories. Compare actuals vs budget side-by-side and track margin trends across months. Export for your accountant or board pack.',
-      vi: 'Xây dựng P&L có cấu trúc từ các loại thu nhập và chi phí. So sánh thực tế vs ngân sách và theo dõi xu hướng biên lợi nhuận.'
-    }
-  },
-  {
-    id: 'analysis_balancesheet', category: 'accounting', app: 'analysis',
-    tab: 'balancesheet', en: 'Balance Sheet Snapshot', vi: 'Bảng Cân đối kế toán',
-    models: ['Assets', 'Liabilities', 'Equity', 'Working capital', 'Debt-to-equity'],
-    href: 'analysis.html#balancesheet',
-    videoKey: 'analysis_balancesheet',
-    guide: {
-      en: 'Enter assets and liabilities to produce a point-in-time balance sheet. Working capital and debt-to-equity ratios calculate automatically — flag if outside healthy ranges.',
-      vi: 'Nhập tài sản và nợ phải trả để tạo bảng cân đối theo thời điểm. Vốn lưu động và tỷ lệ nợ/vốn tính tự động.'
-    }
-  },
-  {
-    id: 'analysis_ratios', category: 'accounting', app: 'analysis',
-    tab: 'ratios', en: 'Financial Ratio Analyser', vi: 'Phân tích Chỉ số Tài chính',
-    models: ['Liquidity ratios', 'Profitability ratios', 'Leverage ratios', 'Efficiency ratios'],
-    href: 'analysis.html#ratios',
-    videoKey: 'analysis_ratios',
-    guide: {
-      en: 'Feed in P&L and balance sheet figures to compute current ratio, quick ratio, ROE, ROA, gross margin, and more. Benchmarks shown alongside each ratio to flag outliers immediately.',
-      vi: 'Nhập số liệu P&L và bảng cân đối để tính hệ số thanh khoản, ROE, ROA, biên lợi nhuận và hơn thế. Điểm chuẩn hiển thị cạnh mỗi chỉ số.'
-    }
-  },
-  {
-    id: 'analysis_breakeven', category: 'accounting', app: 'analysis',
-    tab: 'breakeven', en: 'Break-Even & Margin Model', vi: 'Mô hình Hoà vốn & Biên lợi nhuận',
-    models: ['Fixed costs', 'Variable cost per unit', 'Break-even units', 'Contribution margin', 'Safety margin'],
-    href: 'analysis.html#breakeven',
-    videoKey: 'analysis_breakeven',
-    guide: {
-      en: 'Enter fixed costs, variable cost per unit, and selling price to find break-even volume and contribution margin. Adjust price or cost assumptions to model profitability at different sales levels.',
-      vi: 'Nhập chi phí cố định, biến phí và giá bán để tìm điểm hoà vốn và biên đóng góp. Điều chỉnh giả định để mô hình hoá lợi nhuận theo các mức doanh thu khác nhau.'
-    }
-  },
-
-  /* ── TAX ANALYSIS ── */
-  {
-    id: 'analysis_cgt', category: 'taxanalysis', app: 'analysis',
-    tab: 'cgt', en: 'Capital Gains Tax Calculator', vi: 'Tính Thuế Thu Nhập Vốn (CGT)',
-    models: ['Cost base', 'Proceeds', 'Gross gain', 'CGT discount', 'Net taxable gain'],
-    href: 'analysis.html#cgt',
-    videoKey: 'analysis_cgt',
-    guide: {
-      en: 'Calculate CGT for Australian residents on shares, ETFs, property and crypto. Applies 50% discount automatically for assets held over 12 months. Factor in cost base adjustments and capital losses carried forward.',
-      vi: 'Tính CGT cho cư dân Úc trên cổ phiếu, ETF, bất động sản và tiền điện tử. Áp dụng giảm 50% tự động cho tài sản giữ hơn 12 tháng.'
-    }
-  },
-  {
-    id: 'analysis_division7a', category: 'taxanalysis', app: 'analysis',
-    tab: 'div7a', en: 'Division 7A Loan Calculator', vi: 'Tính vay Division 7A',
-    models: ['Minimum annual repayment', 'Benchmark interest rate', 'Loan term', 'Deemed dividend risk'],
-    href: 'analysis.html#div7a',
-    videoKey: 'analysis_division7a',
-    guide: {
-      en: 'Model minimum annual repayments required under Division 7A for loans between a private company and shareholders or associates. Flags deemed dividend exposure if repayments fall short. Confirm with your accountant each year.',
-      vi: 'Mô hình hoá khoản trả nợ hàng năm tối thiểu theo Division 7A cho vay giữa công ty và cổ đông. Cảnh báo rủi ro cổ tức ảo nếu trả thiếu.'
-    }
-  },
-  {
-    id: 'analysis_gst', category: 'taxanalysis', app: 'analysis',
-    tab: 'gst', en: 'GST & BAS Estimator', vi: 'Ước tính GST & BAS',
-    models: ['GST collected', 'GST credits', 'Net GST payable', 'Quarterly BAS estimate'],
-    href: 'analysis.html#gst',
-    videoKey: 'analysis_gst',
-    guide: {
-      en: 'Enter taxable sales and input tax credits to estimate quarterly GST liability for your BAS. Flags if annual turnover approaches the $75,000 registration threshold. Not a substitute for lodged BAS — use as a planning tool.',
-      vi: 'Nhập doanh thu chịu thuế và tín dụng đầu vào để ước tính trách nhiệm GST hàng quý cho BAS. Cảnh báo nếu doanh thu tiếp cận ngưỡng đăng ký $75.000.'
-    }
-  },
-  {
-    id: 'analysis_depreciation', category: 'taxanalysis', app: 'analysis',
-    tab: 'depreciation', en: 'Depreciation & Write-Off Planner', vi: 'Kế hoạch Khấu hao & Xoá sổ',
-    models: ['Prime cost method', 'Diminishing value', 'Instant asset write-off', 'Book vs tax depreciation'],
-    href: 'analysis.html#depreciation',
-    videoKey: 'analysis_depreciation',
-    guide: {
-      en: 'Model asset depreciation under prime cost or diminishing value methods. Applies instant asset write-off thresholds for small business. Shows the gap between book and tax depreciation to help plan for deferred tax.',
-      vi: 'Mô hình khấu hao tài sản theo phương pháp đường thẳng hoặc giảm dần. Áp dụng ngưỡng xoá sổ ngay cho doanh nghiệp nhỏ. Hiển thị chênh lệch giữa khấu hao sổ sách và thuế.'
-    }
-  },
-
-  /* ── INVESTING ANALYSIS ── */
-  {
-    id: 'analysis_etf_compare', category: 'investing', app: 'analysis',
-    tab: 'etf', en: 'ETF & Managed Fund Comparer', vi: 'So sánh ETF & Quỹ quản lý',
-    models: ['MER comparison', 'After-fee return', 'Tracking error', '10yr fee drag'],
-    href: 'analysis.html#etf',
-    videoKey: 'analysis_etf_compare',
-    guide: {
-      en: 'Compare up to four ETFs or managed funds side-by-side on MER, index tracked, distribution yield and 10-year fee drag. A 0.5% MER difference compounds significantly — use this before switching or consolidating.',
-      vi: 'So sánh tối đa bốn ETF hoặc quỹ quản lý về MER, chỉ số theo dõi, lợi suất và tác động phí 10 năm. Chênh lệch 0,5% MER ảnh hưởng lớn theo thời gian.'
-    }
-  },
-  {
-    id: 'analysis_dividend', category: 'investing', app: 'analysis',
-    tab: 'dividend', en: 'Dividend & Franking Credit Model', vi: 'Mô hình Cổ tức & Tín dụng thuế',
-    models: ['Gross dividend', 'Franking credits', 'Effective yield', 'Tax in hand'],
-    href: 'analysis.html#dividend',
-    videoKey: 'analysis_dividend',
-    guide: {
-      en: 'Enter dividend per share and franking percentage to calculate gross dividend, franking credit value, and after-tax yield at your marginal rate. Useful for comparing fully franked vs unfranked securities.',
-      vi: 'Nhập cổ tức trên cổ phiếu và phần trăm franking để tính cổ tức gộp, giá trị tín dụng thuế và lợi suất sau thuế theo thuế suất biên của bạn.'
-    }
-  },
-  {
-    id: 'analysis_rebalance', category: 'investing', app: 'analysis',
-    tab: 'rebalance', en: 'Portfolio Rebalance Planner', vi: 'Kế hoạch Tái cân bằng danh mục',
-    models: ['Current vs target %', 'Buy/sell amounts', 'Tax impact flag', 'Cash needed'],
-    href: 'analysis.html#rebalance',
-    videoKey: 'analysis_rebalance',
-    guide: {
-      en: 'Enter current holdings and target allocations to calculate exact buy and sell amounts needed to rebalance. Flags positions where selling would trigger a CGT event — prioritise new cash before selling where possible.',
-      vi: 'Nhập tỷ trọng hiện tại và mục tiêu để tính chính xác số tiền cần mua/bán khi tái cân bằng. Cảnh báo vị thế khi bán sẽ kích hoạt CGT.'
-    }
-  },
-  {
-    id: 'analysis_annual_review', category: 'investing', app: 'analysis',
-    tab: 'review', en: 'Annual Financial Review', vi: 'Đánh giá Tài chính Hàng năm',
-    models: ['YoY net worth change', 'Goal progress', 'Strategy checklist', 'Action items'],
-    href: 'analysis.html#review',
-    videoKey: 'analysis_annual_review',
-    guide: {
-      en: 'Run a structured year-end review across net worth, cashflow, tax position, super, insurance, and estate documents. Produces a one-page summary and action list — ideal for your annual advisor meeting.',
-      vi: 'Thực hiện đánh giá cuối năm có cấu trúc về tài sản ròng, dòng tiền, thuế, super, bảo hiểm và hồ sơ tài sản. Tạo tóm tắt một trang và danh sách hành động.'
-    }
-  }
-];
-
-const UI = {
-  en: {
-    hubTitle: 'Traditional Finance Tools', hubSub: 'Everything you need to simplify your financial life — open the right calculator, read the quick guide, watch the walkthrough.',
-    langBtn: '🌐 Tiếng Việt', showAll: 'Show all', filterHint: 'Filter by category, or browse all tools below.',
-    appPersonal: 'Financial Planner', appPersonalSub: 'Personal · cashflow, budget, tax, debt & freedom planning',
-    appSmsf: 'Super Steward', appSmsfSub: 'Superannuation · caps, compliance, fund growth & fire-up',
-    appAnalysis: 'Analysis & Planning', appAnalysisSub: 'Accounting, tax & investing · reports, ratios & strategy',
-    emptyFilter: 'No tools in this category.',
-    writtenGuide: 'Quick guide', videoGuide: 'Video walkthrough', watchVideo: 'Watch guide',
-    openCalc: 'Open', all: 'All categories', modalNoVideo: 'Add a YouTube video ID in index.html → VIDEO_IDS.',
-    modalFoot: 'Tip: keep guides under 3 minutes — focus on inputs and one decision per video.'
-  },
-  vi: {
-    hubTitle: 'Công Cụ Tài Chính', hubSub: 'Tất cả những gì bạn cần để đơn giản hoá tài chính — mở đúng công cụ, đọc hướng dẫn, xem video.',
-    langBtn: '🌐 English', showAll: 'Tất cả', filterHint: 'Lọc theo danh mục hoặc xem toàn bộ bên dưới.',
-    appPersonal: 'Kế hoạch Tài chính', appPersonalSub: 'Cá nhân · dòng tiền, ngân sách, thuế, nợ & kế hoạch tự do',
-    appSmsf: 'Super Steward', appSmsfSub: 'Superannuation · hạn mức, tuân thủ, tăng trưởng quỹ',
-    appAnalysis: 'Phân tích & Kế hoạch', appAnalysisSub: 'Kế toán, thuế & đầu tư · báo cáo, chỉ số & chiến lược',
-    emptyFilter: 'Không có công cụ trong danh mục này.',
-    writtenGuide: 'Hướng dẫn nhanh', videoGuide: 'Video hướng dẫn', watchVideo: 'Xem video',
-    openCalc: 'Mở', all: 'Tất cả danh mục', modalNoVideo: 'Thêm YouTube video ID trong index.html → VIDEO_IDS.',
-    modalFoot: 'Gợi ý: video dưới 3 phút — tập trung vào đầu vào và một quyết định.'
-  }
-};
-
-function ui(k){ return UI[LANG][k] || UI.en[k]; }
-function toggleLang(){ LANG = LANG === 'en' ? 'vi' : 'en'; localStorage.setItem('finance_tools_lang', LANG); render(); }
-
-let activeCat = 'all';
-
-function filterCat(id){
-  activeCat = id;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === id));
-  document.querySelectorAll('.calc-card').forEach(card => {
-    const show = id === 'all' || card.dataset.category === id;
-    card.classList.toggle('hidden', !show);
-  });
-  const anyVisible = [...document.querySelectorAll('.calc-card')].some(c => !c.classList.contains('hidden'));
-  document.getElementById('empty-filter').classList.toggle('show', !anyVisible);
-  document.querySelectorAll('.section').forEach(sec => {
-    const cards = sec.querySelectorAll('.calc-card:not(.hidden)');
-    sec.style.display = cards.length ? '' : 'none';
-  });
-}
-
-function openVideo(key, title){
-  const modal = document.getElementById('video-modal');
-  const body = document.getElementById('modal-body');
-  const foot = document.getElementById('modal-foot');
-  document.getElementById('modal-title').textContent = title;
-  foot.textContent = ui('modalFoot');
-  const id = VIDEO_IDS[key];
-  if (id && id !== 'placeholder') {
-    body.innerHTML = `<div class="ratio"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
-  } else {
-    body.innerHTML = `<div class="modal-placeholder"><p>${ui('modalNoVideo')}</p><p style="margin-top:12px"><code>VIDEO_IDS.${key}</code></p></div>`;
-  }
-  modal.classList.add('open');
-}
-function closeVideo(){
-  document.getElementById('video-modal').classList.remove('open');
-  document.getElementById('modal-body').innerHTML = '';
-}
-document.getElementById('video-modal').addEventListener('click', e => { if (e.target.id === 'video-modal') closeVideo(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
-
-function renderCard(c){
-  const title = LANG === 'vi' ? c.vi : c.en;
-  const guide = LANG === 'vi' ? c.guide.vi : c.guide.en;
-  const appLabel = c.app === 'personal' ? 'Personal' : c.app === 'smsf' ? 'SMSF' : 'Analysis';
-  return `
-    <article class="calc-card" data-category="${c.category}" data-id="${c.id}">
-      <div class="calc-top">
-        <div class="calc-title">${title}</div>
-        <span class="calc-app ${c.app}">${appLabel}</span>
+  <div class="page" id="page-projections">
+    <div class="page-title" data-i18n="projTitle">Freedom Plan Projections</div>
+    <div class="page-sub" data-i18n="projSub">How much you'll need · How much you'll have · How to get there</div>
+    <div class="card section">
+      <h3 data-i18n="projInputs">Projection Inputs</h3>
+      <div class="grid-3">
+        <div class="form-group"><label data-i18n="projCurrentPortfolio">Current Personal Portfolio ($)</label><input type="number" id="proj-start" step="any"></div>
+        <div class="form-group"><label data-i18n="projMonthly">Monthly Investment ($)</label><input type="number" id="proj-monthly" step="any"></div>
+        <div class="form-group"><label data-i18n="projWage">Annual Wage Growth (%)</label><input type="number" id="proj-wage" step="any"></div>
       </div>
-      <div class="models">${c.models.map(m => `<span class="model-tag">${m}</span>`).join('')}</div>
-      <div class="guide-written"><strong>${ui('writtenGuide')}</strong>${guide}</div>
-      <div class="video-strip" onclick="openVideo('${c.videoKey}','${title.replace(/'/g, "\\'")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openVideo('${c.videoKey}','${title.replace(/'/g, "\\'")}')">
-        <div class="video-thumb">▶</div>
-        <div class="video-meta"><strong>${ui('watchVideo')}</strong><span>${ui('videoGuide')}</span></div>
+      <div style="margin-top:16px"><button class="btn btn-accent" onclick="calcProjections()" data-i18n="btnRunProj">Run Projections</button></div>
+    </div>
+    <div class="card section"><div class="chart-wrap" style="height:300px"><canvas id="proj-chart"></canvas></div></div>
+    <div class="card section"><div class="tbl-wrap" id="proj-table"></div></div>
+  </div>
+
+  <div class="page" id="page-settings">
+    <div class="page-title" data-i18n="settingsTitle">Settings & Profile</div>
+    <div class="page-sub" data-i18n="settingsSub">Strategy parameters, risk profile & data management</div>
+    <div class="grid-2 section">
+      <div class="card">
+        <h3 data-i18n="settingsProfile">Investor Profile</h3>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsName">Name</label><input id="s-name"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsAge">Current Age</label><input type="number" id="s-age"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFIAge">Freedom Target Age</label><input type="number" id="s-fi-age"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsFITarget">Freedom Portfolio Target ($)</label><input type="number" id="s-fi-target" step="any"></div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsRisk">Risk Profile</label>
+          <select id="s-risk"><option>Conservative</option><option>Balanced</option><option selected>Balanced-Growth</option><option>Growth</option><option>Aggressive</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:10px"><label data-i18n="settingsInflation">Inflation (% p.a.)</label><input type="number" id="s-inflation" step="any"></div>
+        <div class="form-group" style="margin-bottom:16px"><label data-i18n="settingsEmergency">Emergency Fund Target ($)</label><input type="number" id="s-emergency" step="any"></div>
+        <button class="btn btn-accent" onclick="saveSettings()" data-i18n="btnSaveSettings">Save Settings</button>
       </div>
-      <div class="calc-actions">
-        <a class="btn btn-accent" href="${c.href}">${ui('openCalc')} →</a>
+      <div class="card">
+        <h3 data-i18n="settingsTargetAlloc">Target Allocations (%)</h3>
+        <div id="target-alloc-form"></div>
+        <button class="btn btn-accent" style="margin-top:16px;width:100%" onclick="saveTargets()" data-i18n="btnSaveTargets">Save Targets</button>
       </div>
-    </article>`;
-}
+    </div>
+    <div class="card section">
+      <h3 data-i18n="settingsDataMgmt">Data Management</h3>
+      <div class="form-row">
+        <button class="btn" onclick="exportClientReport()" data-i18n="btnReport">📄 Export Client Report (PDF)</button>
+        <button class="btn" onclick="exportData()" data-i18n="btnExportJson">↓ Export JSON</button>
+        <button class="btn" onclick="document.getElementById('import-file').click()" data-i18n="btnImportJson">↑ Import JSON</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+        <button class="btn" style="color:var(--accent4);border-color:var(--accent4)" onclick="clearAll()" data-i18n="btnClearAll">⚠ Clear All</button>
+      </div>
+    </div>
+  </div>
 
-function render(){
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.getAttribute('data-i18n');
-    if (UI[LANG][k]) el.textContent = UI[LANG][k];
-  });
-
-  const nav = document.getElementById('cat-nav');
-  nav.innerHTML = `<button type="button" class="cat-btn active" data-cat="all" onclick="filterCat('all')">${ui('all')}</button>` +
-    CATEGORIES.map(cat => `<button type="button" class="cat-btn" data-cat="${cat.id}" onclick="filterCat('${cat.id}')">${LANG === 'vi' ? cat.vi : cat.en}</button>`).join('');
-
-  const byCat = {};
-  CATEGORIES.forEach(c => { byCat[c.id] = []; });
-  CALCULATORS.forEach(c => { if (byCat[c.category]) byCat[c.category].push(c); });
-
-  document.getElementById('sections').innerHTML = CATEGORIES.map(cat => {
-    const items = byCat[cat.id];
-    if (!items.length) return '';
-    return `<section class="section" id="cat-${cat.id}">
-      <div class="section-head"><h2>${LANG === 'vi' ? cat.vi : cat.en}</h2><p>${items.length} ${items.length === 1 ? 'tool' : 'tools'}</p></div>
-      <div class="calc-grid">${items.map(renderCard).join('')}</div>
-    </section>`;
-  }).join('');
-
-  filterCat(activeCat);
-}
-
-render();
-
-(function initAppStripCarousel() {
-  const strip = document.getElementById('app-strip');
-  const dotsEl = document.getElementById('app-strip-dots');
-  if (!strip || !dotsEl) return;
-
-  const cards = [...strip.querySelectorAll('.app-card')];
-  if (!cards.length) return;
-
-  dotsEl.innerHTML = cards.map((_, i) =>
-    `<button type="button" class="app-strip-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Go to app ${i + 1}"></button>`
-  ).join('');
-
-  const dots = [...dotsEl.querySelectorAll('.app-strip-dot')];
-
-  function setActiveDot(index) {
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-  }
-
-  function scrollToCard(index) {
-    const card = cards[index];
-    if (!card) return;
-    const offset = card.offsetLeft - strip.offsetLeft - (strip.clientWidth - card.offsetWidth) / 2;
-    strip.scrollTo({ left: offset, behavior: 'smooth' });
-    setActiveDot(index);
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => scrollToCard(Number(dot.dataset.index)));
-  });
-
-  let scrollTimer;
-  strip.addEventListener('scroll', () => {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      const center = strip.scrollLeft + strip.clientWidth / 2;
-      let nearest = 0;
-      let minDist = Infinity;
-      cards.forEach((card, i) => {
-        const cardCenter = card.offsetLeft - strip.offsetLeft + card.offsetWidth / 2;
-        const dist = Math.abs(center - cardCenter);
-        if (dist < minDist) { minDist = dist; nearest = i; }
-      });
-      setActiveDot(nearest);
-    }, 60);
-  }, { passive: true });
-})();
-</script>
-</body>
-</html>
+  </main>
+  </div>
+  <div id="save-toast" data-i18n="toastSaved">✓ Saved</div>
+  <script src="assets/js/wealth-builder-personal.js"></script>
+  </body>
+  </html>
