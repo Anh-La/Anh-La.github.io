@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
       --bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;
@@ -123,6 +125,7 @@
       <span class="last-updated" id="last-updated-label"></span>
       <button class="btn" onclick="toggleLanguage()" data-i18n="btnLangToggle">🌐 Tiếng Việt</button>
       <button class="btn" onclick="exportData()" data-i18n="btnExport">↓ Export</button>
+      <button class="btn" onclick="exportClientReport()" data-i18n="btnReport">📄 Client Report</button>
       <button class="btn btn-accent" onclick="saveAll()" data-i18n="btnSave">Save</button>
     </div>
   </header>
@@ -414,6 +417,7 @@
     <div class="card section">
       <h3 data-i18n="settingsDataMgmt">Data Management</h3>
       <div class="form-row">
+        <button class="btn" onclick="exportClientReport()" data-i18n="btnReport">📄 Export Client Report (PDF)</button>
         <button class="btn" onclick="exportData()" data-i18n="btnExportJson">↓ Export JSON</button>
         <button class="btn" onclick="document.getElementById('import-file').click()" data-i18n="btnImportJson">↑ Import JSON</button>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
