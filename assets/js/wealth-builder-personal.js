@@ -4,105 +4,47 @@ let LANG = localStorage.getItem(LANG_KEY) || 'en';
 
 const TRANSLATIONS = {
   en: {
-    appTitle:'Wealth Builder', appSub:'Personal Investment Strategy',
-    btnSave:'Save', btnExport:'↓ Export', btnLangToggle:'🌐 Tiếng Việt',
+    appTitle:'Individual', appSub:'Finance & Planning',
+    btnSave:'Save', btnExport:'↓ Export', btnReport:'Net worth report', btnLangToggle:'🌐 Tiếng Việt',
     btnAdd:'+ Add', btnAddDebt:'+ Add Debt', btnRunProj:'Run Projections',
     btnSaveSettings:'Save Settings', btnSaveTargets:'Save Targets',
     btnExportJson:'↓ Export JSON', btnImportJson:'↑ Import JSON', btnClearAll:'⚠ Clear All',
     tabDashboard:'📊 Dashboard', tabPortfolio:'💼 Portfolio', tabCashflow:'💸 Cashflow',
-    tabDebt:'🧹 Debt Tracker', tabProjections:'📈 Projections', tabSettings:'⚙️ Settings',
-    dashTitle:'Overview', dashSub:'Personal net wealth · Outside super',
-    dashAlloc:'Portfolio Allocation vs Target', dashFI:'Financial Independence Progress',
-    dashFIYearSub:'years to FI target', dashCashflow:'Monthly Cashflow Summary',
+    tabDebt:'🧹 Debt & Loans', tabTax:'🧾 Tax & Documents', tabProjections:'📈 Projections', tabSettings:'⚙️ Settings',
+    dashTitle:'Overview', dashSub:'Your financial life on one screen',
+    dashAlloc:'Portfolio Allocation vs Target', dashFI:'Financial Freedom Progress',
+    dashFIYearSub:'years to freedom target', dashCashflow:'Monthly Cashflow Summary',
     dashDebt:'Debt Paydown Status', dashRoadmap:'Personal Action Roadmap',
-    portTitle:'Personal Portfolio', portSub:'Taxable & personal accounts · Outside super',
-    portAlert:'💡 Target: STRC 25% · SATA 15% · US ETFs 20% · Commercial RE 15% · Bitcoin 10% · Gold 10% · Cash 5%',
-    portAssetName:'Asset Name', portCategory:'Category', portUnits:'Units / Qty',
-    portPrice:'Price (A$)', portCostBase:'Cost Base (A$)', portDrip:'DRIP?',
-    portTableAsset:'Asset', portTableCat:'Category', portTableUnits:'Units', portTablePrice:'Price',
-    portTableValue:'Value', portTableCost:'Cost Base', portTableGain:'Gain/Loss', portTablePct:'%Portfolio', portTableDrip:'DRIP',
-    portTargetVsActual:'Target vs Actual Allocation',
-    cfTitle:'Cashflow Analysis', cfSub:'Personal income, living costs & investable surplus',
-    cfIncome:'Income', cfSalaryLabel:'Net Monthly Salary (after tax)', cfOtherLabel:'Other Income',
-    cfFixedExp:'Fixed Expenses', cfRent:'Weekly Rent (A$)', cfGroceries:'Weekly Groceries',
-    cfFuel:'Weekly Car Fuel', cfElec:'Weekly Electricity', cfTransport:'Weekly Transport', cfGym:'Fortnightly Gym',
-    cfChildSupport:'Child Support & Quarterly Expenses', cfBball:'Basketball (quarterly)',
-    cfSchool:'School Fees (quarterly)', cfPlay:'Weekly Play Activities',
-    cfInvestContrib:'Investment Contributions', cfMonthlyContrib:'Monthly Personal Investments (A$)',
-    cfDebtRepay:'Monthly Debt Repayment (A$)', cfMonthlySummary:'Monthly Summary', cfInflation:'Expense Inflation Projection',
-    debtTitle:'Debt Tracker', debtSub:'Clear personal debts to accelerate FI',
-    debtAlert:'⚠️ Pay high-interest debt first to free monthly cashflow for investing.',
-    debtAddUpdate:'Add / Update Debt', debtName:'Debt Name', debtType:'Type',
-    debtOriginal:'Original Balance (A$)', debtCurrent:'Current Balance (A$)',
-    debtRate:'Interest Rate (% p.a.)', debtPayment:'Monthly Payment (A$)',
-    debtTotalOutstanding:'Total Debt Outstanding', debtMonthlyInterest:'Monthly Interest Cost',
-    debtTableDebt:'Debt', debtTableType:'Type', debtTableOriginal:'Original', debtTableCurrent:'Balance',
-    debtTableRate:'Rate', debtTablePayment:'Payment', debtTablePayoffIn:'Payoff', debtTableProgress:'Progress', debtAmort:'Amortisation Schedule',
-    projTitle:'Personal Growth Projections', projSub:'Outside-super portfolio · To FI target age',
-    projInputs:'Projection Inputs', projCurrentPortfolio:'Current Personal Portfolio (A$)',
-    projMonthly:'Monthly Investment (A$)', projWage:'Annual Wage Growth (%)',
+    portTitle:'Personal Portfolio', portSub:'Taxable & personal accounts',
     projTableYear:'Year', projTableAge:'Age', projTableCons:'Conservative (5%)',
-    projTableBase:'Base (8%)', projTableOpt:'Optimistic (11%)', projTableFI:'FI Target?',
-    settingsTitle:'Settings & Profile', settingsSub:'Personal strategy parameters',
+    projTableBase:'Base (8%)', projTableOpt:'Optimistic (11%)', projTableFI:'Freedom Target?',
+    settingsTitle:'Settings & Profile', settingsSub:'Strategy parameters & data management',
     settingsProfile:'Investor Profile', settingsName:'Name', settingsAge:'Current Age',
-    settingsFIAge:'FI Target Age', settingsFITarget:'FI Portfolio Target (A$)',
+    settingsFIAge:'Freedom Target Age', settingsFITarget:'Freedom Portfolio Target ($)',
     settingsRisk:'Risk Profile', settingsInflation:'Inflation (% p.a.)',
-    settingsEmergency:'Emergency Fund Target (A$)', settingsTargetAlloc:'Target Allocations (%)',
-    settingsDataMgmt:'Data Management', toastSaved:'✓ Saved', savedPrefix:'Saved '
+    settingsEmergency:'Emergency Fund Target ($)', settingsTargetAlloc:'Target Allocations (%)',
+    settingsDataMgmt:'Data Management', toastSaved:'✓ Saved', savedPrefix:'Saved ',
+    reportGenerating:'Generating LifePlan report…', reportReady:'Client report downloaded'
   },
   vi: {
-    appTitle:'Xây Dựng Tài Sản', appSub:'Chiến Lược Đầu Tư Cá Nhân',
-    btnSave:'Lưu', btnExport:'↓ Xuất', btnLangToggle:'🌐 English',
-    btnAdd:'+ Thêm', btnAddDebt:'+ Thêm Nợ', btnRunProj:'Chạy Dự Báo',
-    btnSaveSettings:'Lưu Cài Đặt', btnSaveTargets:'Lưu Mục Tiêu',
+    appTitle:'Cá Nhân', appSub:'Tài chính & Kế hoạch',
+    btnSave:'Lưu', btnExport:'↓ Xuất', btnReport:'Net worth report', btnLangToggle:'🌐 English',
     btnExportJson:'↓ Xuất JSON', btnImportJson:'↑ Nhập JSON', btnClearAll:'⚠ Xóa Tất Cả',
-    tabDashboard:'📊 Tổng Quan', tabPortfolio:'💼 Danh Mục', tabCashflow:'💸 Dòng Tiền',
-    tabDebt:'🧹 Theo Dõi Nợ', tabProjections:'📈 Dự Báo', tabSettings:'⚙️ Cài Đặt',
-    dashTitle:'Tổng Quan', dashSub:'Tài sản ròng cá nhân · Ngoài quỹ hưu trí',
-    dashAlloc:'Phân Bổ So Với Mục Tiêu', dashFI:'Tiến Độ Độc Lập Tài Chính',
-    dashFIYearSub:'năm đến mục tiêu ĐLTC', dashCashflow:'Tóm Tắt Dòng Tiền',
-    dashDebt:'Tình Trạng Trả Nợ', dashRoadmap:'Lộ Trình Hành Động Cá Nhân',
-    portTitle:'Danh Mục Cá Nhân', portSub:'Tài khoản cá nhân · Ngoài super',
-    portAlert:'💡 Mục tiêu: STRC 25% · SATA 15% · ETF Mỹ 20% · BĐS TM 15% · Bitcoin 10% · Vàng 10% · Tiền mặt 5%',
-    portAssetName:'Tên Tài Sản', portCategory:'Danh Mục', portUnits:'Số Lượng',
-    portPrice:'Giá (A$)', portCostBase:'Giá Vốn (A$)', portDrip:'DRIP?',
-    portTableAsset:'Tài Sản', portTableCat:'Danh Mục', portTableUnits:'Đơn Vị', portTablePrice:'Giá',
-    portTableValue:'Giá Trị', portTableCost:'Giá Vốn', portTableGain:'Lãi/Lỗ', portTablePct:'%DM', portTableDrip:'DRIP',
-    portTargetVsActual:'Mục Tiêu So Với Thực Tế',
-    cfTitle:'Phân Tích Dòng Tiền', cfSub:'Thu nhập cá nhân & thặng dư đầu tư',
-    cfIncome:'Thu Nhập', cfSalaryLabel:'Lương ròng hàng tháng', cfOtherLabel:'Thu nhập khác',
-    cfFixedExp:'Chi Phí Cố Định', cfRent:'Thuê nhà/tuần', cfGroceries:'Thực phẩm/tuần',
-    cfFuel:'Xăng/tuần', cfElec:'Điện/tuần', cfTransport:'Giao thông/tuần', cfGym:'Gym/2 tuần',
-    cfChildSupport:'Hỗ trợ con & chi phí quý', cfBball:'Bóng rổ (quý)', cfSchool:'Học phí (quý)', cfPlay:'Vui chơi/tuần',
-    cfInvestContrib:'Đóng Góp Đầu Tư', cfMonthlyContrib:'Đầu tư cá nhân/tháng',
-    cfDebtRepay:'Trả nợ/tháng', cfMonthlySummary:'Tóm Tắt Tháng', cfInflation:'Dự Báo Lạm Phát',
-    debtTitle:'Theo Dõi Nợ', debtSub:'Trả nợ cá nhân để đẩy nhanh ĐLTC',
-    debtAlert:'⚠️ Ưu tiên nợ lãi cao để giải phóng dòng tiền đầu tư.',
-    debtAddUpdate:'Thêm / Cập Nhật Nợ', debtName:'Tên Nợ', debtType:'Loại',
-    debtOriginal:'Số dư gốc', debtCurrent:'Số dư hiện tại', debtRate:'Lãi suất', debtPayment:'Trả hàng tháng',
-    debtTotalOutstanding:'Tổng Nợ', debtMonthlyInterest:'Lãi Hàng Tháng',
-    debtTableDebt:'Nợ', debtTableType:'Loại', debtTableOriginal:'Gốc', debtTableCurrent:'Hiện tại',
-    debtTableRate:'Lãi', debtTablePayment:'Trả', debtTablePayoffIn:'Hết trong', debtTableProgress:'Tiến độ', debtAmort:'Lịch Khấu Hao',
-    projTitle:'Dự Báo Tăng Trưởng Cá Nhân', projSub:'Danh mục ngoài super',
-    projInputs:'Thông Số', projCurrentPortfolio:'Danh mục hiện tại', projMonthly:'Đầu tư/tháng', projWage:'Tăng lương/năm',
-    projTableYear:'Năm', projTableAge:'Tuổi', projTableCons:'Thận trọng', projTableBase:'Cơ sở', projTableOpt:'Lạc quan', projTableFI:'ĐLTC?',
-    settingsTitle:'Cài Đặt', settingsSub:'Tham số chiến lược cá nhân',
-    settingsProfile:'Hồ Sơ', settingsName:'Họ tên', settingsAge:'Tuổi', settingsFIAge:'Tuổi ĐLTC',
-    settingsFITarget:'Mục tiêu danh mục ĐLTC', settingsRisk:'Rủi ro', settingsInflation:'Lạm phát',
-    settingsEmergency:'Quỹ khẩn cấp', settingsTargetAlloc:'Phân bổ mục tiêu', settingsDataMgmt:'Dữ liệu',
-    toastSaved:'✓ Đã Lưu', savedPrefix:'Đã lưu '
+    toastSaved:'✓ Đã Lưu', savedPrefix:'Đã lưu ',
+    reportGenerating:'Đang tạo báo cáo LifePlan…', reportReady:'Đã tải báo cáo khách hàng'
   }
 };
 
 function t(k){ return (TRANSLATIONS[LANG]&&TRANSLATIONS[LANG][k])||TRANSLATIONS.en[k]||k; }
 function toggleLanguage(){ LANG=LANG==='en'?'vi':'en'; localStorage.setItem(LANG_KEY,LANG); applyLanguage(); refreshAll(); }
 function applyLanguage(){
-  document.title=t('appTitle')+' · '+t('appSub');
+  const sub=t('appSub');
+  document.title=sub? (t('appTitle')+' · '+sub) : t('appTitle');
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=t(el.getAttribute('data-i18n')); if(v) el.textContent=v; });
 }
 
 const DEFAULT_STATE = {
-  settings:{ name:'Investor', age:42, fiAge:48, fiTarget:1200000, risk:'Balanced-Growth', inflation:5, emergency:28000 },
+  settings:{ name:'Client', planner:'', age:42, fiAge:48, fiTarget:1200000, risk:'Balanced-Growth', inflation:5, emergency:28000 },
   targets:{ STRC:25, SATA:15, 'US ETF':20, 'Commercial RE':15, Bitcoin:10, Gold:10, Cash:5 },
   holdings:[
     { id:1, name:'STRC', cat:'STRC', qty:55, price:0, cost:0, drip:'Yes' },
@@ -116,6 +58,9 @@ const DEFAULT_STATE = {
   cashflow:{ salary:5500, other:0, rent:410, groceries:150, fuel:60, electricity:40, transport:17, gym:90,
     bball:200, school:550, play:50, invest:2000, debtRepay:500 },
   projections:{ start:0, monthly:2000, wage:3.5 },
+  tax:{ salary:0, interest:0, dividends:0, rental:0, otherIncome:0, workExp:0, homeOffice:0, vehicle:0, invFees:0, donations:0, otherDed:0 },
+  receipts:[],
+  vault:[],
   lastUpdated:null
 };
 
@@ -124,12 +69,12 @@ let donutChart,cashflowBarChart,debtChartInst,projChartInst;
 const COLORS=['#c8a96e','#5c9eff','#4ecb8a','#e06b6b','#f59e0b','#a78bfa','#64748b'];
 const CAT_COLORS={ STRC:'#c8a96e',SATA:'#5c9eff','US ETF':'#4ecb8a','Commercial RE':'#e06b6b',Bitcoin:'#f59e0b',Gold:'#a78bfa',Cash:'#64748b',Other:'#94a3b8' };
 
-const fmt=(n,d=0)=>'A$'+Number(n||0).toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d});
-const fmtNum=(n,d=2)=>Number(n||0).toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmt=(n,d=0)=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtNum=(n,d=2)=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 
 function loadState(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)),JSON.parse(raw)); }catch(e){} }
 function saveAll(){
-  collectCashflow(); collectProjections(); collectSettings();
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
   S.lastUpdated=new Date().toISOString();
   localStorage.setItem(STORAGE_KEY,JSON.stringify(S));
   const toast=document.getElementById('save-toast');
@@ -139,13 +84,13 @@ function saveAll(){
 }
 function updateLastUpdated(){
   const el=document.getElementById('last-updated-label');
-  if(S.lastUpdated){ const d=new Date(S.lastUpdated); el.textContent=t('savedPrefix')+d.toLocaleString(LANG==='vi'?'vi-VN':'en-AU',{dateStyle:'short',timeStyle:'short'}); }
+  if(S.lastUpdated){ const d=new Date(S.lastUpdated); el.textContent=t('savedPrefix')+d.toLocaleString(LANG==='vi'?'vi-VN':'en-US',{dateStyle:'short',timeStyle:'short'}); }
 }
 function exportData(){
-  collectCashflow(); collectProjections(); collectSettings();
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));
-  a.download='wealth-builder-personal-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  a.download='financial-planner-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
 }
 function importData(e){
   const file=e.target.files[0]; if(!file) return;
@@ -170,6 +115,7 @@ function refreshPage(id){
   if(id==='portfolio') renderPortfolio();
   if(id==='cashflow') renderCashflow();
   if(id==='debt') renderDebt();
+  if(id==='tax') renderTax();
   if(id==='projections') renderProjections();
   if(id==='settings') renderSettings();
 }
@@ -231,12 +177,19 @@ function collectProjections(){
 }
 function collectSettings(){
   S.settings={ name:document.getElementById('s-name')?.value||S.settings.name,
+    planner:document.getElementById('s-planner')?.value||S.settings.planner||'',
     age:parseInt(document.getElementById('s-age')?.value)||S.settings.age,
     fiAge:parseInt(document.getElementById('s-fi-age')?.value)||S.settings.fiAge,
     fiTarget:parseFloat(document.getElementById('s-fi-target')?.value)||S.settings.fiTarget,
     risk:document.getElementById('s-risk')?.value||S.settings.risk,
     inflation:parseFloat(document.getElementById('s-inflation')?.value)||S.settings.inflation,
     emergency:parseFloat(document.getElementById('s-emergency')?.value)||S.settings.emergency };
+}
+function collectTax(){
+  const g=id=>parseFloat(document.getElementById(id)?.value)||0;
+  S.tax={ salary:g('tax-salary'), interest:g('tax-interest'), dividends:g('tax-dividends'), rental:g('tax-rental'),
+    otherIncome:g('tax-other-income'), workExp:g('tax-work-exp'), homeOffice:g('tax-home-office'),
+    vehicle:g('tax-vehicle'), invFees:g('tax-inv-fees'), donations:g('tax-donations'), otherDed:g('tax-other-ded') };
 }
 
 function populateForms(){
@@ -248,8 +201,22 @@ function populateForms(){
   });
   s('cf-invest',cf.invest); s('cf-debt-repay',cf.debtRepay);
   s('proj-start',S.projections.start); s('proj-monthly',S.projections.monthly); s('proj-wage',S.projections.wage);
-  s('s-name',S.settings.name); s('s-age',S.settings.age); s('s-fi-age',S.settings.fiAge);
+  s('s-name',S.settings.name); s('s-planner',S.settings.planner); s('s-age',S.settings.age); s('s-fi-age',S.settings.fiAge);
   s('s-fi-target',S.settings.fiTarget); s('s-risk',S.settings.risk); s('s-inflation',S.settings.inflation); s('s-emergency',S.settings.emergency);
+  const tx=S.tax||{};
+  s('tax-salary',tx.salary); s('tax-interest',tx.interest); s('tax-dividends',tx.dividends); s('tax-rental',tx.rental);
+  s('tax-other-income',tx.otherIncome); s('tax-work-exp',tx.workExp); s('tax-home-office',tx.homeOffice);
+  s('tax-vehicle',tx.vehicle); s('tax-inv-fees',tx.invFees); s('tax-donations',tx.donations); s('tax-other-ded',tx.otherDed);
+}
+
+function getRoadmap(){
+  return [
+    { phase:'Phase 1', timeframe:'Months 1–6', priority:'Debt Clearance', action:'Pay off high-interest debt first.', status:'Priority' },
+    { phase:'Phase 2', timeframe:'Months 7–12', priority:'Debt-Free', action:'Clear remaining liabilities. Top up emergency fund.', status:'Next' },
+    { phase:'Phase 3', timeframe:'Year 2', priority:'Core Holdings', action:'Build STRC, SATA, US ETF and Gold positions per target allocation.', status:'Planned' },
+    { phase:'Phase 4', timeframe:'Years 3–5', priority:'Diversification', action:'Expand Commercial RE and alternative exposure.', status:'Planned' },
+    { phase:'Phase 5', timeframe:'Age '+S.settings.fiAge, priority:'Financial Freedom', action:'Portfolio income covers living expenses.', status:'Goal' }
+  ];
 }
 
 function renderDashboard(){
@@ -266,14 +233,14 @@ function renderDashboard(){
   const fiPct=Math.min(100,totalPV/(S.settings.fiTarget||1)*100);
 
   document.getElementById('kpi-row').innerHTML=`
-    <div class="kpi gold"><div class="kpi-label">Personal Portfolio</div><div class="kpi-value">${fmt(totalPV)}</div><div class="kpi-sub">Outside super</div></div>
+    <div class="kpi gold"><div class="kpi-label">Portfolio Value</div><div class="kpi-value">${fmt(totalPV)}</div><div class="kpi-sub">Personal investments</div></div>
     <div class="kpi ${netWorth>=0?'green':'red'}"><div class="kpi-label">Net Worth</div><div class="kpi-value">${fmt(netWorth)}</div><div class="kpi-sub">Portfolio − debts</div></div>
     <div class="kpi blue"><div class="kpi-label">Monthly Surplus</div><div class="kpi-value">${fmt(surplus)}</div><div class="kpi-delta ${surplus>=0?'pos':'neg'}">${surplus>=0?'▲ Positive':'▼ Deficit'}</div></div>
     <div class="kpi ${totalDebt>0?'red':'green'}"><div class="kpi-label">Total Debt</div><div class="kpi-value">${fmt(totalDebt)}</div></div>`;
 
   document.getElementById('fi-years-left').textContent=fiYears;
   document.getElementById('fi-progress-bars').innerHTML=[
-    { label:'FI Portfolio Target', pct:fiPct, color:'var(--accent)' },
+    { label:'Freedom Portfolio Target', pct:fiPct, color:'var(--accent)' },
     { label:'Emergency Fund', pct:emergencyPct, color:'var(--accent2)' },
     { label:'Debt Clearance', pct:debtClearPct, color:'var(--accent3)' }
   ].map(b=>`<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${b.label}</span><span class="progress-val">${b.pct.toFixed(0)}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${b.pct}%;background:${b.color}"></div></div></div>`).join('');
@@ -293,7 +260,7 @@ function renderDashboard(){
       datasets:[{ data:[income,monthlyExp,cf.invest,cf.debtRepay,Math.max(0,surplus)],
         backgroundColor:['#4ecb8a','#e06b6b','#c8a96e','#f59e0b','#64748b'], borderRadius:4, borderWidth:0 }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales:{ x:{ ticks:{ color:'#7a7f8e',font:{size:10}} }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'A$'+(v/1000).toFixed(0)+'k' } } } }
+      scales:{ x:{ ticks:{ color:'#7a7f8e',font:{size:10}} }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'$'+(v/1000).toFixed(0)+'k' } } } }
   });
 
   const totalOrig=S.debts.reduce((s,d)=>s+(d.original||0),0), paidOff=totalOrig-S.debts.reduce((s,d)=>s+(d.balance||0),0);
@@ -303,19 +270,13 @@ function renderDashboard(){
     return `<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${d.name}</span><span class="progress-val">${fmt(d.balance)} · ${mo<999?mo+' mo':'∞'}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${paid}%;background:var(--accent4)"></div></div></div>`;
   }).join('')+`<div style="margin-top:12px;font-size:12px;color:var(--muted)">Repaid: <span class="td-green">${fmt(paidOff)}</span> of ${fmt(totalOrig)}</div>`:'<div class="empty-state"><div class="icon">✓</div>Debt free</div>';
 
-  const roadmap=[
-    { phase:'Phase 1', timeframe:'Months 1–6', priority:'Debt Clearance', action:'Pay off high-interest credit card first.', status:'🎯 Priority' },
-    { phase:'Phase 2', timeframe:'Months 7–12', priority:'Debt-Free', action:'Clear remaining liabilities. Top up emergency fund.', status:'⏳ Next' },
-    { phase:'Phase 3', timeframe:'Year 2', priority:'STRC / SATA', action:'DRIP compounding. Build US ETF & Gold positions.', status:'📅 Planned' },
-    { phase:'Phase 4', timeframe:'Years 3–5', priority:'Diversification', action:'Commercial RE exposure via listed trusts or direct.', status:'📅 Planned' },
-    { phase:'Phase 5', timeframe:'Age '+S.settings.fiAge, priority:'Financial Independence', action:'Portfolio income covers living expenses outside super.', status:'🏆 Goal' }
-  ];
+  const roadmap=getRoadmap();
   document.getElementById('roadmap-table').innerHTML=`<table><thead><tr><th>Phase</th><th>Timeframe</th><th>Priority</th><th>Action</th><th>Status</th></tr></thead><tbody>${roadmap.map(r=>`<tr><td class="td-gold">${r.phase}</td><td class="td-mono td-muted">${r.timeframe}</td><td style="font-weight:600">${r.priority}</td><td>${r.action}</td><td>${r.status}</td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderPortfolio(){
   const total=totalPortfolioValue(), tbody=document.getElementById('holdings-tbody'), tfoot=document.getElementById('holdings-tfoot');
-  if(!S.holdings.length){ tbody.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="icon">📂</div>No holdings yet</div></td></tr>'; tfoot.innerHTML=''; document.getElementById('allocation-bars').innerHTML=''; return; }
+  if(!S.holdings.length){ tbody.innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="icon">📂</div>No holdings yet</div></td></tr>'; tfoot.innerHTML=''; document.getElementById('allocation-bars').innerHTML=''; return; }
   tbody.innerHTML=S.holdings.map(h=>{
     const val=totalValue(h), gain=val-(h.cost||0), gainPct=h.cost>0?gain/h.cost*100:0, portPct=total>0?val/total*100:0;
     return `<tr><td style="font-weight:600">${h.name}</td><td><span class="badge badge-gold">${h.cat}</span></td>
@@ -331,7 +292,7 @@ function renderPortfolio(){
   tfoot.innerHTML=`<tr style="background:rgba(200,169,110,.05)"><td colspan="4" style="font-weight:700;color:var(--accent)">TOTAL</td><td class="td-mono td-gold" style="font-weight:700">${fmt(total)}</td><td class="td-mono">${fmt(totalCost)}</td><td class="td-mono ${totalGain>=0?'td-green':'td-red'}">${fmt(totalGain)}</td><td>100%</td><td colspan="2"></td></tr>`;
   const alloc=allocationByCategory();
   document.getElementById('allocation-bars').innerHTML=Object.entries(S.targets).map(([cat,tgt])=>{
-    const actual=alloc[cat]||0, diff=actual-tgt, color=CAT_COLORS[cat]||'#64748b';
+    const actual=alloc[cat]||0, color=CAT_COLORS[cat]||'#64748b';
     return `<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${cat}</span><span class="progress-val">${actual.toFixed(1)}% vs ${tgt}%</span></div><div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:${Math.min(100,actual/tgt*100||0)}%;background:${color}"></div></div></div>`;
   }).join('');
 }
@@ -364,7 +325,7 @@ function renderDebt(){
   document.getElementById('monthly-interest-kpi').textContent=fmt(totalInterest);
   const maxMo=S.debts.reduce((m,d)=>Math.max(m,monthsToPayoff(d.balance,d.rate,d.payment)),0);
   if(maxMo<999){ const d=new Date(); d.setMonth(d.getMonth()+maxMo);
-    document.getElementById('debt-payoff-date').textContent='Est. cleared: '+d.toLocaleDateString('en-AU',{month:'short',year:'numeric'}); }
+    document.getElementById('debt-payoff-date').textContent='Est. cleared: '+d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
   const tbody=document.getElementById('debt-tbody');
   tbody.innerHTML=S.debts.length?S.debts.map(d=>{
     const mo=monthsToPayoff(d.balance,d.rate,d.payment), paid=d.original>0?Math.min(100,(d.original-d.balance)/d.original*100):0;
@@ -373,7 +334,7 @@ function renderDebt(){
       <td class="td-mono">${d.rate}%</td><td class="td-mono">${fmt(d.payment)}</td><td class="td-mono">${mo<999?mo+' mo':'∞'}</td>
       <td><div class="progress-bar"><div class="progress-fill" style="width:${paid}%;background:var(--accent3)"></div></div></td>
       <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeDebt(${d.id})">✕</button></td></tr>`;
-  }).join(''):'<tr><td colspan="8"><div class="empty-state">✅ No debts</div></td></tr>';
+  }).join(''):'<tr><td colspan="9"><div class="empty-state">✅ No debts</div></td></tr>';
   const months=Math.min(48,S.debts.length?Math.max(...S.debts.map(d=>monthsToPayoff(d.balance,d.rate,d.payment)).filter(m=>m<999))+3:24);
   const labels=Array.from({length:months},(_,i)=>'M'+(i+1));
   const datasets=S.debts.map((d,i)=>{ let bal=d.balance; const data=[bal];
@@ -382,7 +343,72 @@ function renderDebt(){
   if(debtChartInst) debtChartInst.destroy();
   debtChartInst=new Chart(document.getElementById('debt-chart').getContext('2d'),{ type:'line', data:{labels,datasets},
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#7a7f8e' } } },
-      scales:{ x:{ ticks:{ color:'#7a7f8e', maxTicksLimit:12 } }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'A$'+v.toLocaleString() } } } } });
+      scales:{ x:{ ticks:{ color:'#7a7f8e', maxTicksLimit:12 } }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'$'+v.toLocaleString() } } } } });
+}
+
+function calcLoan(){
+  const bal=parseFloat(document.getElementById('la-balance').value)||0;
+  const r1=(parseFloat(document.getElementById('la-current-rate').value)||0)/100/12;
+  const r2=(parseFloat(document.getElementById('la-new-rate').value)||0)/100/12;
+  const n=parseInt(document.getElementById('la-term').value)||36;
+  const pmt=(r,b,n)=>r===0?b/n:b*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  const p1=pmt(r1,bal,n), p2=pmt(r2,bal,n);
+  const total1=p1*n, total2=p2*n, save=total1-total2;
+  document.getElementById('loan-analyser-result').innerHTML=`
+    <div class="grid-3"><div class="kpi red"><div class="kpi-label">Current payment</div><div class="kpi-value">${fmt(p1)}</div></div>
+    <div class="kpi green"><div class="kpi-label">Better rate payment</div><div class="kpi-value">${fmt(p2)}</div></div>
+    <div class="kpi gold"><div class="kpi-label">Total interest saved</div><div class="kpi-value">${fmt(save)}</div></div></div>`;
+}
+
+function calcTax(){
+  collectTax(); const tx=S.tax;
+  const gross=tx.salary+tx.interest+tx.dividends+tx.rental+tx.otherIncome;
+  const ded=tx.workExp+tx.homeOffice+tx.vehicle+tx.invFees+tx.donations+tx.otherDed;
+  const receiptDed=(S.receipts||[]).reduce((s,r)=>s+(r.amount||0),0);
+  const taxable=Math.max(0,gross-ded-receiptDed);
+  document.getElementById('tax-summary').innerHTML=`
+    <div class="grid-3">
+      <div class="kpi blue"><div class="kpi-label">Total Income</div><div class="kpi-value">${fmt(gross)}</div></div>
+      <div class="kpi gold"><div class="kpi-label">Total Deductions</div><div class="kpi-value">${fmt(ded+receiptDed)}</div></div>
+      <div class="kpi green"><div class="kpi-label">Est. Taxable Income</div><div class="kpi-value">${fmt(taxable)}</div></div>
+    </div><p style="margin-top:12px;font-size:12px;color:var(--muted)">Summary for accountant review — not a tax calculation.</p>`;
+}
+
+function addReceipt(){
+  const desc=document.getElementById('rcpt-desc').value.trim(); if(!desc) return;
+  S.receipts.push({ id:Date.now(), date:document.getElementById('rcpt-date').value||'',
+    desc, cat:document.getElementById('rcpt-cat').value, amount:parseFloat(document.getElementById('rcpt-amount').value)||0 });
+  document.getElementById('rcpt-desc').value=''; document.getElementById('rcpt-amount').value='';
+  renderTax();
+}
+function removeReceipt(id){ S.receipts=(S.receipts||[]).filter(r=>r.id!==id); renderTax(); }
+
+function addVaultDoc(){
+  const name=document.getElementById('vault-name').value.trim(); if(!name) return;
+  S.vault.push({ id:Date.now(), type:document.getElementById('vault-type').value, name,
+    date:document.getElementById('vault-date').value||'', notes:document.getElementById('vault-notes').value||'' });
+  document.getElementById('vault-name').value=''; document.getElementById('vault-notes').value='';
+  renderTax();
+}
+function removeVaultDoc(id){ S.vault=(S.vault||[]).filter(v=>v.id!==id); renderTax(); }
+
+function renderTax(){
+  populateForms();
+  const tbody=document.getElementById('receipts-tbody');
+  const receipts=S.receipts||[];
+  tbody.innerHTML=receipts.length?receipts.map(r=>`<tr>
+    <td class="td-muted">${r.date||'—'}</td><td>${r.desc}</td><td><span class="badge badge-gold">${r.cat}</span></td>
+    <td class="td-mono">${fmt(r.amount)}</td><td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeReceipt(${r.id})">✕</button></td></tr>`).join('')
+    :'<tr><td colspan="5"><div class="empty-state">No receipts logged</div></td></tr>';
+  const totalRcpt=receipts.reduce((s,r)=>s+(r.amount||0),0);
+  document.getElementById('receipts-tfoot').innerHTML=receipts.length?`<tr><td colspan="3" style="font-weight:700">Total</td><td class="td-mono td-gold">${fmt(totalRcpt)}</td><td></td></tr>`:'';
+  const vbody=document.getElementById('vault-tbody');
+  const vault=S.vault||[];
+  vbody.innerHTML=vault.length?vault.map(v=>`<tr>
+    <td><span class="badge badge-green">${v.type}</span></td><td style="font-weight:600">${v.name}</td>
+    <td class="td-muted">${v.date||'—'}</td><td class="td-muted">${v.notes||'—'}</td>
+    <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeVaultDoc(${v.id})">✕</button></td></tr>`).join('')
+    :'<tr><td colspan="5"><div class="empty-state">No documents in vault</div></td></tr>';
 }
 
 function calcProjections(){ collectProjections(); renderProjections(); }
@@ -396,7 +422,7 @@ function renderProjections(){
   if(projChartInst) projChartInst.destroy();
   projChartInst=new Chart(document.getElementById('proj-chart').getContext('2d'),{ type:'line', data:{labels,datasets},
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#7a7f8e' } } },
-      scales:{ y:{ ticks:{ callback:v=>'A$'+(v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3).toFixed(0)+'k') } } } } });
+      scales:{ y:{ ticks:{ callback:v=>'$'+(v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3).toFixed(0)+'k') } } } } });
   const tableRows=[]; for(let yr=0;yr<=years;yr++){
     const row={yr,age:age+yr}; scenarios.forEach(sc=>{ let bal=pr.start||0,m=pr.monthly||0;
       for(let y=1;y<=yr;y++){ bal=bal*(1+sc.return/100)+m*12; m*=1.035; } row[sc.label]=bal; }); tableRows.push(row); }
@@ -404,11 +430,17 @@ function renderProjections(){
     const isFI=r.age>=S.settings.fiAge;
     return `<tr ${isFI?"style='background:rgba(78,203,138,.05)'":''}><td>Y${r.yr}</td><td class="td-mono ${isFI?'td-gold':''}">${r.age}${isFI?' 🏆':''}</td>
       <td class="td-mono">${fmt(r.Conservative)}</td><td class="td-mono td-gold">${fmt(r.Base)}</td><td class="td-mono td-green">${fmt(r.Optimistic)}</td>
-      <td>${isFI?'<span class="badge badge-green">FI</span>':''}</td></tr>`; }).join('')}</tbody></table>`;
+      <td>${isFI?'<span class="badge badge-green">Target</span>':''}</td></tr>`; }).join('')}</tbody></table>`;
 }
 
 function renderSettings(){
   populateForms();
+  if(!document.getElementById('s-planner')){
+    const nameGroup=document.getElementById('s-name')?.closest('.form-group');
+    if(nameGroup){ const g=document.createElement('div'); g.className='form-group'; g.style.marginBottom='10px';
+      g.innerHTML='<label>Financial Planner</label><input id="s-planner" placeholder="Advisor name">';
+      nameGroup.parentNode.insertBefore(g,nameGroup.nextSibling); s('s-planner',S.settings.planner); }
+  }
   document.getElementById('target-alloc-form').innerHTML=Object.keys(S.targets).map(cat=>`
     <div class="form-group" style="margin-bottom:10px"><label>${cat} (%)</label>
     <input type="number" id="tgt-${cat.replace(/\s+/g,'-')}" value="${S.targets[cat]}" step="0.5"></div>`).join('')+
@@ -420,5 +452,222 @@ function saveTargets(){
 }
 function saveSettings(){ collectSettings(); saveAll(); }
 
-loadState(); updateLastUpdated(); populateForms(); applyLanguage(); renderDashboard();
+/* ── LifePlan Client Report PDF (template: LifePlan - Client Report) ── */
+function exportClientReport(){
+  if(typeof window.jspdf==='undefined'){ alert('PDF library not loaded. Check your internet connection and reload.'); return; }
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
+
+  const toast=document.getElementById('save-toast');
+  toast.textContent=t('reportGenerating'); toast.classList.add('show');
+
+  const { jsPDF } = window.jspdf;
+  const doc=new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+  const pageW=doc.internal.pageSize.getWidth();
+  const margin=14;
+  const owner=S.settings.name||'Client';
+  const reportDate=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',day:'numeric'});
+  const cf=S.cashflow, tx=S.tax||{};
+  const totalPV=totalPortfolioValue();
+  const totalDebt=S.debts.reduce((s,d)=>s+(d.balance||0),0);
+  const netWorth=totalPV-totalDebt;
+  const monthlyExp=calcMonthlyExpenses(cf);
+  const annualEmployment=(cf.salary+cf.other)*12;
+  const annualTaxIncome=tx.salary+tx.interest+tx.dividends+tx.rental+tx.otherIncome;
+  const annualIncome=annualTaxIncome>0?annualTaxIncome:annualEmployment;
+
+  const NAVY=[30,58,95], GOLD=[200,169,110], GRAY=[100,100,100];
+
+  function drawHeader(isCover){
+    doc.setFillColor(...NAVY);
+    doc.rect(0,0,pageW,isCover?32:22,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(isCover?26:18);
+    doc.text('LifePlan',margin,isCover?18:14);
+    doc.setFontSize(isCover?14:11);
+    doc.setFont('helvetica','normal');
+    doc.text('Client Report',margin,isCover?26:20);
+    if(!isCover){ doc.setFontSize(8); doc.text(reportDate,pageW-margin,14,{align:'right'}); }
+    doc.setTextColor(0,0,0);
+  }
+
+  function sectionTitle(title,y){
+    if(y>260){ doc.addPage(); drawHeader(false); y=28; }
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(...NAVY);
+    doc.text(title,margin,y);
+    doc.setDrawColor(...GOLD);
+    doc.setLineWidth(0.6);
+    doc.line(margin,y+2,pageW-margin,y+2);
+    doc.setTextColor(0,0,0);
+    return y+8;
+  }
+
+  function addTable(head,body,startY,opts={}){
+    doc.autoTable({
+      startY:startY, head:[head], body,
+      margin:{left:margin,right:margin},
+      theme:'grid',
+      headStyles:{ fillColor:NAVY, textColor:[255,255,255], fontStyle:'bold', fontSize:9 },
+      bodyStyles:{ fontSize:9, cellPadding:2.5 },
+      alternateRowStyles:{ fillColor:[248,248,252] },
+      ...opts
+    });
+    return doc.lastAutoTable.finalY+6;
+  }
+
+  drawHeader(true);
+  let y=40;
+  doc.setFont('helvetica','bold'); doc.setFontSize(12);
+  doc.text('Client Information',margin,y); y+=7;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text('Client Name: '+owner,margin,y); y+=6;
+  if(S.settings.planner){ doc.text('Financial Planner: '+S.settings.planner,margin,y); y+=6; }
+  doc.text('Report Date: '+reportDate,margin,y); y+=6;
+  doc.text('Risk Profile: '+(S.settings.risk||'—')+'  ·  Current Age: '+S.settings.age+'  ·  Freedom Target Age: '+S.settings.fiAge,margin,y);
+  y+=12;
+
+  y=sectionTitle('Your Current Financial Situation',y);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10);
+  doc.text('Assets',margin,y); y+=4;
+
+  const assetRows=S.holdings.length
+    ? S.holdings.map(h=>[h.name, fmt(totalValue(h)), h.cat, owner])
+    : [['Personal portfolio (no holdings entered)','$0','—',owner]];
+  y=addTable(['Asset','Amount','Category','Owner'],assetRows,y);
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(10);
+  doc.text('Liabilities',margin,y); y+=4;
+  const liabRows=S.debts.length
+    ? S.debts.map(d=>[d.name, fmt(d.balance), d.type, owner])
+    : [['No liabilities recorded','$0','—',owner]];
+  y=addTable(['Liability','Amount','Type','Owner'],liabRows,y);
+
+  y=addTable(['Summary','Amount'],[
+    ['Total Assets',fmt(totalPV)],
+    ['Total Liabilities',fmt(totalDebt)],
+    ['Net Worth',fmt(netWorth)],
+    ['Portfolio Gain/Loss',fmt(totalPV-S.holdings.reduce((s,h)=>s+(h.cost||0),0))]
+  ],y,{ headStyles:{ fillColor:GOLD, textColor:[0,0,0] } });
+
+  y=sectionTitle('Annual Income',y);
+  const incomeRows=[
+    ['Employment / Salary (annual est.)', fmt(annualEmployment), owner],
+    ['Interest Income', fmt(tx.interest), owner],
+    ['Dividends', fmt(tx.dividends), owner],
+    ['Rental Income', fmt(tx.rental), owner],
+    ['Other Income', fmt(tx.otherIncome), owner],
+    ['TOTAL ANNUAL INCOME', fmt(annualIncome), owner]
+  ];
+  y=addTable(['Income Source','Amount','Owner'],incomeRows,y);
+
+  y=sectionTitle('Monthly Cashflow',y);
+  const surplus=cf.salary+cf.other-monthlyExp-cf.invest-cf.debtRepay;
+  y=addTable(['Item','Monthly Amount'],[
+    ['Net salary & other income',fmt(cf.salary+cf.other)],
+    ['Living expenses',fmt(monthlyExp)],
+    ['Investment contributions',fmt(cf.invest)],
+    ['Debt repayments',fmt(cf.debtRepay)],
+    ['Net surplus',fmt(surplus)]
+  ],y);
+
+  y=sectionTitle('Portfolio Allocation',y);
+  const alloc=allocationByCategory();
+  y=addTable(['Category','Actual %','Target %','Variance'],
+    Object.keys(S.targets).map(c=>{ const a=alloc[c]||0; return [c,a.toFixed(1)+'%',S.targets[c]+'%',(a-S.targets[c]).toFixed(1)+'%']; }),y);
+
+  y=sectionTitle('Freedom Plan Snapshot',y);
+  const pr=S.projections, age=S.settings.age, years=Math.max(1,S.settings.fiAge-age);
+  let bal=pr.start||totalPV, monthly=pr.monthly||cf.invest||0;
+  for(let yr=1;yr<=years;yr++){ bal=bal*1.08+monthly*12; monthly*=(1+(pr.wage||3.5)/100); }
+  y=addTable(['Measure','Value'],[
+    ['Freedom portfolio target',fmt(S.settings.fiTarget)],
+    ['Current portfolio',fmt(totalPV)],
+    ['Progress to target',((totalPV/(S.settings.fiTarget||1))*100).toFixed(1)+'%'],
+    ['Years to freedom target',Math.max(0,S.settings.fiAge-S.settings.age)],
+    ['Projected portfolio at age '+S.settings.fiAge+' (8% base)',fmt(bal)],
+    ['Monthly investment (current)',fmt(pr.monthly||cf.invest)]
+  ],y);
+
+  y=sectionTitle('Key Assumptions',y);
+  y=addTable(['Assumption','Value'],[
+    ['Annual employment / income increase',(pr.wage||3.5)+'%'],
+    ['Expense inflation',(S.settings.inflation||5)+'%'],
+    ['Shares / portfolio growth (base case)','8%'],
+    ['Conservative projection','5%'],
+    ['Optimistic projection','11%'],
+    ['Income return from investments (est.)','4%']
+  ],y);
+
+  y=sectionTitle('Recommended Action Steps',y);
+  const totalDebtFmt=fmt(totalDebt);
+  const actions=[
+    ['Debt Reduction', totalDebt>0
+      ? 'Prioritise paying down '+totalDebtFmt+' of debt. Current monthly repayments: '+fmt(cf.debtRepay)+'.'
+      : 'Maintain debt-free status and redirect former repayments to investing.'],
+    ['Invest for Growth', (cf.invest||pr.monthly)>0
+      ? 'Continue monthly investments of '+fmt(cf.invest||pr.monthly)+' aligned to target allocation.'
+      : 'Establish regular monthly investments toward your freedom portfolio target.'],
+    ['Supercharge Superannuation', 'Seek advice about concessional contributions and whether an SMSF suits your goals.'],
+    ['Income Protection', 'Review income protection insurance to cover '+fmt(cf.salary*12)+' annual earnings.'],
+    ['Family Protection', 'Request advice about Life / TPD / Trauma insurance for your household.'],
+    ['Estate Planning', (S.vault||[]).some(v=>v.type==='Will')
+      ? 'Will on file — review with estate planning lawyer every 3 years.'
+      : 'Meet with an estate planning lawyer to prepare or update your Will.'],
+    ['Manage Personal Finances', 'Use this Financial Planner to track cashflow, debt, tax receipts and portfolio monthly.']
+  ];
+  getRoadmap().forEach(r=>actions.push([r.priority+' ('+r.phase+')', r.action]));
+  y=addTable(['Key Area','Recommended Action'],actions,y);
+
+  if((S.receipts||[]).length){
+    if(y>240){ doc.addPage(); drawHeader(false); y=28; }
+    y=sectionTitle('Tax Receipt Log',y);
+    y=addTable(['Date','Description','Category','Amount'],
+      S.receipts.map(r=>[r.date||'—',r.desc,r.cat,fmt(r.amount)]),y);
+  }
+  if((S.vault||[]).length){
+    if(y>240){ doc.addPage(); drawHeader(false); y=28; }
+    y=sectionTitle('Document Vault',y);
+    y=addTable(['Type','Document','Date','Notes'],
+      S.vault.map(v=>[v.type,v.name,v.date||'—',v.notes||'—']),y);
+  }
+
+  const pageCount=doc.getNumberOfPages();
+  for(let i=1;i<=pageCount;i++){
+    doc.setPage(i);
+    doc.setFontSize(8); doc.setTextColor(...GRAY);
+    doc.text('LifePlan Client Report · Prepared '+reportDate+' · Page '+i+' of '+pageCount,margin,290);
+    doc.text('This report is for information purposes only and does not constitute financial advice.',margin,294);
+  }
+
+  const safeName=(owner||'client').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-')||'client';
+  doc.save('LifePlan-Client-Report-'+safeName+'-'+new Date().toISOString().slice(0,10)+'.pdf');
+  toast.textContent=t('reportReady');
+  setTimeout(()=>toast.classList.remove('show'),2200);
+}
+
+loadState(); updateLastUpdated(); populateForms(); applyLanguage();
+const _hash = location.hash.replace('#', '');
+if (_hash && document.getElementById('page-' + _hash)) showPage(_hash);
+else renderDashboard();
 document.querySelectorAll('#page-cashflow input').forEach(el=>el.addEventListener('change',()=>{ collectCashflow(); renderCashflow(); }));
+
+// Close header dropdown when clicking outside (and on Escape)
+(() => {
+  const dd = document.getElementById('header-actions');
+  if (!dd) return;
+  document.addEventListener('click', (e) => {
+    if (!dd.classList.contains('open')) return;
+    if (dd.contains(e.target)) {
+      // If the user clicked a menu item, close after selection.
+      const menu = dd.querySelector('.dropdown-menu');
+      if (menu && menu.contains(e.target)) dd.classList.remove('open');
+      return;
+    }
+    dd.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dd.classList.remove('open');
+  });
+})();
