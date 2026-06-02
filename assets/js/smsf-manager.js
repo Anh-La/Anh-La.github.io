@@ -4,78 +4,34 @@ let LANG = localStorage.getItem(LANG_KEY) || 'en';
 
 const TRANSLATIONS = {
   en: {
-    appTitle:'Super Steward', appSub:'SMSF Investment Strategy',
-    btnSave:'Save', btnExport:'↓ Export', btnLangToggle:'🌐 Tiếng Việt', btnAdd:'+ Add',
+    appTitle:'Pension Fund', appSub:'Superannuation Management',
+    btnSave:'Save', btnExport:'↓ Export', btnReport:'Pension Fund Report', btnLangToggle:'🌐 Tiếng Việt', btnAdd:'+ Add',
     btnRecalc:'Recalculate', btnRunProj:'Run Projections', btnSaveSettings:'Save', btnSaveTargets:'Save Targets',
     btnExportJson:'↓ Export JSON', btnImportJson:'↑ Import JSON', btnClearAll:'⚠ Clear All',
     tabDashboard:'📊 Dashboard', tabPortfolio:'💼 Fund Portfolio', tabContributions:'💰 Contributions',
     tabCompliance:'📋 Compliance', tabProjections:'📈 Projections', tabSettings:'⚙️ Settings',
-    dashTitle:'Fund Overview', dashSub:'Complying SMSF · Accumulation phase',
+    dashTitle:'Overview', dashSub:'Pension fund overview · caps, compliance & projected balance',
     dashAlloc:'Fund Asset Allocation', dashRetirement:'Years to Preservation Age',
     dashRetirementSub:'Target balance at age 60', dashContrib:'Annual Contributions Breakdown',
-    dashCompliance:'Compliance Snapshot', dashRoadmap:'SMSF Strategy Roadmap',
-    portTitle:'Fund Portfolio', portSub:'SMSF trust assets · IPS implementation',
-    portAlert:'💡 SMSF IPS: Growth assets with commercial property option · Diversified listed + alternatives',
-    portAssetName:'Asset Name', portCategory:'Asset Class', portUnits:'Units', portPrice:'Price (A$)',
-    portCostBase:'Cost Base', portDrip:'DRIP?', portTableAsset:'Asset', portTableCat:'Class', portTargetVsActual:'IPS Target vs Actual',
-    contribTitle:'Contributions & Caps', contribSub:'Concessional, non-concessional & employer SG',
-    contribConfig:'Contribution Settings', contribGrowth:'Fund Growth to Preservation Age', contribFY:'FY Contribution Summary',
-    fundBalance:'Current Fund Balance (A$)', salarySacrifice:'Monthly Salary Sacrifice (A$)',
-    employerSG:'Monthly Employer SG (A$)', voluntary:'Monthly Voluntary Concessional (A$)',
-    concessionalCap:'Annual Concessional Cap (A$)', nonConcessionalCap:'Annual Non-Concessional Cap (A$)',
-    expectedReturn:'Expected Return (% p.a.)', target60:'Target Balance at Age 60 (A$)',
-    compTitle:'Compliance & Governance', compSub:'Sole purpose · In-house assets · Related parties',
-    compAlert1:'📋 <strong>Sole purpose test:</strong> Fund must provide retirement benefits. All investments and expenses must support member retirement outcomes.',
-    compAlert2:'📋 <strong>In-house asset rule:</strong> Related-party assets must not exceed 5% of fund value at 30 June.',
-    compAlert3:'📋 <strong>Commercial property:</strong> SMSF may acquire business real property at arm\'s length on commercial lease terms.',
-    compAlert4:'📋 <strong>Concessional cap FY2026–27:</strong> A$32,500 p.a. Carry-forward if TSB &lt;A$500k.',
-    compChecklist:'Annual Compliance Checklist', compInHouse:'In-House Asset Monitor',
-    inHouseValue:'Related-Party Asset Value (A$)', inHouseLimit:'5% Limit (auto)',
-    projTitle:'Fund Projections', projSub:'To preservation age',
-    settingsTitle:'Fund Settings', settingsSub:'Trustee profile & IPS', settingsFund:'Fund Profile',
-    fundName:'Fund Name', memberAge:'Member Age', preservationAge:'Preservation Age', trustees:'Number of Trustees',
-    settingsTargetAlloc:'IPS Target Allocations (%)', settingsDataMgmt:'Data Management',
-    toastSaved:'✓ Saved', savedPrefix:'Saved '
+    dashCompliance:'Compliance Snapshot', dashRoadmap:'Pension Fund Strategy Roadmap',
+    settingsDataMgmt:'Data Management', toastSaved:'✓ Saved', savedPrefix:'Saved ',
+    reportGenerating:'Generating Pension Fund report…', reportReady:'Pension Fund report downloaded'
   },
   vi: {
-    appTitle:'Quản Lý Super', appSub:'Chiến Lược Đầu Tư SMSF',
-    btnSave:'Lưu', btnExport:'↓ Xuất', btnLangToggle:'🌐 English', btnAdd:'+ Thêm',
+    appTitle:'Quy Huu Tri', appSub:'Quan ly Super',
+    btnSave:'Lưu', btnExport:'↓ Xuất', btnReport:'Pension Fund Report', btnLangToggle:'🌐 English', btnAdd:'+ Thêm',
     btnRecalc:'Tính Lại', btnRunProj:'Chạy Dự Báo', btnSaveSettings:'Lưu', btnSaveTargets:'Lưu Mục Tiêu',
     btnExportJson:'↓ Xuất JSON', btnImportJson:'↑ Nhập JSON', btnClearAll:'⚠ Xóa',
-    tabDashboard:'📊 Tổng Quan', tabPortfolio:'💼 Danh Mục Quỹ', tabContributions:'💰 Đóng Góp',
-    tabCompliance:'📋 Tuân Thủ', tabProjections:'📈 Dự Báo', tabSettings:'⚙️ Cài Đặt',
-    dashTitle:'Tổng Quan Quỹ', dashSub:'SMSF tuân thủ · Giai đoạn tích lũy',
-    dashAlloc:'Phân Bổ Tài Sản', dashRetirement:'Năm Đến Tuổi Bảo Lưu',
-    dashRetirementSub:'Mục tiêu khi 60 tuổi', dashContrib:'Phân Tích Đóng Góp',
-    dashCompliance:'Tuân Thủ', dashRoadmap:'Lộ Trình SMSF',
-    portTitle:'Danh Mục Quỹ', portSub:'Tài sản ủy thác SMSF',
-    portAlert:'💡 IPS: Tài sản tăng trưởng + BĐS thương mại · Đa dạng hóa',
-    portAssetName:'Tên Tài Sản', portCategory:'Loại', portUnits:'Đơn vị', portPrice:'Giá',
-    portCostBase:'Giá vốn', portDrip:'DRIP?', portTableAsset:'Tài sản', portTableCat:'Loại', portTargetVsActual:'IPS vs Thực tế',
-    contribTitle:'Đóng Góp & Hạn Mức', contribSub:'Ưu đãi & không ưu đãi',
-    contribConfig:'Cấu Hình', contribGrowth:'Tăng Trưởng Đến Tuổi Bảo Lưu', contribFY:'Tóm Tắt FY',
-    fundBalance:'Số dư quỹ', salarySacrifice:'Hy sinh lương/tháng', employerSG:'SG chủ lao động/tháng',
-    voluntary:'Tự nguyện ưu đãi/tháng', concessionalCap:'Hạn mức ưu đãi/năm',
-    nonConcessionalCap:'Hạn mức không ưu đãi', expectedReturn:'Lợi suất %', target60:'Mục tiêu tuổi 60',
-    compTitle:'Tuân Thủ', compSub:'Mục đích duy nhất · Tài sản nội bộ',
-    compAlert1:'📋 <strong>Mục đích duy nhất:</strong> Quỹ phải cung cấp lợi ích hưu trí.',
-    compAlert2:'📋 <strong>Tài sản nội bộ:</strong> Không quá 5% giá trị quỹ.',
-    compAlert3:'📋 <strong>BĐS thương mại:</strong> Mua theo giá thị trường, cho thuê thương mại.',
-    compAlert4:'📋 <strong>Hạn mức ưu đãi:</strong> A$32.500/năm.',
-    compChecklist:'Danh Sách Tuân Thủ', compInHouse:'Giám Sát Tài Sản Nội Bộ',
-    inHouseValue:'Giá trị bên liên quan', inHouseLimit:'Giới hạn 5%',
-    projTitle:'Dự Báo Quỹ', projSub:'Đến tuổi bảo lưu',
-    settingsTitle:'Cài Đặt Quỹ', settingsSub:'Ủy thác & IPS', settingsFund:'Hồ Sơ Quỹ',
-    fundName:'Tên quỹ', memberAge:'Tuổi thành viên', preservationAge:'Tuổi bảo lưu', trustees:'Số ủy thác',
-    settingsTargetAlloc:'Phân bổ IPS', settingsDataMgmt:'Dữ liệu',
-    toastSaved:'✓ Đã Lưu', savedPrefix:'Đã lưu '
+    toastSaved:'✓ Đã Lưu', savedPrefix:'Đã lưu ',
+    reportGenerating:'Dang tao bao cao…', reportReady:'Da tai bao cao'
   }
 };
 
 function t(k){ return (TRANSLATIONS[LANG]&&TRANSLATIONS[LANG][k])||TRANSLATIONS.en[k]||k; }
 function toggleLanguage(){ LANG=LANG==='en'?'vi':'en'; localStorage.setItem(LANG_KEY,LANG); applyLanguage(); refreshAll(); }
 function applyLanguage(){
-  document.title=t('appTitle')+' · '+t('appSub');
+  const sub=t('appSub');
+  document.title=sub ? (t('appTitle')+' · '+sub) : t('appTitle');
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=t(el.getAttribute('data-i18n')); if(v) el.textContent=v; });
   document.querySelectorAll('[data-i18n-html]').forEach(el=>{ const v=t(el.getAttribute('data-i18n-html')); if(v) el.innerHTML=v; });
 }
@@ -116,7 +72,7 @@ function updateLastUpdated(){
 }
 function exportData(){ collectFund(); collectSettings();
   const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)]));
-  a.download='smsf-fund-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); }
+  a.download='pension-fund-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); }
 function importData(e){ const file=e.target.files[0]; if(!file) return;
   const r=new FileReader(); r.onload=ev=>{ try{ S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)),JSON.parse(ev.target.result));
     localStorage.setItem(STORAGE_KEY,JSON.stringify(S)); populateForms(); refreshAll(); alert('Imported!'); }catch(err){ alert('Invalid file.'); } }; r.readAsText(file); }
@@ -192,7 +148,7 @@ function projectToPreservation(){
 function renderDashboard(){
   collectFund();
   const f=S.fund, total=fundTotalBalance(), annual=annualConcessional(), capPct=capUsedPct();
-  const { projected, years } = projectToPreservation();
+  const { projected } = projectToPreservation();
   const shortfall=f.target-projected, yearsLeft=Math.max(0,S.settings.preservationAge-S.settings.age);
   const inHouseLimit=total*0.05, inHouse=S.compliance.inHouseValue||0, inHouseOk=inHouse<=inHouseLimit;
 
@@ -206,7 +162,7 @@ function renderDashboard(){
   const targetPct=Math.min(100,projected/(f.target||1)*100);
   document.getElementById('retirement-progress-bars').innerHTML=[
     { label:'Retirement Target', pct:targetPct, color:'var(--accent)' },
-    { label:'Concessional Cap', pct:capPct, color:capPct>100?'var(--accent4)':'var(--accent2)' },
+    { label:'Concessional Cap', pct:capUsedPct(), color:capUsedPct()>100?'var(--accent4)':'var(--accent2)' },
     { label:'In-House Assets', pct:total>0?Math.min(100,inHouse/inHouseLimit*100):0, color:inHouseOk?'var(--accent3)':'var(--accent4)' }
   ].map(b=>`<div class="progress-wrap"><div class="progress-header"><span>${b.label}</span><span>${b.pct.toFixed(0)}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${b.pct}%;background:${b.color}"></div></div></div>`).join('');
 
@@ -227,7 +183,7 @@ function renderDashboard(){
   });
 
   const checks=[
-    { ok: capPct<=100, text:'Concessional cap within limit' },
+    { ok: capUsedPct()<=100, text:'Concessional cap within limit' },
     { ok: inHouseOk, text:'In-house assets ≤5%' },
     { ok: S.compliance.checklist.investmentStrategy, text:'Investment strategy documented' },
     { ok: S.compliance.checklist.minutes, text:'Trustee minutes current' },
@@ -237,11 +193,11 @@ function renderDashboard(){
     `<div class="check-item"><span class="check-icon">${c.ok?'✅':'⚠️'}</span><span>${c.text}</span></div>`).join('');
 
   const roadmap=[
-    { phase:'Phase 1', timeframe:'FY Current', priority:'Maximise Concessional', action:'Salary sacrifice to cap. Review employer SG.', status:'🎯 Active' },
-    { phase:'Phase 2', timeframe:'Year 1–2', priority:'STRC / SATA Core', action:'Build listed income core with DRIP in accumulation.', status:'📅 Planned' },
-    { phase:'Phase 3', timeframe:'Year 2–4', priority:'Commercial RE', action:'Acquire business real property if IPS permits — arm\'s length lease.', status:'📅 Planned' },
-    { phase:'Phase 4', timeframe:'Pre-60', priority:'Risk Review', action:'Rebalance toward capital preservation 5 years before pension phase.', status:'📅 Planned' },
-    { phase:'Phase 5', timeframe:'Age '+S.settings.preservationAge, priority:'Pension Phase', action:'Commence account-based pension. Meet minimum drawdown.', status:'🏆 Goal' }
+    { phase:'Phase 1', timeframe:'FY Current', priority:'Maximise Concessional', action:'Salary sacrifice to cap. Review employer SG.', status:'Active' },
+    { phase:'Phase 2', timeframe:'Year 1–2', priority:'STRC / SATA Core', action:'Build listed income core with DRIP in accumulation.', status:'Planned' },
+    { phase:'Phase 3', timeframe:'Year 2–4', priority:'Commercial RE', action:'Acquire business real property if IPS permits at arm\'s length lease terms.', status:'Planned' },
+    { phase:'Phase 4', timeframe:'Pre-60', priority:'Risk Review', action:'Rebalance toward capital preservation 5 years before pension phase.', status:'Planned' },
+    { phase:'Phase 5', timeframe:'Age '+S.settings.preservationAge, priority:'Pension Phase', action:'Commence account-based pension. Meet minimum drawdown.', status:'Goal' }
   ];
   document.getElementById('roadmap-table').innerHTML=`<table><thead><tr><th>Phase</th><th>Timeframe</th><th>Priority</th><th>Action</th><th>Status</th></tr></thead><tbody>${roadmap.map(r=>`<tr><td class="td-gold">${r.phase}</td><td class="td-mono">${r.timeframe}</td><td style="font-weight:600">${r.priority}</td><td>${r.action}</td><td>${r.status}</td></tr>`).join('')}</tbody></table>`;
 }
@@ -361,4 +317,131 @@ function saveTargets(){
 }
 function saveSettings(){ collectSettings(); saveAll(); }
 
-loadState(); updateLastUpdated(); populateForms(); applyLanguage(); renderDashboard();
+function calcFireUp(){
+  const balance=parseFloat(document.getElementById('fu-balance')?.value)||0;
+  const fee=parseFloat(document.getElementById('fu-fee')?.value)||0;
+  const ret=parseFloat(document.getElementById('fu-return')?.value)||0;
+  const lost=parseFloat(document.getElementById('fu-lost')?.value)||0;
+  const improved=balance+lost-fee;
+  const est5=improved*Math.pow(1+ret/100,5);
+  const el=document.getElementById('fire-up-result');
+  if(el){ el.innerHTML=`<div class="card"><h3>Fire-Up Snapshot</h3><p>Adjusted starting balance: <strong>${fmt(improved)}</strong></p><p>Indicative 5-year balance at ${ret}%: <strong>${fmt(est5)}</strong></p></div>`; }
+}
+
+function exportPensionFundReport(){
+  if(typeof window.jspdf==='undefined'){ alert('PDF library not loaded. Please reload with internet access.'); return; }
+  collectFund(); collectSettings();
+  const toast=document.getElementById('save-toast');
+  if(toast){ toast.textContent=t('reportGenerating'); toast.classList.add('show'); }
+
+  const { jsPDF } = window.jspdf;
+  const doc=new jsPDF({ unit:'mm', format:'a4' });
+  const pageW=doc.internal.pageSize.getWidth();
+  const margin=14;
+  const reportDate=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  const total=fundTotalBalance();
+  const annual=annualConcessional();
+  const capPct=capUsedPct();
+  const proj=projectToPreservation();
+  const alloc=allocationByCategory();
+  const inHouseLimit=total*0.05;
+  const inHouse=S.compliance.inHouseValue||0;
+
+  const NAVY=[30,58,95], GOLD=[200,169,110], GRAY=[100,100,100];
+  function header(cover){
+    doc.setFillColor(...NAVY); doc.rect(0,0,pageW,cover?32:22,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
+    doc.setFontSize(cover?24:16); doc.text('Pension Fund',margin,cover?18:14);
+    doc.setFont('helvetica','normal'); doc.setFontSize(cover?13:10);
+    doc.text('Client Report',margin,cover?26:20);
+    if(!cover) doc.text(reportDate,pageW-margin,14,{align:'right'});
+    doc.setTextColor(0,0,0);
+  }
+  function section(title,y){
+    if(y>260){ doc.addPage(); header(false); y=28; }
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...NAVY); doc.text(title,margin,y);
+    doc.setDrawColor(...GOLD); doc.setLineWidth(0.5); doc.line(margin,y+2,pageW-margin,y+2); doc.setTextColor(0,0,0);
+    return y+8;
+  }
+  function table(head,body,y){
+    doc.autoTable({
+      startY:y, head:[head], body, margin:{left:margin,right:margin}, theme:'grid',
+      headStyles:{ fillColor:NAVY, textColor:[255,255,255], fontSize:9 }, bodyStyles:{ fontSize:9, cellPadding:2.5 },
+      alternateRowStyles:{ fillColor:[248,248,252] }
+    });
+    return doc.lastAutoTable.finalY+6;
+  }
+
+  header(true);
+  let y=42;
+  y=section('Fund Profile',y);
+  y=table(['Field','Value'],[
+    ['Fund name',S.settings.fundName||'Pension Fund'],
+    ['Member age',String(S.settings.age)],
+    ['Preservation age',String(S.settings.preservationAge)],
+    ['Trustees',String(S.settings.trustees)],
+    ['Report date',reportDate]
+  ],y);
+
+  y=section('Current Financial Position',y);
+  y=table(['Metric','Value'],[
+    ['Total fund balance',fmt(total)],
+    ['Annual concessional contributions',fmt(annual)],
+    ['Concessional cap',fmt(S.fund.conCap)],
+    ['Cap used',capPct.toFixed(1)+'%'],
+    ['Projected at preservation age',fmt(proj.projected)],
+    ['Target balance',fmt(S.fund.target)]
+  ],y);
+
+  y=section('Holdings Register',y);
+  y=table(['Asset','Class','Value','Cost Base'],S.holdings.map(h=>[
+    h.name,h.cat,fmt(totalValue(h)),fmt(h.cost||0)
+  ]),y);
+
+  y=section('IPS Target vs Actual',y);
+  y=table(['Asset Class','Actual %','Target %','Variance'],Object.keys(S.targets).map(cat=>{
+    const actual=alloc[cat]||0; return [cat,actual.toFixed(1)+'%',S.targets[cat]+'%',(actual-S.targets[cat]).toFixed(1)+'%'];
+  }),y);
+
+  y=section('Compliance Snapshot',y);
+  y=table(['Check','Status'],[
+    ['In-house assets <= 5%', inHouse<=inHouseLimit ? 'Pass' : 'Review required'],
+    ['In-house value', fmt(inHouse)],
+    ['In-house limit', fmt(inHouseLimit)],
+    ['Investment strategy documented', S.compliance.checklist.investmentStrategy ? 'Yes' : 'No'],
+    ['Trustee minutes current', S.compliance.checklist.minutes ? 'Yes' : 'No'],
+    ['Asset valuations current', S.compliance.checklist.valuations ? 'Yes' : 'No']
+  ],y);
+
+  const count=doc.getNumberOfPages();
+  for(let i=1;i<=count;i++){
+    doc.setPage(i); doc.setFontSize(8); doc.setTextColor(...GRAY);
+    doc.text(`Pension Fund Report · ${reportDate} · Page ${i} of ${count}`,margin,290);
+    doc.text('Information only. Not financial advice.',margin,294);
+  }
+  const safe=(S.settings.fundName||'pension-fund').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  doc.save(`Pension-Fund-Report-${safe||'fund'}-${new Date().toISOString().slice(0,10)}.pdf`);
+  if(toast){ toast.textContent=t('reportReady'); setTimeout(()=>toast.classList.remove('show'),2200); }
+}
+
+loadState(); updateLastUpdated(); populateForms(); applyLanguage();
+const _hash = location.hash.replace('#', '');
+if (_hash && document.getElementById('page-' + _hash)) showPage(_hash);
+else renderDashboard();
+
+(() => {
+  const dd = document.getElementById('header-actions');
+  if (!dd) return;
+  document.addEventListener('click', (e) => {
+    if (!dd.classList.contains('open')) return;
+    if (dd.contains(e.target)) {
+      const menu = dd.querySelector('.dropdown-menu');
+      if (menu && menu.contains(e.target)) dd.classList.remove('open');
+      return;
+    }
+    dd.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dd.classList.remove('open');
+  });
+})();
