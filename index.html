@@ -32,7 +32,7 @@
   .btn-accent:hover{background:#d4b87a;border-color:#d4b87a;color:#000}
 
   .app-strip-wrap{margin-bottom:32px}
-  .app-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .app-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
   .app-strip-dots{display:none}
   @media(max-width:768px){
     .app-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;gap:12px;margin:0 -24px;padding:4px 24px 8px;scrollbar-width:none;overscroll-behavior-x:contain}
@@ -52,6 +52,8 @@
   .app-card.personal{border-top:2px solid var(--accent3)}
   .app-card.smsf{border-top:2px solid var(--accent2)}
   .app-card.analysis{border-top:2px solid var(--accent5)}
+  .app-card.listed{border-top:2px solid var(--accent4)}
+  .app-card.trust{border-top:2px solid var(--accent)}
 
   .layout{display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:start}
   @media(max-width:800px){.layout{grid-template-columns:1fr}}
@@ -79,6 +81,8 @@
   .calc-app.personal{background:rgba(78,203,138,.12);color:var(--accent3);border:1px solid rgba(78,203,138,.25)}
   .calc-app.smsf{background:rgba(92,158,255,.12);color:var(--accent2);border:1px solid rgba(92,158,255,.25)}
   .calc-app.analysis{background:rgba(182,127,255,.12);color:var(--accent5);border:1px solid rgba(182,127,255,.25)}
+  .calc-app.listed{background:rgba(224,107,107,.12);color:var(--accent4);border:1px solid rgba(224,107,107,.25)}
+  .calc-app.trust{background:rgba(200,169,110,.12);color:var(--accent);border:1px solid rgba(200,169,110,.25)}
 
   .models{display:flex;flex-wrap:wrap;gap:6px}
   .model-tag{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;background:var(--surface);color:var(--muted);border:1px solid var(--border)}
@@ -130,17 +134,25 @@
 
   <div class="app-strip-wrap">
     <div class="app-strip" id="app-strip" role="region" aria-label="Apps">
-      <a class="app-card personal" href="wealth-builder.html">
+      <a class="app-card personal" href="wealth-builder (2).html">
         <span class="icon">💼</span>
-        <div><strong data-i18n="appPersonal">Financial Planner</strong><span data-i18n="appPersonalSub">Personal · cashflow, budget, tax, debt & freedom planning</span></div>
+        <div><strong data-i18n="appPersonal">Individual</strong><span data-i18n="appPersonalSub">Individual · cashflow, budget, tax, debt & net worth planning</span></div>
       </a>
-      <a class="app-card smsf" href="smsf.html">
+      <a class="app-card smsf" href="smsf (1).html">
         <span class="icon">🏛️</span>
-        <div><strong data-i18n="appSmsf">Super Steward</strong><span data-i18n="appSmsfSub">Superannuation · caps, compliance, fund growth & fire-up</span></div>
+        <div><strong data-i18n="appSmsf">Pension Fund</strong><span data-i18n="appSmsfSub">Superannuation · caps, compliance, fund growth & fire-up</span></div>
       </a>
-      <a class="app-card analysis" href="analysis.html">
+      <a class="app-card analysis" href="smes.html">
         <span class="icon">📊</span>
-        <div><strong data-i18n="appAnalysis">Analysis & Planning</strong><span data-i18n="appAnalysisSub">Accounting, tax & investing · reports, ratios & strategy</span></div>
+        <div><strong data-i18n="appAnalysis">SMEs</strong><span data-i18n="appAnalysisSub">Business planning · cashflow, tax, debt, projections</span></div>
+      </a>
+      <a class="app-card listed" href="listed-corporation.html">
+        <span class="icon">🏢</span>
+        <div><strong>Listed Corporation</strong><span>Corporate dashboard · reporting, capital, compliance</span></div>
+      </a>
+      <a class="app-card trust" href="trust.html">
+        <span class="icon">🧾</span>
+        <div><strong>Trust</strong><span>Trust ledger · distributions, tax, and planning</span></div>
       </a>
     </div>
     <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
@@ -207,7 +219,9 @@ const VIDEO_IDS = {
   analysis_etf_compare: 'placeholder',
   analysis_dividend: 'placeholder',
   analysis_rebalance: 'placeholder',
-  analysis_annual_review: 'placeholder'
+  analysis_annual_review: 'placeholder',
+  listed_overview: 'placeholder',
+  trust_overview: 'placeholder'
 };
 
 let LANG = localStorage.getItem('finance_tools_lang') || 'en';
@@ -232,7 +246,7 @@ const CALCULATORS = [
     id: 'personal_dashboard', category: 'overview', app: 'personal',
     tab: 'dashboard', en: 'Financial Life Dashboard', vi: 'Bảng Tổng Quan Tài Chính',
     models: ['Net worth', 'Portfolio value', 'Monthly surplus', 'Debt total'],
-    href: 'wealth-builder.html#dashboard',
+    href: 'wealth-builder (2).html#dashboard',
     videoKey: 'personal_dashboard',
     guide: {
       en: 'See your entire financial life on one screen — all your banks, loans and credit cards. Enter latest prices on the Portfolio tab first, then review KPIs here. Update cashflow monthly so surplus reflects reality.',
@@ -243,7 +257,7 @@ const CALCULATORS = [
     id: 'personal_allocation', category: 'overview', app: 'personal',
     tab: 'dashboard', en: 'Allocation vs Target', vi: 'Phân bổ so mục tiêu',
     models: ['Donut chart', 'Category drift', 'IPS targets'],
-    href: 'wealth-builder.html#dashboard',
+    href: 'wealth-builder (2).html#dashboard',
     videoKey: 'personal_allocation',
     guide: {
       en: 'Rebalance when any category drifts more than ±2% from target. Set targets in Settings to match your IPS.',
@@ -254,7 +268,7 @@ const CALCULATORS = [
     id: 'personal_fi', category: 'growth', app: 'personal',
     tab: 'dashboard', en: 'Financial Freedom Tracker', vi: 'Theo dõi Tự do Tài chính',
     models: ['Years to freedom', 'Freedom portfolio %', 'Emergency fund %', 'Debt clearance %'],
-    href: 'wealth-builder.html#dashboard',
+    href: 'wealth-builder (2).html#dashboard',
     videoKey: 'personal_fi',
     guide: {
       en: 'Set your freedom target portfolio and age in Settings. Fund emergency cash category before aggressive growth bets. A Beautiful Financial Future starts with knowing your number.',
@@ -265,7 +279,7 @@ const CALCULATORS = [
     id: 'personal_cashflow', category: 'cashflow', app: 'personal',
     tab: 'cashflow', en: 'Real-Time Cashflow Model', vi: 'Mô hình dòng tiền thực tế',
     models: ['Income vs expenses', 'Invest surplus', 'Living cost baseline'],
-    href: 'wealth-builder.html#cashflow',
+    href: 'wealth-builder (2).html#cashflow',
     videoKey: 'personal_cashflow',
     guide: {
       en: 'Login anytime, anywhere to see where your money comes and goes — iOS and Android compatible. Use net salary after tax. Convert weekly costs automatically — focus on surplus, not gross income.',
@@ -276,7 +290,7 @@ const CALCULATORS = [
     id: 'personal_inflation', category: 'cashflow', app: 'personal',
     tab: 'cashflow', en: 'Expense Inflation (6yr)', vi: 'Lạm phát chi phí (6 năm)',
     models: ['CPI on expenses', 'Wage growth on investing', 'Surplus by year'],
-    href: 'wealth-builder.html#cashflow',
+    href: 'wealth-builder (2).html#cashflow',
     videoKey: 'personal_inflation',
     guide: {
       en: 'Default 5% Sydney CPI — adjust in Settings if your rent or school fees grow faster.',
@@ -287,7 +301,7 @@ const CALCULATORS = [
     id: 'personal_debt', category: 'debt', app: 'personal',
     tab: 'debt', en: 'Debt Payoff & Interest', vi: 'Trả nợ & Lãi suất',
     models: ['Avalanche priority', 'Months to payoff', 'Monthly interest cost', 'Amortisation curves'],
-    href: 'wealth-builder.html#debt',
+    href: 'wealth-builder (2).html#debt',
     videoKey: 'personal_debt',
     guide: {
       en: 'Attack highest rate first. Once a debt is cleared, roll its payment into the next — do not inflate lifestyle.',
@@ -298,7 +312,7 @@ const CALCULATORS = [
     id: 'personal_loan', category: 'debt', app: 'personal',
     tab: 'debt', en: 'Better Loan Analyser', vi: 'Phân tích vay lãi thấp hơn',
     models: ['Credit card comparison', 'Lower rate savings', 'Refinance calculator', 'Break-even timeline'],
-    href: 'wealth-builder.html#debt',
+    href: 'wealth-builder (2).html#debt',
     videoKey: 'personal_loan',
     guide: {
       en: 'Analyse your credit cards and loans to save big $ with a lower interest rate. Enter your current rate and balance — see exactly how much you could save over the life of the loan.',
@@ -309,7 +323,7 @@ const CALCULATORS = [
     id: 'personal_portfolio', category: 'invest', app: 'personal',
     tab: 'portfolio', en: 'Holdings & Cost Base', vi: 'Danh mục & Giá vốn',
     models: ['Position value', 'Gain/loss', 'DRIP flag', 'Allocation bars'],
-    href: 'wealth-builder.html#portfolio',
+    href: 'wealth-builder (2).html#portfolio',
     videoKey: 'personal_portfolio',
     guide: {
       en: 'Update prices regularly for accurate net worth. Record cost base for CGT — especially crypto and ETFs.',
@@ -320,7 +334,7 @@ const CALCULATORS = [
     id: 'personal_projections', category: 'growth', app: 'personal',
     tab: 'projections', en: 'Freedom Plan Scenarios', vi: 'Kịch bản Kế hoạch Tự do',
     models: ['5% / 8% / 11% returns', 'Wage-linked contributions', 'Freedom age marker'],
-    href: 'wealth-builder.html#projections',
+    href: 'wealth-builder (2).html#projections',
     videoKey: 'personal_projections',
     guide: {
       en: 'Run all three scenarios. Base case 8% is long-run equities — use Conservative if you are debt-heavy. Estimate how much $ you will need and how to get there for a Beautiful Financial Future.',
@@ -331,7 +345,7 @@ const CALCULATORS = [
     id: 'personal_tax', category: 'tax', app: 'personal',
     tab: 'tax', en: 'Effortless Tax Return Prep', vi: 'Chuẩn bị khai thuế dễ dàng',
     models: ['Income summary', 'Deduction tracker', 'Tax receipt log', 'Return estimate'],
-    href: 'wealth-builder.html#tax',
+    href: 'wealth-builder (2).html#tax',
     videoKey: 'personal_tax',
     guide: {
       en: 'No more hours spent sorting through tax receipts. This tool collates all tax return information needed for your individual tax return — income, deductions, and receipts in one place, ready for your accountant.',
@@ -342,7 +356,7 @@ const CALCULATORS = [
     id: 'personal_vault', category: 'tax', app: 'personal',
     tab: 'vault', en: 'Document Vault', vi: 'Kho Lưu Trữ Hồ Sơ',
     models: ['Wills & estate docs', 'Insurance documents', 'Powers of attorney', 'Loan & tax receipts'],
-    href: 'wealth-builder.html#vault',
+    href: 'wealth-builder (2).html#tax',
     videoKey: 'personal_vault',
     guide: {
       en: 'Save your Wills, Insurance Documents, Powers of Attorney, Loan Documents and Tax Receipts securely in the cloud — accessible anytime, anywhere by you and your financial advisor.',
@@ -353,7 +367,7 @@ const CALCULATORS = [
     id: 'personal_settings', category: 'planning', app: 'personal',
     tab: 'settings', en: 'Strategy Settings', vi: 'Cài đặt chiến lược',
     models: ['Freedom age & target', 'Risk profile', 'Target allocation %', 'Export/import JSON'],
-    href: 'wealth-builder.html#settings',
+    href: 'wealth-builder (2).html#settings',
     videoKey: 'personal_settings',
     guide: {
       en: 'Export JSON monthly as backup. Targets should sum to 100% before you rely on allocation charts.',
@@ -364,18 +378,18 @@ const CALCULATORS = [
     id: 'personal_lifeplan', category: 'planning', app: 'personal',
     tab: 'settings', en: 'Life Plan Forms', vi: 'Biểu mẫu Life Plan',
     models: ['Client report', 'Action plan'],
-    href: 'wealth-builder.html#settings',
+    href: 'wealth-builder (2).html#settings',
     videoKey: 'personal_lifeplan',
     guide: {
-      en: 'Use the report form for snapshots; action form for annual goals. Align numbers with Financial Planner exports.',
-      vi: 'Dùng form báo cáo cho ảnh chụp tài chính; form hành động cho mục tiêu năm. Đồng bộ số liệu với Financial Planner.'
+      en: 'Use the report form for snapshots; action form for annual goals. Align numbers with Individual exports.',
+      vi: 'Dùng form báo cáo cho ảnh chụp tài chính; form hành động cho mục tiêu năm. Đồng bộ số liệu với Individual.'
     }
   },
   {
     id: 'smsf_dashboard', category: 'overview', app: 'smsf',
     tab: 'dashboard', en: 'Fund Overview KPIs', vi: 'KPI tổng quan quỹ',
     models: ['Fund balance', 'Annual contributions', 'Cap used %', 'Projected at 60'],
-    href: 'smsf.html#dashboard',
+    href: 'smsf (1).html#dashboard',
     videoKey: 'smsf_dashboard',
     guide: {
       en: 'Sync fund balance and holdings before trustee meetings. Cap % turns red if concessional contributions exceed limit.',
@@ -386,7 +400,7 @@ const CALCULATORS = [
     id: 'smsf_allocation', category: 'invest', app: 'smsf',
     tab: 'dashboard', en: 'Fund Asset Allocation', vi: 'Phân bổ tài sản quỹ',
     models: ['IPS donut', 'Listed vs alternatives', 'Commercial RE slot'],
-    href: 'smsf.html#dashboard',
+    href: 'smsf (1).html#dashboard',
     videoKey: 'smsf_allocation',
     guide: {
       en: 'Document IPS changes in trustee minutes. Property often sits under Commercial RE — confirm sole purpose test.',
@@ -397,7 +411,7 @@ const CALCULATORS = [
     id: 'smsf_contributions', category: 'super', app: 'smsf',
     tab: 'contributions', en: 'Contribution Stack', vi: 'Cơ cấu đóng góp',
     models: ['Salary sacrifice', 'Employer SG', 'Voluntary concessional', 'Growth to preservation'],
-    href: 'smsf.html#contributions',
+    href: 'smsf (1).html#contributions',
     videoKey: 'smsf_contributions',
     guide: {
       en: 'Stack SG + sacrifice + voluntary, then check total against cap before 30 June. Leave headroom for unexpected SG.',
@@ -408,7 +422,7 @@ const CALCULATORS = [
     id: 'smsf_caps', category: 'super', app: 'smsf',
     tab: 'contributions', en: 'Concessional Cap Monitor', vi: 'Giám sát hạn mức ưu đãi',
     models: ['FY table', 'Cap headroom', 'Non-concessional note'],
-    href: 'smsf.html#contributions',
+    href: 'smsf (1).html#contributions',
     videoKey: 'smsf_caps',
     guide: {
       en: 'FY2026–27 concessional cap $32,500. Carry-forward may apply if TSB under $500k — confirm with your accountant. Our Super Fire-Up review traces lost super and recommends better options for your future.',
@@ -419,7 +433,7 @@ const CALCULATORS = [
     id: 'smsf_compliance', category: 'compliance', app: 'smsf',
     tab: 'compliance', en: 'Compliance Checklist', vi: 'Danh sách tuân thủ',
     models: ['Sole purpose', 'Audit & minutes', 'Valuations', 'ATO return'],
-    href: 'smsf.html#compliance',
+    href: 'smsf (1).html#compliance',
     videoKey: 'smsf_compliance',
     guide: {
       en: 'Tick items as completed each quarter. Missing minutes or valuations are common ATO audit triggers.',
@@ -430,7 +444,7 @@ const CALCULATORS = [
     id: 'smsf_inhouse', category: 'compliance', app: 'smsf',
     tab: 'compliance', en: 'In-House Asset (5%)', vi: 'Tài sản nội bộ (5%)',
     models: ['Related-party value', '5% limit bar', 'Breach warning'],
-    href: 'smsf.html#compliance',
+    href: 'smsf (1).html#compliance',
     videoKey: 'smsf_inhouse',
     guide: {
       en: 'Measure related-party assets at 30 June market value. Includes certain loans and lease arrangements.',
@@ -441,18 +455,18 @@ const CALCULATORS = [
     id: 'smsf_portfolio', category: 'invest', app: 'smsf',
     tab: 'portfolio', en: 'SMSF Holdings Register', vi: 'Sổ đăng ký tài sản SMSF',
     models: ['Fund positions', 'Cost base', 'IPS vs actual'],
-    href: 'smsf.html#portfolio',
+    href: 'smsf (1).html#portfolio',
     videoKey: 'smsf_portfolio',
     guide: {
-      en: 'Hold assets in fund name only. Separate portfolio from personal Financial Planner — never mix accounts.',
-      vi: 'Tài sản đứng tên quỹ. Tách khỏi Financial Planner cá nhân — không trộn tài khoản.'
+      en: 'Hold assets in fund name only. Separate portfolio from Individual personal accounts — never mix accounts.',
+      vi: 'Tài sản đứng tên quỹ. Tách khỏi tài khoản Individual cá nhân — không trộn tài khoản.'
     }
   },
   {
     id: 'smsf_projections', category: 'growth', app: 'smsf',
     tab: 'projections', en: 'Fund Growth Scenarios', vi: 'Kịch bản tăng trưởng quỹ',
     models: ['To preservation age', '3 return scenarios', 'Target balance flag'],
-    href: 'smsf.html#projections',
+    href: 'smsf (1).html#projections',
     videoKey: 'smsf_projections',
     guide: {
       en: 'Model contributions as stable unless you have a signed salary sacrifice agreement. Review 5 years before pension phase.',
@@ -463,7 +477,7 @@ const CALCULATORS = [
     id: 'smsf_settings', category: 'planning', app: 'smsf',
     tab: 'settings', en: 'Fund & IPS Settings', vi: 'Cài đặt quỹ & IPS',
     models: ['Fund name', 'Member age', 'Preservation age', 'IPS targets'],
-    href: 'smsf.html#settings',
+    href: 'smsf (1).html#settings',
     videoKey: 'smsf_settings',
     guide: {
       en: 'Match preservation age to your birth year rules. Export data before each financial year rollover.',
@@ -476,7 +490,7 @@ const CALCULATORS = [
     id: 'analysis_pl', category: 'accounting', app: 'analysis',
     tab: 'pl', en: 'Profit & Loss Statement', vi: 'Báo cáo Lãi & Lỗ',
     models: ['Revenue', 'COGS', 'Gross margin', 'EBITDA', 'Net profit'],
-    href: 'analysis.html#pl',
+    href: 'smes.html#dashboard',
     videoKey: 'analysis_pl',
     guide: {
       en: 'Build a structured P&L from income and expense categories. Compare actuals vs budget side-by-side and track margin trends across months. Export for your accountant or board pack.',
@@ -487,7 +501,7 @@ const CALCULATORS = [
     id: 'analysis_balancesheet', category: 'accounting', app: 'analysis',
     tab: 'balancesheet', en: 'Balance Sheet Snapshot', vi: 'Bảng Cân đối kế toán',
     models: ['Assets', 'Liabilities', 'Equity', 'Working capital', 'Debt-to-equity'],
-    href: 'analysis.html#balancesheet',
+    href: 'smes.html#portfolio',
     videoKey: 'analysis_balancesheet',
     guide: {
       en: 'Enter assets and liabilities to produce a point-in-time balance sheet. Working capital and debt-to-equity ratios calculate automatically — flag if outside healthy ranges.',
@@ -498,7 +512,7 @@ const CALCULATORS = [
     id: 'analysis_ratios', category: 'accounting', app: 'analysis',
     tab: 'ratios', en: 'Financial Ratio Analyser', vi: 'Phân tích Chỉ số Tài chính',
     models: ['Liquidity ratios', 'Profitability ratios', 'Leverage ratios', 'Efficiency ratios'],
-    href: 'analysis.html#ratios',
+    href: 'smes.html#cashflow',
     videoKey: 'analysis_ratios',
     guide: {
       en: 'Feed in P&L and balance sheet figures to compute current ratio, quick ratio, ROE, ROA, gross margin, and more. Benchmarks shown alongside each ratio to flag outliers immediately.',
@@ -509,7 +523,7 @@ const CALCULATORS = [
     id: 'analysis_breakeven', category: 'accounting', app: 'analysis',
     tab: 'breakeven', en: 'Break-Even & Margin Model', vi: 'Mô hình Hoà vốn & Biên lợi nhuận',
     models: ['Fixed costs', 'Variable cost per unit', 'Break-even units', 'Contribution margin', 'Safety margin'],
-    href: 'analysis.html#breakeven',
+    href: 'smes.html#debt',
     videoKey: 'analysis_breakeven',
     guide: {
       en: 'Enter fixed costs, variable cost per unit, and selling price to find break-even volume and contribution margin. Adjust price or cost assumptions to model profitability at different sales levels.',
@@ -522,7 +536,7 @@ const CALCULATORS = [
     id: 'analysis_cgt', category: 'taxanalysis', app: 'analysis',
     tab: 'cgt', en: 'Capital Gains Tax Calculator', vi: 'Tính Thuế Thu Nhập Vốn (CGT)',
     models: ['Cost base', 'Proceeds', 'Gross gain', 'CGT discount', 'Net taxable gain'],
-    href: 'analysis.html#cgt',
+    href: 'smes.html#tax',
     videoKey: 'analysis_cgt',
     guide: {
       en: 'Calculate CGT for Australian residents on shares, ETFs, property and crypto. Applies 50% discount automatically for assets held over 12 months. Factor in cost base adjustments and capital losses carried forward.',
@@ -533,7 +547,7 @@ const CALCULATORS = [
     id: 'analysis_division7a', category: 'taxanalysis', app: 'analysis',
     tab: 'div7a', en: 'Division 7A Loan Calculator', vi: 'Tính vay Division 7A',
     models: ['Minimum annual repayment', 'Benchmark interest rate', 'Loan term', 'Deemed dividend risk'],
-    href: 'analysis.html#div7a',
+    href: 'smes.html#tax',
     videoKey: 'analysis_division7a',
     guide: {
       en: 'Model minimum annual repayments required under Division 7A for loans between a private company and shareholders or associates. Flags deemed dividend exposure if repayments fall short. Confirm with your accountant each year.',
@@ -544,7 +558,7 @@ const CALCULATORS = [
     id: 'analysis_gst', category: 'taxanalysis', app: 'analysis',
     tab: 'gst', en: 'GST & BAS Estimator', vi: 'Ước tính GST & BAS',
     models: ['GST collected', 'GST credits', 'Net GST payable', 'Quarterly BAS estimate'],
-    href: 'analysis.html#gst',
+    href: 'smes.html#tax',
     videoKey: 'analysis_gst',
     guide: {
       en: 'Enter taxable sales and input tax credits to estimate quarterly GST liability for your BAS. Flags if annual turnover approaches the $75,000 registration threshold. Not a substitute for lodged BAS — use as a planning tool.',
@@ -555,7 +569,7 @@ const CALCULATORS = [
     id: 'analysis_depreciation', category: 'taxanalysis', app: 'analysis',
     tab: 'depreciation', en: 'Depreciation & Write-Off Planner', vi: 'Kế hoạch Khấu hao & Xoá sổ',
     models: ['Prime cost method', 'Diminishing value', 'Instant asset write-off', 'Book vs tax depreciation'],
-    href: 'analysis.html#depreciation',
+    href: 'smes.html#tax',
     videoKey: 'analysis_depreciation',
     guide: {
       en: 'Model asset depreciation under prime cost or diminishing value methods. Applies instant asset write-off thresholds for small business. Shows the gap between book and tax depreciation to help plan for deferred tax.',
@@ -568,7 +582,7 @@ const CALCULATORS = [
     id: 'analysis_etf_compare', category: 'investing', app: 'analysis',
     tab: 'etf', en: 'ETF & Managed Fund Comparer', vi: 'So sánh ETF & Quỹ quản lý',
     models: ['MER comparison', 'After-fee return', 'Tracking error', '10yr fee drag'],
-    href: 'analysis.html#etf',
+    href: 'smes.html#portfolio',
     videoKey: 'analysis_etf_compare',
     guide: {
       en: 'Compare up to four ETFs or managed funds side-by-side on MER, index tracked, distribution yield and 10-year fee drag. A 0.5% MER difference compounds significantly — use this before switching or consolidating.',
@@ -579,7 +593,7 @@ const CALCULATORS = [
     id: 'analysis_dividend', category: 'investing', app: 'analysis',
     tab: 'dividend', en: 'Dividend & Franking Credit Model', vi: 'Mô hình Cổ tức & Tín dụng thuế',
     models: ['Gross dividend', 'Franking credits', 'Effective yield', 'Tax in hand'],
-    href: 'analysis.html#dividend',
+    href: 'smes.html#portfolio',
     videoKey: 'analysis_dividend',
     guide: {
       en: 'Enter dividend per share and franking percentage to calculate gross dividend, franking credit value, and after-tax yield at your marginal rate. Useful for comparing fully franked vs unfranked securities.',
@@ -590,7 +604,7 @@ const CALCULATORS = [
     id: 'analysis_rebalance', category: 'investing', app: 'analysis',
     tab: 'rebalance', en: 'Portfolio Rebalance Planner', vi: 'Kế hoạch Tái cân bằng danh mục',
     models: ['Current vs target %', 'Buy/sell amounts', 'Tax impact flag', 'Cash needed'],
-    href: 'analysis.html#rebalance',
+    href: 'smes.html#portfolio',
     videoKey: 'analysis_rebalance',
     guide: {
       en: 'Enter current holdings and target allocations to calculate exact buy and sell amounts needed to rebalance. Flags positions where selling would trigger a CGT event — prioritise new cash before selling where possible.',
@@ -601,11 +615,33 @@ const CALCULATORS = [
     id: 'analysis_annual_review', category: 'investing', app: 'analysis',
     tab: 'review', en: 'Annual Financial Review', vi: 'Đánh giá Tài chính Hàng năm',
     models: ['YoY net worth change', 'Goal progress', 'Strategy checklist', 'Action items'],
-    href: 'analysis.html#review',
+    href: 'smes.html#projections',
     videoKey: 'analysis_annual_review',
     guide: {
       en: 'Run a structured year-end review across net worth, cashflow, tax position, super, insurance, and estate documents. Produces a one-page summary and action list — ideal for your annual advisor meeting.',
       vi: 'Thực hiện đánh giá cuối năm có cấu trúc về tài sản ròng, dòng tiền, thuế, super, bảo hiểm và hồ sơ tài sản. Tạo tóm tắt một trang và danh sách hành động.'
+    }
+  },
+  {
+    id: 'listed_overview', category: 'overview', app: 'listed',
+    tab: 'dashboard', en: 'Listed Corporation Dashboard', vi: 'Tổng quan Công ty niêm yết',
+    models: ['Revenue & margin', 'Debt profile', 'Capital allocation'],
+    href: 'listed-corporation.html#dashboard',
+    videoKey: 'listed_overview',
+    guide: {
+      en: 'Track public-company KPI trends, capital structure, and strategic priorities in one operating dashboard.',
+      vi: 'Theo dõi KPI, cấu trúc vốn và ưu tiên chiến lược của công ty niêm yết trên một bảng điều hành.'
+    }
+  },
+  {
+    id: 'trust_overview', category: 'planning', app: 'trust',
+    tab: 'dashboard', en: 'Trust Planning Dashboard', vi: 'Bảng kế hoạch Quỹ tín thác',
+    models: ['Trust assets', 'Distributions', 'Beneficiary planning'],
+    href: 'trust.html#dashboard',
+    videoKey: 'trust_overview',
+    guide: {
+      en: 'Use the trust dashboard for distributions, compliance reminders, and annual planning with your accountant.',
+      vi: 'Dùng bảng quỹ tín thác để theo dõi phân phối, nhắc nhở tuân thủ và kế hoạch năm cùng kế toán.'
     }
   }
 ];
@@ -614,9 +650,9 @@ const UI = {
   en: {
     hubTitle: 'Traditional Finance Tools', hubSub: 'Everything you need to simplify your financial life — open the right calculator, read the quick guide, watch the walkthrough.',
     langBtn: '🌐 Tiếng Việt', showAll: 'Show all', filterHint: 'Filter by category, or browse all tools below.',
-    appPersonal: 'Financial Planner', appPersonalSub: 'Personal · cashflow, budget, tax, debt & freedom planning',
-    appSmsf: 'Super Steward', appSmsfSub: 'Superannuation · caps, compliance, fund growth & fire-up',
-    appAnalysis: 'Analysis & Planning', appAnalysisSub: 'Accounting, tax & investing · reports, ratios & strategy',
+    appPersonal: 'Individual', appPersonalSub: 'Individual · cashflow, budget, tax, debt & net worth planning',
+    appSmsf: 'Pension Fund', appSmsfSub: 'Superannuation · caps, compliance, fund growth & fire-up',
+    appAnalysis: 'SMEs', appAnalysisSub: 'Business planning · cashflow, tax, debt, projections',
     emptyFilter: 'No tools in this category.',
     writtenGuide: 'Quick guide', videoGuide: 'Video walkthrough', watchVideo: 'Watch guide',
     openCalc: 'Open', all: 'All categories', modalNoVideo: 'Add a YouTube video ID in index.html → VIDEO_IDS.',
@@ -625,9 +661,9 @@ const UI = {
   vi: {
     hubTitle: 'Công Cụ Tài Chính', hubSub: 'Tất cả những gì bạn cần để đơn giản hoá tài chính — mở đúng công cụ, đọc hướng dẫn, xem video.',
     langBtn: '🌐 English', showAll: 'Tất cả', filterHint: 'Lọc theo danh mục hoặc xem toàn bộ bên dưới.',
-    appPersonal: 'Kế hoạch Tài chính', appPersonalSub: 'Cá nhân · dòng tiền, ngân sách, thuế, nợ & kế hoạch tự do',
-    appSmsf: 'Super Steward', appSmsfSub: 'Superannuation · hạn mức, tuân thủ, tăng trưởng quỹ',
-    appAnalysis: 'Phân tích & Kế hoạch', appAnalysisSub: 'Kế toán, thuế & đầu tư · báo cáo, chỉ số & chiến lược',
+    appPersonal: 'Individual', appPersonalSub: 'Cá nhân · dòng tiền, ngân sách, thuế, nợ & giá trị ròng',
+    appSmsf: 'Pension Fund', appSmsfSub: 'Superannuation · hạn mức, tuân thủ, tăng trưởng quỹ',
+    appAnalysis: 'SMEs', appAnalysisSub: 'Lập kế hoạch doanh nghiệp · dòng tiền, thuế, nợ, dự báo',
     emptyFilter: 'Không có công cụ trong danh mục này.',
     writtenGuide: 'Hướng dẫn nhanh', videoGuide: 'Video hướng dẫn', watchVideo: 'Xem video',
     openCalc: 'Mở', all: 'Tất cả danh mục', modalNoVideo: 'Thêm YouTube video ID trong index.html → VIDEO_IDS.',
@@ -679,7 +715,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo()
 function renderCard(c){
   const title = LANG === 'vi' ? c.vi : c.en;
   const guide = LANG === 'vi' ? c.guide.vi : c.guide.en;
-  const appLabel = c.app === 'personal' ? 'Personal' : c.app === 'smsf' ? 'SMSF' : 'Analysis';
+  const appLabel = c.app === 'personal' ? 'Individual' : c.app === 'smsf' ? 'Pension Fund' : c.app === 'analysis' ? 'SMEs' : c.app === 'listed' ? 'Listed' : 'Trust';
   return `
     <article class="calc-card" data-category="${c.category}" data-id="${c.id}">
       <div class="calc-top">
