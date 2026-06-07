@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Monetary & Fiscal Policy Dashboard</title>
+    <!-- Tailwind CSS for sleek styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js for economic data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-600 rounded-lg text-white font-bold text-xl tracking-wider">🏛️</div>
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-tight">ApexRepublic</h1>
+                    <p class="text-xs text-gray-400">Macroeconomic Policy Simulator</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm bg-gray-800 text-gray-300 px-3 py-1 rounded-full border border-gray-700" id="quarter-display">Quarter: 1</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Policy Controls -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Monetary Policy Card -->
+                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-xl">🏦</span>
+                        <h2 class="text-xl font-bold text-white">Monetary Policy</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-6">Managed by the Central Bank to regulate money supply and control inflation.</p>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="interest-rate" class="text-gray-300 font-medium">Central Bank Interest Rate</label>
+                                <span class="text-indigo-400 font-semibold" id="interest-rate-val">4.50%</span>
+                            </div>
+                            <input type="range" id="interest-rate" min="0" max="15" step="0.25" value="4.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="reserve-ratio" class="text-gray-300 font-medium">Required Reserve Ratio</label>
+                                <span class="text-indigo-400 font-semibold" id="reserve-ratio-val">10.0%</span>
+                            </div>
+                            <input type="range" id="reserve-ratio" min="1" max="30" step="0.5" value="10" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fiscal Policy Card -->
+                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-xl">⚖️</span>
+                        <h2 class="text-xl font-bold text-white">Fiscal Policy</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-6">Managed by the Government via taxation and spending to influence aggregate demand.</p>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="tax-rate" class="text-gray-300 font-medium">Effective Income Tax Rate</label>
+                                <span class="text-emerald-400 font-semibold" id="tax-rate-val">22.0%</span>
+                            </div>
+                            <input type="range" id="tax-rate" min="5" max="50" step="0.5" value="22" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label for="gov-spending" class="text-gray-300 font-medium">Government Spending</label>
+                                <span class="text-emerald-400 font-semibold" id="gov-spending-val">$120B</span>
+                            </div>
+                            <input type="range" id="gov-spending" min="50" max="300" step="5" value="120" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Trigger -->
+                <button id="simulate-btn" class="w-full bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all transform active:scale-95 text-center cursor-pointer">
+                    Simulate Next Quarter ➡️
+                </button>
+            </div>
+
+            <!-- Right Column: Current Metrics & Charts -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Dashboard Key Metrics Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
+                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">GDP Growth</p>
+                        <p class="text-2xl font-bold mt-1 text-white" id="gdp-display">2.50%</p>
+                    </div>
+                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
+                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Inflation Rate</p>
+                        <p class="text-2xl font-bold mt-1 text-white" id="inflation-display">2.10%</p>
+                    </div>
+                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
+                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Unemployment</p>
+                        <p class="text-2xl font-bold mt-1 text-white" id="unemployment-display">4.80%</p>
+                    </div>
+                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
+                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Budget Balance</p>
+                        <p class="text-2xl font-bold mt-1 text-emerald-400" id="budget-display">+$5B</p>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-lg font-semibold text-white mb-4">Economic Performance Timeline</h3>
+                    <div class="h-80 w-full">
+                        <canvas id="economyChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Feedback / Warning Logs -->
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Central Bank & Treasury Advisory</h4>
+                    <div id="logs" class="text-sm space-y-1 text-gray-300">
+                        <p class="text-emerald-400">✓ Economy is stable. Inflation and growth are within optimal target ranges.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Simulation Engine Logic -->
+    <script>
+        // State Variables
+        let currentQuarter = 1;
+        let gdpGrowth = 2.5;
+        let inflation = 2.1;
+        let unemployment = 4.8;
+        let budgetBalance = 5; // Positive = Surplus, Negative = Deficit
+
+        // History arrays for charting
+        const quarters = ['Q1'];
+        const gdpHistory = [2.5];
+        const inflationHistory = [2.1];
+        const unemploymentHistory = [4.8];
+
+        // UI Element References
+        const interestRateInput = document.getElementById('interest-rate');
+        const reserveRatioInput = document.getElementById('reserve-ratio');
+        const taxRateInput = document.getElementById('tax-rate');
+        const govSpendingInput = document.getElementById('gov-spending');
+
+        const interestRateVal = document.getElementById('interest-rate-val');
+        const reserveRatioVal = document.getElementById('reserve-ratio-val');
+        const taxRateVal = document.getElementById('tax-rate-val');
+        const govSpendingVal = document.getElementById('gov-spending-val');
+
+        // Update Slider Labels Dynamic Readouts
+        interestRateInput.addEventListener('input', () => interestRateVal.innerText = parseFloat(interestRateInput.value).toFixed(2) + '%');
+        reserveRatioInput.addEventListener('input', () => reserveRatioVal.innerText = parseFloat(reserveRatioInput.value).toFixed(1) + '%');
+        taxRateInput.addEventListener('input', () => taxRateVal.innerText = parseFloat(taxRateInput.value).toFixed(1) + '%');
+        govSpendingInput.addEventListener('input', () => govSpendingVal.innerText = '$' + govSpendingInput.value + 'B');
+
+        // Setup Chart.js
+        const ctx = document.getElementById('economyChart').getContext('2d');
+        const economyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: quarters,
+                datasets: [
+                    { label: 'GDP Growth (%)', data: gdpHistory, borderColor: '#3b82f6', tension: 0.2, borderWidth: 3 },
+                    { label: 'Inflation (%)', data: inflationHistory, borderColor: '#f43f5e', tension: 0.2, borderWidth: 3 },
+                    { label: 'Unemployment (%)', data: unemploymentHistory, borderColor: '#eab308', tension: 0.2, borderWidth: 3 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } },
+                    x: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#f3f4f6' } }
+                }
+            }
+        });
+
+        // Simulation Algorithm
+        document.getElementById('simulate-btn').addEventListener('click', () => {
+            currentQuarter++;
+            
+            // Get current policy inputs
+            const ir = parseFloat(interestRateInput.value);
+            const rr = parseFloat(reserveRatioInput.value);
+            const tx = parseFloat(taxRateInput.value);
+            const gs = parseFloat(govSpendingInput.value);
+
+            // Economic Logic Formulas (Simplified Macro Dynamic Relationships)
+            // 1. Calculate Budget Balance: Taxes collected (surrogate) vs Gov Spending
+            budgetBalance = Math.round((tx * 6) - gs); 
+
+            // 2. Monetary & Fiscal impacts on GDP Growth
+            // Higher interest rates and taxes slow economy down. Higher spending speeds it up.
+            const monetaryTightness = (ir - 4.5) * 0.4 + (rr - 10) * 0.15;
+            const fiscalStimulus = (gs - 120) * 0.05 - (tx - 22) * 0.3;
+            
+            gdpGrowth = 2.5 + fiscalStimulus - monetaryTightness + (Math.random() * 0.4 - 0.2);
+            gdpGrowth = Math.max(-5, Math.min(10, gdpGrowth)); // keep realistic boundaries
+
+            // 3. Inflation tracking (Phillips curve / Demand-pull logic)
+            // Fast growth accelerates inflation. High interest rates curb it.
+            inflation = inflation + (gdpGrowth - 2.5) * 0.3 - (ir - 4.5) * 0.25 + (Math.random() * 0.2 - 0.1);
+            inflation = Math.max(-2, Math.min(15, inflation));
+
+            // 4. Unemployment (Okun's Law variant)
+            // Strong GDP growth drops unemployment. Economic stagnation increases it.
+            unemployment = unemployment - (gdpGrowth - 2.2) * 0.4 + (Math.random() * 0.2 - 0.1);
+            unemployment = Math.max(1.5, Math.min(15, unemployment));
+
+            // Update UI displays
+            document.getElementById('quarter-display').innerText = `Quarter: ${currentQuarter}`;
+            document.getElementById('gdp-display').innerText = gdpGrowth.toFixed(2) + '%';
+            document.getElementById('inflation-display').innerText = inflation.toFixed(2) + '%';
+            document.getElementById('unemployment-display').innerText = unemployment.toFixed(2) + '%';
+            
+            const budgetDisplay = document.getElementById('budget-display');
+            if(budgetBalance >= 0) {
+                budgetDisplay.innerText = `+$${budgetBalance}B`;
+                budgetDisplay.className = "text-2xl font-bold mt-1 text-emerald-400";
+            } else {
+                budgetDisplay.innerText = `-$${Math.abs(budgetBalance)}B`;
+                budgetDisplay.className = "text-2xl font-bold mt-1 text-rose-400";
+            }
+
+            // Generate contextual advice log
+            const logsContainer = document.getElementById('logs');
+            let systemLog = "";
+            if (inflation > 4.0) {
+                systemLog = `<p class="text-rose-400">⚠️ HIGH INFLATION: Central Bank should consider increasing interest rates to cool aggregate demand.</p>`;
+            } else if (inflation < 0.5) {
+                systemLog = `<p class="text-amber-400">⚠️ DEFLATIONARY RISK: Consider dropping the interest rate or increasing government spending.</p>`;
+            } else if (unemployment > 6.5) {
+                systemLog = `<p class="text-amber-400">⚠️ HIGH UNEMPLOYMENT: Expansionary fiscal policy (more spending/lower taxes) requested to generate jobs.</p>`;
+            } else {
+                systemLog = `<p class="text-emerald-400">✓ Stable Operations: Macroeconomic metrics are balanced perfectly.</p>`;
+            }
+            
+            if (budgetBalance < -40) {
+                systemLog += `<p class="text-rose-400">⚠️ CRITICAL DEFICIT: Government debt expanding rapidly. Increase tax rates or cut spending.</p>`;
+            }
+            logsContainer.innerHTML = systemLog;
+
+            // Chart update step
+            quarters.push(`Q${currentQuarter}`);
+            gdpHistory.push(parseFloat(gdpGrowth.toFixed(2)));
+            inflationHistory.push(parseFloat(inflation.toFixed(2)));
+            unemploymentHistory.push(parseFloat(unemployment.toFixed(2)));
+            economyChart.update();
+        });
+    </script>
+</body>
+</html>
