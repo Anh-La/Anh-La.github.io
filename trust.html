@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trust Planner · Trust Performance Management</title>
+<title>Family Trust · Finance Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -97,8 +97,8 @@ input[type=number]{font-family:var(--font-mono)}
 <header>
   <div class="logo">
     <a href="index.html" class="back-link">← Hub</a>
-    <span class="logo-title">Trust Planner</span>
-    <span class="logo-sub">Trust Performance</span>
+    <span class="logo-title">Family Trust</span>
+    <span class="logo-sub">Trust Planning</span>
     <span class="hub-badge">Trust</span>
   </div>
   <div class="header-right">
@@ -132,11 +132,11 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <div class="page-title">Trust Overview</div>
-  <div class="page-sub">Corpus value, distributable income, beneficiary summary & compliance snapshot</div>
+  <div class="page-sub">Trust assets, income available to distribute & beneficiary summary</div>
   <div class="grid-5 section" id="dash-kpis"></div>
   <div class="grid-2 section">
     <div class="card">
-      <h3>Corpus vs Income Assets</h3>
+      <h3>Corpus vs Short-term Assets</h3>
       <div style="height:180px;position:relative"><canvas id="dash-corpus-chart"></canvas></div>
     </div>
     <div class="card">
@@ -149,7 +149,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- INCOME STATEMENT -->
 <div class="page" id="page-income">
   <div class="page-title">Income Statement — Comparative</div>
-  <div class="page-sub">Trust income, deductions & distributable income · current year vs prior year</div>
+  <div class="page-sub">Trust income and expenses — what's available to distribute</div>
   <div class="alert alert-info">💡 Trust income = all income of the trust before distributions. Distributable income is calculated after trustee deductions and losses.</div>
 
   <div class="card section">
@@ -171,18 +171,18 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- BALANCE SHEET -->
 <div class="page" id="page-balance">
   <div class="page-title">Balance Sheet — Comparative</div>
-  <div class="page-sub">Trust assets, liabilities & net assets (corpus) · current year vs prior year</div>
+  <div class="page-sub">What the trust owns, what it owes & net value — compared to prior year</div>
   <div class="alert alert-info">💡 Net Assets of Trust = Total Assets − Total Liabilities. This represents the corpus accumulated for beneficiaries.</div>
 
   <div class="grid-2 section">
-    <div class="card"><h3>Corpus Assets</h3><div id="bs-corpus-assets-inputs"></div></div>
-    <div class="card"><h3>Income Assets</h3><div id="bs-income-assets-inputs"></div></div>
+    <div class="card"><h3>Long-term Assets</h3><div id="bs-corpus-assets-inputs"></div></div>
+    <div class="card"><h3>Short-term Assets</h3><div id="bs-income-assets-inputs"></div></div>
   </div>
   <div class="grid-2 section">
     <div class="card"><h3>Current Liabilities</h3><div id="bs-current-liab-inputs"></div></div>
     <div class="card"><h3>Non-Current Liabilities</h3><div id="bs-noncurrent-liab-inputs"></div></div>
   </div>
-  <div class="card section"><h3>Net Assets / Corpus</h3><div id="bs-equity-inputs"></div></div>
+  <div class="card section"><h3>Net Assets</h3><div id="bs-equity-inputs"></div></div>
   <div style="margin-bottom:18px"><button class="btn btn-accent" onclick="calcBS()">Generate Statement</button></div>
 
   <div class="card section" id="bs-statement-wrap" style="display:none">
@@ -197,7 +197,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- CASHFLOW -->
 <div class="page" id="page-cashflow">
   <div class="page-title">Cashflow Statement — Comparative</div>
-  <div class="page-sub">Operating, investing & financing activities · current year vs prior year</div>
+  <div class="page-sub">Cash in and out of the trust — current and prior year</div>
   <div class="card section"><h3>Operating Activities</h3><div id="cf-operating-inputs"></div></div>
   <div class="card section"><h3>Investing Activities</h3><div id="cf-investing-inputs"></div></div>
   <div class="card section"><h3>Financing / Distribution Activities</h3><div id="cf-financing-inputs"></div></div>
@@ -211,7 +211,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- TRIAL BALANCE -->
 <div class="page" id="page-trial">
   <div class="page-title">Trial Balance</div>
-  <div class="page-sub">All trust account balances · debits & credits · verify before financial statements</div>
+  <div class="page-sub">Full list of trust account balances — verify debits equal credits</div>
   <div class="card section">
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-group"><label>Account Name</label><input id="tb-account" placeholder="e.g. Trust Corpus Fund"></div>
@@ -235,8 +235,8 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- DISTRIBUTIONS -->
 <div class="page" id="page-distributions">
   <div class="page-title">Distributions & Beneficiary Register</div>
-  <div class="page-sub">Record beneficiaries, allocate distributable income & track distributions by year</div>
-  <div class="alert alert-warn">⚠ All present entitlements must be resolved by 30 June each year. Undistributed income is taxed to the trustee at the top marginal rate.</div>
+  <div class="page-sub">Add beneficiaries, record distributions & track by year</div>
+  <div class="alert alert-warn">⚠ All income must be allocated to beneficiaries by 30 June each year. Any income not distributed is taxed to the trustee at the top rate (47%).</div>
 
   <div class="card section">
     <h3>Beneficiary Register</h3>
@@ -284,7 +284,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- RATIOS -->
 <div class="page" id="page-ratios">
   <div class="page-title">Financial & Trust Ratios</div>
-  <div class="page-sub">Liquidity · profitability · trust-specific · distribution & corpus analysis</div>
+  <div class="page-sub">Key trust ratios — distributions, asset coverage & efficiency</div>
   <div class="alert alert-info">💡 Ratios pull from your Income Statement and Balance Sheet. Enter those first, or override inputs below.</div>
 
   <div class="card section">
@@ -302,19 +302,19 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- TAX -->
 <div class="page" id="page-tax">
   <div class="page-title">Tax Planning</div>
-  <div class="page-sub">Trustee assessment, TFN withholding, streaming & 30 June entitlement obligations</div>
+  <div class="page-sub">Tax on undistributed income, TFN rules & 30 June deadlines</div>
   <div class="grid-2 section">
     <div class="card">
-      <h3>Trustee Assessment</h3>
-      <div class="alert alert-warn">⚠ A trustee is assessed at 47% on any trust income not distributed to a beneficiary with a lower tax rate. Ensure all income is resolved by 30 June.</div>
-      <div class="form-group" style="margin-bottom:10px"><label>Total Trust Income ($)</label><input type="number" id="tx-income" step="any" oninput="calcTax()"></div>
-      <div class="form-group" style="margin-bottom:10px"><label>Distributed to Beneficiaries ($)</label><input type="number" id="tx-distributed" step="any" oninput="calcTax()"></div>
-      <div class="form-group" style="margin-bottom:10px"><label>Trust Tax Losses B/F ($)</label><input type="number" id="tx-losses" step="any" oninput="calcTax()"></div>
+      <h3>Tax on undistributed income</h3>
+      <div class="alert alert-warn">⚠ Any trust income not distributed to a beneficiary is taxed to the trustee at 47%. Distribute all income before 30 June each year.</div>
+      <div class="form-group" style="margin-bottom:10px"><label>Total trust income ($)</label><input type="number" id="tx-income" step="any" oninput="calcTax()"></div>
+      <div class="form-group" style="margin-bottom:10px"><label>Distributed to beneficiaries ($)</label><input type="number" id="tx-distributed" step="any" oninput="calcTax()"></div>
+      <div class="form-group" style="margin-bottom:10px"><label>Prior year tax losses ($)</label><input type="number" id="tx-losses" step="any" oninput="calcTax()"></div>
       <div id="tax-result" style="margin-top:14px"></div>
     </div>
     <div class="card">
-      <h3>TFN Withholding</h3>
-      <div class="alert alert-info">💡 If a beneficiary has not provided their TFN, the trustee must withhold at 47% on their share of income.</div>
+      <h3>TFN withholding tax</h3>
+      <div class="alert alert-info">💡 If a beneficiary has not provided their tax file number (TFN), the trustee must withhold 47% from their distribution and pay it to the ATO.</div>
       <div class="form-group" style="margin-bottom:10px"><label>Distribution Amount ($)</label><input type="number" id="tfn-amount" step="any" oninput="calcTFN()"></div>
       <div class="form-group" style="margin-bottom:10px"><label>TFN Provided?</label><select id="tfn-provided" onchange="calcTFN()"><option value="yes">Yes</option><option value="no">No — withhold at 47%</option></select></div>
       <div id="tfn-result" style="margin-top:14px"></div>
@@ -325,11 +325,11 @@ input[type=number]{font-family:var(--font-mono)}
     <div id="trust-tax-checklist"></div>
   </div>
   <div class="card section">
-    <h3>Capital Gains — Trust Streaming</h3>
-    <div class="alert alert-info">💡 Trusts can stream capital gains and franked distributions to specific beneficiaries who can best use those concessions.</div>
+    <h3>Capital Gains — Directing to Beneficiaries</h3>
+    <div class="alert alert-info">💡 Trusts can direct capital gains and franked dividends to specific beneficiaries who will benefit most from those tax concessions.</div>
     <div class="grid-3">
-      <div class="form-group"><label>Gross Capital Gain ($)</label><input type="number" id="cg-gross" step="any" oninput="calcCG()"></div>
-      <div class="form-group"><label>Asset Held > 12 months?</label><select id="cg-discount" onchange="calcCG()"><option value="yes">Yes — 50% CGT discount</option><option value="no">No — full gain</option></select></div>
+      <div class="form-group"><label>Total capital gain ($)</label><input type="number" id="cg-gross" step="any" oninput="calcCG()"></div>
+      <div class="form-group"><label>Owned for more than 12 months??</label><select id="cg-discount" onchange="calcCG()"><option value="yes">Yes — 50% tax discount applies</option><option value="no">No — full gain</option></select></div>
       <div class="form-group"><label>Cost Base ($)</label><input type="number" id="cg-cost" step="any" oninput="calcCG()"></div>
     </div>
     <div id="cg-result" style="margin-top:14px"></div>
@@ -339,7 +339,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- SETTINGS -->
 <div class="page" id="page-settings">
   <div class="page-title">Trust Settings</div>
-  <div class="page-sub">Trust profile, reporting periods & data management</div>
+  <div class="page-sub">Trust details, reporting periods & data</div>
   <div class="grid-2 section">
     <div class="card">
       <h3>Trust Profile</h3>
@@ -369,8 +369,8 @@ input[type=number]{font-family:var(--font-mono)}
 </main>
 <div id="save-toast">✓ Saved</div>
 <footer class="site-footer">
-  <span>Trust Planner · Trust Performance Management</span>
-  <span><a href="index.html">← Hub</a> · <a href="wealth-builder.html">Financial Planner</a> · <a href="smsf.html">Super Steward</a> · <a href="smes.html">SME Planner</a> · <a href="listed-corporation.html">Listed Corporation</a></span>
+  <span>Family Trust · Finance Tools</span>
+  <span><a href="index.html">← Finance Tools Hub</a> · <a href="wealth-builder.html">Personal Finance</a> · <a href="smsf.html">Super Fund</a> · <a href="smes.html">Small Business</a> · <a href="listed-corporation.html">Listed Company</a></span>
 </footer>
 </div>
 
@@ -399,7 +399,7 @@ const IS_INCOME=[
   {id:'is_capital_gain',label:'Capital Gains (net of discount)'},{id:'is_other',label:'Other Trust Income'},
 ];
 const IS_DEDUCTIONS=[
-  {id:'is_management',label:'Trustee / Management Fees'},{id:'is_accounting',label:'Accounting & Legal Fees'},
+  {id:'is_management',label:'Trustee and management fees'},{id:'is_accounting',label:'Accounting & Legal Fees'},
   {id:'is_interest_exp',label:'Interest Expense'},{id:'is_depreciation',label:'Depreciation'},
   {id:'is_repairs',label:'Repairs & Maintenance'},{id:'is_other_ded',label:'Other Deductions'},
 ];
@@ -444,7 +444,7 @@ function calcIS(){
   const sHead=l=>{html+=`<tr class="section-head"><td colspan="4">${l}</td></tr>`;};
   sHead('Trust Income');
   IS_INCOME.forEach(i=>row(i.label,sfxs.map(s=>p(i.id,s)),'',true));
-  row('Total Trust Income',sfxs.map(totInc),'subtotal');
+  row('Total trust income',sfxs.map(totInc),'subtotal');
   sHead('Deductions & Expenses');
   IS_DEDUCTIONS.forEach(i=>row(i.label,sfxs.map(s=>p(i.id,s)),'',true));
   row('Total Deductions',sfxs.map(totDed),'subtotal');
@@ -458,11 +458,11 @@ function calcIS(){
 
 // ── BALANCE SHEET
 const BS_FIELDS={
-  corpus_assets:[{id:'bs_property',label:'Investment Property'},{id:'bs_securities',label:'Listed Securities'},{id:'bs_business',label:'Business Interests'},{id:'bs_other_corpus',label:'Other Corpus Assets'}],
+  corpus_assets:[{id:'bs_property',label:'Investment Property'},{id:'bs_securities',label:'Listed Securities'},{id:'bs_business',label:'Business Interests'},{id:'bs_other_corpus',label:'Other Long-term Assets'}],
   income_assets:[{id:'bs_cash',label:'Cash & Bank'},{id:'bs_receivables',label:'Income Receivable'},{id:'bs_prepaid',label:'Prepaid Expenses'}],
   current_liab:[{id:'bs_payables',label:'Creditors & Payables'},{id:'bs_distributions_payable',label:'Distributions Payable'},{id:'bs_tax_payable',label:'Tax Payable'}],
   noncurrent_liab:[{id:'bs_lt_loans',label:'Long-term Loans'},{id:'bs_other_ncl',label:'Other Non-Current Liabilities'}],
-  equity:[{id:'bs_corpus',label:'Corpus (Opening)'},{id:'bs_retained',label:'Retained Income / Reserves'},{id:'bs_current_yr',label:'Current Year Net Income'}]
+  equity:[{id:'bs_corpus',label:'Opening Net Assets'},{id:'bs_retained',label:'Retained Income / Reserves'},{id:'bs_current_yr',label:'Current Year Net Income'}]
 };
 function buildBSInputs(){
   const map={'corpus_assets':'bs-corpus-assets-inputs','income_assets':'bs-income-assets-inputs','current_liab':'bs-current-liab-inputs','noncurrent_liab':'bs-noncurrent-liab-inputs','equity':'bs-equity-inputs'};
@@ -491,13 +491,13 @@ function calcBS(){
   let html=`<thead><tr><th>Description</th><th>${cols[0]}</th><th>${cols[1]}</th><th>Movement</th></tr></thead><tbody>`;
   const row=(label,vals,cls='',indent=false)=>{const[cur,pri]=vals;const mv=cur-pri;const mvCls=mv>=0?'var-pos':'var-neg';html+=`<tr class="${cls}"><td${indent?' style="padding-left:28px;color:var(--muted)"':''}>${label}</td><td>${fmt(cur)}</td><td>${fmt(pri)}</td><td class="${mvCls}">${mv>=0?'+':''}${fmt(mv)}</td></tr>`;};
   const sHead=l=>{html+=`<tr class="section-head"><td colspan="4">${l}</td></tr>`;};
-  sHead('Corpus Assets');BS_FIELDS.corpus_assets.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Corpus Assets',sfxs.map(totCA),'subtotal');
-  sHead('Income Assets');BS_FIELDS.income_assets.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Income Assets',sfxs.map(totIA),'subtotal');
+  sHead('Long-term Assets');BS_FIELDS.corpus_assets.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Long-term Assets',sfxs.map(totCA),'subtotal');
+  sHead('Short-term Assets');BS_FIELDS.income_assets.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Short-term Assets',sfxs.map(totIA),'subtotal');
   row('TOTAL ASSETS',sfxs.map(totAssets),'total');
   sHead('Current Liabilities');BS_FIELDS.current_liab.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Current Liabilities',sfxs.map(totCL),'subtotal');
   sHead('Non-Current Liabilities');BS_FIELDS.noncurrent_liab.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('Total Non-Current Liabilities',sfxs.map(totNCL),'subtotal');
   row('TOTAL LIABILITIES',sfxs.map(totLiab),'total');
-  sHead('Net Assets / Corpus');BS_FIELDS.equity.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('TOTAL NET ASSETS (CORPUS)',sfxs.map(totEq),'total');
+  sHead('Net Assets');BS_FIELDS.equity.forEach(f=>row(f.label,sfxs.map(s=>p(f.id,s)),'',true));row('TOTAL NET ASSETS',sfxs.map(totEq),'total');
   row('CHECK: Liabilities + Net Assets',sfxs.map(totLE),'total');html+='</tbody>';
   document.getElementById('bs-table').innerHTML=html;
   const diff=Math.abs(totAssets('cur')-totLE('cur'));
@@ -579,9 +579,9 @@ function renderDistributions(){
 // ── RATIOS
 function buildRatioInputs(){
   const fields=[
-    {id:'ri_income',label:'Total Trust Income ($)'},{id:'ri_net_income',label:'Net Distributable Income ($)'},
+    {id:'ri_income',label:'Total trust income ($)'},{id:'ri_net_income',label:'Net Distributable Income ($)'},
     {id:'ri_total_assets',label:'Total Assets ($)'},{id:'ri_total_liab',label:'Total Liabilities ($)'},
-    {id:'ri_total_equity',label:'Net Assets / Corpus ($)'},{id:'ri_current_assets',label:'Current Assets ($)'},
+    {id:'ri_total_equity',label:'Net Assets ($)'},{id:'ri_current_assets',label:'Current Assets ($)'},
     {id:'ri_current_liab',label:'Current Liabilities ($)'},{id:'ri_cash',label:'Cash ($)'},
     {id:'ri_distributions',label:'Total Distributions ($)'},{id:'ri_corpus',label:'Corpus Value ($)'},
     {id:'ri_interest_exp',label:'Interest Expense ($)'},{id:'ri_deductions',label:'Total Deductions ($)'},
@@ -594,44 +594,53 @@ function buildRatioInputs(){
 }
 function calcRatios(){
   const g=id=>parseFloat(document.getElementById(id)?.value)||0;
-  const inc=g('ri_income'),ni=g('ri_net_income'),ta=g('ri_total_assets'),tl=g('ri_total_liab'),eq=g('ri_total_equity'),ca=g('ri_current_assets'),cl=g('ri_current_liab'),cash=g('ri_cash'),dist=g('ri_distributions'),corpus=g('ri_corpus'),intExp=g('ri_interest_exp'),ded=g('ri_deductions'),bens=g('ri_beneficiaries')||1;
-  fields.forEach&&null;
-  ['ri_income','ri_net_income','ri_total_assets','ri_total_liab','ri_total_equity','ri_current_assets','ri_current_liab','ri_cash','ri_distributions','ri_corpus','ri_interest_exp','ri_deductions','ri_beneficiaries'].forEach(id=>{S.ratioOverride[id]=g(id);});
-  const rCard=(name,value,fmt,cls,label,formula)=>`<div class="ratio-card"><div class="ratio-name">${name}</div><div class="ratio-value">${value}</div><div class="ratio-formula">${formula}</div><span class="ratio-bench ${cls}">${label}</span></div>`;
-  const bench=(v,hi,lo,dir,fmtFn)=>{if(!v||isNaN(v))return{v:'—',cls:'bench-warn',lbl:'N/A'};const d=fmtFn(v);if(dir==='high'){if(v>=hi)return{v:d,cls:'bench-ok',lbl:'Good'};if(v>=lo)return{v:d,cls:'bench-warn',lbl:'Acceptable'};return{v:d,cls:'bench-bad',lbl:'Low'};}else{if(v<=lo)return{v:d,cls:'bench-ok',lbl:'Good'};if(v<=hi)return{v:d,cls:'bench-warn',lbl:'Monitor'};return{v:d,cls:'bench-bad',lbl:'High risk'};}};
-  const b=(v,hi,lo,dir,fmtFn)=>{const r=bench(v,hi,lo,dir,fmtFn);return{...r,v:r.v};};
+  const inc=g('ri_income'),ni=g('ri_net_income'),ta=g('ri_total_assets'),tl=g('ri_total_liab'),
+    eq=g('ri_total_equity'),ca=g('ri_current_assets'),cl=g('ri_current_liab'),cash=g('ri_cash'),
+    dist=g('ri_distributions'),corpus=g('ri_corpus'),intExp=g('ri_interest_exp'),
+    ded=g('ri_deductions'),bens=g('ri_beneficiaries')||1;
+  ['ri_income','ri_net_income','ri_total_assets','ri_total_liab','ri_total_equity',
+   'ri_current_assets','ri_current_liab','ri_cash','ri_distributions','ri_corpus',
+   'ri_interest_exp','ri_deductions','ri_beneficiaries'].forEach(id=>{S.ratioOverride[id]=g(id);});
 
-  const liq=[
-    b(cl?ca/cl:null,2.0,1.5,'high',fmtX),b(cl?cash/cl:null,0.5,0.2,'high',fmtX),b(ca-cl,1,0,'high',v=>fmt(v)),b(cl?eq/cl:null,2,1,'high',fmtX)
-  ];
+  const card=(name,rawVal,fmtType,bench,dir,formula)=>{
+    const v=(rawVal===null||rawVal===undefined||!isFinite(rawVal)||isNaN(rawVal))?null:rawVal;
+    let cls='bench-ok',label='Good';
+    if(v===null){cls='bench-warn';label='N/A';}
+    else if(dir==='high'&&v<bench[0]){cls='bench-bad';label='Below target';}
+    else if(dir==='high'&&v<bench[1]){cls='bench-warn';label='Acceptable';}
+    else if(dir==='low'&&v>bench[0]){cls='bench-bad';label='High risk';}
+    else if(dir==='low'&&v>bench[1]){cls='bench-warn';label='Monitor';}
+    const display=v===null?'—':fmtType==='pct'?fmtPct(v):fmtType==='x'?fmtX(v):fmt(v);
+    return `<div class="ratio-card"><div class="ratio-name">${name}</div><div class="ratio-value">${display}</div><div class="ratio-formula">${formula}</div><span class="ratio-bench ${cls}">${label}</span></div>`;
+  };
+  const infoCard=(name,display,formula)=>
+    `<div class="ratio-card"><div class="ratio-name">${name}</div><div class="ratio-value">${display}</div><div class="ratio-formula">${formula}</div><span class="ratio-bench bench-ok">Informational</span></div>`;
+
+  const wc=ca-cl;
   document.getElementById('ratios-liquidity').innerHTML=
-    rCard('Current Ratio',liq[0].v,'x',liq[0].cls,liq[0].lbl,'Current Assets ÷ Current Liabilities')+
-    rCard('Cash Ratio',liq[1].v,'x',liq[1].cls,liq[1].lbl,'Cash ÷ Current Liabilities')+
-    `<div class="ratio-card"><div class="ratio-name">Working Capital</div><div class="ratio-value">${fmt(ca-cl)}</div><div class="ratio-formula">Current Assets − Current Liabilities</div><span class="ratio-bench ${(ca-cl)>0?'bench-ok':'bench-bad'}">${(ca-cl)>0?'Positive':'Negative'}</span></div>`+
-    rCard('Net Assets Cover',liq[3].v,'x',liq[3].cls,liq[3].lbl,'Net Assets ÷ Current Liabilities');
+    card('Current Ratio',cl?ca/cl:null,'x',[1.5,2.0],'high','Current Assets ÷ Current Liabilities')+
+    card('Cash Ratio',cl?cash/cl:null,'x',[0.2,0.5],'high','Cash ÷ Current Liabilities')+
+    `<div class="ratio-card"><div class="ratio-name">Working Capital</div><div class="ratio-value">${fmt(wc)}</div><div class="ratio-formula">Current Assets − Current Liabilities</div><span class="ratio-bench ${wc>0?'bench-ok':'bench-bad'}">${wc>0?'Positive':'Negative'}</span></div>`+
+    card('Net Assets Cover',cl?eq/cl:null,'x',[1.0,2.0],'high','Net Assets ÷ Current Liabilities');
 
-  const prof=[
-    b(inc?ni/inc*100:null,50,30,'high',fmtPct),b(ta?ni/ta*100:null,5,3,'high',fmtPct),
-    b(corpus?dist/corpus*100:null,5,3,'high',fmtPct),b(inc?dist/inc*100:null,80,50,'high',fmtPct)
-  ];
   document.getElementById('ratios-profitability').innerHTML=
-    rCard('Income Retention Rate',prof[0].v,'pct',prof[0].cls,prof[0].lbl,'Net Income ÷ Total Income × 100')+
-    rCard('Return on Assets',prof[1].v,'pct',prof[1].cls,prof[1].lbl,'Net Income ÷ Total Assets × 100')+
-    rCard('Distribution Yield',prof[2].v,'pct',prof[2].cls,prof[2].lbl,'Distributions ÷ Corpus × 100')+
-    rCard('Distribution Cover',prof[3].v,'pct',prof[3].cls,prof[3].lbl,'Distributions ÷ Income × 100');
+    card('Income kept vs distributed',inc?ni/inc*100:null,'pct',[20,40],'high','Net Income ÷ Total Income × 100')+
+    card('Return on Assets',ta?ni/ta*100:null,'pct',[3,5],'high','Net Income ÷ Total Assets × 100')+
+    card('Income distribution yield',corpus?dist/corpus*100:null,'pct',[3,5],'high','Distributions ÷ Net Assets × 100')+
+    card('Distribution Cover',inc?dist/inc*100:null,'pct',[80,50],'low','Distributions ÷ Income × 100');
 
+  const expRatio=inc>0?ded/inc*100:null;
   document.getElementById('ratios-trust').innerHTML=
-    `<div class="ratio-card"><div class="ratio-name">Avg Distribution per Beneficiary</div><div class="ratio-value">${fmt(bens?dist/bens:0)}</div><div class="ratio-formula">Total Distributions ÷ Beneficiaries</div><span class="ratio-bench bench-ok">Informational</span></div>`+
-    rCard('Income Coverage',intExp?(ni/intExp):null,fmtX,[3,2],'high','Net Income ÷ Interest Expense')+
-    b(inc?ded/inc*100:null,20,40,'low',fmtPct)&&null||
-    `<div class="ratio-card"><div class="ratio-name">Expense Ratio</div><div class="ratio-value">${inc?fmtPct(ded/inc*100):'—'}</div><div class="ratio-formula">Total Deductions ÷ Total Income × 100</div><span class="ratio-bench ${inc&&ded/inc<0.3?'bench-ok':'bench-warn'}">${inc&&ded/inc<0.3?'Efficient':'Monitor'}</span></div>`+
-    `<div class="ratio-card"><div class="ratio-name">Corpus Growth</div><div class="ratio-value">${fmt(eq)}</div><div class="ratio-formula">Net Assets (Corpus) this period</div><span class="ratio-bench bench-ok">Informational</span></div>`;
+    infoCard('Avg Distribution per Beneficiary',fmt(bens?dist/bens:0),'Total Distributions ÷ Beneficiaries')+
+    card('Interest Cover',intExp?ni/intExp:null,'x',[2.0,3.0],'high','Net Income ÷ Interest Expense')+
+    `<div class="ratio-card"><div class="ratio-name">Expense Ratio</div><div class="ratio-value">${expRatio!==null?fmtPct(expRatio):'—'}</div><div class="ratio-formula">Total Deductions ÷ Total Income × 100</div><span class="ratio-bench ${expRatio!==null&&expRatio<30?'bench-ok':'bench-warn'}">${expRatio!==null&&expRatio<30?'Efficient':'Monitor'}</span></div>`+
+    infoCard('Net Assets (Corpus)',fmt(eq),'Total Assets − Total Liabilities');
 
   document.getElementById('ratios-leverage').innerHTML=
-    rCard('Debt-to-Corpus',eq&&tl?tl/eq:null,'x',[1.5,1.0],'low','Total Liabilities ÷ Corpus')+
-    rCard('Debt-to-Assets',ta?tl/ta:null,'x',[0.5,0.3],'low','Total Liabilities ÷ Total Assets')+
-    `<div class="ratio-card"><div class="ratio-name">Interest Cover</div><div class="ratio-value">${intExp?(ni>=0?fmtX(ni/intExp):'—'):'—'}</div><div class="ratio-formula">Net Income ÷ Interest Expense</div><span class="ratio-bench ${!intExp||ni/intExp>2?'bench-ok':'bench-bad'}">${!intExp?'No debt':ni/intExp>2?'Covered':'At risk'}</span></div>`+
-    `<div class="ratio-card"><div class="ratio-name">Equity (Corpus) Ratio</div><div class="ratio-value">${ta?fmtPct(eq/ta*100):'—'}</div><div class="ratio-formula">Corpus ÷ Total Assets × 100</div><span class="ratio-bench ${ta&&eq/ta>0.5?'bench-ok':'bench-warn'}">${ta&&eq/ta>0.5?'Strong':'Monitor'}</span></div>`;
+    card('Debt to net assets',eq&&tl?tl/eq:null,'x',[1.0,1.5],'low','Total Liabilities ÷ Net Assets')+
+    card('Debt-to-Assets',ta?tl/ta:null,'x',[0.3,0.5],'low','Total Liabilities ÷ Total Assets')+
+    `<div class="ratio-card"><div class="ratio-name">Interest Cover</div><div class="ratio-value">${intExp?fmtX(ni/intExp):'—'}</div><div class="ratio-formula">Net Income ÷ Interest Expense</div><span class="ratio-bench ${!intExp||ni/intExp>2?'bench-ok':'bench-bad'}">${!intExp?'No debt':ni/intExp>2?'Covered':'At risk'}</span></div>`+
+    `<div class="ratio-card"><div class="ratio-name">Net asset ratio</div><div class="ratio-value">${ta?fmtPct(eq/ta*100):'—'}</div><div class="ratio-formula">Net Assets ÷ Total Assets × 100</div><span class="ratio-bench ${ta&&eq/ta>0.5?'bench-ok':'bench-warn'}">${ta&&eq/ta>0.5?'Strong':'Monitor'}</span></div>`;
 }
 
 // ── TAX
@@ -643,9 +652,9 @@ function calcTax(){
   const trusteeAssessment=undistributed*0.47;
   document.getElementById('tax-result').innerHTML=income?`
     <div class="grid-3">
-      <div class="kpi gold"><div class="kpi-label">Total Trust Income</div><div class="kpi-value">${fmt(income)}</div></div>
+      <div class="kpi gold"><div class="kpi-label">Total trust income</div><div class="kpi-value">${fmt(income)}</div></div>
       <div class="kpi green"><div class="kpi-label">Distributed</div><div class="kpi-value">${fmt(dist)}</div></div>
-      <div class="kpi red"><div class="kpi-label">Trustee Assessment</div><div class="kpi-value">${fmt(trusteeAssessment)}</div><div class="kpi-sub">${fmt(undistributed)} at 47% marginal rate</div></div>
+      <div class="kpi red"><div class="kpi-label">Tax on undistributed income</div><div class="kpi-value">${fmt(trusteeAssessment)}</div><div class="kpi-sub">${fmt(undistributed)} at 47% marginal rate</div></div>
     </div>`:'';
 }
 function calcTFN(){
@@ -654,7 +663,7 @@ function calcTFN(){
   const withholding=tfnProvided?0:amount*0.47;
   document.getElementById('tfn-result').innerHTML=amount?`
     <div class="kpi ${tfnProvided?'green':'red'}">
-      <div class="kpi-label">${tfnProvided?'No withholding required':'TFN Withholding'}</div>
+      <div class="kpi-label">${tfnProvided?'No withholding required':'TFN withholding tax'}</div>
       <div class="kpi-value">${tfnProvided?'$0':fmt(withholding)}</div>
       <div class="kpi-sub">${tfnProvided?'TFN provided':'Must remit to ATO by due date'}</div>
     </div>`:'';
@@ -667,18 +676,18 @@ function calcCG(){
   const discountedGain=discount?rawGain*0.5:rawGain;
   document.getElementById('cg-result').innerHTML=gross?`
     <div class="grid-3">
-      <div class="kpi gold"><div class="kpi-label">Gross Capital Gain</div><div class="kpi-value">${fmt(rawGain)}</div></div>
+      <div class="kpi gold"><div class="kpi-label">Total capital gain</div><div class="kpi-value">${fmt(rawGain)}</div></div>
       <div class="kpi blue"><div class="kpi-label">CGT Discount Applied</div><div class="kpi-value">${discount?'50%':'None'}</div></div>
-      <div class="kpi green"><div class="kpi-label">Net Taxable Gain</div><div class="kpi-value">${fmt(discountedGain)}</div><div class="kpi-sub">For streaming to beneficiaries</div></div>
+      <div class="kpi green"><div class="kpi-label">Taxable gain after discount</div><div class="kpi-value">${fmt(discountedGain)}</div><div class="kpi-sub">To allocate to beneficiaries</div></div>
     </div>`:'';
 }
 function renderTrustTaxChecklist(){
   const items=[
-    {label:'Present entitlement resolved by 30 June',note:'All distributable income must be allocated to beneficiaries by 30 June or taxed to trustee at 47%.'},
-    {label:'Trustee resolution signed & dated before 30 June',note:'A valid trustee resolution is required to create present entitlement — back-dated resolutions are not effective.'},
+    {label:'All income allocated to beneficiaries by 30 June',note:'All trust income must be allocated to a beneficiary by 30 June, or the trustee pays 47% tax on it.'},
+    {label:'Trustee resolution signed before 30 June',note:'The trustee must sign a formal resolution by 30 June to confirm who receives which income. Back-dated resolutions are not valid.'},
     {label:'TFN lodged for trust with ATO',note:'The trust must have its own TFN; withhold at 47% for any beneficiary who has not provided theirs.'},
-    {label:'Section 100A risk review',note:'Distributions to beneficiaries with reimbursement agreements or where the economic benefit passes to someone else may be void under s100A.'},
-    {label:'Trust loss provisions reviewed',note:'Trust losses cannot be passed to beneficiaries — they must be retained in the trust and applied in future years under specific tests.'},
+    {label:'Reimbursement agreement risk check (s100A)',note:'If the beneficiary gives the money back or passes it to someone else under an arrangement, the distribution may be voided and fully taxed. Review with your adviser.'},
+    {label:'Trust losses reviewed (cannot pass to beneficiaries)',note:'Losses stay inside the trust and can only be used in future years once specific tests are met. They cannot be passed to beneficiaries.'},
     {label:'Annual tax return lodged (Trust Tax Return)',note:'Lodgement due date is 31 October (or agent date if lodged via a tax agent).'},
   ];
   document.getElementById('trust-tax-checklist').innerHTML=items.map(i=>`<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--accent3);font-size:16px;margin-top:2px">✓</span><div><div style="font-weight:600;font-size:13px">${i.label}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${i.note}</div></div></div>`).join('');
@@ -692,18 +701,32 @@ function renderDashboard(){
   const kpis=[
     {label:'Net Distributable Income',val:fmt(ni),cls:'gold',sub:S.settings.period||'Current'},
     {label:'Total Trust Assets',val:fmt(ta),cls:'blue',sub:'All assets'},
-    {label:'Net Assets (Corpus)',val:fmt(eq),cls:'green',sub:'Assets − Liabilities'},
+    {label:'Net Assets',val:fmt(eq),cls:'green',sub:'Assets − Liabilities'},
     {label:'Total Distributions',val:fmt(dist),cls:'purple',sub:`${bens} beneficiar${bens===1?'y':'ies'}`},
     {label:'Undistributed Income',val:fmt(Math.max(ni-dist,0)),cls:ni>dist?'red':'green',sub:ni>dist?'⚠ May be trustee assessed':'Fully distributed'},
   ];
   document.getElementById('dash-kpis').innerHTML=kpis.map(k=>`<div class="kpi ${k.cls}"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
   const ratioSummary=[
-    {name:'Distribution Yield',val:eq?fmtPct(dist/eq*100):'—',bench:'vs Corpus'},
+    {name:'Income distribution yield',val:eq?fmtPct(dist/eq*100):'—',bench:'vs Net Assets'},
     {name:'Income Coverage',val:S.bs._totCLCur&&ni?(fmtX(ni/S.bs._totCLCur)):'—',bench:'Target >2×'},
     {name:'Equity Ratio',val:ta?fmtPct(eq/ta*100):'—',bench:'Target >50%'},
     {name:'Expense Ratio',val:S.is._totIncCur?fmtPct(S.is._totDedCur/S.is._totIncCur*100):'—',bench:'Target <30%'},
   ];
   document.getElementById('dash-ratio-summary').innerHTML=`<div class="grid-2">${ratioSummary.map(r=>`<div class="card-tight"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">${r.name}</div><div style="font-family:var(--font-mono);font-size:18px;color:var(--accent)">${r.val}</div><div style="font-size:11px;color:var(--muted)">${r.bench}</div></div>`).join('')}</div>`;
+
+  // Corpus vs Income Assets donut chart
+  const ctx=document.getElementById('dash-corpus-chart');
+  if(ctx){
+    const corpusVal=S.bs._totCorpusCur||0;
+    const incomeVal=S.bs._totCACur||0;
+    const other=Math.max(ta-corpusVal-incomeVal,0);
+    if(window._corpusChart) window._corpusChart.destroy();
+    window._corpusChart=new Chart(ctx,{
+      type:'doughnut',
+      data:{ labels:['Long-term Assets','Short-term Assets','Other'], datasets:[{ data:[corpusVal,incomeVal,other], backgroundColor:['#c8a96e','#4ecb8a','#5c9eff'], borderWidth:0 }] },
+      options:{ cutout:'65%', plugins:{ legend:{ position:'bottom', labels:{ color:'#7a7f8e', usePointStyle:true, font:{size:11} } } }, animation:{ duration:400 } }
+    });
+  }
 }
 
 // ── SETTINGS
