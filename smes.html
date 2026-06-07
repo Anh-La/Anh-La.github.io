@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SME Planner · Business Performance Management</title>
+<title>Small Business · Finance Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -129,9 +129,9 @@ input[type=number]{font-family:var(--font-mono)}
 <header>
   <div class="logo">
     <a href="index.html" class="back-link">← Hub</a>
-    <span class="logo-title">SME Planner</span>
-    <span class="logo-sub">Business Performance</span>
-    <span class="hub-badge">SME</span>
+    <span class="logo-title">Small Business</span>
+    <span class="logo-sub">Business Finance</span>
+    <span class="hub-badge">Business</span>
   </div>
   <div class="header-right">
     <span class="last-updated" id="last-updated-label"></span>
@@ -163,7 +163,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <div class="page-title">Business Overview</div>
-  <div class="page-sub">SME performance at a glance · revenue, margin, liquidity & key alerts</div>
+  <div class="page-sub">Revenue, profit margin, cash position & key alerts</div>
   <div class="grid-5 section" id="dash-kpis"></div>
   <div class="grid-2 section">
     <div class="card">
@@ -184,7 +184,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- P&L -->
 <div class="page" id="page-pl">
   <div class="page-title">Profit & Loss — Comparative</div>
-  <div class="page-sub">Actual vs budget vs prior year · revenue, COGS, gross profit, EBITDA, net profit</div>
+  <div class="page-sub">Income vs expenses vs budget — current period and prior year</div>
   <div class="alert alert-info">💡 Enter figures for Current Period, Budget and Prior Year to generate the comparative statement. Variances calculate automatically.</div>
 
   <div class="card section">
@@ -192,7 +192,7 @@ input[type=number]{font-family:var(--font-mono)}
     <div class="grid-3" id="pl-revenue-inputs"></div>
   </div>
   <div class="card section">
-    <h3>Cost of Goods Sold</h3>
+    <h3>Direct Costs (COGS)</h3>
     <div class="grid-3" id="pl-cogs-inputs"></div>
   </div>
   <div class="card section">
@@ -217,7 +217,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- BALANCE SHEET -->
 <div class="page" id="page-balance">
   <div class="page-title">Balance Sheet — Comparative</div>
-  <div class="page-sub">Assets, liabilities & equity · current period vs prior year with movement analysis</div>
+  <div class="page-sub">What you own, what you owe & net equity — compared to prior year</div>
   <div class="alert alert-info">💡 Enter values for Current and Prior Year. The statement checks that Assets = Liabilities + Equity and flags any imbalance.</div>
 
   <div class="grid-2 section">
@@ -258,7 +258,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- CASHFLOW -->
 <div class="page" id="page-cashflow">
   <div class="page-title">Cashflow Statement — Comparative</div>
-  <div class="page-sub">Operating, investing & financing activities · indirect method · current vs prior year</div>
+  <div class="page-sub">Cash in and out of the business — operating, investing & financing</div>
   <div class="alert alert-info">💡 Net cash from all three activities reconciles to the closing cash balance. Operating section uses the indirect method starting from net profit.</div>
 
   <div class="card section">
@@ -284,7 +284,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- TRIAL BALANCE -->
 <div class="page" id="page-trial">
   <div class="page-title">Trial Balance</div>
-  <div class="page-sub">All account balances · debits & credits · pre-adjustment and post-adjustment</div>
+  <div class="page-sub">Full list of account balances — verify debits equal credits</div>
   <div class="card section">
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-group"><label>Account Name</label><input id="tb-account" placeholder="e.g. Trade Receivables"></div>
@@ -317,7 +317,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- RATIOS -->
 <div class="page" id="page-ratios">
   <div class="page-title">Financial & Business Ratios</div>
-  <div class="page-sub">Liquidity · profitability · efficiency · leverage · SME-specific benchmarks</div>
+  <div class="page-sub">Key business ratios with benchmarks — financial health at a glance</div>
   <div class="alert alert-info">💡 Ratios auto-calculate from your Balance Sheet and P&L data. Enter figures in those tabs first, or override individual inputs below.</div>
 
   <div class="card section">
@@ -351,7 +351,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- TAX -->
 <div class="page" id="page-tax">
   <div class="page-title">Tax Planning</div>
-  <div class="page-sub">Company tax, GST, Division 7A, small business concessions · FY estimates</div>
+  <div class="page-sub">Company tax, GST, company loans & small business tax concessions</div>
   <div class="grid-2 section">
     <div class="card">
       <h3>Company Tax Estimate</h3>
@@ -375,10 +375,10 @@ input[type=number]{font-family:var(--font-mono)}
     <div id="sbc-checklist"></div>
   </div>
   <div class="card section">
-    <h3>Division 7A — Loan from Company</h3>
+    <h3>Loan from Your Company</h3>
     <div class="grid-3">
       <div class="form-group"><label>Loan Principal ($)</label><input type="number" id="d7a-principal" step="any" oninput="calcD7A()"></div>
-      <div class="form-group"><label>Benchmark Rate (% p.a.)</label><input type="number" id="d7a-rate" value="8.27" step="any" oninput="calcD7A()"></div>
+      <div class="form-group"><label>ATO Benchmark Rate (% p.a.)</label><input type="number" id="d7a-rate" value="8.27" step="any" oninput="calcD7A()"></div>
       <div class="form-group"><label>Loan Term (years)</label><input type="number" id="d7a-years" value="7" step="any" oninput="calcD7A()"></div>
     </div>
     <div id="d7a-result" style="margin-top:14px"></div>
@@ -388,7 +388,7 @@ input[type=number]{font-family:var(--font-mono)}
 <!-- SETTINGS -->
 <div class="page" id="page-settings">
   <div class="page-title">Entity Settings</div>
-  <div class="page-sub">Business profile, reporting periods & data management</div>
+  <div class="page-sub">Business details, reporting periods & data</div>
   <div class="grid-2 section">
     <div class="card">
       <h3>Business Profile</h3>
@@ -418,8 +418,8 @@ input[type=number]{font-family:var(--font-mono)}
 <div id="save-toast">✓ Saved</div>
 
 <footer class="site-footer">
-  <span>SME Planner · Business Performance Management</span>
-  <span><a href="index.html">← Hub</a> · <a href="wealth-builder.html">Financial Planner</a> · <a href="smsf.html">Super Steward</a> · <a href="trust.html">Trust</a> · <a href="listed-corporation.html">Listed Corporation</a></span>
+  <span>Small Business · Finance Tools</span>
+  <span><a href="index.html">← Finance Tools Hub</a> · <a href="wealth-builder.html">Personal Finance</a> · <a href="smsf.html">Super Fund</a> · <a href="trust.html">Family Trust</a> · <a href="listed-corporation.html">Listed Company</a></span>
 </footer>
 
 </div><!-- #app -->
@@ -570,7 +570,7 @@ function calcPL(){
   PL_REVENUE.forEach(i=>row(i.label,sfxs.map(s=>p(i.id,s)),'' ,true));
   row('Total Revenue',sfxs.map(totRev),'subtotal');
 
-  sHead('Cost of Goods Sold');
+  sHead('Direct Costs (COGS)');
   PL_COGS.forEach(i=>row(i.label,sfxs.map(s=>p(i.id,s)),'',true));
   row('Total COGS',sfxs.map(totCOGS),'subtotal');
   row('Gross Profit',sfxs.map(grossProfit),'total');
@@ -580,7 +580,7 @@ function calcPL(){
   sHead('Operating Expenses');
   PL_OPEX.forEach(i=>row(i.label,sfxs.map(s=>p(i.id,s)),'',true));
   row('Total Operating Expenses',sfxs.map(totOpex),'subtotal');
-  row('EBITDA',sfxs.map(ebitda),'subtotal');
+  row('Operating profit before depreciation (EBITDA)',sfxs.map(ebitda),'subtotal');
   row('EBIT (Operating Profit)',sfxs.map(ebit),'total');
 
   sHead('Other Income / Expense');
@@ -895,7 +895,7 @@ function buildRatioInputs(){
     {id:'ri_revenue',label:'Total Revenue ($)'},
     {id:'ri_gross_profit',label:'Gross Profit ($)'},
     {id:'ri_ebit',label:'EBIT ($)'},
-    {id:'ri_ebitda',label:'EBITDA ($)'},
+    {id:'ri_ebitda',label:'Operating profit before depreciation (EBITDA) ($)'},
     {id:'ri_net_profit',label:'Net Profit ($)'},
     {id:'ri_current_assets',label:'Current Assets ($)'},
     {id:'ri_current_liab',label:'Current Liabilities ($)'},
@@ -981,7 +981,7 @@ function calcRatios(){
   const roce=ta&&tl&&(ta-tl)>0 ? ebit/(ta-tl)*100 : null;
   document.getElementById('ratios-profitability').innerHTML=
     card('Gross Margin',          rev?gp/rev*100:null,       'pct', [20,30],  'high','Gross Profit ÷ Revenue × 100')+
-    card('EBITDA Margin',         rev?ebitda/rev*100:null,   'pct', [8,15],   'high','EBITDA ÷ Revenue × 100')+
+    card('Operating profit before depreciation (EBITDA) Margin',         rev?ebitda/rev*100:null,   'pct', [8,15],   'high','Operating profit before depreciation (EBITDA) ÷ Revenue × 100')+
     card('EBIT Margin',           rev?ebit/rev*100:null,     'pct', [5,10],   'high','EBIT ÷ Revenue × 100')+
     card('Net Profit Margin',     rev?np/rev*100:null,       'pct', [3,7],    'high','Net Profit ÷ Revenue × 100')+
     card('Return on Assets (ROA)',ta?np/ta*100:null,          'pct', [4,8],    'high','Net Profit ÷ Total Assets × 100')+
@@ -1014,7 +1014,7 @@ function calcRatios(){
     card('Debt Service Cover',netOpCF&&intExp?netOpCF/intExp:null,'x',[1.25,2.0],'high','Operating Cashflow ÷ Interest Expense')+
     card('Gearing',         tl&&eq?tl/(tl+eq)*100:null,     'pct',[50,40], 'low', 'Total Debt ÷ (Debt + Equity) × 100')+
     `<div class="ratio-card"><div class="ratio-name">Net Debt ($)</div><div class="ratio-value">${fmt(netDebt)}</div><div class="ratio-formula">Total Debt − Cash</div><span class="ratio-bench ${netDebt<=0?'bench-ok':'bench-warn'}">${netDebt<=0?'Net Cash':'Net Debt'}</span></div>`+
-    card('Net Debt / EBITDA',ebitda&&netDebt>0?netDebt/ebitda:null,'x',[3.0,2.0],'low','Net Debt ÷ EBITDA');
+    card('Net Debt / Operating profit before depreciation (EBITDA)',ebitda&&netDebt>0?netDebt/ebitda:null,'x',[3.0,2.0],'low','Net Debt ÷ Operating profit before depreciation (EBITDA)');
 
   // ── SME-SPECIFIC BUSINESS RATIOS
   const gmPct=rev>0?gp/rev:null;
@@ -1028,7 +1028,7 @@ function calcRatios(){
     card('Overhead Ratio',       opexRatio,                'pct',[35,20], 'low', 'Overhead ÷ Revenue × 100')+
     `<div class="ratio-card"><div class="ratio-name">Break-Even Revenue ($)</div><div class="ratio-value">${breakEvenRev?fmt(breakEvenRev):'—'}</div><div class="ratio-formula">Fixed Costs ÷ Gross Margin %</div><span class="ratio-bench ${breakEvenRev&&rev&&breakEvenRev<rev?'bench-ok':'bench-warn'}">${breakEvenRev&&rev?breakEvenRev<rev?'Above break-even':'Below break-even':'N/A'}</span></div>`+
     card('Operating Cashflow Margin',netOpCF&&rev?netOpCF/rev*100:null,'pct',[5,10],'high','Operating Cashflow ÷ Revenue × 100')+
-    infoCard('Absolute EBITDA',fmt(ebitda),'Earnings before Interest, Tax, D&A')+
+    infoCard('Absolute Operating profit before depreciation (EBITDA)',fmt(ebitda),'Earnings before Interest, Tax, D&A')+
     infoCard('Revenue per $ of Assets',ta?fmtX(rev/ta):'—','Revenue ÷ Total Assets');
 }
 
@@ -1086,12 +1086,12 @@ function calcD7A(){
 
 function renderSBCChecklist(){
   const items=[
-    {label:'Instant asset write-off (assets under threshold)',note:'Small business entities may immediately deduct eligible assets — confirm current threshold with ATO.'},
-    {label:'Small business income tax offset (sole traders)',note:'20% offset up to $1,000 for eligible individuals with business income.'},
-    {label:'Simplified trading stock rules',note:'If stock value change is under $5,000, no year-end stocktake required.'},
-    {label:'Pay-as-you-go (PAYG) instalment concessions',note:'SBEs may use GDP-adjusted notional tax method for lower instalment amounts.'},
-    {label:'Small business CGT concessions',note:'15-year exemption, 50% reduction, retirement exemption and rollover may apply to active business assets.'},
-    {label:'Prepayment deductions',note:'Prepaid expenses of up to 12 months ahead can be deducted in the year of payment.'},
+    {label:'Instant asset write-off for eligible equipment',note:'Small business entities may immediately deduct eligible assets — confirm current threshold with ATO.'},
+    {label:'Income tax offset for eligible sole traders',note:'20% offset up to $1,000 for eligible individuals with business income.'},
+    {label:'Simplified stock rules (change under $5,000)',note:'If stock value change is under $5,000, no year-end stocktake required.'},
+    {label:'Tax instalment concessions',note:'SBEs may use GDP-adjusted notional tax method for lower instalment amounts.'},
+    {label:'Capital gains tax concessions for small business',note:'15-year exemption, 50% reduction, retirement exemption and rollover may apply to active business assets.'},
+    {label:'Prepaid expense deductions (up to 12 months ahead)',note:'Prepaid expenses of up to 12 months ahead can be deducted in the year of payment.'},
   ];
   document.getElementById('sbc-checklist').innerHTML=items.map(i=>`
     <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
