@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listed Corporation · Performance Management</title>
+<title>Listed Company · Finance Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -96,9 +96,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <header>
   <div class="logo">
     <a href="index.html" class="back-link">← Hub</a>
-    <span class="logo-title">Listed Corporation</span>
-    <span class="logo-sub">Performance Management</span>
-    <span class="hub-badge">ASX / Listed</span>
+    <span class="logo-title">Listed Company</span>
+    <span class="logo-sub">Company Reporting</span>
+    <span class="hub-badge">Listed</span>
   </div>
   <div class="header-right">
     <span class="last-updated" id="last-updated-label"></span>
@@ -132,7 +132,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ DASHBOARD ══════════════════════ -->
 <div class="page active" id="page-dashboard">
   <div class="page-title">Corporate Performance Overview</div>
-  <div class="page-sub">Revenue, EBITDA, EPS, market cap & shareholder returns — ASX-listed entity</div>
+  <div class="page-sub">Revenue, profit, earnings per share & shareholder returns overview</div>
   <div class="grid-5 section" id="dash-kpis"></div>
   <div class="grid-2 section">
     <div class="card">
@@ -153,8 +153,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ P&L ══════════════════════ -->
 <div class="page" id="page-pl">
   <div class="page-title">Profit & Loss Statement — Comparative</div>
-  <div class="page-sub">Actual vs budget vs prior year · revenue, COGS, gross profit, EBITDA, NPAT, EPS</div>
-  <div class="alert alert-info">💡 AASB 101 requires presentation of a comparative period. Enter three columns — Current, Budget and Prior Year — to generate the full comparative statement with variance analysis.</div>
+  <div class="page-sub">Income vs expenses vs budget — with earnings per share</div>
+  <div class="alert alert-info">💡 Enter figures for the current period, budget and prior year. Variances calculate automatically.</div>
 
   <div class="card section"><h3>Revenue</h3><div id="pl-revenue-inputs"></div></div>
   <div class="card section"><h3>Cost of Sales</h3><div id="pl-cogs-inputs"></div></div>
@@ -180,8 +180,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ BALANCE SHEET ══════════════════════ -->
 <div class="page" id="page-balance">
   <div class="page-title">Balance Sheet — Comparative</div>
-  <div class="page-sub">Current assets, non-current assets, liabilities & equity · AASB 101 classified presentation</div>
-  <div class="alert alert-info">💡 AASB 101 requires presentation of two comparative periods. The balance check confirms Assets = Liabilities + Equity and flags any imbalance.</div>
+  <div class="page-sub">What the company owns, owes & net equity — current and prior year</div>
+  <div class="alert alert-info">💡 Enter current and prior year figures. The check at the bottom confirms assets equal liabilities plus equity.</div>
 
   <div class="grid-2 section">
     <div class="card"><h3>Current Assets</h3><div id="bs-ca-inputs"></div></div>
@@ -206,8 +206,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ CASHFLOW ══════════════════════ -->
 <div class="page" id="page-cashflow">
   <div class="page-title">Statement of Cashflows — Comparative</div>
-  <div class="page-sub">Operating (indirect), investing & financing · current vs prior year · AASB 107 compliant</div>
-  <div class="alert alert-info">💡 Under AASB 107, listed entities must present operating cashflows using either the direct or indirect method. This statement uses the indirect method, starting from NPAT.</div>
+  <div class="page-sub">Cash generated and spent — operating, investing & financing</div>
+  <div class="alert alert-info">💡 This statement starts from net profit and adjusts for non-cash items to show actual cash generated.</div>
 
   <div class="card section"><h3>Operating Activities (Indirect Method)</h3><div id="cf-op-inputs"></div></div>
   <div class="card section"><h3>Investing Activities</h3><div id="cf-inv-inputs"></div></div>
@@ -223,7 +223,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ TRIAL BALANCE ══════════════════════ -->
 <div class="page" id="page-trial">
   <div class="page-title">Trial Balance</div>
-  <div class="page-sub">All account balances · debits & credits · verify before financial statements are prepared</div>
+  <div class="page-sub">Full list of account balances — verify debits equal credits</div>
   <div class="card section">
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-group"><label>Account Name</label><input id="tb-account" placeholder="e.g. Trade Receivables"></div>
@@ -251,7 +251,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ RATIOS ══════════════════════ -->
 <div class="page" id="page-ratios">
   <div class="page-title">Financial Ratios — Listed Entity</div>
-  <div class="page-sub">Liquidity · profitability · efficiency · leverage · investor & ASX-specific ratios</div>
+  <div class="page-sub">Financial health, profitability, efficiency & investor ratios with benchmarks</div>
   <div class="alert alert-info">💡 Ratios auto-populate from P&L and Balance Sheet. You can override any input below before calculating.</div>
 
   <div class="card section">
@@ -270,7 +270,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ MARKET METRICS ══════════════════════ -->
 <div class="page" id="page-market">
   <div class="page-title">Market Metrics & Valuation</div>
-  <div class="page-sub">EPS, P/E, market cap, enterprise value, EV/EBITDA · ASX investor analysis</div>
+  <div class="page-sub">Share price valuation, market cap & comparisons with peers</div>
   <div class="alert alert-info">💡 Enter current share price and market data to calculate valuation multiples alongside the financial fundamentals.</div>
 
   <div class="grid-2 section">
@@ -295,14 +295,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-group"><label>Company Name</label><input id="peer-name" placeholder="e.g. BHP Group"></div>
       <div class="form-group"><label>Market Cap ($m)</label><input type="number" id="peer-mktcap" step="any"></div>
-      <div class="form-group"><label>P/E Ratio</label><input type="number" id="peer-pe" step="any"></div>
-      <div class="form-group"><label>EV/EBITDA</label><input type="number" id="peer-evebitda" step="any"></div>
+      <div class="form-group"><label>Share price ÷ earnings (P/E)</label><input type="number" id="peer-pe" step="any"></div>
+      <div class="form-group"><label>EV ÷ EBITDA</label><input type="number" id="peer-evebitda" step="any"></div>
       <div class="form-group"><label>Dividend Yield (%)</label><input type="number" id="peer-yield" step="any"></div>
       <div class="form-group" style="align-self:flex-end"><button class="btn btn-accent" onclick="addPeer()">+ Add</button></div>
     </div>
     <div style="overflow-x:auto">
       <table class="tb-table" id="peer-table">
-        <thead><tr><th>Company</th><th>Market Cap ($m)</th><th>P/E</th><th>EV/EBITDA</th><th>Div Yield</th><th></th></tr></thead>
+        <thead><tr><th>Company</th><th>Market Cap ($m)</th><th>P/E</th><th>EV ÷ EBITDA</th><th>Div Yield</th><th></th></tr></thead>
         <tbody id="peer-tbody"></tbody>
       </table>
     </div>
@@ -312,7 +312,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ DIVIDENDS ══════════════════════ -->
 <div class="page" id="page-dividends">
   <div class="page-title">Dividend History & Analysis</div>
-  <div class="page-sub">DPS, payout ratio, franking, yield & dividend sustainability analysis</div>
+  <div class="page-sub">Dividend per share, yield, franking credits & sustainability check</div>
 
   <div class="grid-2 section">
     <div class="card">
@@ -352,7 +352,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ TAX ══════════════════════ -->
 <div class="page" id="page-tax">
   <div class="page-title">Tax Planning & Compliance</div>
-  <div class="page-sub">Company tax, franking account, thin capitalisation, R&D incentives · ASX-listed entity</div>
+  <div class="page-sub">Company tax, franking credits, related-party debt limits & R&D incentives</div>
 
   <div class="grid-2 section">
     <div class="card">
@@ -375,8 +375,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
   </div>
 
   <div class="card section">
-    <h3>Thin Capitalisation Check</h3>
-    <div class="alert alert-warn">⚠ Thin capitalisation rules limit debt deductions for entities with offshore related-party debt. The safe harbour debt amount is 60% of the average value of Australian assets.</div>
+    <h3>Related-party Debt Limit Check</h3>
+    <div class="alert alert-warn">⚠ Rules limit interest deductions for companies with large offshore related-party loans. The safe limit is 60% of Australian assets.</div>
     <div class="grid-3">
       <div class="form-group"><label>Average Australian Assets ($m)</label><input type="number" id="tc-assets" step="any" oninput="calcThinCap()"></div>
       <div class="form-group"><label>Actual Debt ($m)</label><input type="number" id="tc-debt" step="any" oninput="calcThinCap()"></div>
@@ -386,12 +386,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
   </div>
 
   <div class="card section">
-    <h3>R&D Tax Incentive Estimate</h3>
-    <div class="alert alert-info">💡 Eligible R&D expenditure qualifies for a 43.5% tax offset (turnover &lt;$20m) or 8.5%–16.5% premium above the corporate tax rate (turnover ≥$20m).</div>
+    <h3>Research & Development Tax Estimate</h3>
+    <div class="alert alert-info">💡 Qualifying R&D spending receives a 43.5% tax offset for smaller companies (under $20m turnover) or an 8.5–16.5% premium for larger ones.</div>
     <div class="grid-3">
       <div class="form-group"><label>R&D Expenditure ($m)</label><input type="number" id="rd-spend" step="any" oninput="calcRD()"></div>
-      <div class="form-group"><label>Aggregate Turnover ($m)</label><input type="number" id="rd-turnover" step="any" oninput="calcRD()"></div>
-      <div class="form-group"><label>R&D Intensity (%)</label><input type="number" id="rd-intensity" step="any" placeholder="Auto-calculated" readonly></div>
+      <div class="form-group"><label>Total annual revenue ($m)</label><input type="number" id="rd-turnover" step="any" oninput="calcRD()"></div>
+      <div class="form-group"><label>R&D as % of revenue (%)</label><input type="number" id="rd-intensity" step="any" placeholder="Auto-calculated" readonly></div>
     </div>
     <div id="rd-result" style="margin-top:14px"></div>
   </div>
@@ -405,7 +405,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 <!-- ══════════════════════ SETTINGS ══════════════════════ -->
 <div class="page" id="page-settings">
   <div class="page-title">Entity Settings</div>
-  <div class="page-sub">Company profile, reporting periods, ASX details & data management</div>
+  <div class="page-sub">Company details, reporting periods & data</div>
   <div class="grid-2 section">
     <div class="card">
       <h3>Company Profile</h3>
@@ -435,8 +435,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 </main>
 <div id="save-toast">✓ Saved</div>
 <footer class="site-footer">
-  <span>Listed Corporation · Performance Management</span>
-  <span><a href="index.html">← Hub</a> · <a href="wealth-builder.html">Financial Planner</a> · <a href="smsf.html">Super Steward</a> · <a href="smes.html">SME Planner</a> · <a href="trust.html">Trust Planner</a></span>
+  <span>Listed Company · Finance Tools</span>
+  <span><a href="index.html">← Finance Tools Hub</a> · <a href="wealth-builder.html">Personal Finance</a> · <a href="smsf.html">Super Fund</a> · <a href="smes.html">Small Business</a> · <a href="trust.html">Family Trust</a></span>
 </footer>
 </div>
 
@@ -863,7 +863,7 @@ function calcRatios(){
     card('Return on Assets',     ta?npat/ta*100:null,    'pct', [5,10],   'high','NPAT ÷ Total Assets × 100')+
     card('Return on Equity',     eq?npat/eq*100:null,    'pct', [10,15],  'high','NPAT ÷ Equity × 100')+
     card('ROCE',                 roce,                    'pct', [10,15],  'high','EBIT ÷ Capital Employed × 100')+
-    card('Operating CF Margin',  rev&&netOpCF?netOpCF/rev*100:null,'pct',[8,15],'high','Operating Cashflow ÷ Revenue × 100');
+    card('Operating cashflow margin',  rev&&netOpCF?netOpCF/rev*100:null,'pct',[8,15],'high','Operating Cashflow ÷ Revenue × 100');
 
   // EFFICIENCY
   const dso=rev>0?rec/(rev/365):null;
@@ -902,17 +902,17 @@ function calcRatios(){
   const fcfYield=mktCap&&fcf?fcf/mktCap*100:null;
   document.getElementById('ratios-investor').innerHTML=
     infoCard('Market Cap ($m)',     fmt(mktCap),                  'Share Price × Shares on Issue')+
-    infoCard('Enterprise Value ($m)',fmt(ev),                     'Market Cap + Net Debt + Minorities')+
-    card('P/E Ratio',               pe,                          'x',  [10,20], 'high','Share Price ÷ EPS')+
-    card('EV/EBITDA',               evEbitda,                    'x',  [6,12],  'low', 'Enterprise Value ÷ EBITDA')+
-    card('EV/Revenue',              evRev,                       'x',  [1,3],   'low', 'Enterprise Value ÷ Revenue')+
-    card('Price-to-Book (P/BV)',    pbv,                         'x',  [1,3],   'low', 'Price ÷ Book Value per Share')+
+    infoCard('Enterprise value (EV) ($m)',fmt(ev),                     'Market Cap + Net Debt + Minorities')+
+    card('Share price ÷ earnings (P/E)',               pe,                          'x',  [10,20], 'high','Share Price ÷ EPS')+
+    card('EV ÷ EBITDA',               evEbitda,                    'x',  [6,12],  'low', 'Enterprise value (EV) ÷ EBITDA')+
+    card('EV ÷ Revenue',              evRev,                       'x',  [1,3],   'low', 'Enterprise value (EV) ÷ Revenue')+
+    card('Price to book value',    pbv,                         'x',  [1,3],   'low', 'Price ÷ Book Value per Share')+
     card('Dividend Yield',          divYield,                    'pct',[2,4],   'high','DPS ÷ Share Price × 100')+
     card('Payout Ratio',            payoutRatio,                 'pct',[75,50], 'low', 'Dividends Paid ÷ NPAT × 100')+
     infoCard('EPS (¢)',             eps?fmtCents(eps):'—',       'NPAT ÷ Shares on Issue × 100')+
     infoCard('Free Cashflow ($m)',  fmt(fcf),                     'Operating Cashflow − Capex')+
-    card('FCF Yield',               fcfYield,                    'pct',[4,8],   'high','Free Cashflow ÷ Market Cap × 100')+
-    infoCard('NTA per Share ($)',    shares&&S.bs._tEqCur&&S.bs._goodwill?fmt((S.bs._tEqCur-S.bs._goodwill)/shares):'—','(Equity − Intangibles) ÷ Shares');
+    card('Free cashflow yield',               fcfYield,                    'pct',[4,8],   'high','Free Cashflow ÷ Market Cap × 100')+
+    infoCard('Net tangible assets per share ($)',    shares&&S.bs._tEqCur&&S.bs._goodwill?fmt((S.bs._tEqCur-S.bs._goodwill)/shares):'—','(Equity minus intangibles) ÷ shares');
 }
 
 // ══════════════════════════════════════════
@@ -937,10 +937,10 @@ function calcMarket(){
   document.getElementById('market-result').innerHTML=`
     <div class="grid-2">
       <div class="kpi gold"><div class="kpi-label">Market Capitalisation</div><div class="kpi-value">${fmt(mktCap)}m</div></div>
-      <div class="kpi teal"><div class="kpi-label">Enterprise Value</div><div class="kpi-value">${fmt(ev)}m</div></div>
-      <div class="kpi blue"><div class="kpi-label">P/E Ratio</div><div class="kpi-value">${pe?fmtX(pe):'—'}</div><div class="kpi-sub">Share price ÷ EPS</div></div>
-      <div class="kpi green"><div class="kpi-label">EV/EBITDA</div><div class="kpi-value">${evEbitda?fmtX(evEbitda):'—'}</div></div>
-      <div class="kpi gold"><div class="kpi-label">EV/Revenue</div><div class="kpi-value">${evRev?fmtX(evRev):'—'}</div></div>
+      <div class="kpi teal"><div class="kpi-label">Enterprise value (EV)</div><div class="kpi-value">${fmt(ev)}m</div></div>
+      <div class="kpi blue"><div class="kpi-label">Share price ÷ earnings (P/E)</div><div class="kpi-value">${pe?fmtX(pe):'—'}</div><div class="kpi-sub">Share price ÷ EPS</div></div>
+      <div class="kpi green"><div class="kpi-label">EV ÷ EBITDA</div><div class="kpi-value">${evEbitda?fmtX(evEbitda):'—'}</div></div>
+      <div class="kpi gold"><div class="kpi-label">EV ÷ Revenue</div><div class="kpi-value">${evRev?fmtX(evRev):'—'}</div></div>
       <div class="kpi blue"><div class="kpi-label">52-Week Range</div><div class="kpi-value">${low?'$'+low.toFixed(2):''} – ${high?'$'+high.toFixed(2):'—'}</div><div class="kpi-sub">Current: $${price.toFixed(2)}</div></div>
     </div>`;
 }
@@ -1072,9 +1072,9 @@ function calcThinCap(){
   const deniedInt=interest*deniedPct;
   document.getElementById('thincap-result').innerHTML=`
     <div class="grid-3">
-      <div class="kpi gold"><div class="kpi-label">Safe Harbour Debt Limit</div><div class="kpi-value">${fmt(safeHarbour)}m</div><div class="kpi-sub">60% × Australian Assets</div></div>
-      <div class="kpi ${excess>0?'red':'green'}"><div class="kpi-label">Excess Debt</div><div class="kpi-value">${fmt(excess)}m</div><div class="kpi-sub">${excess>0?'⚠ Exceeds safe harbour':'Within safe harbour'}</div></div>
-      <div class="kpi ${deniedInt>0?'red':'green'}"><div class="kpi-label">Denied Deduction</div><div class="kpi-value">${fmt(deniedInt)}m</div><div class="kpi-sub">${deniedInt>0?'Review transfer pricing':'No restriction'}</div></div>
+      <div class="kpi gold"><div class="kpi-label">Allowable debt limit (60% of assets)</div><div class="kpi-value">${fmt(safeHarbour)}m</div><div class="kpi-sub">60% × Australian asset value</div></div>
+      <div class="kpi ${excess>0?'red':'green'}"><div class="kpi-label">Debt above the limit</div><div class="kpi-value">${fmt(excess)}m</div><div class="kpi-sub">${excess>0?'⚠ Above allowable limit':'Within allowable limit'}</div></div>
+      <div class="kpi ${deniedInt>0?'red':'green'}"><div class="kpi-label">Interest deduction disallowed</div><div class="kpi-value">${fmt(deniedInt)}m</div><div class="kpi-sub">${deniedInt>0?'Review with tax adviser':'No restriction applies'}</div></div>
     </div>`;
 }
 function calcRD(){
@@ -1087,21 +1087,21 @@ function calcRD(){
   const offset=smallEnt?spend*0.435:spend*0.085; // simplified
   document.getElementById('rd-result').innerHTML=`
     <div class="grid-3">
-      <div class="kpi gold"><div class="kpi-label">R&D Intensity</div><div class="kpi-value">${fmtPct(intensity)}</div></div>
-      <div class="kpi blue"><div class="kpi-label">Entity Type</div><div class="kpi-value">${smallEnt?'Small':'Large'}</div><div class="kpi-sub">${smallEnt?'43.5% refundable offset':'8.5%–16.5% non-refundable premium'}</div></div>
-      <div class="kpi green"><div class="kpi-label">Estimated Tax Offset</div><div class="kpi-value">${fmt(offset)}m</div><div class="kpi-sub">Confirm eligibility with R&D advisor</div></div>
+      <div class="kpi gold"><div class="kpi-label">R&D as % of revenue</div><div class="kpi-value">${fmtPct(intensity)}</div></div>
+      <div class="kpi blue"><div class="kpi-label">Entity Type</div><div class="kpi-value">${smallEnt?'Small':'Large'}</div><div class="kpi-sub">${smallEnt?'43.5% tax offset (refundable)':'8.5–16.5% premium (non-refundable)'}</div></div>
+      <div class="kpi green"><div class="kpi-label">Estimated tax saving</div><div class="kpi-value">${fmt(offset)}m</div><div class="kpi-sub">Confirm with your tax adviser</div></div>
     </div>`;
 }
 function renderTaxChecklist(){
   const items=[
-    {label:'Annual company income tax return lodged (due 31 Oct or agent date)',note:'Listed entities typically use a tax agent — ensure lodgement is on time to avoid penalties.'},
-    {label:'PAYG instalment reconciliation completed',note:'Reconcile instalments paid during the year against final tax liability. Adjust next year\'s rate where required.'},
-    {label:'Franking account balance reconciled',note:'Franking account must reflect all tax instalments, refunds and dividend debits. Overfranking creates excess franking tax.'},
-    {label:'Transfer pricing documentation prepared',note:'Entities with international related-party transactions must maintain contemporaneous transfer pricing documentation under Div 815.'},
+    {label:'Company income tax return lodged by due date (31 October, or your tax agent date)',note:'Listed entities typically use a tax agent — ensure lodgement is on time to avoid penalties.'},
+    {label:'Quarterly tax instalments reconciled',note:'Reconcile instalments paid during the year against final tax liability. Adjust next year\'s rate where required.'},
+    {label:'Franking account balance reconciled',note:'The franking account tracks credits from tax paid. Make sure it reflects all payments, refunds and dividends. Too many franking credits attached creates a tax liability.'},
+    {label:'Transfer pricing documentation prepared',note:'Companies with international related-party transactions must document that prices are at arms length (what unrelated parties would pay).'},
     {label:'Thin capitalisation test applied',note:'If the entity has foreign-related debt, confirm that actual debt does not exceed safe harbour or arm\'s length limits.'},
-    {label:'R&D Tax Incentive application lodged with AusIndustry',note:'Must register with AusIndustry within 10 months of financial year end to claim the R&D offset.'},
-    {label:'AASB 112 deferred tax recognised',note:'Review temporary differences between accounting and tax values of assets and liabilities. Ensure deferred tax assets and liabilities are current.'},
-    {label:'Country-by-Country reporting (for multinationals)',note:'Entities with global revenue ≥$1 billion must lodge CbC reports with the ATO for exchange with overseas tax authorities.'},
+    {label:'R&D Tax Incentive application lodged with AusIndustry',note:'Register your R&D activities with AusIndustry within 10 months of financial year end to access the tax incentive.'},
+    {label:'Deferred tax balances reviewed',note:'Check that tax values of assets and liabilities match accounting values, and update any deferred tax balances.'},
+    {label:'Country-by-country reporting (multinationals over $1b revenue)',note:'Multinationals with over $1 billion global revenue must lodge country-by-country reports with the ATO.'},
   ];
   document.getElementById('tax-checklist').innerHTML=items.map(i=>`<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--accent3);font-size:16px;margin-top:2px">✓</span><div><div style="font-weight:600;font-size:13px">${i.label}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${i.note}</div></div></div>`).join('');
 }
