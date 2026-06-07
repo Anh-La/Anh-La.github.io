@@ -173,6 +173,117 @@
   /* ── Chart wrap ── */
   .chart-wrap { position: relative; }
 
+  /* ── Tab Navigation ── */
+  .tab-nav {
+    display: flex; gap: 0; margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 12px 20px; font-size: 12px; font-weight: 600;
+    font-family: var(--font-body); letter-spacing: 0.5px;
+    color: var(--muted); background: transparent;
+    border: none; border-bottom: 2px solid transparent;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.18s; text-transform: uppercase;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn .tab-icon { margin-right: 6px; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Figure layout ── */
+  .figure-title {
+    font-family: var(--font-display); font-size: 18px;
+    color: var(--accent2); text-align: center;
+    margin-bottom: 24px; font-style: italic;
+  }
+  .chart-caption {
+    font-size: 11px; color: var(--muted); margin-bottom: 12px;
+    font-style: italic; line-height: 1.5;
+  }
+  .chart-sub-title {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: 700; margin-bottom: 8px;
+  }
+  .source-note {
+    font-size: 11px; color: var(--muted); margin-top: 16px;
+    padding-top: 12px; border-top: 1px solid var(--border);
+  }
+
+  /* ── Sub-tab Navigation (inside GDP tab) ── */
+  .sub-tab-nav {
+    display: flex; gap: 0; margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sub-tab-btn {
+    padding: 9px 18px; font-size: 11px; font-weight: 700;
+    font-family: var(--font-body); letter-spacing: 1px;
+    color: var(--muted); background: transparent;
+    border: none; border-bottom: 2px solid transparent;
+    cursor: pointer; white-space: nowrap; text-transform: uppercase;
+    transition: all 0.18s; margin-bottom: -1px;
+  }
+  .sub-tab-btn:hover { color: var(--text); }
+  .sub-tab-btn.active { color: var(--accent3); border-bottom-color: var(--accent3); }
+  .sub-tab-panel { display: none; }
+  .sub-tab-panel.active { display: block; }
+
+  /* ── GDP Data Table ── */
+  .gdp-table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+  .gdp-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+    font-family: var(--font-mono); min-width: 700px;
+  }
+  .gdp-table thead tr {
+    background: #1a1e28;
+    border-bottom: 2px solid var(--border);
+  }
+  .gdp-table thead th {
+    padding: 10px 14px; color: var(--accent); font-weight: 700;
+    text-align: right; font-size: 11px; letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .gdp-table thead th:first-child { text-align: left; }
+  .gdp-table tbody tr { border-bottom: 1px solid rgba(35,39,48,0.6); transition: background 0.1s; }
+  .gdp-table tbody tr:hover { background: rgba(200,169,110,0.04); }
+  .gdp-table td {
+    padding: 7px 14px; color: var(--text); text-align: right;
+    white-space: nowrap;
+  }
+  .gdp-table td:first-child { text-align: left; color: var(--muted); }
+  .gdp-table tr.tbl-section td {
+    background: rgba(255,255,255,0.03); color: var(--text);
+    font-family: var(--font-body); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase; padding: 10px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .gdp-table tr.tbl-unit td {
+    color: var(--muted); font-style: italic; font-family: var(--font-body);
+    font-size: 11px; text-align: center; padding: 6px; background: rgba(0,0,0,0.1);
+  }
+  .gdp-table .indent-1 td:first-child { padding-left: 28px; }
+  .gdp-table .indent-2 td:first-child { padding-left: 44px; }
+  .gdp-table .bold-row td { font-weight: 700; color: var(--text) !important; }
+  .gdp-table .highlight-row td { background: rgba(200,169,110,0.06); }
+  .gdp-table .neg { color: var(--accent4) !important; }
+  .gdp-table .pos { color: var(--accent3) !important; }
+  .gdp-table .growth-col { color: var(--accent2) !important; }
+
+  /* ── GDP section label row ── */
+  .gdp-section-header {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted); margin: 20px 0 8px;
+  }
+
+  /* ── 3-col grid ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+
   /* ── Responsive ── */
   @media (max-width: 1000px) {
     .layout { grid-template-columns: 1fr; }
@@ -201,8 +312,19 @@
 </header>
 
 <main>
-  <div class="page-title">Policy Dashboard</div>
-  <div class="page-sub">Adjust monetary and fiscal levers, then simulate the next quarter to observe macroeconomic effects.</div>
+  <div class="page-title">ApexRepublic · Macroeconomic Analysis</div>
+  <div class="page-sub">Simulate policy levers and explore sector-level economic diagnostics across real, external, and fiscal dimensions.</div>
+
+  <!-- Tab Navigation -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="dashboard"><span class="tab-icon">🎛️</span>Policy Dashboard</button>
+    <button class="tab-btn" data-tab="real"><span class="tab-icon">📈</span>Real Sector</button>
+    <button class="tab-btn" data-tab="external"><span class="tab-icon">🌐</span>External Sector</button>
+    <button class="tab-btn" data-tab="fiscal"><span class="tab-icon">🏛️</span>Fiscal &amp; Monetary</button>
+  </nav>
+
+  <!-- Tab: Policy Dashboard -->
+  <div class="tab-panel active" id="tab-dashboard">
 
   <!-- KPI Row -->
   <div class="grid-4 section" id="kpi-row">
@@ -301,26 +423,248 @@
 
     </div>
   </div>
+  </div><!-- end tab-dashboard -->
+
+  <!-- Tab: Real Sector -->
+  <div class="tab-panel" id="tab-real">
+    <div class="figure-title">Figure 1. ApexRepublic, Real Sector</div>
+
+    <!-- KPI strip -->
+    <div class="grid-4 section">
+      <div class="kpi gold">
+        <div class="kpi-label">Real GDP Growth</div>
+        <div class="kpi-value" id="r-gdp-display">2.50%</div>
+        <div class="kpi-delta" id="r-gdp-delta"></div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">Inflation (CPI)</div>
+        <div class="kpi-value" id="r-inf-display">2.10%</div>
+        <div class="kpi-delta" id="r-inf-delta"></div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-label">Output Gap</div>
+        <div class="kpi-value" id="r-gap-display">0.00%</div>
+        <div class="kpi-delta"></div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">S-I Balance (% GDP)</div>
+        <div class="kpi-value" id="r-si-display">0.0%</div>
+        <div class="kpi-delta"></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- GDP Growth & Output Gap -->
+      <div class="card">
+        <div class="chart-caption">Real GDP growth rose above potential — largely on account of stronger consumption and net exports...</div>
+        <div class="chart-sub-title">Real GDP Growth &amp; Output Gap (%)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="realGdpChart"></canvas></div>
+      </div>
+      <!-- GDP Contributions -->
+      <div class="card">
+        <div class="chart-caption">...largely on account of stronger consumption and net exports.</div>
+        <div class="chart-sub-title">Real GDP Growth and Contribution (%)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="gdpContribChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- Inflation -->
+      <div class="card">
+        <div class="chart-caption">...as a result, inflation rose sharply and almost breached its upper limit.</div>
+        <div class="chart-sub-title">Inflation Indicators (%)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="inflationDetailChart"></canvas></div>
+      </div>
+      <!-- Saving & Investment -->
+      <div class="card">
+        <div class="chart-caption">Higher spending-led growth caused the S-I deficit to widen.</div>
+        <div class="chart-sub-title">Saving and Investment (% of GDP)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="siChart"></canvas></div>
+      </div>
+    </div>
+    <div class="source-note">Source: ApexRepublic authorities and IMF staff calculations</div>
+  </div><!-- end tab-real -->
+
+  <!-- Tab: External Sector -->
+  <div class="tab-panel" id="tab-external">
+    <div class="figure-title">Figure 2. ApexRepublic, External Sector</div>
+
+    <div class="grid-4 section">
+      <div class="kpi gold">
+        <div class="kpi-label">REER Index</div>
+        <div class="kpi-value" id="x-reer-display">100.0</div>
+        <div class="kpi-delta" id="x-reer-delta"></div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">Current Acct (% GDP)</div>
+        <div class="kpi-value" id="x-ca-display">0.0%</div>
+        <div class="kpi-delta" id="x-ca-delta"></div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-label">Reserves (mo. imports)</div>
+        <div class="kpi-value" id="x-res-display">3.5</div>
+        <div class="kpi-delta" id="x-res-delta"></div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">NIIP (% GDP)</div>
+        <div class="kpi-value" id="x-niip-display">-10.0%</div>
+        <div class="kpi-delta" id="x-niip-delta"></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- REER -->
+      <div class="card">
+        <div class="chart-caption">The appreciation trend in the real exchange rate has been driven largely by inflation differentials...</div>
+        <div class="chart-sub-title">Real Exchange Rate Index (Base Q1 = 100)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="reerChart"></canvas></div>
+      </div>
+      <!-- BOP -->
+      <div class="card">
+        <div class="chart-caption">...leading to a deterioration of the current account. Despite strong financial inflows, the BOP surplus is shrinking...</div>
+        <div class="chart-sub-title">BOP Main Balances (% of GDP)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="bopChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- Reserves -->
+      <div class="card">
+        <div class="chart-caption">...and reserves have started to decline below 3-months of import coverage...</div>
+        <div class="chart-sub-title">Reserve Coverage (months of imports)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="reservesChart"></canvas></div>
+      </div>
+      <!-- NIIP -->
+      <div class="card">
+        <div class="chart-caption">...thus widening the negative country's net international investment position.</div>
+        <div class="chart-sub-title">IIP (% of GDP)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="niipChart"></canvas></div>
+      </div>
+    </div>
+    <div class="source-note">Source: IMF staff calculations</div>
+  </div><!-- end tab-external -->
+
+  <!-- Tab: Fiscal & Monetary -->
+  <div class="tab-panel" id="tab-fiscal">
+    <div class="figure-title">Figure 3. ApexRepublic, Fiscal &amp; Monetary Stance</div>
+
+    <div class="grid-4 section">
+      <div class="kpi gold">
+        <div class="kpi-label">Fiscal Impulse</div>
+        <div class="kpi-value" id="f-impulse-display">0.0%</div>
+        <div class="kpi-delta" id="f-impulse-delta"></div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">GG Liabilities ($B)</div>
+        <div class="kpi-value" id="f-debt-display">$0B</div>
+        <div class="kpi-delta" id="f-debt-delta"></div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-label">Policy Rate</div>
+        <div class="kpi-value" id="f-rate-display">4.50%</div>
+        <div class="kpi-delta" id="f-rate-delta"></div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">Broad Money Growth</div>
+        <div class="kpi-value" id="f-m2-display">8.0%</div>
+        <div class="kpi-delta" id="f-m2-delta"></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- Output gap & fiscal impulse -->
+      <div class="card">
+        <div class="chart-caption">The output gap opened up on the back of an increasingly loose fiscal stance...</div>
+        <div class="chart-sub-title">Output Gap (%) &amp; Fiscal Impulse (expansionary +)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="fiscalImpulseChart"></canvas></div>
+      </div>
+      <!-- GG Liabilities -->
+      <div class="card">
+        <div class="chart-caption">...which has caused the general government debt to go up.</div>
+        <div class="chart-sub-title">GG Liabilities ($B)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="ggDebtChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <!-- Interest rates -->
+      <div class="card">
+        <div class="chart-caption">In the wake of expansionary fiscal policy, monetary policy was tightened and domestic lending rates continued climbing up...</div>
+        <div class="chart-sub-title">Interest Rates (%)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="ratesChart"></canvas></div>
+      </div>
+      <!-- Credit -->
+      <div class="card">
+        <div class="chart-caption">...leading to crowding out overall credit growth to the private sector.</div>
+        <div class="chart-sub-title">Broad Money &amp; Private Sector Credit Growth (%)</div>
+        <div class="chart-wrap" style="height:240px;"><canvas id="creditChart"></canvas></div>
+      </div>
+    </div>
+    <div class="source-note">Source: IMF staff calculations</div>
+  </div><!-- end tab-fiscal -->
+
 </main>
 </div>
 
 <script>
+  // ── Tab switching ──
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── Chart defaults ──
+  const chartDefaults = {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      y: { grid: { color: '#232730' }, ticks: { color: '#7a7f8e', font: { family: "'DM Mono'", size: 10 } }, border: { color: '#232730' } },
+      x: { grid: { color: '#232730' }, ticks: { color: '#7a7f8e', font: { family: "'DM Mono'", size: 10 } }, border: { color: '#232730' } }
+    },
+    plugins: {
+      legend: { labels: { color: '#e8e3d8', font: { family: "'Manrope'", size: 11 }, boxWidth: 10, boxHeight: 10 } },
+      tooltip: { backgroundColor: '#161920', borderColor: '#232730', borderWidth: 1, titleColor: '#e8e3d8', bodyColor: '#7a7f8e', padding: 10 }
+    }
+  };
+  function mkOpts(extra) { return Object.assign({}, chartDefaults, extra); }
+
   // ── State ──
   let currentQuarter = 1;
   let gdpGrowth      = 2.5;
   let inflation      = 2.1;
   let unemployment   = 4.8;
   let budgetBalance  = 5;
-
-  // Previous values for delta display
   let prevGdp = gdpGrowth, prevInflation = inflation,
       prevUnemployment = unemployment, prevBudget = budgetBalance;
 
-  // History arrays
+  // History arrays — dashboard
   const quarters            = ['Q1'];
   const gdpHistory          = [2.5];
   const inflationHistory    = [2.1];
   const unemploymentHistory = [4.8];
+
+  // Derived state histories
+  let outputGap = 0, reer = 100, currentAccount = -2.5, reserves = 3.5, niip = -10;
+  let ggDebt = 0, fiscalImpulse = 0, broadMoney = 8, psCredit = 12;
+  let investment = 22, nationalSaving = 19.5;
+  const outputGapHist  = [0];
+  const reerHist       = [100];
+  const caHist         = [-2.5];
+  const reservesHist   = [3.5];
+  const niipHist       = [-10];
+  const ggDebtHist     = [0];
+  const fiHist         = [0];
+  const bmHist         = [8];
+  const pscHist        = [12];
+  const investHist     = [22];
+  const savingHist     = [19.5];
+  const siBalHist      = [-2.5];
+  const irHist         = [4.5];
+  const ibHist         = [6.5]; // interbank
 
   // ── Inputs ──
   const irInput  = document.getElementById('interest-rate');
@@ -333,70 +677,191 @@
   txInput.addEventListener('input', () => document.getElementById('tax-rate-val').textContent = parseFloat(txInput.value).toFixed(1) + '%');
   gsInput.addEventListener('input', () => document.getElementById('gov-spending-val').textContent = '$' + gsInput.value + 'B');
 
-  // ── Chart ──
+  // ── Helper ──
+  function setDelta(elId, current, previous, unit='pp') {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const diff = current - previous;
+    if (Math.abs(diff) < 0.005) { el.textContent = ''; return; }
+    const sign = diff > 0 ? '+' : '';
+    el.textContent = sign + diff.toFixed(2) + unit;
+    el.className = 'kpi-delta ' + (diff > 0 ? 'pos' : 'neg');
+  }
+
+  // ── Build Dashboard Chart ──
   const ctx = document.getElementById('economyChart').getContext('2d');
   const economyChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: quarters,
       datasets: [
-        { label: 'GDP Growth (%)',   data: gdpHistory,          borderColor: '#c8a96e', backgroundColor: 'rgba(200,169,110,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
-        { label: 'Inflation (%)',    data: inflationHistory,    borderColor: '#e06b6b', backgroundColor: 'rgba(224,107,107,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
-        { label: 'Unemployment (%)',  data: unemploymentHistory, borderColor: '#5c9eff', backgroundColor: 'rgba(92,158,255,0.06)',  tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+        { label: 'GDP Growth (%)',    data: gdpHistory,          borderColor: '#c8a96e', backgroundColor: 'rgba(200,169,110,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+        { label: 'Inflation (%)',     data: inflationHistory,    borderColor: '#e06b6b', backgroundColor: 'rgba(224,107,107,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+        { label: 'Unemployment (%)', data: unemploymentHistory,  borderColor: '#5c9eff', backgroundColor: 'rgba(92,158,255,0.06)',  tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
       ]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      scales: {
-        y: {
-          grid:  { color: '#232730' },
-          ticks: { color: '#7a7f8e', font: { family: "'DM Mono', monospace", size: 11 } },
-          border: { color: '#232730' }
-        },
-        x: {
-          grid:  { color: '#232730' },
-          ticks: { color: '#7a7f8e', font: { family: "'DM Mono', monospace", size: 11 } },
-          border: { color: '#232730' }
-        }
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#e8e3d8',
-            font: { family: "'Manrope', sans-serif", size: 12 },
-            boxWidth: 12, boxHeight: 12, borderRadius: 3
-          }
-        },
-        tooltip: {
-          backgroundColor: '#161920',
-          borderColor: '#232730',
-          borderWidth: 1,
-          titleColor: '#e8e3d8',
-          bodyColor: '#7a7f8e',
-          titleFont: { family: "'Manrope', sans-serif" },
-          bodyFont: { family: "'DM Mono', monospace", size: 12 },
-          padding: 12
-        }
-      }
-    }
+    options: mkOpts({})
   });
 
-  // ── Delta helper ──
-  function setDelta(elId, current, previous) {
-    const el   = document.getElementById(elId);
-    const diff = current - previous;
-    if (Math.abs(diff) < 0.005) { el.textContent = ''; return; }
-    const sign = diff > 0 ? '+' : '';
-    el.textContent = sign + diff.toFixed(2) + 'pp';
-    el.className = 'kpi-delta ' + (diff > 0 ? 'pos' : 'neg');
-  }
+  // ── Real Sector Charts ──
+  const realGdpChart = new Chart(document.getElementById('realGdpChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Output Gap (%)', data: outputGapHist, backgroundColor: 'rgba(92,158,255,0.5)', borderColor: '#5c9eff', borderWidth: 1, order: 2 },
+        { label: 'Real GDP Growth (%)', data: gdpHistory, type: 'line', borderColor: '#c8a96e', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false, order: 1 },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const gdpContribChart = new Chart(document.getElementById('gdpContribChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Final Consumption', data: gdpHistory.map(v => v * 0.5), backgroundColor: 'rgba(92,158,255,0.7)', stack: 'gdp' },
+        { label: 'Gross Fixed Capital', data: gdpHistory.map(v => v * 0.3), backgroundColor: 'rgba(224,107,107,0.7)', stack: 'gdp' },
+        { label: 'Exports (G&S)', data: gdpHistory.map(v => v * 0.4), backgroundColor: 'rgba(78,203,138,0.7)', stack: 'gdp' },
+        { label: 'Imports (G&S)', data: gdpHistory.map(v => -v * 0.2), backgroundColor: 'rgba(200,169,110,0.7)', stack: 'gdp' },
+      ]
+    },
+    options: mkOpts({ scales: { ...chartDefaults.scales, x: { ...chartDefaults.scales.x, stacked: true }, y: { ...chartDefaults.scales.y, stacked: true } } })
+  });
+
+  const inflationDetailChart = new Chart(document.getElementById('inflationDetailChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'GDP Deflator', data: inflationHistory, borderColor: '#5c9eff', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'CPI (average)', data: inflationHistory.map(v => v * 0.95), borderColor: '#4ecb8a', borderWidth: 2, borderDash: [4,3], pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'CPI (end of period)', data: inflationHistory.map(v => v * 1.05), borderColor: '#e06b6b', borderWidth: 2, borderDash: [2,2], pointRadius: 3, tension: 0.3, fill: false },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const siChart = new Chart(document.getElementById('siChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'S-I Balance (left)', data: siBalHist, backgroundColor: 'rgba(92,158,255,0.6)', stack: 'si', yAxisID: 'y' },
+        { label: 'Investment', data: investHist, type: 'line', borderColor: '#e06b6b', borderDash: [4,3], borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false, yAxisID: 'y2' },
+        { label: 'National Saving', data: savingHist, type: 'line', borderColor: '#5c9eff', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false, yAxisID: 'y2' },
+      ]
+    },
+    options: mkOpts({
+      scales: {
+        y:  { ...chartDefaults.scales.y, position: 'left',  title: { display: true, text: 'S-I Bal (%)', color: '#7a7f8e', font: { size: 10 } } },
+        y2: { ...chartDefaults.scales.y, position: 'right', title: { display: true, text: '% GDP', color: '#7a7f8e', font: { size: 10 } }, grid: { drawOnChartArea: false } },
+        x:  chartDefaults.scales.x
+      }
+    })
+  });
+
+  // ── External Sector Charts ──
+  const reerChart = new Chart(document.getElementById('reerChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'REER Index', data: reerHist, borderColor: '#5c9eff', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const bopChart = new Chart(document.getElementById('bopChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Gross Reserves', data: caHist.map(v => Math.abs(v) * 0.3), backgroundColor: 'rgba(92,158,255,0.7)', stack: 'bop' },
+        { label: 'Financial Account', data: caHist.map(v => Math.abs(v) * 0.8), backgroundColor: 'rgba(78,203,138,0.7)', stack: 'bop' },
+        { label: 'Current Account', data: caHist, backgroundColor: 'rgba(224,107,107,0.7)', stack: 'bop' },
+      ]
+    },
+    options: mkOpts({ scales: { ...chartDefaults.scales, x: { ...chartDefaults.scales.x, stacked: true }, y: { ...chartDefaults.scales.y, stacked: true } } })
+  });
+
+  const reservesChart = new Chart(document.getElementById('reservesChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Reserves (months of imports)', data: reservesHist, backgroundColor: 'rgba(130,100,200,0.6)', borderColor: '#8264c8', borderWidth: 1 },
+      ]
+    },
+    options: mkOpts({
+      plugins: { ...chartDefaults.plugins, annotation: {} }
+    })
+  });
+
+  const niipChart = new Chart(document.getElementById('niipChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'NIIP (% GDP)', data: niipHist, backgroundColor: 'rgba(92,158,255,0.5)', borderColor: '#5c9eff', borderWidth: 1 },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  // ── Fiscal & Monetary Charts ──
+  const fiscalImpulseChart = new Chart(document.getElementById('fiscalImpulseChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Fiscal Impulse (expansionary +)', data: fiHist, backgroundColor: 'rgba(78,203,138,0.6)', stack: 'fi', order: 2 },
+        { label: 'Output Gap (% pot. GDP)', data: outputGapHist, type: 'line', borderColor: '#e06b6b', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false, order: 1 },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const ggDebtChart = new Chart(document.getElementById('ggDebtChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'GG Liabilities ($B)', data: ggDebtHist, backgroundColor: 'rgba(92,158,255,0.6)', borderColor: '#5c9eff', borderWidth: 1 },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const ratesChart = new Chart(document.getElementById('ratesChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Monetary Policy Rate', data: irHist, borderColor: '#111318', backgroundColor: '#e8e3d8', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'Interbank Rate (avg)', data: ibHist, borderColor: '#e06b6b', borderDash: [4,3], borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+      ]
+    },
+    options: mkOpts({})
+  });
+
+  const creditChart = new Chart(document.getElementById('creditChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'Broad Money Growth (%)', data: bmHist, borderColor: '#111318', backgroundColor: '#e8e3d8', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'Private Sector Credit (y-o-y %)', data: pscHist, borderColor: '#5c9eff', borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+      ]
+    },
+    options: mkOpts({})
+  });
 
   // ── Simulate ──
   document.getElementById('simulate-btn').addEventListener('click', () => {
     currentQuarter++;
-
     const ir = parseFloat(irInput.value);
     const rr = parseFloat(rrInput.value);
     const tx = parseFloat(txInput.value);
@@ -414,59 +879,164 @@
     gdpGrowth = 2.5 + fiscalStimulus - monetaryTightness + (Math.random() * 0.4 - 0.2);
     gdpGrowth = Math.max(-5, Math.min(10, gdpGrowth));
 
-    // Inflation
     inflation = inflation + (gdpGrowth - 2.5) * 0.3 - (ir - 4.5) * 0.25 + (Math.random() * 0.2 - 0.1);
     inflation = Math.max(-2, Math.min(15, inflation));
 
-    // Unemployment
     unemployment = unemployment - (gdpGrowth - 2.2) * 0.4 + (Math.random() * 0.2 - 0.1);
     unemployment = Math.max(1.5, Math.min(15, unemployment));
 
-    // ── Update KPIs ──
+    // Derived variables
+    outputGap = parseFloat((gdpGrowth - 2.5).toFixed(2));
+    fiscalImpulse = parseFloat(((gs - 120) * 0.02 - (tx - 22) * 0.05).toFixed(2));
+    reer = parseFloat((reer - (inflation - 3) * 0.5 + (Math.random() * 0.4 - 0.2)).toFixed(1));
+    reer = Math.max(80, Math.min(140, reer));
+    currentAccount = parseFloat((currentAccount - outputGap * 0.3 - fiscalImpulse * 0.2 + (Math.random() * 0.2 - 0.1)).toFixed(2));
+    currentAccount = Math.max(-20, Math.min(5, currentAccount));
+    reserves = parseFloat((reserves + currentAccount * 0.05 - (inflation - 3) * 0.02 + (Math.random() * 0.05 - 0.025)).toFixed(2));
+    reserves = Math.max(1.0, Math.min(6.0, reserves));
+    niip = parseFloat((niip + currentAccount * 0.5 + (Math.random() * 0.2 - 0.1)).toFixed(1));
+    niip = Math.max(-60, Math.min(20, niip));
+    ggDebt = parseFloat((ggDebt + Math.max(0, -budgetBalance)).toFixed(1));
+    broadMoney = parseFloat((broadMoney - (ir - 4.5) * 0.5 + fiscalImpulse * 0.3 + (Math.random() * 0.3 - 0.15)).toFixed(1));
+    broadMoney = Math.max(0, Math.min(35, broadMoney));
+    psCredit = parseFloat((psCredit - (ir - 4.5) * 0.8 + (gdpGrowth - 2.5) * 0.3 + (Math.random() * 0.3 - 0.15)).toFixed(1));
+    psCredit = Math.max(0, Math.min(35, psCredit));
+    investment = parseFloat((22 - (ir - 4.5) * 0.3 + (Math.random() * 0.2 - 0.1)).toFixed(1));
+    nationalSaving = parseFloat((19.5 + (tx - 22) * 0.1 + (Math.random() * 0.1 - 0.05)).toFixed(1));
+    const siBalance = parseFloat((nationalSaving - investment).toFixed(1));
+    const interbankRate = parseFloat((ir + 2.0 + inflation * 0.1 + (Math.random() * 0.2 - 0.1)).toFixed(2));
+
+    // ── Update Dashboard KPIs ──
     document.getElementById('quarter-display').textContent = 'QUARTER ' + currentQuarter;
     document.getElementById('gdp-display').textContent         = gdpGrowth.toFixed(2) + '%';
     document.getElementById('inflation-display').textContent   = inflation.toFixed(2) + '%';
     document.getElementById('unemployment-display').textContent = unemployment.toFixed(2) + '%';
-
     const budEl = document.getElementById('budget-display');
-    if (budgetBalance >= 0) {
-      budEl.textContent = '+$' + budgetBalance + 'B';
-      budEl.style.color = 'var(--accent3)';
-    } else {
-      budEl.textContent = '-$' + Math.abs(budgetBalance) + 'B';
-      budEl.style.color = 'var(--accent4)';
-    }
-
-    setDelta('gdp-delta',          gdpGrowth,    prevGdp);
-    setDelta('inflation-delta',    inflation,    prevInflation);
+    if (budgetBalance >= 0) { budEl.textContent = '+$' + budgetBalance + 'B'; budEl.style.color = 'var(--accent3)'; }
+    else { budEl.textContent = '-$' + Math.abs(budgetBalance) + 'B'; budEl.style.color = 'var(--accent4)'; }
+    setDelta('gdp-delta', gdpGrowth, prevGdp);
+    setDelta('inflation-delta', inflation, prevInflation);
     setDelta('unemployment-delta', unemployment, prevUnemployment);
-    setDelta('budget-delta',       budgetBalance, prevBudget);
+    setDelta('budget-delta', budgetBalance, prevBudget);
+
+    // ── Update Real Sector KPIs ──
+    document.getElementById('r-gdp-display').textContent = gdpGrowth.toFixed(2) + '%';
+    document.getElementById('r-inf-display').textContent = inflation.toFixed(2) + '%';
+    document.getElementById('r-gap-display').textContent = (outputGap >= 0 ? '+' : '') + outputGap.toFixed(2) + '%';
+    document.getElementById('r-si-display').textContent  = (siBalance >= 0 ? '+' : '') + siBalance.toFixed(1) + '%';
+
+    // ── Update External KPIs ──
+    document.getElementById('x-reer-display').textContent = reer.toFixed(1);
+    document.getElementById('x-ca-display').textContent   = currentAccount.toFixed(1) + '%';
+    document.getElementById('x-res-display').textContent  = reserves.toFixed(1);
+    document.getElementById('x-niip-display').textContent = niip.toFixed(1) + '%';
+
+    // ── Update Fiscal KPIs ──
+    document.getElementById('f-impulse-display').textContent = (fiscalImpulse >= 0 ? '+' : '') + fiscalImpulse.toFixed(1) + '%';
+    document.getElementById('f-debt-display').textContent = '$' + ggDebt.toFixed(0) + 'B';
+    document.getElementById('f-rate-display').textContent = ir.toFixed(2) + '%';
+    document.getElementById('f-m2-display').textContent = broadMoney.toFixed(1) + '%';
 
     // ── Advisory log ──
     const logs = document.getElementById('logs');
     let html = '';
-    if (inflation > 4.0) {
-      html += `<div class="alert alert-danger">⚠️ HIGH INFLATION (${inflation.toFixed(2)}%): Central Bank should consider raising interest rates to cool aggregate demand.</div>`;
-    } else if (inflation < 0.5) {
-      html += `<div class="alert alert-warn">⚠️ DEFLATIONARY RISK: Consider cutting the interest rate or increasing government spending.</div>`;
-    }
-    if (unemployment > 6.5) {
-      html += `<div class="alert alert-warn">⚠️ HIGH UNEMPLOYMENT (${unemployment.toFixed(2)}%): Expansionary fiscal policy recommended to generate employment.</div>`;
-    }
-    if (budgetBalance < -40) {
-      html += `<div class="alert alert-danger">⚠️ CRITICAL DEFICIT ($${budgetBalance}B): Debt expanding rapidly — raise taxes or reduce spending.</div>`;
-    }
-    if (!html) {
-      html = `<div class="alert alert-ok">✓ Stable Operations: Macroeconomic metrics are balanced. No immediate intervention required.</div>`;
-    }
+    if (inflation > 4.0) html += `<div class="alert alert-danger">⚠️ HIGH INFLATION (${inflation.toFixed(2)}%): Central Bank should consider raising interest rates to cool aggregate demand.</div>`;
+    else if (inflation < 0.5) html += `<div class="alert alert-warn">⚠️ DEFLATIONARY RISK: Consider cutting the interest rate or increasing government spending.</div>`;
+    if (unemployment > 6.5) html += `<div class="alert alert-warn">⚠️ HIGH UNEMPLOYMENT (${unemployment.toFixed(2)}%): Expansionary fiscal policy recommended to generate employment.</div>`;
+    if (budgetBalance < -40) html += `<div class="alert alert-danger">⚠️ CRITICAL DEFICIT ($${budgetBalance}B): Debt expanding rapidly — raise taxes or reduce spending.</div>`;
+    if (reserves < 3.0) html += `<div class="alert alert-warn">⚠️ RESERVES BELOW 3 MONTHS: External vulnerability rising — consider tightening monetary stance.</div>`;
+    if (!html) html = `<div class="alert alert-ok">✓ Stable Operations: Macroeconomic metrics are balanced. No immediate intervention required.</div>`;
     logs.innerHTML = html;
 
-    // ── Chart ──
-    quarters.push('Q' + currentQuarter);
+    // ── Push history ──
+    const q = 'Q' + currentQuarter;
+    quarters.push(q);
     gdpHistory.push(parseFloat(gdpGrowth.toFixed(2)));
     inflationHistory.push(parseFloat(inflation.toFixed(2)));
     unemploymentHistory.push(parseFloat(unemployment.toFixed(2)));
+    outputGapHist.push(outputGap);
+    reerHist.push(reer);
+    caHist.push(currentAccount);
+    reservesHist.push(reserves);
+    niipHist.push(niip);
+    ggDebtHist.push(ggDebt);
+    fiHist.push(fiscalImpulse);
+    bmHist.push(broadMoney);
+    pscHist.push(psCredit);
+    investHist.push(investment);
+    savingHist.push(nationalSaving);
+    siBalHist.push(siBalance);
+    irHist.push(ir);
+    ibHist.push(interbankRate);
+
+    // ── Refresh all charts ──
+    // Dashboard
+    economyChart.data.labels = quarters;
     economyChart.update();
+
+    // Real sector — refresh derived datasets
+    realGdpChart.data.labels = quarters;
+    realGdpChart.data.datasets[0].data = outputGapHist;
+    realGdpChart.data.datasets[1].data = gdpHistory;
+    realGdpChart.update();
+
+    gdpContribChart.data.labels = quarters;
+    gdpContribChart.data.datasets[0].data = gdpHistory.map(v => v * 0.5);
+    gdpContribChart.data.datasets[1].data = gdpHistory.map(v => v * 0.3);
+    gdpContribChart.data.datasets[2].data = gdpHistory.map(v => v * 0.4);
+    gdpContribChart.data.datasets[3].data = gdpHistory.map(v => -v * 0.2);
+    gdpContribChart.update();
+
+    inflationDetailChart.data.labels = quarters;
+    inflationDetailChart.data.datasets[0].data = inflationHistory;
+    inflationDetailChart.data.datasets[1].data = inflationHistory.map(v => v * 0.95);
+    inflationDetailChart.data.datasets[2].data = inflationHistory.map(v => v * 1.05);
+    inflationDetailChart.update();
+
+    siChart.data.labels = quarters;
+    siChart.data.datasets[0].data = siBalHist;
+    siChart.data.datasets[1].data = investHist;
+    siChart.data.datasets[2].data = savingHist;
+    siChart.update();
+
+    // External
+    reerChart.data.labels = quarters;
+    reerChart.data.datasets[0].data = reerHist;
+    reerChart.update();
+
+    bopChart.data.labels = quarters;
+    bopChart.data.datasets[0].data = caHist.map(v => Math.abs(v) * 0.3);
+    bopChart.data.datasets[1].data = caHist.map(v => Math.abs(v) * 0.8);
+    bopChart.data.datasets[2].data = caHist;
+    bopChart.update();
+
+    reservesChart.data.labels = quarters;
+    reservesChart.data.datasets[0].data = reservesHist;
+    reservesChart.update();
+
+    niipChart.data.labels = quarters;
+    niipChart.data.datasets[0].data = niipHist;
+    niipChart.update();
+
+    // Fiscal & Monetary
+    fiscalImpulseChart.data.labels = quarters;
+    fiscalImpulseChart.data.datasets[0].data = fiHist;
+    fiscalImpulseChart.data.datasets[1].data = outputGapHist;
+    fiscalImpulseChart.update();
+
+    ggDebtChart.data.labels = quarters;
+    ggDebtChart.data.datasets[0].data = ggDebtHist;
+    ggDebtChart.update();
+
+    ratesChart.data.labels = quarters;
+    ratesChart.data.datasets[0].data = irHist;
+    ratesChart.data.datasets[1].data = ibHist;
+    ratesChart.update();
+
+    creditChart.data.labels = quarters;
+    creditChart.data.datasets[0].data = bmHist;
+    creditChart.data.datasets[1].data = pscHist;
+    creditChart.update();
   });
 </script>
 </body>
