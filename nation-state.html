@@ -1,268 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Monetary & Fiscal Policy Dashboard</title>
-    <!-- Tailwind CSS for sleek styling -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Chart.js for economic data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexRepublic · Macroeconomic Policy Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:       #0a0c10;
+    --surface:  #111318;
+    --card:     #161920;
+    --border:   #232730;
+    --accent:   #c8a96e;
+    --accent2:  #5c9eff;
+    --accent3:  #4ecb8a;
+    --accent4:  #e06b6b;
+    --text:     #e8e3d8;
+    --muted:    #7a7f8e;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'Manrope', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+    --radius: 12px;
+    --shadow: 0 4px 32px rgba(0,0,0,0.5);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  #app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: baseline; gap: 10px; }
+  .logo-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .quarter-badge {
+    font-size: 11px; color: var(--muted); font-family: var(--font-mono);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 5px 12px; border-radius: 6px;
+    letter-spacing: 1px;
+  }
+  .btn {
+    padding: 7px 16px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-size: 12px; font-family: var(--font-body);
+    cursor: pointer; transition: all 0.15s; font-weight: 500;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-accent { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+  .btn-accent:hover { background: #d4b87a; color: #000; border-color: #d4b87a; }
+
+  /* ── Main layout ── */
+  main { flex: 1; padding: 32px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+  /* ── Typography ── */
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 28px; color: var(--accent); margin-bottom: 4px; font-style: italic;
+  }
+  .page-sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; letter-spacing: 0.3px; }
+
+  /* ── Grid helpers ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+  }
+
+  /* ── KPI tiles ── */
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px;
+    position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .kpi.gold::before { background: var(--accent); }
+  .kpi.blue::before { background: var(--accent2); }
+  .kpi.green::before { background: var(--accent3); }
+  .kpi.red::before { background: var(--accent4); }
+  .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 6px; }
+  .kpi-value { font-family: var(--font-mono); font-size: 24px; font-weight: 500; color: var(--text); }
+  .kpi-delta { font-size: 12px; margin-top: 6px; font-weight: 600; }
+  .kpi-delta.pos { color: var(--accent3); }
+  .kpi-delta.neg { color: var(--accent4); }
+
+  /* ── Section spacing ── */
+  .section { margin-bottom: 28px; }
+
+  /* ── Form elements ── */
+  .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; }
+  .form-group:last-child { margin-bottom: 0; }
+  label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── Range slider ── */
+  .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .slider-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  .slider-val { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+  .slider-val.green { color: var(--accent3); }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%; height: 4px;
+    background: var(--border); border-radius: 99px;
+    cursor: pointer; outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
+    border: 2px solid var(--bg);
+    transition: transform 0.1s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  input[type="range"].green-thumb::-webkit-slider-thumb { background: var(--accent3); }
+
+  /* ── Section divider within card ── */
+  .card-section-title {
+    font-size: 10px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── Alert / log panel ── */
+  .alert {
+    padding: 12px 16px; border-radius: 8px; font-size: 13px;
+    border-left: 3px solid; margin-bottom: 8px;
+  }
+  .alert-warn  { background: rgba(200,169,110,0.08); border-color: var(--accent);  color: var(--text); }
+  .alert-info  { background: rgba(92,158,255,0.08);  border-color: var(--accent2); color: var(--text); }
+  .alert-ok    { background: rgba(78,203,138,0.08);  border-color: var(--accent3); color: var(--text); }
+  .alert-danger{ background: rgba(224,107,107,0.08); border-color: var(--accent4); color: var(--text); }
+
+  /* ── Chart wrap ── */
+  .chart-wrap { position: relative; }
+
+  /* ── Responsive ── */
+  @media (max-width: 1000px) {
+    .layout { grid-template-columns: 1fr; }
+    .grid-4  { grid-template-columns: 1fr 1fr; }
+    main { padding: 24px 20px; }
+    header { padding: 14px 20px; }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .grid-4 { grid-template-columns: 1fr; }
+    .logo-sub { display: none; }
+  }
+</style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen">
+<body>
+<div id="app">
 
-    <!-- Header Navigation -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="p-2 bg-indigo-600 rounded-lg text-white font-bold text-xl tracking-wider">🏛️</div>
-                <div>
-                    <h1 class="text-lg font-bold text-white tracking-tight">ApexRepublic</h1>
-                    <p class="text-xs text-gray-400">Macroeconomic Policy Simulator</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="text-sm bg-gray-800 text-gray-300 px-3 py-1 rounded-full border border-gray-700" id="quarter-display">Quarter: 1</span>
-            </div>
+<header>
+  <div class="logo">
+    <span class="logo-title">🏛️ ApexRepublic</span>
+    <span class="logo-sub">Macroeconomic Policy Simulator</span>
+  </div>
+  <div class="header-right">
+    <span class="quarter-badge" id="quarter-display">QUARTER 1</span>
+    <button class="btn btn-accent" id="simulate-btn">Simulate Next Quarter →</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">Policy Dashboard</div>
+  <div class="page-sub">Adjust monetary and fiscal levers, then simulate the next quarter to observe macroeconomic effects.</div>
+
+  <!-- KPI Row -->
+  <div class="grid-4 section" id="kpi-row">
+    <div class="kpi gold">
+      <div class="kpi-label">GDP Growth</div>
+      <div class="kpi-value" id="gdp-display">2.50%</div>
+      <div class="kpi-delta" id="gdp-delta"></div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Inflation Rate</div>
+      <div class="kpi-value" id="inflation-display">2.10%</div>
+      <div class="kpi-delta" id="inflation-delta"></div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Unemployment</div>
+      <div class="kpi-value" id="unemployment-display">4.80%</div>
+      <div class="kpi-delta" id="unemployment-delta"></div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Budget Balance</div>
+      <div class="kpi-value" id="budget-display">+$5B</div>
+      <div class="kpi-delta" id="budget-delta"></div>
+    </div>
+  </div>
+
+  <!-- Main 2-col layout -->
+  <div class="layout">
+
+    <!-- Left: Policy Controls -->
+    <div>
+
+      <!-- Monetary Policy -->
+      <div class="card section">
+        <div class="card-section-title">🏦 Monetary Policy</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6;">Managed by the Central Bank to regulate money supply and control inflation.</p>
+
+        <div class="form-group">
+          <div class="slider-row">
+            <span class="slider-label">Central Bank Interest Rate</span>
+            <span class="slider-val" id="interest-rate-val">4.50%</span>
+          </div>
+          <input type="range" id="interest-rate" min="0" max="15" step="0.25" value="4.5">
         </div>
-    </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Left Column: Policy Controls -->
-            <div class="lg:col-span-1 space-y-6">
-                <!-- Monetary Policy Card -->
-                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="text-xl">🏦</span>
-                        <h2 class="text-xl font-bold text-white">Monetary Policy</h2>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-6">Managed by the Central Bank to regulate money supply and control inflation.</p>
-                    
-                    <div class="space-y-5">
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <label for="interest-rate" class="text-gray-300 font-medium">Central Bank Interest Rate</label>
-                                <span class="text-indigo-400 font-semibold" id="interest-rate-val">4.50%</span>
-                            </div>
-                            <input type="range" id="interest-rate" min="0" max="15" step="0.25" value="4.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <label for="reserve-ratio" class="text-gray-300 font-medium">Required Reserve Ratio</label>
-                                <span class="text-indigo-400 font-semibold" id="reserve-ratio-val">10.0%</span>
-                            </div>
-                            <input type="range" id="reserve-ratio" min="1" max="30" step="0.5" value="10" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fiscal Policy Card -->
-                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="text-xl">⚖️</span>
-                        <h2 class="text-xl font-bold text-white">Fiscal Policy</h2>
-                    </div>
-                    <p class="text-xs text-gray-400 mb-6">Managed by the Government via taxation and spending to influence aggregate demand.</p>
-                    
-                    <div class="space-y-5">
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <label for="tax-rate" class="text-gray-300 font-medium">Effective Income Tax Rate</label>
-                                <span class="text-emerald-400 font-semibold" id="tax-rate-val">22.0%</span>
-                            </div>
-                            <input type="range" id="tax-rate" min="5" max="50" step="0.5" value="22" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <label for="gov-spending" class="text-gray-300 font-medium">Government Spending</label>
-                                <span class="text-emerald-400 font-semibold" id="gov-spending-val">$120B</span>
-                            </div>
-                            <input type="range" id="gov-spending" min="50" max="300" step="5" value="120" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simulation Trigger -->
-                <button id="simulate-btn" class="w-full bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all transform active:scale-95 text-center cursor-pointer">
-                    Simulate Next Quarter ➡️
-                </button>
-            </div>
-
-            <!-- Right Column: Current Metrics & Charts -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Dashboard Key Metrics Grid -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
-                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">GDP Growth</p>
-                        <p class="text-2xl font-bold mt-1 text-white" id="gdp-display">2.50%</p>
-                    </div>
-                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
-                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Inflation Rate</p>
-                        <p class="text-2xl font-bold mt-1 text-white" id="inflation-display">2.10%</p>
-                    </div>
-                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
-                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Unemployment</p>
-                        <p class="text-2xl font-bold mt-1 text-white" id="unemployment-display">4.80%</p>
-                    </div>
-                    <div class="bg-gray-800/30 border border-gray-800 rounded-xl p-4">
-                        <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Budget Balance</p>
-                        <p class="text-2xl font-bold mt-1 text-emerald-400" id="budget-display">+$5B</p>
-                    </div>
-                </div>
-
-                <!-- Chart Container -->
-                <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-6 shadow-xl">
-                    <h3 class="text-lg font-semibold text-white mb-4">Economic Performance Timeline</h3>
-                    <div class="h-80 w-full">
-                        <canvas id="economyChart"></canvas>
-                    </div>
-                </div>
-                
-                <!-- Feedback / Warning Logs -->
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Central Bank & Treasury Advisory</h4>
-                    <div id="logs" class="text-sm space-y-1 text-gray-300">
-                        <p class="text-emerald-400">✓ Economy is stable. Inflation and growth are within optimal target ranges.</p>
-                    </div>
-                </div>
-            </div>
-
+        <div class="form-group">
+          <div class="slider-row">
+            <span class="slider-label">Required Reserve Ratio</span>
+            <span class="slider-val" id="reserve-ratio-val">10.0%</span>
+          </div>
+          <input type="range" id="reserve-ratio" min="1" max="30" step="0.5" value="10">
         </div>
-    </main>
+      </div>
 
-    <!-- Simulation Engine Logic -->
-    <script>
-        // State Variables
-        let currentQuarter = 1;
-        let gdpGrowth = 2.5;
-        let inflation = 2.1;
-        let unemployment = 4.8;
-        let budgetBalance = 5; // Positive = Surplus, Negative = Deficit
+      <!-- Fiscal Policy -->
+      <div class="card section">
+        <div class="card-section-title">⚖️ Fiscal Policy</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6;">Managed by the Government via taxation and spending to influence aggregate demand.</p>
 
-        // History arrays for charting
-        const quarters = ['Q1'];
-        const gdpHistory = [2.5];
-        const inflationHistory = [2.1];
-        const unemploymentHistory = [4.8];
+        <div class="form-group">
+          <div class="slider-row">
+            <span class="slider-label">Effective Income Tax Rate</span>
+            <span class="slider-val green" id="tax-rate-val">22.0%</span>
+          </div>
+          <input type="range" id="tax-rate" min="5" max="50" step="0.5" value="22" class="green-thumb">
+        </div>
 
-        // UI Element References
-        const interestRateInput = document.getElementById('interest-rate');
-        const reserveRatioInput = document.getElementById('reserve-ratio');
-        const taxRateInput = document.getElementById('tax-rate');
-        const govSpendingInput = document.getElementById('gov-spending');
+        <div class="form-group">
+          <div class="slider-row">
+            <span class="slider-label">Government Spending</span>
+            <span class="slider-val green" id="gov-spending-val">$120B</span>
+          </div>
+          <input type="range" id="gov-spending" min="50" max="300" step="5" value="120" class="green-thumb">
+        </div>
+      </div>
 
-        const interestRateVal = document.getElementById('interest-rate-val');
-        const reserveRatioVal = document.getElementById('reserve-ratio-val');
-        const taxRateVal = document.getElementById('tax-rate-val');
-        const govSpendingVal = document.getElementById('gov-spending-val');
+    </div>
 
-        // Update Slider Labels Dynamic Readouts
-        interestRateInput.addEventListener('input', () => interestRateVal.innerText = parseFloat(interestRateInput.value).toFixed(2) + '%');
-        reserveRatioInput.addEventListener('input', () => reserveRatioVal.innerText = parseFloat(reserveRatioInput.value).toFixed(1) + '%');
-        taxRateInput.addEventListener('input', () => taxRateVal.innerText = parseFloat(taxRateInput.value).toFixed(1) + '%');
-        govSpendingInput.addEventListener('input', () => govSpendingVal.innerText = '$' + govSpendingInput.value + 'B');
+    <!-- Right: Charts & Logs -->
+    <div>
 
-        // Setup Chart.js
-        const ctx = document.getElementById('economyChart').getContext('2d');
-        const economyChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: quarters,
-                datasets: [
-                    { label: 'GDP Growth (%)', data: gdpHistory, borderColor: '#3b82f6', tension: 0.2, borderWidth: 3 },
-                    { label: 'Inflation (%)', data: inflationHistory, borderColor: '#f43f5e', tension: 0.2, borderWidth: 3 },
-                    { label: 'Unemployment (%)', data: unemploymentHistory, borderColor: '#eab308', tension: 0.2, borderWidth: 3 }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } },
-                    x: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } }
-                },
-                plugins: {
-                    legend: { labels: { color: '#f3f4f6' } }
-                }
-            }
-        });
+      <!-- Chart -->
+      <div class="card section">
+        <h3>Economic Performance Timeline</h3>
+        <div class="chart-wrap" style="height:300px;">
+          <canvas id="economyChart"></canvas>
+        </div>
+      </div>
 
-        // Simulation Algorithm
-        document.getElementById('simulate-btn').addEventListener('click', () => {
-            currentQuarter++;
-            
-            // Get current policy inputs
-            const ir = parseFloat(interestRateInput.value);
-            const rr = parseFloat(reserveRatioInput.value);
-            const tx = parseFloat(taxRateInput.value);
-            const gs = parseFloat(govSpendingInput.value);
+      <!-- Advisory Log -->
+      <div class="card section">
+        <h3>Central Bank & Treasury Advisory</h3>
+        <div id="logs">
+          <div class="alert alert-ok">✓ Economy is stable. Inflation and growth are within optimal target ranges.</div>
+        </div>
+      </div>
 
-            // Economic Logic Formulas (Simplified Macro Dynamic Relationships)
-            // 1. Calculate Budget Balance: Taxes collected (surrogate) vs Gov Spending
-            budgetBalance = Math.round((tx * 6) - gs); 
+    </div>
+  </div>
+</main>
+</div>
 
-            // 2. Monetary & Fiscal impacts on GDP Growth
-            // Higher interest rates and taxes slow economy down. Higher spending speeds it up.
-            const monetaryTightness = (ir - 4.5) * 0.4 + (rr - 10) * 0.15;
-            const fiscalStimulus = (gs - 120) * 0.05 - (tx - 22) * 0.3;
-            
-            gdpGrowth = 2.5 + fiscalStimulus - monetaryTightness + (Math.random() * 0.4 - 0.2);
-            gdpGrowth = Math.max(-5, Math.min(10, gdpGrowth)); // keep realistic boundaries
+<script>
+  // ── State ──
+  let currentQuarter = 1;
+  let gdpGrowth      = 2.5;
+  let inflation      = 2.1;
+  let unemployment   = 4.8;
+  let budgetBalance  = 5;
 
-            // 3. Inflation tracking (Phillips curve / Demand-pull logic)
-            // Fast growth accelerates inflation. High interest rates curb it.
-            inflation = inflation + (gdpGrowth - 2.5) * 0.3 - (ir - 4.5) * 0.25 + (Math.random() * 0.2 - 0.1);
-            inflation = Math.max(-2, Math.min(15, inflation));
+  // Previous values for delta display
+  let prevGdp = gdpGrowth, prevInflation = inflation,
+      prevUnemployment = unemployment, prevBudget = budgetBalance;
 
-            // 4. Unemployment (Okun's Law variant)
-            // Strong GDP growth drops unemployment. Economic stagnation increases it.
-            unemployment = unemployment - (gdpGrowth - 2.2) * 0.4 + (Math.random() * 0.2 - 0.1);
-            unemployment = Math.max(1.5, Math.min(15, unemployment));
+  // History arrays
+  const quarters            = ['Q1'];
+  const gdpHistory          = [2.5];
+  const inflationHistory    = [2.1];
+  const unemploymentHistory = [4.8];
 
-            // Update UI displays
-            document.getElementById('quarter-display').innerText = `Quarter: ${currentQuarter}`;
-            document.getElementById('gdp-display').innerText = gdpGrowth.toFixed(2) + '%';
-            document.getElementById('inflation-display').innerText = inflation.toFixed(2) + '%';
-            document.getElementById('unemployment-display').innerText = unemployment.toFixed(2) + '%';
-            
-            const budgetDisplay = document.getElementById('budget-display');
-            if(budgetBalance >= 0) {
-                budgetDisplay.innerText = `+$${budgetBalance}B`;
-                budgetDisplay.className = "text-2xl font-bold mt-1 text-emerald-400";
-            } else {
-                budgetDisplay.innerText = `-$${Math.abs(budgetBalance)}B`;
-                budgetDisplay.className = "text-2xl font-bold mt-1 text-rose-400";
-            }
+  // ── Inputs ──
+  const irInput  = document.getElementById('interest-rate');
+  const rrInput  = document.getElementById('reserve-ratio');
+  const txInput  = document.getElementById('tax-rate');
+  const gsInput  = document.getElementById('gov-spending');
 
-            // Generate contextual advice log
-            const logsContainer = document.getElementById('logs');
-            let systemLog = "";
-            if (inflation > 4.0) {
-                systemLog = `<p class="text-rose-400">⚠️ HIGH INFLATION: Central Bank should consider increasing interest rates to cool aggregate demand.</p>`;
-            } else if (inflation < 0.5) {
-                systemLog = `<p class="text-amber-400">⚠️ DEFLATIONARY RISK: Consider dropping the interest rate or increasing government spending.</p>`;
-            } else if (unemployment > 6.5) {
-                systemLog = `<p class="text-amber-400">⚠️ HIGH UNEMPLOYMENT: Expansionary fiscal policy (more spending/lower taxes) requested to generate jobs.</p>`;
-            } else {
-                systemLog = `<p class="text-emerald-400">✓ Stable Operations: Macroeconomic metrics are balanced perfectly.</p>`;
-            }
-            
-            if (budgetBalance < -40) {
-                systemLog += `<p class="text-rose-400">⚠️ CRITICAL DEFICIT: Government debt expanding rapidly. Increase tax rates or cut spending.</p>`;
-            }
-            logsContainer.innerHTML = systemLog;
+  irInput.addEventListener('input', () => document.getElementById('interest-rate-val').textContent = parseFloat(irInput.value).toFixed(2) + '%');
+  rrInput.addEventListener('input', () => document.getElementById('reserve-ratio-val').textContent = parseFloat(rrInput.value).toFixed(1) + '%');
+  txInput.addEventListener('input', () => document.getElementById('tax-rate-val').textContent = parseFloat(txInput.value).toFixed(1) + '%');
+  gsInput.addEventListener('input', () => document.getElementById('gov-spending-val').textContent = '$' + gsInput.value + 'B');
 
-            // Chart update step
-            quarters.push(`Q${currentQuarter}`);
-            gdpHistory.push(parseFloat(gdpGrowth.toFixed(2)));
-            inflationHistory.push(parseFloat(inflation.toFixed(2)));
-            unemploymentHistory.push(parseFloat(unemployment.toFixed(2)));
-            economyChart.update();
-        });
-    </script>
+  // ── Chart ──
+  const ctx = document.getElementById('economyChart').getContext('2d');
+  const economyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: quarters,
+      datasets: [
+        { label: 'GDP Growth (%)',   data: gdpHistory,          borderColor: '#c8a96e', backgroundColor: 'rgba(200,169,110,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+        { label: 'Inflation (%)',    data: inflationHistory,    borderColor: '#e06b6b', backgroundColor: 'rgba(224,107,107,0.06)', tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+        { label: 'Unemployment (%)',  data: unemploymentHistory, borderColor: '#5c9eff', backgroundColor: 'rgba(92,158,255,0.06)',  tension: 0.3, borderWidth: 2, pointRadius: 3, fill: true },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: {
+          grid:  { color: '#232730' },
+          ticks: { color: '#7a7f8e', font: { family: "'DM Mono', monospace", size: 11 } },
+          border: { color: '#232730' }
+        },
+        x: {
+          grid:  { color: '#232730' },
+          ticks: { color: '#7a7f8e', font: { family: "'DM Mono', monospace", size: 11 } },
+          border: { color: '#232730' }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e8e3d8',
+            font: { family: "'Manrope', sans-serif", size: 12 },
+            boxWidth: 12, boxHeight: 12, borderRadius: 3
+          }
+        },
+        tooltip: {
+          backgroundColor: '#161920',
+          borderColor: '#232730',
+          borderWidth: 1,
+          titleColor: '#e8e3d8',
+          bodyColor: '#7a7f8e',
+          titleFont: { family: "'Manrope', sans-serif" },
+          bodyFont: { family: "'DM Mono', monospace", size: 12 },
+          padding: 12
+        }
+      }
+    }
+  });
+
+  // ── Delta helper ──
+  function setDelta(elId, current, previous) {
+    const el   = document.getElementById(elId);
+    const diff = current - previous;
+    if (Math.abs(diff) < 0.005) { el.textContent = ''; return; }
+    const sign = diff > 0 ? '+' : '';
+    el.textContent = sign + diff.toFixed(2) + 'pp';
+    el.className = 'kpi-delta ' + (diff > 0 ? 'pos' : 'neg');
+  }
+
+  // ── Simulate ──
+  document.getElementById('simulate-btn').addEventListener('click', () => {
+    currentQuarter++;
+
+    const ir = parseFloat(irInput.value);
+    const rr = parseFloat(rrInput.value);
+    const tx = parseFloat(txInput.value);
+    const gs = parseFloat(gsInput.value);
+
+    prevGdp = gdpGrowth; prevInflation = inflation;
+    prevUnemployment = unemployment; prevBudget = budgetBalance;
+
+    // Budget balance
+    budgetBalance = Math.round((tx * 6) - gs);
+
+    // GDP
+    const monetaryTightness = (ir - 4.5) * 0.4 + (rr - 10) * 0.15;
+    const fiscalStimulus     = (gs - 120) * 0.05 - (tx - 22) * 0.3;
+    gdpGrowth = 2.5 + fiscalStimulus - monetaryTightness + (Math.random() * 0.4 - 0.2);
+    gdpGrowth = Math.max(-5, Math.min(10, gdpGrowth));
+
+    // Inflation
+    inflation = inflation + (gdpGrowth - 2.5) * 0.3 - (ir - 4.5) * 0.25 + (Math.random() * 0.2 - 0.1);
+    inflation = Math.max(-2, Math.min(15, inflation));
+
+    // Unemployment
+    unemployment = unemployment - (gdpGrowth - 2.2) * 0.4 + (Math.random() * 0.2 - 0.1);
+    unemployment = Math.max(1.5, Math.min(15, unemployment));
+
+    // ── Update KPIs ──
+    document.getElementById('quarter-display').textContent = 'QUARTER ' + currentQuarter;
+    document.getElementById('gdp-display').textContent         = gdpGrowth.toFixed(2) + '%';
+    document.getElementById('inflation-display').textContent   = inflation.toFixed(2) + '%';
+    document.getElementById('unemployment-display').textContent = unemployment.toFixed(2) + '%';
+
+    const budEl = document.getElementById('budget-display');
+    if (budgetBalance >= 0) {
+      budEl.textContent = '+$' + budgetBalance + 'B';
+      budEl.style.color = 'var(--accent3)';
+    } else {
+      budEl.textContent = '-$' + Math.abs(budgetBalance) + 'B';
+      budEl.style.color = 'var(--accent4)';
+    }
+
+    setDelta('gdp-delta',          gdpGrowth,    prevGdp);
+    setDelta('inflation-delta',    inflation,    prevInflation);
+    setDelta('unemployment-delta', unemployment, prevUnemployment);
+    setDelta('budget-delta',       budgetBalance, prevBudget);
+
+    // ── Advisory log ──
+    const logs = document.getElementById('logs');
+    let html = '';
+    if (inflation > 4.0) {
+      html += `<div class="alert alert-danger">⚠️ HIGH INFLATION (${inflation.toFixed(2)}%): Central Bank should consider raising interest rates to cool aggregate demand.</div>`;
+    } else if (inflation < 0.5) {
+      html += `<div class="alert alert-warn">⚠️ DEFLATIONARY RISK: Consider cutting the interest rate or increasing government spending.</div>`;
+    }
+    if (unemployment > 6.5) {
+      html += `<div class="alert alert-warn">⚠️ HIGH UNEMPLOYMENT (${unemployment.toFixed(2)}%): Expansionary fiscal policy recommended to generate employment.</div>`;
+    }
+    if (budgetBalance < -40) {
+      html += `<div class="alert alert-danger">⚠️ CRITICAL DEFICIT ($${budgetBalance}B): Debt expanding rapidly — raise taxes or reduce spending.</div>`;
+    }
+    if (!html) {
+      html = `<div class="alert alert-ok">✓ Stable Operations: Macroeconomic metrics are balanced. No immediate intervention required.</div>`;
+    }
+    logs.innerHTML = html;
+
+    // ── Chart ──
+    quarters.push('Q' + currentQuarter);
+    gdpHistory.push(parseFloat(gdpGrowth.toFixed(2)));
+    inflationHistory.push(parseFloat(inflation.toFixed(2)));
+    unemploymentHistory.push(parseFloat(unemployment.toFixed(2)));
+    economyChart.update();
+  });
+</script>
 </body>
 </html>
