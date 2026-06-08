@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listed Company · Finance Tools</title>
+<title>Listed Company</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -95,7 +95,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
 
 <header>
   <div class="logo">
-    <a href="index.html" class="back-link">← Hub</a>
     <span class="logo-title">Listed Company</span>
     <span class="logo-sub">Company Reporting</span>
     <span class="hub-badge">Listed</span>
@@ -113,7 +112,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
     <button class="btn btn-accent" onclick="saveAll()">Save</button>
   </div>
 </header>
-
+<div><a href="index.html" class="back-link">← Hub</a></div>
 <nav>
   <div class="tab active" id="tab-dashboard"      onclick="showPage('dashboard')">📊 Dashboard</div>
   <div class="tab"        id="tab-pl"             onclick="showPage('pl')">📋 P&amp;L</div>
@@ -124,7 +123,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
   <div class="tab"        id="tab-market"         onclick="showPage('market')">📈 Market Metrics</div>
   <div class="tab"        id="tab-dividends"      onclick="showPage('dividends')">💰 Dividends</div>
   <div class="tab"        id="tab-tax"            onclick="showPage('tax')">🧾 Tax</div>
-  <div class="tab"        id="tab-settings"       onclick="showPage('settings')">⚙️ Settings</div>
 </nav>
 
 <main>
