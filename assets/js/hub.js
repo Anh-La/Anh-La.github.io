@@ -1,0 +1,720 @@
+/* ═══════════════════════════════════════════════════════════
+   hub.js — Finance Tools Hub shared logic
+   Consumed by: index.html
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Video IDs ──────────────────────────────────────────────
+   Replace 'placeholder' with your YouTube video IDs.
+   e.g. personal_dashboard: 'dQw4w9WgXcQ'
+   ─────────────────────────────────────────────────────────── */
+const VIDEO_IDS = {
+  personal_dashboard:   'placeholder',
+  personal_allocation:  'placeholder',
+  personal_fi:          'placeholder',
+  personal_cashflow:    'placeholder',
+  personal_inflation:   'placeholder',
+  personal_debt:        'placeholder',
+  personal_loan:        'placeholder',
+  personal_portfolio:   'placeholder',
+  personal_projections: 'placeholder',
+  personal_tax:         'placeholder',
+  personal_vault:       'placeholder',
+  personal_settings:    'placeholder',
+  personal_lifeplan:    'placeholder',
+  smsf_dashboard:       'placeholder',
+  smsf_allocation:      'placeholder',
+  smsf_contributions:   'placeholder',
+  smsf_caps:            'placeholder',
+  smsf_compliance:      'placeholder',
+  smsf_inhouse:         'placeholder',
+  smsf_portfolio:       'placeholder',
+  smsf_projections:     'placeholder',
+  smsf_settings:        'placeholder',
+  analysis_pl:          'placeholder',
+  analysis_balancesheet:'placeholder',
+  analysis_ratios:      'placeholder',
+  analysis_breakeven:   'placeholder',
+  analysis_cgt:         'placeholder',
+  analysis_division7a:  'placeholder',
+  analysis_gst:         'placeholder',
+  analysis_depreciation:'placeholder',
+  analysis_etf_compare: 'placeholder',
+  analysis_dividend:    'placeholder',
+  analysis_rebalance:   'placeholder',
+  analysis_annual_review:'placeholder',
+  listed_overview:      'placeholder',
+  trust_overview:       'placeholder',
+  nation_dashboard:     'placeholder',
+  nation_monetary:      'placeholder',
+  nation_fiscal:        'placeholder',
+  nation_simulate:      'placeholder',
+  nation_projections:   'placeholder',
+};
+
+/* ── Language ───────────────────────────────────────────────  */
+let LANG = localStorage.getItem('finance_tools_lang') || 'en';
+
+/* ── Categories ─────────────────────────────────────────────  */
+const CATEGORIES = [
+  { id: 'overview',    en: 'Overview & KPIs',         vi: 'Tổng quan & KPI' },
+  { id: 'cashflow',    en: 'Cashflow & Budget',        vi: 'Dòng tiền & Ngân sách' },
+  { id: 'debt',        en: 'Debt & Loans',             vi: 'Nợ & Khoản vay' },
+  { id: 'tax',         en: 'Tax & Documents',          vi: 'Thuế & Hồ sơ' },
+  { id: 'accounting',  en: 'Accounting & Reports',     vi: 'Kế toán & Báo cáo' },
+  { id: 'taxanalysis', en: 'Tax Analysis',             vi: 'Phân tích Thuế' },
+  { id: 'invest',      en: 'Portfolio & Allocation',   vi: 'Danh mục & Phân bổ' },
+  { id: 'investing',   en: 'Investing Analysis',       vi: 'Phân tích Đầu tư' },
+  { id: 'growth',      en: 'Projections & Freedom',    vi: 'Dự báo & Kế hoạch' },
+  { id: 'super',       en: 'Super & Contributions',    vi: 'Super & Đóng góp' },
+  { id: 'compliance',  en: 'SMSF Compliance',          vi: 'Tuân thủ SMSF' },
+  { id: 'planning',    en: 'Planning & Settings',      vi: 'Kế hoạch & Cài đặt' },
+  { id: 'macro',       en: 'Macroeconomic Policy',     vi: 'Chính sách Kinh tế Vĩ mô' },
+];
+
+/* ── Calculator / tool definitions ──────────────────────────  */
+const CALCULATORS = [
+
+  /* ── PERSONAL FINANCE ── */
+  {
+    id: 'personal_dashboard', category: 'overview', app: 'personal',
+    tab: 'dashboard', en: 'Financial Life Dashboard', vi: 'Bảng Tổng Quan Tài Chính',
+    models: ['Net worth', 'Portfolio value', 'Monthly surplus', 'Debt total'],
+    href: 'wealth-builder.html#dashboard', videoKey: 'personal_dashboard',
+    guide: {
+      en: 'See your entire financial picture on one screen — accounts, loans, and portfolio. Update prices on the Portfolio tab first, then check your key numbers here. Refresh cashflow monthly.',
+      vi: 'Xem toàn bộ tài chính trên một màn hình. Nhập giá mới nhất ở tab Danh mục trước, rồi xem KPI tại đây. Cập nhật dòng tiền hàng tháng.'
+    }
+  },
+  {
+    id: 'personal_allocation', category: 'overview', app: 'personal',
+    tab: 'dashboard', en: 'Allocation vs Target', vi: 'Phân bổ so mục tiêu',
+    models: ['Donut chart', 'Category drift', 'IPS targets'],
+    href: 'wealth-builder.html#dashboard', videoKey: 'personal_allocation',
+    guide: {
+      en: 'Rebalance when any category drifts more than ±2% from your target. Set your target mix in Settings.',
+      vi: 'Tái cân bằng khi lệch quá ±2% so mục tiêu. Đặt mục tiêu trong Cài đặt.'
+    }
+  },
+  {
+    id: 'personal_fi', category: 'growth', app: 'personal',
+    tab: 'dashboard', en: 'Financial Freedom Tracker', vi: 'Theo dõi Tự do Tài chính',
+    models: ['Years to target', 'Portfolio progress %', 'Emergency fund %', 'Debt clearance %'],
+    href: 'wealth-builder.html#dashboard', videoKey: 'personal_fi',
+    guide: {
+      en: 'Set your target portfolio value and retirement age in Settings. Build your emergency cash reserve before taking on more investment risk.',
+      vi: 'Đặt mục tiêu danh mục và tuổi tự do trong Cài đặt. Ưu tiên quỹ khẩn cấp trước khi tăng rủi ro.'
+    }
+  },
+  {
+    id: 'personal_cashflow', category: 'cashflow', app: 'personal',
+    tab: 'cashflow', en: 'Real-Time Cashflow Model', vi: 'Mô hình dòng tiền thực tế',
+    models: ['Income vs expenses', 'Invest surplus', 'Living cost baseline'],
+    href: 'wealth-builder.html#cashflow', videoKey: 'personal_cashflow',
+    guide: {
+      en: 'Use your take-home salary after tax. Weekly expenses are converted automatically — focus on your monthly surplus.',
+      vi: 'Dùng lương ròng sau thuế. Chi phí tuần được quy đổi tự động — tập trung vào thặng dư.'
+    }
+  },
+  {
+    id: 'personal_inflation', category: 'cashflow', app: 'personal',
+    tab: 'cashflow', en: 'Expense Inflation (6yr)', vi: 'Lạm phát chi phí (6 năm)',
+    models: ['CPI on expenses', 'Wage growth on investing', 'Surplus by year'],
+    href: 'wealth-builder.html#cashflow', videoKey: 'personal_inflation',
+    guide: {
+      en: 'Default 5% inflation — adjust in Settings if your rent or school fees are rising faster.',
+      vi: 'Mặc định CPI 5% — chỉnh trong Cài đặt nếu thuê nhà hoặc học phí tăng nhanh hơn.'
+    }
+  },
+  {
+    id: 'personal_debt', category: 'debt', app: 'personal',
+    tab: 'debt', en: 'Debt Payoff & Interest', vi: 'Trả nợ & Lãi suất',
+    models: ['Avalanche priority', 'Months to payoff', 'Monthly interest cost', 'Amortisation curves'],
+    href: 'wealth-builder.html#debt', videoKey: 'personal_debt',
+    guide: {
+      en: 'Pay off the highest-rate debt first. Once a debt is cleared, redirect that payment to the next one — don\'t increase spending.',
+      vi: 'Ưu tiên lãi suất cao nhất. Khi xong một khoản, chuyển khoản trả sang khoản tiếp — đừng tăng chi tiêu.'
+    }
+  },
+  {
+    id: 'personal_loan', category: 'debt', app: 'personal',
+    tab: 'debt', en: 'Better Loan Analyser', vi: 'Phân tích vay lãi thấp hơn',
+    models: ['Credit card comparison', 'Lower rate savings', 'Refinance calculator', 'Break-even timeline'],
+    href: 'wealth-builder.html#debt', videoKey: 'personal_loan',
+    guide: {
+      en: 'Enter your current balance and rate to see how much you could save by refinancing to a lower rate.',
+      vi: 'Phân tích thẻ tín dụng và khoản vay để tiết kiệm lớn với lãi suất thấp hơn. Nhập lãi suất và số dư hiện tại.'
+    }
+  },
+  {
+    id: 'personal_portfolio', category: 'invest', app: 'personal',
+    tab: 'portfolio', en: 'Holdings & Cost Base', vi: 'Danh mục & Giá vốn',
+    models: ['Position value', 'Gain/loss', 'DRIP flag', 'Allocation bars'],
+    href: 'wealth-builder.html#portfolio', videoKey: 'personal_portfolio',
+    guide: {
+      en: 'Update prices regularly for accurate net worth. Record your purchase price (cost base) for each holding — especially crypto and ETFs — for tax purposes.',
+      vi: 'Cập nhật giá thường xuyên. Ghi giá vốn cho thuế CGT — đặc biệt crypto và ETF.'
+    }
+  },
+  {
+    id: 'personal_projections', category: 'growth', app: 'personal',
+    tab: 'projections', en: 'Growth Plan Scenarios', vi: 'Kịch bản Kế hoạch Tự do',
+    models: ['5% / 8% / 11% returns', 'Salary-linked contributions', 'Target age marker'],
+    href: 'wealth-builder.html#projections', videoKey: 'personal_projections',
+    guide: {
+      en: 'Review all three return scenarios. The 8% base case reflects long-run share market returns — use Conservative if you carry significant debt.',
+      vi: 'Chạy cả ba kịch bản. 8% là kỳ vọng dài hạn — dùng Thận trọng nếu còn nhiều nợ.'
+    }
+  },
+  {
+    id: 'personal_tax', category: 'tax', app: 'personal',
+    tab: 'tax', en: 'Tax Return Preparation', vi: 'Chuẩn bị khai thuế dễ dàng',
+    models: ['Income summary', 'Deduction tracker', 'Tax receipt log', 'Return estimate'],
+    href: 'wealth-builder.html#tax', videoKey: 'personal_tax',
+    guide: {
+      en: 'Collects all your tax return information in one place — income, deductions, and receipts — ready to share with your accountant.',
+      vi: 'Không còn mất giờ phân loại biên lai thuế. Công cụ tổng hợp toàn bộ thông tin khai thuế cá nhân — thu nhập, khấu trừ, biên lai, sẵn sàng cho kế toán.'
+    }
+  },
+  {
+    id: 'personal_vault', category: 'tax', app: 'personal',
+    tab: 'vault', en: 'Document Vault', vi: 'Kho Lưu Trữ Hồ Sơ',
+    models: ['Wills & estate docs', 'Insurance documents', 'Powers of attorney', 'Loan & tax receipts'],
+    href: 'wealth-builder.html#tax', videoKey: 'personal_vault',
+    guide: {
+      en: 'Store references to your Wills, Insurance, Powers of Attorney, Loan Documents, and Tax Receipts — accessible anytime by you and your adviser.',
+      vi: 'Lưu Di chúc, Hồ sơ Bảo hiểm, Ủy quyền, Hợp đồng Vay và Biên lai Thuế trên đám mây — truy cập mọi lúc, mọi nơi.'
+    }
+  },
+  {
+    id: 'personal_settings', category: 'planning', app: 'personal',
+    tab: 'settings', en: 'Strategy Settings', vi: 'Cài đặt chiến lược',
+    models: ['Target age & portfolio', 'Risk profile', 'Target allocation %', 'Export / import data'],
+    href: 'wealth-builder.html#settings', videoKey: 'personal_settings',
+    guide: {
+      en: 'Export your data monthly as a backup. Make sure target allocations add up to 100% before relying on the allocation charts.',
+      vi: 'Xuất JSON hàng tháng để sao lưu. Tổng phân bổ mục tiêu phải bằng 100%.'
+    }
+  },
+  {
+    id: 'personal_lifeplan', category: 'planning', app: 'personal',
+    tab: 'settings', en: 'Life Plan Forms', vi: 'Biểu mẫu Life Plan',
+    models: ['Client report', 'Action plan'],
+    href: 'wealth-builder.html#settings', videoKey: 'personal_lifeplan',
+    guide: {
+      en: 'Use the report form for a financial snapshot; the action form for annual goals. Match figures to your Personal Finance export.',
+      vi: 'Dùng form báo cáo cho ảnh chụp tài chính; form hành động cho mục tiêu năm. Đồng bộ số liệu với Individual.'
+    }
+  },
+
+  /* ── SMSF ── */
+  {
+    id: 'smsf_dashboard', category: 'overview', app: 'smsf',
+    tab: 'dashboard', en: 'Super Fund Overview', vi: 'KPI tổng quan quỹ',
+    models: ['Fund balance', 'Annual contributions', 'Cap used %', 'Projected at 60'],
+    href: 'smsf.html#dashboard', videoKey: 'smsf_dashboard',
+    guide: {
+      en: 'Sync fund balance and holdings before trustee meetings. The contribution cap indicator turns red if your concessional contributions are approaching the annual limit.',
+      vi: 'Đồng bộ số dư và danh mục trước họp ủy thác. % hạn mức đỏ nếu vượt đóng góp ưu đãi.'
+    }
+  },
+  {
+    id: 'smsf_allocation', category: 'invest', app: 'smsf',
+    tab: 'dashboard', en: 'Fund Asset Allocation', vi: 'Phân bổ tài sản quỹ',
+    models: ['IPS donut', 'Listed vs alternatives', 'Commercial RE slot'],
+    href: 'smsf.html#dashboard', videoKey: 'smsf_allocation',
+    guide: {
+      en: 'Record any changes to your target allocation in the trustee minutes. Property typically sits under Commercial Property — check it meets the sole purpose test.',
+      vi: 'Ghi thay đổi IPS trong biên bản ủy thác. BĐS thường nằm Commercial RE — xác nhận mục đích duy nhất.'
+    }
+  },
+  {
+    id: 'smsf_contributions', category: 'super', app: 'smsf',
+    tab: 'contributions', en: 'Contributions Breakdown', vi: 'Cơ cấu đóng góp',
+    models: ['Salary sacrifice', 'Employer contributions', 'Voluntary contributions', 'Growth to preservation'],
+    href: 'smsf.html#contributions', videoKey: 'smsf_contributions',
+    guide: {
+      en: 'Add up your employer contributions + salary sacrifice + voluntary contributions, then check the total against the annual cap before 30 June.',
+      vi: 'Cộng SG + hy sinh lương + tự nguyện, đối chiếu hạn mức trước 30/6. Giữ biên an toàn cho SG phát sinh.'
+    }
+  },
+  {
+    id: 'smsf_caps', category: 'super', app: 'smsf',
+    tab: 'contributions', en: 'Annual Cap Tracker', vi: 'Giám sát hạn mức ưu đãi',
+    models: ['Financial year table', 'Cap remaining', 'After-tax contributions note'],
+    href: 'smsf.html#contributions', videoKey: 'smsf_caps',
+    guide: {
+      en: 'The concessional (pre-tax) contribution cap for FY2026–27 is $32,500. You may carry forward unused cap amounts from prior years if your fund balance is under $500k.',
+      vi: 'Hạn mức ưu đãi $32.500. Có thể chuyển hạn mức chưa dùng nếu TSB dưới $500k — hỏi kế toán.'
+    }
+  },
+  {
+    id: 'smsf_compliance', category: 'compliance', app: 'smsf',
+    tab: 'compliance', en: 'Compliance Checklist', vi: 'Danh sách tuân thủ',
+    models: ['Sole purpose', 'Audit & minutes', 'Valuations', 'ATO return'],
+    href: 'smsf.html#compliance', videoKey: 'smsf_compliance',
+    guide: {
+      en: 'Tick items off each quarter. Missing trustee minutes or property valuations are the most common triggers for an ATO audit.',
+      vi: 'Đánh dấu từng mục mỗi quý. Thiếu biên bản hoặc định giá là lỗi thường gặp khi kiểm tra.'
+    }
+  },
+  {
+    id: 'smsf_inhouse', category: 'compliance', app: 'smsf',
+    tab: 'compliance', en: 'In-House Asset (5%)', vi: 'Tài sản nội bộ (5%)',
+    models: ['Related-party value', '5% limit bar', 'Breach warning'],
+    href: 'smsf.html#compliance', videoKey: 'smsf_inhouse',
+    guide: {
+      en: 'Value related-party assets at market value as at 30 June. Includes certain loans and lease arrangements.',
+      vi: 'Đo tài sản bên liên quan theo giá thị trường 30/6. Bao gồm một số khoản cho vay và thuê.'
+    }
+  },
+  {
+    id: 'smsf_portfolio', category: 'invest', app: 'smsf',
+    tab: 'portfolio', en: 'Fund Holdings Register', vi: 'Sổ đăng ký tài sản SMSF',
+    models: ['Fund positions', 'Cost base', 'IPS vs actual'],
+    href: 'smsf.html#portfolio', videoKey: 'smsf_portfolio',
+    guide: {
+      en: 'All assets must be held in the fund\'s name only. Keep this register separate from your personal accounts — never mix them.',
+      vi: 'Tài sản đứng tên quỹ. Tách khỏi tài khoản Individual cá nhân — không trộn tài khoản.'
+    }
+  },
+  {
+    id: 'smsf_projections', category: 'growth', app: 'smsf',
+    tab: 'projections', en: 'Fund Growth Scenarios', vi: 'Kịch bản tăng trưởng quỹ',
+    models: ['To preservation age', '3 return scenarios', 'Target balance flag'],
+    href: 'smsf.html#projections', videoKey: 'smsf_projections',
+    guide: {
+      en: 'Assume contributions stay the same unless you have a signed salary sacrifice agreement. Review your projections 5 years before you plan to start drawing from the fund.',
+      vi: 'Giả định đóng góp ổn định trừ khi có thỏa thuận hy sinh lương. Rà soát 5 năm trước giai đoạn hưu.'
+    }
+  },
+  {
+    id: 'smsf_settings', category: 'planning', app: 'smsf',
+    tab: 'settings', en: 'Fund & Allocation Settings', vi: 'Cài đặt quỹ & IPS',
+    models: ['Fund name', 'Member age', 'Preservation age', 'Target allocation %'],
+    href: 'smsf.html#settings', videoKey: 'smsf_settings',
+    guide: {
+      en: 'Match your preservation age to the rules for your birth year. Export your data before the financial year rollover.',
+      vi: 'Tuổi bảo lưu theo năm sinh. Xuất dữ liệu trước khi chuyển năm tài chính.'
+    }
+  },
+
+  /* ── ACCOUNTING & REPORTS ── */
+  {
+    id: 'analysis_pl', category: 'accounting', app: 'analysis',
+    tab: 'pl', en: 'Profit & Loss Statement', vi: 'Báo cáo Lãi & Lỗ',
+    models: ['Revenue', 'COGS', 'Gross margin', 'EBITDA', 'Net profit'],
+    href: 'smes.html#dashboard', videoKey: 'analysis_pl',
+    guide: {
+      en: 'Build a structured P&L from income and expense categories. Compare actuals vs budget side-by-side and track margin trends across months.',
+      vi: 'Xây dựng P&L có cấu trúc từ các loại thu nhập và chi phí. So sánh thực tế vs ngân sách và theo dõi xu hướng biên lợi nhuận.'
+    }
+  },
+  {
+    id: 'analysis_balancesheet', category: 'accounting', app: 'analysis',
+    tab: 'balancesheet', en: 'Balance Sheet Snapshot', vi: 'Bảng Cân đối kế toán',
+    models: ['Assets', 'Liabilities', 'Equity', 'Working capital', 'Debt-to-equity'],
+    href: 'smes.html#portfolio', videoKey: 'analysis_balancesheet',
+    guide: {
+      en: 'Enter assets and liabilities to produce a point-in-time balance sheet. Working capital and debt-to-equity ratios calculate automatically.',
+      vi: 'Nhập tài sản và nợ phải trả để tạo bảng cân đối theo thời điểm. Vốn lưu động và tỷ lệ nợ/vốn tính tự động.'
+    }
+  },
+  {
+    id: 'analysis_ratios', category: 'accounting', app: 'analysis',
+    tab: 'ratios', en: 'Financial Ratio Analyser', vi: 'Phân tích Chỉ số Tài chính',
+    models: ['Liquidity ratios', 'Profitability ratios', 'Leverage ratios', 'Efficiency ratios'],
+    href: 'smes.html#cashflow', videoKey: 'analysis_ratios',
+    guide: {
+      en: 'Feed in P&L and balance sheet figures to compute current ratio, quick ratio, ROE, ROA, gross margin, and more.',
+      vi: 'Nhập số liệu P&L và bảng cân đối để tính hệ số thanh khoản, ROE, ROA, biên lợi nhuận và hơn thế.'
+    }
+  },
+  {
+    id: 'analysis_breakeven', category: 'accounting', app: 'analysis',
+    tab: 'breakeven', en: 'Break-Even & Margin Model', vi: 'Mô hình Hoà vốn & Biên lợi nhuận',
+    models: ['Fixed costs', 'Variable cost per unit', 'Break-even units', 'Contribution margin', 'Safety margin'],
+    href: 'smes.html#debt', videoKey: 'analysis_breakeven',
+    guide: {
+      en: 'Enter fixed costs, variable cost per unit, and selling price to find break-even volume and contribution margin.',
+      vi: 'Nhập chi phí cố định, biến phí và giá bán để tìm điểm hoà vốn và biên đóng góp.'
+    }
+  },
+
+  /* ── TAX ANALYSIS ── */
+  {
+    id: 'analysis_cgt', category: 'taxanalysis', app: 'analysis',
+    tab: 'cgt', en: 'Capital Gains Tax Calculator', vi: 'Tính Thuế Thu Nhập Vốn (CGT)',
+    models: ['Purchase price', 'Sale proceeds', 'Gross gain', '50% discount (12+ months)', 'Net taxable gain'],
+    href: 'smes.html#tax', videoKey: 'analysis_cgt',
+    guide: {
+      en: 'Calculate CGT for Australian residents on shares, ETFs, property and crypto. Applies 50% discount automatically for assets held over 12 months.',
+      vi: 'Tính CGT cho cư dân Úc trên cổ phiếu, ETF, bất động sản và tiền điện tử. Áp dụng giảm 50% tự động cho tài sản giữ hơn 12 tháng.'
+    }
+  },
+  {
+    id: 'analysis_division7a', category: 'taxanalysis', app: 'analysis',
+    tab: 'div7a', en: 'Company Loan Calculator (Div 7A)', vi: 'Tính vay Division 7A',
+    models: ['Minimum annual repayment', 'Benchmark interest rate', 'Loan term', 'Taxable dividend risk'],
+    href: 'smes.html#tax', videoKey: 'analysis_division7a',
+    guide: {
+      en: 'Calculates the minimum annual repayment for loans between a private company and its shareholders. Flags risk of the loan being treated as a taxable dividend if repayments fall short.',
+      vi: 'Mô hình hoá khoản trả nợ hàng năm tối thiểu theo Division 7A. Cảnh báo rủi ro cổ tức ảo nếu trả thiếu.'
+    }
+  },
+  {
+    id: 'analysis_gst', category: 'taxanalysis', app: 'analysis',
+    tab: 'gst', en: 'GST & BAS Estimator', vi: 'Ước tính GST & BAS',
+    models: ['GST collected', 'GST credits', 'Net GST payable', 'Quarterly BAS estimate'],
+    href: 'smes.html#tax', videoKey: 'analysis_gst',
+    guide: {
+      en: 'Enter taxable sales and input tax credits to estimate quarterly GST liability for your BAS. Flags if annual turnover approaches the $75,000 registration threshold.',
+      vi: 'Nhập doanh thu chịu thuế và tín dụng đầu vào để ước tính trách nhiệm GST hàng quý cho BAS.'
+    }
+  },
+  {
+    id: 'analysis_depreciation', category: 'taxanalysis', app: 'analysis',
+    tab: 'depreciation', en: 'Asset Depreciation Planner', vi: 'Kế hoạch Khấu hao & Xoá sổ',
+    models: ['Straight-line method', 'Diminishing value', 'Instant write-off (small business)', 'Book vs tax difference'],
+    href: 'smes.html#tax', videoKey: 'analysis_depreciation',
+    guide: {
+      en: 'Model asset depreciation under prime cost or diminishing value methods. Applies instant asset write-off thresholds for small business.',
+      vi: 'Mô hình khấu hao tài sản theo phương pháp đường thẳng hoặc giảm dần. Áp dụng ngưỡng xoá sổ ngay cho doanh nghiệp nhỏ.'
+    }
+  },
+
+  /* ── INVESTING ANALYSIS ── */
+  {
+    id: 'analysis_etf_compare', category: 'investing', app: 'analysis',
+    tab: 'etf', en: 'ETF & Fund Comparison', vi: 'So sánh ETF & Quỹ quản lý',
+    models: ['Annual fee comparison', 'After-fee return', 'Tracking error', '10yr fee drag'],
+    href: 'smes.html#portfolio', videoKey: 'analysis_etf_compare',
+    guide: {
+      en: 'Compare up to four ETFs or managed funds side-by-side on annual fees, index tracked, distribution yield, and 10-year fee drag.',
+      vi: 'So sánh tối đa bốn ETF hoặc quỹ quản lý về MER, chỉ số theo dõi, lợi suất và tác động phí 10 năm.'
+    }
+  },
+  {
+    id: 'analysis_dividend', category: 'investing', app: 'analysis',
+    tab: 'dividend', en: 'Dividend & Franking Credit Model', vi: 'Mô hình Cổ tức & Tín dụng thuế',
+    models: ['Gross dividend', 'Franking credits', 'Effective yield', 'Tax in hand'],
+    href: 'smes.html#portfolio', videoKey: 'analysis_dividend',
+    guide: {
+      en: 'Enter dividend per share and franking percentage to calculate gross dividend, franking credit value, and after-tax yield at your marginal rate.',
+      vi: 'Nhập cổ tức trên cổ phiếu và phần trăm franking để tính cổ tức gộp, giá trị tín dụng thuế và lợi suất sau thuế.'
+    }
+  },
+  {
+    id: 'analysis_rebalance', category: 'investing', app: 'analysis',
+    tab: 'rebalance', en: 'Portfolio Rebalance Planner', vi: 'Kế hoạch Tái cân bằng danh mục',
+    models: ['Current vs target %', 'Buy / sell amounts', 'Tax impact flag', 'Cash needed'],
+    href: 'smes.html#portfolio', videoKey: 'analysis_rebalance',
+    guide: {
+      en: 'Enter current holdings and target allocations to calculate the exact buy and sell amounts needed to rebalance. Flags positions where selling could trigger a CGT event.',
+      vi: 'Nhập tỷ trọng hiện tại và mục tiêu để tính chính xác số tiền cần mua/bán khi tái cân bằng. Cảnh báo vị thế khi bán sẽ kích hoạt CGT.'
+    }
+  },
+  {
+    id: 'analysis_annual_review', category: 'investing', app: 'analysis',
+    tab: 'review', en: 'Annual Financial Review', vi: 'Đánh giá Tài chính Hàng năm',
+    models: ['Year-on-year net worth', 'Goal progress', 'Strategy checklist', 'Action items'],
+    href: 'smes.html#projections', videoKey: 'analysis_annual_review',
+    guide: {
+      en: 'Run a structured year-end review across net worth, cashflow, tax position, super, insurance, and estate documents. Produces a one-page summary and action list.',
+      vi: 'Thực hiện đánh giá cuối năm có cấu trúc về tài sản ròng, dòng tiền, thuế, super, bảo hiểm và hồ sơ tài sản.'
+    }
+  },
+
+  /* ── LISTED CORPORATION ── */
+  {
+    id: 'listed_overview', category: 'overview', app: 'listed',
+    tab: 'dashboard', en: 'Listed Corporation Dashboard', vi: 'Tổng quan Công ty niêm yết',
+    models: ['Revenue & margin', 'Debt profile', 'Capital allocation'],
+    href: 'listed-corporation.html#dashboard', videoKey: 'listed_overview',
+    guide: {
+      en: 'Track public-company KPI trends, capital structure, and strategic priorities in one operating dashboard.',
+      vi: 'Theo dõi KPI, cấu trúc vốn và ưu tiên chiến lược của công ty niêm yết trên một bảng điều hành.'
+    }
+  },
+
+  /* ── TRUST ── */
+  {
+    id: 'trust_overview', category: 'planning', app: 'trust',
+    tab: 'dashboard', en: 'Trust Planning Dashboard', vi: 'Bảng kế hoạch Quỹ tín thác',
+    models: ['Trust assets', 'Distributions', 'Beneficiary planning'],
+    href: 'trust.html#dashboard', videoKey: 'trust_overview',
+    guide: {
+      en: 'Use the trust dashboard for distributions, compliance reminders, and annual planning with your accountant.',
+      vi: 'Dùng bảng quỹ tín thác để theo dõi phân phối, nhắc nhở tuân thủ và kế hoạch năm cùng kế toán.'
+    }
+  },
+
+  /* ── NATION STATE ── */
+  {
+    id: 'nation_dashboard', category: 'macro', app: 'nation-state',
+    tab: 'dashboard', en: 'Policy Dashboard', vi: 'Bảng Tổng Quan Chính Sách',
+    models: ['GDP growth', 'Inflation rate', 'Unemployment', 'Budget balance'],
+    href: 'nation-state.html#dashboard', videoKey: 'nation_dashboard',
+    guide: {
+      en: 'Live macroeconomic snapshot. Set your monetary and fiscal levers in the Monetary and Fiscal tabs, then advance the simulation quarter by quarter.',
+      vi: 'Ảnh chụp kinh tế vĩ mô theo thời gian thực. Đặt các đòn bẩy tiền tệ và tài khóa, rồi chạy mô phỏng từng quý.'
+    }
+  },
+  {
+    id: 'nation_monetary', category: 'macro', app: 'nation-state',
+    tab: 'monetary', en: 'Monetary Policy Controls', vi: 'Điều khiển Chính sách Tiền tệ',
+    models: ['Cash rate', 'Reserve ratio', 'Quantitative easing', 'Money multiplier'],
+    href: 'nation-state.html#monetary', videoKey: 'nation_monetary',
+    guide: {
+      en: 'Adjust the cash rate and reserve ratio to control inflation and credit growth. QE injects liquidity but raises long-run inflation risk. Monitor the money multiplier panel.',
+      vi: 'Điều chỉnh lãi suất và tỷ lệ dự trữ để kiểm soát lạm phát và tăng trưởng tín dụng. QE bơm thanh khoản nhưng tăng rủi ro lạm phát.'
+    }
+  },
+  {
+    id: 'nation_fiscal', category: 'macro', app: 'nation-state',
+    tab: 'fiscal', en: 'Fiscal Policy Controls', vi: 'Điều khiển Chính sách Tài khóa',
+    models: ['Tax rate', 'Government spending', 'Infrastructure investment', 'Budget balance', 'Debt/GDP'],
+    href: 'nation-state.html#fiscal', videoKey: 'nation_fiscal',
+    guide: {
+      en: 'Raise spending or cut taxes to stimulate demand. Watch the budget panel — deficits expand national debt. Infrastructure investment has long-run supply-side benefits.',
+      vi: 'Tăng chi tiêu hoặc cắt giảm thuế để kích thích cầu. Theo dõi bảng ngân sách — thâm hụt làm tăng nợ quốc gia.'
+    }
+  },
+  {
+    id: 'nation_simulate', category: 'macro', app: 'nation-state',
+    tab: 'simulate', en: 'Quarter Simulation Engine', vi: 'Động cơ Mô phỏng Theo quý',
+    models: ['Phillips curve', 'Okun\'s law', 'Fiscal multiplier', 'Noise level'],
+    href: 'nation-state.html#simulate', videoKey: 'nation_simulate',
+    guide: {
+      en: 'Apply your current policy mix and advance the economy by one quarter. Results reflect the Phillips curve (inflation/unemployment trade-off) and Okun\'s law (GDP/unemployment link).',
+      vi: 'Áp dụng chính sách hiện tại và tăng nền kinh tế một quý. Kết quả phản ánh đường Phillips và định luật Okun.'
+    }
+  },
+  {
+    id: 'nation_projections', category: 'macro', app: 'nation-state',
+    tab: 'projections', en: 'Multi-Year Economic Projections', vi: 'Dự báo Kinh tế Nhiều năm',
+    models: ['Conservative / Base / Optimistic', 'GDP trend', 'Population growth', 'Horizon up to 30yr'],
+    href: 'nation-state.html#projections', videoKey: 'nation_projections',
+    guide: {
+      en: 'Project GDP growth over 1–30 years under three scenarios. Adjust the base trend and population growth rate to model different long-run outcomes.',
+      vi: 'Dự báo tăng trưởng GDP trong 1–30 năm theo ba kịch bản. Điều chỉnh xu hướng cơ sở và tốc độ tăng dân số.'
+    }
+  },
+];
+
+/* ── UI string translations ──────────────────────────────── */
+const UI = {
+  en: {
+    hubTitle: 'Finance Tools Hub',
+    hubSub: 'Open the right tool, read the quick guide, or watch the video walkthrough.',
+    langBtn: '🌐 Tiếng Việt',
+    showAll: 'Show all',
+    filterHint: 'Filter by category, or browse all tools below.',
+    appPersonal: 'Personal Finance',   appPersonalSub: 'Cashflow, budget, tax, debt & net worth',
+    appSmsf: 'Super Fund (SMSF)',      appSmsfSub: 'Contributions, compliance & fund growth',
+    appAnalysis: 'Business (SME)',     appAnalysisSub: 'Cashflow, tax, financial statements',
+    appNation: 'Nation State',         appNationSub: 'Fiscal & monetary policy simulator',
+    emptyFilter: 'No tools in this category.',
+    writtenGuide: 'Quick guide',
+    videoGuide: 'Video walkthrough',
+    watchVideo: 'Watch guide',
+    openCalc: 'Open',
+    all: 'All categories',
+    modalNoVideo: 'Add a YouTube video ID in hub.js → VIDEO_IDS.',
+    modalFoot: 'Tip: keep guides under 3 minutes — focus on inputs and one decision per video.'
+  },
+  vi: {
+    hubTitle: 'Công Cụ Tài Chính',
+    hubSub: 'Mở đúng công cụ, đọc hướng dẫn, xem video.',
+    langBtn: '🌐 English',
+    showAll: 'Tất cả',
+    filterHint: 'Lọc theo danh mục hoặc xem toàn bộ bên dưới.',
+    appPersonal: 'Tài Chính Cá Nhân',  appPersonalSub: 'Dòng tiền, ngân sách, thuế, nợ & tài sản ròng',
+    appSmsf: 'Quỹ Super (SMSF)',       appSmsfSub: 'Đóng góp, tuân thủ & tăng trưởng quỹ',
+    appAnalysis: 'Doanh Nghiệp (SME)', appAnalysisSub: 'Dòng tiền, thuế, báo cáo tài chính',
+    appNation: 'Quốc Gia',             appNationSub: 'Mô phỏng chính sách tài khóa & tiền tệ',
+    emptyFilter: 'Không có công cụ trong danh mục này.',
+    writtenGuide: 'Hướng dẫn nhanh',
+    videoGuide: 'Video hướng dẫn',
+    watchVideo: 'Xem video',
+    openCalc: 'Mở',
+    all: 'Tất cả danh mục',
+    modalNoVideo: 'Thêm YouTube video ID trong hub.js → VIDEO_IDS.',
+    modalFoot: 'Gợi ý: video dưới 3 phút — tập trung vào đầu vào và một quyết định.'
+  }
+};
+
+/* ── Helpers ─────────────────────────────────────────────── */
+function ui(k) { return UI[LANG][k] || UI.en[k]; }
+
+function toggleLang() {
+  LANG = LANG === 'en' ? 'vi' : 'en';
+  localStorage.setItem('finance_tools_lang', LANG);
+  render();
+}
+
+/* ── Category filter ─────────────────────────────────────── */
+let activeCat = 'all';
+
+function filterCat(id) {
+  activeCat = id;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === id));
+  document.querySelectorAll('.calc-card').forEach(card => {
+    const show = id === 'all' || card.dataset.category === id;
+    card.classList.toggle('hidden', !show);
+  });
+  const anyVisible = [...document.querySelectorAll('.calc-card')].some(c => !c.classList.contains('hidden'));
+  document.getElementById('empty-filter').classList.toggle('show', !anyVisible);
+  document.querySelectorAll('.section').forEach(sec => {
+    const cards = sec.querySelectorAll('.calc-card:not(.hidden)');
+    sec.style.display = cards.length ? '' : 'none';
+  });
+}
+
+/* ── Video modal ─────────────────────────────────────────── */
+function openVideo(key, title) {
+  const modal = document.getElementById('video-modal');
+  const body  = document.getElementById('modal-body');
+  const foot  = document.getElementById('modal-foot');
+  document.getElementById('modal-title').textContent = title;
+  foot.textContent = ui('modalFoot');
+  const id = VIDEO_IDS[key];
+  if (id && id !== 'placeholder') {
+    body.innerHTML = `<div class="ratio"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  } else {
+    body.innerHTML = `<div class="modal-placeholder"><p>${ui('modalNoVideo')}</p><p style="margin-top:12px"><code>VIDEO_IDS.${key}</code></p></div>`;
+  }
+  modal.classList.add('open');
+}
+
+function closeVideo() {
+  document.getElementById('video-modal').classList.remove('open');
+  document.getElementById('modal-body').innerHTML = '';
+}
+
+/* ── Card renderer ───────────────────────────────────────── */
+function appLabel(app) {
+  const map = {
+    personal: 'Personal', smsf: 'SMSF', analysis: 'Business',
+    listed: 'Listed', trust: 'Trust', 'nation-state': 'Nation State'
+  };
+  return map[app] || app;
+}
+
+function renderCard(c) {
+  const title = LANG === 'vi' ? c.vi : c.en;
+  const guide = LANG === 'vi' ? c.guide.vi : c.guide.en;
+  const safeTitle = title.replace(/'/g, "\\'");
+  return `
+    <article class="calc-card" data-category="${c.category}" data-id="${c.id}">
+      <div class="calc-top">
+        <div class="calc-title">${title}</div>
+        <span class="calc-app ${c.app}">${appLabel(c.app)}</span>
+      </div>
+      <div class="models">${c.models.map(m => `<span class="model-tag">${m}</span>`).join('')}</div>
+      <div class="guide-written"><strong>${ui('writtenGuide')}</strong>${guide}</div>
+      <div class="video-strip"
+           onclick="openVideo('${c.videoKey}','${safeTitle}')"
+           role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter')openVideo('${c.videoKey}','${safeTitle}')">
+        <div class="video-thumb">▶</div>
+        <div class="video-meta"><strong>${ui('watchVideo')}</strong><span>${ui('videoGuide')}</span></div>
+      </div>
+      <div class="calc-actions">
+        <a class="btn btn-accent" href="${c.href}">${ui('openCalc')} →</a>
+      </div>
+    </article>`;
+}
+
+/* ── Main render ─────────────────────────────────────────── */
+function render() {
+  /* i18n static elements */
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (UI[LANG][k]) el.textContent = UI[LANG][k];
+  });
+
+  /* Category nav */
+  const nav = document.getElementById('cat-nav');
+  nav.innerHTML =
+    `<button type="button" class="cat-btn active" data-cat="all" onclick="filterCat('all')">${ui('all')}</button>` +
+    CATEGORIES.map(cat =>
+      `<button type="button" class="cat-btn" data-cat="${cat.id}" onclick="filterCat('${cat.id}')">${LANG === 'vi' ? cat.vi : cat.en}</button>`
+    ).join('');
+
+  /* Group calculators by category */
+  const byCat = {};
+  CATEGORIES.forEach(c => { byCat[c.id] = []; });
+  CALCULATORS.forEach(c => { if (byCat[c.category]) byCat[c.category].push(c); });
+
+  /* Render sections */
+  document.getElementById('sections').innerHTML = CATEGORIES.map(cat => {
+    const items = byCat[cat.id];
+    if (!items.length) return '';
+    return `<section class="section" id="cat-${cat.id}">
+      <div class="section-head">
+        <h2>${LANG === 'vi' ? cat.vi : cat.en}</h2>
+        <p>${items.length} ${items.length === 1 ? 'tool' : 'tools'}</p>
+      </div>
+      <div class="calc-grid">${items.map(renderCard).join('')}</div>
+    </section>`;
+  }).join('');
+
+  filterCat(activeCat);
+}
+
+/* ── App strip carousel (mobile dots) ───────────────────── */
+function initCarousel() {
+  const strip  = document.getElementById('app-strip');
+  const dotsEl = document.getElementById('app-strip-dots');
+  if (!strip || !dotsEl) return;
+
+  const cards = [...strip.querySelectorAll('.app-card')];
+  if (!cards.length) return;
+
+  dotsEl.innerHTML = cards.map((_, i) =>
+    `<button type="button" class="app-strip-dot${i === 0 ? ' active' : ''}" data-index="${i}" aria-label="Go to app ${i + 1}"></button>`
+  ).join('');
+
+  const dots = [...dotsEl.querySelectorAll('.app-strip-dot')];
+
+  function setActiveDot(index) {
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+  }
+
+  function scrollToCard(index) {
+    const card = cards[index];
+    if (!card) return;
+    const offset = card.offsetLeft - strip.offsetLeft - (strip.clientWidth - card.offsetWidth) / 2;
+    strip.scrollTo({ left: offset, behavior: 'smooth' });
+    setActiveDot(index);
+  }
+
+  dots.forEach(dot => dot.addEventListener('click', () => scrollToCard(Number(dot.dataset.index))));
+
+  let scrollTimer;
+  strip.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const center = strip.scrollLeft + strip.clientWidth / 2;
+      let nearest = 0, minDist = Infinity;
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft - strip.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(center - cardCenter);
+        if (dist < minDist) { minDist = dist; nearest = i; }
+      });
+      setActiveDot(nearest);
+    }, 60);
+  }, { passive: true });
+}
+
+/* ── Boot ────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  /* Modal close handlers */
+  document.getElementById('video-modal').addEventListener('click', e => {
+    if (e.target.id === 'video-modal') closeVideo();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+
+  render();
+  initCarousel();
+});
