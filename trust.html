@@ -113,7 +113,9 @@ input[type=number]{font-family:var(--font-mono)}
     <button class="btn btn-accent" onclick="saveAll()">Save</button>
   </div>
 </header>
-<a href="index.html" class="back-link">← Hub</a>
+  <div>
+    <a href="index.html" class="back-link">← Hub</a>
+  </div>
 <nav>
   <div class="tab active" id="tab-dashboard" onclick="showPage('dashboard')">📊 Dashboard</div>
   <div class="tab" id="tab-income" onclick="showPage('income')">📋 Income Statement</div>
@@ -367,9 +369,21 @@ input[type=number]{font-family:var(--font-mono)}
 </main>
 <div id="save-toast">✓ Saved</div>
 <footer class="site-footer">
-  <span>Family Trust · Finance Tools</span>
-  <span><a href="index.html">← Finance Tools Hub</a> · <a href="wealth-builder.html">Personal Finance</a> · <a href="smsf.html">Super Fund</a> · <a href="smes.html">Small Business</a> · <a href="listed-corporation.html">Listed Company</a></span>
-</footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-title">Related resources</div>
+        <a href="index">Financial Hub</a><br/>
+        <a href="listed corporation">Listed Corporation</a><br/>
+        <a href="smes">Company</a><br/>
+        <a href="nation-state">Nation State</a><br/>
+        <a href="smsf">Pension Fund</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">References</div>
+        <div class="footer-text">Prepared for information purposes only. Not financial advice.</div>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <script>
