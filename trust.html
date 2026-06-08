@@ -98,22 +98,22 @@ input[type=number]{font-family:var(--font-mono)}
   <div class="logo">
     <span class="logo-title">Trust</span>
     <span class="logo-sub">Trust Planning</span>
-    <a href="index.html" class="back-link">← Hub</a>
   </div>
   <div class="header-right">
     <span class="last-updated" id="last-updated-label"></span>
+      <button class="btn" onclick="toggleLanguage()" data-i18n="btnLangToggle">🌐 Tiếng Việt</button>
     <div class="dropdown" id="header-actions">
-      <button class="btn" id="header-actions-toggle" onclick="toggleDropdown()">⋯</button>
       <div class="dropdown-menu">
         <button class="dropdown-item" onclick="exportData()">↓ Export JSON</button>
         <button class="dropdown-item" onclick="exportReport()">↓ Trust Report</button>
         <button class="dropdown-item" onclick="showPage('settings')">⚙️ Settings</button>
       </div>
+      <button class="btn" id="header-actions-toggle" onclick="toggleDropdown()">⋯</button>
     </div>
     <button class="btn btn-accent" onclick="saveAll()">Save</button>
   </div>
 </header>
-
+<a href="index.html" class="back-link">← Hub</a>
 <nav>
   <div class="tab active" id="tab-dashboard" onclick="showPage('dashboard')">📊 Dashboard</div>
   <div class="tab" id="tab-income" onclick="showPage('income')">📋 Income Statement</div>
@@ -123,7 +123,6 @@ input[type=number]{font-family:var(--font-mono)}
   <div class="tab" id="tab-distributions" onclick="showPage('distributions')">👥 Distributions</div>
   <div class="tab" id="tab-ratios" onclick="showPage('ratios')">📐 Ratios</div>
   <div class="tab" id="tab-tax" onclick="showPage('tax')">🧾 Tax</div>
-  <div class="tab" id="tab-settings" onclick="showPage('settings')">⚙️ Settings</div>
 </nav>
 
 <main>
