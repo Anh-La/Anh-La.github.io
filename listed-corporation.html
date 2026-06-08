@@ -97,7 +97,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
   <div class="logo">
     <span class="logo-title">Listed Company</span>
     <span class="logo-sub">Company Reporting</span>
-    <span class="hub-badge">Listed</span>
   </div>
   <div class="header-right">
     <span class="last-updated" id="last-updated-label"></span>
@@ -112,7 +111,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent)} input[type=num
     <button class="btn btn-accent" onclick="saveAll()">Save</button>
   </div>
 </header>
-<div><a href="index.html" class="back-link">← Hub</a></div>
+<div class="return-link-wrap">
+      <a href="index.html" class="back-link" title="Back to Hub">← Hub</a>
+    </div>
 <nav>
   <div class="tab active" id="tab-dashboard"      onclick="showPage('dashboard')">📊 Dashboard</div>
   <div class="tab"        id="tab-pl"             onclick="showPage('pl')">📋 P&amp;L</div>
