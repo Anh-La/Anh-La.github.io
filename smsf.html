@@ -97,6 +97,9 @@
 <body>
 <div id="app">
 <header>
+  <div class="return-link-wrap">
+      <a href="index.html" class="back-link" title="Back to Hub">← Hub</a>
+  </div>
   <div class="logo">
     <span class="logo-title" data-i18n="appTitle">Pension Fund</span>
   </div>
@@ -114,9 +117,7 @@
     <button class="btn btn-accent" onclick="saveAll()" data-i18n="btnSave">Save</button>
   </div>
 </header>
-  <div class="return-link-wrap">
-      <a href="index.html" class="back-link" title="Back to Hub">← Hub</a>
-    </div>
+  
 <nav>
   <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard" data-i18n="tabDashboard">📊 Dashboard</div>
   <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio" data-i18n="tabPortfolio">💼 Fund Portfolio</div>
@@ -127,9 +128,6 @@
 <main>
 
 <div class="page active" id="page-dashboard">
-  <div class="return-link-wrap">
-    <a href="index" class="back-link" title="Back to Hub">← Hub</a>
-  </div>
   <div class="page-title" data-i18n="dashTitle">Fund Overview</div>
   <div class="page-sub" data-i18n="dashSub">Superannuation fund overview · caps, compliance & projected balance</div>
   <div class="grid-4 section" id="kpi-row"></div>
