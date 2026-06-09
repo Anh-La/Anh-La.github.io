@@ -49,6 +49,10 @@ const VIDEO_IDS = {
   nation_fiscal:        'placeholder',
   nation_simulate:      'placeholder',
   nation_projections:   'placeholder',
+  earth_overview:       'placeholder',
+  earth_economies:      'placeholder',
+  earth_trends:         'placeholder',
+  earth_sectors:        'placeholder',
 };
 
 /* ── Language ───────────────────────────────────────────────  */
@@ -69,6 +73,7 @@ const CATEGORIES = [
   { id: 'compliance',  en: 'SMSF Compliance',          vi: 'Tuân thủ SMSF' },
   { id: 'planning',    en: 'Planning & Settings',      vi: 'Kế hoạch & Cài đặt' },
   { id: 'macro',       en: 'Macroeconomic Policy',     vi: 'Chính sách Kinh tế Vĩ mô' },
+  { id: 'global',      en: 'Global Economy',           vi: 'Kinh tế Toàn cầu' },
 ];
 
 /* ── Calculator / tool definitions ──────────────────────────  */
@@ -499,6 +504,48 @@ const CALCULATORS = [
       vi: 'Dự báo tăng trưởng GDP trong 1–30 năm theo ba kịch bản. Điều chỉnh xu hướng cơ sở và tốc độ tăng dân số.'
     }
   },
+
+  /* ── EARTH ECONOMY ── */
+  {
+    id: 'earth_overview', category: 'global', app: 'earth-economy',
+    tab: 'overview', en: 'Global Economic Overview', vi: 'Tổng Quan Kinh Tế Toàn Cầu',
+    models: ['Global Gross Product $112.4T', 'Avg inflation 4.1%', 'Population 8.25B', 'Trade Openness 61.3%'],
+    href: 'earth-economy.html#overview', videoKey: 'earth_overview',
+    guide: {
+      en: 'The entry point for the Global Macroeconomic Observatory. Four headline KPIs summarise the state of the world economy, supported by the Top 10 GDP bar chart, global sector doughnut, and a decade-long growth trajectory. Use the health indicator bars to quickly assess whether growth, inflation, trade, and urbanisation are within healthy ranges.',
+      vi: 'Điểm vào của Đài quan sát Kinh tế Vĩ mô Toàn cầu. Bốn KPI tóm tắt tình trạng kinh tế thế giới, kèm biểu đồ GDP Top 10, bánh ngành toàn cầu và quỹ đạo tăng trưởng thập kỷ. Dùng thanh chỉ số sức khỏe để đánh giá nhanh tình trạng tăng trưởng, lạm phát, thương mại và đô thị hóa.'
+    }
+  },
+  {
+    id: 'earth_economies', category: 'global', app: 'earth-economy',
+    tab: 'economies', en: 'Sovereign Economy Ledger', vi: 'Sổ Kinh Tế Quốc Gia',
+    models: ['15 major economies', 'Nominal GDP', 'GDP growth & inflation', 'GDP per capita', 'Regional groupings'],
+    href: 'earth-economy.html#economies', videoKey: 'earth_economies',
+    guide: {
+      en: 'A sortable, searchable table of 15 major economies showing nominal GDP, growth rate, inflation, population and GDP per capita for 2026. Filter by country name to isolate a single economy, or scan the regional summary cards below the table to compare aggregated block performance across North America, Europe, Asia-Pacific, Latin America, and Africa / Middle East.',
+      vi: 'Bảng 15 nền kinh tế lớn có thể sắp xếp và tìm kiếm, hiển thị GDP danh nghĩa, tốc độ tăng trưởng, lạm phát, dân số và GDP bình quân đầu người 2026. Lọc theo tên quốc gia hoặc xem thẻ tóm tắt vùng để so sánh hiệu suất khối.'
+    }
+  },
+  {
+    id: 'earth_trends', category: 'global', app: 'earth-economy',
+    tab: 'trends', en: 'Economic Trend Analysis', vi: 'Phân Tích Xu Hướng Kinh Tế',
+    models: ['Historical GDP 2016–2026', 'Top 5 fastest growers', 'Macro advisory alerts', 'Multi-economy comparison'],
+    href: 'earth-economy.html#trends', videoKey: 'earth_trends',
+    guide: {
+      en: 'Combines a historical GDP growth line chart (2016–2026) with a ranked list of the five fastest-growing economies, automatic macro advisory alerts (expansion vs deceleration, inflation vs stabilisation), and a bar chart comparing GDP growth across five key economies: USA, China, India, Brazil, and Australia. Use the advisory panel first to frame the macro environment before drilling into individual economies.',
+      vi: 'Kết hợp biểu đồ tăng trưởng GDP lịch sử (2016–2026) với xếp hạng 5 nền kinh tế tăng nhanh nhất, cảnh báo tư vấn vĩ mô tự động và biểu đồ so sánh 5 nền kinh tế chính. Xem bảng tư vấn trước để định hình môi trường vĩ mô trước khi đi sâu vào từng quốc gia.'
+    }
+  },
+  {
+    id: 'earth_sectors', category: 'global', app: 'earth-economy',
+    tab: 'sectors', en: 'Global Sector Composition', vi: 'Cơ Cấu Ngành Kinh Tế Toàn Cầu',
+    models: ['Services 65.2%', 'Industry 30.5%', 'Agriculture 4.3%', 'Regional sector breakdowns'],
+    href: 'earth-economy.html#sectors', videoKey: 'earth_sectors',
+    guide: {
+      en: 'Shows the global split of economic output across Services (65.2%), Industry (30.5%), and Agriculture (4.3%) via a full doughnut chart, then breaks the same three-way split down by region — North America, Europe, Asia-Pacific, Latin America, and Africa / Middle East — using stacked progress bars. Note how Asia-Pacific carries a significantly higher industry share than Western economies, reflecting manufacturing concentration.',
+      vi: 'Hiển thị phân bổ đầu ra kinh tế toàn cầu theo Dịch vụ (65.2%), Công nghiệp (30.5%), Nông nghiệp (4.3%) qua biểu đồ bánh, sau đó phân tách theo vùng bằng thanh tiến trình. Lưu ý châu Á-Thái Bình Dương có tỷ trọng công nghiệp cao hơn đáng kể so với các nền kinh tế phương Tây.'
+    }
+  },
 ];
 
 /* ── UI string translations ──────────────────────────────── */
@@ -513,6 +560,7 @@ const UI = {
     appSmsf: 'Super Fund (SMSF)',      appSmsfSub: 'Contributions, compliance & fund growth',
     appAnalysis: 'Business (SME)',     appAnalysisSub: 'Cashflow, tax, financial statements',
     appNation: 'Nation State',         appNationSub: 'Fiscal & monetary policy simulator',
+    appEarth: 'Earth Economy',         appEarthSub: 'Global macroeconomic observatory · GDP, trade & inflation',
     emptyFilter: 'No tools in this category.',
     writtenGuide: 'Quick guide',
     videoGuide: 'Video walkthrough',
@@ -532,6 +580,7 @@ const UI = {
     appSmsf: 'Quỹ Super (SMSF)',       appSmsfSub: 'Đóng góp, tuân thủ & tăng trưởng quỹ',
     appAnalysis: 'Doanh Nghiệp (SME)', appAnalysisSub: 'Dòng tiền, thuế, báo cáo tài chính',
     appNation: 'Quốc Gia',             appNationSub: 'Mô phỏng chính sách tài khóa & tiền tệ',
+    appEarth: 'Kinh Tế Toàn Cầu',     appEarthSub: 'Đài quan sát kinh tế vĩ mô · GDP, thương mại & lạm phát',
     emptyFilter: 'Không có công cụ trong danh mục này.',
     writtenGuide: 'Hướng dẫn nhanh',
     videoGuide: 'Video hướng dẫn',
@@ -595,7 +644,8 @@ function closeVideo() {
 function appLabel(app) {
   const map = {
     personal: 'Personal', smsf: 'SMSF', analysis: 'Business',
-    listed: 'Listed', trust: 'Trust', 'nation-state': 'Nation State'
+    listed: 'Listed', trust: 'Trust', 'nation-state': 'Nation State',
+    'earth-economy': 'Earth Economy'
   };
   return map[app] || app;
 }
