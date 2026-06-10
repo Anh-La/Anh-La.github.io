@@ -22,7 +22,6 @@
     </div>
   </header>
 
-  <!-- ── App strip ── -->
   <div class="app-strip-wrap">
     <div class="app-strip" id="app-strip" role="region" aria-label="Apps">
 
@@ -86,9 +85,87 @@
     <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
   </div>
 
+  <div class="app-strip-wrap" style="margin-top: 1rem;">
+    <div class="app-strip" id="asset-strip" role="region" aria-label="Asset Classes">
+
+      <a class="app-card cash" href="assets-cash.html">
+        <span class="icon">💵</span>
+        <div>
+          <strong data-i18n="assetCash">Cash (Fiat money)</strong>
+          <span data-i18n="assetCashSub">Liquidity, multi-currency holdings & cash reserves</span>
+        </div>
+      </a>
+
+      <a class="app-card term-deposit" href="assets-term-deposit.html">
+        <span class="icon">🏦</span>
+        <div>
+          <strong data-i18n="assetTD">Term Deposit</strong>
+          <span data-i18n="assetTDSub">Fixed-term yield accounts & capital preservation</span>
+        </div>
+      </a>
+
+      <a class="app-card bonds" href="assets-bonds.html">
+        <span class="icon">📜</span>
+        <div>
+          <strong data-i18n="assetBonds">Bonds</strong>
+          <span data-i18n="assetBondsSub">Fixed-income securities, government treasuries & debt</span>
+        </div>
+      </a>
+
+      <a class="app-card shares" href="assets-shares.html">
+        <span class="icon">📈</span>
+        <div>
+          <strong data-i18n="assetShares">Shares</strong>
+          <span data-i18n="assetSharesSub">Public equities, dividend yields & market portfolios</span>
+        </div>
+      </a>
+
+      <a class="app-card derivatives" href="assets-derivatives.html">
+        <span class="icon">🔀</span>
+        <div>
+          <strong data-i18n="assetDerivatives">Derivatives</strong>
+          <span data-i18n="assetDerivativesSub">Options, futures contracts & structural risk hedging</span>
+        </div>
+      </a>
+
+      <a class="app-card managed-funds" href="assets-managed-funds.html">
+        <span class="icon">🧺</span>
+        <div>
+          <strong data-i18n="assetMF">Managed Funds</strong>
+          <span data-i18n="assetMFSub">ETFs, mutual funds & institutionally diversified portfolios</span>
+        </div>
+      </a>
+
+      <a class="app-card property" href="assets-property.html">
+        <span class="icon">🏡</span>
+        <div>
+          <strong data-i18n="assetProperty">Real Property</strong>
+          <span data-i18n="assetPropertySub">Residential, commercial real estate & brick-and-mortar assets</span>
+        </div>
+      </a>
+
+      <a class="app-card metals" href="assets-metals.html">
+        <span class="icon">🧱</span>
+        <div>
+          <strong data-i18n="assetMetals">Gold & Metals</strong>
+          <span data-i18n="assetMetalsSub">Precious metal bullion, physical commodities & inflation hedges</span>
+        </div>
+      </a>
+
+      <a class="app-card crypto" href="assets-crypto.html">
+        <span class="icon">🪙</span>
+        <div>
+          <strong data-i18n="assetCrypto">Cryptocurrency</strong>
+          <span data-i18n="assetCryptoSub">Digital assets, sovereign keys, on-chain networks & liquidity</span>
+        </div>
+      </a>
+
+    </div>
+    <div class="app-strip-dots" id="asset-strip-dots" aria-hidden="true"></div>
+  </div>
+
   <p class="filter-hint" data-i18n="filterHint">Filter by category, or browse all tools below.</p>
 
-  <!-- ── Main layout ── -->
   <div class="layout">
     <aside class="sidebar">
       <nav class="cat-nav" id="cat-nav" aria-label="Categories"></nav>
@@ -99,10 +176,7 @@
     </div>
   </div>
 
-</div><!-- .shell -->
-
-<!-- ── Video modal ── -->
-<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+</div><div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-box">
     <div class="modal-head">
       <h3 id="modal-title">Video guide</h3>
