@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +59,8 @@
   .table-total-row{font-weight:700;background:rgba(255,255,255,0.02)}
   .table-total-row td{border-top:2px solid var(--border);border-bottom:2px solid var(--border)}
   .indent-item{padding-left:28px}
-  .td-mono{font-family:var(--font-mono)}.td-green{color:var(--accent3);font-weight:600}.td-gold{color:var(--accent)}.td-red{color:var(--accent4);font-weight:600}
+  .td-mono{font-family:var(--font-mono)}.td-green{color:var(--accent3);font-weight:600}.td-gold{color:var(--accent)}
+  .td-red{color:var(--accent4);font-weight:600}
   .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
   label{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600}
   input,select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:9px 12px;font-size:13px}
@@ -92,6 +92,9 @@
   .site-footer a:hover{color:var(--accent)}
   .footer-text{font-size:12px;line-height:1.5;max-width:560px}
   .empty-state{text-align:center;padding:48px;color:var(--muted)}
+  .settings-subnav{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;}
+  .settings-panel{display:none}
+  .settings-panel.active{display:block}
   @media(max-width:900px){.grid-4,.grid-3{grid-template-columns:1fr 1fr}main{padding:20px 16px}}
   @media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.site-footer{padding:18px 16px}}
 </style>
@@ -105,10 +108,11 @@
   </div>
   <div class="header-right">
     <span class="last-updated" id="last-updated-label">Live Systems Ready</span>
-    <button class="btn" onclick="toggleLanguage()">🌐 English</button>
+    <button class="btn" id="lang-toggle-btn" onclick="toggleLanguage()">🌐 Tiếng Việt</button>
     <div class="dropdown" id="header-actions">
       <button class="btn" type="button" onclick="document.getElementById('header-actions').classList.toggle('open')">⋯</button>
       <div class="dropdown-menu">
+        <button class="dropdown-item" onclick="showPage('settings'); switchSettingsTab('data-mgmt');">📥 Import Data JSON</button>
         <button class="dropdown-item" onclick="exportData()">↓ Export Data JSON</button>
         <button class="dropdown-item" onclick="exportPensionFundReport()">📊 Complete PDF Report</button>
         <button class="dropdown-item" onclick="showPage('settings')">⚙️ Settings & Inventory</button>
@@ -123,7 +127,7 @@
   <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio">💼 Investment Portfolio</div>
   <div class="tab" onclick="showPage('performance')" id="tab-performance">📈 Performance Track</div>
   <div class="tab" onclick="showPage('financials')" id="tab-financials">🧾 Financial Statements</div>
-  <div class="tab" onclick="showPage('contributions')" id="tab-contributions">💰 Contributions</div>
+  <div class="tab" onclick="showPage('contributions')" id="tab-contributions">💰 Contributions & Caps</div>
   <div class="tab" onclick="showPage('compliance')" id="tab-compliance">📋 Compliance</div>
   <div class="tab" onclick="showPage('projections')" id="tab-projections">📈 Projections</div>
 </nav>
@@ -228,7 +232,7 @@
     </div>
     <div class="kpi green">
       <div class="kpi-label">Net Alpha Generation Margin</div>
-      <div class="kpi-value td-green">+0.94%</div>
+      <div class="kpi-value td-green" id="perf-fund-alpha">+0.94%</div>
       <div class="kpi-sub">Relative outperformance spread</div>
     </div>
   </div>
@@ -275,11 +279,11 @@
         <tr><td>Net Realised Capital Gains Ledger</td><td class="td-mono">12,500</td><td class="td-mono" id="fin-inc-cap">8,900</td></tr>
         <tr class="table-total-row"><td>Total Operational Income Revenue</td><td class="td-mono">66,250</td><td class="td-mono" id="fin-inc-total">69,820</td></tr>
         <tr><td style="font-weight:600">Operating Outflow Expenses</td><td></td><td></td></tr>
-        <tr class="indent-item"><td>Accounting & Administration Outgoings</td><td class="td-mono">2,200</td><td class="td-mono">2,400</td></tr>
-        <tr class="indent-item"><td>Approved SMSF Audit Provision Costs</td><td class="td-mono">650</td><td class="td-mono">700</td></tr>
-        <tr class="indent-item"><td>ATO Supervisory Levies Applied</td><td class="td-mono">259</td><td class="td-mono">259</td></tr>
-        <tr class="indent-item"><td>Commercial Property Holding Outgoings</td><td class="td-mono">4,800</td><td class="td-mono">5,100</td></tr>
-        <tr class="table-total-row"><td>Total Operating Expenses Deducted</td><td class="td-mono">7,909</td><td class="td-mono">8,459</td></tr>
+        <tr class="indent-item"><td>Accounting & Administration Outgoings</td><td class="td-mono">2,200</td><td class="td-mono" id="fin-exp-admin">2,400</td></tr>
+        <tr class="indent-item"><td>Approved SMSF Audit Provision Costs</td><td class="td-mono">650</td><td class="td-mono" id="fin-exp-audit">700</td></tr>
+        <tr class="indent-item"><td>ATO Supervisory Levies Applied</td><td class="td-mono">259</td><td class="td-mono" id="fin-exp-levy">259</td></tr>
+        <tr class="indent-item"><td>Commercial Property Holding Outgoings</td><td class="td-mono">4,800</td><td class="td-mono" id="fin-exp-prop">5,100</td></tr>
+        <tr class="table-total-row"><td>Total Operating Expenses Deducted</td><td class="td-mono">7,909</td><td class="td-mono" id="fin-exp-total">8,459</td></tr>
         <tr class="table-total-row" style="color:var(--accent3)"><td>Net Earnings Allocated to Member Capital Account</td><td class="td-mono">58,341</td><td class="td-mono" id="fin-inc-net">61,361</td></tr>
       </tbody>
     </table>
@@ -300,9 +304,9 @@
         <tr class="indent-item"><td>Alternative Commodity, Precious Metals & Other Assets</td><td class="td-mono">88,400</td><td class="td-mono" id="fin-bal-alt">112,600</td></tr>
         <tr class="table-total-row"><td>Gross Strategic Fund Assets (Gross Assets Value)</td><td class="td-mono">910,600</td><td class="td-mono" id="fin-bal-gross-assets">1,050,500</td></tr>
         <tr><td style="font-weight:600">Liabilities Matrix</td><td></td><td></td></tr>
-        <tr class="indent-item"><td>Accrued Expenses and Fees Owed</td><td class="td-mono">1,100</td><td class="td-mono">1,350</td></tr>
-        <tr class="indent-item"><td>Deferred Provision for Fund Capital Income Tax Liabilities</td><td class="td-mono">8,400</td><td class="td-mono">9,200</td></tr>
-        <tr class="table-total-row"><td>Total Liabilities Matrix Accruals</td><td class="td-mono">9,500</td><td class="td-mono">10,550</td></tr>
+        <tr class="indent-item"><td>Accrued Expenses and Fees Owed</td><td class="td-mono">1,100</td><td class="td-mono" id="fin-liab-accrued">1,350</td></tr>
+        <tr class="indent-item"><td>Deferred Provision for Fund Capital Income Tax Liabilities</td><td class="td-mono">8,400</td><td class="td-mono" id="fin-liab-tax">9,200</td></tr>
+        <tr class="table-total-row"><td>Total Liabilities Matrix Accruals</td><td class="td-mono">9,500</td><td class="td-mono" id="fin-liab-total">10,550</td></tr>
         <tr class="table-total-row" style="color:var(--accent)"><td>Net Fund Assets (Total Member Equity Balances)</td><td class="td-mono">901,100</td><td class="td-mono" id="fin-bal-net-assets">1,039,950</td></tr>
       </tbody>
     </table>
@@ -313,17 +317,17 @@
     <table>
       <thead><tr><th>Cash Receipts and Disbursement Channels</th><th class="td-mono">FY2025 ($)</th><th class="td-mono">FY2026 ($)</th></tr></thead>
       <tbody>
-        <tr><td>Cash Collection from Distributions and Dividends</td><td class="td-mono">17,300</td><td class="td-mono">20,300</td></tr>
-        <tr><td>Interest Yield Inflow Receipts</td><td class="td-mono">2,450</td><td class="td-mono">4,120</td></tr>
-        <tr><td>Rental Outflow Proceeds from Commercial Real Estate</td><td class="td-mono">34,000</td><td class="td-mono">36,500</td></tr>
-        <tr><td>Payments to Administrators, Auditors and System Suppliers</td><td class="td-mono">-7,909</td><td class="td-mono">-8,459</td></tr>
-        <tr class="table-total-row"><td>Net Cash Flow from Core Operating Channels</td><td class="td-mono">45,841</td><td class="td-mono">52,461</td></tr>
-        <tr><td>Cash Received from Portfolio Divestment Sales</td><td class="td-mono">45,000</td><td class="td-mono">30,000</td></tr>
-        <tr><td>Cash Outflow Absorbed by System Capital Acquisitions</td><td class="td-mono">-92,000</td><td class="td-mono">-115,000</td></tr>
-        <tr class="table-total-row"><td>Net Cash Generated by Capital Investment Activity</td><td class="td-mono">-47,000</td><td class="td-mono">-85,000</td></tr>
-        <tr><td>Member Inward Concessional & Non-Concessional Cash Deposits</td><td class="td-mono">32,500</td><td class="td-mono" id="fin-cash-contribs">45,739</td></tr>
-        <tr class="table-total-row"><td>Net Financing Contributions Cash Flow Inwards</td><td class="td-mono">32,500</td><td class="td-mono">45,739</td></tr>
-        <tr class="table-total-row" style="color:var(--accent2)"><td>Net Absolute Increase/Decrease Variance in Cash Held</td><td class="td-mono">31,341</td><td class="td-mono" id="fin-cash-variance">13,200</td></tr>
+        <tr><td>Cash Collection from Distributions and Dividends</td><td class="td-mono">17,300</td><td class="td-mono" id="fin-cf-dist">20,300</td></tr>
+        <tr><td>Interest Yield Inflow Receipts</td><td class="td-mono">2,450</td><td class="td-mono" id="fin-cf-int">4,120</td></tr>
+        <tr><td>Rental Outflow Proceeds from Commercial Real Estate</td><td class="td-mono">34,000</td><td class="td-mono" id="fin-cf-rent">36,500</td></tr>
+        <tr><td>Payments to Administrators, Auditors and System Suppliers</td><td class="td-mono">-7,909</td><td class="td-mono" id="fin-cf-exp">-8,459</td></tr>
+        <tr class="table-total-row"><td>Net Cash Flow from Core Operating Channels</td><td class="td-mono">45,841</td><td class="td-mono" id="fin-cf-op">52,461</td></tr>
+        <tr><td>Cash Received from Portfolio Divestment Sales</td><td class="td-mono">45,000</td><td class="td-mono" id="fin-cf-sale">30,000</td></tr>
+        <tr><td>Cash Outflows Absorbed by Capital Acquisitions</td><td class="td-mono">-92,000</td><td class="td-mono" id="fin-cf-acq">-115,000</td></tr>
+        <tr class="table-total-row"><td>Net Cash Generated by Capital Investment Activity</td><td class="td-mono">-47,000</td><td class="td-mono" id="fin-cf-inv">-85,000</td></tr>
+        <tr><td>Member Inward Concessional & Non-Concessional Cash Deposits</td><td class="td-mono">32,500</td><td class="td-mono" id="fin-cf-contrib">45,739</td></tr>
+        <tr class="table-total-row"><td>Net Financing Contributions Cash Flow Inwards</td><td class="td-mono">32,500</td><td class="td-mono" id="fin-cf-fin">45,739</td></tr>
+        <tr class="table-total-row" style="color:var(--accent2)"><td>Net Absolute Increase/Decrease Variance in Cash Held</td><td class="td-mono">31,341</td><td class="td-mono" id="fin-cf-var">13,200</td></tr>
       </tbody>
     </table>
   </div>
@@ -346,25 +350,17 @@
 </div>
 
 <div class="page" id="page-contributions">
-  <div class="page-title">Contributions & Caps</div>
-  <div class="page-sub">Concessional, non-concessional & employer SG · Super Fire-Up review</div>
+  <div class="page-title">Contributions & Caps Overview</div>
+  <div class="page-sub">Concessional, non-concessional & employer SG summaries.</div>
   <div class="grid-4 section" id="contrib-kpis"></div>
   <div class="grid-2 section">
     <div class="card">
-      <h3>Contribution Settings</h3>
-      <div class="form-group"><label>Current Fund Balance ($)</label><input type="number" id="fund-balance" step="any"></div>
-      <div class="form-group"><label>Monthly Salary Sacrifice ($)</label><input type="number" id="fund-ss" step="any"></div>
-      <div class="form-group"><label>Monthly Employer SG ($)</label><input type="number" id="fund-sg" step="any"></div>
-      <div class="form-group"><label>Monthly Voluntary Concessional ($)</label><input type="number" id="fund-vol" step="any"></div>
-      <div class="form-group"><label>Annual Concessional Cap ($)</label><input type="number" id="fund-con-cap" step="any"></div>
-      <div class="form-group"><label>Annual Non-Concessional Cap ($)</label><input type="number" id="fund-non-cap" step="any"></div>
-      <div class="form-group"><label>Expected Return (% p.a.)</label><input type="number" id="fund-return" step="any"></div>
-      <div class="form-group"><label>Target Balance at Age 60 ($)</label><input type="number" id="fund-target" step="any"></div>
-      <button class="btn btn-accent" style="width:100%;margin-top:8px" onclick="calcFund()">Recalculate</button>
+      <h3>Fund Growth to Preservation Age</h3>
+      <div class="chart-wrap" style="height:270px"><canvas id="fund-growth-chart"></canvas></div>
     </div>
     <div class="card">
-      <h3>Fund Growth to Preservation Age</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="fund-growth-chart"></canvas></div>
+      <h3>Active Optimization Parameters</h3>
+      <div id="contributions-read-panel" style="display:flex; flex-direction:column; gap:12px; margin-top:10px;"></div>
     </div>
   </div>
   <div class="card section">
@@ -372,19 +368,8 @@
     <div id="fy-contrib-table"></div>
   </div>
   <div class="card section">
-    <h3>Super Fire-Up Review</h3>
-    <div class="alert alert-info">🔥 Review your current super, trace lost accounts and identify better options for your future.</div>
-    <div class="grid-2">
-      <div>
-        <div class="form-group"><label>Current Fund Name</label><input id="fu-fund-name" value="AustralianSuper"></div>
-        <div class="form-group"><label>Current Balance ($)</label><input type="number" id="fu-balance" value="450000"></div>
-        <div class="form-group"><label>Annual Fee ($)</label><input type="number" id="fu-fee" value="4200"></div>
-        <div class="form-group"><label>Current Return (% p.a.)</label><input type="number" id="fu-return" value="6.80"></div>
-        <div class="form-group"><label>Estimated Lost Super ($)</label><input type="number" id="fu-lost" value="12500" placeholder="Check ATO MyGov"></div>
-        <button class="btn btn-accent" onclick="calcFireUp()" style="margin-top:8px">Run Fire-Up Analysis</button>
-      </div>
-      <div id="fire-up-result"></div>
-    </div>
+    <h3>Super Fire-Up Dynamic Assessment</h3>
+    <div id="fire-up-static-view"></div>
   </div>
 </div>
 
@@ -393,7 +378,7 @@
   <div class="page-sub">Sole purpose test · In-house assets · Audit, minutes & valuations</div>
   <div class="alert alert-info">📋 <strong>Sole purpose test:</strong> Fund must provide retirement benefits. All investments and expenses must support member retirement outcomes.</div>
   <div class="alert alert-warn">📋 <strong>In-house asset rule:</strong> Related-party assets (incl. loans to members) must not exceed 5% of fund value at 30 June.</div>
-  <div class="alert alert-info">📋 <strong>Commercial property:</strong> SMSF may acquire business real property at arm's length, leased on commercial terms, meeting sole purpose test.</div>
+  <div class="alert alert-info">📋 <strong>Commercial property:</strong> SMSF may acquire business real property at arm's length, leased on commercial terms.</div>
   <div class="alert alert-warn">📋 <strong>Concessional cap FY2026–27:</strong> $32,500 p.a. Unused cap carry-forward if TSB &lt;$500k.</div>
   <div class="card section">
     <h3>Annual Compliance Checklist</h3>
@@ -420,13 +405,22 @@
 </div>
 
 <div class="page" id="page-settings">
-  <div class="page-title">Fund Settings</div>
-  <div class="page-sub">Trustee profile, IPS targets & inventory ledger definitions management</div>
+  <div class="page-title">Settings & Inventory Hub</div>
+  <div class="page-sub">Consolidated form configuration engine for portfolio holdings, configurations, caps, and fund parameters.</div>
   
-  <div class="card section">
+  <div class="settings-subnav">
+    <button class="subnav-btn active" onclick="switchSettingsTab('asset-intake')" id="sbt-asset-intake">📦 Asset Inventory</button>
+    <button class="subnav-btn" onclick="switchSettingsTab('fund-profile')" id="sbt-fund-profile">👤 Profile & Targets</button>
+    <button class="subnav-btn" onclick="switchSettingsTab('financial-data')" id="sbt-financial-data">🧾 Financials Data</button>
+    <button class="subnav-btn" onclick="switchSettingsTab('contrib-settings')" id="sbt-contrib-settings">💰 Contribution Caps</button>
+    <button class="subnav-btn" onclick="switchSettingsTab('fireup-review')" id="sbt-fireup-review">🔥 Fire-Up</button>
+    <button class="subnav-btn" onclick="switchSettingsTab('data-mgmt')" id="sbt-data-mgmt">💽 Data Exchange</button>
+  </div>
+
+  <div class="card section settings-panel active" id="spnl-asset-intake">
     <h3>Portfolio Asset Inventory Intake Form</h3>
     <p style="color:var(--muted); font-size:12px; margin-bottom:14px;">Insert and validate asset entries across the restructured global taxonomy standard classes.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end">
       <div class="form-group" style="flex:2"><label>Asset Label Name</label><input id="h-name" placeholder="e.g. Vanguard Balanced High-Growth Index"></div>
       <div class="form-group"><label>Restructured Asset Class</label>
         <select id="h-cat">
@@ -450,28 +444,100 @@
     </div>
   </div>
 
-  <div class="grid-2 section">
+  <div class="grid-2 section settings-panel" id="spnl-fund-profile">
     <div class="card">
-      <h3>Fund Profile</h3>
-      <div class="form-group"><label>Fund Name</label><input id="s-fund-name"></div>
-      <div class="form-group"><label>Member Age</label><input type="number" id="s-age"></div>
-      <div class="form-group"><label>Preservation Age</label><input type="number" id="s-pres-age" value="60"></div>
-      <div class="form-group"><label>Number of Trustees</label><input type="number" id="s-trustees" value="2"></div>
-      <button class="btn btn-accent" onclick="saveSettings()">Save</button>
+      <h3>Fund Corporate Profile Configuration</h3>
+      <div class="form-group"><label>Fund Entity Name</label><input id="s-fund-name"></div>
+      <div class="form-group"><label>Primary Member Age</label><input type="number" id="s-age"></div>
+      <div class="form-group"><label>Statutory Preservation Age Target</label><input type="number" id="s-pres-age" value="60"></div>
+      <div class="form-group"><label>Registered Corporate Trustees Pool</label><input type="number" id="s-trustees" value="2"></div>
+      <button class="btn btn-accent" style="margin-top:8px; width:100%" onclick="saveSettings()">Save Identity Profile</button>
     </div>
     <div class="card">
-      <h3>IPS Target Allocations (%)</h3>
-      <div id="target-alloc-form"></div>
-      <button class="btn btn-accent" style="margin-top:16px;width:100%" onclick="saveTargets()">Save Targets</button>
+      <h3>IPS Model Target Allocations Weight Matrix (%)</h3>
+      <div id="target-alloc-form" style="max-height: 275px; overflow-y: auto; padding-right: 5px;"></div>
+      <button class="btn btn-accent" style="margin-top:16px; width:100%" onclick="saveTargets()">Commit IPS Allocation Weights</button>
     </div>
   </div>
-  <div class="card section">
-    <h3>Data Management</h3>
-    <button class="btn" onclick="exportPensionFundReport()">Pension Fund Report</button>
-    <button class="btn" onclick="exportData()">↓ Export</button>
-    <button class="btn" onclick="document.getElementById('import-file').click()">↑ Import</button>
-    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
-    <button class="btn" style="color:var(--accent4);border-color:var(--accent4);margin-left:8px" onclick="clearAll()">⚠ Clear</button>
+
+  <div class="card section settings-panel" id="spnl-financial-data">
+    <h3>Current FY Financial Reporting Inputs</h3>
+    <p style="color:var(--muted); font-size:12px; margin-bottom:14px;">These fields synchronize across all performance, ROI, cash flow, and income statement frameworks within the platform.</p>
+    
+    <div class="grid-2">
+      <div>
+        <h4 style="color:var(--accent); margin-bottom:8px; font-size:12px; text-transform:uppercase;">Gross Revenue Streams ($)</h4>
+        <div class="form-group"><label>Franked Dividend Inflows</label><input type="number" id="in-fin-div-f" step="any"></div>
+        <div class="form-group"><label>Unfranked Dividend Inflows</label><input type="number" id="in-fin-div-u" step="any"></div>
+        <div class="form-group"><label>Interest Yield Income</label><input type="number" id="in-fin-int" step="any"></div>
+        <div class="form-group"><label>Commercial Property Rent</label><input type="number" id="in-fin-rent" step="any"></div>
+        <div class="form-group"><label>Net Realised Capital Gains</label><input type="number" id="in-fin-cap" step="any"></div>
+        
+        <h4 style="color:var(--accent); margin-bottom:8px; margin-top:20px; font-size:12px; text-transform:uppercase;">Investing Cash Flows ($)</h4>
+        <div class="form-group"><label>Cash Received from Portfolio Divestment Sales</label><input type="number" id="in-fin-cash-sale" step="any"></div>
+        <div class="form-group"><label>Cash Outflows Absorbed by Capital Acquisitions</label><input type="number" id="in-fin-cash-acq" step="any"></div>
+      </div>
+      
+      <div>
+        <h4 style="color:var(--accent); margin-bottom:8px; font-size:12px; text-transform:uppercase;">Operating Expenses ($)</h4>
+        <div class="form-group"><label>Accounting & Administration Outgoings</label><input type="number" id="in-fin-exp-admin" step="any"></div>
+        <div class="form-group"><label>Approved SMSF Audit Provision Costs</label><input type="number" id="in-fin-exp-audit" step="any"></div>
+        <div class="form-group"><label>ATO Supervisory Levies Applied</label><input type="number" id="in-fin-exp-levy" step="any"></div>
+        <div class="form-group"><label>Commercial Property Holding Outgoings</label><input type="number" id="in-fin-exp-prop" step="any"></div>
+        
+        <h4 style="color:var(--accent); margin-bottom:8px; margin-top:20px; font-size:12px; text-transform:uppercase;">Liabilities Provision ($)</h4>
+        <div class="form-group"><label>Accrued Expenses and Fees Owed</label><input type="number" id="in-fin-liab-accrued" step="any"></div>
+        <div class="form-group"><label>Deferred Provision for Fund Capital Income Tax</label><input type="number" id="in-fin-liab-tax" step="any"></div>
+      </div>
+    </div>
+    <button class="btn btn-accent" style="margin-top:16px; width:100%" onclick="saveFinancials()">Synchronize Financial Ledgers</button>
+  </div>
+
+  <div class="card section settings-panel" id="spnl-contrib-settings">
+    <h3>Integrated System Contribution Settings</h3>
+    <p style="color:var(--muted); font-size:12px; margin-bottom:14px;">Establish baseline limits, super guarantees, and salary sacrifice flows to model long-term outcomes.</p>
+    <div class="grid-4" style="margin-bottom:16px;">
+      <div class="form-group"><label>Current Audited Base Fund Balance ($)</label><input type="number" id="fund-balance" readonly style="opacity:.65"></div>
+      <div class="form-group"><label>Monthly Inward Salary Sacrifice ($)</label><input type="number" id="fund-ss" step="any"></div>
+      <div class="form-group"><label>Monthly Mandated Employer SG ($)</label><input type="number" id="fund-sg" step="any"></div>
+      <div class="form-group"><label>Monthly Voluntary Concessional Flow ($)</label><input type="number" id="fund-vol" step="any"></div>
+    </div>
+    <div class="grid-4">
+      <div class="form-group"><label>Annual Concessional Cap Framework ($)</label><input type="number" id="fund-con-cap" step="any"></div>
+      <div class="form-group"><label>Annual Non-Concessional Cap Threshold ($)</label><input type="number" id="fund-non-cap" step="any"></div>
+      <div class="form-group"><label>Expected Net Return Multipliers (% p.a.)</label><input type="number" id="fund-return" step="any"></div>
+      <div class="form-group"><label>Target Terminal Capital Value Target at Age 60 ($)</label><input type="number" id="fund-target" step="any"></div>
+    </div>
+    <button class="btn btn-accent" style="width:100%; margin-top:20px;" onclick="calcFund()">Re-Calculate Forward Projections</button>
+  </div>
+
+  <div class="card section settings-panel" id="spnl-fireup-review">
+    <h3>Super Fire-Up Analytics Engine Review</h3>
+    <div class="alert alert-info">🔥 Map current multi-fund leakage points, parse lost legacy ledger structures, and index enhanced cost structures instantly.</div>
+    <div class="grid-2">
+      <div>
+        <div class="form-group"><label>Legacy Retail/Industry Fund Identity</label><input id="fu-fund-name" value="AustralianSuper"></div>
+        <div class="form-group"><label>Current Retained Capital Base ($)</label><input type="number" id="fu-balance" value="450000"></div>
+        <div class="form-group"><label>Aggregated Outward Annual Fee Drag ($)</label><input type="number" id="fu-fee" value="4200"></div>
+        <div class="form-group"><label>Historical Performance Return Metric (% p.a.)</label><input type="number" id="fu-return" value="6.80"></div>
+        <div class="form-group"><label>Estimated Extraneous Lost Super Pool ($)</label><input type="number" id="fu-lost" value="12500" placeholder="Verify via ATO MyGov profile portal"></div>
+        <button class="btn btn-accent" onclick="calcFireUp()" style="margin-top:12px; width:100%">Run Loss Trace Optimization Model</button>
+      </div>
+      <div id="fire-up-result" style="display:flex; flex-direction:column; justify-content:center;"></div>
+    </div>
+  </div>
+
+  <div class="card section settings-panel" id="spnl-data-mgmt">
+    <h3>Form Native Data Exchange & Management Module</h3>
+    <p style="color:var(--muted); font-size:12px; margin-bottom:16px;">Perform state data transfers. Seamlessly upload configuration schemas or export application states into clean JSON schemas.</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-accent" onclick="document.getElementById('import-file-settings').click()">↑ Import Data Form JSON</button>
+      <input type="file" id="import-file-settings" accept=".json" style="display:none" onchange="importData(event)">
+      
+      <button class="btn btn-accent" onclick="exportData()">↓ Export Data Form JSON</button>
+      <button class="btn" onclick="exportPensionFundReport()">📊 Complete PDF Report</button>
+      <button class="btn" style="color:var(--accent4); border-color:var(--accent4); margin-left:auto" onclick="clearAll()">⚠ Reset Framework State</button>
+    </div>
   </div>
 </div>
 
@@ -496,6 +562,311 @@
   </footer>
 
 <script>
+  // TRANSLATION ENGINE
+  let currentLang = 'en';
+  let tPairs = [
+    ["Pension Fund", "Quỹ Hưu Trí"],
+    ["Live Systems Ready", "Hệ thống Sẵn sàng"],
+    ["Import Data JSON", "Nhập Dữ liệu JSON"],
+    ["Export Data JSON", "Xuất Dữ liệu JSON"],
+    ["Complete PDF Report", "Báo cáo PDF Toàn diện"],
+    ["Settings & Inventory Hub", "Trung tâm Cài đặt & Danh mục"],
+    ["Settings & Inventory", "Cài đặt & Danh mục"],
+    ["Save", "Lưu"],
+    ["Dashboard", "Tổng quan"],
+    ["Investment Portfolio", "Danh mục Đầu tư"],
+    ["Performance Track", "Theo dõi Hiệu suất"],
+    ["Financial Statements", "Báo cáo Tài chính"],
+    ["Contributions & Caps Overview", "Tổng quan Đóng góp & Hạn mức"],
+    ["Contributions & Caps", "Đóng góp & Hạn mức"],
+    ["Compliance & Governance", "Tuân thủ & Quản trị"],
+    ["Compliance", "Tuân thủ"],
+    ["Projections", "Dự phóng"],
+    ["Fund Overview", "Tổng quan Quỹ"],
+    ["Fund Asset Allocation", "Phân bổ Tài sản Quỹ"],
+    ["Years to Preservation Age", "Năm đến tuổi Nhận hưu"],
+    ["Annual Contributions Breakdown", "Chi tiết Đóng góp Hàng năm"],
+    ["Compliance Snapshot", "Tóm tắt Tuân thủ"],
+    ["SMSF Strategy Roadmap", "Lộ trình Chiến lược SMSF"],
+    ["Superannuation fund overview · caps, compliance & projected balance", "Tổng quan quỹ hưu trí · hạn mức, tuân thủ & số dư dự kiến"],
+    ["Target balance at age 60", "Mục tiêu số dư ở tuổi 60"],
+    ["SMSF trust assets · Holdings register, cost base & IPS vs actual", "Tài sản quỹ SMSF · Danh sách nắm giữ, chi phí gốc & IPS"],
+    ["SMSF IPS target: Balanced long-term asset structures across standardized global allocation frameworks. Manage actual entries via Settings panel.", "Mục tiêu IPS SMSF: Cấu trúc tài sản cân bằng dài hạn."],
+    ["Asset Specification", "Đặc điểm Tài sản"],
+    ["Asset Class Group", "Nhóm Lớp Tài sản"],
+    ["Units Held", "Số lượng Nắm giữ"],
+    ["Market Price", "Giá Thị trường"],
+    ["Current Valuation", "Định giá Hiện tại"],
+    ["Cost Base", "Chi phí Gốc"],
+    ["Unrealized Gain/Loss", "Lãi/Lỗ Chưa thực hiện"],
+    ["Allocation Weight", "Tỷ trọng Phân bổ"],
+    ["IPS Target vs Actual Allocation", "Mục tiêu IPS so với Phân bổ Thực tế"],
+    ["Historical Multi-Year Asset Allocations ($)", "Phân bổ Tài sản Lịch sử Đa năm ($)"],
+    ["Historical Multi-Year Asset Allocations", "Phân bổ Tài sản Lịch sử Đa năm"],
+    ["Select Calendar Horizon View", "Chọn Chế độ xem Lịch trình"],
+    ["Fund 3-Year Compounded Return", "Lợi nhuận Kép 3 năm của Quỹ"],
+    ["Super Industry Growth Benchmark", "Điểm chuẩn Tăng trưởng Ngành"],
+    ["Net Alpha Generation Margin", "Biên độ Tạo Alpha Ròng"],
+    ["Historical Performance Profile vs Benchmark Indicators (%)", "Hiệu suất Lịch sử so với Điểm chuẩn (%)"],
+    ["Historical Operating Profit & Loss Summary Ledger", "Sổ cái Lãi Lỗ Hoạt động Lịch sử"],
+    ["Net of administrative fee extractions", "Sau khi trừ phí quản lý"],
+    ["Median balanced fund tracking average", "Trung bình quỹ cân bằng theo dõi"],
+    ["Relative outperformance spread", "Mức chênh lệch vượt trội tương đối"],
+    ["Performance Metric Vectors", "Các Chỉ số Hiệu suất"],
+    ["Statement of Comprehensive Income (Profit and Loss)", "Báo cáo Thu nhập Toàn diện (Lãi và Lỗ)"],
+    ["Statement of Comprehensive Income", "Báo cáo Thu nhập Toàn diện"],
+    ["Statement of Financial Position (Balance Sheet)", "Bảng Cân đối Kế toán"],
+    ["Statement of Cash Flows", "Báo cáo Lưu chuyển Tiền tệ"],
+    ["Realised vs Unrealised Capital Yields Ledger Analysis", "Phân tích Lợi suất Đã thực hiện & Chưa thực hiện"],
+    ["Realised vs Unrealised Yields Matrix", "Ma trận Lợi suất Đã thực hiện & Chưa thực hiện"],
+    ["Revenue and Expense Classification", "Phân loại Doanh thu và Chi phí"],
+    ["Asset & Liability Ledger Pools", "Sổ cái Tài sản & Nợ phải trả"],
+    ["Cash Receipts and Disbursement Channels", "Kênh Thu và Chi Tiền mặt"],
+    ["Asset Taxonomy Grouping Vectors", "Nhóm Phân loại Tài sản"],
+    ["Weighted Cost Base ($)", "Chi phí Gốc Gia quyền ($)"],
+    ["Current Market Valuation ($)", "Định giá Thị trường Hiện tại ($)"],
+    ["Realised Capital Yield ($)", "Lợi suất Vốn Đã thực hiện ($)"],
+    ["Unrealised Valuation Variance ($)", "Chênh lệch Định giá Chưa thực hiện ($)"],
+    ["Concessional, non-concessional & employer SG summaries.", "Tóm tắt đóng góp khấu trừ, không khấu trừ & SG."],
+    ["Fund Growth to Preservation Age", "Tăng trưởng Quỹ đến Tuổi Nhận hưu"],
+    ["Active Optimization Parameters", "Thông số Tối ưu hóa Hiện tại"],
+    ["Financial Year Contribution Summary", "Tóm tắt Đóng góp Năm Tài chính"],
+    ["Super Fire-Up Dynamic Assessment", "Đánh giá Động Super Fire-Up"],
+    ["Sole purpose test · In-house assets · Audit, minutes & valuations", "Kiểm tra Mục đích duy nhất · Tài sản nội bộ · Kiểm toán"],
+    ["Sole purpose test:", "Kiểm tra Mục đích duy nhất:"],
+    ["In-house asset rule:", "Quy tắc Tài sản nội bộ:"],
+    ["Commercial property:", "Bất động sản thương mại:"],
+    ["Concessional cap FY2026–27:", "Hạn mức khấu trừ FY2026-27:"],
+    ["Fund must provide retirement benefits. All investments and expenses must support member retirement outcomes.", "Quỹ phải cung cấp phúc lợi hưu trí. Mọi đầu tư và chi phí phải hỗ trợ kết quả hưu trí."],
+    ["Related-party assets (incl. loans to members) must not exceed 5% of fund value at 30 June.", "Tài sản liên quan (gồm khoản vay cho thành viên) không được vượt 5% giá trị quỹ lúc 30/6."],
+    ["SMSF may acquire business real property at arm's length, leased on commercial terms.", "SMSF có thể mua bất động sản kinh doanh sòng phẳng, cho thuê theo điều kiện thương mại."],
+    ["Unused cap carry-forward if TSB <$500k.", "Chuyển tiếp hạn mức chưa sử dụng nếu TSB <$500k."],
+    ["Annual Compliance Checklist", "Danh sách Kiểm tra Tuân thủ Hàng năm"],
+    ["In-House Asset Monitor", "Giám sát Tài sản Nội bộ"],
+    ["Related-Party Asset Value ($)", "Giá trị Tài sản Liên quan ($)"],
+    ["5% Limit (auto)", "Giới hạn 5% (tự động)"],
+    ["Accumulation to preservation age · Conservative / Base / Optimistic scenarios", "Tích lũy đến tuổi nhận hưu · Kịch bản Bảo thủ / Cơ sở / Lạc quan"],
+    ["Run Projections", "Chạy Dự phóng"],
+    ["Consolidated form configuration engine for portfolio holdings, configurations, caps, and fund parameters.", "Công cụ cấu hình biểu mẫu hợp nhất cho danh mục, hạn mức và tham số."],
+    ["Asset Inventory", "Danh mục Tài sản"],
+    ["Profile & Targets", "Hồ sơ & Mục tiêu"],
+    ["Financials Data", "Dữ liệu Tài chính"],
+    ["Contribution Caps", "Hạn mức Đóng góp"],
+    ["Fire-Up", "Fire-Up"],
+    ["Data Exchange", "Trao đổi Dữ liệu"],
+    ["Portfolio Asset Inventory Intake Form", "Biểu mẫu Nhập Tài sản Danh mục"],
+    ["Insert and validate asset entries across the restructured global taxonomy standard classes.", "Chèn và xác thực danh sách tài sản trong hệ thống phân loại toàn cầu mới."],
+    ["Fund Corporate Profile Configuration", "Cấu hình Hồ sơ Doanh nghiệp Quỹ"],
+    ["IPS Model Target Allocations Weight Matrix (%)", "Ma trận Tỷ trọng Phân bổ Mục tiêu IPS (%)"],
+    ["Current FY Financial Reporting Inputs", "Đầu vào Báo cáo Tài chính Năm hiện tại"],
+    ["These fields synchronize across all performance, ROI, cash flow, and income statement frameworks within the platform.", "Các trường này đồng bộ hóa trên tất cả báo cáo hiệu suất, dòng tiền và thu nhập."],
+    ["Integrated System Contribution Settings", "Cài đặt Đóng góp Hệ thống Tích hợp"],
+    ["Establish baseline limits, super guarantees, and salary sacrifice flows to model long-term outcomes.", "Thiết lập giới hạn cơ sở, SG và luồng tiền khấu trừ lương để dự phóng dài hạn."],
+    ["Super Fire-Up Analytics Engine Review", "Đánh giá Phân tích Động cơ Super Fire-Up"],
+    ["Map current multi-fund leakage points, parse lost legacy ledger structures, and index enhanced cost structures instantly.", "Lập bản đồ rò rỉ đa quỹ, phân tích sổ cái cũ, và chỉ mục cấu trúc chi phí tức thì."],
+    ["Form Native Data Exchange & Management Module", "Mô-đun Trao đổi & Quản lý Dữ liệu Bản địa"],
+    ["Perform state data transfers. Seamlessly upload configuration schemas or export application states into clean JSON schemas.", "Thực hiện truyền dữ liệu trạng thái. Tải lên cấu hình hoặc xuất cấu trúc JSON."],
+    ["Asset Label Name", "Tên Nhãn Tài sản"],
+    ["Restructured Asset Class", "Lớp Tài sản Cấu trúc lại"],
+    ["Units Volume", "Khối lượng Đơn vị"],
+    ["Unit Face Price ($)", "Mệnh giá Đơn vị ($)"],
+    ["Initial Cost Base ($)", "Chi phí Gốc Ban đầu ($)"],
+    ["DRIP Mode", "Chế độ DRIP"],
+    ["Add into Asset Ledger", "Thêm vào Sổ cái Tài sản"],
+    ["Fund Entity Name", "Tên Thực thể Quỹ"],
+    ["Primary Member Age", "Tuổi Thành viên Chính"],
+    ["Statutory Preservation Age Target", "Mục tiêu Tuổi Nhận hưu Pháp định"],
+    ["Registered Corporate Trustees Pool", "Số Ủy viên Quản trị Đăng ký"],
+    ["Save Identity Profile", "Lưu Hồ sơ Danh tính"],
+    ["Commit IPS Allocation Weights", "Áp dụng Tỷ trọng Phân bổ IPS"],
+    ["Gross Revenue Streams ($)", "Dòng Doanh thu Gộp ($)"],
+    ["Investing Cash Flows ($)", "Dòng tiền Đầu tư ($)"],
+    ["Operating Expenses ($)", "Chi phí Hoạt động ($)"],
+    ["Liabilities Provision ($)", "Dự phòng Nợ phải trả ($)"],
+    ["Synchronize Financial Ledgers", "Đồng bộ hóa Sổ cái Tài chính"],
+    ["Current Audited Base Fund Balance ($)", "Số dư Quỹ Cơ sở Đã kiểm toán ($)"],
+    ["Monthly Inward Salary Sacrifice ($)", "Khấu trừ Lương Hàng tháng ($)"],
+    ["Monthly Mandated Employer SG ($)", "Đóng góp Bắt buộc Hàng tháng ($)"],
+    ["Monthly Voluntary Concessional Flow ($)", "Dòng tiền Khấu trừ Tự nguyện ($)"],
+    ["Annual Concessional Cap Framework ($)", "Khung Hạn mức Khấu trừ Hàng năm ($)"],
+    ["Annual Non-Concessional Cap Threshold ($)", "Ngưỡng Hạn mức Không Khấu trừ Hàng năm ($)"],
+    ["Expected Net Return Multipliers (% p.a.)", "Hệ số Lợi nhuận Ròng Kỳ vọng (%/năm)"],
+    ["Target Terminal Capital Value Target at Age 60 ($)", "Mục tiêu Giá trị Vốn tại Tuổi 60 ($)"],
+    ["Re-Calculate Forward Projections", "Tính toán lại Dự phóng Tương lai"],
+    ["Legacy Retail/Industry Fund Identity", "Tên Quỹ Bán lẻ/Ngành Cũ"],
+    ["Current Retained Capital Base ($)", "Cơ sở Vốn Giữ lại Hiện tại ($)"],
+    ["Aggregated Outward Annual Fee Drag ($)", "Phí Hàng năm Gộp Rút ra ($)"],
+    ["Historical Performance Return Metric (% p.a.)", "Tỷ suất Lợi nhuận Lịch sử (%/năm)"],
+    ["Estimated Extraneous Lost Super Pool ($)", "Ước tính Khoản Super Thất lạc ($)"],
+    ["Run Loss Trace Optimization Model", "Chạy Mô hình Tối ưu Truy tìm Tổn thất"],
+    ["Reset Framework State", "Đặt lại Trạng thái Khuôn khổ"],
+    ["Aggregate Portfolios Sum", "Tổng Danh mục Đầu tư"],
+    ["Strategic Implementation Phase Milestone", "Cột mốc Giai đoạn Triển khai"],
+    ["Timeline Velocity Gauge Status", "Trạng thái Đo lường Tiến độ"],
+    ["Execution Focus", "Trọng tâm Thực thi"],
+    ["Phase Alpha Initialization: Asset Structure Rebalancing", "Giai đoạn Alpha: Tái cân bằng Cấu trúc Tài sản"],
+    ["Phase Beta Acceleration: Volumetric Capital Inflows Injection", "Giai đoạn Beta: Bơm Vốn Khối lượng lớn"],
+    ["Phase Gamma Finalization: Preservation Age Liquidity Event Transition", "Giai đoạn Gamma: Chuyển đổi Thanh khoản Nghỉ hưu"],
+    ["Active Operations", "Đang Hoạt động"],
+    ["Pending Verification", "Chờ Xác minh"],
+    ["Halted Target Mapped", "Đã lập bản đồ"],
+    ["Sole Purpose Framework Compliance:", "Tuân thủ Khuôn khổ Mục đích Duy nhất:"],
+    ["Regulatory Audit Readiness Index:", "Chỉ số Sẵn sàng Kiểm toán:"],
+    ["Gross Fund Operating Revenues ($)", "Tổng Doanh thu Hoạt động Quỹ ($)"],
+    ["System Operational Admin Expenses ($)", "Chi phí Quản trị Vận hành ($)"],
+    ["Net Fund Retained Distributable Profits ($)", "Lợi nhuận Ròng Giữ lại ($)"],
+    ["Internal Fund Compounded Yield Trajectory Return (%)", "Lợi nhuận Kép Nội bộ Quỹ (%)"],
+    ["Institutional Superannuation Industry Growth Benchmark (%)", "Điểm chuẩn Tăng trưởng Ngành Quỹ Hưu trí (%)"],
+    ["Cap Segment Type Allocation", "Phân bổ Hạn mức"],
+    ["Yearly Accumulated Outflows", "Dòng tiền Tích lũy Hàng năm"],
+    ["Statutory Legal Limit Cap", "Hạn mức Pháp lý Tuân thủ"],
+    ["Calculated Space Margin", "Biên độ Trống Tính toán"],
+    ["Concessional Caps (Pre-Tax Stream)", "Hạn mức Khấu trừ (Trước thuế)"],
+    ["Non-Concessional Allocations (Post-Tax)", "Phân bổ Không Khấu trừ (Sau thuế)"],
+    ["Monthly Salary Sacrifice:", "Khấu trừ Lương Hàng tháng:"],
+    ["Monthly Employer SG:", "Đóng góp Người sử dụng lao động:"],
+    ["Monthly Voluntary Concessional:", "Đóng góp Tự nguyện:"],
+    ["Target Balance (Age 60):", "Mục tiêu Số dư (Tuổi 60):"],
+    ["Expected Base Return Rate:", "Tỷ suất Sinh lời Kỳ vọng:"],
+    ["Breach Event Detected:", "Phát hiện Vi phạm:"],
+    ["Regulatory Status Clear:", "Trạng thái Pháp lý Rõ ràng:"],
+    ["Financial Optimization Result Mapped", "Kết quả Tối ưu hóa Tài chính"],
+    ["Consolidated Yield Vectors", "Vectơ Lợi suất Hợp nhất"],
+    ["Portfolio Assets", "Tài sản Danh mục"],
+    ["Conservative Scenario", "Kịch bản Bảo thủ"],
+    ["Base Case Framework", "Kịch bản Cơ sở"],
+    ["Optimistic Track", "Kịch bản Lạc quan"],
+    ["Time Stamp Matrix Interval", "Khoảng thời gian Ma trận"],
+    ["Conservative Vector ($)", "Vectơ Bảo thủ ($)"],
+    ["Base Vector Target ($)", "Mục tiêu Cơ sở ($)"],
+    ["Optimistic Vector Allocation ($)", "Phân bổ Lạc quan ($)"],
+    ["Year 0 Baseline Initial", "Năm 0 Cơ sở Ban đầu"],
+    ["Year 5 Accumulation Interval", "Năm 5 Khoảng thời gian Tích lũy"],
+    ["Year 10 Accumulation Terminal", "Năm 10 Tích lũy Cuối cùng"],
+    ["Year", "Năm"],
+    ["Related resources", "Tài nguyên liên quan"],
+    ["References", "Tài liệu tham khảo"],
+    ["Prepared for information purposes only. Not financial advice.", "Chỉ nhằm mục đích thông tin. Không phải lời khuyên tài chính."],
+    ["Franked Dividend Inflows", "Cổ tức Đã đóng thuế"],
+    ["Unfranked Dividend Inflows", "Cổ tức Chưa đóng thuế"],
+    ["Interest Yield Income", "Thu nhập Lãi suất"],
+    ["Commercial Property Rental Gross Revenue", "Tổng Doanh thu Cho thuê Bất động sản"],
+    ["Commercial Property Rent", "Thuê Bất động sản"],
+    ["Net Realised Capital Gains Ledger", "Sổ cái Lợi nhuận Vốn Đã thực hiện"],
+    ["Net Realised Capital Gains", "Lợi nhuận Vốn Đã thực hiện"],
+    ["Total Operational Income Revenue", "Tổng Doanh thu Hoạt động"],
+    ["Operating Outflow Expenses", "Chi phí Hoạt động Dòng ra"],
+    ["Accounting & Administration Outgoings", "Chi phí Kế toán & Quản trị"],
+    ["Approved SMSF Audit Provision Costs", "Chi phí Kiểm toán SMSF"],
+    ["ATO Supervisory Levies Applied", "Thuế Giám sát ATO"],
+    ["Commercial Property Holding Outgoings", "Chi phí Duy trì Bất động sản"],
+    ["Total Operating Expenses Deducted", "Tổng Chi phí Khấu trừ"],
+    ["Net Earnings Allocated to Member Capital Account", "Lợi nhuận Ròng Phân bổ vào Tài khoản"],
+    ["Current Liquid Funds", "Quỹ Thanh khoản Hiện tại"],
+    ["Operating Cash Accounts", "Tài khoản Tiền mặt Hoạt động"],
+    ["Term Deposits Registry", "Sổ Đăng ký Tiền gửi Kỳ hạn"],
+    ["Non-Current Investments Balance", "Số dư Đầu tư Dài hạn"],
+    ["Sovereign Fixed Income Debt Bonds", "Trái phiếu Nợ Thu nhập Cố định"],
+    ["Direct Equities (Listed Shares)", "Cổ phiếu Trực tiếp (Niêm yết)"],
+    ["Commercial Property Real Estate Assets", "Bất động sản Thương mại"],
+    ["Alternative Commodity, Precious Metals & Other Assets", "Hàng hóa Thay thế, Kim loại & Khác"],
+    ["Gross Strategic Fund Assets (Gross Assets Value)", "Tổng Tài sản Quỹ (Giá trị Gộp)"],
+    ["Liabilities Matrix", "Ma trận Nợ phải trả"],
+    ["Accrued Expenses and Fees Owed", "Chi phí Trích trước & Phí Còn nợ"],
+    ["Deferred Provision for Fund Capital Income Tax Liabilities", "Dự phòng Thuế Thu nhập Hoãn lại"],
+    ["Deferred Provision for Fund Capital Income Tax", "Dự phòng Thuế Thu nhập"],
+    ["Total Liabilities Matrix Accruals", "Tổng Trích trước Nợ phải trả"],
+    ["Net Fund Assets (Total Member Equity Balances)", "Tài sản Quỹ Ròng (Tổng Vốn Thành viên)"],
+    ["Cash Collection from Distributions and Dividends", "Thu tiền từ Phân phối và Cổ tức"],
+    ["Interest Yield Inflow Receipts", "Biên nhận Dòng tiền Lãi suất"],
+    ["Rental Outflow Proceeds from Commercial Real Estate", "Doanh thu Cho thuê Bất động sản"],
+    ["Payments to Administrators, Auditors and System Suppliers", "Thanh toán Kế toán, Kiểm toán & Hệ thống"],
+    ["Net Cash Flow from Core Operating Channels", "Dòng tiền Ròng từ Hoạt động Cốt lõi"],
+    ["Cash Received from Portfolio Divestment Sales", "Tiền mặt từ Bán thoái vốn"],
+    ["Cash Outflows Absorbed by Capital Acquisitions", "Dòng tiền Ra mua Tài sản"],
+    ["Net Cash Generated by Capital Investment Activity", "Dòng tiền Ròng từ Hoạt động Đầu tư"],
+    ["Member Inward Concessional & Non-Concessional Cash Deposits", "Tiền gửi Đóng góp từ Thành viên"],
+    ["Net Financing Contributions Cash Flow Inwards", "Dòng tiền Đóng góp Tài trợ"],
+    ["Net Absolute Increase/Decrease Variance in Cash Held", "Chênh lệch Tăng/Giảm Tiền mặt"],
+    ["Transitioning architecture from", "Chuyển đổi kiến trúc từ"],
+    ["under internal institutional administration profiles decreases structural cost leaks. Expected annual management fees drop by", "dưới hồ sơ quản trị tổ chức làm giảm rò rỉ chi phí cấu trúc. Dự kiến phí quản lý hàng năm giảm"],
+    ["inside the system framework parameters.", "bên trong các thông số khuôn khổ hệ thống."],
+    ["Salary Sacrifice", "Khấu trừ Lương"],
+    ["Employer SG", "Cấp SG"],
+    ["Voluntary Cap", "Mức Tự nguyện"],
+    ["Fund Return Rate (%)", "Lợi nhuận Quỹ (%)"],
+    ["Median Institutional Sector Benchmark (%)", "Điểm chuẩn Trung vị Ngành (%)"],
+    ["Conservative Scenario (5% p.a.)", "Kịch bản Bảo thủ (5%/năm)"],
+    ["Base Case Framework (7.5% p.a.)", "Kịch bản Cơ sở (7.5%/năm)"],
+    ["Optimistic Track (9.5% p.a.)", "Kịch bản Lạc quan (9.5%/năm)"],
+    ["Cash", "Tiền mặt"],
+    ["Term Deposit", "Tiền gửi Kỳ hạn"],
+    ["Bonds", "Trái phiếu"],
+    ["Shares", "Cổ phiếu"],
+    ["Derivatives", "Phái sinh"],
+    ["Managed Funds", "Quỹ Quản lý"],
+    ["Property", "Bất động sản"],
+    ["Golds & Metals", "Vàng & Kim loại"],
+    ["Cryptocurrency", "Tiền điện tử"],
+    ["Other", "Khác"]
+  ];
+  
+  // Sort descending by length to prevent partial substring matches
+  tPairs.sort((a, b) => b[0].length - a[0].length);
+
+  function t(str) {
+    if (currentLang === 'en') return str;
+    for (let i = 0; i < tPairs.length; i++) {
+      if (tPairs[i][0] === str) return tPairs[i][1];
+    }
+    return str;
+  }
+
+  function tText(text, toVi) {
+    let result = text;
+    tPairs.forEach(pair => {
+      const source = toVi ? pair[0] : pair[1];
+      const target = toVi ? pair[1] : pair[0];
+      if (result.includes(source)) {
+        result = result.split(source).join(target);
+      }
+    });
+    return result;
+  }
+
+  function translateDOMNode(node, toVi) {
+    if (node.nodeType === 3) {
+      let txt = node.nodeValue;
+      if (txt.trim() !== '') {
+        let translated = tText(txt, toVi);
+        if (translated !== txt) node.nodeValue = translated;
+      }
+    } else {
+      if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE' || node.tagName === 'CANVAS') return;
+      if (node.tagName === 'INPUT' && node.placeholder) {
+        let translated = tText(node.placeholder, toVi);
+        if (translated !== node.placeholder) node.placeholder = translated;
+      }
+      node.childNodes.forEach(child => translateDOMNode(child, toVi));
+    }
+  }
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'vi' : 'en';
+    const toVi = currentLang === 'vi';
+    
+    const langBtn = document.getElementById('lang-toggle-btn');
+    if (langBtn) langBtn.innerHTML = toVi ? "🌐 English" : "🌐 Tiếng Việt";
+
+    // Translate the entire static DOM
+    translateDOMNode(document.body, toVi);
+
+    // Re-trigger dynamic state rendering
+    calculateCoreAggregates();
+    const activePageId = document.querySelector('.page.active').id.replace('page-', '');
+    triggerChartsRendering(activePageId);
+  }
+
   // STATE DEFINITIONS CONTROL OBJECT
   let state = {
     settings: { fundName: "Apex Private Wealth SMSF", age: 42, presAge: 60, trustees: 2 },
@@ -510,7 +881,13 @@
       { name: "Perth Mint Direct Vault Physical Bullion", cat: "Golds & Metals", qty: 32, price: 2100, cost: 62000, drip: "No" },
       { name: "Bitcoin Ledger Protected Cold Storage Account", cat: "Cryptocurrency", qty: 0.45, price: 110000, cost: 23200, drip: "No" }
     ],
-    contributions: { balance: 1039950, ss: 1200, sg: 950, vol: 500, conCap: 32500, nonConCap: 110000, returnRate: 7.5, targetBal: 2500000 }
+    contributions: { balance: 1039950, ss: 1200, sg: 950, vol: 500, conCap: 32500, nonConCap: 110000, returnRate: 7.5, targetBal: 2500000 },
+    financials: {
+      incDivF: 16500, incDivU: 3800, incInt: 4120, incRent: 36500, incCap: 8900,
+      expAdmin: 2400, expAudit: 700, expLevy: 259, expProp: 5100,
+      liabAccrued: 1350, liabTax: 9200,
+      cashSale: 30000, cashAcq: 115000
+    }
   };
 
   const assetCategoriesOrdered = ["Cash", "Term Deposit", "Bonds", "Shares", "Derivatives", "Managed Funds", "Property", "Golds & Metals", "Cryptocurrency", "Other"];
@@ -522,14 +899,12 @@
     "2024": [12.0, 0.0, 10.0, 20.0, 0.0, 5.0, 48.0, 5.0, 0.0, 0.0]
   };
 
-  // ACTIVE CHART INSTANCES POINTERS
   let donutChart = null;
   let multiYearChart = null;
   let perfLineChart = null;
   let growthBarChart = null;
   let projLineChart = null;
 
-  // SYSTEM LIFECYCLE INITIALIZATION
   window.addEventListener('DOMContentLoaded', () => {
     loadLocalState();
     initializeForms();
@@ -543,7 +918,10 @@
     if (localData) {
       try {
         const parsed = JSON.parse(localData);
-        if (parsed.holdings && parsed.settings) state = parsed;
+        if (parsed.holdings && parsed.settings && parsed.financials) state = parsed;
+        else if (parsed.holdings && parsed.settings) {
+            state.holdings = parsed.holdings; state.settings = parsed.settings; state.targets = parsed.targets; state.contributions = parsed.contributions;
+        }
       } catch (e) { console.warn("Failed to parse local browser cache state.", e); }
     }
   }
@@ -570,6 +948,23 @@
     document.getElementById('fund-return').value = state.contributions.returnRate;
     document.getElementById('fund-target').value = state.contributions.targetBal;
 
+    document.getElementById('in-fin-div-f').value = state.financials.incDivF;
+    document.getElementById('in-fin-div-u').value = state.financials.incDivU;
+    document.getElementById('in-fin-int').value = state.financials.incInt;
+    document.getElementById('in-fin-rent').value = state.financials.incRent;
+    document.getElementById('in-fin-cap').value = state.financials.incCap;
+    
+    document.getElementById('in-fin-exp-admin').value = state.financials.expAdmin;
+    document.getElementById('in-fin-exp-audit').value = state.financials.expAudit;
+    document.getElementById('in-fin-exp-levy').value = state.financials.expLevy;
+    document.getElementById('in-fin-exp-prop').value = state.financials.expProp;
+
+    document.getElementById('in-fin-liab-accrued').value = state.financials.liabAccrued;
+    document.getElementById('in-fin-liab-tax').value = state.financials.liabTax;
+    
+    document.getElementById('in-fin-cash-sale').value = state.financials.cashSale;
+    document.getElementById('in-fin-cash-acq').value = state.financials.cashAcq;
+
     const targetAllocForm = document.getElementById('target-alloc-form');
     targetAllocForm.innerHTML = '';
     assetCategoriesOrdered.forEach(cat => {
@@ -579,6 +974,14 @@
           <input type="number" class="ips-target-input" data-cat="${cat}" value="${state.targets[cat] || 0}">
         </div>`;
     });
+  }
+
+  function switchSettingsTab(tabId) {
+    document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.settings-subnav .subnav-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById('spnl-' + tabId).classList.add('active');
+    document.getElementById('sbt-' + tabId).classList.add('active');
   }
 
   function showPage(pageId) {
@@ -602,15 +1005,33 @@
     });
   }
 
-  function toggleLanguage() {
-    alert("Language packs configuration updated. Running in master localized mode: English.");
-  }
-
   function saveSettings() {
     state.settings.fundName = document.getElementById('s-fund-name').value;
     state.settings.age = parseInt(document.getElementById('s-age').value) || 40;
     state.settings.presAge = parseInt(document.getElementById('s-pres-age').value) || 60;
     state.settings.trustees = parseInt(document.getElementById('s-trustees').value) || 2;
+    saveAll();
+    calculateCoreAggregates();
+  }
+
+  function saveFinancials() {
+    state.financials.incDivF = parseFloat(document.getElementById('in-fin-div-f').value) || 0;
+    state.financials.incDivU = parseFloat(document.getElementById('in-fin-div-u').value) || 0;
+    state.financials.incInt = parseFloat(document.getElementById('in-fin-int').value) || 0;
+    state.financials.incRent = parseFloat(document.getElementById('in-fin-rent').value) || 0;
+    state.financials.incCap = parseFloat(document.getElementById('in-fin-cap').value) || 0;
+
+    state.financials.expAdmin = parseFloat(document.getElementById('in-fin-exp-admin').value) || 0;
+    state.financials.expAudit = parseFloat(document.getElementById('in-fin-exp-audit').value) || 0;
+    state.financials.expLevy = parseFloat(document.getElementById('in-fin-exp-levy').value) || 0;
+    state.financials.expProp = parseFloat(document.getElementById('in-fin-exp-prop').value) || 0;
+
+    state.financials.liabAccrued = parseFloat(document.getElementById('in-fin-liab-accrued').value) || 0;
+    state.financials.liabTax = parseFloat(document.getElementById('in-fin-liab-tax').value) || 0;
+
+    state.financials.cashSale = parseFloat(document.getElementById('in-fin-cash-sale').value) || 0;
+    state.financials.cashAcq = parseFloat(document.getElementById('in-fin-cash-acq').value) || 0;
+
     saveAll();
     calculateCoreAggregates();
   }
@@ -632,16 +1053,15 @@
     const cost = parseFloat(document.getElementById('h-cost').value) || 0;
     const drip = document.getElementById('h-drip').value;
 
-    if (!name) { alert("Please provide a valid asset identity description."); return; }
+    if (!name) return;
     state.holdings.push({ name, cat, qty, price, cost, drip });
     saveAll();
     calculateCoreAggregates();
     document.getElementById('h-name').value = '';
-    alert("Asset holding appended to the fund general inventory register.");
   }
 
   function removeHolding(idx) {
-    if (confirm("Confirm absolute deletion of this asset holding register?")) {
+    if (confirm(currentLang === 'vi' ? "Xác nhận xóa tài sản này khỏi danh mục?" : "Confirm absolute deletion of this asset holding register?")) {
       state.holdings.splice(idx, 1);
       saveAll();
       calculateCoreAggregates();
@@ -649,7 +1069,7 @@
   }
 
   function clearAll() {
-    if (confirm("Clear local cache register matrices? This deletes all structural modifications.")) {
+    if (confirm(currentLang === 'vi' ? "Xóa bộ đệm máy chủ? Việc này sẽ xóa mọi sửa đổi." : "Clear local cache register matrices? This deletes all structural modifications.")) {
       localStorage.removeItem('smsf_suite_localstate');
       window.location.reload();
     }
@@ -671,17 +1091,21 @@
         const parsed = JSON.parse(reader.result);
         if (parsed.holdings && parsed.settings) {
           state = parsed;
+          if(!state.financials) state.financials = {
+              incDivF: 16500, incDivU: 3800, incInt: 4120, incRent: 36500, incCap: 8900,
+              expAdmin: 2400, expAudit: 700, expLevy: 259, expProp: 5100,
+              liabAccrued: 1350, liabTax: 9200, cashSale: 30000, cashAcq: 115000
+          };
           saveAll();
           initializeForms();
           calculateCoreAggregates();
-          alert("Fund snapshot loaded successfully.");
+          calcFireUp();
         }
-      } catch(e) { alert("Parsing breakdown logic error on loaded data schema structure."); }
+      } catch(e) { console.error("Parsing error", e); }
     };
     reader.readAsText(input.files[0]);
   }
 
-  // MATHEMATICAL PROCESS ENGINE CORE
   function calculateCoreAggregates() {
     let aggregateValue = 0;
     let aggregateCost = 0;
@@ -704,7 +1128,7 @@
           <td><span class="badge badge-blue">${h.cat}</span></td>
           <td class="td-mono">${h.qty.toLocaleString()}</td>
           <td class="td-mono">$${h.price.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          <td class="td-mono font-weight:600">$${val.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+          <td class="td-mono" style="font-weight:600">$${val.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
           <td class="td-mono">$${h.cost.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
           <td class="td-mono ${gain>=0?'td-green':'td-red'}">$${gain.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
           <td class="td-mono" id="row-weight-${i}">0%</td>
@@ -733,23 +1157,27 @@
       document.getElementById(`row-weight-${i}`).textContent = pct.toFixed(1) + '%';
     });
 
-    // REFRESH KPI DASHBOARD INTERFACES
-    const kpiRow = document.getElementById('kpi-row');
-    kpiRow.innerHTML = `
+    document.getElementById('contributions-read-panel').innerHTML = `
+      <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>Monthly Salary Sacrifice:</span><b class="td-mono">$${state.contributions.ss.toLocaleString()}</b></div>
+      <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>Monthly Employer SG:</span><b class="td-mono">$${state.contributions.sg.toLocaleString()}</b></div>
+      <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>Monthly Voluntary Concessional:</span><b class="td-mono">$${state.contributions.vol.toLocaleString()}</b></div>
+      <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>Target Balance (Age 60):</span><b class="td-mono">$${state.contributions.targetBal.toLocaleString()}</b></div>
+      <div style="display:flex; justify-content:space-between;"><span>Expected Base Return Rate:</span><b class="td-mono text-accent">${state.contributions.returnRate}% p.a.</b></div>
+    `;
+
+    document.getElementById('kpi-row').innerHTML = `
       <div class="kpi gold"><div class="kpi-label">Net Fund Balance</div><div class="kpi-value">$${aggregateValue.toLocaleString(undefined,{maximumFractionDigits:0})}</div><div class="kpi-sub">Total market valuation assets</div></div>
       <div class="kpi blue"><div class="kpi-label">Aggregated Cost Base</div><div class="kpi-value">$${aggregateCost.toLocaleString(undefined,{maximumFractionDigits:0})}</div><div class="kpi-sub">Initial capital outlays base</div></div>
       <div class="kpi green"><div class="kpi-label">Total Unrealised Growth</div><div class="kpi-value">$${totalGain.toLocaleString(undefined,{maximumFractionDigits:0})}</div><div class="kpi-sub">Valuation performance spread</div></div>
       <div class="kpi red"><div class="kpi-label">In-House Related Exposure</div><div class="kpi-value" id="kpi-inhouse-val">0.00%</div><div class="kpi-sub">Statutory maximum threshold 5.00%</div></div>
     `;
 
-    // ALLOCATION PROGRESS BAR GENERATOR
-    const barsContainer = document.getElementById('allocation-bars');
-    barsContainer.innerHTML = '';
+    document.getElementById('allocation-bars').innerHTML = '';
     assetCategoriesOrdered.forEach(cat => {
       const cVal = classAggregates[cat];
       const cPct = aggregateValue > 0 ? (cVal / aggregateValue) * 100 : 0;
       const tPct = state.targets[cat] || 0;
-      barsContainer.innerHTML += `
+      document.getElementById('allocation-bars').innerHTML += `
         <div class="progress-wrap">
           <div class="progress-header">
             <span><strong>${cat}</strong> ($${cVal.toLocaleString(undefined,{maximumFractionDigits:0})} · ${cPct.toFixed(1)}%)</span>
@@ -759,7 +1187,6 @@
         </div>`;
     });
 
-    // REGENERATING LIFECYCLE ROADMAP DATA MODEL
     const targetYearsToPreservation = Math.max(0, state.settings.presAge - state.settings.age);
     document.getElementById('years-to-60').textContent = targetYearsToPreservation + " Years";
     
@@ -780,7 +1207,6 @@
         </tbody>
       </table>`;
 
-    // ORIGINAL COMPLIANCE SCREEN SNAPSHOT REBIND
     document.getElementById('compliance-snapshot').innerHTML = `
       <div class="check-item"><span class="td-green">✔</span> <div><strong>Sole Purpose Framework Compliance:</strong> Verified structural deployment structures.</div></div>
       <div class="check-item"><span class="td-green">✔</span> <div><strong>Regulatory Audit Readiness Index:</strong> System parameters aligned for verification.</div></div>
@@ -792,47 +1218,81 @@
       <div class="check-item"><span class="td-green">✔</span> <div><strong>Statutory In-House Asset Allocation Rule:</strong> Aggregate exposure metrics remain completely within the legal 5.0% asset boundary limit.</div></div>
     `;
 
-    // PERFORMANCE VIEW INTERACTIVE TABLE REBIND
+    const fin = state.financials;
+    const incTotal = fin.incDivF + fin.incDivU + fin.incInt + fin.incRent + fin.incCap;
+    const expTotal = fin.expAdmin + fin.expAudit + fin.expLevy + fin.expProp;
+    const incNet = incTotal - expTotal;
+
+    document.getElementById('fin-inc-div-f').textContent = fin.incDivF.toLocaleString();
+    document.getElementById('fin-inc-div-u').textContent = fin.incDivU.toLocaleString();
+    document.getElementById('fin-inc-int').textContent = fin.incInt.toLocaleString();
+    document.getElementById('fin-inc-rent').textContent = fin.incRent.toLocaleString();
+    document.getElementById('fin-inc-cap').textContent = fin.incCap.toLocaleString();
+    document.getElementById('fin-inc-total').textContent = incTotal.toLocaleString();
+
+    document.getElementById('fin-exp-admin').textContent = fin.expAdmin.toLocaleString();
+    document.getElementById('fin-exp-audit').textContent = fin.expAudit.toLocaleString();
+    document.getElementById('fin-exp-levy').textContent = fin.expLevy.toLocaleString();
+    document.getElementById('fin-exp-prop').textContent = fin.expProp.toLocaleString();
+    document.getElementById('fin-exp-total').textContent = expTotal.toLocaleString();
+    
+    document.getElementById('fin-inc-net').textContent = incNet.toLocaleString();
+
+    document.getElementById('fin-bal-cash').textContent = classAggregates["Cash"].toLocaleString();
+    document.getElementById('fin-bal-td').textContent = classAggregates["Term Deposit"].toLocaleString();
+    document.getElementById('fin-bal-bonds').textContent = classAggregates["Bonds"].toLocaleString();
+    document.getElementById('fin-bal-shares').textContent = classAggregates["Shares"].toLocaleString();
+    document.getElementById('fin-bal-prop').textContent = classAggregates["Property"].toLocaleString();
+    
+    const sumAlts = classAggregates["Derivatives"] + classAggregates["Managed Funds"] + classAggregates["Golds & Metals"] + classAggregates["Cryptocurrency"] + classAggregates["Other"];
+    document.getElementById('fin-bal-alt').textContent = sumAlts.toLocaleString();
+    document.getElementById('fin-bal-gross-assets').textContent = aggregateValue.toLocaleString();
+    
+    const liabTotal = fin.liabAccrued + fin.liabTax;
+    document.getElementById('fin-liab-accrued').textContent = fin.liabAccrued.toLocaleString();
+    document.getElementById('fin-liab-tax').textContent = fin.liabTax.toLocaleString();
+    document.getElementById('fin-liab-total').textContent = liabTotal.toLocaleString();
+    document.getElementById('fin-bal-net-assets').textContent = (aggregateValue - liabTotal).toLocaleString();
+
+    const cashDist = fin.incDivF + fin.incDivU;
+    const opCashFlow = cashDist + fin.incInt + fin.incRent - expTotal;
+    document.getElementById('fin-cf-dist').textContent = cashDist.toLocaleString();
+    document.getElementById('fin-cf-int').textContent = fin.incInt.toLocaleString();
+    document.getElementById('fin-cf-rent').textContent = fin.incRent.toLocaleString();
+    document.getElementById('fin-cf-exp').textContent = "-" + expTotal.toLocaleString();
+    document.getElementById('fin-cf-op').textContent = opCashFlow.toLocaleString();
+    
+    const invCashFlow = fin.cashSale - fin.cashAcq;
+    document.getElementById('fin-cf-sale').textContent = fin.cashSale.toLocaleString();
+    document.getElementById('fin-cf-acq').textContent = "-" + fin.cashAcq.toLocaleString();
+    document.getElementById('fin-cf-inv').textContent = invCashFlow.toLocaleString();
+
+    const annualInwardContribs = (state.contributions.ss + state.contributions.sg + state.contributions.vol) * 12;
+    document.getElementById('fin-cf-contrib').textContent = annualInwardContribs.toLocaleString();
+    document.getElementById('fin-cf-fin').textContent = annualInwardContribs.toLocaleString();
+
+    const netCashVar = opCashFlow + invCashFlow + annualInwardContribs;
+    document.getElementById('fin-cf-var').textContent = netCashVar.toLocaleString();
+
+    const previousGrossAssets = aggregateValue - incNet;
+    const activeRoi = previousGrossAssets > 0 ? (incNet / previousGrossAssets) * 100 : 0;
+    
     const perfTbody = document.getElementById('perf-summary-tbody');
     perfTbody.innerHTML = `
-      <tr><td>Gross Fund Operating Revenues ($)</td><td class="td-mono">48,200</td><td class="td-mono">66,250</td><td class="td-mono td-gold">${(aggregateValue * 0.067).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td></tr>
-      <tr><td>System Operational Admin Expenses ($)</td><td class="td-mono">7,100</td><td class="td-mono">7,909</td><td class="td-mono">8,459</td></tr>
-      <tr><td>Net Fund Retained Distributable Profits ($)</td><td class="td-mono td-green">41,100</td><td class="td-mono td-green">58,341</td><td class="td-mono td-green">${((aggregateValue * 0.067) - 8459).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td></tr>
-      <tr><td>Internal Fund Compounded Yield Trajectory Return (%)</td><td class="td-mono td-green">+6.92%</td><td class="td-mono td-green">+8.14%</td><td class="td-mono td-green">+8.45%</td></tr>
+      <tr><td>Gross Fund Operating Revenues ($)</td><td class="td-mono">48,200</td><td class="td-mono">66,250</td><td class="td-mono td-gold">${incTotal.toLocaleString()}</td></tr>
+      <tr><td>System Operational Admin Expenses ($)</td><td class="td-mono">7,100</td><td class="td-mono">7,909</td><td class="td-mono">${expTotal.toLocaleString()}</td></tr>
+      <tr><td>Net Fund Retained Distributable Profits ($)</td><td class="td-mono td-green">41,100</td><td class="td-mono td-green">58,341</td><td class="td-mono td-green">${incNet.toLocaleString()}</td></tr>
+      <tr><td>Internal Fund Compounded Yield Trajectory Return (%)</td><td class="td-mono td-green">+6.92%</td><td class="td-mono td-green">+8.14%</td><td class="td-mono td-green">+${activeRoi.toFixed(2)}%</td></tr>
       <tr><td>Institutional Superannuation Industry Growth Benchmark (%)</td><td class="td-mono" style="color:var(--muted)">+6.10%</td><td class="td-mono" style="color:var(--muted)">+7.20%</td><td class="td-mono" style="color:var(--muted)">+7.42%</td></tr>
     `;
 
-    // FINANCIAL STATEMENT LIVE REBIND MODULES
-    const activeDivF = aggregateValue * 0.0158;
-    const activeDivU = aggregateValue * 0.0036;
-    const activeInt = aggregateValue * 0.0039;
-    const activeRent = aggregateValue * 0.0351;
-    const activeCap = aggregateValue * 0.0085;
-    const activeTotalRev = activeDivF + activeDivU + activeInt + activeRent + activeCap;
-    const activeNetProfits = activeTotalRev - 8459;
+    document.getElementById('perf-fund-roi').textContent = activeRoi.toFixed(2) + "%";
+    const benchmarkROI = 7.42; 
+    const alphaGen = activeRoi - benchmarkROI;
+    const alphaElem = document.getElementById('perf-fund-alpha');
+    alphaElem.textContent = (alphaGen > 0 ? "+" : "") + alphaGen.toFixed(2) + "%";
+    alphaElem.className = alphaGen >= 0 ? "kpi-value td-green" : "kpi-value td-red";
 
-    document.getElementById('fin-inc-div-f').textContent = activeDivF.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-div-u').textContent = activeDivU.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-int').textContent = activeInt.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-rent').textContent = activeRent.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-cap').textContent = activeCap.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-total').textContent = activeTotalRev.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-inc-net').textContent = activeNetProfits.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    document.getElementById('fin-bal-cash').textContent = classAggregates["Cash"].toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-td').textContent = classAggregates["Term Deposit"].toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-bonds').textContent = classAggregates["Bonds"].toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-shares').textContent = classAggregates["Shares"].toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-prop').textContent = classAggregates["Property"].toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    
-    const sumAlts = classAggregates["Derivatives"] + classAggregates["Managed Funds"] + classAggregates["Golds & Metals"] + classAggregates["Cryptocurrency"] + classAggregates["Other"];
-    document.getElementById('fin-bal-alt').textContent = sumAlts.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-gross-assets').textContent = aggregateValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById('fin-bal-net-assets').textContent = (aggregateValue - 10550).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    document.getElementById('fin-cash-variance').textContent = (13200 + (classAggregates["Cash"] * 0.02)).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    // RE-COMPILING REALIZED VS UNREALIZED MATRIX
     const gainsTbody = document.getElementById('gains-matrix-tbody');
     gainsTbody.innerHTML = '';
     
@@ -847,7 +1307,7 @@
       state.holdings.forEach(h => { if(h.cat === cat) cCost += h.cost; });
       if(cVal > 0 || cCost > 0) {
         let cUnrealised = cVal - cCost;
-        let cRealised = cVal > 0 ? cCost * 0.045 : 0; // Simulated historical realized events
+        let cRealised = cVal > 0 ? cCost * 0.045 : 0; 
         
         sumCostVector += cCost;
         sumValueVector += cVal;
@@ -871,11 +1331,46 @@
         <td class="td-mono">$${sumCostVector.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
         <td class="td-mono">$${sumValueVector.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
         <td class="td-mono td-green">$${sumRealisedVector.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
-        <td class="td-mono ${sumUnrealisedVector>=0?'td-green':'td-red'}$">$${sumUnrealisedVector.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+        <td class="td-mono ${sumUnrealisedVector>=0?'td-green':'td-red'}">$${sumUnrealisedVector.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
       </tr>`;
 
     updateInHouse();
     state.computedClassSums = classAggregates;
+
+    const annualConcessionalsTotal = (state.contributions.ss + state.contributions.sg + state.contributions.vol) * 12;
+    const remainingCapVal = Math.max(0, state.contributions.conCap - annualConcessionalsTotal);
+    document.getElementById('fy-contrib-table').innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Cap Segment Type Allocation</th>
+              <th>Yearly Accumulated Outflows</th>
+              <th>Statutory Legal Limit Cap</th>
+              <th>Calculated Space Margin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Concessional Caps (Pre-Tax Stream)</td><td class="td-mono">$${annualConcessionalsTotal.toLocaleString(undefined,{maximumFractionDigits:0})}</td><td class="td-mono">$${state.contributions.conCap.toLocaleString()}</td><td class="td-mono td-green">$${remainingCapVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
+            <tr><td>Non-Concessional Allocations (Post-Tax)</td><td class="td-mono">$0</td><td class="td-mono">$${state.contributions.nonConCap.toLocaleString()}</td><td class="td-mono td-green">$${state.contributions.nonConCap.toLocaleString()}</td></tr>
+          </tbody>
+        </table>
+    `;
+
+    // Apply translations directly to the freshly injected dynamic DOM if we are in Vietnamese mode
+    if (currentLang === 'vi') {
+        translateDOMNode(document.getElementById('holdings-tbody'), true);
+        translateDOMNode(document.getElementById('holdings-tfoot'), true);
+        translateDOMNode(document.getElementById('contributions-read-panel'), true);
+        translateDOMNode(document.getElementById('kpi-row'), true);
+        translateDOMNode(document.getElementById('allocation-bars'), true);
+        translateDOMNode(document.getElementById('retirement-progress-bars'), true);
+        translateDOMNode(document.getElementById('roadmap-table'), true);
+        translateDOMNode(document.getElementById('compliance-snapshot'), true);
+        translateDOMNode(document.getElementById('compliance-checklist-full'), true);
+        translateDOMNode(document.getElementById('perf-summary-tbody'), true);
+        translateDOMNode(document.getElementById('gains-matrix-tbody'), true);
+        translateDOMNode(document.getElementById('fy-contrib-table'), true);
+    }
   }
 
   function updateInHouse() {
@@ -891,14 +1386,17 @@
 
     const statusPanel = document.getElementById('inhouse-status');
     if (pct > 5.0) {
-      statusPanel.innerHTML = `<div class="alert alert-warn" style="color:var(--accent4)">❌ <strong>Breach Event Detected:</strong> Related party asset exposure levels (${pct.toFixed(2)}%) exceed the statutory 5.0% threshold boundary limit. Action required.</div>`;
+      statusPanel.innerHTML = `<div class="alert alert-warn" style="color:var(--accent4)">❌ <strong>Breach Event Detected:</strong> Related party assets (${pct.toFixed(2)}%) exceed the statutory 5.0% threshold. Action required.</div>`;
     } else {
       statusPanel.innerHTML = `<div class="alert alert-info" style="color:var(--accent3)">✔ <strong>Regulatory Status Clear:</strong> In-house exposures (${pct.toFixed(2)}%) remain within safe legislative limits.</div>`;
+    }
+
+    if (currentLang === 'vi') {
+      translateDOMNode(statusPanel, true);
     }
   }
 
   function calcFund() {
-    state.contributions.balance = parseFloat(document.getElementById('fund-balance').value) || 0;
     state.contributions.ss = parseFloat(document.getElementById('fund-ss').value) || 0;
     state.contributions.sg = parseFloat(document.getElementById('fund-sg').value) || 0;
     state.contributions.vol = parseFloat(document.getElementById('fund-vol').value) || 0;
@@ -908,7 +1406,6 @@
     state.contributions.targetBal = parseFloat(document.getElementById('fund-target').value) || 2500000;
     saveAll();
     calculateCoreAggregates();
-    showPage('contributions');
   }
 
   function calcFireUp() {
@@ -917,18 +1414,25 @@
     const fees = parseFloat(document.getElementById('fu-fee').value) || 0;
     const savings = Math.max(0, fees - 680);
 
-    document.getElementById('fire-up-result').innerHTML = `
+    const layoutMarkup = `
       <div class="card" style="border-color:var(--accent3); background: rgba(78,203,138,0.02)">
         <h4 style="color:var(--accent3); margin-bottom:8px;">🔥 Financial Optimization Result Mapped</h4>
         <p>Transitioning architecture from <strong>${fundName}</strong> under internal institutional administration profiles decreases structural cost leaks. Expected annual management fees drop by <strong>$${savings.toLocaleString()}</strong> inside the system framework parameters.</p>
       </div>`;
+    
+    document.getElementById('fire-up-result').innerHTML = layoutMarkup;
+    document.getElementById('fire-up-static-view').innerHTML = layoutMarkup;
+
+    if (currentLang === 'vi') {
+        translateDOMNode(document.getElementById('fire-up-result'), true);
+        translateDOMNode(document.getElementById('fire-up-static-view'), true);
+    }
   }
 
   function calcProjections() {
     showPage('projections');
   }
 
-  // DYNAMIC CHART DATA UPDATES BINDING
   function triggerChartsRendering(pageId) {
     const themeLineColor = '#232730';
     const themeMutedColor = '#7a7f8e';
@@ -943,7 +1447,7 @@
       donutChart = new Chart(ctxDonut, {
         type: 'doughnut',
         data: {
-          labels: assetCategoriesOrdered,
+          labels: assetCategoriesOrdered.map(cat => t(cat)),
           datasets: [{ data: activeSums, backgroundColor: assetColorsMapping, borderWidth: 2, borderColor: '#161920' }]
         },
         options: { plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false }
@@ -958,19 +1462,18 @@
           legendElement.innerHTML += `
             <div class="legend-item">
               <span class="legend-dot" style="background:${assetColorsMapping[idx]}"></span>
-              <span><strong>${cat}</strong>: ${catPct.toFixed(1)}%</span>
+              <span><strong>${t(cat)}</strong>: ${catPct.toFixed(1)}%</span>
             </div>`;
         }
       });
 
-      // CONSOLE MATRIX RENDER REBIND GRAPH 2
       const ctxContrib = document.getElementById('contrib-chart');
       if (ctxContrib) {
         if (growthBarChart) growthBarChart.destroy();
         growthBarChart = new Chart(ctxContrib, {
           type: 'bar',
           data: {
-            labels: ['Salary Sacrifice', 'Employer SG', 'Voluntary Cap'],
+            labels: [t('Salary Sacrifice'), t('Employer SG'), t('Voluntary Cap')],
             datasets: [{ data: [state.contributions.ss * 12, state.contributions.sg * 12, state.contributions.vol * 12], backgroundColor: ['#c8a96e', '#5c9eff', '#4ecb8a'] }]
           },
           options: { plugins: { legend: { display: false } }, scales: { x: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } }, y: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } } }, responsive: true, maintainAspectRatio: false }
@@ -986,13 +1489,19 @@
       const ctxPerf = document.getElementById('perf-chart');
       if (!ctxPerf) return;
       if (perfLineChart) perfLineChart.destroy();
+      
+      const fin = state.financials;
+      const incNet = (fin.incDivF + fin.incDivU + fin.incInt + fin.incRent + fin.incCap) - (fin.expAdmin + fin.expAudit + fin.expLevy + fin.expProp);
+      const prevAssets = state.contributions.balance - incNet;
+      const calcRoi = prevAssets > 0 ? (incNet / prevAssets) * 100 : 0;
+      
       perfLineChart = new Chart(ctxPerf, {
         type: 'line',
         data: {
           labels: ['FY22', 'FY23', 'FY24', 'FY25', 'FY26'],
           datasets: [
-            { label: 'Fund Return Rate (%)', data: [6.40, 7.10, 6.92, 8.14, 8.45], borderColor: '#c8a96e', backgroundColor: 'rgba(200,169,110,0.03)', tension: 0.25, fill: true },
-            { label: 'Median Institutional Sector Benchmark (%)', data: [5.80, 6.20, 6.10, 7.20, 7.42], borderColor: '#5c9eff', borderDash: [4, 4], tension: 0.25, fill: false }
+            { label: t('Fund Return Rate (%)'), data: [6.40, 7.10, 6.92, 8.14, parseFloat(calcRoi.toFixed(2))], borderColor: '#c8a96e', backgroundColor: 'rgba(200,169,110,0.03)', tension: 0.25, fill: true },
+            { label: t('Median Institutional Sector Benchmark (%)'), data: [5.80, 6.20, 6.10, 7.20, 7.42], borderColor: '#5c9eff', borderDash: [4, 4], tension: 0.25, fill: false }
           ]
         },
         options: { scales: { x: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } }, y: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } } }, plugins: { legend: { labels: { color: '#e8e3d8' } } }, responsive: true, maintainAspectRatio: false }
@@ -1009,14 +1518,14 @@
       const points = [];
       const labels = [];
       for(let y=0; y<=8; y++) {
-        labels.push("Year " + y);
+        labels.push(t("Year") + " " + y);
         points.push(baseVal);
         baseVal = (baseVal + annualInflows) * (1 + (state.contributions.returnRate/100));
       }
 
       growthBarChart = new Chart(ctxGrowth, {
         type: 'bar',
-        data: { labels: labels, datasets: [{ label: 'Estimated Fund Accumulation Valuation ($)', data: points, backgroundColor: '#4ecb8a' }] },
+        data: { labels: labels, datasets: [{ label: t('Fund Growth to Preservation Age'), data: points, backgroundColor: '#4ecb8a' }] },
         options: { plugins: { legend: { display: false } }, scales: { x: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } }, y: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } } }, responsive: true, maintainAspectRatio: false }
       });
     }
@@ -1031,7 +1540,7 @@
       const p1 = [], p2 = [], p3 = [], labels = [];
 
       for(let i=0; i<=10; i++) {
-        labels.push("Year " + i); p1.push(v1); p2.push(v2); p3.push(v3);
+        labels.push(t("Year") + " " + i); p1.push(v1); p2.push(v2); p3.push(v3);
         v1 = (v1 + inflows) * 1.05; v2 = (v2 + inflows) * 1.075; v3 = (v3 + inflows) * 1.095;
       }
 
@@ -1040,9 +1549,9 @@
         data: {
           labels: labels,
           datasets: [
-            { label: 'Conservative Scenario (5% p.a.)', data: p1, borderColor: '#e06b6b', fill: false },
-            { label: 'Base Case Framework (7.5% p.a.)', data: p2, borderColor: '#5c9eff', fill: false },
-            { label: 'Optimistic Track (9.5% p.a.)', data: p3, borderColor: '#4ecb8a', fill: false }
+            { label: t('Conservative Scenario (5% p.a.)'), data: p1, borderColor: '#e06b6b', fill: false },
+            { label: t('Base Case Framework (7.5% p.a.)'), data: p2, borderColor: '#5c9eff', fill: false },
+            { label: t('Optimistic Track (9.5% p.a.)'), data: p3, borderColor: '#4ecb8a', fill: false }
           ]
         },
         options: { scales: { x: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } }, y: { grid: { color: themeLineColor }, ticks: { color: themeMutedColor } } }, responsive: true, maintainAspectRatio: false }
@@ -1050,11 +1559,11 @@
 
       document.getElementById('proj-table').innerHTML = `
         <table>
-          <thead><tr><th>Time Stamp Matrix Interval</th><th>Conservative Vector ($)</th><th>Base Vector Target ($)</th><th>Optimistic Vector Allocation ($)</th></tr></thead>
+          <thead><tr><th>${t("Time Stamp Matrix Interval")}</th><th>${t("Conservative Vector ($)")}</th><th>${t("Base Vector Target ($)")}</th><th>${t("Optimistic Vector Allocation ($)")}</th></tr></thead>
           <tbody>
-            <tr><td>Year 0 Baseline Initial</td><td>$${p1[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
-            <tr><td>Year 5 Accumulation Interval</td><td>$${p1[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
-            <tr><td>Year 10 Accumulation Terminal</td><td>$${p1[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
+            <tr><td>${t("Year 0 Baseline Initial")}</td><td>$${p1[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[0].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
+            <tr><td>${t("Year 5 Accumulation Interval")}</td><td>$${p1[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[5].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
+            <tr><td>${t("Year 10 Accumulation Terminal")}</td><td>$${p1[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p2[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>$${p3[10].toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>
           </tbody>
         </table>`;
     }
@@ -1071,8 +1580,8 @@
     multiYearChart = new Chart(ctxMulti, {
       type: 'bar',
       data: {
-        labels: assetCategoriesOrdered,
-        datasets: [{ label: `Historical Structural Distribution Percent in ${selectedYear} (%)`, data: trackingDatasetValues, backgroundColor: assetColorsMapping }]
+        labels: assetCategoriesOrdered.map(cat => t(cat)),
+        datasets: [{ label: `${selectedYear}`, data: trackingDatasetValues, backgroundColor: assetColorsMapping }]
       },
       options: {
         plugins: { legend: { display: false } },
@@ -1086,12 +1595,10 @@
     });
   }
 
-  // REWRITTEN HIGH-LEVEL COMPREHENSIVE PDF REPORT GENERATION DISPATCHER
   function exportPensionFundReport() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
     
-    // Header styling configurations
     doc.setFillColor(17, 19, 24);
     doc.rect(0, 0, 210, 35, 'F');
     
@@ -1110,7 +1617,6 @@
     doc.text("Current Market Value Asset Value: $" + state.contributions.balance.toLocaleString(), 14, 45);
     doc.text("Trustee Pool Count: " + state.settings.trustees + " Members", 14, 51);
 
-    // Section 1: Asset holdings listing
     doc.setFontSize(12);
     doc.setTextColor(200, 169, 110);
     doc.text("1. Registered Portfolio Holdings Inventory", 14, 62);
@@ -1128,14 +1634,18 @@
       headStyles: { fillColor: [22, 25, 32], textColor: [200, 169, 110] }
     });
 
-    // Section 2: Performance track matrices
     let currentY = doc.lastAutoTable.finalY + 12;
     doc.setFontSize(12);
     doc.setTextColor(200, 169, 110);
     doc.text("2. Multi-Year Compound Return Allocation Performance Overview", 14, currentY);
     
+    const fin = state.financials;
+    const incNet = (fin.incDivF + fin.incDivU + fin.incInt + fin.incRent + fin.incCap) - (fin.expAdmin + fin.expAudit + fin.expLevy + fin.expProp);
+    const prevAssets = state.contributions.balance - incNet;
+    const calcRoi = prevAssets > 0 ? (incNet / prevAssets) * 100 : 0;
+
     const performanceRows = [
-      ["Fund Compounded Performance Metric ROI", "+6.92%", "+8.14%", "+8.45%"],
+      ["Fund Compounded Performance Metric ROI", "+6.92%", "+8.14%", "+" + calcRoi.toFixed(2) + "%"],
       ["Superannuation Industry Balanced Benchmark Index", "+6.10%", "+7.20%", "+7.42%"]
     ];
 
@@ -1147,7 +1657,6 @@
       headStyles: { fillColor: [22, 25, 32], textColor: [92, 158, 255] }
     });
 
-    // Section 3: Add financial statements (New requirement)
     doc.addPage();
     doc.setFillColor(17, 19, 24);
     doc.rect(0, 0, 210, 20, 'F');
@@ -1159,22 +1668,18 @@
     doc.setTextColor(232, 227, 216);
     doc.text("3.1 Statement of Comprehensive Income (Profit & Loss)", 14, 30);
 
-    const incDivF = state.contributions.balance * 0.0158;
-    const incDivU = state.contributions.balance * 0.0036;
-    const incInt = state.contributions.balance * 0.0039;
-    const incRent = state.contributions.balance * 0.0351;
-    const incCap = state.contributions.balance * 0.0085;
-    const incTotal = incDivF + incDivU + incInt + incRent + incCap;
+    const incTotal = fin.incDivF + fin.incDivU + fin.incInt + fin.incRent + fin.incCap;
+    const expTotal = fin.expAdmin + fin.expAudit + fin.expLevy + fin.expProp;
 
     const incomeTableRows = [
-      ["Franked Dividend Inflows", "$14,200", "$" + incDivF.toFixed(0)],
-      ["Unfranked Dividend Inflows", "$3,100", "$" + incDivU.toFixed(0)],
-      ["Interest Yield Income Received", "$2,450", "$" + incInt.toFixed(0)],
-      ["Commercial Property Rentals", "$34,000", "$" + incRent.toFixed(0)],
-      ["Net Capital Gain Liquidations Ledger", "$12,500", "$" + incCap.toFixed(0)],
-      ["Total Operational Revenues Sum", "$66,250", "$" + incTotal.toFixed(0)],
-      ["Total Audited Expense Outflows Deducted", "-$7,909", "-$8,459"],
-      ["Net System Earnings Distributed Reserves", "$58,341", "$" + (incTotal - 8459).toFixed(0)]
+      ["Franked Dividend Inflows", "$14,200", "$" + fin.incDivF.toLocaleString()],
+      ["Unfranked Dividend Inflows", "$3,100", "$" + fin.incDivU.toLocaleString()],
+      ["Interest Yield Income Received", "$2,450", "$" + fin.incInt.toLocaleString()],
+      ["Commercial Property Rentals", "$34,000", "$" + fin.incRent.toLocaleString()],
+      ["Net Capital Gain Liquidations Ledger", "$12,500", "$" + fin.incCap.toLocaleString()],
+      ["Total Operational Revenues Sum", "$66,250", "$" + incTotal.toLocaleString()],
+      ["Total Audited Expense Outflows Deducted", "-$7,909", "-$" + expTotal.toLocaleString()],
+      ["Net System Earnings Distributed Reserves", "$58,341", "$" + incNet.toLocaleString()]
     ];
 
     doc.autoTable({
@@ -1184,18 +1689,18 @@
       theme: 'striped'
     });
 
-    // Append balance sheet allocation components
     currentY = doc.lastAutoTable.finalY + 10;
     doc.text("3.2 Statement of Financial Position (Balance Sheet Summary)", 14, currentY);
 
+    const liabTotal = fin.liabAccrued + fin.liabTax;
     const balanceTableRows = [
-      ["Liquid Funds and Cash Assets Account Balance", "$45,200", "$" + (state.contributions.balance * 0.05).toFixed(0)],
-      ["Fixed Sovereign Debt Bonds Portfolio Allocation", "$62,000", "$" + (state.contributions.balance * 0.06).toFixed(0)],
-      ["Listed Equity Shares Instrument Assets", "$245,000", "$" + (state.contributions.balance * 0.28).toFixed(0)],
-      ["Direct Managed Commercial Real Estate Values", "$420,000", "$" + (state.contributions.balance * 0.43).toFixed(0)],
-      ["Gross Base Value Fund Assets", "$910,600", "$" + state.contributions.balance.toFixed(0)],
-      ["Total Structural Liability Accruals Provisions", "-$9,500", "-$10,550"],
-      ["Net Asset Reserve Balance (Members Allocation Equity)", "$901,100", "$" + (state.contributions.balance - 10550).toFixed(0)]
+      ["Liquid Funds and Cash Assets Account Balance", "$45,200", "$" + state.computedClassSums["Cash"].toLocaleString()],
+      ["Fixed Sovereign Debt Bonds Portfolio Allocation", "$62,000", "$" + state.computedClassSums["Bonds"].toLocaleString()],
+      ["Listed Equity Shares Instrument Assets", "$245,000", "$" + state.computedClassSums["Shares"].toLocaleString()],
+      ["Direct Managed Commercial Real Estate Values", "$420,000", "$" + state.computedClassSums["Property"].toLocaleString()],
+      ["Gross Base Value Fund Assets", "$910,600", "$" + state.contributions.balance.toLocaleString()],
+      ["Total Structural Liability Accruals Provisions", "-$9,500", "-$" + liabTotal.toLocaleString()],
+      ["Net Asset Reserve Balance (Members Allocation Equity)", "$901,100", "$" + (state.contributions.balance - liabTotal).toLocaleString()]
     ];
 
     doc.autoTable({
