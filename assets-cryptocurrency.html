@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptocurrency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ═══════════════════════════════════════════════════════════
+   hub.css — Finance Tools Hub shared stylesheet
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:      #0a0c10;
+  --surface: #111318;
+  --card:    #161920;
+  --border:  #232730;
+  --accent:  #c8a96e;
+  --accent2: #5c9eff;
+  --accent3: #4ecb8a;
+  --accent4: #e06b6b;
+  --accent5: #b67fff;
+  --accent6: #ff9f43; 
+  --text:    #e8e3d8;
+  --muted:   #7a7f8e;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius: 12px;
+  
+  --asset-accent:        #5c9eff;
+  --asset-accent-dim:    rgba(92,158,255,.12);
+  --asset-accent-border: rgba(92,158,255,.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+
+.shell {
+  position: relative; z-index: 1;
+  max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px;
+}
+
+/* ── Page Navigation Framework ── */
+.page-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 24px;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted); font-size: 12px; text-decoration: none;
+  transition: color .15s;
+}
+.back-link:hover { color: var(--asset-accent); }
+
+.lang-selector {
+  display: flex; gap: 4px; background: var(--surface);
+  border: 1px solid var(--border); padding: 2px; border-radius: 6px;
+}
+.lang-btn {
+  background: transparent; border: none; padding: 4px 10px; font-size: 11px;
+  font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 4px; transition: all 0.15s;
+}
+.lang-btn.active { background: var(--asset-accent); color: #000; }
+
+/* ── Sticky Top-Level Section Navigation ── */
+.top-nav-container {
+  position: sticky; top: 0; background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 100; border-bottom: 1px solid var(--border);
+  margin: 0 -24px 36px -24px; padding: 10px 24px;
+}
+.top-nav-links {
+  display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none;
+}
+.top-nav-links::-webkit-scrollbar { display: none; }
+.top-nav-item {
+  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500;
+  padding: 6px 12px; border-radius: 6px; white-space: nowrap; transition: all 0.15s;
+}
+.top-nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.top-nav-item.active { color: var(--asset-accent); background: var(--asset-accent-dim); font-weight: 600; }
+
+/* ── Hero ── */
+.asset-hero {
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 36px; padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.asset-hero-icon {
+  font-size: 52px; line-height: 1;
+  background: var(--asset-accent-dim);
+  border: 1px solid var(--asset-accent-border);
+  border-radius: 16px; padding: 16px; flex-shrink: 0;
+}
+.asset-hero-text h1 {
+  font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
+  color: var(--asset-accent); font-style: italic; font-weight: 400;
+}
+.asset-hero-text p { color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 560px; }
+.asset-tagline {
+  font-size: 15px; color: var(--text); font-weight: 400;
+  margin-top: 10px; line-height: 1.5;
+  border-left: 3px solid var(--asset-accent); padding-left: 14px; max-width: 600px;
+}
+
+/* ── Layout & Cards Grid ── */
+.section { margin-bottom: 48px; scroll-margin-top: 80px; }
+.section-head { margin-bottom: 18px; }
+.section-head h2 {
+  font-family: var(--font-display); font-size: 24px;
+  color: var(--asset-accent); font-style: italic; font-weight: 400;
+}
+.tools-count { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 4px; }
+
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+.calc-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  display: flex; flex-direction: column; gap: 16px; position: relative;
+}
+.calc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.calc-title { font-size: 16px; font-weight: 700; color: var(--text); }
+
+.calc-app {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  padding: 3px 8px; border-radius: 4px; font-weight: 700; white-space: nowrap;
+}
+.calc-app.asset-badge {
+  background: var(--asset-accent-dim); color: var(--asset-accent); border: 1px solid var(--asset-accent-border);
+}
+
+.models { display: flex; flex-wrap: wrap; gap: 6px; }
+.model-tag {
+  font-family: var(--font-mono); font-size: 10px; padding: 3px 8px;
+  border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border);
+}
+
+.guide-written {
+  font-size: 13px; color: var(--muted); line-height: 1.55;
+  border-left: 2px solid var(--border); padding-left: 12px;
+}
+.guide-written strong {
+  color: var(--text); font-weight: 600; display: block;
+  margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+}
+
+/* ── Video Strip ── */
+.video-strip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--surface);
+  border-radius: 8px; border: 1px solid var(--border);
+  cursor: pointer; transition: border-color .15s;
+}
+.video-strip:hover { border-color: var(--asset-accent); }
+.video-thumb {
+  width: 32px; height: 24px; border-radius: 4px;
+  background: linear-gradient(135deg, #1a2030, #2a3548);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 12px; color: var(--asset-accent);
+}
+.video-meta { font-size: 12px; }
+.video-meta span { display: block; color: var(--muted); font-size: 11px; }
+
+/* ── Interactive Workspace Forms ── */
+.interactive-workspace {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px; margin-top: 4px; display: flex; flex-direction: column; gap: 12px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 12px; font-weight: 500; color: var(--muted); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.input-control {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 12px; border-radius: 6px; font-family: var(--font-body); font-size: 13px;
+  width: 100%; transition: border-color 0.15s;
+}
+.input-control:focus { outline: none; border-color: var(--asset-accent); }
+
+.workspace-actions { display: flex; gap: 8px; margin-top: 4px; }
+.btn {
+  padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn:hover { border-color: var(--asset-accent); color: var(--asset-accent); }
+.btn-accent { background: var(--asset-accent) !important; border-color: var(--asset-accent) !important; color: #000 !important; font-weight: 700; }
+.btn-accent:hover { filter: brightness(1.1); }
+.btn-secondary { background: transparent; border-color: var(--border); color: var(--muted); }
+.btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+/* ── Calculation Dynamic Results ── */
+.calc-result-block {
+  background: rgba(92,158,255,0.04); border: 1px dashed var(--asset-accent-border);
+  border-radius: 6px; padding: 12px; font-family: var(--font-mono); font-size: 12px;
+}
+.result-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.result-row:last-child { margin-bottom: 0; padding-top: 6px; border-top: 1px dashed var(--border); }
+.result-val { color: var(--asset-accent); font-weight: 600; }
+.result-val.profit { color: var(--accent3); }
+.result-val.loss { color: var(--accent4); }
+
+/* ── Action Dropdown Module ── */
+.action-dropdown-container { position: relative; margin-top: auto; padding-top: 8px; }
+.dropdown-menu {
+  position: absolute; bottom: calc(100% + 4px); left: 0; right: 0;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10; display: none; flex-direction: column; padding: 6px;
+}
+.dropdown-menu.show { display: flex; }
+.dropdown-item {
+  background: transparent; border: none; text-align: left; padding: 8px 12px;
+  font-family: var(--font-body); font-size: 12px; color: var(--text); border-radius: 6px;
+  cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%;
+}
+.dropdown-item:hover { background: rgba(255,255,255,0.05); color: var(--asset-accent); }
+
+/* ── Modal Window ── */
+.modal {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+}
+.modal.open { display: flex; }
+.modal-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); max-width: 600px; width: 100%; overflow: hidden;
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.modal-head h3 { font-size: 15px; font-weight: 600; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 20px; font-size: 13px; line-height: 1.6; color: var(--text); }
+.modal-placeholder { padding: 24px 0; text-align: center; color: var(--muted); }
+.modal-body .ratio { position: relative; padding-bottom: 56.25%; height: 0; background: #000; border-radius: 6px; overflow: hidden; }
+.modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.modal-foot { padding: 14px 20px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+
+.footer-bar { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+@media (max-width: 600px) {
+  .asset-hero { flex-direction: column; align-items: flex-start; }
+}
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="page-nav">
+    <a class="back-link" href="index.html">&#8592; Back to Financial Hub</a>
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="switchLanguage('en')" id="btn-lang-en">EN</button>
+      <button class="lang-btn" onclick="switchLanguage('vi')" id="btn-lang-vi">VI</button>
+    </div>
+  </nav>
+
+  <div class="asset-hero">
+    <div class="asset-hero-icon">🪙</div>
+    <div class="asset-hero-text">
+      <h1 data-i18n="hero-title">Cryptocurrency</h1>
+      <p data-i18n="hero-desc">Digital assets, sovereign keys, on-chain networks & liquidity</p>
+      <p class="asset-tagline" data-i18n="hero-tagline">Volatile by design — track cost base meticulously, know the tax rules, and size positions your plan can survive.</p>
+    </div>
+  </div>
+
+  <div class="top-nav-container">
+    <div class="top-nav-links">
+      <a href="#sec-portfolio" class="top-nav-item active" onclick="highlightTopNav(this)" data-i18n="nav-portfolio">Portfolio Tracker</a>
+      <a href="#sec-cgt" class="top-nav-item" onclick="highlightTopNav(this)" data-i18n="nav-cgt">CGT Logger</a>
+      <a href="#sec-staking" class="top-nav-item" onclick="highlightTopNav(this)" data-i18n="nav-staking">Staking Income</a>
+      <a href="#sec-volatility" class="top-nav-item" onclick="highlightTopNav(this)" data-i18n="nav-volatility">Volatility Analyser</a>
+      <a href="#sec-sizing" class="top-nav-item" onclick="highlightTopNav(this)" data-i18n="nav-sizing">Position Sizing</a>
+      <a href="#sec-wallets" class="top-nav-item" onclick="highlightTopNav(this)" data-i18n="nav-wallets">Wallet Register</a>
+    </div>
+  </div>
+
+  <div class="section" id="sec-portfolio">
+    <div class="section-head">
+      <h2 data-i18n="nav-portfolio">Crypto Portfolio Tracker</h2>
+      <p class="tools-count" data-i18n="badge-holdings">Holdings Engine</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc1-title">Interactive Cost Base Ledger</div>
+          <span class="calc-app asset-badge" data-i18n="badge-holdings">Holdings</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">BTC / ETH / altcoins</span>
+          <span class="model-tag">AUD cost base</span>
+          <span class="model-tag">Unrealised P&L</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc1-guide">Record every acquisition: date, asset, quantity, AUD price paid. The ATO treats crypto as a CGT asset — your cost base is your AUD cost at the time of purchase.</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label-qty">Quantity Purchased</label>
+              <input type="number" id="p1-qty" class="input-control" value="0.25" step="any" oninput="calculatePortfolio()">
+            </div>
+            <div class="form-group">
+              <label data-i18n="label-buy-price">Buy Price (AUD)</label>
+              <input type="number" id="p1-buy" class="input-control" value="95000" oninput="calculatePortfolio()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="label-current-price">Current Market Price (AUD)</label>
+            <input type="number" id="p1-current" class="input-control" value="105000" oninput="calculatePortfolio()">
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-total-cost">Total Cost Base:</span>
+              <span class="result-val" id="p1-res-cost">AUD $23,750.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-current-val">Current Value:</span>
+              <span class="result-val" id="p1-res-val">AUD $26,250.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-unrealised">Unrealised P&L:</span>
+              <span class="result-val profit" id="p1-res-pnl">AUD +$2,500.00 (10.53%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_portfolio', 'Crypto Portfolio Tracker')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'Portfolio Tracker')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'Portfolio Tracker')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('Portfolio Tracker Config', 'Portfolio Parameters Configuration Options Key value storage configuration updated successfully.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="sec-cgt">
+    <div class="section-head">
+      <h2 data-i18n="nav-cgt">CGT Event Logger</h2>
+      <p class="tools-count" data-i18n="badge-tax">Tax Compliance Engine</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc2-title">Disposal Tax & Discount Estimator</div>
+          <span class="calc-app asset-badge" data-i18n="badge-tax">Tax</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Net taxable gain</span>
+          <span class="model-tag">12-month discount</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc2-guide">Every sale, swap, or use of crypto to buy goods is a CGT event. Log each disposal and calculate the net gain after the 50% discount (if held over 12 months).</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label-cost-basis">Total Cost Base (AUD)</label>
+              <input type="number" id="p2-cost" class="input-control" value="10000" oninput="calculateCGT()">
+            </div>
+            <div class="form-group">
+              <label data-i18n="label-proceeds">Proceeds Value (AUD)</label>
+              <input type="number" id="p2-proceeds" class="input-control" value="25000" oninput="calculateCGT()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="p2-discount" checked onchange="calculateCGT()"> 
+              <span data-i18n="label-held-12m">Asset held for more than 12 months (50% Discount)</span>
+            </label>
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-gross-gain">Gross Capital Gain:</span>
+              <span class="result-val" id="p2-res-gross">AUD $15,000.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-discount-applied">Discount Applied:</span>
+              <span class="result-val" id="p2-res-discount">AUD $7,500.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-net-taxable">Net Taxable Capital Gain:</span>
+              <span class="result-val profit" id="p2-res-net">AUD $7,500.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_cgt', 'CGT Event Logger')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'CGT Logger')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'CGT Logger')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('CGT Regulatory Rules', 'Configure tax residency thresholds, capital loss balancing adjustments, and standard audit log formatting parameters.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="sec-staking">
+    <div class="section-head">
+      <h2 data-i18n="nav-staking">Staking & Yield Income Tracker</h2>
+      <p class="tools-count" data-i18n="badge-income">Yield Framework</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc3-title">Yield Revenue & Ordinary Income Ledger</div>
+          <span class="calc-app asset-badge" data-i18n="badge-income">Income</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Ordinary income</span>
+          <span class="model-tag">Cost base of rewards</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc3-guide">Staking rewards are ordinary income taxed at your marginal rate on the AUD value at receipt. The cost base of those rewards is that same AUD value.</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label-rewards-tokens">Tokens Received</label>
+              <input type="number" id="p3-tokens" class="input-control" value="1.5" step="any" oninput="calculateStaking()">
+            </div>
+            <div class="form-group">
+              <label data-i18n="label-token-price-aud">Token Price at Receipt (AUD)</label>
+              <input type="number" id="p3-rate" class="input-control" value="4200" oninput="calculateStaking()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="label-tax-bracket">Estimated Marginal Tax Rate</label>
+            <select id="p3-taxrate" class="input-control" onchange="calculateStaking()">
+              <option value="0.19">19% (Income $18,201 – $45,000)</option>
+              <option value="0.30" selected>30% (Income $45,001 – $135,000)</option>
+              <option value="0.37">37% (Income $135,001 – $190,000)</option>
+              <option value="0.45">45% (Income $190,001+)</option>
+            </select>
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-assessable-income">Assessable Ordinary Income:</span>
+              <span class="result-val" id="p3-res-income">AUD $6,300.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-tax-liability">Estimated Income Tax Liability:</span>
+              <span class="result-val loss" id="p3-res-tax">AUD $1,890.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-future-cost-base">New Token Cost Base Pool:</span>
+              <span class="result-val" id="p3-res-pool">AUD $6,300.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_staking', 'Staking & Yield Income Tracker')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'Staking Income')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'Staking Income')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('Yield Rule Engine', 'Configure dynamic token derivative options, liquid staking rebasing index adjustments, and automated reporting intervals.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="sec-volatility">
+    <div class="section-head">
+      <h2 data-i18n="nav-volatility">Volatility & Drawdown Analyser</h2>
+      <p class="tools-count" data-i18n="badge-risk">Risk Modeling Engine</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc4-title">Stress-Testing & Capital Drop Modeler</div>
+          <span class="calc-app asset-badge" data-i18n="badge-risk">Risk</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Max drawdown %</span>
+          <span class="model-tag">Risk capacity check</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc4-guide">Bitcoin has experienced drawdowns exceeding 80% multiple times. Enter your position size and model the portfolio impact of an intensive market crash.</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-group">
+            <label data-i18n="label-allocation">Total Crypto Allocation Value (AUD)</label>
+            <input type="number" id="p4-alloc" class="input-control" value="50000" oninput="calculateVolatility()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="label-drawdown-percent">Simulated Market Crash Drawdown (%)</label>
+            <input type="range" id="p4-drop" class="input-control" min="10" max="90" value="65" oninput="updateDropLabel(); calculateVolatility();" style="padding:0;">
+            <div style="font-size:11px; color:var(--muted); text-align:right;" id="p4-drop-lbl">65% Drawdown Target</div>
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-peak-to-trough">Peak-to-Trough Value Loss:</span>
+              <span class="result-val loss" id="p4-res-loss">AUD -$32,500.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-surviving-equity">Remaining Capital Equity:</span>
+              <span class="result-val" id="p4-res-rem">AUD $17,500.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-required-recovery">Required Gains to Break Even:</span>
+              <span class="result-val profit" id="p4-res-recovery">+185.71% Gain</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_volatility', 'Volatility & Drawdown Analyser')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'Volatility Analyser')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'Volatility Analyser')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('Stress-Testing Core', 'Define Monte Carlo simulation seeds, historic crypto macro cycle indices, and systemic volatility metrics.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="sec-sizing">
+    <div class="section-head">
+      <h2 data-i18n="nav-sizing">Position Sizing Tool</h2>
+      <p class="tools-count" data-i18n="badge-sizing">Risk Sizing Architecture</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc5-title">Risk Management Position Sizer</div>
+          <span class="calc-app asset-badge" data-i18n="badge-sizing">Sizing</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Portfolio %</span>
+          <span class="model-tag">Max position AUD</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc5-guide">Size crypto positions based on portfolio percentage and maximum loss tolerance. Most risk frameworks cap crypto at 5–10% of total assets due to high correlation.</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label-total-net">Total Assets Net Worth (AUD)</label>
+              <input type="number" id="p5-networth" class="input-control" value="500000" oninput="calculateSizing()">
+            </div>
+            <div class="form-group">
+              <label data-i18n="label-target-risk">Target Allocation Limit (%)</label>
+              <input type="number" id="p5-target" class="input-control" value="5" max="100" min="1" oninput="calculateSizing()">
+            </div>
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-max-allocation">Maximum Allocation Cap:</span>
+              <span class="result-val profit" id="p5-res-cap">AUD $25,000.00</span>
+            </div>
+            <div class="result-row">
+              <span data-i18n="res-risk-status">Framework Compliance:</span>
+              <span class="result-val" id="p5-res-status" style="color:var(--accent3);">Optimal Range (&le; 5%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_sizing', 'Position Sizing Tool')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'Position Sizing')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'Position Sizing')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('Sizing Engine parameters', 'Configure dynamic threshold boundaries, asset correlations, and personalized alert triggers.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="sec-wallets">
+    <div class="section-head">
+      <h2 data-i18n="nav-wallets">Wallet & Exchange Register</h2>
+      <p class="tools-count" data-i18n="badge-security">Estate Security Registry</p>
+    </div>
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="calc6-title">Secure Cold & Exchange Asset Inventory</div>
+          <span class="calc-app asset-badge" data-i18n="badge-security">Security</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Self-custody</span>
+          <span class="model-tag">Cold storage</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick-guide">Quick guide</strong>
+          <span data-i18n="calc6-guide">Maintain a secure record of all wallets and accounts (never store private keys online). Include details for estate planning so executors can access assets.</span>
+        </div>
+
+        <div class="interactive-workspace">
+          <div class="form-group">
+            <label data-i18n="label-vault-name">Inventory Registry Tag</label>
+            <input type="text" id="p6-tag" class="input-control" value="Hardware Cold Vault Alpha" oninput="calculateRegister()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label-vault-type">Storage Class Type</label>
+              <select id="p6-type" class="input-control" onchange="calculateRegister()">
+                <option value="Hardware Wallet" selected>Hardware (Cold Storage)</option>
+                <option value="Multi-Signature">Multi-Signature Network</option>
+                <option value="Centralized Exchange">Custodial Exchange Account</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="label-last-audit">Last Physical Audit Date</label>
+              <input type="date" id="p6-date" class="input-control" value="2026-05-12" onchange="calculateRegister()">
+            </div>
+          </div>
+
+          <div class="calc-result-block">
+            <div class="result-row">
+              <span data-i18n="res-compliance-status">Estate Security Health State:</span>
+              <span class="result-val" id="p6-res-status" style="color:var(--accent3);">Audited & Confirmed Active</span>
+            </div>
+            <div class="result-row" style="font-size:11px; color:var(--muted); line-height: 1.35;">
+              <span id="p6-res-summary">Registry Tag [Hardware Cold Vault Alpha] classified under Hardware Wallet. Metadata stored.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-strip" onclick="openVideoLocal('crypto_wallets', 'Wallet & Exchange Register')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta">
+            <strong data-i18n="watch-guide">Watch guide</strong>
+            <span data-i18n="video-walk">Video walkthrough</span>
+          </div>
+        </div>
+
+        <div class="action-dropdown-container">
+          <button class="btn btn-accent style-btn-block" style="width:100%" onclick="toggleDropdown(this)">
+            <span data-i18n="btn-actions">Actions / Export</span> &#9662;
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="triggerAction('Export Data', 'Wallet Register')">📂 <span data-i18n="opt-data">Export Raw Data (CSV)</span></button>
+            <button class="dropdown-item" onclick="triggerAction('Export Report', 'Wallet Register')">📋 <span data-i18n="opt-report">Generate Executive Summary (PDF)</span></button>
+            <button class="dropdown-item" onclick="triggerModalSettings('Vault Access Security Config', 'Configure localized recovery seed dead-man switch intervals, safe deposit parameters, and verified executor key indicators.')">⚙️ <span data-i18n="opt-settings">Ledger Core Settings</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <a class="back-link" href="index.html">&#8592; Return to Financial Hub</a>
+  </div>
+
+</div>
+
+<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modal-title">System Action Control</h3>
+      <button class="modal-close" type="button" onclick="closeModalWindow()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot">Tip: Context-driven action response log tracking.</div>
+  </div>
+</div>
+
+<script>
+/* ── Multi-Language Translation Map Data ── */
+const TRANSLATIONS = {
+  en: {
+    "hero-title": "Cryptocurrency",
+    "hero-desc": "Digital assets, sovereign keys, on-chain networks & liquidity",
+    "hero-tagline": "Volatile by design — track cost base meticulously, know the tax rules, and size positions your plan can survive.",
+    "nav-portfolio": "Portfolio Tracker",
+    "nav-cgt": "CGT Logger",
+    "nav-staking": "Staking Income",
+    "nav-volatility": "Volatility Analyser",
+    "nav-sizing": "Position Sizing",
+    "nav-wallets": "Wallet Register",
+    "badge-holdings": "Holdings",
+    "badge-tax": "Tax",
+    "badge-income": "Income",
+    "badge-risk": "Risk",
+    "badge-sizing": "Sizing",
+    "badge-security": "Security",
+    "quick-guide": "Quick guide",
+    "watch-guide": "Watch guide",
+    "video-walk": "Video walkthrough",
+    "btn-actions": "Actions / Export",
+    "opt-data": "Export Raw Data (CSV)",
+    "opt-report": "Generate Executive Summary (PDF)",
+    "opt-settings": "Ledger Core Settings",
+    "calc1-title": "Interactive Cost Base Ledger",
+    "calc1-guide": "Record every acquisition: date, asset, quantity, AUD price paid. The ATO treats crypto as a CGT asset — your cost base is your AUD cost at the time of purchase.",
+    "label-qty": "Quantity Purchased",
+    "label-buy-price": "Buy Price (AUD)",
+    "label-current-price": "Current Market Price (AUD)",
+    "res-total-cost": "Total Cost Base:",
+    "res-current-val": "Current Value:",
+    "res-unrealised": "Unrealised P&L:",
+    "calc2-title": "Disposal Tax & Discount Estimator",
+    "calc2-guide": "Every sale, swap, or use of crypto to buy goods is a CGT event. Log each disposal and calculate the net gain after the 50% discount (if held over 12 months).",
+    "label-cost-basis": "Total Cost Base (AUD)",
+    "label-proceeds": "Proceeds Value (AUD)",
+    "label-held-12m": "Asset held for more than 12 months (50% Discount)",
+    "res-gross-gain": "Gross Capital Gain:",
+    "res-discount-applied": "Discount Applied:",
+    "res-net-taxable": "Net Taxable Capital Gain:",
+    "calc3-title": "Yield Revenue & Ordinary Income Ledger",
+    "calc3-guide": "Staking rewards are ordinary income taxed at your marginal rate on the AUD value at receipt. The cost base of those rewards is that same AUD value.",
+    "label-rewards-tokens": "Tokens Received",
+    "label-token-price-aud": "Token Price at Receipt (AUD)",
+    "label-tax-bracket": "Estimated Marginal Tax Rate",
+    "res-assessable-income": "Assessable Ordinary Income:",
+    "res-tax-liability": "Estimated Income Tax Liability:",
+    "res-future-cost-base": "New Token Cost Base Pool:",
+    "calc4-title": "Stress-Testing & Capital Drop Modeler",
+    "calc4-guide": "Bitcoin has experienced drawdowns exceeding 80% multiple times. Enter your position size and model the portfolio impact of an intensive market crash.",
+    "label-allocation": "Total Crypto Allocation Value (AUD)",
+    "label-drawdown-percent": "Simulated Market Crash Drawdown (%)",
+    "res-peak-to-trough": "Peak-to-Trough Value Loss:",
+    "res-surviving-equity": "Remaining Capital Equity:",
+    "res-required-recovery": "Required Gains to Break Even:",
+    "calc5-title": "Risk Management Position Sizer",
+    "calc5-guide": "Size crypto positions based on portfolio percentage and maximum loss tolerance. Most risk frameworks cap crypto at 5–10% of total assets due to high correlation.",
+    "label-total-net": "Total Assets Net Worth (AUD)",
+    "label-target-risk": "Target Allocation Limit (%)",
+    "res-max-allocation": "Maximum Allocation Cap:",
+    "res-risk-status": "Framework Compliance:",
+    "calc6-title": "Secure Cold & Exchange Asset Inventory",
+    "calc6-guide": "Maintain a secure record of all wallets and accounts (never store private keys online). Include details for estate planning so executors can access assets.",
+    "label-vault-name": "Inventory Registry Tag",
+    "label-vault-type": "Storage Class Type",
+    "label-last-audit": "Last Physical Audit Date",
+    "res-compliance-status": "Estate Security Health State:",
+  },
+  vi: {
+    "hero-title": "Tài Sản Mã Hóa",
+    "hero-desc": "Tài sản kỹ thuật số, khóa chủ quyền, mạng lưới on-chain & thanh khoản",
+    "hero-tagline": "Biến động mạnh theo bản chất — theo dõi chi phí cơ sở chi tiết, hiểu rõ luật thuế, và phân bổ tỷ trọng danh mục trong tầm kiểm soát.",
+    "nav-portfolio": "Theo Dõi Danh Mục",
+    "nav-cgt": "Nhật Ký Thuế CGT",
+    "nav-staking": "Thu Nhập Staking",
+    "nav-volatility": "Phân Tích Biến Động",
+    "nav-sizing": "Phân Bổ Tỷ Trọng",
+    "nav-wallets": "Quản Lý Ví / Sàn",
+    "badge-holdings": "Tài Sản",
+    "badge-tax": "Thuế",
+    "badge-income": "Thu Nhập",
+    "badge-risk": "Rủi Ro",
+    "badge-sizing": "Tỷ Trọng",
+    "badge-security": "Bảo Mật",
+    "quick-guide": "Hướng dẫn nhanh",
+    "watch-guide": "Xem video hướng dẫn",
+    "video-walk": "Video chi tiết dữ liệu",
+    "btn-actions": "Thao Tác / Xuất Dữ Liệu",
+    "opt-data": "Xuất Dữ Liệu Thô (CSV)",
+    "opt-report": "Xuất Báo Cáo Tổng Hợp (PDF)",
+    "opt-settings": "Cấu Hình Hệ Thống",
+    "calc1-title": "Sổ Cái Theo Dõi Chi Phí Cơ Sở",
+    "calc1-guide": "Ghi nhận mọi giao dịch: ngày mua, loại tài sản, số lượng và giá trị AUD. ATO coi crypto là tài sản tính thuế CGT — chi phí cơ sở tính theo giá trị AUD tại thời điểm mua.",
+    "label-qty": "Số Lượng Mua",
+    "label-buy-price": "Giá Mua (AUD)",
+    "label-current-price": "Giá Thị Trường Hiện Tại (AUD)",
+    "res-total-cost": "Tổng Chi Phí Cơ Sở:",
+    "res-current-val": "Giá Trị Hiện Tại:",
+    "res-unrealised": "Lợi Nhuận Chưa Ghi Nhận:",
+    "calc2-title": "Công Cụ Tính Thuế CGT & Miễn Giảm",
+    "calc2-guide": "Mỗi giao dịch bán, hoán đổi (swap) hoặc dùng crypto mua hàng hóa đều là sự kiện tính thuế CGT tại Úc. Tính toán lợi nhuận ròng sau khi giảm 50% (nếu nắm giữ trên 12 tháng).",
+    "label-cost-basis": "Tổng Chi Phí Cơ Sở (AUD)",
+    "label-proceeds": "Giá Trị Thu Về (AUD)",
+    "label-held-12m": "Tài sản nắm giữ hơn 12 tháng (Giảm 50% thuế)",
+    "res-gross-gain": "Lợi Nhuận Vốn Gộp:",
+    "res-discount-applied": "Mức Miễn Giảm Áp Dụng:",
+    "res-net-taxable": "Lợi Nhuận Vốn Chịu Thuế Ròng:",
+    "calc3-title": "Sổ Cái Thu Nhập Từ Staking & Yield",
+    "calc3-guide": "Phần thưởng staking được tính là thu nhập thông thường, chịu thuế theo thuế suất lũy tiến dựa trên giá trị AUD tại thời điểm nhận. Giá trị này cũng là chi phí cơ sở cho tương lai.",
+    "label-rewards-tokens": "Số Lượng Token Nhận Được",
+    "label-token-price-aud": "Giá Token Lúc Nhận (AUD)",
+    "label-tax-bracket": "Thuế Suất Biên Tích Lũy Ước Tính",
+    "res-assessable-income": "Thu Nhập Chịu Thuế Thông Thường:",
+    "res-tax-liability": "Nghĩa Vụ Thu Thu Nhập Ước Tính:",
+    "res-future-cost-base": "Chi Phí Cơ Sở Mới Cho Pool Token:",
+    "calc4-title": "Mô Phỏng Khủng Hoảng & Sụt Giảm Vốn",
+    "calc4-guide": "Bitcoin đã từng có nhiều lần sụt giảm giá trị vượt quá 80%. Nhập quy mô vị thế của bạn để mô phỏng tác động lên danh mục khi thị trường sụt giảm mạnh.",
+    "label-allocation": "Tổng Giá Trị Phân Bổ Crypto (AUD)",
+    "label-drawdown-percent": "Mức Độ Sụt Giảm Mô Phỏng (%)",
+    "res-peak-to-trough": "Giá Trị Tổn Thất Từ Đỉnh Xuống Đáy:",
+    "res-surviving-equity": "Giá Trị Vốn Còn Lại:",
+    "res-required-recovery": "Mức Tăng Trưởng Để Hòa Vốn:",
+    "calc5-title": "Quản Trị Quy Mô Vị Thế & Rủi Ro",
+    "calc5-guide": "Xác định quy mô danh mục crypto dựa trên tỷ lệ phần trăm tổng tài sản và mức chấp nhận thua lỗ tối đa. Hầu hết khung rủi ro giới hạn crypto ở mức 5-10% tổng danh mục.",
+    "label-total-net": "Tổng Giá Trị Tài Sản Ròng (AUD)",
+    "label-target-risk": "Giới Hạn Tỷ Trọng Mục Tiêu (%)",
+    "res-max-allocation": "Hạn Mức Phân Bổ Tối Đa:",
+    "res-risk-status": "Trạng Thái Khung Quy Chuẩn:",
+    "calc6-title": "Hệ Thống Đăng Ký Lưu Trữ Ví & Sàn",
+    "calc6-guide": "Duy trì hồ sơ bảo mật về tất cả các ví và tài khoản sàn (tuyệt đối không lưu khóa bảo mật online). Sử dụng cho việc lập kế hoạch thừa kế tài sản.",
+    "label-vault-name": "Tên Nhãn Phân Loại Ví / Sàn",
+    "label-vault-type": "Hình Thức Lưu Trữ",
+    "label-last-audit": "Ngày Kiểm Toán Kiểm Tra Vật Lý Gần Nhất",
+    "res-compliance-status": "Trạng Thái An Toàn Thừa Kế:",
+  }
+};
+
+let currentLang = 'en';
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-lang-vi').classList.toggle('active', lang === 'vi');
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (TRANSLATIONS[lang][key]) {
+      el.textContent = TRANSLATIONS[lang][key];
+    }
+  });
+  
+  // Refresh dynamic label updates to utilize translated values
+  updateDropLabel();
+  calculatePortfolio();
+  calculateCGT();
+  calculateStaking();
+  calculateVolatility();
+  calculateSizing();
+  calculateRegister();
+}
+
+/* ── Sticky Top-Level Navigation Engine ── */
+function highlightTopNav(element) {
+  document.querySelectorAll('.top-nav-item').forEach(item => item.classList.remove('active'));
+  element.classList.add('active');
+}
+
+// Track scrolling to auto-update active nav state 
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.top-nav-item');
+  let currentSecId = "";
+  
+  sections.forEach(sec => {
+    const secTop = sec.offsetTop;
+    if (window.pageYOffset >= secTop - 120) {
+      currentSecId = sec.getAttribute('id');
+    }
+  });
+  
+  if(currentSecId) {
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === `#${currentSecId}`);
+    });
+  }
+});
+
+/* ── Dropdown Control Actions Engine ── */
+function toggleDropdown(button) {
+  // Close all other instances first
+  document.querySelectorAll('.dropdown-menu').forEach(menu => {
+    if (menu !== button.nextElementSibling) menu.classList.remove('show');
+  });
+  button.nextElementSibling.classList.toggle('show');
+}
+
+// Global click wrapper window intercept to close active action menus
+window.addEventListener('click', function(e) {
+  if (!e.target.matches('.btn-accent')) {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+  }
+});
+
+function triggerAction(actionName, calcName) {
+  const modal = document.getElementById('video-modal');
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+  
+  title.textContent = `${actionName} - Action Processed`;
+  body.innerHTML = `
+    <div style="text-align:center; padding:12px 0;">
+      <div style="font-size:44px; margin-bottom:12px;">✅</div>
+      <p style="font-weight:600; font-size:15px; color:var(--asset-accent);">Command Executed Successfully</p>
+      <p style="margin-top:8px; color:var(--muted); font-size:13px;">
+        Initiated <strong>${actionName}</strong> routine loop target for [<em>${calcName}</em>]. Local data arrays bundled and pushed to sandbox framework pipeline.
+      </p>
+    </div>
+  `;
+  modal.classList.add('open');
+}
+
+function triggerModalSettings(configName, textContext) {
+  const modal = document.getElementById('video-modal');
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+  
+  title.textContent = `Settings Engine: ${configName}`;
+  body.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <p style="color:var(--muted); font-size:12px; line-height:1.4;">${textContext}</p>
+      <div class="form-group">
+        <label>System Processing Mode Preference</label>
+        <select class="input-control">
+          <option>FIFO (First-In, First-Out) Standard</option>
+          <option>LIFO (Last-In, First-Out) Optimization</option>
+          <option>HIFO (Highest-In, First-Out) Minimal Tax Maxima</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Data Decoupled Cache Pipeline Refresh Rate</label>
+        <input type="text" class="input-control" value="Realtime Streaming Websockets">
+      </div>
+      <button class="btn btn-accent" style="margin-top:4px;" onclick="closeModalWindow()">Commit & Persist Parameters</button>
+    </div>
+  `;
+  modal.classList.add('open');
+}
+
+/* ── Video Modal Interface Operations ── */
+function openVideoLocal(key, titleName) {
+  const modal = document.getElementById('video-modal');
+  const body  = document.getElementById('modal-body');
+  const title = document.getElementById('modal-title');
+  const foot  = document.getElementById('modal-foot');
+  
+  title.textContent = titleName;
+  foot.textContent = currentLang === 'en' ? 'Tip: Keep guides under 3 minutes — focus on input structures.' : 'Gợi ý: Thời lượng clip dưới 3 phút — tập trung vào cấu trúc nhập liệu.';
+  
+  body.innerHTML = `
+    <div class="modal-placeholder">
+      <p style="color:var(--text); font-weight:600; margin-bottom:6px;">Streaming Sandbox Active</p>
+      <p style="font-size:12px; max-width:400px; margin:0 auto 14px;">Mock presentation module for <code>ASSET_VIDEO_IDS.${key}</code> setup configuration.</p>
+      <div class="ratio">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:#1c202b; color:var(--asset-accent); font-family:var(--font-mono); font-size:12px;">
+          [ Simulated Embedded Media Playback Window ]
+        </div>
+      </div>
+    </div>`;
+  modal.classList.add('open');
+}
+
+function closeModalWindow() {
+  document.getElementById('video-modal').classList.remove('open');
+  document.getElementById('modal-body').innerHTML = '';
+}
+
+// Close via peripheral interfaces natively
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModalWindow(); });
+
+/* ── Calculator Calculation Logic Engines ── */
+
+function calculatePortfolio() {
+  const qty = parseFloat(document.getElementById('p1-qty').value) || 0;
+  const buyPrice = parseFloat(document.getElementById('p1-buy').value) || 0;
+  const currentPrice = parseFloat(document.getElementById('p1-current').value) || 0;
+  
+  const totalCost = qty * buyPrice;
+  const currentVal = qty * currentPrice;
+  const pnl = currentVal - totalCost;
+  const pnlPct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
+  
+  document.getElementById('p1-res-cost').textContent = `AUD $${totalCost.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p1-res-val').textContent = `AUD $${currentVal.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  
+  const pnlEl = document.getElementById('p1-res-pnl');
+  const sign = pnl >= 0 ? '+' : '';
+  pnlEl.textContent = `AUD ${sign}$${pnl.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})} (${sign}${pnlPct.toFixed(2)}%)`;
+  pnlEl.className = `result-val ${pnl >= 0 ? 'profit' : 'loss'}`;
+}
+
+function calculateCGT() {
+  const cost = parseFloat(document.getElementById('p2-cost').value) || 0;
+  const proceeds = parseFloat(document.getElementById('p2-proceeds').value) || 0;
+  const isDiscountEligible = document.getElementById('p2-discount').checked;
+  
+  const grossGain = Math.max(0, proceeds - cost);
+  const discount = isDiscountEligible ? (grossGain * 0.5) : 0;
+  const netGain = grossGain - discount;
+  
+  document.getElementById('p2-res-gross').textContent = `AUD $${grossGain.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p2-res-discount').textContent = `AUD $${discount.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p2-res-net').textContent = `AUD $${netGain.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+}
+
+function calculateStaking() {
+  const tokens = parseFloat(document.getElementById('p3-tokens').value) || 0;
+  const rate = parseFloat(document.getElementById('p3-rate').value) || 0;
+  const taxRate = parseFloat(document.getElementById('p3-taxrate').value) || 0;
+  
+  const assessableIncome = tokens * rate;
+  const taxLiability = assessableIncome * taxRate;
+  
+  document.getElementById('p3-res-income').textContent = `AUD $${assessableIncome.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p3-res-tax').textContent = `AUD $${taxLiability.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p3-res-pool').textContent = `AUD $${assessableIncome.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+}
+
+function updateDropLabel() {
+  const dropVal = document.getElementById('p4-drop').value;
+  const labelText = currentLang === 'en' ? `${dropVal}% Drawdown Target` : `Mức Sụt Giảm Mục Tiêu ${dropVal}%`;
+  document.getElementById('p4-drop-lbl').textContent = labelText;
+}
+
+function calculateVolatility() {
+  const alloc = parseFloat(document.getElementById('p4-alloc').value) || 0;
+  const dropPct = parseFloat(document.getElementById('p4-drop').value) || 0;
+  
+  const lossVal = alloc * (dropPct / 100);
+  const remaining = alloc - lossVal;
+  const recoveryPct = remaining > 0 ? (lossVal / remaining) * 100 : 0;
+  
+  document.getElementById('p4-res-loss').textContent = `AUD -$${lossVal.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p4-res-rem').textContent = `AUD $${remaining.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('p4-res-recovery').textContent = `+${recoveryPct.toFixed(2)}% ${currentLang === 'en' ? 'Gain' : 'Tăng Trưởng'}`;
+}
+
+function calculateSizing() {
+  const networth = parseFloat(document.getElementById('p5-networth').value) || 0;
+  const targetPct = parseFloat(document.getElementById('p5-target').value) || 0;
+  
+  const cap = networth * (targetPct / 100);
+  document.getElementById('p5-res-cap').textContent = `AUD $${cap.toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  
+  const statusEl = document.getElementById('p5-res-status');
+  if (targetPct <= 5) {
+    statusEl.textContent = currentLang === 'en' ? "Optimal Range (\u2264 5%)" : "Vùng Tối Ưu An Toàn (\u2264 5%)";
+    statusEl.style.color = "var(--accent3)";
+  } else if (targetPct <= 10) {
+    statusEl.textContent = currentLang === 'en' ? "Elevated Exposure (5-10%)" : "Rủi Ro Gia Tăng (5-10%)";
+    statusEl.style.color = "var(--accent6)";
+  } else {
+    statusEl.textContent = currentLang === 'en' ? "High Concentration Risk (>10%)" : "Rủi Ro Tập Trung Cao (>10%)";
+    statusEl.style.color = "var(--accent4)";
+  }
+}
+
+function calculateRegister() {
+  const tagStr = document.getElementById('p6-tag').value || 'Unnamed';
+  const typeStr = document.getElementById('p6-type').value;
+  
+  if(currentLang === 'en') {
+    document.getElementById('p6-res-summary').textContent = `Registry Tag [${tagStr}] classified under ${typeStr}. Metadata stored securely offline.`;
+  } else {
+    document.getElementById('p6-res-summary').textContent = `Nhãn phân loại [${tagStr}] được đồng bộ dưới dạng ${typeStr}. Bản sao lưu offline an toàn.`;
+  }
+}
+
+// Initial initialization load sequence
+document.addEventListener('DOMContentLoaded', () => {
+  calculatePortfolio();
+  calculateCGT();
+  calculateStaking();
+  calculateVolatility();
+  calculateSizing();
+  calculateRegister();
+});
+</script>
+</body>
+</html>
