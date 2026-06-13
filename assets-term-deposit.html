@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="pageTitle">Term Deposit — Financial Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ═══════════════════════════════════════════════════════════
+   hub.css — Finance Tools Hub shared stylesheet
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:      #0a0c10;
+  --surface: #111318;
+  --card:    #161920;
+  --border:  #232730;
+  --accent:  #c8a96e;
+  --accent2: #5c9eff;
+  --accent3: #4ecb8a;
+  --accent4: #e06b6b;
+  --accent5: #b67fff;
+  --accent6: #ff9f43;
+  --text:    #e8e3d8;
+  --muted:   #7a7f8e;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius: 12px;
+
+  --asset-accent:        #5c9eff;
+  --asset-accent-dim:    rgba(92,158,255,.12);
+  --asset-accent-border: rgba(92,158,255,.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+
+.shell { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px; }
+
+/* Horizontal Management Bar */
+header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;
+  margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);
+}
+.brand h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 36px); color: var(--accent); font-style: italic; font-weight: 400; }
+.brand p { color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 480px; }
+.header-actions { display: flex; gap: 10px; flex-wrap: wrap; position: relative; }
+
+/* Dropdowns & UI Controls */
+.dropdown-menu {
+  position: absolute; top: 100%; right: 0; margin-top: 6px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; display: none; flex-direction: column;
+  min-width: 180px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden;
+}
+.dropdown-menu.show { display: flex; }
+.dropdown-item {
+  padding: 10px 16px; color: var(--text); background: transparent; border: none;
+  text-align: left; font-size: 13px; cursor: pointer; transition: background .15s; font-family: var(--font-body);
+}
+.dropdown-item:hover { background: var(--surface); color: var(--asset-accent); }
+
+.btn {
+  padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); font-size: 12px; font-family: var(--font-body);
+  cursor: pointer; font-weight: 500; transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover { border-color: var(--asset-accent); color: var(--asset-accent); }
+.btn-accent { background: var(--asset-accent) !important; border-color: var(--asset-accent) !important; color: #000 !important; font-weight: 700; }
+.btn-accent:hover { filter: brightness(1.1); }
+
+/* Navigation Framework */
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; text-decoration: none; transition: color .15s; }
+.back-link:hover { color: var(--asset-accent); }
+.page-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.sub-tabs { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }
+.tab-btn {
+  padding: 6px 12px; border: none; background: transparent; color: var(--muted); font-size: 12px;
+  font-weight: 500; border-radius: 6px; cursor: pointer; font-family: var(--font-body); white-space: nowrap; transition: all .15s;
+}
+.tab-btn.active { background: var(--card); color: var(--asset-accent); border: 1px solid var(--border); }
+
+/* Hero Section */
+.asset-hero { display: flex; align-items: center; gap: 20px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.asset-hero-icon { font-size: 42px; line-height: 1; background: var(--asset-accent-dim); border: 1px solid var(--asset-accent-border); border-radius: 16px; padding: 14px; flex-shrink: 0; }
+.asset-hero-text h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 34px); color: var(--asset-accent); font-style: italic; font-weight: 400; }
+.asset-hero-text p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.asset-tagline { font-size: 14px; color: var(--text); font-weight: 400; margin-top: 10px; line-height: 1.5; border-left: 3px solid var(--asset-accent); padding-left: 14px; max-width: 700px; }
+
+/* Grid Architecture */
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.calc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.calc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.calc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.calc-app { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; font-weight: 700; white-space: nowrap; }
+.calc-app.asset-badge { background: var(--asset-accent-dim); color: var(--asset-accent); border: 1px solid var(--asset-accent-border); }
+.models { display: flex; flex-wrap: wrap; gap: 6px; }
+.model-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+.guide-written { font-size: 13px; color: var(--muted); line-height: 1.55; border-left: 2px solid var(--border); padding-left: 12px; }
+.guide-written strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+.video-strip { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: border-color .15s; }
+.video-strip:hover { border-color: var(--asset-accent); }
+.video-thumb { width: 32px; height: 24px; border-radius: 4px; background: var(--card); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--asset-accent); }
+.video-meta { font-size: 12px; }
+.video-meta span { display: block; color: var(--muted); font-size: 11px; }
+.calc-actions { margin-top: auto; padding-top: 4px; }
+.calc-actions .btn { width: 100%; justify-content: center; }
+
+/* Interactive Workspaces Configuration */
+.workspace-section { display: none; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px; animation: fadeIn 0.2s ease-in-out; }
+.workspace-section.active { display: block; }
+.workspace-head { margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+.workspace-head h3 { font-family: var(--font-display); font-size: 22px; color: var(--asset-accent); font-style: italic; }
+.workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+@media (max-width: 768px) {
+  .workspace-grid { grid-template-columns: 1fr; }
+}
+
+/* Control Elements */
+.form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+input, select {
+  padding: 10px 12px; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px; font-family: var(--font-body); font-size: 14px; width: 100%; transition: border-color 0.15s;
+}
+input:focus, select:focus { outline: none; border-color: var(--asset-accent); }
+
+/* Results Dashboard Panels */
+.results-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.results-title { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+.result-row:last-child { border-bottom: none; }
+.result-value { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--text); }
+.result-value.highlight { color: var(--accent3); font-size: 20px; }
+
+/* Interactive Arrays & Matrix Engines */
+.matrix-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.matrix-table th, .matrix-table td { padding: 8px 10px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+.matrix-table th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+.matrix-table input { padding: 6px 8px; font-size: 13px; }
+.best-row { background: rgba(78,203,138,0.05); }
+.best-badge { background: var(--accent3); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+
+/* Visual Architecture Sub-elements */
+.ladder-container { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+.ladder-rung { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--asset-accent); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+.ladder-rung:nth-child(2) { border-left-color: var(--accent5); }
+.ladder-rung:nth-child(3) { border-left-color: var(--accent6); }
+
+/* Modals */
+.modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.8); backdrop-filter: blur(6px); }
+.modal.open { display: flex; }
+.modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 600px; width: 100%; overflow: hidden; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.modal-head h3 { font-size: 15px; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 20px; }
+.modal-foot { padding: 14px 20px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="page-nav">
+    <a class="back-link" href="index.html" data-i18n="backHub">&#8592; Back to Financial Hub</a>
+    <div class="sub-tabs">
+      <button class="tab-btn active" onclick="switchTab('grid')" data-i18n="tabOverview">Dashboard Matrix</button>
+      <button class="tab-btn" onclick="switchTab('td-compare')" data-i18n="tabCompare">Comparator</button>
+      <button class="tab-btn" onclick="switchTab('td-calculator')" data-i18n="tabCalc">Maturity Engine</button>
+      <button class="tab-btn" onclick="switchTab('td-ladder')" data-i18n="tabLadder">Ladder Strategy</button>
+      <button class="tab-btn" onclick="switchTab('td-break-cost')" data-i18n="tabBreak">Early Exit Risk</button>
+      <button class="tab-btn" onclick="switchTab('td-inflation')" data-i18n="tabInflation">Real Return</button>
+    </div>
+  </nav>
+
+  <header>
+    <div class="brand">
+      <h1 data-i18n="hubTitle">Term Deposit Framework</h1>
+      <p data-i18n="hubSub">Analytical system for capital optimization, mathematical verification & real yield modeling.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" type="button" onclick="toggleDropdown('export-drop')" data-i18n="btnExport">📥 Export Matrix</button>
+      <div class="dropdown-menu" id="export-drop">
+        <button class="dropdown-item" onclick="exportDataMatrix('csv')" data-i18n="expCSV">Export Workspace Data (CSV)</button>
+        <button class="dropdown-item" onclick="exportDataMatrix('json')" data-i18n="expJSON">Export Parameter Config (JSON)</button>
+        <button class="dropdown-item" onclick="triggerReportPrint()" data-i18n="expReport">Generate Audit Report (Print)</button>
+      </div>
+
+      <button class="btn" type="button" onclick="toggleDropdown('settings-drop')" data-i18n="btnSettings">⚙️ System Settings</button>
+      <div class="dropdown-menu" id="settings-drop">
+        <div style="padding: 10px 16px; border-bottom: 1px solid var(--border);">
+          <label style="margin-bottom:4px; display:block;" data-i18n="cfgCurrency">Base Currency</label>
+          <select id="cfg-currency" onchange="updateGlobalSettings()">
+            <option value="$">AUD / USD ($)</option>
+            <option value="₫">VND (₫)</option>
+          </select>
+        </div>
+        <div style="padding: 10px 16px;">
+          <label style="margin-bottom:4px; display:block;" data-i18n="cfgTax">Marginal Tax Rate</label>
+          <input type="number" id="cfg-tax-rate" value="32.5" step="0.5" oninput="updateGlobalSettings()">
+        </div>
+      </div>
+
+      <button class="btn btn-accent" type="button" onclick="toggleLanguage()" id="lang-toggle">🌐 Tiếng Việt</button>
+    </div>
+  </header>
+
+  <div class="asset-hero">
+    <div class="asset-hero-icon">🏦</div>
+    <div class="asset-hero-text">
+      <h1 data-i18n="assetTitle">Term Deposit Engineering</h1>
+      <p data-i18n="assetSub">Fixed-term secure yield analysis & capital allocation modeling.</p>
+      <p class="asset-tagline" data-i18n="assetTagline">Lock in certainty — evaluate competitive product offers, model maturity events, mitigate break-cost risks, and structure sequential ladders.</p>
+    </div>
+  </div>
+
+  <div id="grid-view" class="tab-panel active">
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="t1Title">TD Rate Comparator</div>
+          <span class="calc-app asset-badge" data-i18n="bCompare">Compare</span>
+        </div>
+        <div class="models">
+          <span class="model-tag" data-i18n="mInstitution">Institution</span>
+          <span class="model-tag" data-i18n="mTerm">Term</span>
+          <span class="model-tag" data-i18n="mRate">Rate %</span>
+          <span class="model-tag" data-i18n="mYield">Yield Index</span>
+        </div>
+        <div class="guide-written" data-i18n="g1Text">
+          <strong>Quick guide</strong>Map yields from multiple institutions. Shorter structures introduce compounding variance and reinvestment liabilities.
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" onclick="switchTab('td-compare')" data-i18n="btnOpenWorkspace">Initialize Framework &#8594;</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="t2Title">Maturity & Interest Engine</div>
+          <span class="calc-app asset-badge" data-i18n="bCalc">Calculator</span>
+        </div>
+        <div class="models">
+          <span class="model-tag" data-i18n="mPrincipal">Principal</span>
+          <span class="model-tag" data-i18n="mCompounding">Compounding</span>
+          <span class="model-tag" data-i18n="mTax">Net After-Tax</span>
+        </div>
+        <div class="guide-written" data-i18n="g2Text">
+          <strong>Quick guide</strong>Calculates final yields for terminal horizons. Under standard tax frameworks, accrued interest is assessable inside the receipt tax year.
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" onclick="switchTab('td-calculator')" data-i18n="btnOpenWorkspace">Initialize Framework &#8594;</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="t3Title">Deposit Ladder Planner</div>
+          <span class="calc-app asset-badge" data-i18n="bStrategy">Strategy</span>
+        </div>
+        <div class="models">
+          <span class="model-tag" data-i18n="mLadder">Staggered Maturity</span>
+          <span class="model-tag" data-i18n="mLiquidity">Liquidity Windows</span>
+        </div>
+        <div class="guide-written" data-i18n="g3Text">
+          <strong>Quick guide</strong>Construct a 3-tier rolling matrix (3M, 6M, 12M). Mitigates reinvestment risk profiles while optimizing foundational asset liquidity positions.
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" onclick="switchTab('td-ladder')" data-i18n="btnOpenWorkspace">Initialize Framework &#8594;</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="t4Title">Early Exit Penalties</div>
+          <span class="calc-app asset-badge" data-i18n="bRisk">Risk Analysis</span>
+        </div>
+        <div class="models">
+          <span class="model-tag" data-i18n="mPenalty">Reduction Coefficient</span>
+          <span class="model-tag" data-i18n="mNetPayout">Net Value Realized</span>
+        </div>
+        <div class="guide-written" data-i18n="g4Text">
+          <strong>Quick guide</strong>Quantify downstream financial erosion from contract breaks. Most authorized deposit institutions strip 20%-80% of accrued interest positions.
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" onclick="switchTab('td-break-cost')" data-i18n="btnOpenWorkspace">Initialize Framework &#8594;</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="t5Title">Inflation-Adjusted Yield</div>
+          <span class="calc-app asset-badge" data-i18n="bRealReturn">Real Return</span>
+        </div>
+        <div class="models">
+          <span class="model-tag" data-i18n="mNominal">Nominal Vector</span>
+          <span class="model-tag" data-i18n="mCPI">CPI Deflator</span>
+          <span class="model-tag" data-i18n="mPurchasing">Purchasing Power</span>
+        </div>
+        <div class="guide-written" data-i18n="g5Text">
+          <strong>Quick guide</strong>Strip macroeconomic inflation layers out of nominal values via standard real rate calculus to track absolute purchasing power maintenance vectors.
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" onclick="switchTab('td-inflation')" data-i18n="btnOpenWorkspace">Initialize Framework &#8594;</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <section id="workspace-td-compare" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="w1Title">TD Product Yield Comparator Matrix</h3>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:12px;" data-i18n="w1Desc">Input structural variables from competitive banking options to evaluate absolute yield rankings.</p>
+        <table class="matrix-table" id="comparator-table">
+          <thead>
+            <tr>
+              <th data-i18n="thInstitution">Institution</th>
+              <th data-i18n="thTerm">Term (Months)</th>
+              <th data-i18n="thRate">Nominal Rate (%)</th>
+              <th data-i18n="thMetrics">Analysis Metric</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" value="Alpha Bank" id="comp-inst-0"></td>
+              <td><input type="number" value="6" id="comp-term-0" oninput="runComparatorEngine()"></td>
+              <td><input type="number" value="4.85" step="0.05" id="comp-rate-0" oninput="runComparatorEngine()"></td>
+              <td id="comp-res-0" class="result-value">-</td>
+            </tr>
+            <tr>
+              <td><input type="text" value="Beta Capital" id="comp-inst-1"></td>
+              <td><input type="number" value="12" id="comp-term-1" oninput="runComparatorEngine()"></td>
+              <td><input type="number" value="5.10" step="0.05" id="comp-rate-1" oninput="runComparatorEngine()"></td>
+              <td id="comp-res-1" class="result-value">-</td>
+            </tr>
+            <tr>
+              <td><input type="text" value="Gamma Credit" id="comp-inst-2"></td>
+              <td><input type="number" value="3" id="comp-term-2" oninput="runComparatorEngine()"></td>
+              <td><input type="number" value="4.60" step="0.05" id="comp-rate-2" oninput="runComparatorEngine()"></td>
+              <td id="comp-res-2" class="result-value">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelOptimized">Mathematical Optimum Result</div>
+        <div class="result-row">
+          <span data-i18n="lblOptimalProduct">Highest Yielding Asset Variant:</span>
+          <span id="comp-optimal-name" class="result-value" style="color:var(--accent3); font-weight:700;">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblNormalizedYield">Normalized Annualized Yield:</span>
+          <span id="comp-optimal-yield" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workspace-td-calculator" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="w2Title">Maturity Event & Structural Yield Engine</h3>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-group">
+          <label data-i18n="lblPrincipal">Investment Principal Base</label>
+          <input type="number" id="calc-principal" value="50000" step="1000" oninput="runMaturityEngine()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lblRate">Nominal Annual Interest (%)</label>
+            <input type="number" id="calc-rate" value="4.95" step="0.05" oninput="runMaturityEngine()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lblTermMonths">Allocation Horizon (Months)</label>
+            <input type="number" id="calc-term" value="12" step="1" oninput="runMaturityEngine()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lblCompounding">Compounding Recurrence Interval</label>
+          <select id="calc-compound" onchange="runMaturityEngine()">
+            <option value="1" data-i18n="optMaturity">At Maturity / Simple Return</option>
+            <option value="12" data-i18n="optMonthly">Monthly compounding cycle</option>
+            <option value="4" data-i18n="optQuarterly">Quarterly compounding cycle</option>
+            <option value="2" data-i18n="optSemiAnn">Semi-Annual compounding cycle</option>
+          </select>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelYieldOutputs">Calculated Interest Output Parameters</div>
+        <div class="result-row">
+          <span data-i18n="lblGrossInterest">Gross Accrued Interest Pool:</span>
+          <span id="calc-gross-interest" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblTaxProvision">Marginal Tax Liability Provision:</span>
+          <span id="calc-tax-withheld" class="result-value" style="color:var(--accent4);">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblNetMaturityValue">Net Portfolio Value at Horizon:</span>
+          <span id="calc-net-total" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workspace-td-ladder" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="w3Title">Staggered Allocation & Ladder Strategy Matrix</h3>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-group">
+          <label data-i18n="lblTotalLiquidityPool">Total Liquidity Pool Asset base</label>
+          <input type="number" id="ladder-pool" value="150000" step="5000" oninput="runLadderEngine()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lblRungCount">Strategic Liquidity Windows</label>
+            <select id="ladder-rungs" onchange="runLadderEngine()">
+              <option value="3">3 Rungs (Quarterly Sequence)</option>
+              <option value="4">4 Rungs (Quad-Interval Sequence)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="lblAvgBaseRate">Estimated Target Rate Array (%)</label>
+            <input type="number" id="ladder-rate" value="5.15" step="0.05" oninput="runLadderEngine()">
+          </div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelLadderAllocation">Portfolio Structure Topology</div>
+        <div class="result-row">
+          <span data-i18n="lblCapitalPerWindow">Capital Per Window Segment:</span>
+          <span id="ladder-split" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblProjectedAnnualReturn">Aggregate Projected Annual Return:</span>
+          <span id="ladder-annual-yield" class="result-value highlight">-</span>
+        </div>
+        <div class="ladder-container" id="ladder-visualization">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workspace-td-break-cost" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="w4Title">Contract Modification Penalty & Early Exit Assessment</h3>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-group">
+          <label data-i18n="lblPrincipal">Contract Principal Base</label>
+          <input type="number" id="break-principal" value="100000" oninput="runBreakCostEngine()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lblRate">Contract Locked Rate (%)</label>
+            <input type="number" id="break-rate" value="5.25" step="0.05" oninput="runBreakCostEngine()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lblOriginalTerm">Agreed Horizon (Months)</label>
+            <input type="number" id="break-total-term" value="12" oninput="runBreakCostEngine()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lblMonthsElapsed">Actual Duration Elapsed (Months)</label>
+            <input type="number" id="break-elapsed" value="7" oninput="runBreakCostEngine()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lblPenaltyReduction">Rate Reduction Coefficient (%)</label>
+            <input type="number" id="break-penalty" value="40" step="5" oninput="runBreakCostEngine()">
+          </div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelErosionRisk">Erosion Risk Valuation</div>
+        <div class="result-row">
+          <span data-i18n="lblInterestEarned">Expected Unadjusted Accrued Interest:</span>
+          <span id="break-expected-interest" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblLiquidatedDamages">Institutional Financial Penalty Liquidated:</span>
+          <span id="break-cost-value" class="result-value" style="color:var(--accent4);">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblNetCapitalPushed">Net Adjusted Liquidation Value Payout:</span>
+          <span id="break-payout" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workspace-td-inflation" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="w5Title">Purchasing Power Preservation Index</h3>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-group">
+          <label data-i18n="lblNominalRateInput">Nominal Investment Yield Vector (%)</label>
+          <input type="number" id="inf-nominal-rate" value="4.80" step="0.05" oninput="runInflationEngine()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="lblCpiAssumption">Macroeconomic CPI / Inflation Baseline (%)</label>
+          <input type="number" id="inf-cpi" value="3.20" step="0.1" oninput="runInflationEngine()">
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelPurchasingPower">Macro Verification Parameters</div>
+        <div class="result-row">
+          <span data-i18n="lblAbsoluteRealYield">Absolute Fisher Model Real Yield:</span>
+          <span id="inf-real-rate" class="result-value highlight">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lblPurchasingVector">12-Month Purchasing Power Vector:</span>
+          <span id="inf-purchasing-power" class="result-value">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-bar">
+    <a class="back-link" href="index.html" data-i18n="backHub">&#8592; Return to Financial Hub</a>
+  </div>
+</div>
+
+<script>
+  /* ═══════════════════════════════════════════════════════════
+     COMPREHENSIVE DUAL-LANGUAGE LOCALIZATION ENGINE (EN / VI)
+     ═══════════════════════════════════════════════════════════ */
+  let currentLanguage = 'en';
+  let activeGlobalCurrency = '$';
+  let activeGlobalTaxRate = 32.5;
+
+  const translations = {
+    en: {
+      pageTitle: "Term Deposit Architecture — Financial Hub",
+      backHub: "← Back to Financial Hub",
+      tabOverview: "Dashboard Matrix",
+      tabCompare: "Comparator",
+      tabCalc: "Maturity Engine",
+      tabLadder: "Ladder Strategy",
+      tabBreak: "Early Exit Risk",
+      tabInflation: "Real Return",
+      hubTitle: "Term Deposit Framework",
+      hubSub: "Analytical system for capital optimization, mathematical verification & real yield modeling.",
+      btnExport: "📥 Export Matrix",
+      btnSettings: "⚙️ System Settings",
+      assetTitle: "Term Deposit Engineering",
+      assetSub: "Fixed-term secure yield analysis & capital allocation modeling.",
+      assetTagline: "Lock in certainty — evaluate competitive product offers, model maturity events, mitigate break-cost risks, and structure sequential ladders.",
+      expCSV: "Export Workspace Data (CSV)",
+      expJSON: "Export Parameter Config (JSON)",
+      expReport: "Generate Audit Report (Print)",
+      cfgCurrency: "Base Currency",
+      cfgTax: "Marginal Tax Rate (%)",
+      t1Title: "TD Rate Comparator",
+      bCompare: "Compare",
+      mInstitution: "Institution",
+      mTerm: "Term",
+      mRate: "Rate %",
+      mYield: "Yield Index",
+      g1Text: "Quick guide: Map yields from multiple institutions. Shorter structures introduce compounding variance and reinvestment liabilities.",
+      t2Title: "Maturity & Interest Engine",
+      bCalc: "Calculator",
+      mPrincipal: "Principal",
+      mCompounding: "Compounding",
+      mTax: "Net After-Tax",
+      g2Text: "Quick guide: Calculates final yields for terminal horizons. Under standard tax frameworks, accrued interest is assessable inside the receipt tax year.",
+      t3Title: "Deposit Ladder Planner",
+      bStrategy: "Strategy",
+      mLadder: "Staggered Maturity",
+      mLiquidity: "Liquidity Windows",
+      g3Text: "Quick guide: Construct a 3-tier rolling matrix (3M, 6M, 12M). Mitigates reinvestment risk profiles while optimizing foundational asset liquidity positions.",
+      t4Title: "Early Exit Penalties",
+      bRisk: "Risk Analysis",
+      mPenalty: "Reduction Coefficient",
+      mNetPayout: "Net Value Realized",
+      g4Text: "Quick guide: Quantify downstream financial erosion from contract breaks. Most authorized deposit institutions strip 20%-80% of accrued interest positions.",
+      t5Title: "Inflation-Adjusted Yield",
+      bRealReturn: "Real Return",
+      mNominal: "Nominal Vector",
+      mCPI: "CPI Deflator",
+      mPurchasing: "Purchasing Power",
+      g5Text: "Quick guide: Strip macroeconomic inflation layers out of nominal values via standard real rate calculus to track absolute purchasing power maintenance vectors.",
+      w1Title: "TD Product Yield Comparator Matrix",
+      w1Desc: "Input structural variables from competitive banking options to evaluate absolute yield rankings.",
+      thInstitution: "Institution",
+      thTerm: "Term (Months)",
+      thRate: "Nominal Rate (%)",
+      thMetrics: "Analysis Metric",
+      panelOptimized: "Mathematical Optimum Result",
+      lblOptimalProduct: "Highest Yielding Asset Variant:",
+      lblNormalizedYield: "Normalized Annualized Yield:",
+      w2Title: "Maturity Event & Structural Yield Engine",
+      lblPrincipal: "Investment Principal Base",
+      lblTermMonths: "Allocation Horizon (Months)",
+      lblCompounding: "Compounding Recurrence Interval",
+      optMaturity: "At Maturity / Simple Return",
+      optMonthly: "Monthly compounding cycle",
+      optQuarterly: "Quarterly compounding cycle",
+      optSemiAnn: "Semi-Annual compounding cycle",
+      panelYieldOutputs: "Calculated Interest Output Parameters",
+      lblGrossInterest: "Gross Accrued Interest Pool:",
+      lblTaxProvision: "Marginal Tax Liability Provision:",
+      lblNetMaturityValue: "Net Portfolio Value at Horizon:",
+      w3Title: "Staggered Allocation & Ladder Strategy Matrix",
+      lblTotalLiquidityPool: "Total Liquidity Pool Asset Base",
+      lblRungCount: "Strategic Liquidity Windows",
+      lblAvgBaseRate: "Estimated Target Rate Array (%)",
+      panelLadderAllocation: "Portfolio Structure Topology",
+      lblCapitalPerWindow: "Capital Per Window Segment:",
+      lblProjectedAnnualReturn: "Aggregate Projected Annual Return:",
+      w4Title: "Contract Modification Penalty & Early Exit Assessment",
+      lblOriginalTerm: "Agreed Horizon (Months)",
+      lblMonthsElapsed: "Actual Duration Elapsed (Months)",
+      lblPenaltyReduction: "Rate Reduction Coefficient (%)",
+      panelErosionRisk: "Erosion Risk Valuation",
+      lblInterestEarned: "Expected Unadjusted Accrued Interest:",
+      lblLiquidatedDamages: "Institutional Financial Penalty Liquidated:",
+      lblNetCapitalPushed: "Net Adjusted Liquidation Value Payout:",
+      w5Title: "Purchasing Power Preservation Index",
+      lblNominalRateInput: "Nominal Investment Yield Vector (%)",
+      lblCpiAssumption: "Macroeconomic CPI / Inflation Baseline (%)",
+      panelPurchasingPower: "Macro Verification Parameters",
+      lblAbsoluteRealYield: "Absolute Fisher Model Real Yield:",
+      lblPurchasingVector: "12-Month Purchasing Power Vector:",
+      btnOpenWorkspace: "Initialize Framework →",
+      lblRungText: "Rung {num} ({months}M Window) Maturity Value:",
+      lblPositiveReal: "Positive Yield Growth Vector",
+      lblNegativeReal: "Negative Purchasing Erosion Risk"
+    },
+    vi: {
+      pageTitle: "Cấu trúc Tiền gửi Kỳ hạn — Financial Hub",
+      backHub: "← Quay lại Financial Hub",
+      tabOverview: "Ma trận Tổng quan",
+      tabCompare: "So sánh sản phẩm",
+      tabCalc: "Động cơ Đáo hạn",
+      tabLadder: "Chiến lược Thang tiền",
+      tabBreak: "Rủi ro Rút trước hạn",
+      tabInflation: "Lợi suất Thực tế",
+      hubTitle: "Hệ thống Tiền gửi Kỳ hạn",
+      hubSub: "Hệ thống phân tích tối ưu hóa vốn, xác minh toán học & mô hình hóa lợi suất thực tế.",
+      btnExport: "📥 Xuất Dữ liệu",
+      btnSettings: "⚙️ Cài đặt Hệ thống",
+      assetTitle: "Kỹ thuật Tiền gửi Kỳ hạn",
+      assetSub: "Phân tích lợi suất cố định an toàn & mô hình hóa phân bổ nguồn vốn gốc.",
+      assetTagline: "Khóa chặt sự chắc chắn — đánh giá các gói lãi suất cạnh tranh từ ngân hàng, mô hình hóa sự kiện đáo hạn, giảm thiểu rủi ro chi phí rút trước hạn và cấu trúc chuỗi thang tiền gửi.",
+      expCSV: "Xuất dữ liệu Không gian làm việc (CSV)",
+      expJSON: "Xuất cấu hình Tham số (JSON)",
+      expReport: "Tạo Báo cáo Kiểm toán (In)",
+      cfgCurrency: "Đơn vị Tiền tệ",
+      cfgTax: "Thuế suất Biên hành chính (%)",
+      t1Title: "So sánh Lãi suất Kỳ hạn",
+      bCompare: "So sánh",
+      mInstitution: "Tổ chức",
+      mTerm: "Kỳ hạn",
+      mRate: "Lãi suất %",
+      mYield: "Chỉ số Lợi suất",
+      g1Text: "Hướng dẫn nhanh: Đối chiếu lợi suất thực tế từ nhiều ngân hàng. Kỳ hạn ngắn có thể tạo biến động lãi kép và nghĩa vụ tái đầu tư.",
+      t2Title: "Động cơ Đáo hạn & Lãi suất",
+      bCalc: "Máy tính",
+      mPrincipal: "Vốn gốc",
+      mCompounding: "Lãi kép",
+      mTax: "Sau thuế ròng",
+      g2Text: "Hướng dẫn nhanh: Tính toán lợi suất cuối cùng cho các mốc thời gian. Theo luật thuế tiêu chuẩn, tiền lãi tích lũy được tính thuế trong năm tài chính nhận tiền.",
+      t3Title: "Lập kế hoạch Thang Tiền gửi",
+      bStrategy: "Chiến lược",
+      mLadder: "Đáo hạn So le",
+      mLiquidity: "Cửa sổ Thanh khoản",
+      g3Text: "Hướng dẫn nhanh: Cấu trúc ma trận xoay vòng 3 tầng (3 tháng, 6 tháng, 12 tháng). Giảm thiểu rủi ro tái đầu tư trong khi tối ưu thanh khoản cơ sở.",
+      t4Title: "Chi phí Rút trước Hạn",
+      bRisk: "Phân tích Rủi ro",
+      mPenalty: "Hệ số Giảm lãi",
+      mNetPayout: "Giá trị Ròng Thực tế",
+      g4Text: "Hướng dẫn nhanh: Định lượng mức độ tổn thất tài chính khi phá vỡ hợp đồng kỳ hạn. Hầu hết các tổ chức tín dụng sẽ cắt giảm 20%-80% lượng lãi tích lũy.",
+      t5Title: "Lợi suất Điều chỉnh theo Lạm phát",
+      bRealReturn: "Lợi suất Thực",
+      mNominal: "Vectơ Danh nghĩa",
+      mCPI: "Chỉ số CPI",
+      mPurchasing: "Sức mua",
+      g5Text: "Hướng dẫn nhanh: Bóc tách các lớp lạm phát vĩ mô ra khỏi giá trị danh nghĩa bằng phép tính tỷ lệ thực tế để theo dõi vectơ bảo toàn sức mua tuyệt đối.",
+      w1Title: "Ma trận So sánh Lợi suất Sản phẩm Tiền gửi",
+      w1Desc: "Nhập các biến cấu trúc từ các phương án ngân hàng cạnh tranh để đánh giá xếp hạng lợi suất tuyệt đối.",
+      thInstitution: "Tổ chức",
+      thTerm: "Kỳ hạn (Tháng)",
+      thRate: "Lãi suất Danh nghĩa (%)",
+      thMetrics: "Chỉ số Phân tích",
+      panelOptimized: "Kết quả Tối ưu Toán học",
+      lblOptimalProduct: "Biến thể Tài sản Lợi suất Cao nhất:",
+      lblNormalizedYield: "Lợi suất Chuẩn hóa Hàng năm:",
+      w2Title: "Sự kiện Đáo hạn & Động cơ Lợi suất Cấu trúc",
+      lblPrincipal: "Cơ sở Vốn gốc Đầu tư",
+      lblTermMonths: "Thời hạn Phân bổ (Tháng)",
+      lblCompounding: "Chu kỳ Tính Lãi kép",
+      optMaturity: "Đáo hạn / Lợi nhuận Đơn giản",
+      optMonthly: "Chu kỳ tính lãi kép hàng tháng",
+      optQuarterly: "Chu kỳ tính lãi kép hàng quý",
+      optSemiAnn: "Chu kỳ tính lãi kép bán niên",
+      panelYieldOutputs: "Tham số Đầu ra Tiền lãi được Tính toán",
+      lblGrossInterest: "Tổng Tiền lãi Tích lũy Tổng thể:",
+      lblTaxProvision: "Dự phòng Nghĩa vụ Thuế Biên:",
+      lblNetMaturityValue: "Giá trị Danh mục Ròng khi Đáo hạn:",
+      w3Title: "Phân bổ So le & Ma trận Chiến lược Thang Tiền",
+      lblTotalLiquidityPool: "Tổng Cơ sở Tài sản Thanh khoản",
+      lblRungCount: "Cửa sổ Thanh khoản Chiến lược",
+      lblAvgBaseRate: "Mảng Lãi suất Mục tiêu Ước tính (%)",
+      panelLadderAllocation: "Cấu trúc Cấu hình Danh mục",
+      lblCapitalPerWindow: "Vốn trên mỗi phân đoạn cửa sổ:",
+      lblProjectedAnnualReturn: "Tổng Lợi nhuận Hàng năm Dự kiến:",
+      w4Title: "Phạt sửa đổi Hợp đồng & Đánh giá Rút vốn Sớm",
+      lblOriginalTerm: "Kỳ hạn Thỏa thuận (Tháng)",
+      lblMonthsElapsed: "Thời gian Thực tế Đã qua (Tháng)",
+      lblPenaltyReduction: "Hệ số Giảm Lãi suất Phạt (%)",
+      panelErosionRisk: "Đánh giá Tái định giá Tổn thất",
+      lblInterestEarned: "Tiền lãi Tích lũy Dự kiến Chưa điều chỉnh:",
+      lblLiquidatedDamages: "Biện pháp Phạt Tài chính Định sẵn từ Tổ chức:",
+      lblNetCapitalPushed: "Giá trị Thanh lý Sau Điều chỉnh Thực nhận:",
+      w5Title: "Chỉ số Bảo toàn Sức mua Thực tế",
+      lblNominalRateInput: "Vectơ Lợi suất Đầu tư Danh nghĩa (%)",
+      lblCpiAssumption: "Lạm phát Cơ sở Vĩ mô / CPI (%)",
+      panelPurchasingPower: "Tham số Xác minh Vĩ mô",
+      lblAbsoluteRealYield: "Lợi suất Thực Mô hình Fisher Tuyệt đối:",
+      lblPurchasingVector: "Vectơ Sức mua Kỳ hạn 12 Tháng:",
+      btnOpenWorkspace: "Khởi tạo Không gian làm việc →",
+      lblRungText: "Bậc thang {num} (Cửa sổ {months}T) Giá trị Đáo hạn:",
+      lblPositiveReal: "Vectơ Tăng trưởng Lợi suất Dương",
+      lblNegativeReal: "Rủi ro Hao mòn Sức mua Tài sản"
+    }
+  };
+
+  function executeLocalizationEngine() {
+    const dict = translations[currentLanguage];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) {
+        if (el.tagName === 'INPUT' && el.type === 'placeholder') {
+          el.placeholder = dict[key];
+        } else {
+          // Preserve inner interactive elements if they exist, otherwise update text content safely
+          const strongTag = el.querySelector('strong');
+          if (strongTag) {
+            const strongText = strongTag.outerHTML;
+            el.innerHTML = strongText + " " + dict[key].replace(/^.*?:/, '').trim();
+          } else {
+            el.textContent = dict[key];
+          }
+        }
+      }
+    });
+    document.getElementById('lang-toggle').textContent = currentLanguage === 'en' ? '🌐 Tiếng Việt' : '🌐 English';
+    
+    // Rerun all structural matrix math pipelines to refresh display data formats
+    triggerAllAnalyticalEngines();
+  }
+
+  function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
+    executeLocalizationEngine();
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     NAVIGATION FRAMEWORK & INTERACTIVE TAB LOGIC
+     ═══════════════════════════════════════════════════════════ */
+  function switchTab(targetId) {
+    // Drop dropdown states instantly
+    closeAllDropdowns();
+
+    // Toggle horizontal navigation element styling states
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    // Select specific button index matches based on unique target identifier hashes
+    const tabIndexMap = { 'grid': 0, 'td-compare': 1, 'td-calculator': 2, 'td-ladder': 3, 'td-break-cost': 4, 'td-inflation': 5 };
+    const buttons = document.querySelectorAll('.tab-btn');
+    if (buttons[tabIndexMap[targetId]]) {
+      buttons[tabIndexMap[targetId]].classList.add('active');
+    }
+
+    // Toggle UI element block visibility layout states
+    if (targetId === 'grid') {
+      document.getElementById('grid-view').style.display = 'block';
+      document.querySelectorAll('.workspace-section').forEach(sec => sec.classList.remove('active'));
+    } else {
+      document.getElementById('grid-view').style.display = 'none';
+      document.querySelectorAll('.workspace-section').forEach(sec => sec.classList.remove('active'));
+      const activeWorkspace = document.getElementById(`workspace-${targetId}`);
+      if (activeWorkspace) activeWorkspace.classList.add('active');
+    }
+
+    triggerAllAnalyticalEngines();
+  }
+
+  function toggleDropdown(id) {
+    const drop = document.getElementById(id);
+    const state = drop.style.display === 'flex';
+    closeAllDropdowns();
+    if (!state) drop.style.display = 'flex';
+  }
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
+  }
+
+  function updateGlobalSettings() {
+    activeGlobalCurrency = document.getElementById('cfg-currency').value;
+    activeGlobalTaxRate = parseFloat(document.getElementById('cfg-tax-rate').value) || 0;
+    triggerAllAnalyticalEngines();
+  }
+
+  function formatFinancialAssetValue(val) {
+    if (isNaN(val) || !isFinite(val)) return '0.00';
+    return activeGlobalCurrency + ' ' + val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function triggerAllAnalyticalEngines() {
+    runComparatorEngine();
+    runMaturityEngine();
+    runLadderEngine();
+    runBreakCostEngine();
+    runInflationEngine();
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     MATHEMATICAL CALCULATION ENGINES
+     ═══════════════════════════════════════════════════════════ */
+
+  // 1. TD Rate Comparator Matrix Engine
+  function runComparatorEngine() {
+    let topYield = -1;
+    let topInstitution = '-';
+    
+    for (let i = 0; i < 3; i++) {
+      const inst = document.getElementById(`comp-inst-${i}`).value;
+      const term = parseFloat(document.getElementById(`comp-term-${i}`).value) || 0;
+      const rate = parseFloat(document.getElementById(`comp-rate-${i}`).value) || 0;
+      const cellResult = document.getElementById(`comp-res-${i}`);
+      const rowElement = cellResult.parentElement;
+      
+      rowElement.classList.remove('best-row');
+      const standardBadge = rowElement.querySelector('.best-badge');
+      if (standardBadge) standardBadge.remove();
+
+      if (term > 0 && rate > 0) {
+        // Compute Effective Annual Yield (EAY) approximation for relative normalization metrics
+        const frequencyPerYear = 12 / term;
+        const eay = (Math.pow(1 + (rate / 100) / frequencyPerYear, frequencyPerYear) - 1) * 100;
+        cellResult.textContent = eay.toFixed(3) + '% EAY';
+
+        if (eay > topYield) {
+          topYield = eay;
+          topInstitution = inst;
+        }
+      } else {
+        cellResult.textContent = '-';
+      }
+    }
+
+    // Append dynamic visualization highlights for verified optimal row parameters
+    if (topYield > -1) {
+      document.getElementById('comp-optimal-name').textContent = topInstitution;
+      document.getElementById('comp-optimal-yield').textContent = topYield.toFixed(3) + '%';
+      
+      for (let i = 0; i < 3; i++) {
+        const inst = document.getElementById(`comp-inst-${i}`).value;
+        if (inst === topInstitution) {
+          const row = document.getElementById(`comp-res-${i}`).parentElement;
+          row.classList.add('best-row');
+          const badge = document.createElement('span');
+          badge.className = 'best-badge';
+          badge.textContent = currentLanguage === 'en' ? 'OPTIMAL' : 'TỐI ƯU';
+          row.cells[0].appendChild(badge);
+        }
+      }
+    }
+  }
+
+  // 2. Maturity Event & Structural Yield Engine
+  function runMaturityEngine() {
+    const P = parseFloat(document.getElementById('calc-principal').value) || 0;
+    const r = (parseFloat(document.getElementById('calc-rate').value) || 0) / 100;
+    const tMonths = parseFloat(document.getElementById('calc-term').value) || 0;
+    const n = parseFloat(document.getElementById('calc-compound').value) || 1;
+    const tYears = tMonths / 12;
+
+    let grossInterest = 0;
+    if (n === 1) {
+      // Simple Interest Formula Matrix for standard "At Maturity" allocation targets
+      grossInterest = P * r * tYears;
+    } else {
+      // Periodic Compounding Equations Framework
+      grossInterest = P * Math.pow(1 + (r / n), n * tYears) - P;
+    }
+
+    const taxLiabilityProvision = grossInterest * (activeGlobalTaxRate / 100);
+    const netTotalValue = P + grossInterest - taxLiabilityProvision;
+
+    document.getElementById('calc-gross-interest').textContent = formatFinancialAssetValue(grossInterest);
+    document.getElementById('calc-tax-withheld').textContent = formatFinancialAssetValue(taxLiabilityProvision);
+    document.getElementById('calc-net-total').textContent = formatFinancialAssetValue(netTotalValue);
+  }
+
+  // 3. Staggered Allocation & Ladder Strategy Matrix Engine
+  function runLadderEngine() {
+    const totalPool = parseFloat(document.getElementById('ladder-pool').value) || 0;
+    const rungsCount = parseInt(document.getElementById('ladder-rungs').value) || 3;
+    const estimatedRate = parseFloat(document.getElementById('ladder-rate').value) || 0;
+
+    const principalPerRung = totalPool / rungsCount;
+    document.getElementById('ladder-split').textContent = formatFinancialAssetValue(principalPerRung);
+
+    const macroProjectedYield = totalPool * (estimatedRate / 100);
+    document.getElementById('ladder-annual-yield').textContent = formatFinancialAssetValue(macroProjectedYield);
+
+    const visualContainer = document.getElementById('ladder-visualization');
+    visualContainer.innerHTML = '';
+
+    // Step-wise interval allocation layout configurations
+    const baseInterval = 12 / rungsCount;
+    for (let i = 1; i <= rungsCount; i++) {
+      const activeWindowHorizonMonths = baseInterval * i;
+      const rungYieldAtMaturity = principalPerRung * (estimatedRate / 100) * (activeWindowHorizonMonths / 12);
+      const totalRungAssetTerminalValue = principalPerRung + rungYieldAtMaturity;
+
+      const rungRow = document.createElement('div');
+      rungRow.className = 'ladder-rung';
+      
+      let localizedText = translations[currentLanguage].lblRungText
+        .replace('{num}', i)
+        .replace('{months}', activeWindowHorizonMonths);
+
+      rungRow.innerHTML = `
+        <div>
+          <strong style="margin-bottom:2px;">${localizedText}</strong>
+          <span style="font-size:11px; color:var(--muted); font-family:var(--font-mono);">
+            Base Allocation: ${formatFinancialAssetValue(principalPerRung)} @ ${estimatedRate}%
+          </span>
+        </div>
+        <div class="result-value" style="color:var(--asset-accent); font-weight:700;">
+          ${formatFinancialAssetValue(totalRungAssetTerminalValue)}
+        </div>
+      `;
+      visualContainer.appendChild(rungRow);
+    }
+  }
+
+  // 4. Contract Modification Penalty & Early Exit Assessment Engine
+  function runBreakCostEngine() {
+    const principal = parseFloat(document.getElementById('break-principal').value) || 0;
+    const lockedRate = parseFloat(document.getElementById('break-rate').value) || 0;
+    const totalTerm = parseFloat(document.getElementById('break-total-term').value) || 12;
+    const elapsedMonths = parseFloat(document.getElementById('break-elapsed').value) || 0;
+    const penaltyPct = parseFloat(document.getElementById('break-penalty').value) || 0;
+
+    // Linearly derive baseline accrued simple interest parameters prior to adjustment calculations
+    const fullExpectedInterest = principal * (lockedRate / 100) * (elapsedMonths / 12);
+    const calculatedPenaltyDeduction = fullExpectedInterest * (penaltyPct / 100);
+    const adjustedPayoutValue = principal + fullExpectedInterest - calculatedPenaltyDeduction;
+
+    document.getElementById('break-expected-interest').textContent = formatFinancialAssetValue(fullExpectedInterest);
+    document.getElementById('break-cost-value').textContent = formatFinancialAssetValue(calculatedPenaltyDeduction);
+    document.getElementById('break-payout').textContent = formatFinancialAssetValue(adjustedPayoutValue);
+  }
+
+  // 5. Purchasing Power Preservation Index Engine (Fisher Equation Framework)
+  function runInflationEngine() {
+    const nominalRate = parseFloat(document.getElementById('inf-nominal-rate').value) || 0;
+    const cpiAssumption = parseFloat(document.getElementById('inf-cpi').value) || 0;
+
+    // Pure Fisher Model Formula Matrix implementation: ((1 + R_nom) / (1 + CPI)) - 1
+    const convertedNominal = nominalRate / 100;
+    const convertedCpi = cpiAssumption / 100;
+    const exactFisherRealYield = ((1 + convertedNominal) / (1 + convertedCpi) - 1) * 100;
+    
+    const displayElement = document.getElementById('inf-real-rate');
+    displayElement.textContent = exactFisherRealYield.toFixed(3) + '%';
+
+    const textVectorField = document.getElementById('inf-purchasing-power');
+    if (exactFisherRealYield >= 0) {
+      displayElement.style.color = 'var(--accent3)';
+      textVectorField.textContent = translations[currentLanguage].lblPositiveReal;
+      textVectorField.style.color = 'var(--accent3)';
+    } else {
+      displayElement.style.color = 'var(--accent4)';
+      textVectorField.textContent = translations[currentLanguage].lblNegativeReal;
+      textVectorField.style.color = 'var(--accent4)';
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     DATA EXPORT, PRINTING, & REPORT SYSTEM HANDLERS
+     ═══════════════════════════════════════════════════════════ */
+  function exportDataMatrix(format) {
+    // Aggregates structural DOM configuration parameters for parsing transformations
+    const payloadSourceObj = {
+      timestamp: new Date().toISOString(),
+      globalCurrency: activeGlobalCurrency,
+      globalTaxRatePercent: activeGlobalTaxRate,
+      calculatorConfigurationSnapshots: {
+        maturityEngineInputs: {
+          principal: document.getElementById('calc-principal').value,
+          nominalRatePercent: document.getElementById('calc-rate').value,
+          horizonMonths: document.getElementById('calc-term').value
+        },
+        inflationFisherInputs: {
+          nominalVector: document.getElementById('inf-nominal-rate').value,
+          cpiDeflator: document.getElementById('inf-cpi').value
+        }
+      }
+    };
+
+    if (format === 'json') {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payloadSourceObj, null, 2));
+      const targetDownloadNode = document.createElement('a');
+      targetDownloadNode.setAttribute("href", dataStr);
+      targetDownloadNode.setAttribute("download", `TD_Framework_Config_${Date.now()}.json`);
+      document.body.appendChild(targetDownloadNode);
+      targetDownloadNode.click();
+      targetDownloadNode.remove();
+    } else if (format === 'csv') {
+      let csvContent = "data:text/csv;charset=utf-8,Parameter,Value\r\n";
+      csvContent += `Execution_Timestamp,${payloadSourceObj.timestamp}\r\n`;
+      csvContent += `Config_Currency,${payloadSourceObj.globalCurrency}\r\n`;
+      csvContent += `Config_Tax_Rate_Pct,${payloadSourceObj.globalTaxRatePercent}\r\n`;
+      csvContent += `Maturity_Base_Principal,${payloadSourceObj.calculatorConfigurationSnapshots.maturityEngineInputs.principal}\r\n`;
+      csvContent += `Maturity_Nominal_Rate,${payloadSourceObj.calculatorConfigurationSnapshots.maturityEngineInputs.nominalRatePercent}\r\n`;
+      
+      const targetDownloadNode = document.createElement('a');
+      targetDownloadNode.setAttribute("href", encodeURI(csvContent));
+      targetDownloadNode.setAttribute("download", `TD_Workspace_Data_${Date.now()}.csv`);
+      document.body.appendChild(targetDownloadNode);
+      targetDownloadNode.click();
+      targetDownloadNode.remove();
+    }
+    closeAllDropdowns();
+  }
+
+  function triggerReportPrint() {
+    closeAllDropdowns();
+    window.print();
+  }
+
+  // Intercept explicit window click event frames to close open menu matrices safely
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.header-actions')) {
+      closeAllDropdowns();
+    }
+  });
+
+  // Initialization Pipelines Execution sequence
+  document.addEventListener('DOMContentLoaded', function() {
+    executeLocalizationEngine();
+  });
+</script>
+</body>
+</html>
