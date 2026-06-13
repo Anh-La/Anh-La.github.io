@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Property</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       Design Tokens & Shared Styles
+       ═══════════════════════════════════════════════════════════ */
+    :root {
+      --bg:      #0a0c10;
+      --surface: #111318;
+      --card:    #161920;
+      --border:  #232730;
+      --accent:  #c8a96e;
+      --accent2: #5c9eff;
+      --accent3: #4ecb8a;
+      --accent4: #e06b6b;
+      --accent5: #b67fff;
+      --accent6: #ff9f43; /* Asset accent */
+      --text:    #e8e3d8;
+      --muted:   #7a7f8e;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'Manrope', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+      --radius: 12px;
+
+      --asset-accent:        #ff9f43;
+      --asset-accent-dim:    rgba(255,159,67,.12);
+      --asset-accent-border: rgba(255,159,67,.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+
+    .shell { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 24px 24px 64px; }
+
+    /* ── Top Horizontal Navigation Framework ── */
+    .top-nav-framework {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 24px;
+    }
+    .nav-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-tab {
+      padding: 8px 14px; border-radius: 6px; border: 1px solid transparent;
+      background: transparent; color: var(--muted); font-family: var(--font-body);
+      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all .15s;
+    }
+    .nav-tab:hover { color: var(--text); background: rgba(255,255,255,.03); }
+    .nav-tab.active { color: var(--asset-accent); background: var(--asset-accent-dim); border-color: var(--asset-accent-border); font-weight: 600; }
+
+    .nav-actions { display: flex; gap: 10px; align-items: center; position: relative; }
+    .dropdown-container { position: relative; }
+
+    /* ── Buttons & UI Dropdowns ── */
+    .btn {
+      padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--card); color: var(--text); font-size: 12px; font-weight: 500;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .15s;
+    }
+    .btn:hover { border-color: var(--asset-accent); color: var(--asset-accent); }
+    .btn-accent { background: var(--asset-accent); color: #000 !important; border-color: var(--asset-accent); font-weight: 700; }
+    .btn-accent:hover { filter: brightness(1.1); }
+    
+    .dropdown-menu {
+      position: absolute; top: calc(100% + 6px); right: 0; background: var(--card);
+      border: 1px solid var(--border); border-radius: 8px; width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      display: none; flex-direction: column; z-index: 100; overflow: hidden;
+    }
+    .dropdown-menu.show { display: flex; }
+    .dropdown-item {
+      padding: 10px 14px; color: var(--text); font-size: 12px; text-decoration: none;
+      background: transparent; border: none; text-align: left; cursor: pointer; transition: background .12s;
+    }
+    .dropdown-item:hover { background: rgba(255,255,255,.04); color: var(--asset-accent); }
+
+    /* ── Hero section ── */
+    .asset-hero { display: flex; align-items: center; gap: 20px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .asset-hero-icon { font-size: 42px; background: var(--asset-accent-dim); border: 1px solid var(--asset-accent-border); border-radius: 14px; padding: 12px; flex-shrink: 0; }
+    .asset-hero-text h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); color: var(--asset-accent); font-style: italic; font-weight: 400; }
+    .asset-hero-text p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .asset-tagline { font-size: 14px; color: var(--text); margin-top: 10px; border-left: 3px solid var(--asset-accent); padding-left: 12px; max-width: 700px; }
+
+    /* ── Layout Panels ── */
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+    
+    .section-head { margin-bottom: 18px; }
+    .section-head h2 { font-family: var(--font-display); font-size: 22px; color: var(--asset-accent); font-style: italic; font-weight: 400; }
+    .tools-count { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; }
+
+    .calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .calc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .calc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .calc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .calc-app { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; font-weight: 700; background: var(--asset-accent-dim); color: var(--asset-accent); border: 1px solid var(--asset-accent-border); }
+    .models { display: flex; flex-wrap: wrap; gap: 6px; }
+    .model-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+    .guide-written { font-size: 13px; color: var(--muted); line-height: 1.55; border-left: 2px solid var(--border); padding-left: 12px; }
+    .guide-written strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+    .video-strip { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+    .video-strip:hover { border-color: var(--asset-accent); }
+    .video-thumb { width: 32px; height: 24px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--asset-accent); }
+    .video-meta { font-size: 11px; }
+    .video-meta span { display: block; color: var(--muted); font-size: 10px; }
+
+    /* ── Interactive Workspace Design ── */
+    .workspace-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-top: 12px; }
+    @media (max-width: 768px) { .workspace-layout { grid-template-columns: 1fr; } }
+    
+    .input-panel { display: flex; flex-direction: column; gap: 14px; }
+    .results-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--text); }
+    .input-wrapper { position: relative; display: flex; align-items: center; }
+    .input-prefix { position: absolute; left: 12px; font-family: var(--font-mono); color: var(--muted); font-size: 13px; pointer-events: none; }
+    .input-suffix { position: absolute; right: 12px; font-family: var(--font-mono); color: var(--muted); font-size: 13px; pointer-events: none; }
+    
+    .form-control {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      padding: 10px 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 14px; transition: border-color .15s;
+    }
+    .form-control:focus { outline: none; border-color: var(--asset-accent); }
+    .form-control.has-prefix { padding-left: 28px; }
+    .form-control.has-suffix { padding-right: 32px; }
+    
+    .results-title { font-family: var(--font-display); font-size: 18px; color: var(--asset-accent); font-style: italic; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .result-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.04); }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { font-size: 13px; color: var(--muted); }
+    .result-value { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--text); }
+    .result-value.highlight { color: var(--accent3); }
+    .result-value.negative { color: var(--accent4); }
+
+    /* ── Settings Modal ── */
+    .modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.8); backdrop-filter: blur(4px); }
+    .modal.open { display: flex; }
+    .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 480px; width: 100%; overflow: hidden; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .modal-head h3 { font-size: 15px; color: var(--asset-accent); font-family: var(--font-display); font-style: italic; font-size: 18px; }
+    .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── Print/Report Style ── */
+    @media print {
+      body { background: #fff; color: #000; }
+      .top-nav-framework, .input-panel, .btn, .video-strip { display: none !important; }
+      .workspace-layout { grid-template-columns: 1fr; border: none; background: transparent; }
+      .results-panel { background: transparent; border: 1px solid #000; color: #000; }
+      .result-value { color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="top-nav-framework">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('dashboard')" data-i18n="nav_dashboard">Dashboard</button>
+      <button class="nav-tab" onclick="switchTab('yield')" data-i18n="nav_yield">Rental Yield</button>
+      <button class="nav-tab" onclick="switchTab('gearing')" data-i18n="nav_gearing">Negative Gearing</button>
+      <button class="nav-tab" onclick="switchTab('stamp')" data-i18n="nav_stamp">Stamp Duty</button>
+      <button class="nav-tab" onclick="switchTab('compare')" data-i18n="nav_compare">Property vs Shares</button>
+      <button class="nav-tab" onclick="switchTab('growth')" data-i18n="nav_growth">Capital Growth</button>
+      <button class="nav-tab" onclick="switchTab('depreciation')" data-i18n="nav_depreciation">Depreciation</button>
+    </div>
+    
+    <div class="nav-actions">
+      <button class="btn" onclick="toggleLanguage()" id="langBtn" style="font-family: var(--font-mono);">EN</button>
+      
+      <div class="dropdown-container">
+        <button class="btn btn-accent" onclick="toggleDropdown('actionsMenu')" data-i18n="btn_actions">Actions ▾</button>
+        <div class="dropdown-menu" id="actionsMenu">
+          <button class="dropdown-item" onclick="exportData()" data-i18n="action_export_data">Export Data (JSON)</button>
+          <button class="dropdown-item" onclick="exportReport()" data-i18n="action_export_report">Export Report (Print)</button>
+          <button class="dropdown-item" onclick="openSettings()" data-i18n="action_settings">Global Settings</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div id="panel-dashboard" class="view-panel active">
+    <div class="asset-hero">
+      <div class="asset-hero-icon">🏡</div>
+      <div class="asset-hero-text">
+        <h1 data-i18n="hero_title">Real Property</h1>
+        <p data-i18n="hero_subtitle">Residential, commercial real estate & brick-and-mortar assets</p>
+        <p class="asset-tagline" data-i18n="hero_tagline">Australia's most beloved asset class — model the real numbers behind the emotion and know your yield before you buy.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2 data-i18n="tools_heading">Tools &amp; Calculators</h2>
+        <p class="tools-count" data-i18n="tools_count">6 tools operational</p>
+      </div>
+      
+      <div class="calc-grid">
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card1_title">Rental Yield Calculator</div>
+            <span class="calc-app asset-badge" data-i18n="badge_yield">Yield</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_annual_rent">Annual rent</span>
+            <span class="model-tag" data-i18n="tag_purchase_price">Purchase price</span>
+            <span class="model-tag" data-i18n="tag_gross_yield">Gross yield %</span>
+            <span class="model-tag" data-i18n="tag_net_yield">Net yield %</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide1">Gross yield = annual rent ÷ purchase price. Net yield deducts rates, insurance, management fees, and maintenance. A net yield below 3% in most Australian markets means negative gearing.</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('yield')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card2_title">Negative Gearing Model</div>
+            <span class="calc-app asset-badge" data-i18n="badge_tax">Tax</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_rental_income">Rental income</span>
+            <span class="model-tag" data-i18n="tag_interest_expense">Interest expense</span>
+            <span class="model-tag" data-i18n="tag_tax_saving">Tax saving</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide2">Calculate the annual tax saving from negative gearing at your marginal rate. Negative gearing is a tax deferral strategy — the deferred tax is recaptured as a CGT reduction when you sell.</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('gearing')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card3_title">Stamp Duty & Purchase Costs</div>
+            <span class="calc-app asset-badge" data-i18n="badge_costs">Costs</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_stamp_duty">State-based duty</span>
+            <span class="model-tag" data-i18n="tag_legal_fees">Legal fees</span>
+            <span class="model-tag" data-i18n="tag_upfront_cost">Total upfront cost</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide3">Stamp duty varies by state. Enter the purchase price and state to calculate the full upfront cost including duty, conveyancing, building inspection, and LMI (if LVR > 80%).</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('stamp')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card4_title">Property vs Shares Comparison</div>
+            <span class="calc-app asset-badge" data-i18n="badge_compare">Compare</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_after_tax">After-tax return</span>
+            <span class="model-tag" data-i18n="tag_leverage">Leverage effect</span>
+            <span class="model-tag" data-i18n="tag_risk_adj">Risk-adjusted</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide4">Compare the after-tax, after-cost return of a leveraged investment property against an equivalent investment in diversified shares. Factor in leverage, liquidity, and management time.</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('compare')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card5_title">Capital Growth Projector</div>
+            <span class="calc-app asset-badge" data-i18n="badge_growth">Growth</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_growth_rate">Growth rate %</span>
+            <span class="model-tag" data-i18n="tag_years_held">Years held</span>
+            <span class="model-tag" data-i18n="tag_future_value">Estimated value</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide5">Project future property value at assumed annual growth rates (conservative 4% / base 6% / optimistic 8%). Remember: growth is only realised on sale — it does not improve cashflow.</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('growth')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+
+        <article class="calc-card">
+          <div class="calc-top">
+            <div class="calc-title" data-i18n="card6_title">Depreciation Schedule Estimator</div>
+            <span class="calc-app asset-badge" data-i18n="badge_depr">Depreciation</span>
+          </div>
+          <div class="models">
+            <span class="model-tag" data-i18n="tag_div43">Building write-off</span>
+            <span class="model-tag" data-i18n="tag_div40">Plant & equipment</span>
+            <span class="model-tag" data-i18n="tag_annual_ded">Annual deduction</span>
+          </div>
+          <div class="guide-written">
+            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide6">Estimate Division 43 (building) and Division 40 (plant and equipment) deductions for a rental property. Post-2017 properties cannot claim depreciation on second-hand plant and equipment.</span>
+          </div>
+          <div class="calc-actions">
+            <button class="btn btn-accent" onclick="switchTab('depreciation')" style="width:100%; justify-content:center;" data-i18n="btn_open">Open Tool →</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-yield" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card1_title">Rental Yield Calculator</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="label_purchase_price">Purchase Price</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="y_price" value="650000" oninput="calcYield()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_weekly_rent">Weekly Rent</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="y_rent" value="550" oninput="calcYield()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_expenses">Annual Expenses (Rates, Fees, Insurances)</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="y_expenses" value="6200" oninput="calcYield()"></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="tag_annual_rent">Annual rent</span><span class="result-value" id="res_y_annRent">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_gross_yield">Gross Rental Yield</span><span class="result-value highlight" id="res_y_gross">0.00%</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_net_yield">Net Rental Yield</span><span class="result-value highlight" id="res_y_net">0.00%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-gearing" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card2_title">Negative Gearing Model</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="tag_annual_rent">Annual Rental Income</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="g_income" value="30000" oninput="calcGearing()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_loan_amount">Loan Outstanding Amount</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="g_loan" value="500000" oninput="calcGearing()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_interest_rate">Interest Rate</label>
+          <div class="input-wrapper"><input type="number" step="0.01" class="form-control has-suffix" id="g_rate" value="6.2" oninput="calcGearing()"><span class="input-suffix">%</span></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_other_costs">Other Annual Deductible Costs</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="g_costs" value="5000" oninput="calcGearing()"></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="tag_interest_expense">Annual Interest Expense</span><span class="result-value" id="res_g_interest">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_taxable_diff">Net Taxable Profit/Loss</span><span class="result-value" id="res_g_taxProfit">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_estimated_saving">Estimated Annual Tax Saving</span><span class="result-value highlight" id="res_g_saving">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_out_of_pocket">Net Out-of-Pocket Cashflow</span><span class="result-value" id="res_g_cashflow">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-stamp" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card3_title">Stamp Duty & Purchase Costs</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="tag_purchase_price">Purchase Price</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="s_price" value="750000" oninput="calcStamp()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_state">Australian State / Territory</label>
+          <select class="form-control" id="s_state" onchange="calcStamp()">
+            <option value="NSW">New South Wales (NSW)</option>
+            <option value="VIC">Victoria (VIC)</option>
+            <option value="QLD">Queensland (QLD)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_legal_fees">Estimated Legal/Conveyancing Fees</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="s_legal" value="1800" oninput="calcStamp()"></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="label_calc_stamp">Calculated Stamp Duty</span><span class="result-value" id="res_s_duty">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_trans_fees">Transfer & Registration Fees</span><span class="result-value" id="res_s_fees">$250</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="tag_upfront_cost">Total Upfront Capital Required</span><span class="result-value highlight" id="res_s_total">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-compare" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card4_title">Property vs Shares Comparison</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="label_init_cap">Available Initial Capital</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="c_cap" value="150000" oninput="calcCompare()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_prop_growth">Assumed Property Growth Rate</label>
+          <div class="input-wrapper"><input type="number" class="form-control has-suffix" id="c_p_growth" value="5.5" oninput="calcCompare()"><span class="input-suffix">%</span></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_share_growth">Assumed Shares Capital Growth</label>
+          <div class="input-wrapper"><input type="number" class="form-control has-suffix" id="c_s_growth" value="8.0" oninput="calcCompare()"><span class="input-suffix">%</span></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_comp_years">Investment Period Horizon</label>
+          <div class="input-wrapper"><input type="number" class="form-control has-suffix" id="c_years" value="10" oninput="calcCompare()"><span class="input-suffix">Yrs</span></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="label_prop_end">Leveraged Property Value (5x Leverage)</span><span class="result-value" id="res_c_prop">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_share_end">Unleveraged Shares Value (1x Leverage)</span><span class="result-value" id="res_c_shares">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_leveraged_advantage">Leverage Multiplier Dynamic Advantage</span><span class="result-value highlight" id="res_c_diff">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-growth" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card5_title">Capital Growth Projector</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="tag_purchase_price">Current Purchase Price / Value</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="grow_price" value="500000" oninput="calcGrowth()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_grow_years">Target Holding Period</label>
+          <div class="input-wrapper"><input type="number" class="form-control has-suffix" id="grow_years" value="10" oninput="calcGrowth()"><span class="input-suffix">Yrs</span></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="label_growth_cons">Conservative Performance (4% p.a.)</span><span class="result-value" id="res_grow_4">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_growth_base">Base Case Outlook Scenario (6% p.a.)</span><span class="result-value highlight" id="res_grow_6">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_growth_opt">Optimistic Performance (8% p.a.)</span><span class="result-value" id="res_grow_8">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-depreciation" class="view-panel">
+    <div class="section-head">
+      <h2 data-i18n="card6_title">Depreciation Schedule Estimator</h2>
+    </div>
+    <div class="workspace-layout">
+      <div class="input-panel">
+        <div class="form-group">
+          <label data-i18n="label_build_cost">Estimated Building Construction Cost</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="d_cost" value="320000" oninput="calcDepreciation()"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_plant_val">Fixtures, Plant & Equipment Value Assets</label>
+          <div class="input-wrapper"><span class="input-prefix">$</span><input type="number" class="form-control has-prefix" id="d_plant" value="40000" oninput="calcDepreciation()"></div>
+        </div>
+      </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="results_summary">Analysis Summary</div>
+        <div class="result-row"><span class="result-label" data-i18n="label_div43_claim">Div 43 Capital Works Claims Allowance (2.5%)</span><span class="result-value" id="res_d_div43">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_div40_claim">Div 40 Plant Deductions Estimate (Year 1 Diminishing)</span><span class="result-value" id="res_d_div40">$0</span></div>
+        <div class="result-row"><span class="result-label" data-i18n="label_total_depr_claim">Total Estimated First Year Claim Allocation</span><span class="result-value highlight" id="res_d_total">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal" id="settingsModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 data-i18n="modal_settings_title">Global Regulatory Settings</h3>
+      <button class="modal-close" type="button" onclick="closeSettings()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label data-i18n="setting_tax_rate">Investor Marginal Tax Rate Allocation</label>
+        <div class="input-wrapper">
+          <input type="number" class="form-control has-suffix" id="set_tax_rate" value="37.0">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <button class="btn btn-accent" style="width:100%; justify-content:center;" onclick="saveSettings()" data-i18n="btn_save_settings">Apply Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ═══════════════════════════════════════════════════════════
+     Dual-Language Engine Localization Dictionary
+     ═══════════════════════════════════════════════════════════ */
+  const TRANSLATIONS = {
+    en: {
+      nav_dashboard: "Dashboard", nav_yield: "Rental Yield", nav_gearing: "Negative Gearing",
+      nav_stamp: "Stamp Duty", nav_compare: "Property vs Shares", nav_growth: "Capital Growth", nav_depreciation: "Depreciation",
+      btn_actions: "Actions ▾", action_export_data: "Export Data (JSON)", action_export_report: "Export Report (Print)",
+      action_settings: "Global Settings", hero_title: "Real Property", hero_subtitle: "Residential, commercial real estate & brick-and-mortar assets",
+      hero_tagline: "Australia's most beloved asset class — model the real numbers behind the emotion and know your yield before you buy.",
+      tools_heading: "Tools & Calculators", tools_count: "6 tools operational",
+      card1_title: "Rental Yield Calculator", badge_yield: "Yield", quick_guide: "Quick guide",
+      guide1: "Gross yield = annual rent ÷ purchase price. Net yield deducts rates, insurance, management fees, and maintenance. A net yield below 3% in most Australian markets means negative gearing.",
+      card2_title: "Negative Gearing Model", badge_tax: "Tax",
+      guide2: "Calculate the annual tax saving from negative gearing at your marginal rate. Negative gearing is a tax deferral strategy — the deferred tax is recaptured as a CGT reduction when you sell.",
+      card3_title: "Stamp Duty & Purchase Costs", badge_costs: "Costs",
+      guide3: "Stamp duty varies by state. Enter the purchase price and state to calculate the full upfront cost including duty, conveyancing, building inspection, and LMI (if LVR > 80%).",
+      card4_title: "Property vs Shares Comparison", badge_compare: "Compare",
+      guide4: "Compare the after-tax, after-cost return of a leveraged investment property against an equivalent investment in diversified shares. Factor in leverage, liquidity, and management time.",
+      card5_title: "Capital Growth Projector", badge_growth: "Growth",
+      guide5: "Project future property value at assumed annual growth rates (conservative 4% / base 6% / optimistic 8%). Remember: growth is only realised on sale — it does not improve cashflow.",
+      card6_title: "Depreciation Schedule Estimator", badge_depr: "Depreciation",
+      guide6: "Estimate Division 43 (building) and Division 40 (plant and equipment) deductions for a rental property. Post-2017 properties cannot claim depreciation on second-hand plant and equipment.",
+      btn_open: "Open Tool →", results_summary: "Analysis Summary", tag_annual_rent: "Annual rent", tag_purchase_price: "Purchase price",
+      tag_gross_yield: "Gross yield %", tag_net_yield: "Net yield %", label_purchase_price: "Purchase Price", label_weekly_rent: "Weekly Rent",
+      label_expenses: "Annual Expenses (Rates, Fees, Insurances)", label_gross_yield: "Gross Rental Yield", label_net_yield: "Net Rental Yield",
+      tag_rental_income: "Rental income", tag_interest_expense: "Interest expense", tag_tax_saving: "Tax saving", label_loan_amount: "Loan Outstanding Amount",
+      label_interest_rate: "Interest Rate", label_other_costs: "Other Annual Deductible Costs", label_taxable_diff: "Net Taxable Profit/Loss",
+      label_estimated_saving: "Estimated Annual Tax Saving", label_out_of_pocket: "Net Out-of-Pocket Cashflow", tag_stamp_duty: "State-based duty",
+      tag_legal_fees: "Legal fees", tag_upfront_cost: "Total upfront cost", label_state: "Australian State / Territory", label_legal_fees: "Estimated Legal/Conveyancing Fees",
+      label_calc_stamp: "Calculated Stamp Duty", label_trans_fees: "Transfer & Registration Fees", tag_upfront_cost: "Total Upfront Capital Required",
+      tag_after_tax: "After-tax return", tag_leverage: "Leverage effect", tag_risk_adj: "Risk-adjusted", label_init_cap: "Available Initial Capital",
+      label_prop_growth: "Assumed Property Growth Rate", label_share_growth: "Assumed Shares Capital Growth", label_comp_years: "Investment Period Horizon",
+      label_prop_end: "Leveraged Property Value (5x Leverage)", label_share_end: "Unleveraged Shares Value (1x Leverage)", label_leveraged_advantage: "Leverage Multiplier Dynamic Advantage",
+      tag_growth_rate: "Growth rate %", tag_years_held: "Years held", tag_future_value: "Estimated value", label_grow_years: "Target Holding Period",
+      label_growth_cons: "Conservative Performance (4% p.a.)", label_growth_base: "Base Case Outlook Scenario (6% p.a.)", label_growth_opt: "Optimistic Performance (8% p.a.)",
+      tag_div43: "Building write-off", tag_div40: "Plant & equipment", tag_annual_ded: "Annual deduction", label_build_cost: "Estimated Building Construction Cost",
+      label_plant_val: "Fixtures, Plant & Equipment Value Assets", label_div43_claim: "Div 43 Capital Works Claims Allowance (2.5%)",
+      label_div40_claim: "Div 40 Plant Deductions Estimate (Year 1 Diminishing)", label_total_depr_claim: "Total Estimated First Year Claim Allocation",
+      modal_settings_title: "Global Regulatory Settings", setting_tax_rate: "Investor Marginal Tax Rate Allocation", btn_save_settings: "Apply Changes"
+    },
+    vi: {
+      nav_dashboard: "Tổng Quan", nav_yield: "Tỷ Suất Cho Thuê", nav_gearing: "Khấu Trừ Thuế Thua Lỗ",
+      nav_stamp: "Thuế Trước Bạ", nav_compare: "So Sánh BĐS vs Chứng Khoán", nav_growth: "Tăng Trưởng Vốn", nav_depreciation: "Khấu Hao Tài Sản",
+      btn_actions: "Hành Động ▾", action_export_data: "Xuất Dữ Liệu (JSON)", action_export_report: "In Báo Cáo",
+      action_settings: "Cài Đặt Hệ Thống", hero_title: "Bất Động Sản", hero_subtitle: "Bất động sản nhà ở, thương mại & tài sản hữu hình",
+      hero_tagline: "Phân tích các con số thực tế đằng sau cảm xúc đầu tư để xác định chính xác lợi nhuận thực tế trước khi xuống tiền.",
+      tools_heading: "Công Cụ & Máy Tính Phân Tích", tools_count: "6 công cụ hoàn chỉnh",
+      card1_title: "Máy Tính Tỷ Suất Lợi Nhuận Cho Thuê", badge_yield: "Lợi Nhuận", quick_guide: "Hướng dẫn nhanh",
+      guide1: "Tỷ suất gộp = Tiền thuê hàng năm ÷ Giá mua. Tỷ suất ròng trừ đi thuế đất, bảo hiểm, phí quản lý và bảo trì. Tỷ suất ròng dưới 3% hiển thị trạng thái âm dòng tiền.",
+      card2_title: "Mô Hình Khấu Trừ Thuế Thua Lỗ (Negative Gearing)", badge_tax: "Thuế",
+      guide2: "Tính toán số tiền tiết kiệm thuế hàng năm từ chiến lược lỗ tài chính đầu tư dựa trên mức thuế biên của bạn. Khoản thuế hoãn lại này tối ưu hóa dòng tiền mặt.",
+      card3_title: "Thuế Trước Bạ & Chi Phí Mua", badge_costs: "Chi Phí",
+      guide3: "Thuế trước bạ thay đổi theo từng bang tại Úc. Nhập giá mua và tên bang để tính toán toàn bộ chi phí trả trước bao gồm phí luật sư và phí đăng ký tài sản công.",
+      card4_title: "So Sánh Bất Động Sản vs Chứng Khoán", badge_compare: "So Sánh",
+      guide4: "So sánh hiệu suất lợi nhuận sau thuế của danh mục bất động sản có sử dụng đòn bẩy tài chính so với danh mục cổ phiếu đa dạng hóa tự thân.",
+      card5_title: "Dự Kiến Tốc Độ Tăng Trưởng Vốn", badge_growth: "Tăng Trưởng",
+      guide5: "Mô phỏng giá trị tương lai dựa trên các kịch bản tăng trưởng tài sản hàng năm (Thận trọng 4% / Cơ bản 6% / Tối ưu 8%). Lợi nhuận chỉ hiện thực hóa khi bán.",
+      card6_title: "Ước Tính Khấu Hao Tài Sản Cố Định", badge_depr: "Khấu Hao",
+      guide6: "Tính toán hạn mức khấu hao công trình (Division 43) và trang thiết bị nội thất (Division 40) để tối ưu nghĩa vụ khai thuế thu nhập đầu tư.",
+      btn_open: "Mở Công Cụ →", results_summary: "Tóm Tắt Kết Quả Phân Tích", tag_annual_rent: "Thu nhập thuê năm", tag_purchase_price: "Giá trị mua",
+      tag_gross_yield: "Tỷ suất gộp %", tag_net_yield: "Tỷ suất ròng %", label_purchase_price: "Giá Mua Bất Động Sản", label_weekly_rent: "Tiền Thuê Mỗi Tuần",
+      label_expenses: "Chi Phí Vận Hành Năm (Thuế, Phí Quản Lý, Bảo Hiểm)", label_gross_yield: "Tỷ Suất Lợi Nhuận Cho Thuê Gộp", label_net_yield: "Tỷ Suất Lợi Nhuận Cho Thuê Ròng",
+      tag_rental_income: "Doanh thu thuê", tag_interest_expense: "Chi phí lãi vay", tag_tax_saving: "Tiết kiệm thuế", label_loan_amount: "Tổng Dư Nợ Gốc Vay",
+      label_interest_rate: "Lãi Suất Vay Năm", label_other_costs: "Chi Phí Vận Hành Khác Được Trừ Thuế", label_taxable_diff: "Thu Nhập Chịu Thuế Ròng (Lỗ/Lời)",
+      label_estimated_saving: "Số Tiền Thuế Tiết Kiệm Được Hàng Năm", label_out_of_pocket: "Dòng Tiền Mặt Thực Tế Sau Thuế", tag_stamp_duty: "Thuế trước bạ bang",
+      tag_legal_fees: "Phí luật sư", tag_upfront_cost: "Tổng vốn ban đầu", label_state: "Bang / Vùng Lãnh Thổ Úc", label_legal_fees: "Chi Phí Luật Sư & Công Chứng",
+      label_calc_stamp: "Thuế Trước Bạ Phải Nộp", label_trans_fees: "Lệ Phí Chuyển Nhượng & Đăng Ký Địa Chính", tag_upfront_cost: "Tổng Số Vốn Mặt Trả Trước Cần Thiết",
+      tag_after_tax: "Lợi nhuận sau thuế", tag_leverage: "Hiệu ứng đòn bẩy", tag_risk_adj: "Rủi ro điều chỉnh", label_init_cap: "Vốn Tự Có Sẵn Có Ban Đầu",
+      label_prop_growth: "Tỷ Lệ Tăng Trưởng BĐS Kỳ Vọng", label_share_growth: "Tỷ Lệ Tăng Trưởng Chứng Khoán Kỳ Vọng", label_comp_years: "Thời Gian Đầu Tư Dự Kiến",
+      label_prop_end: "Giá Trị BĐS Có Đòn Bẩy (Tỷ Lệ LVR 5x)", label_share_end: "Giá Trị Danh Mục Chứng Khoán (Không Đòn Bẩy)", label_leveraged_advantage: "Lợi Thế Giá Trị Gia Tăng Từ Đòn Bẩy",
+      tag_growth_rate: "Tỷ lệ tăng trưởng", tag_years_held: "Số năm nắm giữ", tag_future_value: "Giá trị ước tính", label_grow_years: "Số Năm Đầu Tư Mục Tiêu",
+      label_growth_cons: "Kịch Bản Thận Trọng (4% mỗi năm)", label_growth_base: "Kịch Bản Cơ Bản Kỳ Vọng (6% mỗi năm)", label_growth_opt: "Kịch Bản Tối Ưu Phát Triển (8% mỗi năm)",
+      tag_div43: "Khấu hao phần thô", tag_div40: "Khấu hao nội thất", tag_annual_ded: "Khấu hao tổng năm", label_build_cost: "Chi Phí Xây Dựng Phần Thô Ước Tính",
+      label_plant_val: "Giá Trị Máy Móc, Thiết Bị & Tiện Nghi", label_div43_claim: "Khấu Hao Công Trình Xây Dựng Div 43 (Hạn mức 2.5%)",
+      label_div40_claim: "Khấu Hao Thiết Bị Khấu Trừ Div 40 (Năm đầu tiên)", label_total_depr_claim: "Tổng Hạn Mức Khấu Hao Khai Thuế Năm Đầu Tiên",
+      modal_settings_title: "Cài Đặt Tham Số Thuế Điều Hành", setting_tax_rate: "Mức Thuế Thu Nhập Biên Của Nhà Đầu Tư", btn_save_settings: "Áp Dụng Thay Đổi"
+    }
+  };
+
+  let currentLang = 'en';
+  let globalMarginalTaxRate = 0.37; // Default Australian 37% tax bracket
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'vi' : 'en';
+    document.getElementById('langBtn').textContent = currentLang.toUpperCase();
+    applyLocalization();
+  }
+
+  function applyLocalization() {
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      if (TRANSLATIONS[currentLang][key]) {
+        element.textContent = TRANSLATIONS[currentLang][key];
+      }
+    });
+    // Trigger redraws across all calculation systems to update currencies/suffixes dynamically
+    executeAllCalculations();
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     Navigation and Action Controller Layout Engine
+     ═══════════════════════════════════════════════════════════ */
+  function switchTab(tabId) {
+    document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    
+    document.getElementById(`panel-${tabId}`).classList.add('active');
+    
+    // Highlight correct tab link layout
+    const tabs = document.querySelectorAll('.nav-tab');
+    tabs.forEach(tab => {
+      if (tab.getAttribute('onclick').includes(`'${tabId}'`)) {
+        tab.classList.add('active');
+      }
+    });
+
+    executeAllCalculations();
+  }
+
+  function toggleDropdown(id) {
+    const menu = document.getElementById(id);
+    menu.classList.toggle('show');
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.btn-accent')) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+    }
+  }
+
+  function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
+  function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+  function saveSettings() {
+    const inputTax = parseFloat(document.getElementById('set_tax_rate').value);
+    globalMarginalTaxRate = (isNaN(inputTax) ? 37 : inputTax) / 100;
+    closeSettings();
+    executeAllCalculations();
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     Core Mathematical Financial Calculators
+     ═══════════════════════════════════════════════════════════ */
+  function formatCurrency(v) {
+    return '$' + Math.round(v).toLocaleString();
+  }
+
+  function executeAllCalculations() {
+    calcYield();
+    calcGearing();
+    calcStamp();
+    calcCompare();
+    calcGrowth();
+    calcDepreciation();
+  }
+
+  // 1. Rental Yield Mechanics
+  function calcYield() {
+    const price = parseFloat(document.getElementById('y_price').value) || 0;
+    const rent = parseFloat(document.getElementById('y_rent').value) || 0;
+    const expenses = parseFloat(document.getElementById('y_expenses').value) || 0;
+
+    const annualRent = rent * 52;
+    const grossYield = price > 0 ? (annualRent / price) * 100 : 0;
+    const netYield = price > 0 ? ((annualRent - expenses) / price) * 100 : 0;
+
+    document.getElementById('res_y_annRent').textContent = formatCurrency(annualRent);
+    document.getElementById('res_y_gross').textContent = grossYield.toFixed(2) + '%';
+    document.getElementById('res_y_net').textContent = netYield.toFixed(2) + '%';
+  }
+
+  // 2. Negative Gearing Architecture
+  function calcGearing() {
+    const income = parseFloat(document.getElementById('g_income').value) || 0;
+    const loan = parseFloat(document.getElementById('g_loan').value) || 0;
+    const rate = parseFloat(document.getElementById('g_rate').value) || 0;
+    const costs = parseFloat(document.getElementById('g_costs').value) || 0;
+
+    const annualInterest = loan * (rate / 100);
+    const totalDeductions = annualInterest + costs;
+    const netTaxablePos = income - totalDeductions;
+    
+    let taxSaving = 0;
+    if (netTaxablePos < 0) {
+      taxSaving = Math.abs(netTaxablePos) * globalMarginalTaxRate;
+    }
+
+    const outOfPocketCashflow = netTaxablePos + taxSaving;
+
+    document.getElementById('res_g_interest').textContent = formatCurrency(annualInterest);
+    
+    const profitEl = document.getElementById('res_g_taxProfit');
+    profitEl.textContent = formatCurrency(netTaxablePos);
+    profitEl.className = netTaxablePos < 0 ? "result-value negative" : "result-value highlight";
+
+    document.getElementById('res_g_saving').textContent = formatCurrency(taxSaving);
+    
+    const cashEl = document.getElementById('res_g_cashflow');
+    cashEl.textContent = formatCurrency(outOfPocketCashflow);
+    cashEl.className = outOfPocketCashflow < 0 ? "result-value negative" : "result-value highlight";
+  }
+
+  // 3. Stamp Duty & Purchase Framework (Realistic tiered structures)
+  function calcStamp() {
+    const price = parseFloat(document.getElementById('s_price').value) || 0;
+    const state = document.getElementById('s_state').value;
+    const legal = parseFloat(document.getElementById('s_legal').value) || 0;
+    let duty = 0;
+
+    if (state === 'NSW') {
+      // Standard NSW residential investment scale approximation
+      if (price <= 31000) duty = price * 0.0125;
+      else if (price <= 93000) duty = 387 + (price - 31000) * 0.015;
+      else if (price <= 351000) duty = 1317 + (price - 93000) * 0.0175;
+      else if (price <= 1168000) duty = 5832 + (price - 351000) * 0.035;
+      else duty = 34427 + (price - 1168000) * 0.045;
+    } else if (state === 'VIC') {
+      // Standard VIC scale approximation
+      if (price <= 25000) duty = price * 0.014;
+      else if (price <= 130000) duty = 350 + (price - 25000) * 0.024;
+      else if (price <= 960000) duty = 2870 + (price - 130000) * 0.06;
+      else duty = price * 0.055;
+    } else {
+      // QLD safe baseline general calculation flat rate estimation
+      duty = price * 0.038;
+    }
+
+    const totalCost = price + duty + legal + 250;
+
+    document.getElementById('res_s_duty').textContent = formatCurrency(duty);
+    document.getElementById('res_s_total').textContent = formatCurrency(totalCost);
+  }
+
+  // 4. Property vs Shares Comparison Engine
+  function calcCompare() {
+    const capital = parseFloat(document.getElementById('c_cap').value) || 0;
+    const pGrowth = parseFloat(document.getElementById('c_p_growth').value) || 0;
+    const sGrowth = parseFloat(document.getElementById('c_s_growth').value) || 0;
+    const years = parseFloat(document.getElementById('c_years').value) || 0;
+
+    // Leveraged property portfolio modeling logic (Assume standard 5x leverage deployment factor)
+    const propertyInitialAssetValue = capital * 5; 
+    const finalPropertyValue = propertyInitialAssetValue * Math.pow(1 + (pGrowth / 100), years);
+    const propertyNetPosition = finalPropertyValue - (propertyInitialAssetValue - capital);
+
+    // Unleveraged Shares position modeling logic
+    const finalSharesValue = capital * Math.pow(1 + (sGrowth / 100), years);
+
+    document.getElementById('res_c_prop').textContent = formatCurrency(propertyNetPosition);
+    document.getElementById('res_c_shares').textContent = formatCurrency(finalSharesValue);
+    
+    const diff = propertyNetPosition - finalSharesValue;
+    const diffEl = document.getElementById('res_c_diff');
+    diffEl.textContent = formatCurrency(diff);
+    diffEl.className = diff >= 0 ? "result-value highlight" : "result-value negative";
+  }
+
+  // 5. Compound Capital Growth Projector
+  function calcGrowth() {
+    const price = parseFloat(document.getElementById('grow_price').value) || 0;
+    const years = parseFloat(document.getElementById('grow_years').value) || 0;
+
+    const c4 = price * Math.pow(1 + 0.04, years);
+    const b6 = price * Math.pow(1 + 0.06, years);
+    const o8 = price * Math.pow(1 + 0.08, years);
+
+    document.getElementById('res_grow_4').textContent = formatCurrency(c4);
+    document.getElementById('res_grow_6').textContent = formatCurrency(b6);
+    document.getElementById('res_grow_8').textContent = formatCurrency(o8);
+  }
+
+  // 6. Depreciation Schedule Engine
+  function calcDepreciation() {
+    const buildCost = parseFloat(document.getElementById('d_cost').value) || 0;
+    const plantValue = parseFloat(document.getElementById('d_plant').value) || 0;
+
+    const div43 = buildCost * 0.025; // Standard 2.5% p.a. capital works rate
+    const div40 = plantValue * 0.15; // Estimated safe baseline diminishing value first year allocation rate
+
+    document.getElementById('res_d_div43').textContent = formatCurrency(div43);
+    document.getElementById('res_d_div40').textContent = formatCurrency(div40);
+    document.getElementById('res_d_total').textContent = formatCurrency(div43 + div40);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     Data Serialization & Export Infrastructure Actions
+     ═══════════════════════════════════════════════════════════ */
+  function exportData() {
+    const dataMetrics = {
+      timestamp: new Date().toISOString(),
+      taxSettings: { globalMarginalTaxRatePercent: globalMarginalTaxRate * 100 },
+      inputs: {
+        yieldCalc: { price: document.getElementById('y_price').value, rent: document.getElementById('y_rent').value },
+        gearingCalc: { loan: document.getElementById('g_loan').value, interestRate: document.getElementById('g_rate').value },
+        stampDutyCalc: { price: document.getElementById('s_price').value, state: document.getElementById('s_state').value }
+      }
+    };
+    
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataMetrics, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "Property_Financial_Model_Data.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  }
+
+  function exportReport() {
+    window.print();
+  }
+
+  // Initialize calculations on DOM ready
+  document.addEventListener("DOMContentLoaded", function() {
+    executeAllCalculations();
+  });
+</script>
+</body>
+</html>
