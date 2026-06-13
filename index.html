@@ -6,7 +6,11 @@
   <title>Financial Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
+    /* ═══════════════════════════════════════════════════════════
+       Embedded hub.css — Shared Global Design Token Architecture
+       ═══════════════════════════════════════════════════════════ */
     :root {
       --bg:      #0a0c10;
       --surface: #111318;
@@ -25,8 +29,10 @@
       --font-mono:    'DM Mono', monospace;
       --radius: 12px;
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -36,224 +42,167 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
+
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
       opacity: .4;
     }
-    .shell { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 40px 24px 96px; }
 
-    /* ── Header ── */
-    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
-    .brand h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 400; font-style: italic; color: var(--accent); line-height: 1.1; }
-    .brand p { color: var(--muted); margin-top: 6px; font-size: 13px; }
-    .header-actions { display: flex; gap: 10px; padding-top: 6px; }
+    .shell { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 48px 24px 96px; }
+
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 48px; flex-wrap: wrap; }
+    .brand h1 { font-family: var(--font-display); font-size: clamp(32px, 5vw, 48px); font-weight: 400; font-style: italic; color: var(--accent); line-height: 1.1; }
+    .brand p { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 520px; }
+    .header-actions { display: flex; gap: 12px; padding-top: 8px; }
+
     .btn {
       background: var(--surface); border: 1px solid var(--border); color: var(--text);
-      font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 9px 16px;
+      font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 10px 18px;
       border-radius: 8px; cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; gap: 8px;
     }
     .btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.04); }
 
-    /* ── App & Asset Strips ── */
-    .strip-wrap { position: relative; margin-bottom: 24px; }
-    .strip { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
-    .strip::-webkit-scrollbar { display: none; }
+    /* Horizontal Carousel Strip Framework */
+    .app-strip-wrap { position: relative; margin-bottom: 32px; }
+    .app-strip { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
+    .app-strip::-webkit-scrollbar { display: none; }
+    
     .app-card {
-      flex: 0 0 260px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 18px; text-decoration: none; color: inherit;
-      display: flex; gap: 14px; align-items: flex-start; transition: all .2s ease;
+      flex: 0 0 280px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; text-decoration: none; color: inherit;
+      display: flex; gap: 16px; align-items: flex-start; transition: all .2s ease;
     }
     .app-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-    .app-card .icon { font-size: 26px; background: var(--surface); padding: 10px; border-radius: 10px; border: 1px solid var(--border); line-height: 1; flex-shrink: 0; }
-    .app-card strong { display: block; font-size: 14px; color: var(--text); transition: color .2s; }
+    .app-card .icon { font-size: 28px; background: var(--surface); padding: 10px; border-radius: 10px; border: 1px solid var(--border); line-height: 1; }
+    .app-card strong { display: block; font-size: 15px; color: var(--text); transition: color .2s; }
     .app-card:hover strong { color: var(--accent); }
-    .app-card span { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; line-height: 1.4; }
-    .strip-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
-    .strip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all .2s; }
-    .strip-dot.active { background: var(--accent); transform: scale(1.3); }
+    .app-card span { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.4; }
 
-    /* ── Asset Icon Strip ── */
-    #asset-strip { gap: 10px; }
+    .app-strip-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+    .app-strip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all .2s; }
+    .app-strip-dot.active { background: var(--accent); transform: scale(1.3); }
+
+    /* ── Minimized Layout For Asset Classes Strip ── */
+    #asset-strip { gap: 12px; padding-bottom: 8px; }
     #asset-strip .app-card {
-      flex: 0 0 100px; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 14px 8px; gap: 7px; border-radius: 10px;
-      cursor: pointer;
+      flex: 0 0 calc(11.11% - 11px); min-width: 108px; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; padding: 16px 8px; gap: 8px;
     }
-    #asset-strip .app-card.selected { border-color: var(--accent); background: rgba(200,169,110,0.05); }
+    @media (max-width: 1024px) { #asset-strip .app-card { flex: 0 0 110px; } }
     #asset-strip .app-card .icon {
-      font-size: 22px; padding: 0; width: 40px; height: 40px; border-radius: 50%;
+      font-size: 24px; padding: 0; width: 44px; height: 44px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center; margin: 0 auto;
     }
-    #asset-strip .app-card strong { font-size: 11px; line-height: 1.2; }
+    #asset-strip .app-card strong { font-size: 12px; text-align: center; font-weight: 500; line-height: 1.2; }
     #asset-strip .app-card span { display: none !important; }
 
-    /* ══════════════════════════════════════════════════════════
-       OBSERVATORY — Improved 2D Map Section
-       ══════════════════════════════════════════════════════════ */
-    .observatory {
+    /* ── Global 2D Asset Dominance Observatory Layout ── */
+    .observatory-section {
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-      padding: 24px; margin-bottom: 44px; position: relative;
+      padding: 28px; margin-bottom: 48px; position: relative;
     }
-    .obs-head {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+    .observatory-head { text-align: center; margin-bottom: 16px; }
+    .observatory-head h2 { font-family: var(--font-display); font-size: 26px; font-style: italic; color: var(--accent); font-weight: 400; }
+    .observatory-head p { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    
+    .observatory-grid { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 24px; 
+      margin-top: 24px; 
     }
-    .obs-title-block h2 {
-      font-family: var(--font-display); font-size: 22px; font-style: italic;
-      color: var(--accent); font-weight: 400;
+    
+    .map-viewport {
+      position: relative; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      background: #0d1017;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      height: 380px; 
+      overflow: hidden; 
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
     }
-    .obs-title-block p { color: var(--muted); font-size: 12px; margin-top: 4px; }
-    .obs-total {
-      text-align: right; background: var(--card); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 16px;
+    #mapCanvas { width: 100%; height: 100%; display: block; }
+    .map-hint { position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; font-size: 11px; color: var(--muted); letter-spacing: 0.5px; pointer-events: none; }
+    
+    .dominance-metrics { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+      gap: 10px; 
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 12px;
     }
-    .obs-total-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
-    .obs-total-value { font-family: var(--font-mono); font-size: 20px; color: var(--accent); font-weight: 500; }
-    .obs-total-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    @media (max-width: 520px) { .dominance-metrics { grid-template-columns: 1fr; } }
 
-    /* Map container */
-    .obs-map-wrap {
-      position: relative; border-radius: 10px; overflow: hidden;
-      background: #0b0e14; border: 1px solid var(--border);
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+    .dom-row {
+      display: flex; flex-direction: column; gap: 4px; padding: 8px 12px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      cursor: pointer; transition: all .2s ease;
     }
-    #mapCanvas { display: block; width: 100%; }
+    .dom-row:hover, .dom-row.active { border-color: var(--accent); background: rgba(255,255,255,0.02); transform: translateY(-2px); }
+    .dom-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+    .dom-title-wrap { display: flex; align-items: center; gap: 6px; }
+    .dom-title { font-weight: 500; color: var(--text); }
+    .dom-value { font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
+    .dom-track { height: 4px; background: var(--surface); border-radius: 2px; overflow: hidden; position: relative; }
+    .dom-fill { height: 100%; border-radius: 2px; width: 0%; transition: width 0.8s cubic-bezier(0.1, 0.8, 0.2, 1); }
 
-    /* Map tooltip */
-    .map-tooltip {
-      position: absolute; background: rgba(10,12,16,0.95); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 14px; pointer-events: none; transition: opacity .15s;
-      font-size: 12px; white-space: nowrap; z-index: 10; opacity: 0;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    }
-    .map-tooltip.visible { opacity: 1; }
-    .tt-name { font-weight: 600; color: var(--text); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
-    .tt-row { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); }
-    .tt-val { font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
-
-    /* Map controls */
-    .map-controls {
-      position: absolute; bottom: 12px; right: 12px; display: flex; gap: 6px;
-    }
-    .map-ctrl-btn {
-      background: rgba(10,12,16,0.85); border: 1px solid var(--border); color: var(--muted);
-      width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 14px;
-      display: flex; align-items: center; justify-content: center; transition: all .2s;
-      font-family: var(--font-mono);
-    }
-    .map-ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .map-hint-bar {
-      position: absolute; bottom: 12px; left: 12px;
-      font-size: 10px; color: var(--muted); letter-spacing: 0.4px;
-      background: rgba(10,12,16,0.7); padding: 4px 8px; border-radius: 4px;
-    }
-
-    /* ── Map Legend (colour key) ── */
-    .obs-legend {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
-    }
-    .legend-item {
-      display: flex; align-items: center; gap: 6px; padding: 5px 10px;
-      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-      cursor: pointer; transition: all .2s; font-size: 11px;
-    }
-    .legend-item:hover, .legend-item.active { border-color: currentColor; background: rgba(255,255,255,0.03); }
-    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .legend-name { color: var(--muted); }
-    .legend-amt { font-family: var(--font-mono); font-weight: 500; margin-left: 2px; }
-
-    /* ── Allocation Bars ── */
-    .obs-bars-section { margin-top: 20px; }
-    .obs-bars-head {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
-    }
-    .bars-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
-    }
-    .bar-row {
-      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
-      padding: 10px 12px; cursor: pointer; transition: all .2s;
-    }
-    .bar-row:hover, .bar-row.active { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-    .bar-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .bar-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; }
-    .bar-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .bar-amount { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
-    .bar-pct { font-size: 9px; color: var(--muted); margin-left: 3px; }
-    .bar-track { height: 3px; background: rgba(255,255,255,0.04); border-radius: 2px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 2px; transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1); width: 0; }
-
-    /* ── Donut Summary ── */
-    .obs-summary-wrap {
-      display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
-      margin-top: 20px; background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px;
-    }
-    @media (max-width: 600px) { .obs-summary-wrap { grid-template-columns: 1fr; } }
-    .donut-wrap { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
-    #donutCanvas { width: 100px; height: 100px; }
-    .donut-center {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; pointer-events: none;
-    }
-    .donut-center-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .donut-center-value { font-family: var(--font-mono); font-size: 13px; color: var(--accent); font-weight: 500; }
-    .summary-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-    .stat-chip {
-      padding: 8px 10px; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 6px;
-    }
-    .stat-chip-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
-    .stat-chip-value { font-family: var(--font-mono); font-size: 14px; font-weight: 500; margin-top: 1px; }
-    .stat-chip-sub { font-size: 9px; color: var(--muted); margin-top: 1px; }
-
-    /* ── Tools Section ── */
-    .section-header { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 18px; }
-    .layout { display: grid; grid-template-columns: 220px 1fr; gap: 36px; margin-top: 8px; }
+    /* Main Layout Infrastructure */
+    .filter-hint { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 20px; }
+    .layout { display: grid; grid-template-columns: 240px 1fr; gap: 40px; margin-top: 12px; }
     @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } .sidebar { position: static; } }
+    
     .sidebar { position: sticky; top: 24px; height: fit-content; }
-    .cat-nav { display: flex; flex-direction: column; gap: 5px; }
+    .cat-nav { display: flex; flex-direction: column; gap: 6px; }
     @media (max-width: 860px) { .cat-nav { flex-direction: row; flex-wrap: wrap; } }
+    
     .cat-btn {
       background: none; border: 1px solid transparent; color: var(--muted); text-align: left;
-      padding: 10px 14px; border-radius: 8px; cursor: pointer; font-family: var(--font-body);
-      font-size: 13px; font-weight: 500; transition: all .15s ease; display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; border-radius: 8px; cursor: pointer; font-family: var(--font-body);
+      font-size: 14px; font-weight: 500; transition: all .15s ease; display: flex; justify-content: space-between; align-items: center;
     }
     .cat-btn:hover { color: var(--text); background: var(--surface); }
     .cat-btn.active { color: var(--accent); background: var(--surface); border-color: var(--border); }
     .cat-btn .badge { font-family: var(--font-mono); font-size: 11px; background: var(--card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); }
     .cat-btn.active .badge { border-color: var(--accent); color: var(--accent); }
-    .section-block { margin-bottom: 36px; }
-    .section-title { font-family: var(--font-display); font-size: 18px; font-style: italic; color: var(--accent); font-weight: 400; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+    /* Tools Display Architecture */
+    .section-block { margin-bottom: 40px; }
+    .section-title { font-family: var(--font-display); font-size: 20px; font-style: italic; color: var(--accent); font-weight: 400; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    
     .tool-card {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all .2s;
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: all .2s;
     }
     .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .tool-head h4 { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
-    .tool-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 14px; }
-    .tool-tag { font-family: var(--font-mono); font-size: 10px; color: var(--accent2); background: rgba(92,158,255,0.06); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(92,158,255,0.15); }
-    .tool-card p { color: var(--muted); font-size: 12px; line-height: 1.5; margin-bottom: 20px; }
+    .tool-head h4 { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .tool-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+    .tool-tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); background: rgba(92,158,255,0.06); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(92,158,255,0.15); }
+    .tool-card p { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 24px; }
+    
     .empty-filter { display: none; text-align: center; padding: 48px; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); }
 
-    /* ── Modal ── */
-    .modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.75); backdrop-filter: blur(6px); }
+    /* Video Modals */
+    .modal {
+      position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center;
+      padding: 24px; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+    }
     .modal.open { display: flex; }
-    .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 680px; width: 100%; overflow: hidden; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-    .modal-head h3 { font-size: 14px; }
-    .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; }
+    .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 720px; width: 100%; overflow: hidden; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .modal-head h3 { font-size: 15px; }
+    .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
     .modal-close:hover { color: var(--text); }
-    .modal-foot { padding: 10px 18px; background: var(--surface); color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); }
-
-    /* ── Responsive ── */
-    @media (max-width: 520px) { .bars-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 380px) { .bars-grid { grid-template-columns: 1fr; } }
+    .modal-body { padding: 0; }
+    .modal-foot { padding: 12px 20px; background: var(--surface); color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); }
   </style>
 </head>
 <body>
@@ -262,148 +211,106 @@
   <header>
     <div class="brand">
       <h1 data-i18n="hubTitle">Financial Hub</h1>
-      <p data-i18n="hubSub">Global asset allocation · Capital markets · Financial tools</p>
+      <p data-i18n="hubSub">Open the right tool, read the quick guide, or watch the video walkthrough.</p>
     </div>
     <div class="header-actions">
-      <button class="btn" type="button" onclick="toggleLang()" id="lang-toggle-btn">🌐 Tiếng Việt</button>
-      <button class="btn" type="button" onclick="filterCat('all')" data-i18n="showAll">All tools</button>
+      <button class="btn" type="button" onclick="toggleLang()" id="lang-toggle-btn" data-i18n="langBtn">🌐 Tiếng Việt</button>
+      <button class="btn" type="button" onclick="filterCat('all')" data-i18n="showAll">Show all</button>
     </div>
   </header>
 
-  <!-- App navigation strip -->
-  <div class="strip-wrap">
-    <div class="strip" id="app-strip">
-      <a class="app-card" href="wealth-builder">
+  <div class="app-strip-wrap">
+    <div class="app-strip" id="app-strip" role="region" aria-label="Apps">
+      <a class="app-card personal" href="wealth-builder">
         <span class="icon">💼</span>
         <div>
-          <strong data-i18n="appPersonal">Personal Portfolio</strong>
+          <strong data-i18n="appPersonal">Personal</strong>
           <span data-i18n="appPersonalSub">Cashflow, budget, tax, debt & net worth</span>
         </div>
       </a>
-      <a class="app-card" href="smes">
+      <a class="app-card analysis" href="smes">
         <span class="icon">📊</span>
         <div>
-          <strong data-i18n="appAnalysis">Business Account</strong>
+          <strong data-i18n="appAnalysis">Business</strong>
           <span data-i18n="appAnalysisSub">Cashflow, tax, financial statements</span>
         </div>
       </a>
-      <a class="app-card" href="nation-state">
+      <a class="app-card nation-state" href="nation-state">
         <span class="icon">🌐</span>
         <div>
           <strong data-i18n="appNation">Nation State</strong>
           <span data-i18n="appNationSub">Fiscal & monetary policy simulator</span>
         </div>
       </a>
-      <a class="app-card" href="earth-economy">
+      <a class="app-card earth-economy" href="earth-economy">
         <span class="icon">🌍</span>
         <div>
           <strong data-i18n="appGlobal">Global Economy</strong>
-          <span data-i18n="appGlobalSub">GDP, trade & inflation observatory</span>
+          <span data-i18n="appGlobalSub">Global macroeconomic observatory · GDP, trade &amp; inflation</span>
         </div>
       </a>
     </div>
-    <div class="strip-dots" id="app-strip-dots" aria-hidden="true"></div>
+    <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
   </div>
 
-  <!-- Asset class icon strip -->
-  <div class="strip-wrap">
-    <div class="strip" id="asset-strip">
-      <div class="app-card" data-asset-id="cash" onclick="selectAsset('cash')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(255,159,67,0.1);border-color:rgba(255,159,67,0.2)">💵</span>
-        <strong data-i18n="assetCash">Cash</strong>
-      </div>
-      <div class="app-card" data-asset-id="term-deposit" onclick="selectAsset('term-deposit')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(92,158,255,0.1);border-color:rgba(92,158,255,0.2)">🏦</span>
-        <strong data-i18n="assetTD">Term Deposit</strong>
-      </div>
-      <div class="app-card" data-asset-id="bonds" onclick="selectAsset('bonds')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(92,158,255,0.1);border-color:rgba(92,158,255,0.2)">📜</span>
-        <strong data-i18n="assetBonds">Bonds</strong>
-      </div>
-      <div class="app-card" data-asset-id="shares" onclick="selectAsset('shares')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(78,203,138,0.1);border-color:rgba(78,203,138,0.2)">📈</span>
-        <strong data-i18n="assetShares">Shares</strong>
-      </div>
-      <div class="app-card" data-asset-id="derivatives" onclick="selectAsset('derivatives')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(182,127,255,0.1);border-color:rgba(182,127,255,0.2)">🔀</span>
-        <strong data-i18n="assetDerivatives">Derivatives</strong>
-      </div>
-      <div class="app-card" data-asset-id="managed-funds" onclick="selectAsset('managed-funds')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(200,169,110,0.1);border-color:rgba(200,169,110,0.2)">🧺</span>
-        <strong data-i18n="assetMF">Managed Funds</strong>
-      </div>
-      <div class="app-card" data-asset-id="property" onclick="selectAsset('property')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(224,107,107,0.1);border-color:rgba(224,107,107,0.2)">🏡</span>
-        <strong data-i18n="assetProperty">Property</strong>
-      </div>
-      <div class="app-card" data-asset-id="metals" onclick="selectAsset('metals')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(255,215,0,0.1);border-color:rgba(255,215,0,0.2)">🧱</span>
-        <strong data-i18n="assetMetals">Gold & Metals</strong>
-      </div>
-      <div class="app-card" data-asset-id="crypto" onclick="selectAsset('crypto')" style="text-decoration:none;cursor:pointer">
-        <span class="icon" style="background:rgba(255,159,67,0.1);border-color:rgba(255,159,67,0.2)">🪙</span>
-        <strong data-i18n="assetCrypto">Crypto</strong>
-      </div>
+  <div class="app-strip-wrap">
+    <div class="app-strip" id="asset-strip" role="region" aria-label="Asset Classes">
+      <a class="app-card cash" href="assets-cash" onmouseenter="highlightAsset('cash')" onmouseleave="clearHighlight()">
+        <span class="icon">💵</span>
+        <div><strong data-i18n="assetCash">Cash (Fiat money)</strong></div>
+      </a>
+      <a class="app-card term-deposit" href="assets-term-deposit.html" onmouseenter="highlightAsset('term-deposit')" onmouseleave="clearHighlight()">
+        <span class="icon">🏦</span>
+        <div><strong data-i18n="assetTD">Term Deposit</strong></div>
+      </a>
+      <a class="app-card bonds" href="assets-bonds" onmouseenter="highlightAsset('bonds')" onmouseleave="clearHighlight()">
+        <span class="icon">📜</span>
+        <div><strong data-i18n="assetBonds">Bonds</strong></div>
+      </a>
+      <a class="app-card shares" href="assets-shares" onmouseenter="highlightAsset('shares')" onmouseleave="clearHighlight()">
+        <span class="icon">📈</span>
+        <div><strong data-i18n="assetShares">Shares</strong></div>
+      </a>
+      <a class="app-card derivatives" href="assets-derivatives" onmouseenter="highlightAsset('derivatives')" onmouseleave="clearHighlight()">
+        <span class="icon">🔀</span>
+        <div><strong data-i18n="assetDerivatives">Derivatives</strong></div>
+      </a>
+      <a class="app-card managed-funds" href="assets-managed-funds" onmouseenter="highlightAsset('managed-funds')" onmouseleave="clearHighlight()">
+        <span class="icon">🧺</span>
+        <div><strong data-i18n="assetMF">Managed Funds</strong></div>
+      </a>
+      <a class="app-card property" href="assets-property" onmouseenter="highlightAsset('property')" onmouseleave="clearHighlight()">
+        <span class="icon">🏡</span>
+        <div><strong data-i18n="assetProperty">Real Property</strong></div>
+      </a>
+      <a class="app-card metals" href="assets-metals" onmouseenter="highlightAsset('metals')" onmouseleave="clearHighlight()">
+        <span class="icon">🧱</span>
+        <div><strong data-i18n="assetMetals">Gold & Metals</strong></div>
+      </a>
+      <a class="app-card crypto" href="assets-crypto" onmouseenter="highlightAsset('crypto')" onmouseleave="clearHighlight()">
+        <span class="icon">🪙</span>
+        <div><strong data-i18n="assetCrypto">Cryptocurrency</strong></div>
+      </a>
     </div>
-    <div class="strip-dots" id="asset-strip-dots" aria-hidden="true"></div>
+    <div class="app-strip-dots" id="asset-strip-dots" aria-hidden="true"></div>
   </div>
 
-  <!-- ════════════ OBSERVATORY ════════════ -->
-  <section class="observatory">
-    <div class="obs-head">
-      <div class="obs-title-block">
-        <h2 data-i18n="obsTitle">Global Asset Allocation Map</h2>
-        <p data-i18n="obsSub">Total capital by asset class · USD trillion · Click any marker or bar to isolate</p>
-      </div>
-      <div class="obs-total">
-        <div class="obs-total-label">Total global assets</div>
-        <div class="obs-total-value">$1,453.2T</div>
-        <div class="obs-total-sub">across 9 asset classes</div>
-      </div>
+  <section class="observatory-section">
+    <div class="observatory-head">
+      <h2 data-i18n="obsTitle">Global Asset Dominance Observatory</h2>
+      <p data-i18n="obsSub">Interactive 2D macroeconomic projection map charting total regional capital allocation metrics in USD.</p>
     </div>
-
-    <!-- Map -->
-    <div class="obs-map-wrap" id="mapParent">
-      <canvas id="mapCanvas"></canvas>
-      <div class="map-tooltip" id="mapTooltip">
-        <div class="tt-name" id="tt-name"></div>
-        <div class="tt-row"><span>Hub</span><span class="tt-val" id="tt-hub"></span></div>
-        <div class="tt-row"><span>Total value</span><span class="tt-val" id="tt-val"></span></div>
-        <div class="tt-row"><span>Global share</span><span class="tt-val" id="tt-pct"></span></div>
+    <div class="observatory-grid">
+      <div class="map-viewport" id="mapParent">
+        <canvas id="mapCanvas"></canvas>
+        <div class="map-hint" data-i18n="mapHint">Hover asset class tags below to cross-reference localized regional liquidity pools</div>
       </div>
-      <div class="map-hint-bar" id="map-hint">Click markers or bars below to focus · Hover to inspect</div>
-      <div class="map-controls">
-        <button class="map-ctrl-btn" onclick="resetFocus()" title="Reset view">⟳</button>
-      </div>
-    </div>
-
-    <!-- Colour legend / quick filter -->
-    <div class="obs-legend" id="obs-legend"></div>
-
-    <!-- Allocation bars -->
-    <div class="obs-bars-section">
-      <div class="obs-bars-head">
-        <span data-i18n="allocationBreakdown">Allocation Breakdown</span>
-        <span id="bars-filter-label" style="color:var(--accent);font-size:10px;display:none"></span>
-      </div>
-      <div class="bars-grid" id="bars-grid"></div>
-    </div>
-
-    <!-- Donut + stat chips -->
-    <div class="obs-summary-wrap">
-      <div class="donut-wrap">
-        <canvas id="donutCanvas" width="100" height="100"></canvas>
-        <div class="donut-center">
-          <div class="donut-center-label">Top</div>
-          <div class="donut-center-value" id="donut-center-val">44.7%</div>
-        </div>
-      </div>
-      <div class="summary-stats" id="summary-stats"></div>
+      <div class="dominance-metrics" id="dominance-bars-container"></div>
     </div>
   </section>
 
-  <!-- Tools section -->
-  <p class="section-header" data-i18n="filterHint">Filter by category or browse all tools below</p>
+  <p class="filter-hint" data-i18n="filterHint">Filter by category, or browse all tools below.</p>
+
   <div class="layout">
     <aside class="sidebar">
       <nav class="cat-nav" id="cat-nav" aria-label="Categories"></nav>
@@ -413,682 +320,415 @@
       <div class="empty-filter" id="empty-filter" data-i18n="emptyFilter">No tools in this category.</div>
     </div>
   </div>
+
 </div>
 
-<!-- Modal -->
-<div class="modal" id="video-modal" role="dialog" aria-modal="true">
+<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-box">
     <div class="modal-head">
-      <h3 id="modal-title">Application</h3>
-      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close">&times;</button>
+      <h3 id="modal-title">Video guide</h3>
+      <button class="modal-close" type="button" onclick="closeVideo()" aria-label="Close">&times;</button>
     </div>
-    <div id="modal-body"></div>
-    <div class="modal-foot">Keep parameters calibrated to active ATO framework limits.</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot">Tip: Keep parameters calibrated to active ATO framework limits.</div>
   </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════════════════════════
-   DATA
-   ════════════════════════════════════════════════════════════ */
-let currentLang = 'en';
-let currentCat  = 'all';
-let activeAsset = null;  // id or null
-let pulsePhase  = 0;
-let mapScale    = 1;
-let mapOffsetX  = 0;
-let mapOffsetY  = 0;
+  let currentLang = 'en';
+  let currentCat = 'all';
 
-const TOTAL = 1453.2; // $T
-
-const ASSETS = [
-  { id:'derivatives',   key:'assetDerivatives', label:{en:'Derivatives',    vi:'Phái Sinh'},         value:650,  unit:'T', color:'#b67fff', icon:'🔀', hub:'London',       lat:51.51,  lon:-0.13  },
-  { id:'property',      key:'assetProperty',    label:{en:'Real Property',  vi:'Bất Động Sản'},      value:330,  unit:'T', color:'#e06b6b', icon:'🏡', hub:'New York',     lat:40.71,  lon:-74.01 },
-  { id:'bonds',         key:'assetBonds',       label:{en:'Bonds & Debt',   vi:'Trái Phiếu'},        value:140,  unit:'T', color:'#5c9eff', icon:'📜', hub:'Washington',   lat:38.91,  lon:-77.04 },
-  { id:'shares',        key:'assetShares',      label:{en:'Shares',         vi:'Cổ Phiếu'},          value:115,  unit:'T', color:'#4ecb8a', icon:'📈', hub:'Tokyo',        lat:35.68,  lon:139.65 },
-  { id:'cash',          key:'assetCash',        label:{en:'Cash (Fiat)',    vi:'Tiền Mặt'},          value:100,  unit:'T', color:'#ff9f43', icon:'💵', hub:'Frankfurt',    lat:50.11,  lon:8.68   },
-  { id:'managed-funds', key:'assetMF',          label:{en:'Managed Funds',  vi:'Quỹ Quản Lý'},       value:52,   unit:'T', color:'#c8a96e', icon:'🧺', hub:'Singapore',   lat:1.35,   lon:103.82 },
-  { id:'term-deposit',  key:'assetTD',          label:{en:'Term Deposit',   vi:'Tiền Gửi'},          value:45,   unit:'T', color:'#5c9eff', icon:'🏦', hub:'Sydney',       lat:-33.87, lon:151.21 },
-  { id:'metals',        key:'assetMetals',      label:{en:'Gold & Metals',  vi:'Vàng & Kim Loại'},   value:18,   unit:'T', color:'#ffd700', icon:'🧱', hub:'Zurich',       lat:47.38,  lon:8.54   },
-  { id:'crypto',        key:'assetCrypto',      label:{en:'Cryptocurrency', vi:'Tiền Mã Hóa'},       value:3.2,  unit:'T', color:'#ff9f43', icon:'🪙', hub:'Decentralised', lat:37.77, lon:-122.42},
-];
-
-const I18N = {
-  en: {
-    hubTitle:'Financial Hub', hubSub:'Global asset allocation · Capital markets · Financial tools',
-    obsTitle:'Global Asset Allocation Map',
-    obsSub:'Total capital by asset class · USD trillion · Click any marker or bar to isolate',
-    allocationBreakdown:'Allocation Breakdown',
-    filterHint:'Filter by category or browse all tools below',
-    emptyFilter:'No tools in this category.',
-    showAll:'All tools',
-    appPersonal:'Personal Portfolio', appPersonalSub:'Cashflow, budget, tax, debt & net worth',
-    appAnalysis:'Business Account',  appAnalysisSub:'Cashflow, tax, financial statements',
-    appNation:'Nation State',        appNationSub:'Fiscal & monetary policy simulator',
-    appGlobal:'Global Economy',      appGlobalSub:'GDP, trade & inflation observatory',
-    assetCash:'Cash', assetTD:'Term Deposit', assetBonds:'Bonds', assetShares:'Shares',
-    assetDerivatives:'Derivatives', assetMF:'Managed Funds', assetProperty:'Property',
-    assetMetals:'Gold & Metals', assetCrypto:'Crypto',
-    quickView:'Launch Application',
-  },
-  vi: {
-    hubTitle:'Trung Tâm Tài Chính', hubSub:'Phân bổ tài sản toàn cầu · Thị trường vốn · Công cụ tài chính',
-    obsTitle:'Bản Đồ Phân Bổ Tài Sản Toàn Cầu',
-    obsSub:'Tổng vốn theo loại tài sản · Nghìn tỷ USD · Nhấn vào điểm hoặc thanh để làm nổi bật',
-    allocationBreakdown:'Phân Tích Phân Bổ',
-    filterHint:'Lọc theo danh mục hoặc duyệt tất cả công cụ',
-    emptyFilter:'Không có công cụ nào trong danh mục này.',
-    showAll:'Tất cả',
-    appPersonal:'Tài Sản Cá Nhân', appPersonalSub:'Dòng tiền, ngân sách, thuế, nợ & tài sản ròng',
-    appAnalysis:'Tài Chính DN',    appAnalysisSub:'Dòng tiền, thuế, báo cáo tài chính',
-    appNation:'Quốc Gia',          appNationSub:'Trình giả lập chính sách tài khóa & tiền tệ',
-    appGlobal:'Kinh Tế Toàn Cầu', appGlobalSub:'Quan sát GDP, thương mại & lạm phát',
-    assetCash:'Tiền Mặt', assetTD:'Tiền Gửi', assetBonds:'Trái Phiếu', assetShares:'Cổ Phiếu',
-    assetDerivatives:'Phái Sinh', assetMF:'Quỹ Quản Lý', assetProperty:'Bất Động Sản',
-    assetMetals:'Vàng & Kim Loại', assetCrypto:'Tiền Mã Hóa',
-    quickView:'Khởi Chạy Công Cụ',
-  }
-};
-
-const CATEGORIES = {
-  all:      { en:'All Systems',      vi:'Tất Cả' },
-  personal: { en:'Personal Wealth',  vi:'Tài Sản Cá Nhân' },
-  smsf:     { en:'SMSF Suite',       vi:'Danh Mục SMSF' },
-  analysis: { en:'Corporate Finance', vi:'Tài Chính DN' },
-  nation:   { en:'Macro Strategy',   vi:'Chiến Lược Vĩ Mô' },
-};
-
-const TOOLS_DATA = [
-  {
-    id:'personal',
-    title:{ en:'Personal Wealth & Asset Architecture', vi:'Kiến Trúc & Phân Bổ Tài Sản Cá Nhân' },
-    tools:[
-      { id:'personal_dashboard', app:'personal',
-        title:{ en:'Global Net Worth Ledger', vi:'Sổ Cái Tổng Tài Sản Ròng' },
-        models:['Multi-currency Base','Liquidity Layer'],
-        desc:{ en:'Consolidate asset valuations, foreign accounts, property sheets and liabilities into one interactive view.', vi:'Hợp nhất định giá tài sản, tài khoản nước ngoài, bất động sản và các khoản nợ.' } },
-      { id:'personal_tax', app:'personal',
-        title:{ en:'ATO Income Tax Modeler', vi:'Mô Hình Thuế Thu Nhập ATO' },
-        models:['FY 2025/2026','CGT Discount'],
-        desc:{ en:'Evaluate cross-border marginal tax brackets, Medicare liabilities, and capital gains tax offsets.', vi:'Tính toán biểu thuế Úc, bảo hiểm Medicare và giảm trừ thuế lãi vốn.' } },
-    ]
-  },
-  {
-    id:'smsf',
-    title:{ en:'Self-Managed Super Funds (SMSF)', vi:'Quỹ Hưu Bổng Tự Quản (SMSF)' },
-    tools:[
-      { id:'smsf_compliance', app:'smsf',
-        title:{ en:'Statutory Compliance Audit', vi:'Kiểm Toán Tuân Thủ Pháp Lý' },
-        models:['Sole Purpose Test','Arm\'s Length'],
-        desc:{ en:'Review compliance indicators against the ATO regulatory framework automatically.', vi:'Kiểm tra chỉ số tuân thủ theo khung quy định ATO tự động.' } },
-      { id:'smsf_caps', app:'smsf',
-        title:{ en:'Contribution Caps Monitor', vi:'Giám Sát Hạn Mức Đóng Góp' },
-        models:['Concessional','Non-Concessional'],
-        desc:{ en:'Track contributions to manage safe margins under statutory annual cap rules.', vi:'Theo dõi đóng góp để kiểm soát biên độ an toàn theo hạn mức tối đa hàng năm.' } },
-    ]
-  },
-  {
-    id:'analysis',
-    title:{ en:'Corporate Finance & Intelligence', vi:'Tài Chính Doanh Nghiệp' },
-    tools:[
-      { id:'analysis_pl', app:'analysis',
-        title:{ en:'Dynamic Financial Statement Engine', vi:'Mô Hình Báo Cáo Tài Chính' },
-        models:['Power Query','Xero / MYOB'],
-        desc:{ en:'Transform spreadsheets into cashflow models, margin metrics, and currency adjustment indicators.', vi:'Chuyển đổi bảng tính thành mô hình dòng tiền và chỉ số biên lợi nhuận.' } },
-    ]
-  },
-];
-
-/* ════════════════════════════════════════════════════════════
-   MAP ENGINE
-   ════════════════════════════════════════════════════════════ */
-const canvas  = document.getElementById('mapCanvas');
-const ctx     = canvas.getContext('2d');
-let hoveredId = null;
-let animId    = null;
-
-// Simplified but more accurate landmass outlines
-const LANDS = [
-  // North America
-  { pts:[[-168,72],[-141,70],[-95,72],[-65,70],[-55,47],[-65,44],[-70,41],[-76,34],[-80,25],[-90,20],[-97,20],[-105,20],[-115,30],[-120,38],[-124,47],[-130,55],[-140,60],[-152,62],[-168,65],[-168,72]] },
-  // Greenland
-  { pts:[[-73,76],[-20,84],[-17,76],[-45,60],[-73,76]] },
-  // South America
-  { pts:[[-78,12],[-62,12],[-55,5],[-51,-4],[-35,-8],[-35,-20],[-42,-22],[-50,-30],[-53,-34],[-68,-55],[-72,-50],[-75,-40],[-73,-30],[-70,-18],[-76,-2],[-78,8],[-78,12]] },
-  // Europe
-  { pts:[[-10,36],[0,36],[5,43],[8,45],[15,44],[20,40],[30,43],[30,47],[24,60],[20,65],[15,70],[5,62],[-2,55],[-5,48],[-10,43],[-10,36]] },
-  // Scandinavia
-  { pts:[[5,58],[10,57],[18,62],[25,72],[30,72],[28,65],[20,60],[14,58],[8,58],[5,58]] },
-  // Africa
-  { pts:[[-18,15],[-18,20],[-8,37],[10,37],[35,37],[42,11],[44,-12],[35,-25],[26,-34],[18,-30],[12,-5],[10,5],[2,6],[-5,5],[-18,15]] },
-  // Russia / Siberia
-  { pts:[[30,72],[60,75],[100,78],[140,75],[170,64],[160,52],[140,46],[130,42],[110,42],[80,42],[60,52],[40,62],[30,72]] },
-  // Middle East & South Asia
-  { pts:[[36,37],[42,37],[55,27],[60,22],[65,24],[73,22],[78,8],[80,14],[92,22],[100,24],[103,5],[110,2],[120,5],[130,0],[135,-4],[132,-8],[120,-20],[115,-35],[120,-38],[130,-35],[150,-35],[152,-26],[145,-15],[138,-8],[135,0],[140,10],[150,20],[145,35],[140,43],[130,42]] },
-  // Southeast Asia Islands
-  { pts:[[100,5],[110,5],[120,10],[125,5],[120,-5],[115,-8],[108,-8],[100,5]] },
-  // Australia
-  { pts:[[114,-22],[120,-34],[130,-35],[140,-38],[148,-38],[152,-26],[148,-20],[138,-16],[130,-16],[122,-18],[114,-22]] },
-  // Japan
-  { pts:[[130,31],[131,33],[134,35],[136,38],[140,43],[141,40],[138,35],[132,33],[130,31]] },
-  // UK
-  { pts:[[-6,50],[-3,51],[2,52],[1,58],[-4,58],[-6,54],[-6,50]] },
-];
-
-function latLonToXY(lat, lon, w, h) {
-  const px = 36, py = 24;
-  const x = ((lon + 180) / 360) * (w - px*2) + px;
-  const y = ((90 - lat) / 180) * (h - py*2) + py;
-  return { x, y };
-}
-
-function resolveColor(c) {
-  if (!c.startsWith('var')) return c;
-  return getComputedStyle(document.documentElement).getPropertyValue(c.replace('var(','').replace(')','').trim()).trim();
-}
-
-function hexToRgba(hex, a) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
-function drawMap() {
-  const parent = canvas.parentElement;
-  const W = parent.clientWidth;
-  const H = Math.max(300, Math.min(450, W * 0.45));
-  if (canvas.width !== W || canvas.height !== H) {
-    canvas.width = W;
-    canvas.height = H;
-  }
-
-  ctx.clearRect(0,0,W,H);
-  pulsePhase = (pulsePhase + 0.035) % (Math.PI * 2);
-
-  // Background gradient
-  const bg = ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,'#0b0e14');
-  bg.addColorStop(1,'#080a0e');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0,0,W,H);
-
-  // Grid
-  ctx.strokeStyle = 'rgba(200,169,110,0.025)';
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i <= 18; i++) {
-    const x = (W/18)*i; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
-  }
-  for (let i = 0; i <= 9; i++) {
-    const y = (H/9)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
-  }
-
-  // Latitude / longitude reference lines
-  ctx.strokeStyle = 'rgba(200,169,110,0.06)';
-  ctx.lineWidth = 0.5;
-  ctx.setLineDash([3,6]);
-  // Equator
-  const eq = latLonToXY(0,0,W,H);
-  ctx.beginPath(); ctx.moveTo(0,eq.y); ctx.lineTo(W,eq.y); ctx.stroke();
-  // Tropics
-  [23.5,-23.5].forEach(lat => {
-    const p = latLonToXY(lat,0,W,H);
-    ctx.beginPath(); ctx.moveTo(0,p.y); ctx.lineTo(W,p.y); ctx.stroke();
-  });
-  ctx.setLineDash([]);
-
-  // Landmasses
-  LANDS.forEach(land => {
-    ctx.beginPath();
-    land.pts.forEach(([lon,lat],i) => {
-      const p = latLonToXY(lat,lon,W,H);
-      i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
-    });
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(255,255,255,0.035)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(200,169,110,0.12)';
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-  });
-
-  // --- Draw asset markers ---
-  const sorted = [...ASSETS].sort((a,b) => a.value - b.value); // draw small on top
-
-  sorted.forEach(a => {
-    const pos = latLonToXY(a.lat, a.lon, W, H);
-    const color = resolveColor(a.color);
-    const isFocused = (activeAsset === a.id || hoveredId === a.id);
-    const isOther   = activeAsset && !isFocused;
-
-    const maxR = 28;
-    const minR = 5;
-    const baseR = minR + (a.value / 650) * (maxR - minR);
-    const r = isFocused ? baseR * 1.25 : baseR;
-
-    const alpha = isOther ? 0.18 : 1;
-
-    // Pulse ring
-    if (isFocused) {
-      const pulseR = r + 6 + Math.sin(pulsePhase) * 4;
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, pulseR, 0, Math.PI*2);
-      ctx.strokeStyle = hexToRgba(color, 0.35);
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
+  const I18N_DICT = {
+    en: {
+      hubTitle: "Financial Hub",
+      hubSub: "Open the right tool, read the quick guide, or watch the video walkthrough.",
+      langBtn: "🌐 Tiếng Việt",
+      showAll: "Show all",
+      filterHint: "Filter by category, or browse all tools below.",
+      emptyFilter: "No tools in this category.",
+      obsTitle: "Global Asset Dominance Observatory",
+      obsSub: "Interactive 2D macroeconomic projection map charting total regional capital allocation metrics in USD.",
+      mapHint: "Hover asset class tags below to cross-reference localized regional liquidity pools",
+      appPersonal: "Personal Portfolio",
+      appPersonalSub: "Cashflow, budget, tax, debt & net worth",
+      appAnalysis: "Business Account",
+      appAnalysisSub: "Cashflow, tax, financial statements",
+      appNation: "Nation State",
+      appNationSub: "Fiscal & monetary policy simulator",
+      appGlobal: "Global Economy",
+      appGlobalSub: "Global macroeconomic observatory · GDP, trade & inflation",
+      assetCash: "Cash (Fiat money)",
+      assetTD: "Term Deposit",
+      assetBonds: "Bonds & Debt",
+      assetShares: "Shares & Equities",
+      assetDerivatives: "Derivatives Contract",
+      assetMF: "Managed Funds",
+      assetProperty: "Real Property",
+      assetMetals: "Gold & Metals",
+      assetCrypto: "Cryptocurrency",
+      quickView: "Launch Application",
+      modelsText: "Frameworks: "
+    },
+    vi: {
+      hubTitle: "Trung Tâm Tài Chính",
+      hubSub: "Mở công cụ phù hợp, đọc hướng dẫn nhanh hoặc xem video hướng dẫn chi tiết.",
+      langBtn: "🌐 English",
+      showAll: "Hiển thị tất cả",
+      filterHint: "Lọc theo danh mục hoặc duyệt xem tất cả các công cụ bên dưới.",
+      emptyFilter: "Không có công cụ nào trong danh mục này.",
+      obsTitle: "Đài Quan Sát Ưu Thế Tài Sản Toàn Cầu",
+      obsSub: "Bản đồ phân phối kinh tế vĩ mô 2D hiển thị tổng giá trị định lượng dòng vốn phân bổ theo từng khu vực bằng USD.",
+      mapHint: "Di chuột qua các lớp tài sản bên dưới để đối chiếu lưu lượng thanh khoản theo phân vùng địa lý",
+      appPersonal: "Tài Sản Cá Nhân",
+      appPersonalSub: "Dòng tiền, ngân sách, thuế, nợ & giá trị tài sản ròng",
+      appAnalysis: "Quản Trị Doanh Nghiệp",
+      appAnalysisSub: "Dòng tiền, lập kế hoạch thuế, báo cáo tài chính",
+      appNation: "Mô Phỏng Quốc Gia",
+      appNationSub: "Trình giả lập chính sách tài khóa & tiền tệ",
+      appGlobal: "Kinh Tế Toàn Cầu",
+      appGlobalSub: "Đài quan sát vĩ mô thế giới · GDP, thương mại & lạm phát",
+      assetCash: "Tiền Mặt (Fiat)",
+      assetTD: "Tiền Gửi Kỳ Hạn",
+      assetBonds: "Trái Phiếu & Nợ",
+      assetShares: "Cổ Phiếu & Vốn Hóa",
+      assetDerivatives: "Thị Trường Phái Sinh",
+      assetMF: "Quỹ Quản Lý",
+      assetProperty: "Bất Động Sản",
+      assetMetals: "Vàng & Kim Loại Quý",
+      assetCrypto: "Tiền Mã Hóa",
+      quickView: "Khởi Chạy Công Cụ",
+      modelsText: "Mô hình: "
     }
+  };
 
-    // Glow halo
-    const grd = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r*2.2);
-    grd.addColorStop(0, hexToRgba(color, isFocused ? 0.28 : 0.12));
-    grd.addColorStop(1, hexToRgba(color, 0));
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, r*2.2, 0, Math.PI*2);
-    ctx.fillStyle = grd;
-    ctx.globalAlpha = alpha;
-    ctx.fill();
+  const CATEGORIES = {
+    all: { en: 'All Systems', vi: 'Tất Cả Hệ Thống' },
+    personal: { en: 'Personal Wealth', vi: 'Tài Sản Cá Nhân' },
+    smsf: { en: 'SMSF Suite', vi: 'Danh Mục SMSF' },
+    analysis: { en: 'Corporate Finance', vi: 'Tài Tài Chính Doanh Nghiệp' },
+    nation: { en: 'Macro Strategy', vi: 'Chiến Lược Vĩ Mô' }
+  };
 
-    // Core circle
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, r, 0, Math.PI*2);
-    ctx.fillStyle = hexToRgba(color, isFocused ? 0.5 : 0.25);
-    ctx.fill();
-    ctx.strokeStyle = color;
-    ctx.lineWidth = isFocused ? 2 : 1;
-    ctx.stroke();
-
-    // Inner dot
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, isFocused ? 4 : 2.5, 0, Math.PI*2);
-    ctx.fillStyle = color;
-    ctx.fill();
-
-    ctx.globalAlpha = 1;
-
-    // Label (always show for large assets or focused)
-    const showLabel = isFocused || (a.value >= 100 && !isOther);
-    if (showLabel) {
-      const label = `$${a.value}${a.unit}`;
-      ctx.font = `${isFocused ? '600' : '500'} ${isFocused ? 11 : 10}px 'DM Mono', monospace`;
-      ctx.textAlign = 'center';
-
-      const tx = pos.x;
-      const ty = pos.y - r - 7;
-
-      // Background pill
-      const tw = ctx.measureText(label).width + 10;
-      ctx.fillStyle = 'rgba(10,12,16,0.88)';
-      ctx.beginPath();
-      ctx.roundRect(tx - tw/2, ty - 11, tw, 15, 4);
-      ctx.fill();
-      ctx.strokeStyle = hexToRgba(color, 0.4);
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      ctx.fillStyle = isFocused ? color : 'rgba(232,227,216,0.7)';
-      ctx.globalAlpha = isOther ? 0.2 : 1;
-      ctx.fillText(label, tx, ty);
-      ctx.globalAlpha = 1;
-    }
-  });
-
-  animId = requestAnimationFrame(drawMap);
-}
-
-/* ════════════════════════════════════════════════════════════
-   DONUT CHART
-   ════════════════════════════════════════════════════════════ */
-function drawDonut() {
-  const dc = document.getElementById('donutCanvas');
-  const dctx = dc.getContext('2d');
-  const cx = 50, cy = 50, outerR = 44, innerR = 30;
-  dctx.clearRect(0,0,100,100);
-
-  let startAngle = -Math.PI/2;
-  const data = activeAsset
-    ? ASSETS.map(a => ({ ...a, display: a.id === activeAsset ? a.value : 0 }))
-    : ASSETS;
-
-  const total = data.reduce((s,a) => s + a.value, 0);
-
-  ASSETS.forEach(a => {
-    const slice = (a.value / TOTAL) * Math.PI * 2;
-    const color = resolveColor(a.color);
-    const focused = (activeAsset === a.id);
-    const dim = activeAsset && !focused;
-
-    dctx.beginPath();
-    dctx.moveTo(cx, cy);
-    dctx.arc(cx, cy, outerR - (dim ? 0 : focused ? 0 : 0), startAngle, startAngle + slice);
-    dctx.closePath();
-    dctx.fillStyle = dim ? hexToRgba(color, 0.15) : color;
-    dctx.fill();
-    startAngle += slice;
-  });
-
-  // Donut hole
-  dctx.beginPath();
-  dctx.arc(cx,cy,innerR,0,Math.PI*2);
-  dctx.fillStyle = '#161920';
-  dctx.fill();
-
-  // Update centre value
-  const top = activeAsset ? ASSETS.find(a=>a.id===activeAsset) : ASSETS[0];
-  const pct = ((top.value/TOTAL)*100).toFixed(1);
-  document.getElementById('donut-center-val').textContent = pct+'%';
-}
-
-/* ════════════════════════════════════════════════════════════
-   LEGEND & BARS
-   ════════════════════════════════════════════════════════════ */
-function buildLegend() {
-  const el = document.getElementById('obs-legend');
-  el.innerHTML = '';
-  ASSETS.forEach(a => {
-    const color = resolveColor(a.color);
-    const pct = ((a.value/TOTAL)*100).toFixed(1);
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.style.color = color;
-    item.dataset.id = a.id;
-    item.innerHTML = `
-      <div class="legend-dot" style="background:${color}"></div>
-      <span class="legend-name">${a.label[currentLang]}</span>
-      <span class="legend-amt" style="color:${color}">$${a.value}T <span style="color:var(--muted);font-size:9px">${pct}%</span></span>
-    `;
-    item.onclick = () => toggleFocus(a.id);
-    el.appendChild(item);
-  });
-}
-
-function buildBars() {
-  const grid = document.getElementById('bars-grid');
-  grid.innerHTML = '';
-  ASSETS.forEach(a => {
-    const color = resolveColor(a.color);
-    const pct = ((a.value/TOTAL)*100).toFixed(1);
-    const row = document.createElement('div');
-    row.className = 'bar-row';
-    row.dataset.id = a.id;
-    row.style.borderColor = activeAsset === a.id ? color : '';
-    row.innerHTML = `
-      <div class="bar-meta">
-        <div class="bar-label">
-          <div class="bar-dot" style="background:${color}"></div>
-          <span style="color:${activeAsset && activeAsset!==a.id ? 'var(--muted)':'var(--text)'}">${a.icon} ${a.label[currentLang]}</span>
-        </div>
-        <div>
-          <span class="bar-amount" style="color:${color}">$${a.value}${a.unit}</span>
-          <span class="bar-pct">${pct}%</span>
-        </div>
-      </div>
-      <div class="bar-track">
-        <div class="bar-fill" data-w="${pct}" style="background:${color};opacity:${activeAsset && activeAsset!==a.id ? 0.2:1}"></div>
-      </div>
-    `;
-    row.onclick = () => toggleFocus(a.id);
-    row.onmouseenter = () => { hoveredId = a.id; };
-    row.onmouseleave = () => { hoveredId = null; };
-    grid.appendChild(row);
-  });
-  // Animate fills
-  requestAnimationFrame(() => {
-    grid.querySelectorAll('.bar-fill').forEach(el => {
-      el.style.width = el.dataset.w + '%';
-    });
-  });
-}
-
-function buildSummaryStats() {
-  const el = document.getElementById('summary-stats');
-  // Top 3 by value + largest / smallest share
-  const sorted = [...ASSETS].sort((a,b) => b.value - a.value);
-  const chips = [
-    { label:'Largest class',   value: sorted[0].icon + ' ' + sorted[0].label[currentLang], sub:`$${sorted[0].value}T`, color: resolveColor(sorted[0].color) },
-    { label:'2nd largest',     value: sorted[1].icon + ' ' + sorted[1].label[currentLang], sub:`$${sorted[1].value}T`, color: resolveColor(sorted[1].color) },
-    { label:'Smallest class',  value: sorted[sorted.length-1].icon + ' ' + sorted[sorted.length-1].label[currentLang], sub:`$${sorted[sorted.length-1].value}T`, color: resolveColor(sorted[sorted.length-1].color) },
-    { label:'Total classes',   value: ASSETS.length + ' types', sub: '$'+TOTAL+'T total', color: 'var(--accent)' },
-    { label:'Top 2 share',     value: (((sorted[0].value+sorted[1].value)/TOTAL)*100).toFixed(1)+'%', sub:'of all assets', color: 'var(--accent3)' },
-    { label:'Smallest share',  value: ((sorted[sorted.length-1].value/TOTAL)*100).toFixed(2)+'%', sub: sorted[sorted.length-1].label[currentLang], color: resolveColor(sorted[sorted.length-1].color) },
+  const ASSET_DOMINANCE_DATA = [
+    { id: 'derivatives', key: 'assetDerivatives', value: 650, unit: 'T', color: 'var(--accent5)', icon: '🔀', hub: 'London', lat: 51.5074, lon: -0.1278 },
+    { id: 'property', key: 'assetProperty', value: 330, unit: 'T', color: 'var(--accent4)', icon: '🏡', hub: 'New York', lat: 40.7128, lon: -74.0060 },
+    { id: 'bonds', key: 'assetBonds', value: 140, unit: 'T', color: 'var(--accent2)', icon: '📜', hub: 'Washington', lat: 38.9072, lon: -77.0369 },
+    { id: 'shares', key: 'assetShares', value: 115, unit: 'T', color: 'var(--accent3)', icon: '📈', hub: 'Tokyo', lat: 35.6762, lon: 139.6503 },
+    { id: 'cash', key: 'assetCash', value: 100, unit: 'T', color: 'var(--accent6)', icon: '💵', hub: 'Frankfurt', lat: 50.1109, lon: 8.6821 },
+    { id: 'managed-funds', key: 'assetMF', value: 52, unit: 'T', color: 'var(--accent)', icon: '🧺', hub: 'Singapore', lat: 1.3521, lon: 103.8198 },
+    { id: 'term-deposit', key: 'assetTD', value: 45, unit: 'T', color: 'var(--accent2)', icon: '🏦', hub: 'Sydney', lat: -33.8688, lon: 151.2093 },
+    { id: 'metals', key: 'assetMetals', value: 18, unit: 'T', color: '#ffd700', icon: '🧱', hub: 'Zurich', lat: 47.3769, lon: 8.5417 },
+    { id: 'crypto', key: 'assetCrypto', value: 3.2, unit: 'T', color: '#ff9f43', icon: '🪙', hub: 'Sovereign Keys', lat: 10.7942, lon: -70.8965 }
   ];
-  el.innerHTML = chips.map(c => `
-    <div class="stat-chip">
-      <div class="stat-chip-label">${c.label}</div>
-      <div class="stat-chip-value" style="color:${c.color}">${c.value}</div>
-      <div class="stat-chip-sub">${c.sub}</div>
-    </div>
-  `).join('');
-}
 
-/* ════════════════════════════════════════════════════════════
-   FOCUS / INTERACT
-   ════════════════════════════════════════════════════════════ */
-function toggleFocus(id) {
-  activeAsset = (activeAsset === id) ? null : id;
-  syncFocus();
-}
+  const TOOLS_DATA = [
+    {
+      id: 'personal',
+      title: { en: 'Personal Wealth & Asset Architecture', vi: 'Kiến Trúc & Phân Bổ Tài Sản Cá Nhân' },
+      tools: [
+        { id: 'personal_dashboard', app: 'personal', title: { en: 'Global Net Worth Ledger', vi: 'Sổ Cái Tổng Tài Sản Ròng' }, models: ['Multi-currency Base', 'Liquidity Layer'], desc: { en: 'Consolidate asset valuations, foreign accounts, property holding sheets, and liabilities into one interactive view.', vi: 'Hợp nhất định giá tài sản tài chính, tài khoản nước ngoài, bất động sản và các khoản nợ phải trả.' } },
+        { id: 'personal_tax', app: 'personal', title: { en: 'ATO Income Tax Modeler', vi: 'Mô Hình Thu Thập Thuế Thu Nhập ATO' }, models: ['FY 2025/2026 Concessions', 'CGT Discount Calculations'], desc: { en: 'Evaluate cross-border marginal tax brackets, Medicare liabilities, and individual capital gains tax offsets rules.', vi: 'Tính toán biểu thuế lũy tiến Úc, nghĩa vụ bảo hiểm Medicare và các quy tắc giảm trừ thuế lãi vốn đối với cá nhân.' } }
+      ]
+    },
+    {
+      id: 'smsf',
+      title: { en: 'Self-Managed Super Funds (SMSF) Regulatory Suite', vi: 'Danh Mục Quản Lý Quỹ Hưu Bổng Tự Quản (SMSF)' },
+      tools: [
+        { id: 'smsf_compliance', app: 'smsf', title: { en: 'Statutory Compliance Audit Tool', vi: 'Hệ Thống Kiểm Toán Tuân Thủ Pháp Lý' }, models: ['Sole Purpose Test Protocols', 'Arm\'s Length Constraints'], desc: { en: 'Review compliance indicators against the ATO regulatory framework to monitor fund parameters automatically.', vi: 'Kiểm tra các chỉ số tuân thủ dựa trên khung quy định ATO nhằm tự động giám sát các thông số vận hành của quỹ.' } },
+        { id: 'smsf_caps', app: 'smsf', title: { en: 'Contribution Caps Monitor', vi: 'Bộ Giám Sát Hạn Mức Đóng Góp Hưu Bổng' }, models: ['Concessional Thresholds', 'Non-Concessional Logs'], desc: { en: 'Track internal contributions to manage safe margins under statutory annual maximum cap rules.', vi: 'Theo dõi các khoản đóng góp nội bộ nhằm kiểm soát biên độ an toàn theo luật định về hạn mức tối đa hàng năm.' } }
+      ]
+    },
+    {
+      id: 'analysis',
+      title: { en: 'Corporate Finance & Intelligence Matrix', vi: 'Ma Trận Phân Tích & Tài Chính Doanh Nghiệp' },
+      tools: [
+        { id: 'analysis_pl', app: 'analysis', title: { en: 'Dynamic Financial Statement Engine', vi: 'Mô Hình Báo Cáo Kết Quả Kinh Doanh Linh Hoạt' }, models: ['Power Query Connectors', 'Xero / MYOB Sync Bridges'], desc: { en: 'Transform financial spreadsheets into operating cashflow models, margins metrics, and currency adjustments indicators.', vi: 'Chuyển đổi dữ liệu bảng tính thành mô hình dòng tiền hoạt động, chỉ số biên lợi nhuận và điều chỉnh tỷ giá.' } }
+      ]
+    }
+  ];
 
-function selectAsset(id) {
-  activeAsset = (activeAsset === id) ? null : id;
-  syncFocus();
-}
+  /* ── 2D Flat Map Micro-Engine ── */
+  const canvas = document.getElementById('mapCanvas');
+  const ctx = canvas.getContext('2d');
+  let activeAssetId = null;
+  let pulsePhase = 0;
 
-function resetFocus() {
-  activeAsset = null;
-  syncFocus();
-}
+  // Optimized vector point-matrix representations of major landmasses for flat 2D rendering
+  const LANDMASSES = [
+    { name: 'North America', segments: [[[-125,50],[-70,50],[-75,25],[-100,20],[-110,30],[-125,50]]] },
+    { name: 'South America', segments: [[[-75,-10],[-50,-10],[-60,-50],[-70,-50],[-75,-10]]] },
+    { name: 'Eurasia/Africa', segments: [[[-10,60],[40,65],[140,60],[130,20],[100,10],[80,15],[40,10],[-10,35],[-10,60]], [[15,30],[40,30],[45,0],[20,-30],[15,-30],[10,5],[15,30]]] },
+    { name: 'Southeast Asia/Oceania', segments: [[[[100,5],[115,-5],[125,5],[100,5]], [[115,-20],[150,-20],[150,-40],[130,-40],[115,-20]]]] }
+  ];
 
-function syncFocus() {
-  // Legend
-  document.querySelectorAll('.legend-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.id === activeAsset);
-    const color = el.style.color;
-    el.style.background = el.dataset.id === activeAsset ? hexToRgba(color, 0.06) : '';
-  });
-  // Asset strip
-  document.querySelectorAll('#asset-strip .app-card').forEach(el => {
-    el.classList.toggle('selected', el.dataset.assetId === activeAsset);
-  });
-  // Filter label
-  const lbl = document.getElementById('bars-filter-label');
-  if (activeAsset) {
-    const a = ASSETS.find(x=>x.id===activeAsset);
-    lbl.textContent = `Showing: ${a.icon} ${a.label[currentLang]}`;
-    lbl.style.display = 'inline';
-  } else {
-    lbl.style.display = 'none';
+  // Helper projection translates standard GPS lat/lon properties straight onto standard 2D Cartesian pixels
+  function convertCoordinates(lat, lon, width, height) {
+    // Add custom padding metrics to ensure markers never bleed out of frame boundaries
+    const x = ((lon + 180) / 360) * (width - 60) + 30;
+    const y = ((90 - lat) / 180) * (height - 60) + 30;
+    return { x, y };
   }
-  buildBars();
-  drawDonut();
-}
 
-/* ════════════════════════════════════════════════════════════
-   MAP TOOLTIP ON HOVER
-   ════════════════════════════════════════════════════════════ */
-canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
-  const my = (e.clientY - rect.top)  * (canvas.height / rect.height);
-  const W = canvas.width, H = canvas.height;
+  function renderMapLoop() {
+    const w = canvas.width = canvas.parentElement.clientWidth;
+    const h = canvas.height = canvas.parentElement.clientHeight;
 
-  let found = null;
-  let minDist = Infinity;
-  ASSETS.forEach(a => {
-    const pos = latLonToXY(a.lat, a.lon, W, H);
-    const r = 5 + (a.value/650)*23 + 10; // hit area
-    const dist = Math.hypot(mx-pos.x, my-pos.y);
-    if (dist < r && dist < minDist) { found = a; minDist = dist; }
-  });
+    pulsePhase += 0.04;
 
-  const tt = document.getElementById('mapTooltip');
-  if (found) {
-    hoveredId = found.id;
-    document.getElementById('tt-name').innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${resolveColor(found.color)};margin-right:4px"></span>${found.icon} ${found.label[currentLang]}`;
-    document.getElementById('tt-hub').textContent = found.hub;
-    document.getElementById('tt-val').textContent = `$${found.value}${found.unit} USD`;
-    document.getElementById('tt-pct').textContent = ((found.value/TOTAL)*100).toFixed(2)+'%';
-    // Position tooltip
-    const cx = (e.clientX - rect.left) / rect.width * 100;
-    const cy = (e.clientY - rect.top)  / rect.height * 100;
-    tt.style.left = cx > 65 ? '' : (e.clientX - rect.left + 14)+'px';
-    tt.style.right = cx > 65 ? (rect.right - e.clientX + 14)+'px' : '';
-    tt.style.top = (e.clientY - rect.top + 14)+'px';
-    tt.classList.add('visible');
-    canvas.style.cursor = 'pointer';
-  } else {
-    hoveredId = null;
-    tt.classList.remove('visible');
-    canvas.style.cursor = 'default';
+    // Draw grid layer architecture 
+    ctx.strokeStyle = 'rgba(200, 169, 110, 0.03)';
+    ctx.lineWidth = 1;
+    const gridCount = 18;
+    for (let i = 1; i < gridCount; i++) {
+      let xPos = (w / gridCount) * i;
+      ctx.beginPath(); ctx.moveTo(xPos, 0); ctx.lineTo(xPos, h); ctx.stroke();
+      
+      let yPos = (h / (gridCount / 2)) * i;
+      ctx.beginPath(); ctx.moveTo(0, yPos); ctx.lineTo(w, yPos); ctx.stroke();
+    }
+
+    // Process landmass boundaries map rendering
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+    ctx.strokeStyle = 'rgba(200, 169, 110, 0.1)';
+    ctx.lineWidth = 1.5;
+
+    LANDMASSES.forEach(land => {
+      land.segments.forEach(polygon => {
+        ctx.beginPath();
+        polygon.forEach((pt, idx) => {
+          let pos = convertCoordinates(pt[1], pt[0], w, h);
+          if (idx === 0) ctx.moveTo(pos.x, pos.y);
+          else ctx.lineTo(pos.x, pos.y);
+        });
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      });
+    });
+
+    // Plot capital hubs allocations onto mapped paths
+    ASSET_DOMINANCE_DATA.forEach(a => {
+      const pos = convertCoordinates(a.lat, a.lon, w, h);
+      const isFocused = (activeAssetId === a.id);
+      
+      // Proportional indicator sizing math
+      let baseRadius = (a.value / 650) * 22 + 4;
+      if (isFocused) baseRadius *= 1.15;
+
+      // Outer radial glow pulse structure
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, baseRadius + Math.sin(pulsePhase) * (isFocused ? 6 : 3), 0, Math.PI * 2);
+      ctx.fillStyle = a.color.replace(')', ', 0.15)').replace('var', 'rgba');
+      if (!a.color.startsWith('var')) ctx.fillStyle = a.color + '26'; 
+      ctx.fill();
+
+      // Core tracking point anchor
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, isFocused ? 6 : 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = a.color;
+      if (a.color.startsWith('var')) ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue(a.color.replace('var(', '').replace(')', '')).trim();
+      ctx.fill();
+
+      // Text tracking label box
+      if (isFocused) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '600 11px var(--font-mono)';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 4;
+        ctx.fillText(`${a.icon} ${a.hub}: \$${a.value}${a.unit}`, pos.x, pos.y - baseRadius - 8);
+        ctx.shadowBlur = 0;
+      }
+    });
+
+    requestAnimationFrame(renderMapLoop);
   }
-});
 
-canvas.addEventListener('mouseleave', () => {
-  hoveredId = null;
-  document.getElementById('mapTooltip').classList.remove('visible');
-});
+  /* ── Interactive Synchronization Elements ── */
+  function highlightAsset(id) {
+    activeAssetId = id;
+    document.querySelectorAll('.dom-row').forEach(r => {
+      r.classList.toggle('active', r.dataset.id === id);
+    });
+  }
 
-canvas.addEventListener('click', e => {
-  if (hoveredId) toggleFocus(hoveredId);
-});
+  function clearHighlight() {
+    activeAssetId = null;
+    document.querySelectorAll('.dom-row').forEach(r => r.classList.remove('active'));
+  }
 
-/* ════════════════════════════════════════════════════════════
-   TOOLS SECTION
-   ════════════════════════════════════════════════════════════ */
-function renderCats() {
-  const nav = document.getElementById('cat-nav');
-  nav.innerHTML = '';
-  Object.keys(CATEGORIES).forEach(key => {
-    let count = key==='all' ? TOOLS_DATA.reduce((s,g)=>s+g.tools.length,0) : (TOOLS_DATA.find(g=>g.id===key)||{tools:[]}).tools.length;
-    const btn = document.createElement('button');
-    btn.className = `cat-btn ${currentCat===key?'active':''}`;
-    btn.type = 'button';
-    btn.onclick = () => { currentCat=key; renderCats(); renderTools(); };
-    btn.innerHTML = `<span>${CATEGORIES[key][currentLang]}</span><span class="badge">${count}</span>`;
-    nav.appendChild(btn);
-  });
-}
-
-function renderTools() {
-  const container = document.getElementById('sections');
-  container.innerHTML = '';
-  let shown = 0;
-  TOOLS_DATA.forEach(group => {
-    const tools = group.tools.filter(t => currentCat==='all' || t.app===currentCat);
-    if (!tools.length) return;
-    shown++;
-    const block = document.createElement('section');
-    block.className = 'section-block';
-    block.innerHTML = `<h3 class="section-title">${group.title[currentLang]}</h3>`;
-    const grid = document.createElement('div');
-    grid.className = 'tools-grid';
-    tools.forEach(t => {
-      const card = document.createElement('div');
-      card.className = 'tool-card';
-      card.innerHTML = `
-        <div class="tool-head">
-          <h4>${t.title[currentLang]}</h4>
-          <div class="tool-tags">${t.models.map(m=>`<span class="tool-tag">${m}</span>`).join('')}</div>
-          <p>${t.desc[currentLang]}</p>
+  function buildDominanceList() {
+    const container = document.getElementById('dominance-bars-container');
+    container.innerHTML = '';
+    ASSET_DOMINANCE_DATA.forEach(a => {
+      let pct = ((a.value / 1451.2) * 100).toFixed(1); 
+      const row = document.createElement('div');
+      row.className = 'dom-row';
+      row.dataset.id = a.id;
+      row.onmouseenter = () => highlightAsset(a.id);
+      row.onmouseleave = () => clearHighlight();
+      row.innerHTML = `
+        <div class="dom-meta">
+          <div class="dom-title-wrap">
+            <span>${a.icon}</span>
+            <span class="dom-title" data-i18n="${a.key}">${I18N_DICT[currentLang][a.key]}</span>
+          </div>
+          <span class="dom-value">\$${a.value}${a.unit} <span style="font-size:10px;color:var(--muted); margin-left:2px;">(${pct}%)</span></span>
         </div>
-        <button class="btn" type="button" onclick="openModal('${t.id}','${t.title[currentLang]}')">
-          ⚙️ ${I18N[currentLang].quickView}
-        </button>
+        <div class="dom-track">
+          <div class="dom-fill" style="background:${a.color}; width: ${pct}%"></div>
+        </div>
       `;
-      grid.appendChild(card);
+      container.appendChild(row);
     });
-    block.appendChild(grid);
-    container.appendChild(block);
-  });
-  document.getElementById('empty-filter').style.display = shown ? 'none' : 'block';
-}
+  }
 
-/* ════════════════════════════════════════════════════════════
-   MODAL
-   ════════════════════════════════════════════════════════════ */
-function openModal(key, title) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = `
-    <div style="padding:36px;text-align:center;background:var(--surface);color:var(--muted);font-family:var(--font-mono);font-size:13px;">
-      🚀 Initialising module [${key}]…<br>
-      <span style="font-size:11px;color:var(--accent)">Ready for professional processing</span>
-    </div>
-  `;
-  document.getElementById('video-modal').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('video-modal').classList.remove('open');
-  document.getElementById('modal-body').innerHTML = '';
-}
+  /* ── Localization Core Engine ── */
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'vi' : 'en';
+    renderDOM();
+  }
 
-/* ════════════════════════════════════════════════════════════
-   I18N
-   ════════════════════════════════════════════════════════════ */
-function toggleLang() {
-  currentLang = currentLang === 'en' ? 'vi' : 'en';
-  document.getElementById('lang-toggle-btn').textContent = currentLang === 'en' ? '🌐 Tiếng Việt' : '🌐 English';
-  renderAll();
-}
-
-function renderAll() {
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (I18N[currentLang][key]) el.textContent = I18N[currentLang][key];
-  });
-  buildLegend();
-  buildBars();
-  buildSummaryStats();
-  renderCats();
-  renderTools();
-}
-
-/* ════════════════════════════════════════════════════════════
-   STRIP DOTS
-   ════════════════════════════════════════════════════════════ */
-function setupStrip(stripId, dotsId) {
-  const strip = document.getElementById(stripId);
-  const dotsEl = document.getElementById(dotsId);
-  if (!strip||!dotsEl) return;
-  const cards = strip.querySelectorAll('.app-card');
-  dotsEl.innerHTML = '';
-  cards.forEach((_,i) => {
-    const dot = document.createElement('div');
-    dot.className = `strip-dot ${i===0?'active':''}`;
-    dot.onclick = () => { cards[i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); };
-    dotsEl.appendChild(dot);
-  });
-  strip.addEventListener('scroll', () => {
-    const center = strip.scrollLeft + strip.clientWidth/2;
-    let nearest = 0, minD = Infinity;
-    cards.forEach((card,i) => {
-      const cc = card.offsetLeft + card.offsetWidth/2;
-      const d = Math.abs(center - cc);
-      if (d < minD) { minD=d; nearest=i; }
+  function renderDOM() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (I18N_DICT[currentLang][key]) {
+        el.textContent = I18N_DICT[currentLang][key];
+      }
     });
-    dotsEl.querySelectorAll('.strip-dot').forEach((d,idx) => d.classList.toggle('active', idx===nearest));
-  }, {passive:true});
-}
+    
+    buildDominanceList();
+    renderCategoriesSidebar();
+    renderToolsGrid();
+  }
 
-/* ════════════════════════════════════════════════════════════
-   INIT
-   ════════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  renderAll();
-  drawMap();
-  drawDonut();
-  setupStrip('app-strip','app-strip-dots');
-  setupStrip('asset-strip','asset-strip-dots');
+  function renderCategoriesSidebar() {
+    const nav = document.getElementById('cat-nav');
+    nav.innerHTML = '';
+    Object.keys(CATEGORIES).forEach(key => {
+      let count = 0;
+      if (key === 'all') {
+        TOOLS_DATA.forEach(g => count += g.tools.length);
+      } else {
+        const group = TOOLS_DATA.find(g => g.id === key);
+        if (group) count = group.tools.length;
+      }
+      
+      const btn = document.createElement('button');
+      btn.className = `cat-btn ${currentCat === key ? 'active' : ''}`;
+      btn.type = 'button';
+      btn.onclick = () => filterCat(key);
+      btn.innerHTML = `<span>${CATEGORIES[key][currentLang]}</span><span class="badge">${count}</span>`;
+      nav.appendChild(btn);
+    });
+  }
 
-  // Resize map
-  window.addEventListener('resize', () => {
-    if (animId) { cancelAnimationFrame(animId); animId=null; }
-    drawMap();
+  function renderToolsGrid() {
+    const container = document.getElementById('sections');
+    container.innerHTML = '';
+    let displayedGroups = 0;
+
+    TOOLS_DATA.forEach(group => {
+      const matchingTools = group.tools.filter(t => currentCat === 'all' || t.app === currentCat);
+      if (matchingTools.length === 0) return;
+      displayedGroups++;
+
+      const block = document.createElement('section');
+      block.className = 'section-block';
+      block.innerHTML = `<h3 class="section-title">${group.title[currentLang]}</h3>`;
+      
+      const grid = document.createElement('div');
+      grid.className = 'tools-grid';
+
+      matchingTools.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'tool-card';
+        card.innerHTML = `
+          <div class="tool-head">
+            <h4>${t.title[currentLang]}</h4>
+            <div class="tool-tags">
+              ${t.models.map(m => `<span class="tool-tag">${m}</span>`).join('')}
+            </div>
+            <p>${t.desc[currentLang]}</p>
+          </div>
+          <button class="btn" type="button" onclick="openVideo('${t.id}', '${t.title[currentLang]}')">
+            <span>⚙️ ${I18N_DICT[currentLang].quickView}</span>
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+      block.appendChild(grid);
+      container.appendChild(block);
+    });
+
+    document.getElementById('empty-filter').style.display = displayedGroups === 0 ? 'block' : 'none';
+  }
+
+  function filterCat(catId) {
+    currentCat = catId;
+    renderCategoriesSidebar();
+    renderToolsGrid();
+  }
+
+  /* ── Interactive Carousel Track Navigation ── */
+  function setupCarouselTrack(stripId, dotsId) {
+    const strip = document.getElementById(stripId);
+    const dotsEl = document.getElementById(dotsId);
+    if (!strip || !dotsEl) return;
+    
+    const cards = strip.querySelectorAll('.app-card');
+    dotsEl.innerHTML = '';
+    
+    cards.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = `app-strip-dot ${i === 0 ? 'active' : ''}`;
+      dot.onclick = () => {
+        const offset = cards[i].offsetLeft - strip.offsetLeft - (strip.clientWidth - cards[i].offsetWidth) / 2;
+        strip.scrollTo({ left: offset, behavior: 'smooth' });
+      };
+      dotsEl.appendChild(dot);
+    });
+
+    strip.addEventListener('scroll', () => {
+      const center = strip.scrollLeft + strip.clientWidth / 2;
+      let nearestIndex = 0, minDist = Infinity;
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft - strip.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(center - cardCenter);
+        if (dist < minDist) { minDist = dist; nearestIndex = i; }
+      });
+      dotsEl.querySelectorAll('.app-strip-dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx === nearestIndex);
+      });
+    }, { passive: true });
+  }
+
+  /* ── Video Overlay Controllers ── */
+  function openVideo(key, title) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-body').innerHTML = `
+      <div style="padding:40px; text-align:center; background:var(--surface); color:var(--muted); font-family:var(--font-mono); font-size:13px;">
+        🚀 Initializing secure workspace runtime module [${key}]...<br>
+        <span style="font-size:11px; color:var(--accent);">Ready for professional processing</span>
+      </div>
+    `;
+    document.getElementById('video-modal').classList.add('open');
+  }
+
+  function closeVideo() {
+    document.getElementById('video-modal').classList.remove('open');
+    document.getElementById('modal-body').innerHTML = '';
+  }
+
+  /* ── Bootstrap Initialization ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderDOM();
+    renderMapLoop();
+    setupCarouselTrack('app-strip', 'app-strip-dots');
+    setupCarouselTrack('asset-strip', 'asset-strip-dots');
+
+    document.getElementById('video-modal').addEventListener('click', e => { if (e.target.id === 'video-modal') closeVideo(); });
   });
-
-  // Close modal on backdrop click
-  document.getElementById('video-modal').addEventListener('click', e => {
-    if (e.target.id==='video-modal') closeModal();
-  });
-});
 </script>
 </body>
 </html>
