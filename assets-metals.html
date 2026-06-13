@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">Gold & Metals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ═══════════════════════════════════════════════════════════
+   hub.css — Finance Tools Hub shared stylesheet
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:      #0a0c10;
+  --surface: #111318;
+  --card:    #161920;
+  --border:  #232730;
+  --accent:  #c8a96e;
+  --accent2: #5c9eff;
+  --accent3: #4ecb8a;
+  --accent4: #e06b6b;
+  --accent5: #b67fff;
+  --accent6: #ff9f43;
+  --text:    #e8e3d8;
+  --muted:   #7a7f8e;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius: 12px;
+  --asset-accent:        #c8a96e;
+  --asset-accent-dim:    rgba(200,169,110,.12);
+  --asset-accent-border: rgba(200,169,110,.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+
+.shell {
+  position: relative; z-index: 1;
+  max-width: 1180px; margin: 0 auto; padding: 20px 24px 64px;
+}
+
+/* ── Top Navigation Framework ── */
+.top-nav-framework {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; margin-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.nav-links { display: flex; gap: 20px; }
+.nav-links a {
+  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500;
+  transition: color .15s; display: inline-flex; align-items: center; gap: 6px;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-controls { display: flex; gap: 12px; align-items: center; position: relative; }
+
+/* ── Dropdown Actions ── */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-menu {
+  display: none; position: absolute; right: 0; top: 100%; z-index: 100;
+  background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+  min-width: 160px; margin-top: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.dropdown-menu.show { display: block; }
+.dropdown-item {
+  display: block; width: 100%; padding: 10px 14px; text-align: left;
+  background: none; border: none; color: var(--text); font-size: 13px;
+  cursor: pointer; font-family: var(--font-body); transition: background .15s;
+}
+.dropdown-item:hover { background: rgba(255,255,255,0.05); color: var(--accent); }
+
+/* ── Language Switcher ── */
+.lang-btn {
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+  padding: 6px 12px; font-size: 11px; font-weight: 700; border-radius: 4px;
+  cursor: pointer; font-family: var(--font-mono); text-transform: uppercase;
+}
+.lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Header / Hero ── */
+.asset-hero {
+  display: flex; align-items: center; gap: 24px;
+  margin-bottom: 36px; padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.asset-hero-icon {
+  font-size: 52px; line-height: 1;
+  background: var(--asset-accent-dim);
+  border: 1px solid var(--asset-accent-border);
+  border-radius: 16px; padding: 16px; flex-shrink: 0;
+}
+.asset-hero-text h1 {
+  font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
+  color: var(--asset-accent); font-style: italic; font-weight: 400;
+}
+.asset-hero-text p { color: var(--muted); font-size: 13px; margin-top: 4px; max-width: 560px; }
+.asset-tagline {
+  font-size: 14px; color: var(--text); font-weight: 400; margin-top: 10px;
+  line-height: 1.5; border-left: 3px solid var(--asset-accent); padding-left: 14px; max-width: 680px;
+}
+
+/* ── Grid & Panels ── */
+.section { margin-bottom: 40px; }
+.section-head { margin-bottom: 18px; display: flex; justify-content: space-between; align-items: flex-end; }
+.section-head h2 { font-family: var(--font-display); font-size: 22px; color: var(--asset-accent); font-style: italic; font-weight: 400; }
+.tools-count { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.calc-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: border-color .15s;
+}
+.calc-card:hover { border-color: rgba(200,169,110,0.4); }
+.calc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.calc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.calc-app.asset-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; font-weight: 700; background: var(--asset-accent-dim); color: var(--asset-accent); border: 1px solid var(--asset-accent-border); }
+
+.models { display: flex; flex-wrap: wrap; gap: 6px; }
+.model-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+.guide-written { font-size: 13px; color: var(--muted); line-height: 1.55; border-left: 2px solid var(--border); padding-left: 12px; }
+.guide-written strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+
+.video-strip {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface);
+  border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: border-color .15s;
+}
+.video-strip:hover { border-color: var(--accent2); }
+.video-thumb { width: 44px; height: 28px; border-radius: 4px; background: linear-gradient(135deg, #1a2030, #2a3548); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; color: var(--accent); }
+.video-meta { font-size: 12px; }
+.video-meta strong { display: block; font-size: 12px; }
+.video-meta span { display: block; color: var(--muted); font-size: 11px; }
+
+.btn {
+  padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; text-align: center; text-decoration: none;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-accent { background: var(--asset-accent) !important; border-color: var(--asset-accent) !important; color: #000 !important; font-weight: 700; }
+.btn-accent:hover { filter: brightness(1.1); }
+
+/* ── Interactive Workspace Setup ── */
+.workspace-section {
+  display: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; margin-top: 32px;
+}
+.workspace-section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.workspace-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+.workspace-head h3 { font-family: var(--font-display); font-size: 20px; font-style: italic; color: var(--accent); }
+
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 12px; color: var(--text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select {
+  background: var(--card); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 14px; border-radius: 6px; font-family: var(--font-body); font-size: 14px;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--accent); outline: none; }
+
+.results-panel {
+  background: var(--card); border: 1px solid rgba(200,169,110,0.15);
+  border-radius: 8px; padding: 20px; margin-top: 20px;
+}
+.results-panel h4 { font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.result-stat { display: flex; flex-direction: column; }
+.result-stat .label { font-size: 12px; color: var(--muted); }
+.result-stat .val { font-family: var(--font-mono); font-size: 18px; color: var(--accent); font-weight: 700; margin-top: 2px; }
+.result-stat .val.negative { color: var(--accent4); }
+
+/* ── Financial Tables ── */
+.table-wrapper { overflow-x: auto; margin-bottom: 16px; border: 1px solid var(--border); border-radius: 6px; }
+.financial-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; background: var(--card); }
+.financial-table th { background: var(--surface); color: var(--muted); padding: 12px; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.financial-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.financial-table input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 4px; width: 100%; font-family: var(--font-mono); }
+.financial-table input:focus { border-color: var(--accent); outline: none; }
+
+/* ── Modals ── */
+.modal {
+  position: fixed; inset: 0; z-index: 200; display: none;
+  align-items: center; justify-content: center; padding: 24px;
+  background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+}
+.modal.open { display: flex; }
+.modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 600px; width: 100%; overflow: hidden; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.modal-head h3 { font-size: 15px; color: var(--accent); }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 20px; }
+.modal-foot { padding: 14px 20px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); text-align: right; }
+
+.badge-alert { background: rgba(224,107,107,0.15); color: var(--accent4); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; margin-top: 6px; }
+.badge-success { background: rgba(78,203,138,0.15); color: var(--accent3); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; margin-top: 6px; }
+
+@media (max-width: 768px) {
+  .asset-hero { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .top-nav-framework { flex-direction: column; gap: 14px; align-items: flex-start; }
+}
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="top-nav-framework">
+    <div class="nav-links">
+      <a href="index.html">🏛️ <span data-i18n="nav_hub">Financial Hub</span></a>
+      <a href="#calculators" class="active">📊 <span data-i18n="nav_metals">Gold & Metals</span></a>
+    </div>
+    <div class="nav-controls">
+      <button class="lang-btn" onclick="toggleLanguage()" id="langToggle">VN</button>
+      
+      <div class="dropdown">
+        <button class="btn" onclick="toggleDropdown('actionsDropdown')" data-i18n="btn_actions">Actions ▾</button>
+        <div class="dropdown-menu" id="actionsDropdown">
+          <button class="dropdown-item" onclick="exportData()" data-i18n="action_export_data">📥 Export CSV Data</button>
+          <button class="dropdown-item" onclick="exportReport()" data-i18n="action_export_report">📄 Export PDF Report</button>
+          <button class="dropdown-item" onclick="openSettings()" data-i18n="action_settings">⚙️ Strategy Settings</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="asset-hero">
+    <div class="asset-hero-icon">🧱</div>
+    <div class="asset-hero-text">
+      <h1 data-i18n="hero_title">Gold & Metals</h1>
+      <p data-i18n="hero_subtitle">Precious metal bullion, physical commodities & inflation hedges</p>
+      <p class="asset-tagline" data-i18n="hero_tagline">The oldest store of value — track spot prices, calculate real returns, and size your hedge against currency risk.</p>
+    </div>
+  </div>
+
+  <div class="section" id="calculators">
+    <div class="section-head">
+      <h2 data-i18n="section_title">Tools &amp; Calculators</h2>
+      <p class="tools-count"><span id="toolCount">5</span> <span data-i18n="tools_suffix">tools</span></p>
+    </div>
+    
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="c1_title">Spot Price Converter</div>
+          <span class="calc-app asset-badge" data-i18n="badge_pricing">Pricing</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Troy oz</span>
+          <span class="model-tag">Grams / kg</span>
+          <span class="model-tag">AUD / USD</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="c1_guide">Convert between troy ounces, grams, and kilograms at spot price. Enter current asset metrics for instant macro conversion.</span>
+        </div>
+        <div class="video-strip" onclick="openVideoLocal('metals_spot', 'Spot Price Converter')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent w-100" onclick="activateWorkspace('calc-spot-converter')" data-i18n="btn_open">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="c2_title">Holdings Valuation Register</div>
+          <span class="calc-app asset-badge" data-i18n="badge_holdings">Holdings</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Physical Gold</span>
+          <span class="model-tag">ETFs (PMGOLD)</span>
+          <span class="model-tag">Silver & Platinum</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="c2_guide">Record precious metals allocations across multiple asset descriptions. Updates asset valuation weight matrix seamlessly.</span>
+        </div>
+        <div class="video-strip" onclick="openVideoLocal('metals_holdings', 'Holdings Valuation Register')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent w-100" onclick="activateWorkspace('calc-holdings-register')" data-i18n="btn_open">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="c3_title">Inflation Hedge Analyser</div>
+          <span class="calc-app asset-badge" data-i18n="badge_hedge">Hedge</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">CPI-Adjusted Return</span>
+          <span class="model-tag">CAGR Matrix</span>
+          <span class="model-tag">Purchasing Power</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="c3_guide">Review real (CPI-adjusted) asset returns over custom horizons to assess historical capital retention profiles.</span>
+        </div>
+        <div class="video-strip" onclick="openVideoLocal('metals_hedge', 'Inflation Hedge Analyser')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent w-100" onclick="activateWorkspace('calc-inflation-hedge')" data-i18n="btn_open">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="c4_title">Physical Storage Cost Calculator</div>
+          <span class="calc-app asset-badge" data-i18n="badge_costs">Costs</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Vault Fees</span>
+          <span class="model-tag">Insurance Drag</span>
+          <span class="model-tag">Net Yield Cost</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="c4_guide">Isolate total cost of carry (secure custody structures, logistics and spread allocations) to evaluate total yield friction.</span>
+        </div>
+        <div class="video-strip" onclick="openVideoLocal('metals_storage', 'Physical Storage Cost Calculator')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent w-100" onclick="activateWorkspace('calc-storage-cost')" data-i18n="btn_open">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="c5_title">Portfolio Allocation Target</div>
+          <span class="calc-app asset-badge" data-i18n="badge_allocation">Allocation</span>
+        </div>
+        <div class="models">
+          <span class="model-tag">Target Variance</span>
+          <span class="model-tag">Rebalance Trigger</span>
+          <span class="model-tag">Capital Flow</span>
+        </div>
+        <div class="guide-written">
+          <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="c5_guide">Track modern portfolio safety parameters. Calibrates specific weight parameters and provides explicit rebalancing indicators.</span>
+        </div>
+        <div class="video-strip" onclick="openVideoLocal('metals_allocation', 'Portfolio Allocation Target')">
+          <div class="video-thumb">&#9654;</div>
+          <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent w-100" onclick="activateWorkspace('calc-portfolio-target')" data-i18n="btn_open">Open →</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div id="workspace-container">
+    
+    <section class="workspace-section" id="calc-spot-converter">
+      <div class="workspace-head">
+        <h3 data-i18n="c1_title">Spot Price Converter</h3>
+        <button class="btn" onclick="closeWorkspace()">✕ Close</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="label_spot_usd">Gold Spot Price (USD / Troy oz)</label>
+          <input type="number" id="sc_spot_usd" value="2350" oninput="runSpotConverter()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_fx_rate">AUD / USD Exchange Rate</label>
+          <input type="number" id="sc_fx" value="0.6650" step="0.0001" oninput="runSpotConverter()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_custom_mass">Custom Transaction Weight (oz)</label>
+          <input type="number" id="sc_mass" value="10" oninput="runSpotConverter()">
+        </div>
+      </div>
+      <div class="results-panel">
+        <h4 data-i18n="hdr_conversion_outputs">Conversion Analysis Metric Workspace</h4>
+        <div class="results-grid">
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_aud_oz">Spot Price (AUD / oz)</span>
+            <div class="val" id="sc_res_aud_oz">$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_aud_gram">Gram Price (AUD / g)</span>
+            <div class="val" id="sc_res_aud_gram">$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_aud_kg">Kilo Price (AUD / kg)</span>
+            <div class="val" id="sc_res_aud_kg">$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_total_val">Custom Target Gross Value (AUD)</span>
+            <div class="val" id="sc_res_total_val">$0.00</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="calc-holdings-register">
+      <div class="workspace-head">
+        <h3 data-i18n="c2_title">Holdings Valuation Register</h3>
+        <button class="btn" onclick="closeWorkspace()">✕ Close</button>
+      </div>
+      <div class="table-wrapper">
+        <table class="financial-table">
+          <thead>
+            <tr>
+              <th data-i18n="th_asset_desc">Asset Description</th>
+              <th data-i18n="th_units">Units Owned (oz / share)</th>
+              <th data-i18n="th_unit_cost_aud">Unit Spot/Price (AUD)</th>
+              <th data-i18n="th_total_valuation">Current Value (AUD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-i18n="row_gold_phys">Physical Gold Bullion (oz)</td>
+              <td><input type="number" id="hr_g_units" value="5" oninput="runHoldingsRegister()"></td>
+              <td><input type="number" id="hr_g_price" value="3533" oninput="runHoldingsRegister()"></td>
+              <td class="val" id="hr_g_total">$0.00</td>
+            </tr>
+            <tr>
+              <td data-i18n="row_silver_phys">Physical Silver Bullion (oz)</td>
+              <td><input type="number" id="hr_s_units" value="100" oninput="runHoldingsRegister()"></td>
+              <td><input type="number" id="hr_s_price" value="45" oninput="runHoldingsRegister()"></td>
+              <td class="val" id="hr_s_total">$0.00</td>
+            </tr>
+            <tr>
+              <td data-i18n="row_pmgold">Perth Mint Gold ETF (PMGOLD)</td>
+              <td><input type="number" id="hr_e_units" value="250" oninput="runHoldingsRegister()"></td>
+              <td><input type="number" id="hr_e_price" value="34.5" oninput="runHoldingsRegister()"></td>
+              <td class="val" id="hr_e_total">$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="results-panel">
+        <h4 data-i18n="hdr_aggregate_portfolio">Aggregate Portfolio Parameters</h4>
+        <div class="results-grid">
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_total_portfolio_aud">Total Metals Portfolio (AUD)</span>
+            <div class="val" id="hr_res_aggregate">$0.00</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="calc-inflation-hedge">
+      <div class="workspace-head">
+        <h3 data-i18n="c3_title">Inflation Hedge Analyser</h3>
+        <button class="btn" onclick="closeWorkspace()">✕ Close</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="label_purchase_price_aud">Initial Purchase Price (AUD)</label>
+          <input type="number" id="ih_cost" value="1850" oninput="runInflationHedge()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_current_value_aud">Current Asset Value (AUD)</label>
+          <input type="number" id="ih_current" value="3533" oninput="runInflationHedge()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_holding_years">Holding Horizon Period (Years)</label>
+          <input type="number" id="ih_years" value="8" oninput="runInflationHedge()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_cpi_rate">Average Annual Inflation / CPI (%)</label>
+          <input type="number" id="ih_cpi" value="2.8" step="0.1" oninput="runInflationHedge()">
+        </div>
+      </div>
+      <div class="results-panel">
+        <h4 data-i18n="hdr_purchasing_power_metrics">Purchasing Power Hedging Metrics</h4>
+        <div class="results-grid">
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_nominal_return">Nominal Total Growth</span>
+            <div class="val" id="ih_res_nominal">0.00%</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_cagr">Nominal CAGR Rate</span>
+            <div class="val" id="ih_res_cagr">0.00%</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_breakeven_cost">CPI Adjusted Cost Basis</span>
+            <div class="val" id="ih_res_adjusted_cost">$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_net_purchasing_power">Net Purchasing Power Variation</span>
+            <div class="val" id="ih_res_power">$0.00</div>
+            <div id="ih_status_badge"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="calc-storage-cost">
+      <div class="workspace-head">
+        <h3 data-i18n="c4_title">Physical Storage Cost Calculator</h3>
+        <button class="btn" onclick="closeWorkspace()">✕ Close</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="label_bullion_value">Allocated Bullion Value (AUD)</label>
+          <input type="number" id="st_value" value="50000" oninput="runStorageCalculator()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_vault_fee_pct">Vault Custody Storage Rate (% p.a.)</label>
+          <input type="number" id="st_vault_pct" value="0.75" step="0.05" oninput="runStorageCalculator()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_insurance_flat">Annual Insurance Premium / Logistics (AUD)</label>
+          <input type="number" id="st_ins" value="120" oninput="runStorageCalculator()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_spread_cost_pct">Buy/Sell Spread Friction Execution (% Plan)</label>
+          <input type="number" id="st_spread" value="1.5" step="0.1" oninput="runStorageCalculator()">
+        </div>
+      </div>
+      <div class="results-panel">
+        <h4 data-i18n="hdr_cost_carry_analysis">Cost of Carry Friction Matrix</h4>
+        <div class="results-grid">
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_annual_custody_fee">Annual Custody Fee Allocation</span>
+            <div class="val negative" id="st_res_annual_cost">-$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_spread_friction_value">Liquidity Entry Spread Friction</span>
+            <div class="val negative" id="st_res_spread_val">-$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_five_year_carry">5-Year Aggregate Holding Drag</span>
+            <div class="val negative" id="st_res_five_year">-$0.00</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_net_yield_drag">Net Yield Carry Friction (% p.a.)</span>
+            <div class="val negative" id="st_res_yield_drag">0.00%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="calc-portfolio-target">
+      <div class="workspace-head">
+        <h3 data-i18n="c5_title">Portfolio Allocation Target</h3>
+        <button class="btn" onclick="closeWorkspace()">✕ Close</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-i18n="label_total_net_wealth">Total Overall Net Portfolio Assets (AUD)</label>
+          <input type="number" id="al_total_portfolio" value="500000" oninput="runAllocationCalculator()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_target_allocation_pct">Target Strategic Allocation Weight (%)</label>
+          <input type="number" id="al_target_pct" value="7.5" step="0.5" oninput="runAllocationCalculator()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_current_metals_aud">Current Consolidated Metal Assets (AUD)</label>
+          <input type="number" id="al_current_aud" value="22150" oninput="runAllocationCalculator()">
+        </div>
+      </div>
+      <div class="results-panel">
+        <h4 data-i18n="hdr_rebalancing_parameters">Asset Rebalancing Parameters</h4>
+        <div class="results-grid">
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_current_weight">Current Asset Weight Parameter</span>
+            <div class="val" id="al_res_current_weight">0.00%</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_variance_deviation">Variance Allocation Deviation</span>
+            <div class="val" id="al_res_variance">0.00%</div>
+          </div>
+          <div class="result-stat">
+            <span class="label" data-i18n="lbl_rebalance_action">Target Deployment Strategy Action</span>
+            <div class="val" id="al_res_action">HOLD</div>
+            <div id="al_action_badge"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer-bar">
+    <a class="back-link" href="index.html">← <span data-i18n="back_to_hub">Return to Financial Hub</span></a>
+  </div>
+
+</div>
+
+<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modal-title">Video guide</h3>
+      <button class="modal-close" type="button" onclick="closeVideoLocal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">Tip: Keep strategic updates under 3 minutes — focus on macro inputs.</div>
+  </div>
+</div>
+
+<div class="modal" id="settings-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 data-i18n="settings_modal_hdr">System Execution Configuration</h3>
+      <button class="modal-close" type="button" onclick="closeSettings()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label data-i18n="settings_base_currency">Base Institutional Accounting Currency</label>
+        <select id="setting_currency" onchange="applySettings()">
+          <option value="AUD">AUD ($)</option>
+          <option value="USD">USD ($)</option>
+          <option value="VND">VND (₫)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="settings_alert_threshold">Rebalancing Alert Tolerance Threshold (+/- %)</label>
+        <input type="number" id="setting_tolerance" value="1.5" step="0.1" oninput="applySettings()">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-accent" onclick="closeSettings()" data-i18n="btn_save_settings">Save Strategy Configuration</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Global App State Variables
+  let currentLang = 'en';
+
+  const ASSET_VIDEO_IDS = {
+    metals_spot: 'placeholder',
+    metals_holdings: 'placeholder',
+    metals_hedge: 'placeholder',
+    metals_storage: 'placeholder',
+    metals_allocation: 'placeholder',
+  };
+
+  // Dual-Language Localization Dictionary
+  const dictionary = {
+    en: {
+      page_title: "Gold & Metals — Financial Hub",
+      nav_hub: "Financial Hub",
+      nav_metals: "Gold & Metals",
+      btn_actions: "Actions ▾",
+      action_export_data: "📥 Export CSV Data",
+      action_export_report: "📄 Export PDF Report",
+      action_settings: "⚙️ Strategy Settings",
+      hero_title: "Gold & Metals",
+      hero_subtitle: "Precious metal bullion, physical commodities & inflation hedges",
+      hero_tagline: "The oldest store of value — track spot prices, calculate real returns, and size your hedge against currency risk.",
+      section_title: "Tools & Calculators",
+      tools_suffix: "tools",
+      quick_guide: "Quick guide",
+      watch_guide: "Watch guide",
+      video_walkthrough: "Video walkthrough",
+      btn_open: "Open →",
+      badge_pricing: "Pricing",
+      badge_holdings: "Holdings",
+      badge_hedge: "Hedge",
+      badge_costs: "Costs",
+      badge_allocation: "Allocation",
+      
+      // Calculator 1
+      c1_title: "Spot Price Converter",
+      c1_guide: "Convert between troy ounces, grams, and kilograms at spot price. Enter current asset metrics for instant macro conversion.",
+      label_spot_usd: "Gold Spot Price (USD / Troy oz)",
+      label_fx_rate: "AUD / USD Exchange Rate",
+      label_custom_mass: "Custom Transaction Weight (oz)",
+      hdr_conversion_outputs: "Conversion Analysis Metric Workspace",
+      lbl_aud_oz: "Spot Price (AUD / oz)",
+      lbl_aud_gram: "Gram Price (AUD / g)",
+      lbl_aud_kg: "Kilo Price (AUD / kg)",
+      lbl_total_val: "Custom Target Gross Value (AUD)",
+
+      // Calculator 2
+      c2_title: "Holdings Valuation Register",
+      c2_guide: "Record precious metals allocations across multiple asset descriptions. Updates asset valuation weight matrix seamlessly.",
+      th_asset_desc: "Asset Description",
+      th_units: "Units Owned (oz / share)",
+      th_unit_cost_aud: "Unit Spot/Price (AUD)",
+      th_total_valuation: "Current Value (AUD)",
+      row_gold_phys: "Physical Gold Bullion (oz)",
+      row_silver_phys: "Physical Silver Bullion (oz)",
+      row_pmgold: "Perth Mint Gold ETF (PMGOLD)",
+      hdr_aggregate_portfolio: "Aggregate Portfolio Parameters",
+      lbl_total_portfolio_aud: "Total Metals Portfolio (AUD)",
+
+      // Calculator 3
+      c3_title: "Inflation Hedge Analyser",
+      c3_guide: "Review real (CPI-adjusted) asset returns over custom horizons to assess historical capital retention profiles.",
+      label_purchase_price_aud: "Initial Purchase Price (AUD)",
+      label_current_value_aud: "Current Asset Value (AUD)",
+      label_holding_years: "Holding Horizon Period (Years)",
+      label_cpi_rate: "Average Annual Inflation / CPI (%)",
+      hdr_purchasing_power_metrics: "Purchasing Power Hedging Metrics",
+      lbl_nominal_return: "Nominal Total Growth",
+      lbl_cagr: "Nominal CAGR Rate",
+      lbl_breakeven_cost: "CPI Adjusted Cost Basis",
+      lbl_net_purchasing_power: "Net Purchasing Power Variation",
+
+      // Calculator 4
+      c4_title: "Physical Storage Cost Calculator",
+      c4_guide: "Isolate total cost of carry (secure custody structures, logistics and spread allocations) to evaluate total yield friction.",
+      label_bullion_value: "Allocated Bullion Value (AUD)",
+      label_vault_fee_pct: "Vault Custody Storage Rate (% p.a.)",
+      label_insurance_flat: "Annual Insurance Premium / Logistics (AUD)",
+      label_spread_cost_pct: "Buy/Sell Spread Friction Execution (% Plan)",
+      hdr_cost_carry_analysis: "Cost of Carry Friction Matrix",
+      lbl_annual_custody_fee: "Annual Custody Fee Allocation",
+      lbl_spread_friction_value: "Liquidity Entry Spread Friction",
+      lbl_five_year_carry: "5-Year Aggregate Holding Drag",
+      lbl_net_yield_drag: "Net Yield Carry Friction (% p.a.)",
+
+      // Calculator 5
+      c5_title: "Portfolio Allocation Target",
+      c5_guide: "Track modern portfolio safety parameters. Calibrates specific weight parameters and provides explicit rebalancing indicators.",
+      label_total_net_wealth: "Total Overall Net Portfolio Assets (AUD)",
+      label_target_allocation_pct: "Target Strategic Allocation Weight (%)",
+      label_current_metals_aud: "Current Consolidated Metal Assets (AUD)",
+      hdr_rebalancing_parameters: "Asset Rebalancing Parameters",
+      lbl_current_weight: "Current Asset Weight Parameter",
+      lbl_variance_deviation: "Variance Allocation Deviation",
+      lbl_rebalance_action: "Target Deployment Strategy Action",
+
+      back_to_hub: "Return to Financial Hub",
+      settings_modal_hdr: "System Execution Configuration",
+      settings_base_currency: "Base Institutional Accounting Currency",
+      settings_alert_threshold: "Rebalancing Alert Tolerance Threshold (+/- %)",
+      btn_save_settings: "Save Strategy Configuration",
+      action_buy: "STRATEGIC INFLOW (BUY)",
+      action_sell: "LIQUIDATE EXCESS (SELL)",
+      action_hold: "TARGET MATCHED (HOLD)",
+      alert_preserved: "PURCHASING POWER SECURED",
+      alert_debased: "REAL CAPITAL DEBASEMENT DRAG"
+    },
+    vn: {
+      page_title: "Vàng & Kim loại quý — Trung tâm Tài chính",
+      nav_hub: "Tổng quan Hub",
+      nav_metals: "Vàng & Kim loại quý",
+      btn_actions: "Thao tác ▾",
+      action_export_data: "📥 Xuất Dữ liệu CSV",
+      action_export_report: "📄 Xuất Báo cáo PDF",
+      action_settings: "⚙️ Cấu hình Chiến lược",
+      hero_title: "Vàng & Kim loại quý",
+      hero_subtitle: "Quản lý kim loại quý, hàng hóa vật chất & phòng vệ lạm phát",
+      hero_tagline: "Hệ thống lưu trữ giá trị lâu đời nhất — theo dõi giá giao ngay, tính toán lợi nhuận thực tế và định lượng rủi ro tiền tệ.",
+      section_title: "Công cụ & Máy tính chuyên sâu",
+      tools_suffix: "công cụ",
+      quick_guide: "Hướng dẫn nhanh",
+      watch_guide: "Video hướng dẫn",
+      video_walkthrough: "Xem quy trình xử lý",
+      btn_open: "Kích hoạt →",
+      badge_pricing: "Định giá",
+      badge_holdings: "Tài sản",
+      badge_hedge: "Phòng vệ",
+      badge_costs: "Chi phí",
+      badge_allocation: "Phân bổ",
+
+      // Calculator 1
+      c1_title: "Bộ chuyển đổi Giá Giao ngay",
+      c1_guide: "Quy đổi nhanh chóng giữa troy ounces, grams, và kilograms theo giá giao ngay quốc tế (USD/oz) và tỷ giá AUD.",
+      label_spot_usd: "Giá Vàng Giao ngay (USD / Troy oz)",
+      label_fx_rate: "Tỷ giá AUD / USD",
+      label_custom_mass: "Khối lượng Định giá Tùy chỉnh (oz)",
+      hdr_conversion_outputs: "Kết quả Quy đổi Tài sản Toàn cầu",
+      lbl_aud_oz: "Giá Giao ngay (AUD / oz)",
+      lbl_aud_gram: "Giá mỗi Gram (AUD / g)",
+      lbl_aud_kg: "Giá mỗi Kilogram (AUD / kg)",
+      lbl_total_val: "Tổng Giá trị Khối lượng Tùy chỉnh (AUD)",
+
+      // Calculator 2
+      c2_title: "Sổ đăng ký Định giá Tài sản",
+      c2_guide: "Theo dõi danh mục kim loại quý hiện có: vàng vật chất, tài khoản được phân bổ và các chứng chỉ quỹ ETF (PMGOLD, GLD).",
+      th_asset_desc: "Mô tả Tài sản",
+      th_units: "Số lượng Nắm giữ (oz / chứng chỉ)",
+      th_unit_cost_aud: "Đơn giá Hiện tại (AUD)",
+      th_total_valuation: "Tổng Giá trị Hiện hành (AUD)",
+      row_gold_phys: "Vàng vật chất (oz)",
+      row_silver_phys: "Bạc vật chất (oz)",
+      row_pmgold: "Perth Mint Gold ETF (PMGOLD)",
+      hdr_aggregate_portfolio: "Tổng hợp Danh mục Kim loại quý",
+      lbl_total_portfolio_aud: "Tổng giá trị danh mục (AUD)",
+
+      // Calculator 3
+      c3_title: "Công cụ Phân tích Phòng vệ Lạm phát",
+      c3_guide: "Đánh giá tỷ suất sinh lời thực tế (đã điều chỉnh chỉ số CPI) qua các chu kỳ nắm giữ để xác định hiệu quả bảo toàn vốn.",
+      label_purchase_price_aud: "Giá vốn Ban đầu (AUD)",
+      label_current_value_aud: "Giá trị Thị trường Hiện tại (AUD)",
+      label_holding_years: "Thời gian Nắm giữ (Số Năm)",
+      label_cpi_rate: "Tỷ lệ Lạm phát Bình quân / CPI (%)",
+      hdr_purchasing_power_metrics: "Chỉ số Sức mua & Bảo toàn Vốn",
+      lbl_nominal_return: "Tăng trưởng Danh nghĩa",
+      lbl_cagr: "Tỷ lệ CAGR Danh nghĩa",
+      lbl_breakeven_cost: "Giá vốn Điều chỉnh theo CPI",
+      lbl_net_purchasing_power: "Biến động Sức mua Thực tế",
+
+      // Calculator 4
+      c4_title: "Máy tính Chi phí Lưu kho Vật chất",
+      c4_guide: "Bóc tách toàn bộ chi phí sở hữu (phí lưu kho an toàn, bảo hiểm logistics và chênh lệch mua bán spread).",
+      label_bullion_value: "Giá trị Khối kim loại Định giá (AUD)",
+      label_vault_fee_pct: "Phí Lưu kho An toàn (% năm)",
+      label_insurance_flat: "Phí Bảo hiểm & Logistics Cố định (AUD/năm)",
+      label_spread_cost_pct: "Chênh lệch Mua/Bán Friction Spread (%)",
+      hdr_cost_carry_analysis: "Ma trận Phân tích Chi phí Sở hữu",
+      lbl_annual_custody_fee: "Phí Lưu kho Phân bổ Hàng năm",
+      lbl_spread_friction_value: "Chi phí Chênh lệch Khi Thanh khoản",
+      lbl_five_year_carry: "Tổng Chi phí Sở hữu Sau 5 Năm",
+      lbl_net_yield_drag: "Mức Giảm Tỷ suất do Chi phí (% / năm)",
+
+      // Calculator 5
+      c5_title: "Mục tiêu Phân bổ Danh mục",
+      c5_guide: "Xác định tỷ trọng vàng tối ưu trong danh mục tổng thể để giảm thiểu rủi ro hệ thống và kích hoạt tái cân bằng.",
+      label_total_net_wealth: "Tổng Tài sản Toàn danh mục (AUD)",
+      label_target_allocation_pct: "Tỷ trọng Phân bổ Mục tiêu (%)",
+      label_current_metals_aud: "Giá trị Kim loại Hiện tại (AUD)",
+      hdr_rebalancing_parameters: "Thông số Kích hoạt Tái Cân bằng",
+      lbl_current_weight: "Tỷ trọng Thực tế Hiện tại",
+      lbl_variance_deviation: "Độ lệch so với Mục tiêu",
+      lbl_rebalance_action: "Hành động Chiến lược Đề xuất",
+
+      back_to_hub: "Quay lại Trung tâm Tài chính",
+      settings_modal_hdr: "Cấu hình Tham số Hệ thống",
+      settings_base_currency: "Đơn vị Tiền tệ Kế toán Cơ sở",
+      settings_alert_threshold: "Ngưỡng dung sai Cảnh báo Tái cân bằng (+/- %)",
+      btn_save_settings: "Lưu Cấu hình Tham số",
+      action_buy: "BỔ SUNG CHIẾN LƯỢC (MUA)",
+      action_sell: "THANH LÝ BỚT TÀI SẢN (BÁN)",
+      action_hold: "ĐẠT TỶ TRỌNG MỤC TIÊU (GIỮ)",
+      alert_preserved: "ĐÃ BẢO TOÀN SỨC MUA THỰC TẾ",
+      alert_debased: "XÓI MÒN VỐN THỰC TẾ DO LẠM PHÁT"
+    }
+  };
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'vn' : 'en';
+    document.getElementById('langToggle').textContent = currentLang === 'en' ? 'VN' : 'EN';
+    applyLocalization();
+    // Refresh active workspace calculations to update reactive text strings
+    runSpotConverter();
+    runHoldingsRegister();
+    runInflationHedge();
+    runStorageCalculator();
+    runAllocationCalculator();
+  }
+
+  function applyLocalization() {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dictionary[currentLang][key]) {
+        if (el.tagName === 'INPUT' && el.type === 'button') {
+          el.value = dictionary[currentLang][key];
+        } else {
+          el.textContent = dictionary[currentLang][key];
+        }
+      }
+    });
+  }
+
+  // ── Workspace Navigation Logic ──
+  function activateWorkspace(id) {
+    // Hide all panels
+    const panels = document.querySelectorAll('.workspace-section');
+    panels.forEach(p => p.classList.remove('active'));
+    
+    // Show selected panel
+    const target = document.getElementById(id);
+    if(target) {
+      target.classList.add('active');
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function closeWorkspace() {
+    const panels = document.querySelectorAll('.workspace-section');
+    panels.forEach(p => p.classList.remove('active'));
+    window.scrollTo({ top: document.getElementById('calculators').offsetTop, behavior: 'smooth' });
+  }
+
+  // ── Dropdown Control ──
+  function toggleDropdown(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.btn')) {
+      const dropdowns = document.getElementsByClassName("dropdown-menu");
+      for (let i = 0; i < dropdowns.length; i++) {
+        let openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  // ── STRATEGIC CORE MATHEMATICS ENGINE ──
+
+  // Calc 1: Spot Converter Engine
+  function runSpotConverter() {
+    const spotUsd = parseFloat(document.getElementById('sc_spot_usd').value) || 0;
+    const fxRate = parseFloat(document.getElementById('sc_fx').value) || 1;
+    const massOz = parseFloat(document.getElementById('sc_mass').value) || 0;
+
+    const audPerOz = spotUsd / fxRate;
+    const audPerGram = audPerOz / 31.1034768;
+    const audPerKg = audPerGram * 1000;
+    const totalVal = audPerOz * massOz;
+
+    document.getElementById('sc_res_aud_oz').textContent = formatCurrency(audPerOz);
+    document.getElementById('sc_res_aud_gram').textContent = formatCurrency(audPerGram);
+    document.getElementById('sc_res_aud_kg').textContent = formatCurrency(audPerKg);
+    document.getElementById('sc_res_total_val').textContent = formatCurrency(totalVal);
+  }
+
+  // Calc 2: Holdings Register Engine
+  function runHoldingsRegister() {
+    const gUnits = parseFloat(document.getElementById('hr_g_units').value) || 0;
+    const gPrice = parseFloat(document.getElementById('hr_g_price').value) || 0;
+    const sUnits = parseFloat(document.getElementById('hr_s_units').value) || 0;
+    const sPrice = parseFloat(document.getElementById('hr_s_price').value) || 0;
+    const eUnits = parseFloat(document.getElementById('hr_e_units').value) || 0;
+    const ePrice = parseFloat(document.getElementById('hr_e_price').value) || 0;
+
+    const gTotal = gUnits * gPrice;
+    const sTotal = sUnits * sPrice;
+    const eTotal = eUnits * ePrice;
+    const aggregate = gTotal + sTotal + eTotal;
+
+    document.getElementById('hr_g_total').textContent = formatCurrency(gTotal);
+    document.getElementById('hr_s_total').textContent = formatCurrency(sTotal);
+    document.getElementById('hr_e_total').textContent = formatCurrency(eTotal);
+    document.getElementById('hr_res_aggregate').textContent = formatCurrency(aggregate);
+
+    // Sync directly to Calc 5 to ensure user state matches
+    document.getElementById('al_current_aud').value = aggregate.toFixed(0);
+    runAllocationCalculator();
+  }
+
+  // Calc 3: Inflation Hedge Engine
+  function runInflationHedge() {
+    const cost = parseFloat(document.getElementById('ih_cost').value) || 0;
+    const current = parseFloat(document.getElementById('ih_current').value) || 0;
+    const years = parseFloat(document.getElementById('ih_years').value) || 1;
+    const cpiPct = parseFloat(document.getElementById('ih_cpi').value) || 0;
+
+    const nominalReturnPct = cost > 0 ? ((current - cost) / cost) * 100 : 0;
+    const cagr = cost > 0 && years > 0 ? (Math.pow((current / cost), (1 / years)) - 1) * 100 : 0;
+    const inflationAdjustedCost = cost * Math.pow((1 + (cpiPct / 100)), years);
+    const netPurchasingPower = current - inflationAdjustedCost;
+
+    document.getElementById('ih_res_nominal').textContent = nominalReturnPct.toFixed(2) + '%';
+    document.getElementById('ih_res_cagr').textContent = cagr.toFixed(2) + '%';
+    document.getElementById('ih_res_adjusted_cost').textContent = formatCurrency(inflationAdjustedCost);
+    
+    const powerEl = document.getElementById('ih_res_power');
+    powerEl.textContent = formatCurrency(netPurchasingPower);
+    
+    const badgeContainer = document.getElementById('ih_status_badge');
+    if(netPurchasingPower >= 0) {
+      powerEl.classList.remove('negative');
+      badgeContainer.innerHTML = `<span class="badge-success">${dictionary[currentLang].alert_preserved}</span>`;
+    } else {
+      powerEl.classList.add('negative');
+      badgeContainer.innerHTML = `<span class="badge-alert">${dictionary[currentLang].alert_debased}</span>`;
+    }
+  }
+
+  // Calc 4: Physical Storage Cost Engine
+  function runStorageCalculator() {
+    const val = parseFloat(document.getElementById('st_value').value) || 0;
+    const vaultPct = parseFloat(document.getElementById('st_vault_pct').value) || 0;
+    const insFlat = parseFloat(document.getElementById('st_ins').value) || 0;
+    const spreadPct = parseFloat(document.getElementById('st_spread').value) || 0;
+
+    const annualVaultCost = val * (vaultPct / 100) + insFlat;
+    const spreadFrictionCost = val * (spreadPct / 100);
+    const fiveYearAccumulatedDrag = (annualVaultCost * 5) + spreadFrictionCost;
+    const netYieldDragPct = val > 0 ? ((annualVaultCost / val) * 100) : 0;
+
+    document.getElementById('st_res_annual_cost').textContent = '-' + formatCurrency(annualVaultCost);
+    document.getElementById('st_res_spread_val').textContent = '-' + formatCurrency(spreadFrictionCost);
+    document.getElementById('st_res_five_year').textContent = '-' + formatCurrency(fiveYearAccumulatedDrag);
+    document.getElementById('st_res_yield_drag').textContent = '-' + netYieldDragPct.toFixed(2) + '%';
+  }
+
+  // Calc 5: Portfolio Allocation Target Engine
+  function runAllocationCalculator() {
+    const totalPortfolio = parseFloat(document.getElementById('al_total_portfolio').value) || 0;
+    const targetPct = parseFloat(document.getElementById('al_target_pct').value) || 0;
+    const currentMetalsAud = parseFloat(document.getElementById('al_current_aud').value) || 0;
+
+    const currentWeightPct = totalPortfolio > 0 ? (currentMetalsAud / totalPortfolio) * 100 : 0;
+    const variancePct = currentWeightPct - targetPct;
+    
+    const tolerance = parseFloat(document.getElementById('setting_tolerance').value) || 1.5;
+
+    document.getElementById('al_res_current_weight').textContent = currentWeightPct.toFixed(2) + '%';
+    
+    const varEl = document.getElementById('al_res_variance');
+    varEl.textContent = (variancePct > 0 ? '+' : '') + variancePct.toFixed(2) + '%';
+
+    const actionEl = document.getElementById('al_res_action');
+    const badgeEl = document.getElementById('al_action_badge');
+
+    if (Math.abs(variancePct) <= tolerance) {
+      actionEl.textContent = dictionary[currentLang].action_hold;
+      actionEl.classList.remove('negative');
+      badgeEl.innerHTML = `<span class="badge-success">OPTIMAL STRATEGY ALLOCATION</span>`;
+    } else if (variancePct < -tolerance) {
+      const targetBuy = (targetPct / 100 * totalPortfolio) - currentMetalsAud;
+      actionEl.textContent = dictionary[currentLang].action_buy + ` : Add ${formatCurrency(targetBuy)}`;
+      actionEl.classList.remove('negative');
+      badgeEl.innerHTML = `<span class="badge-alert">UNDERWEIGHT TRIGGER REBALANCE</span>`;
+    } else {
+      const targetSell = currentMetalsAud - (targetPct / 100 * totalPortfolio);
+      actionEl.textContent = dictionary[currentLang].action_sell + ` : Trim ${formatCurrency(targetSell)}`;
+      actionEl.classList.add('negative');
+      badgeEl.innerHTML = `<span class="badge-alert">OVERWEIGHT RISK EXPOSURE</span>`;
+    }
+  }
+
+  // ── Format Helper ──
+  function formatCurrency(num) {
+    const currency = document.getElementById('setting_currency').value || 'AUD';
+    if(currency === 'VND') {
+      return num.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    } else {
+      return num.toLocaleString('en-AU', { style: 'currency', currency: currency, minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  }
+
+  // ── External Functional Drops ──
+  function exportData() {
+    // Generate functional data object matrix compiled for accountant analytics via CSV
+    const rows = [
+      ["Parameter Description", "Calculated Metric Value"],
+      ["Spot Price USD/oz", document.getElementById('sc_spot_usd').value],
+      ["FX Conversion Matrix", document.getElementById('sc_fx').value],
+      ["Portfolio Aggregate Base", document.getElementById('hr_res_aggregate').textContent],
+      ["Cost of Carry Net Yield Drag", document.getElementById('st_res_yield_drag').textContent]
+    ];
+    let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Precious_Metals_Friction_Analysis.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function exportReport() {
+    window.print();
+  }
+
+  function openSettings() { document.getElementById('settings-modal').classList.add('open'); }
+  function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
+  function applySettings() {
+    runSpotConverter();
+    runHoldingsRegister();
+    runInflationHedge();
+    runStorageCalculator();
+    runAllocationCalculator();
+  }
+
+  // Video Modal Interactivity
+  function openVideoLocal(key, title) {
+    const modal = document.getElementById('video-modal');
+    const body  = document.getElementById('modal-body');
+    document.getElementById('modal-title').textContent = title;
+    body.innerHTML = `<div style="text-align:center; padding: 20px 0; color: var(--accent);">
+      🎥 <code>ASSET_VIDEO_IDS.${key}</code> active overview hook. Ready for deployment streaming ID.
+    </div>`;
+    modal.classList.add('open');
+  }
+
+  function closeVideoLocal() {
+    document.getElementById('video-modal').classList.remove('open');
+  }
+
+  // Initialize Engines on Load
+  document.addEventListener('DOMContentLoaded', () => {
+    runSpotConverter();
+    runHoldingsRegister();
+    runInflationHedge();
+    runStorageCalculator();
+    runAllocationCalculator();
+    
+    // Close modals via window escapes
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeVideoLocal();
+        closeSettings();
+      }
+    });
+  });
+</script>
+</body>
+</html>
