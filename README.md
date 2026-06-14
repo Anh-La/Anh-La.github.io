@@ -32,4 +32,4 @@ The platform aggregates specialized tools into functional categories to facilita
 3.  **Perform Simulations:** Select a tool from the "Tools" section to launch a module and begin applying your parameters against active regulatory frameworks.
 
 ---
-*Note: This framework is intended for research and educational purposes. Ensure all inputs are calibrated to the most recent regulatory standards (e.g., FY 2025/2026 frameworks).*
+*Note: This framework is intended for research and educational purposes, to explore an analytical research framework designed to model the interdependencies of global financial systems and project these dynamics into the emerging multiplanetary economy.*
