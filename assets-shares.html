@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shares</title>
+  <title data-i18n="pageTitle">Shares — Financial Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
 /* ═══════════════════════════════════════════════════════════
    hub.css — Finance Tools Hub shared stylesheet
-   Consumed by: index.html
    ═══════════════════════════════════════════════════════════ */
 
-/* ── Design tokens ── */
 :root {
   --bg:      #0a0c10;
   --surface: #111318;
@@ -23,16 +21,20 @@
   --accent3: #4ecb8a;
   --accent4: #e06b6b;
   --accent5: #b67fff;
-  --accent6: #ff9f43; /* nation-state orange */
+  --accent6: #ff9f43;
   --text:    #e8e3d8;
   --muted:   #7a7f8e;
   --font-display: 'DM Serif Display', Georgia, serif;
   --font-body:    'Manrope', sans-serif;
   --font-mono:    'DM Mono', monospace;
   --radius: 12px;
+
+  /* Asset Specific Colors (Shares = Green) */
+  --asset-accent:        #4ecb8a;
+  --asset-accent-dim:    rgba(78,203,138,.12);
+  --asset-accent-border: rgba(78,203,138,.25);
 }
 
-/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -45,7 +47,6 @@ body {
   min-height: 100vh;
 }
 
-/* ── Grain overlay ── */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -53,291 +54,116 @@ body::before {
   opacity: .4;
 }
 
-/* ── Page shell ── */
-.shell {
-  position: relative; z-index: 1;
-  max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px;
-}
+.shell { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px; }
 
-/* ── Header ── */
-header {
-  display: flex; flex-wrap: wrap; align-items: flex-end;
-  justify-content: space-between; gap: 20px;
-  margin-bottom: 36px; padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
+/* ── Top Navigation Bar ── */
+.page-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 24px; background: var(--surface); padding: 12px 20px; border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
-.brand h1 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 36px);
-  color: var(--accent); font-style: italic; font-weight: 400;
-}
-.brand p { color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 480px; }
-.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; transition: color .15s; }
+.back-link:hover { color: var(--asset-accent); }
+.action-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; position: relative; }
 
-/* ── Buttons ── */
+/* Dropdowns & UI Controls */
+.dropdown-container { position: relative; display: inline-block; }
+.dropdown-menu {
+  position: absolute; top: 100%; right: 0; margin-top: 6px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; display: none; flex-direction: column;
+  min-width: 200px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden;
+}
+.dropdown-menu.show { display: flex; }
+.dropdown-item {
+  padding: 10px 16px; color: var(--text); background: transparent; border: none;
+  text-align: left; font-size: 13px; cursor: pointer; transition: background .15s; font-family: var(--font-body);
+  display: flex; align-items: center; gap: 8px; width: 100%;
+}
+.dropdown-item:hover { background: var(--surface); color: var(--asset-accent); }
+.dropdown-panel { padding: 12px 16px; }
+.dropdown-panel + .dropdown-panel { border-top: 1px solid var(--border); }
+.dropdown-panel label { display: block; margin-bottom: 4px; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+
 .btn {
   padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
-  background: var(--card); color: var(--text);
-  font-size: 12px; font-family: var(--font-body);
-  cursor: pointer; font-weight: 500; transition: all .15s;
+  background: var(--card); color: var(--text); font-size: 12px; font-family: var(--font-body);
+  cursor: pointer; font-weight: 500; transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
 }
-.btn:hover { border-color: var(--accent); color: var(--accent); }
-.btn-accent { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
-.btn-accent:hover { background: #d4b87a; border-color: #d4b87a; color: #000; }
+.btn:hover { border-color: var(--asset-accent); color: var(--asset-accent); }
+.btn-accent { background: var(--asset-accent) !important; border-color: var(--asset-accent) !important; color: #000 !important; font-weight: 700; }
+.btn-accent:hover { filter: brightness(1.1); color: #000 !important; }
 
-/* ── Layout ── */
-.layout {
-  display: grid; grid-template-columns: 200px 1fr;
-  gap: 28px; align-items: start;
+/* ── Horizontal Sub-Tab Navigation ── */
+.sub-tabs { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 28px; }
+.tab-btn {
+  padding: 8px 14px; border: none; background: transparent; color: var(--muted); font-size: 12px;
+  font-weight: 500; border-radius: 6px; cursor: pointer; font-family: var(--font-body); white-space: nowrap; transition: all .15s;
 }
-@media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
-.sidebar { position: sticky; top: 24px; }
-@media (max-width: 800px) { .sidebar { position: static; display: flex; flex-wrap: wrap; gap: 8px; } }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { background: var(--card); color: var(--asset-accent); border: 1px solid var(--border); font-weight: 700; }
 
-/* ── Tool sections ── */
-.section { margin-bottom: 40px; scroll-margin-top: 24px; }
-.section-head { margin-bottom: 18px; }
-.section-head h2 {
-  font-family: var(--font-display); font-size: 22px;
-  color: var(--text); font-style: italic; font-weight: 400;
-}
-.section-head p { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1.2px; }
+/* ── Hero Section ── */
+.asset-hero { display: flex; align-items: center; gap: 20px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.asset-hero-icon { font-size: 48px; line-height: 1; background: var(--asset-accent-dim); border: 1px solid var(--asset-accent-border); border-radius: 16px; padding: 16px; flex-shrink: 0; }
+.asset-hero-text h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); color: var(--asset-accent); font-style: italic; font-weight: 400; }
+.asset-hero-text p { color: var(--muted); font-size: 13px; margin-top: 4px; max-width: 560px; }
+.asset-tagline { font-size: 14px; color: var(--text); font-weight: 400; margin-top: 10px; line-height: 1.5; border-left: 3px solid var(--asset-accent); padding-left: 14px; max-width: 700px; }
 
-/* ── Calc cards ── */
-.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-.calc-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px;
-  display: flex; flex-direction: column; gap: 12px;
-}
+/* ── Calculator Card Grid (Dashboard tab) ── */
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.calc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: border-color .15s; }
+.calc-card:hover { border-color: var(--asset-accent); }
 .calc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .calc-title { font-size: 15px; font-weight: 700; color: var(--text); }
-
-/* App badge on calc cards */
-.calc-app {
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
-  padding: 3px 8px; border-radius: 4px; font-weight: 700; white-space: nowrap;
-}
-.calc-app.personal     { background: rgba(78,203,138,.12);  color: var(--accent3); border: 1px solid rgba(78,203,138,.25);  }
-.calc-app.smsf         { background: rgba(92,158,255,.12);  color: var(--accent2); border: 1px solid rgba(92,158,255,.25);  }
-.calc-app.analysis     { background: rgba(182,127,255,.12); color: var(--accent5); border: 1px solid rgba(182,127,255,.25); }
-.calc-app.listed       { background: rgba(224,107,107,.12); color: var(--accent4); border: 1px solid rgba(224,107,107,.25); }
-.calc-app.trust        { background: rgba(200,169,110,.12); color: var(--accent);  border: 1px solid rgba(200,169,110,.25); }
-.calc-app.nation-state { background: rgba(255,159,67,.12);  color: var(--accent6); border: 1px solid rgba(255,159,67,.25);  }
-
-/* ── Model tags ── */
+.calc-app { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; font-weight: 700; white-space: nowrap; }
+.calc-app.asset-badge { background: var(--asset-accent-dim); color: var(--asset-accent); border: 1px solid var(--asset-accent-border); }
 .models { display: flex; flex-wrap: wrap; gap: 6px; }
-.model-tag {
-  font-family: var(--font-mono); font-size: 10px; padding: 3px 8px;
-  border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border);
-}
+.model-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+.guide-written { font-size: 13px; color: var(--muted); line-height: 1.55; border-left: 2px solid var(--border); padding-left: 12px; }
+.guide-written strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+.calc-actions { margin-top: auto; padding-top: 4px; }
+.calc-actions .btn { width: 100%; justify-content: center; }
 
-/* ── Written guide ── */
-.guide-written {
-  font-size: 13px; color: var(--muted); line-height: 1.55;
-  border-left: 2px solid var(--border); padding-left: 12px;
-}
-.guide-written strong {
-  color: var(--text); font-weight: 600; display: block;
-  margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
-}
+/* ── Workspace Sections ── */
+.workspace-section { display: none; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px; animation: fadeIn 0.2s ease-in-out; }
+.workspace-section.active { display: block; }
+.workspace-head { margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+.workspace-head h3 { font-family: var(--font-display); font-size: 22px; color: var(--asset-accent); font-style: italic; }
+.workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
 
-/* ── Calc actions ── */
-.calc-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; }
-.calc-actions .btn {
-  flex: 1; text-align: center; text-decoration: none;
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+/* Integrated quick guide inside workspace */
+.workspace-guide {
+  display: flex; gap: 12px; align-items: flex-start; background: var(--surface);
+  border: 1px solid var(--border); border-left: 3px solid var(--asset-accent); border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: var(--muted); line-height: 1.55;
 }
+.workspace-guide .guide-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.workspace-guide strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
 
-/* ── Video strip ── */
-.video-strip {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; background: var(--surface);
-  border-radius: 8px; border: 1px solid var(--border);
-  cursor: pointer; transition: border-color .15s;
+/* ── Form Elements ── */
+.form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+input, select {
+  padding: 10px 12px; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px; font-family: var(--font-body); font-size: 14px; width: 100%; transition: border-color 0.15s;
 }
-.video-strip:hover { border-color: var(--accent2); }
-.video-thumb {
-  width: 72px; height: 40px; border-radius: 4px;
-  background: linear-gradient(135deg, #1a2030, #2a3548);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; font-size: 18px;
-}
-.video-meta { font-size: 12px; }
-.video-meta span { display: block; color: var(--muted); font-size: 11px; }
+input:focus, select:focus { outline: none; border-color: var(--asset-accent); }
 
-/* ── Video modal ── */
-.modal {
-  position: fixed; inset: 0; z-index: 200;
-  display: none; align-items: center; justify-content: center;
-  padding: 24px; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
-}
-.modal.open { display: flex; }
-.modal-box {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); max-width: 720px; width: 100%; overflow: hidden;
-}
-.modal-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-}
-.modal-head h3 { font-size: 15px; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
-.modal-close:hover { color: var(--text); }
-.modal-body { padding: 0; }
-.modal-body .ratio { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-.modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-.modal-foot { padding: 14px 20px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
-.modal-placeholder { padding: 40px 24px; text-align: center; color: var(--muted); }
+/* ── Results Panels ── */
+.results-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.results-title { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); gap: 12px; }
+.result-row:last-child { border-bottom: none; }
+.result-value { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--text); text-align: right; }
+.result-value.highlight { color: var(--accent3); font-size: 20px; }
 
-/* ── Asset page custom tokens ── */
-:root {
-  --asset-accent:        #4ecb8a;
-  --asset-accent-dim:    rgba(78,203,138,.12);
-  --asset-accent-border: rgba(78,203,138,.25);
-}
-
-/* ── Hero ── */
-.asset-hero {
-  display: flex; align-items: center; gap: 20px;
-  margin-bottom: 36px; padding-bottom: 28px;
-  border-bottom: 1px solid var(--border);
-}
-.asset-hero-icon {
-  font-size: 52px; line-height: 1;
-  background: var(--asset-accent-dim);
-  border: 1px solid var(--asset-accent-border);
-  border-radius: 16px; padding: 16px; flex-shrink: 0;
-}
-.asset-hero-text h1 {
-  font-family: var(--font-display);
-  font-size: clamp(26px, 4vw, 38px);
-  color: var(--asset-accent);
-  font-style: italic; font-weight: 400;
-}
-.asset-hero-text p {
-  color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 560px;
-}
-.asset-tagline {
-  font-size: 15px; color: var(--text); font-weight: 400;
-  margin-top: 10px; line-height: 1.5;
-  border-left: 3px solid var(--asset-accent);
-  padding-left: 14px; max-width: 600px;
-}
-
-/* ── Nav ── */
-.back-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--muted); font-size: 12px; text-decoration: none;
-  transition: color .15s;
-}
-.back-link:hover { color: var(--asset-accent); }
-.page-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; flex-wrap: wrap; margin-bottom: 32px;
-}
-
-/* ── Badge & button overrides ── */
-.calc-app.asset-badge {
-  background: var(--asset-accent-dim);
-  color: var(--asset-accent);
-  border: 1px solid var(--asset-accent-border);
-}
-.btn-accent {
-  background: var(--asset-accent) !important;
-  border-color: var(--asset-accent) !important;
-  color: #000 !important;
-}
-.btn-accent:hover { filter: brightness(1.1); }
-.section-head h2 {
-  font-family: var(--font-display); font-size: 22px;
-  color: var(--asset-accent); font-style: italic; font-weight: 400;
-}
-.tools-count {
-  font-size: 12px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px;
-}
-.footer-bar {
-  margin-top: 48px; padding-top: 24px;
-  border-top: 1px solid var(--border);
-}
-
-@media (max-width: 600px) {
-  .asset-hero { flex-direction: column; align-items: flex-start; }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   New Production Framework Extensions
-   ═══════════════════════════════════════════════════════════ */
-
-/* ── Top-Level Horizontal Navigation ── */
-.top-nav-framework {
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--surface); border: 1px solid var(--border);
-  padding: 10px 20px; border-radius: var(--radius); margin-bottom: 24px;
-  position: sticky; top: 12px; z-index: 100; backdrop-filter: blur(8px);
-}
-.nav-links-group { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-.nav-links-group::-webkit-scrollbar { display: none; }
-.nav-link-item {
-  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600;
-  padding: 8px 14px; border-radius: 6px; transition: all .2s; white-space: nowrap;
-}
-.nav-link-item:hover, .nav-link-item.active {
-  color: var(--asset-accent); background: var(--asset-accent-dim);
-}
-.nav-actions-group { display: flex; gap: 10px; align-items: center; position: relative; }
-
-/* ── Action Dropdowns ── */
-.dropdown-menu {
-  display: none; position: absolute; top: 100%; right: 0; margin-top: 8px;
-  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 150; min-width: 190px; overflow: hidden;
-}
-.dropdown-menu.show { display: block; }
-.dropdown-menu button {
-  width: 100%; padding: 12px 16px; background: transparent; border: none;
-  color: var(--text); text-align: left; font-size: 13px; cursor: pointer; transition: background .15s;
-}
-.dropdown-menu button:hover { background: rgba(255,255,255,0.04); color: var(--asset-accent); }
-
-/* ── Interactive Workspace ── */
-.workspace-wrapper { margin-top: 48px; display: flex; flex-direction: column; gap: 40px; }
-.workspace-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 24px; scroll-margin-top: 90px; transition: border-color .3s;
-}
-.workspace-card.active-focus { border-color: var(--asset-accent); }
-.workspace-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-.workspace-title { font-family: var(--font-display); font-size: 20px; color: var(--text); font-style: italic; }
-
-/* Form Fields Layout */
-.fields-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 20px; }
-.input-block { display: flex; flex-direction: column; gap: 6px; }
-.input-block label { font-size: 12px; color: var(--muted); font-weight: 500; }
-.input-block input, .input-block select {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-  padding: 10px; color: var(--text); font-family: var(--font-body); font-size: 13px; transition: border-color .15s;
-}
-.input-block input:focus, .input-block select:focus { border-color: var(--asset-accent); outline: none; }
-
-/* Dashboard Results Panel */
-.analysis-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-top: 18px; }
-.analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
-.analysis-metric { display: flex; flex-direction: column; gap: 4px; }
-.metric-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
-.metric-val { font-family: var(--font-mono); font-size: 16px; font-weight: 600; }
-.metric-val.up-trend { color: var(--accent3); }
-.metric-val.down-trend { color: var(--accent4); }
-
-/* Data Tables */
-.responsive-table-holder { overflow-x: auto; margin-top: 18px; border-radius: 8px; border: 1px solid var(--border); }
+/* ── Workspace Tables & Graphs ── */
 .workspace-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
 .workspace-table th { background: var(--surface); padding: 12px 16px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
 .workspace-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
-.workspace-table tr:last-child td { border-bottom: none; }
 
-/* Distribution Graph Engine */
 .allocation-bar-node { margin-bottom: 14px; }
 .allocation-bar-headers { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
 .allocation-bar-track { background: var(--surface); height: 8px; border-radius: 4px; overflow: hidden; }
@@ -345,933 +171,808 @@ header {
 .concentration-risk-alert { background: rgba(224, 107, 107, 0.1); border: 1px solid var(--accent4); color: var(--accent4); padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-top: 16px; display: none; }
 .concentration-risk-alert.triggered { display: block; }
 
-/* Feedback Engine Toast */
-.toast-banner {
-  position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--asset-accent);
-  color: var(--text); padding: 14px 24px; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-  z-index: 1000; display: none; font-size: 13px; animation: fadeInUp 0.2s ease-out;
-}
-@keyframes fadeInUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* ── Footer ── */
+.footer-bar { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 <div class="shell">
 
-  <nav class="top-nav-framework">
-    <div class="nav-links-group">
-      <a href="#" class="nav-link-item active" data-nav-target="overview-deck" data-i18n="nav_overview">Overview</a>
-      <a href="#shares-holdings" class="nav-link-item" data-nav-target="shares-holdings" data-i18n="nav_holdings">Holdings</a>
-      <a href="#shares-dividends" class="nav-link-item" data-nav-target="shares-dividends" data-i18n="nav_dividends">Dividends</a>
-      <a href="#shares-cgt" class="nav-link-item" data-nav-target="shares-cgt" data-i18n="nav_cgt">CGT Tax</a>
-      <a href="#shares-allocation" class="nav-link-item" data-nav-target="shares-allocation" data-i18n="nav_allocation">Allocation</a>
-      <a href="#shares-dca" class="nav-link-item" data-nav-target="shares-dca" data-i18n="nav_dca">DCA Strategy</a>
-      <a href="#shares-return" class="nav-link-item" data-nav-target="shares-return" data-i18n="nav_performance">Performance</a>
-    </div>
-    <div class="nav-actions-group">
-      <button class="btn" id="dropdown-trigger-node" onclick="toggleActionsDropdown(event)">
-        <span data-i18n="btn_actions">Actions</span> ▾
-      </button>
-      <div class="dropdown-menu" id="actions-dropdown-menu">
-        <button onclick="executeDataExport()" data-i18n="act_export_csv">📥 Export Data (CSV)</button>
-        <button onclick="executeReportExport()" data-i18n="act_export_pdf">📄 Export Report (PDF)</button>
-        <button onclick="triggerEngineSettingsModal()" data-i18n="act_settings">⚙️ Settings</button>
+  <nav class="page-nav">
+    <a class="back-link" href="index.html" data-i18n="backHub">&#8592; Back to Financial Hub</a>
+    <div class="action-controls">
+      <div class="dropdown-container">
+        <button class="btn" type="button" onclick="toggleDropdown('export-data-drop')">📦 <span data-i18n="btnExportData">Export Data</span> ▼</button>
+        <div class="dropdown-menu" id="export-data-drop">
+          <button class="dropdown-item" type="button" onclick="exportDataMatrix('csv')">📄 <span data-i18n="expCSV">Export as CSV</span></button>
+          <button class="dropdown-item" type="button" onclick="exportDataMatrix('json')">⚙️ <span data-i18n="expJSON">Export Raw JSON</span></button>
+        </div>
       </div>
-      <button class="btn btn-accent" style="min-width: 60px;" onclick="switchLocalizationEngine()" id="localization-toggle-node">🇻🇳 VI</button>
+
+      <div class="dropdown-container">
+        <button class="btn" type="button" onclick="toggleDropdown('export-report-drop')">📊 <span data-i18n="btnExportReport">Export Report</span> ▼</button>
+        <div class="dropdown-menu" id="export-report-drop">
+          <button class="dropdown-item" type="button" onclick="triggerReportPrint()">🖨️ <span data-i18n="expPrint">Print Dashboard</span></button>
+          <button class="dropdown-item" type="button" onclick="exportExecutiveSummary()">📕 <span data-i18n="expSummary">Save Executive Summary</span></button>
+        </div>
+      </div>
+
+      <div class="dropdown-container">
+        <button class="btn" type="button" onclick="toggleDropdown('settings-drop')">🛠️ <span data-i18n="btnSettings">Settings</span> ▼</button>
+        <div class="dropdown-menu" id="settings-drop">
+          <div class="dropdown-panel">
+            <label data-i18n="cfgCurrency">Base Currency</label>
+            <select id="cfg-currency" onchange="updateGlobalSettings()">
+              <option value="$">AUD / USD ($)</option>
+              <option value="₫">VND (₫)</option>
+              <option value="€">EUR (€)</option>
+              <option value="£">GBP (£)</option>
+            </select>
+          </div>
+          <div class="dropdown-panel">
+            <label data-i18n="cfgTax">Corp Tax / Imputation (%)</label>
+            <input type="number" id="cfg-tax-rate" value="30.0" step="0.5" oninput="updateGlobalSettings()">
+          </div>
+          <div class="dropdown-panel">
+            <button class="dropdown-item" type="button" style="padding:0;" onclick="resetAllInputs()">🗑️ <span data-i18n="btnResetDefaults">Reset to Defaults</span></button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-accent" type="button" onclick="toggleLanguage()" id="lang-toggle">🌐 Tiếng Việt</button>
     </div>
   </nav>
 
-  <div id="overview-deck">
-    <nav class="page-nav">
-      <a class="back-link" href="index.html" data-i18n="back_to_hub">&#8592; Back to Financial Hub</a>
-    </nav>
+  <div class="sub-tabs" id="sub-tabs">
+    <button class="tab-btn active" onclick="switchTab('grid')" data-i18n="tabOverview">Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('shares-holdings')" data-i18n="nav_holdings">Holdings</button>
+    <button class="tab-btn" onclick="switchTab('shares-dividends')" data-i18n="nav_dividends">Dividends</button>
+    <button class="tab-btn" onclick="switchTab('shares-cgt')" data-i18n="nav_cgt">CGT Tax</button>
+    <button class="tab-btn" onclick="switchTab('shares-allocation')" data-i18n="nav_allocation">Allocation</button>
+    <button class="tab-btn" onclick="switchTab('shares-dca')" data-i18n="nav_dca">DCA Strategy</button>
+    <button class="tab-btn" onclick="switchTab('shares-return')" data-i18n="nav_performance">Performance</button>
+  </div>
 
-    <div class="asset-hero">
-      <div class="asset-hero-icon">📈</div>
-      <div class="asset-hero-text">
-        <h1 data-i18n="hero_title">Shares</h1>
-        <p data-i18n="hero_subtitle">Public equities, dividend yields & market portfolios</p>
-        <p class="asset-tagline" data-i18n="hero_tagline">From a single stock to a full portfolio — track performance, income, and risk in one disciplined system.</p>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">
-        <h2 data-i18n="tools_title">Tools &amp; Calculators</h2>
-        <p class="tools-count"><span id="tools-qty-node">6</span> <span data-i18n="tools_count_label">tools</span></p>
-      </div>
-      <div class="calc-grid">
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_holdings">Portfolio Holdings Tracker</div>
-            <span class="calc-app asset-badge" data-i18n="badge_holdings">Holdings</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_units">Units</span><span class="model-tag" data-i18n="tag_costbase">Cost base</span><span class="model-tag" data-i18n="tag_marketval">Market value</span><span class="model-tag" data-i18n="tag_gainloss">Gain / Loss</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_holdings">Record every parcel with purchase date, price, and units. The tool calculates unrealised gain/loss and flags positions held over 12 months (eligible for the 50% CGT discount).</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_holdings', 'Portfolio Holdings Tracker')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-holdings" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_dividends">Dividend Income Planner</div>
-            <span class="calc-app asset-badge" data-i18n="badge_income">Income</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_yield">Yield %</span><span class="model-tag" data-i18n="tag_franking">Franking credits</span><span class="model-tag" data-i18n="tag_calendar">Payment calendar</span><span class="model-tag" data-i18n="tag_annual_inc">Annual income</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_dividends">Map dividend payments across the year. Enter the franking percentage to see the gross dividend including imputation credits — particularly valuable for investors in lower tax brackets.</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_dividends', 'Dividend Income Planner')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-dividends" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_cgt">CGT Event Calculator</div>
-            <span class="calc-app asset-badge" data-i18n="badge_tax">Tax</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_proceeds">Sale proceeds</span><span class="model-tag" data-i18n="tag_costbase">Cost base</span><span class="model-tag" data-i18n="tag_netgain">Net gain</span><span class="model-tag" data-i18n="tag_discount">50% discount</span><span class="model-tag" data-i18n="tag_payable">Tax payable</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_cgt">Calculate CGT on a share sale. Assets held over 12 months attract the 50% CGT discount. Enter your marginal tax rate for an accurate after-tax proceeds estimate.</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_cgt', 'CGT Event Calculator')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-cgt" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_allocation">Allocation & Sector Breakdown</div>
-            <span class="calc-app asset-badge" data-i18n="badge_allocation">Allocation</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_weights">Sector weights</span><span class="model-tag" data-i18n="tag_geomix">Geographic mix</span><span class="model-tag" data-i18n="tag_concentration">Concentration risk</span><span class="model-tag" data-i18n="tag_ips">IPS target vs actual</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_allocation">Check your portfolio concentration by sector (Financials, Mining, Healthcare, etc.). A single sector above 40% of equities represents significant concentration risk.</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_allocation', 'Allocation & Sector Breakdown')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-allocation" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_dca">Dollar-Cost Averaging Planner</div>
-            <span class="calc-app asset-badge" data-i18n="badge_strategy">Strategy</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_regbuy">Regular buy amount</span><span class="model-tag" data-i18n="tag_freq">Contribution frequency</span><span class="model-tag" data-i18n="tag_avgcost">Average cost per unit</span><span class="model-tag" data-i18n="tag_projection">Return projection</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_dca">Model the effect of regular purchases at fixed dollar amounts. DCA smooths out entry price volatility — useful for salary-linked investments into index ETFs.</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_dca', 'Dollar-Cost Averaging Planner')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-dca" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-
-        <article class="calc-card">
-          <div class="calc-top">
-            <div class="calc-title" data-i18n="title_performance">Return Attribution</div>
-            <span class="calc-app asset-badge" data-i18n="badge_performance">Performance</span>
-          </div>
-          <div class="models"><span class="model-tag" data-i18n="tag_priceret">Price return</span><span class="model-tag" data-i18n="tag_divret">Dividend return</span><span class="model-tag" data-i18n="tag_frankingup">Franking uplift</span><span class="model-tag" data-i18n="tag_totreturn">Total return %</span></div>
-          <div class="guide-written">
-            <strong data-i18n="quick_guide">Quick guide</strong><span data-i18n="guide_performance">Separate your total return into capital gain and income components. For Australian shares, the franking uplift can add 1–2% to effective total return for investors above the threshold.</span>
-          </div>
-          <div class="video-strip" onclick="openVideoLocal('shares_return', 'Return Attribution')">
-            <div class="video-thumb">&#9654;</div>
-            <div class="video-meta"><strong data-i18n="watch_guide">Watch guide</strong><span data-i18n="video_walkthrough">Video walkthrough</span></div>
-          </div>
-          <div class="calc-actions">
-            <a class="btn btn-accent execution-anchor" href="#shares-return" data-i18n="btn_open">Open &#8594;</a>
-          </div>
-        </article>
-      </div>
+  <div class="asset-hero">
+    <div class="asset-hero-icon">📈</div>
+    <div class="asset-hero-text">
+      <h1 data-i18n="hero_title">Shares</h1>
+      <p data-i18n="hero_subtitle">Public equities, dividend yields & market portfolios</p>
+      <p class="asset-tagline" data-i18n="hero_tagline">From a single stock to a full portfolio — track performance, income, and risk in one disciplined system.</p>
     </div>
   </div>
 
-  <div class="workspace-wrapper">
+  <div id="grid-view" class="tab-panel active">
+    <div class="calc-grid">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_holdings">Portfolio Holdings Tracker</div>
+          <span class="calc-app asset-badge" data-i18n="badge_holdings">Holdings</span>
+        </div>
+        <div class="models"><span class="model-tag" data-i18n="tag_units">Units</span><span class="model-tag" data-i18n="tag_costbase">Cost base</span><span class="model-tag" data-i18n="tag_marketval">Market value</span><span class="model-tag" data-i18n="tag_gainloss">Gain / Loss</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_holdings">Record every parcel with purchase date, price, and units. Calculates unrealised gain/loss and flags positions held over 12 months.</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-holdings')" data-i18n="btnOpen">Open →</button>
+        </div>
+      </article>
 
-    <section class="workspace-card" id="shares-holdings">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_holdings">Portfolio Holdings Tracker</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_holdings">Holdings</span>
-      </div>
-      <div class="fields-grid">
-        <div class="input-block">
-          <label data-i18n="lbl_ticker">Share Ticker</label>
-          <input type="text" id="holding-ticker" value="BHP">
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_dividends">Dividend Income Planner</div>
+          <span class="calc-app asset-badge" data-i18n="badge_income">Income</span>
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_pdate">Purchase Date</label>
-          <input type="date" id="holding-date" value="2024-03-15">
+        <div class="models"><span class="model-tag" data-i18n="tag_yield">Yield %</span><span class="model-tag" data-i18n="tag_franking">Franking credits</span><span class="model-tag" data-i18n="tag_annual_inc">Annual income</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_dividends">Map dividend payments across the year. Enter the franking percentage to see the gross dividend including imputation credits.</span>
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_pprice">Purchase Price ($)</label>
-          <input type="number" id="holding-price" value="42.50" step="0.01">
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-dividends')" data-i18n="btnOpen">Open →</button>
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_units">Units</label>
-          <input type="number" id="holding-units" value="200" step="1">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_cprice">Current Market Price ($)</label>
-          <input type="number" id="holding-current-price" value="45.00" step="0.01">
-        </div>
-      </div>
-      <button class="btn btn-accent" onclick="insertPositionNode()" data-i18n="btn_add_pos">Add Position</button>
+      </article>
 
-      <div class="responsive-table-holder">
-        <table class="workspace-table">
-          <thead>
-            <tr>
-              <th data-i18n="th_ticker">Ticker</th>
-              <th data-i18n="th_date">Purchase Date</th>
-              <th data-i18n="th_units">Units</th>
-              <th data-i18n="th_cost_price">Cost Price</th>
-              <th data-i18n="th_market_price">Market Price</th>
-              <th data-i18n="th_total_cost">Total Cost</th>
-              <th data-i18n="th_market_val">Market Value</th>
-              <th data-i18n="th_gain_loss">Gain / Loss</th>
-              <th data-i18n="th_cgt_status">CGT 50%</th>
-            </tr>
-          </thead>
-          <tbody id="holdings-table-body">
-            </tbody>
-        </table>
-      </div>
-    </section>
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_cgt">CGT Event Calculator</div>
+          <span class="calc-app asset-badge" data-i18n="badge_tax">Tax</span>
+        </div>
+        <div class="models"><span class="model-tag" data-i18n="tag_proceeds">Sale proceeds</span><span class="model-tag" data-i18n="tag_discount">50% discount</span><span class="model-tag" data-i18n="tag_payable">Tax payable</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_cgt">Calculate CGT on a share sale. Assets held over 12 months attract the 50% CGT discount. Enter your marginal tax rate for an accurate estimate.</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-cgt')" data-i18n="btnOpen">Open →</button>
+        </div>
+      </article>
 
-    <section class="workspace-card" id="shares-dividends">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_dividends">Dividend Income Planner</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_income">Income</span>
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_allocation">Allocation & Sector Breakdown</div>
+          <span class="calc-app asset-badge" data-i18n="badge_allocation">Allocation</span>
+        </div>
+        <div class="models"><span class="model-tag" data-i18n="tag_weights">Sector weights</span><span class="model-tag" data-i18n="tag_concentration">Concentration risk</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_allocation">Check your portfolio concentration by sector (Financials, Mining, etc.). A single sector above 40% represents significant risk.</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-allocation')" data-i18n="btnOpen">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_dca">Dollar-Cost Averaging Planner</div>
+          <span class="calc-app asset-badge" data-i18n="badge_strategy">Strategy</span>
+        </div>
+        <div class="models"><span class="model-tag" data-i18n="tag_regbuy">Regular buy</span><span class="model-tag" data-i18n="tag_avgcost">Average cost</span><span class="model-tag" data-i18n="tag_projection">Return projection</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_dca">Model the effect of regular purchases. DCA smooths out entry price volatility — useful for salary-linked investments into index ETFs.</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-dca')" data-i18n="btnOpen">Open →</button>
+        </div>
+      </article>
+
+      <article class="calc-card">
+        <div class="calc-top">
+          <div class="calc-title" data-i18n="title_performance">Return Attribution</div>
+          <span class="calc-app asset-badge" data-i18n="badge_performance">Performance</span>
+        </div>
+        <div class="models"><span class="model-tag" data-i18n="tag_priceret">Price return</span><span class="model-tag" data-i18n="tag_divret">Dividend return</span><span class="model-tag" data-i18n="tag_frankingup">Franking uplift</span></div>
+        <div class="guide-written">
+          <strong data-i18n="guideTitle">Quick guide</strong>
+          <span data-i18n="guide_performance">Separate your total return into capital gain and income. Franking uplift can add 1–2% to effective total return.</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-accent" type="button" onclick="switchTab('shares-return')" data-i18n="btnOpen">Open →</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <section id="workspace-shares-holdings" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_holdings">Portfolio Holdings Tracker</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_holdings">Record every parcel with purchase date, price, and units. Calculates unrealised gain/loss and flags positions held over 12 months.</span></div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label data-i18n="lbl_ticker">Share Ticker</label>
+        <input type="text" id="holding-ticker" value="BHP">
       </div>
-      <div class="fields-grid">
-        <div class="input-block">
+      <div class="form-group">
+        <label data-i18n="lbl_pdate">Purchase Date</label>
+        <input type="date" id="holding-date" value="2024-03-15">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label data-i18n="lbl_pprice">Purchase Price ($)</label>
+        <input type="number" id="holding-price" value="42.50" step="0.01">
+      </div>
+      <div class="form-group">
+        <label data-i18n="lbl_units">Units</label>
+        <input type="number" id="holding-units" value="200" step="1">
+      </div>
+    </div>
+    <div class="form-group">
+      <label data-i18n="lbl_cprice">Current Market Price ($)</label>
+      <input type="number" id="holding-current-price" value="45.00" step="0.01">
+    </div>
+    <button class="btn btn-accent" style="margin-bottom: 24px;" onclick="insertPositionNode()" data-i18n="btn_add_pos">Add Position</button>
+
+    <div style="overflow-x: auto;">
+      <table class="workspace-table">
+        <thead>
+          <tr>
+            <th data-i18n="th_ticker">Ticker</th>
+            <th data-i18n="th_date">Purchase Date</th>
+            <th data-i18n="th_units">Units</th>
+            <th data-i18n="th_cost_price">Cost Price</th>
+            <th data-i18n="th_market_price">Market Price</th>
+            <th data-i18n="th_total_cost">Total Cost</th>
+            <th data-i18n="th_market_val">Market Value</th>
+            <th data-i18n="th_gain_loss">Gain / Loss</th>
+            <th data-i18n="th_cgt_status">CGT 50%</th>
+          </tr>
+        </thead>
+        <tbody id="holdings-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="workspace-shares-dividends" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_dividends">Dividend Income Planner</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_dividends">Map dividend payments across the year. Enter the franking percentage to see the gross dividend including imputation credits.</span></div>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-group">
           <label data-i18n="lbl_units">Units</label>
           <input type="number" id="div-units" value="500" oninput="calculateDividendPlanner()">
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_div_share">Annual Dividend per Share ($)</label>
-          <input type="number" id="div-per-share" value="2.40" step="0.01" oninput="calculateDividendPlanner()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_franking_pct">Franking Percentage (%)</label>
-          <input type="number" id="div-franking" value="100" max="100" min="0" oninput="calculateDividendPlanner()">
-        </div>
-      </div>
-      <div class="analysis-panel">
-        <div class="analysis-grid">
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_cash_received">Net Cash Received</span>
-            <span class="metric-val up-trend" id="div-metric-cash">$0.00</span>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_div_share">Annual Dividend per Share</label>
+            <input type="number" id="div-per-share" value="2.40" step="0.01" oninput="calculateDividendPlanner()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_franking_credits">Franking Credits Uplift</span>
-            <span class="metric-val" id="div-metric-credits">$0.00</span>
-          </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_gross_div">Gross Dividend (inc. Imputation)</span>
-            <span class="metric-val up-trend" id="div-metric-gross">$0.00</span>
+          <div class="form-group">
+            <label data-i18n="lbl_franking_pct">Franking Percentage (%)</label>
+            <input type="number" id="div-franking" value="100" max="100" min="0" oninput="calculateDividendPlanner()">
           </div>
         </div>
       </div>
-    </section>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelYieldOutputs">Income Metrics</div>
+        <div class="result-row">
+          <span data-i18n="lbl_cash_received">Net Cash Received:</span>
+          <span id="div-metric-cash" class="result-value highlight">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_franking_credits">Franking Credits Uplift:</span>
+          <span id="div-metric-credits" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_gross_div">Gross Dividend (inc. Imputation):</span>
+          <span id="div-metric-gross" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="workspace-card" id="shares-cgt">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_cgt">CGT Event Calculator</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_tax">Tax</span>
-      </div>
-      <div class="fields-grid">
-        <div class="input-block">
-          <label data-i18n="lbl_costbase_input">Total Cost Base ($)</label>
-          <input type="number" id="cgt-costbase" value="15000" oninput="calculateCgtEngine()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_proceeds_input">Sale Proceeds ($)</label>
-          <input type="number" id="cgt-proceeds" value="28000" oninput="calculateCgtEngine()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_holding_duration">Held Over 12 Months?</label>
-          <select id="cgt-duration-select" onchange="calculateCgtEngine()">
-            <option value="yes" data-i18n="opt_yes">Yes (Apply 50% Discount)</option>
-            <option value="no" data-i18n="opt_no">No (Full Marginal Bracket)</option>
-          </select>
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_marginal_rate">Marginal Tax Rate (%)</label>
-          <input type="number" id="cgt-tax-rate" value="32.5" step="0.1" oninput="calculateCgtEngine()">
-        </div>
-      </div>
-      <div class="analysis-panel">
-        <div class="analysis-grid">
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="tag_netgain">Net Capital Gain</span>
-            <span class="metric-val" id="cgt-metric-gain">$0.00</span>
+  <section id="workspace-shares-cgt" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_cgt">CGT Event Calculator</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_cgt">Calculate CGT on a share sale. Assets held over 12 months attract the 50% CGT discount. Enter your marginal tax rate for an accurate estimate.</span></div>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_costbase_input">Total Cost Base</label>
+            <input type="number" id="cgt-costbase" value="15000" oninput="calculateCgtEngine()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_tax_payable">Estimated Tax Payable</span>
-            <span class="metric-val down-trend" id="cgt-metric-tax">$0.00</span>
+          <div class="form-group">
+            <label data-i18n="lbl_proceeds_input">Sale Proceeds</label>
+            <input type="number" id="cgt-proceeds" value="28000" oninput="calculateCgtEngine()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_after_tax">Net After-Tax Proceeds</span>
-            <span class="metric-val up-trend" id="cgt-metric-net">$0.00</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_holding_duration">Held Over 12 Months?</label>
+            <select id="cgt-duration-select" onchange="calculateCgtEngine()">
+              <option value="yes" data-i18n="opt_yes">Yes (Apply 50% Discount)</option>
+              <option value="no" data-i18n="opt_no">No (Full Marginal Bracket)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_marginal_rate">Marginal Tax Rate (%)</label>
+            <input type="number" id="cgt-tax-rate" value="32.5" step="0.1" oninput="calculateCgtEngine()">
           </div>
         </div>
       </div>
-    </section>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelTaxOutputs">CGT Breakdown</div>
+        <div class="result-row">
+          <span data-i18n="tag_netgain">Net Capital Gain:</span>
+          <span id="cgt-metric-gain" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_tax_payable">Estimated Tax Payable:</span>
+          <span id="cgt-metric-tax" class="result-value" style="color:var(--accent4);">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_after_tax">Net After-Tax Proceeds:</span>
+          <span id="cgt-metric-net" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="workspace-card" id="shares-allocation">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_allocation">Allocation & Sector Breakdown</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_allocation">Allocation</span>
-      </div>
-      <div class="fields-grid">
-        <div class="input-block">
-          <label data-i18n="lbl_sect_financials">Financials (%)</label>
-          <input type="number" class="allocation-input-node" data-sector="Financials" value="45" max="100" min="0" oninput="recomputeAllocationGraph()">
+  <section id="workspace-shares-allocation" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_allocation">Allocation & Sector Breakdown</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_allocation">Check your portfolio concentration by sector. A single sector above 40% represents significant risk.</span></div>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_sect_financials">Financials (%)</label>
+            <input type="number" class="allocation-input-node" data-sector="Financials" value="45" max="100" min="0" oninput="recomputeAllocationGraph()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_sect_materials">Materials & Mining (%)</label>
+            <input type="number" class="allocation-input-node" data-sector="Materials" value="25" max="100" min="0" oninput="recomputeAllocationGraph()">
+          </div>
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_sect_materials">Materials & Mining (%)</label>
-          <input type="number" class="allocation-input-node" data-sector="Materials" value="25" max="100" min="0" oninput="recomputeAllocationGraph()">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_sect_healthcare">Healthcare (%)</label>
+            <input type="number" class="allocation-input-node" data-sector="Healthcare" value="15" max="100" min="0" oninput="recomputeAllocationGraph()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_sect_tech">Technology (%)</label>
+            <input type="number" class="allocation-input-node" data-sector="Technology" value="10" max="100" min="0" oninput="recomputeAllocationGraph()">
+          </div>
         </div>
-        <div class="input-block">
-          <label data-i18n="lbl_sect_healthcare">Healthcare (%)</label>
-          <input type="number" class="allocation-input-node" data-sector="Healthcare" value="15" max="100" min="0" oninput="recomputeAllocationGraph()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_sect_tech">Technology (%)</label>
-          <input type="number" class="allocation-input-node" data-sector="Technology" value="10" max="100" min="0" oninput="recomputeAllocationGraph()">
-        </div>
-        <div class="input-block">
+        <div class="form-group">
           <label data-i18n="lbl_sect_others">Others (%)</label>
           <input type="number" class="allocation-input-node" data-sector="Others" value="5" max="100" min="0" oninput="recomputeAllocationGraph()">
         </div>
       </div>
-
-      <div class="analysis-panel">
-        <div id="allocation-visual-container">
-          </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelVisualizer">Sector Weights</div>
+        <div id="allocation-visual-container"></div>
         <div class="concentration-risk-alert" id="risk-alert-node" data-i18n="risk_warning">
           ⚠️ Concentration Risk Detected: One or more sectors exceed 40% of the equities portfolio.
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="workspace-card" id="shares-dca">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_dca">Dollar-Cost Averaging Planner</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_strategy">Strategy</span>
-      </div>
-      <div class="fields-grid">
-        <div class="input-block">
-          <label data-i18n="lbl_reg_buy">Regular Buy Amount ($)</label>
-          <input type="number" id="dca-amount" value="1000" oninput="calculateDcaSchedule()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_frequency">Contribution Frequency</label>
-          <select id="dca-frequency" onchange="calculateDcaSchedule()">
-            <option value="12" data-i18n="freq_monthly">Monthly</option>
-            <option value="26" data-i18n="freq_fortnightly">Fortnightly</option>
-            <option value="52" data-i18n="freq_weekly">Weekly</option>
-          </select>
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_duration">Duration (Years)</label>
-          <input type="number" id="dca-years" value="5" oninput="calculateDcaSchedule()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_exp_return">Expected Annual Return (%)</label>
-          <input type="number" id="dca-return" value="8" step="0.1" oninput="calculateDcaSchedule()">
-        </div>
-      </div>
-      <div class="analysis-panel">
-        <div class="analysis-grid">
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_total_invested">Total Capital Invested</span>
-            <span class="metric-val" id="dca-metric-invested">$0.00</span>
+  <section id="workspace-shares-dca" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_dca">Dollar-Cost Averaging Planner</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_dca">Model the effect of regular purchases. DCA smooths out entry price volatility — useful for salary-linked investments.</span></div>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_reg_buy">Regular Buy Amount</label>
+            <input type="number" id="dca-amount" value="1000" oninput="calculateDcaSchedule()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_projected_value">Projected Portfolio Value</span>
-            <span class="metric-val up-trend" id="dca-metric-future">$0.00</span>
+          <div class="form-group">
+            <label data-i18n="lbl_frequency">Contribution Frequency</label>
+            <select id="dca-frequency" onchange="calculateDcaSchedule()">
+              <option value="12" data-i18n="freq_monthly">Monthly</option>
+              <option value="26" data-i18n="freq_fortnightly">Fortnightly</option>
+              <option value="52" data-i18n="freq_weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_duration">Duration (Years)</label>
+            <input type="number" id="dca-years" value="5" oninput="calculateDcaSchedule()">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_exp_return">Expected Annual Return (%)</label>
+            <input type="number" id="dca-return" value="8" step="0.1" oninput="calculateDcaSchedule()">
           </div>
         </div>
       </div>
-    </section>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelProjection">Growth Projection</div>
+        <div class="result-row">
+          <span data-i18n="lbl_total_invested">Total Capital Invested:</span>
+          <span id="dca-metric-invested" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_projected_value">Projected Portfolio Value:</span>
+          <span id="dca-metric-future" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="workspace-card" id="shares-return">
-      <div class="workspace-header">
-        <h3 class="workspace-title" data-i18n="title_performance">Return Attribution</h3>
-        <span class="calc-app asset-badge" data-i18n="badge_performance">Performance</span>
-      </div>
-      <div class="fields-grid">
-        <div class="input-block">
-          <label data-i18n="lbl_init_price">Initial Purchase Price ($)</label>
-          <input type="number" id="ret-init-price" value="50.00" step="0.01" oninput="calculateReturnAttribution()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_final_price">Current Market Price ($)</label>
-          <input type="number" id="ret-final-price" value="58.00" step="0.01" oninput="calculateReturnAttribution()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_div_received">Total Dividends Received ($)</label>
-          <input type="number" id="ret-dividends" value="3.50" step="0.01" oninput="calculateReturnAttribution()">
-        </div>
-        <div class="input-block">
-          <label data-i18n="lbl_franking_pct">Franking Percentage (%)</label>
-          <input type="number" id="ret-franking" value="100" max="100" min="0" oninput="calculateReturnAttribution()">
-        </div>
-      </div>
-      <div class="analysis-panel">
-        <div class="analysis-grid">
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_price_return">Capital Price Return</span>
-            <span class="metric-val" id="ret-metric-price">0.00%</span>
+  <section id="workspace-shares-return" class="workspace-section">
+    <div class="workspace-head">
+      <h3 data-i18n="title_performance">Return Attribution</h3>
+    </div>
+    <div class="workspace-guide">
+      <span class="guide-icon">💡</span>
+      <div><strong data-i18n="guideTitle">Quick guide</strong><span data-i18n="guide_performance">Separate your total return into capital gain and income. Franking uplift can add 1–2% to effective total return.</span></div>
+    </div>
+    <div class="workspace-grid">
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_init_price">Initial Purchase Price</label>
+            <input type="number" id="ret-init-price" value="50.00" step="0.01" oninput="calculateReturnAttribution()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_div_return">Dividend Income Return</span>
-            <span class="metric-val" id="ret-metric-dividend">0.00%</span>
+          <div class="form-group">
+            <label data-i18n="lbl_final_price">Current Market Price</label>
+            <input type="number" id="ret-final-price" value="58.00" step="0.01" oninput="calculateReturnAttribution()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_franking_uplift">Franking Uplift</span>
-            <span class="metric-val" id="ret-metric-franking">0.00%</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_div_received">Total Dividends Received</label>
+            <input type="number" id="ret-dividends" value="3.50" step="0.01" oninput="calculateReturnAttribution()">
           </div>
-          <div class="analysis-metric">
-            <span class="metric-lbl" data-i18n="lbl_total_effective_return">Total Effective Return</span>
-            <span class="metric-val up-trend" id="ret-metric-total">0.00%</span>
+          <div class="form-group">
+            <label data-i18n="lbl_franking_pct">Franking Percentage (%)</label>
+            <input type="number" id="ret-franking" value="100" max="100" min="0" oninput="calculateReturnAttribution()">
           </div>
         </div>
       </div>
-    </section>
-
-  </div>
+      <div class="results-panel">
+        <div class="results-title" data-i18n="panelAttribution">Attribution Breakdown</div>
+        <div class="result-row">
+          <span data-i18n="lbl_price_return">Capital Price Return:</span>
+          <span id="ret-metric-price" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_div_return">Dividend Income Return:</span>
+          <span id="ret-metric-dividend" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_franking_uplift">Franking Uplift:</span>
+          <span id="ret-metric-franking" class="result-value">-</span>
+        </div>
+        <div class="result-row">
+          <span data-i18n="lbl_total_effective_return">Total Effective Return:</span>
+          <span id="ret-metric-total" class="result-value highlight">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="footer-bar">
-    <a class="back-link" href="index.html" data-i18n="back_to_hub">&#8592; Return to Financial Hub</a>
-  </div>
-
-</div>
-
-<div class="modal" id="engine-settings-modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 data-i18n="settings_engine_title">Global System Configuration Engine</h3>
-      <button class="modal-close" type="button" onclick="closeEngineSettingsModal()">&times;</button>
-    </div>
-    <div class="modal-body" style="padding: 24px;">
-      <div class="fields-grid" style="grid-template-columns: 1fr;">
-        <div class="input-block">
-          <label data-i18n="lbl_corporate_tax_rate">Standard Corporate Tax Rate / Imputation Benchmark (%)</label>
-          <input type="number" id="settings-corporate-rate" value="30.0" step="0.1">
-        </div>
-      </div>
-      <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
-        <button class="btn" onclick="closeEngineSettingsModal()" data-i18n="btn_cancel">Cancel</button>
-        <button class="btn btn-accent" onclick="saveEngineSettingsParameters()" data-i18n="btn_save_config">Save Configuration</button>
-      </div>
-    </div>
+    <a class="back-link" href="index.html" data-i18n="backHub">&#8592; Return to Financial Hub</a>
   </div>
 </div>
-
-<div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 id="modal-title">Video guide</h3>
-      <button class="modal-close" type="button" onclick="closeVideoLocal()" aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot" id="modal-foot"></div>
-  </div>
-</div>
-
-<div class="toast-banner" id="system-toast-node"></div>
 
 <script>
-  // Preservation of original video state mappings
-  const ASSET_VIDEO_IDS = {
-    shares_holdings: 'placeholder',
-    shares_dividends: 'placeholder',
-    shares_cgt: 'placeholder',
-    shares_allocation: 'placeholder',
-    shares_dca: 'placeholder',
-    shares_return: 'placeholder',
-  };
-
-  function openVideoLocal(key, title) {
-    const modal = document.getElementById('video-modal');
-    const body  = document.getElementById('modal-body');
-    const foot  = document.getElementById('modal-foot');
-    document.getElementById('modal-title').textContent = title;
-    foot.textContent = 'Tip: keep guides under 3 minutes — focus on inputs and one decision per video.';
-    const id = ASSET_VIDEO_IDS[key];
-    if (id && id !== 'placeholder') {
-      body.innerHTML = '<div class="ratio"><iframe src="https://www.youtube-nocookie.com/embed/' + id + '?rel=0" title="' + title + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
-    } else {
-      body.innerHTML = '<div class="modal-placeholder"><p>Add a YouTube video ID to ASSET_VIDEO_IDS in this file.</p><p style="margin-top:12px"><code>ASSET_VIDEO_IDS.' + key + '</code></p></div>';
-    }
-    modal.classList.add('open');
-  }
-
-  function closeVideoLocal() {
-    document.getElementById('video-modal').classList.remove('open');
-    document.getElementById('modal-body').innerHTML = '';
-  }
-
-  // Global Calculation Parameters Engine
+  /* ═══════════════════════════════════════════════════════════
+     LOCALIZATION & CORE LOGIC
+     ═══════════════════════════════════════════════════════════ */
+  let currentLanguage = 'en';
+  let activeGlobalCurrency = '$';
   let GLOBAL_CORPORATE_TAX_RATE = 30.0;
-  let CURRENT_LANG = 'en';
 
-  // Dynamic Dictionary Localization Matrix Data Scheme
-  const i18nDictionary = {
+  const translations = {
     en: {
-      nav_overview: "Overview",
+      pageTitle: "Shares — Financial Hub",
+      backHub: "← Back to Financial Hub",
+      tabOverview: "Dashboard",
       nav_holdings: "Holdings",
       nav_dividends: "Dividends",
       nav_cgt: "CGT Tax",
       nav_allocation: "Allocation",
       nav_dca: "DCA Strategy",
       nav_performance: "Performance",
-      btn_actions: "Actions",
-      act_export_csv: "📥 Export Data (CSV)",
-      act_export_pdf: "📄 Export Report (PDF)",
-      act_settings: "⚙️ Settings",
-      back_to_hub: "← Back to Financial Hub",
+      btnExportData: "Export Data",
+      btnExportReport: "Export Report",
+      btnSettings: "Settings",
+      expCSV: "Export as CSV",
+      expJSON: "Export Raw JSON",
+      expPrint: "Print Dashboard",
+      expSummary: "Save Executive Summary",
+      cfgCurrency: "Base Currency",
+      cfgTax: "Corp Tax / Imputation (%)",
+      btnResetDefaults: "Reset to Defaults",
+      btnOpen: "Open →",
+      guideTitle: "Quick guide",
+      
       hero_title: "Shares",
       hero_subtitle: "Public equities, dividend yields & market portfolios",
       hero_tagline: "From a single stock to a full portfolio — track performance, income, and risk in one disciplined system.",
-      tools_title: "Tools & Calculators",
-      tools_count_label: "tools",
+      
       title_holdings: "Portfolio Holdings Tracker",
       badge_holdings: "Holdings",
-      tag_units: "Units",
-      tag_costbase: "Cost base",
-      tag_marketval: "Market value",
-      tag_gainloss: "Gain / Loss",
-      quick_guide: "Quick guide",
-      guide_holdings: "Record every parcel with purchase date, price, and units. The tool calculates unrealised gain/loss and flags positions held over 12 months (eligible for the 50% CGT discount).",
-      watch_guide: "Watch guide",
-      video_walkthrough: "Video walkthrough",
-      btn_open: "Open →",
+      tag_units: "Units", tag_costbase: "Cost base", tag_marketval: "Market value", tag_gainloss: "Gain / Loss",
+      guide_holdings: "Record every parcel with purchase date, price, and units. Calculates unrealised gain/loss and flags positions held over 12 months.",
+      
       title_dividends: "Dividend Income Planner",
       badge_income: "Income",
-      tag_yield: "Yield %",
-      tag_franking: "Franking credits",
-      tag_calendar: "Payment calendar",
-      tag_annual_inc: "Annual income",
-      guide_dividends: "Map dividend payments across the year. Enter the franking percentage to see the gross dividend including imputation credits — particularly valuable for investors in lower tax brackets.",
+      tag_yield: "Yield %", tag_franking: "Franking credits", tag_annual_inc: "Annual income",
+      guide_dividends: "Map dividend payments across the year. Enter the franking percentage to see the gross dividend including imputation credits.",
+      
       title_cgt: "CGT Event Calculator",
       badge_tax: "Tax",
-      tag_proceeds: "Sale proceeds",
-      tag_netgain: "Net gain",
-      tag_discount: "50% discount",
-      tag_payable: "Tax payable",
-      guide_cgt: "Calculate CGT on a share sale. Assets held over 12 months attract the 50% CGT discount. Enter your marginal tax rate for an accurate after-tax proceeds estimate.",
+      tag_proceeds: "Sale proceeds", tag_discount: "50% discount", tag_payable: "Tax payable",
+      guide_cgt: "Calculate CGT on a share sale. Assets held over 12 months attract the 50% CGT discount. Enter your marginal tax rate for an accurate estimate.",
+      
       title_allocation: "Allocation & Sector Breakdown",
       badge_allocation: "Allocation",
-      tag_weights: "Sector weights",
-      tag_geomix: "Geographic mix",
-      tag_concentration: "Concentration risk",
-      tag_ips: "IPS target vs actual",
-      guide_allocation: "Check your portfolio concentration by sector (Financials, Mining, Healthcare, etc.). A single sector above 40% of equities represents significant concentration risk.",
+      tag_weights: "Sector weights", tag_concentration: "Concentration risk",
+      guide_allocation: "Check your portfolio concentration by sector (Financials, Mining, etc.). A single sector above 40% represents significant risk.",
+      
       title_dca: "Dollar-Cost Averaging Planner",
       badge_strategy: "Strategy",
-      tag_regbuy: "Regular buy amount",
-      tag_freq: "Contribution frequency",
-      tag_avgcost: "Average cost per unit",
-      tag_projection: "Return projection",
-      guide_dca: "Model the effect of regular purchases at fixed dollar amounts. DCA smooths out entry price volatility — useful for salary-linked investments into index ETFs.",
+      tag_regbuy: "Regular buy", tag_avgcost: "Average cost", tag_projection: "Return projection",
+      guide_dca: "Model the effect of regular purchases. DCA smooths out entry price volatility — useful for salary-linked investments.",
+      
       title_performance: "Return Attribution",
       badge_performance: "Performance",
-      tag_priceret: "Price return",
-      tag_divret: "Dividend return",
-      tag_frankingup: "Franking uplift",
-      tag_totreturn: "Total return %",
-      guide_performance: "Separate your total return into capital gain and income components. For Australian shares, the franking uplift can add 1–2% to effective total return for investors above the threshold.",
-      lbl_ticker: "Share Ticker",
-      lbl_pdate: "Purchase Date",
-      lbl_pprice: "Purchase Price ($)",
-      lbl_units: "Units",
-      lbl_cprice: "Current Market Price ($)",
+      tag_priceret: "Price return", tag_divret: "Dividend return", tag_frankingup: "Franking uplift",
+      guide_performance: "Separate your total return into capital gain and income. Franking uplift can add 1–2% to effective total return.",
+      
+      lbl_ticker: "Share Ticker", lbl_pdate: "Purchase Date", lbl_pprice: "Purchase Price", lbl_units: "Units", lbl_cprice: "Current Market Price",
       btn_add_pos: "Add Position",
-      th_ticker: "Ticker",
-      th_date: "Purchase Date",
-      th_units: "Units",
-      th_cost_price: "Cost Price",
-      th_market_price: "Market Price",
-      th_total_cost: "Total Cost",
-      th_market_val: "Market Value",
-      th_gain_loss: "Gain / Loss",
-      th_cgt_status: "CGT 50%",
-      status_eligible: "Eligible",
-      status_not_eligible: "Not Eligible",
-      lbl_div_share: "Annual Dividend per Share ($)",
-      lbl_franking_pct: "Franking Percentage (%)",
-      lbl_cash_received: "Net Cash Received",
-      lbl_franking_credits: "Franking Credits Uplift",
-      lbl_gross_div: "Gross Dividend (inc. Imputation)",
-      lbl_costbase_input: "Total Cost Base ($)",
-      lbl_proceeds_input: "Sale Proceeds ($)",
-      lbl_holding_duration: "Held Over 12 Months?",
-      opt_yes: "Yes (Apply 50% Discount)",
-      opt_no: "No (Full Marginal Bracket)",
-      lbl_marginal_rate: "Marginal Tax Rate (%)",
-      lbl_tax_payable: "Estimated Tax Payable",
-      lbl_after_tax: "Net After-Tax Proceeds",
-      lbl_sect_financials: "Financials (%)",
-      lbl_sect_materials: "Materials & Mining (%)",
-      lbl_sect_healthcare: "Healthcare (%)",
-      lbl_sect_tech: "Technology (%)",
-      lbl_sect_others: "Others (%)",
+      th_ticker: "Ticker", th_date: "Purchase Date", th_units: "Units", th_cost_price: "Cost Price", th_market_price: "Market Price", th_total_cost: "Total Cost", th_market_val: "Market Value", th_gain_loss: "Gain / Loss", th_cgt_status: "CGT 50%",
+      status_eligible: "Eligible", status_not_eligible: "Not Eligible",
+      
+      lbl_div_share: "Annual Dividend per Share", lbl_franking_pct: "Franking Percentage (%)",
+      lbl_cash_received: "Net Cash Received:", lbl_franking_credits: "Franking Credits Uplift:", lbl_gross_div: "Gross Dividend (inc. Imputation):",
+      panelYieldOutputs: "Income Metrics",
+      
+      lbl_costbase_input: "Total Cost Base", lbl_proceeds_input: "Sale Proceeds", lbl_holding_duration: "Held Over 12 Months?",
+      opt_yes: "Yes (Apply 50% Discount)", opt_no: "No (Full Marginal Bracket)", lbl_marginal_rate: "Marginal Tax Rate (%)",
+      tag_netgain: "Net Capital Gain:", lbl_tax_payable: "Estimated Tax Payable:", lbl_after_tax: "Net After-Tax Proceeds:",
+      panelTaxOutputs: "CGT Breakdown",
+      
+      lbl_sect_financials: "Financials (%)", lbl_sect_materials: "Materials & Mining (%)", lbl_sect_healthcare: "Healthcare (%)", lbl_sect_tech: "Technology (%)", lbl_sect_others: "Others (%)",
       risk_warning: "⚠️ Concentration Risk Detected: One or more sectors exceed 40% of the equities portfolio.",
-      lbl_reg_buy: "Regular Buy Amount ($)",
-      lbl_frequency: "Contribution Frequency",
-      freq_monthly: "Monthly",
-      freq_fortnightly: "Fortnightly",
-      freq_weekly: "Weekly",
-      lbl_duration: "Duration (Years)",
-      lbl_exp_return: "Expected Annual Return (%)",
-      lbl_total_invested: "Total Capital Invested",
-      lbl_projected_value: "Projected Portfolio Value",
-      lbl_init_price: "Initial Purchase Price ($)",
-      lbl_final_price: "Current Market Price ($)",
-      lbl_div_received: "Total Dividends Received ($)",
-      lbl_price_return: "Capital Price Return",
-      lbl_div_return: "Dividend Income Return",
-      lbl_franking_uplift: "Franking Uplift",
-      lbl_total_effective_return: "Total Effective Return",
-      settings_engine_title: "Global System Configuration Engine",
-      lbl_corporate_tax_rate: "Standard Corporate Tax Rate / Imputation Benchmark (%)",
-      btn_cancel: "Cancel",
-      btn_save_config: "Save Configuration",
-      toast_export_csv: "System structured portfolio ledger successfully extracted into CSV format matrix.",
-      toast_export_report: "Comprehensive Financial Intelligence Analysis rendered and forwarded to system print architecture.",
-      toast_settings_saved: "Imputation structural tax parameter rule matrix modified successfully."
+      panelVisualizer: "Sector Weights",
+      
+      lbl_reg_buy: "Regular Buy Amount", lbl_frequency: "Contribution Frequency",
+      freq_monthly: "Monthly", freq_fortnightly: "Fortnightly", freq_weekly: "Weekly",
+      lbl_duration: "Duration (Years)", lbl_exp_return: "Expected Annual Return (%)",
+      lbl_total_invested: "Total Capital Invested:", lbl_projected_value: "Projected Portfolio Value:",
+      panelProjection: "Growth Projection",
+      
+      lbl_init_price: "Initial Purchase Price", lbl_final_price: "Current Market Price", lbl_div_received: "Total Dividends Received",
+      lbl_price_return: "Capital Price Return:", lbl_div_return: "Dividend Income Return:", lbl_franking_uplift: "Franking Uplift:", lbl_total_effective_return: "Total Effective Return:",
+      panelAttribution: "Attribution Breakdown",
+      confirmReset: "Are you sure you want to reset all inputs to their default values?"
     },
     vi: {
-      nav_overview: "Tổng quan",
-      nav_holdings: "Danh mục vị thế",
-      nav_dividends: "Dòng tiền cổ tức",
-      nav_cgt: "Thuế Thặng dư (CGT)",
-      nav_allocation: "Phân bổ tài sản",
-      nav_dca: "Kế hoạch Tích sản",
-      nav_performance: "Hiệu suất hiệu dụng",
-      btn_actions: "Thao tác",
-      act_export_csv: "📥 Xuất số liệu (CSV)",
-      act_export_pdf: "📄 In báo cáo (PDF)",
-      act_settings: "⚙️ Cài đặt hệ thống",
-      back_to_hub: "← Quay lại Trung tâm tài chính",
-      hero_title: "Cổ phiếu công chúng",
-      hero_subtitle: "Chứng khoán đại chúng, lợi suất cổ tức & quản trị danh mục thị trường",
-      hero_tagline: "Từ một cổ phiếu riêng lẻ đến cấu trúc toàn bộ danh mục đầu tư — theo dõi hiệu suất nguồn vốn, dòng thu nhập và kiểm soát rủi ro trong một hệ thống kỷ luật chặt chẽ.",
-      tools_title: "Hệ thống Công cụ & Máy tính",
-      tools_count_label: "mô-đun",
-      title_holdings: "Trình theo dõi Vị thế Danh mục",
-      badge_holdings: "Vị thế",
-      tag_units: "Khối lượng",
-      tag_costbase: "Giá vốn",
-      tag_marketval: "Giá trị thị trường",
-      tag_gainloss: "Lời / Lỗ",
-      quick_guide: "Hướng dẫn nhanh",
-      guide_holdings: "Ghi nhận từng lô cổ phiếu với chi tiết ngày mua, mức giá mua và số lượng đơn vị. Hệ thống tự động tính toán mức lời/lỗ chưa thực hiện và đánh dấu vị thế nắm giữ trên 12 tháng (đủ điều kiện hưởng mức giảm thuế 50% CGT theo luật ATO).",
-      watch_guide: "Xem hướng dẫn",
-      video_walkthrough: "Video chi tiết",
-      btn_open: "Mở công cụ →",
+      pageTitle: "Cổ Phiếu — Financial Hub",
+      backHub: "← Quay lại Financial Hub",
+      tabOverview: "Tổng quan",
+      nav_holdings: "Danh mục",
+      nav_dividends: "Cổ tức",
+      nav_cgt: "Thuế CGT",
+      nav_allocation: "Phân bổ",
+      nav_dca: "Tích sản",
+      nav_performance: "Hiệu suất",
+      btnExportData: "Xuất dữ liệu",
+      btnExportReport: "Xuất báo cáo",
+      btnSettings: "Cài đặt",
+      expCSV: "Xuất tệp CSV",
+      expJSON: "Xuất tệp JSON",
+      expPrint: "In Bảng điều khiển",
+      expSummary: "Lưu Báo cáo Tóm tắt",
+      cfgCurrency: "Đơn vị Tiền tệ",
+      cfgTax: "Thuế DN / Imputation (%)",
+      btnResetDefaults: "Đặt lại Mặc định",
+      btnOpen: "Mở →",
+      guideTitle: "Hướng dẫn nhanh",
+      
+      hero_title: "Cổ phiếu đại chúng",
+      hero_subtitle: "Chứng khoán, lợi suất cổ tức & quản trị danh mục",
+      hero_tagline: "Từ một cổ phiếu riêng lẻ đến toàn bộ danh mục — theo dõi hiệu suất, thu nhập và rủi ro trong một hệ thống kỷ luật.",
+      
+      title_holdings: "Theo dõi Vị thế Danh mục",
+      badge_holdings: "Danh mục",
+      tag_units: "Số lượng", tag_costbase: "Giá vốn", tag_marketval: "Giá thị trường", tag_gainloss: "Lời / Lỗ",
+      guide_holdings: "Ghi nhận lô cổ phiếu với ngày mua, giá và số lượng. Tính toán mức lời/lỗ chưa thực hiện và đánh dấu vị thế trên 12 tháng.",
+      
       title_dividends: "Kế hoạch Thu nhập Cổ tức",
-      badge_income: "Cổ tức",
-      tag_yield: "Tỷ suất lợi tức",
-      tag_franking: "Tín dụng Franking",
-      tag_calendar: "Lịch dòng tiền",
-      tag_annual_inc: "Thu nhập năm",
-      guide_dividends: "Hoạch định các khoản chi trả cổ tức trong năm tài chính. Nhập tỷ lệ franking để xác định mức cổ tức gộp thực tế bao gồm cả tín dụng thuế imputation — đặc biệt giá trị đối với nhà đầu tư có mức thuế suất biên thấp.",
-      title_cgt: "Máy tính Thuế Thặng dư Vốn (CGT)",
+      badge_income: "Thu nhập",
+      tag_yield: "Tỷ suất %", tag_franking: "Tín dụng Franking", tag_annual_inc: "Thu nhập năm",
+      guide_dividends: "Hoạch định cổ tức trong năm. Nhập tỷ lệ franking để xác định cổ tức gộp thực tế bao gồm cả tín dụng thuế imputation.",
+      
+      title_cgt: "Tính thuế Thặng dư Vốn (CGT)",
       badge_tax: "Thuế",
-      tag_proceeds: "Giá trị chuyển nhượng",
-      tag_netgain: "Thặng dư ròng",
-      tag_discount: "Khấu trừ 50%",
-      tag_payable: "Thuế phải nộp",
-      guide_cgt: "Tính toán nghĩa vụ thuế thặng dư vốn khi chuyển nhượng cổ phiếu. Tài sản nắm giữ trên 12 tháng được áp dụng cơ chế giảm trừ 50% CGT. Nhập thuế suất biên để dự phóng chính xác dòng tiền sau thuế.",
-      title_allocation: "Phân tích Cơ cấu & Ngành",
-      badge_allocation: "Cơ cấu",
-      tag_weights: "Tỷ trọng ngành",
-      tag_geomix: "Địa lý",
-      tag_concentration: "Rủi ro tập trung",
-      tag_ips: "Mục tiêu IPS",
-      guide_allocation: "Kiểm tra mức độ tập trung nguồn vốn theo các nhóm ngành kinh tế (Tài chính, Khai khoáng, Y tế, v.v.). Một nhóm ngành chiếm tỷ trọng vượt quá 40% danh mục thể hiện rủi ro tập trung lớn.",
-      title_dca: "Lập kế hoạch Tích sản (DCA)",
+      tag_proceeds: "Chuyển nhượng", tag_discount: "Khấu trừ 50%", tag_payable: "Thuế phải nộp",
+      guide_cgt: "Tính thuế CGT khi bán. Tài sản giữ trên 12 tháng giảm 50% CGT. Nhập thuế suất biên để dự phóng dòng tiền sau thuế.",
+      
+      title_allocation: "Phân bổ Ngành nghề",
+      badge_allocation: "Phân bổ",
+      tag_weights: "Tỷ trọng ngành", tag_concentration: "Rủi ro tập trung",
+      guide_allocation: "Kiểm tra mức tập trung theo ngành. Một ngành vượt quá 40% danh mục thể hiện rủi ro tập trung lớn.",
+      
+      title_dca: "Kế hoạch Tích sản (DCA)",
       badge_strategy: "Chiến lược",
-      tag_regbuy: "Vốn định kỳ",
-      tag_freq: "Tần suất đầu tư",
-      tag_avgcost: "Giá vốn trung bình",
-      tag_projection: "Dự phóng tài sản",
-      guide_dca: "Mô phỏng hiệu ứng phân bổ vốn đầu tư định kỳ với số tiền cố định. Chiến lược DCA giúp tối ưu hóa biến động giá vốn đầu vào — phù hợp cho dòng vốn tích sản từ lương vào các quỹ chỉ số ETF.",
+      tag_regbuy: "Vốn định kỳ", tag_avgcost: "Giá trung bình", tag_projection: "Dự phóng",
+      guide_dca: "Mô phỏng hiệu ứng phân bổ vốn định kỳ. DCA giúp tối ưu hóa biến động giá vốn đầu vào.",
+      
       title_performance: "Phân tích Nguồn gốc Lợi nhuận",
       badge_performance: "Hiệu suất",
-      tag_priceret: "Lợi nhuận giá",
-      tag_divret: "Lợi nhuận cổ tức",
-      tag_frankingup: "Franking tăng thêm",
-      tag_totreturn: "Tổng lợi nhuận %",
-      guide_performance: "Tách biệt tổng tỷ suất sinh lời thành cấu phần tăng trưởng thị giá và cấu phần thu nhập cổ tức. Đối với chứng khoán Úc, phần Franking tăng thêm có thể bổ sung 1-2% vào hiệu suất thực tế của nhà đầu tư.",
-      lbl_ticker: "Mã Cổ phiếu",
-      lbl_pdate: "Ngày Mua Vị thế",
-      lbl_pprice: "Giá Mua Vào ($)",
-      lbl_units: "Số lượng đơn vị",
-      lbl_cprice: "Giá Thị trường Hiện tại ($)",
-      btn_add_pos: "Thêm vào Danh mục",
-      th_ticker: "Mã CP",
-      th_date: "Ngày mua",
-      th_units: "Số lượng",
-      th_cost_price: "Giá vốn mua",
-      th_market_price: "Giá thị trường",
-      th_total_cost: "Tổng giá vốn",
-      th_market_val: "Giá trị hợp lý",
-      th_gain_loss: "Lời / Lỗ ròng",
-      th_cgt_status: "Khấu trừ CGT",
-      status_eligible: "Đủ Đ/K giảm",
-      status_not_eligible: "Không giảm",
-      lbl_div_share: "Cổ tức/Cổ phiếu hàng năm ($)",
-      lbl_franking_pct: "Tỷ lệ Franking (%)",
-      lbl_cash_received: "Tiền mặt thực nhận (Net)",
-      lbl_franking_credits: "Tín dụng Franking tăng thêm",
-      lbl_gross_div: "Cổ tức gộp (Gồm Imputation)",
-      lbl_costbase_input: "Tổng giá vốn danh mục ($)",
-      lbl_proceeds_input: "Giá trị chuyển nhượng bán ($)",
-      lbl_holding_duration: "Nắm giữ trên 12 tháng?",
-      opt_yes: "Đúng (Áp dụng giảm 50% thuế)",
-      opt_no: "Không (Tính toàn bộ biểu thuế biên)",
-      lbl_marginal_rate: "Thuế suất biên cá nhân (%)",
-      lbl_tax_payable: "Nghĩa vụ thuế ước tính",
-      lbl_after_tax: "Giá trị thu hồi sau thuế",
-      lbl_sect_financials: "Tài chính (%)",
-      lbl_sect_materials: "Khai khoáng & Vật liệu (%)",
-      lbl_sect_healthcare: "Y tế & Sức khỏe (%)",
-      lbl_sect_tech: "Công nghệ (%)",
-      lbl_sect_others: "Ngành khác (%)",
-      risk_warning: "⚠️ Phát hiện rủi ro tập trung cấu trúc: Một hoặc nhiều nhóm ngành chiếm tỷ trọng vượt mức giới hạn an toàn 40%.",
-      lbl_reg_buy: "Vốn đầu tư định kỳ ($)",
-      lbl_frequency: "Tần suất phân bổ vốn",
-      freq_monthly: "Hàng tháng",
-      freq_fortnightly: "Hàng hai tuần",
-      freq_weekly: "Hàng tuần",
-      lbl_duration: "Thời gian tích sản (Năm)",
-      lbl_exp_return: "Lợi nhuận năm kỳ vọng (%)",
-      lbl_total_invested: "Tổng vốn đầu tư gốc",
-      lbl_projected_value: "Giá trị danh mục dự phóng",
-      lbl_init_price: "Giá mua ban đầu ($)",
-      lbl_final_price: "Giá thị trường hiện tại ($)",
-      lbl_div_received: "Tổng cổ tức nhận được ($)",
-      lbl_price_return: "Hiệu suất tăng trưởng thị giá",
-      lbl_div_return: "Hiệu suất thu nhập cổ tức",
-      lbl_franking_uplift: "Hiệu ứng Franking tăng trưởng",
-      lbl_total_effective_return: "Tổng tỷ suất sinh lời thực tế",
-      settings_engine_title: "Cấu hình tham số hệ thống toàn cục",
-      lbl_corporate_tax_rate: "Thuế suất doanh nghiệp tiêu chuẩn / Khấu trừ Imputation (%)",
-      btn_cancel: "Hủy bỏ",
-      btn_save_config: "Lưu cấu hình hệ thống",
-      toast_export_csv: "Cấu trúc ma trận dữ liệu danh mục đã được trích xuất thành công sang tệp CSV.",
-      toast_export_report: "Hồ sơ phân tích trí tuệ tài chính đã được tổng hợp và chuyển sang giao diện in ấn hệ thống.",
-      toast_settings_saved: "Quy tắc tham số phân bổ thuế Imputation toàn cục đã được cập nhật thành công."
+      tag_priceret: "Lợi nhuận giá", tag_divret: "Lợi nhuận cổ tức", tag_frankingup: "Hiệu ứng Franking",
+      guide_performance: "Tách biệt tổng lợi nhuận thành vốn và thu nhập. Franking có thể bổ sung 1-2% vào hiệu suất thực tế.",
+      
+      lbl_ticker: "Mã Cổ phiếu", lbl_pdate: "Ngày Mua", lbl_pprice: "Giá Mua Vào", lbl_units: "Số lượng", lbl_cprice: "Giá Thị trường Hiện tại",
+      btn_add_pos: "Thêm Vị thế",
+      th_ticker: "Mã CP", th_date: "Ngày mua", th_units: "Số lượng", th_cost_price: "Giá vốn", th_market_price: "Giá TT", th_total_cost: "Tổng Giá Vốn", th_market_val: "Giá Trị HT", th_gain_loss: "Lời / Lỗ", th_cgt_status: "Khấu trừ CGT",
+      status_eligible: "Hợp lệ", status_not_eligible: "Không hợp lệ",
+      
+      lbl_div_share: "Cổ tức mỗi cổ phiếu", lbl_franking_pct: "Tỷ lệ Franking (%)",
+      lbl_cash_received: "Tiền mặt thực nhận:", lbl_franking_credits: "Tín dụng Franking:", lbl_gross_div: "Cổ tức gộp (Gồm Imputation):",
+      panelYieldOutputs: "Chỉ số Thu nhập",
+      
+      lbl_costbase_input: "Tổng Giá Vốn", lbl_proceeds_input: "Giá Trị Chuyển Nhượng", lbl_holding_duration: "Giữ Trên 12 Tháng?",
+      opt_yes: "Có (Giảm 50% Thuế)", opt_no: "Không (Tính Đủ Thuế)", lbl_marginal_rate: "Thuế Suất Biên (%)",
+      tag_netgain: "Lãi Ròng:", lbl_tax_payable: "Thuế Ước Tính:", lbl_after_tax: "Giá Trị Sau Thuế:",
+      panelTaxOutputs: "Chi tiết Thuế CGT",
+      
+      lbl_sect_financials: "Tài chính (%)", lbl_sect_materials: "Khai khoáng (%)", lbl_sect_healthcare: "Y tế (%)", lbl_sect_tech: "Công nghệ (%)", lbl_sect_others: "Ngành khác (%)",
+      risk_warning: "⚠️ Cảnh báo Rủi ro: Một số ngành vượt 40% tổng danh mục.",
+      panelVisualizer: "Tỷ trọng Ngành",
+      
+      lbl_reg_buy: "Vốn Đầu tư Định kỳ", lbl_frequency: "Tần suất",
+      freq_monthly: "Hàng tháng", freq_fortnightly: "Hàng hai tuần", freq_weekly: "Hàng tuần",
+      lbl_duration: "Thời gian (Năm)", lbl_exp_return: "Lợi nhuận Kỳ vọng (%)",
+      lbl_total_invested: "Tổng Vốn Đầu tư:", lbl_projected_value: "Giá trị Dự phóng:",
+      panelProjection: "Dự phóng Tăng trưởng",
+      
+      lbl_init_price: "Giá Mua Ban đầu", lbl_final_price: "Giá Hiện tại", lbl_div_received: "Tổng Cổ tức Đã nhận",
+      lbl_price_return: "Tăng trưởng Giá:", lbl_div_return: "Tỷ suất Cổ tức:", lbl_franking_uplift: "Hiệu ứng Franking:", lbl_total_effective_return: "Tổng Lợi suất Thực tế:",
+      panelAttribution: "Chi tiết Hiệu suất",
+      confirmReset: "Bạn có chắc chắn muốn đặt lại toàn bộ giá trị đầu vào về mặc định?"
     }
   };
 
-  // State Matrix Model for Ledger Positions
   let portfolioLedgerState = [
     { id: 1, ticker: "BHP", purchaseDate: "2024-03-15", price: 42.50, units: 200, currentPrice: 45.00 },
     { id: 2, ticker: "VAS", purchaseDate: "2025-08-10", price: 91.00, units: 100, currentPrice: 96.50 }
   ];
 
-  // Core App Initializer Execution
-  document.addEventListener('DOMContentLoaded', function() {
-    executeLocalizationRendering();
+  function executeLocalizationEngine() {
+    const dict = translations[currentLanguage];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) {
+        if (el.tagName === 'INPUT' || el.tagName === 'OPTION') {
+          if (el.hasAttribute('placeholder')) el.placeholder = dict[key];
+          else el.textContent = dict[key];
+        } else {
+          el.textContent = dict[key];
+        }
+      }
+    });
+    document.getElementById('lang-toggle').textContent = currentLanguage === 'en' ? '🌐 Tiếng Việt' : '🌐 English';
+    triggerAllAnalyticalEngines();
+  }
+
+  function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
+    executeLocalizationEngine();
+  }
+
+  function switchTab(targetId) {
+    closeAllDropdowns();
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    const tabIndexMap = { 'grid': 0, 'shares-holdings': 1, 'shares-dividends': 2, 'shares-cgt': 3, 'shares-allocation': 4, 'shares-dca': 5, 'shares-return': 6 };
+    const buttons = document.querySelectorAll('.tab-btn');
+    if (buttons[tabIndexMap[targetId]]) buttons[tabIndexMap[targetId]].classList.add('active');
+
+    if (targetId === 'grid') {
+      document.getElementById('grid-view').style.display = 'block';
+      document.querySelectorAll('.workspace-section').forEach(sec => sec.classList.remove('active'));
+    } else {
+      document.getElementById('grid-view').style.display = 'none';
+      document.querySelectorAll('.workspace-section').forEach(sec => sec.classList.remove('active'));
+      const activeWorkspace = document.getElementById(`workspace-${targetId}`);
+      if (activeWorkspace) activeWorkspace.classList.add('active');
+    }
+    triggerAllAnalyticalEngines();
+  }
+
+  function toggleDropdown(id) {
+    const drop = document.getElementById(id);
+    const isOpen = drop.classList.contains('show');
+    closeAllDropdowns();
+    if (!isOpen) drop.classList.add('show');
+  }
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.action-controls')) closeAllDropdowns();
+  });
+
+  function updateGlobalSettings() {
+    activeGlobalCurrency = document.getElementById('cfg-currency').value;
+    GLOBAL_CORPORATE_TAX_RATE = parseFloat(document.getElementById('cfg-tax-rate').value) || 0;
+    triggerAllAnalyticalEngines();
+  }
+
+  function resetAllInputs() {
+    if (!confirm(translations[currentLanguage].confirmReset)) return;
+    portfolioLedgerState = [
+      { id: 1, ticker: "BHP", purchaseDate: "2024-03-15", price: 42.50, units: 200, currentPrice: 45.00 },
+      { id: 2, ticker: "VAS", purchaseDate: "2025-08-10", price: 91.00, units: 100, currentPrice: 96.50 }
+    ];
+    document.getElementById('div-units').value = 500;
+    document.getElementById('div-per-share').value = 2.40;
+    document.getElementById('div-franking').value = 100;
+    document.getElementById('cgt-costbase').value = 15000;
+    document.getElementById('cgt-proceeds').value = 28000;
+    document.getElementById('cgt-tax-rate').value = 32.5;
+    
+    document.querySelector('[data-sector="Financials"]').value = 45;
+    document.querySelector('[data-sector="Materials"]').value = 25;
+    document.querySelector('[data-sector="Healthcare"]').value = 15;
+    document.querySelector('[data-sector="Technology"]').value = 10;
+    document.querySelector('[data-sector="Others"]').value = 5;
+
+    document.getElementById('dca-amount').value = 1000;
+    document.getElementById('dca-years').value = 5;
+    document.getElementById('dca-return').value = 8;
+
+    document.getElementById('ret-init-price').value = 50.00;
+    document.getElementById('ret-final-price').value = 58.00;
+    document.getElementById('ret-dividends').value = 3.50;
+    document.getElementById('ret-franking').value = 100;
+    
+    document.getElementById('cfg-currency').value = '$';
+    document.getElementById('cfg-tax-rate').value = 30.0;
+    
+    updateGlobalSettings();
+    closeAllDropdowns();
+  }
+
+  function formatFinancialAssetValue(val) {
+    if (isNaN(val) || !isFinite(val)) return activeGlobalCurrency + ' 0.00';
+    return activeGlobalCurrency + ' ' + val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function triggerAllAnalyticalEngines() {
     refreshHoldingsTableView();
     calculateDividendPlanner();
     calculateCgtEngine();
     recomputeAllocationGraph();
     calculateDcaSchedule();
     calculateReturnAttribution();
-
-    // Setup Top-Level Sticky Navigation Framework Event Anchors
-    const navItems = document.querySelectorAll('.nav-link-item');
-    navItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('data-nav-target');
-        if(targetId === 'overview-deck') {
-          e.preventDefault();
-          document.getElementById('overview-deck').style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          setActiveNavHighlight(this);
-        } else {
-          // Allow internal cross links tracking behavior
-          document.getElementById('overview-deck').style.display = 'block';
-          setActiveNavHighlight(this);
-          const element = document.getElementById(targetId);
-          if (element) {
-            setTimeout(() => {
-              element.scrollIntoView({ behavior: 'smooth' });
-              element.classList.add('active-focus');
-              setTimeout(() => element.classList.remove('active-focus'), 1200);
-            }, 50);
-          }
-        }
-      });
-    });
-
-    // Intercept original "Open →" grid button anchors to point cleanly to interactive active forms workspaces
-    const executionAnchors = document.querySelectorAll('.execution-anchor');
-    executionAnchors.forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').substring(1);
-        const equivalentNav = document.querySelector(`[data-nav-target="${targetId}"]`);
-        if (equivalentNav) equivalentNav.click();
-      });
-    });
-
-    // Global Modal Window Dismissal Click Catchers Rules
-    document.getElementById('video-modal').addEventListener('click', function(e) {
-      if (e.target.id === 'video-modal') closeVideoLocal();
-    });
-    document.getElementById('engine-settings-modal').addEventListener('click', function(e) {
-      if (e.target.id === 'engine-settings-modal') closeEngineSettingsModal();
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeVideoLocal();
-        closeEngineSettingsModal();
-      }
-    });
-
-    // Close Dropdowns on external click boundaries
-    window.addEventListener('click', function() {
-      document.getElementById('actions-dropdown-menu').classList.remove('show');
-    });
-  });
-
-  function setActiveNavHighlight(activeNode) {
-    document.querySelectorAll('.nav-link-item').forEach(item => item.classList.remove('active'));
-    activeNode.classList.add('active');
   }
 
-  // Multi-functional action dropdown controllers
-  function toggleActionsDropdown(e) {
-    e.stopPropagation();
-    document.getElementById('actions-dropdown-menu').classList.toggle('show');
-  }
+  /* ═══════════════════════════════════════════════════════════
+     CALCULATION ENGINES
+     ═══════════════════════════════════════════════════════════ */
 
-  // Notification Toast Feedback Engine Block
-  function displayToastNotification(messageKey) {
-    const toast = document.getElementById('system-toast-node');
-    toast.textContent = i18nDictionary[CURRENT_LANG][messageKey] || messageKey;
-    toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 4000);
-  }
-
-  // System Configuration Logic Settings Node
-  function triggerEngineSettingsModal() {
-    document.getElementById('settings-corporate-rate').value = GLOBAL_CORPORATE_TAX_RATE;
-    document.getElementById('engine-settings-modal').classList.add('open');
-  }
-
-  function closeEngineSettingsModal() {
-    document.getElementById('engine-settings-modal').classList.remove('open');
-  }
-
-  function saveEngineSettingsParameters() {
-    const value = parseFloat(document.getElementById('settings-corporate-rate').value);
-    if (!isNaN(value) && value >= 0 && value <= 100) {
-      GLOBAL_CORPORATE_TAX_RATE = value;
-      closeEngineSettingsModal();
-      displayToastNotification('toast_settings_saved');
-      // Recalculate dependants engines
-      calculateDividendPlanner();
-      calculateReturnAttribution();
-    }
-  }
-
-  // Localization Engine Controller Functions
-  function switchLocalizationEngine() {
-    CURRENT_LANG = (CURRENT_LANG === 'en') ? 'vi' : 'en';
-    document.getElementById('localization-toggle-node').textContent = (CURRENT_LANG === 'en') ? '🇻🇳 VI' : '🇬🇧 EN';
-    executeLocalizationRendering();
-    refreshHoldingsTableView();
-    recomputeAllocationGraph();
-  }
-
-  function executeLocalizationRendering() {
-    const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(element => {
-      const token = element.getAttribute('data-i18n');
-      if (i18nDictionary[CURRENT_LANG][token]) {
-        element.textContent = i18nDictionary[CURRENT_LANG][token];
-      }
-    });
-  }
-
-  // Format Helper Utilities
-  function parseCurrencyString(val) {
-    return new Intl.NumberFormat(CURRENT_LANG === 'en' ? 'en-AU' : 'vi-VN', {
-      style: 'currency',
-      currency: CURRENT_LANG === 'en' ? 'AUD' : 'VND',
-      minimumFractionDigits: 2
-    }).format(val);
-  }
-
-  // Calculator Module 1: Portfolio Holdings Tracker Engine
   function refreshHoldingsTableView() {
     const tbody = document.getElementById('holdings-table-body');
     tbody.innerHTML = '';
-    
-    // Setting constant calculation baseline anchor representation date as requested by framework context
-    const referenceCurrentDate = new Date('2026-06-13');
+    const referenceCurrentDate = new Date('2026-06-14');
 
     portfolioLedgerState.forEach(pos => {
       const totalCost = pos.price * pos.units;
       const marketVal = pos.currentPrice * pos.units;
       const gainLoss = marketVal - totalCost;
-      const trendClass = gainLoss >= 0 ? 'up-trend' : 'down-trend';
+      const trendClass = gainLoss >= 0 ? 'highlight' : 'negative';
 
-      // Evaluate logic for 12 months Australian Taxation Office CGT rule validation discount tier limits
       const buyDate = new Date(pos.purchaseDate);
-      const differenceInTime = referenceCurrentDate.getTime() - buyDate.getTime();
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+      const differenceInDays = (referenceCurrentDate.getTime() - buyDate.getTime()) / (1000 * 3600 * 24);
       const isEligibleForDiscount = differenceInDays > 365;
       
       const cgtStatusText = isEligibleForDiscount 
-        ? i18nDictionary[CURRENT_LANG]['status_eligible']
-        : i18nDictionary[CURRENT_LANG]['status_not_eligible'];
+        ? translations[currentLanguage]['status_eligible']
+        : translations[currentLanguage]['status_not_eligible'];
 
       const row = document.createElement('tr');
       row.innerHTML = `
         <td style="font-weight:700; color:var(--asset-accent);">${pos.ticker}</td>
         <td>${pos.purchaseDate}</td>
-        <td class="font-mono">${pos.units}</td>
-        <td class="font-mono">${parseCurrencyString(pos.price)}</td>
-        <td class="font-mono">${parseCurrencyString(pos.currentPrice)}</td>
-        <td class="font-mono">${parseCurrencyString(totalCost)}</td>
-        <td class="font-mono">${parseCurrencyString(marketVal)}</td>
-        <td class="font-mono ${trendClass}">${gainLoss >= 0 ? '+' : ''}${parseCurrencyString(gainLoss)}</td>
+        <td style="font-family:var(--font-mono);">${pos.units}</td>
+        <td style="font-family:var(--font-mono);">${formatFinancialAssetValue(pos.price)}</td>
+        <td style="font-family:var(--font-mono);">${formatFinancialAssetValue(pos.currentPrice)}</td>
+        <td style="font-family:var(--font-mono);">${formatFinancialAssetValue(totalCost)}</td>
+        <td style="font-family:var(--font-mono);">${formatFinancialAssetValue(marketVal)}</td>
+        <td class="result-value ${trendClass}">${gainLoss >= 0 ? '+' : ''}${formatFinancialAssetValue(gainLoss)}</td>
         <td><span class="calc-app" style="background:${isEligibleForDiscount ? 'rgba(78,203,138,0.1)' : 'rgba(224,107,107,0.1)'}; color:${isEligibleForDiscount ? 'var(--accent3)' : 'var(--accent4)'}; border:1px solid ${isEligibleForDiscount ? 'rgba(78,203,138,0.2)' : 'rgba(224,107,107,0.2)'};">${cgtStatusText}</span></td>
       `;
       tbody.appendChild(row);
@@ -1286,60 +987,43 @@ header {
     const currentPrice = parseFloat(document.getElementById('holding-current-price').value);
 
     if (ticker && purchaseDate && !isNaN(price) && !isNaN(units) && !isNaN(currentPrice)) {
-      const newPos = {
-        id: Date.now(),
-        ticker: ticker,
-        purchaseDate: purchaseDate,
-        price: price,
-        units: units,
-        currentPrice: currentPrice
-      };
-      portfolioLedgerState.push(newPos);
+      portfolioLedgerState.push({ id: Date.now(), ticker, purchaseDate, price, units, currentPrice });
       refreshHoldingsTableView();
     }
   }
 
-  // Calculator Module 2: Dividend Income Planner Engine
   function calculateDividendPlanner() {
     const units = parseInt(document.getElementById('div-units').value) || 0;
     const divPerShare = parseFloat(document.getElementById('div-per-share').value) || 0;
     const frankingPct = parseFloat(document.getElementById('div-franking').value) || 0;
 
     const netCashReceived = units * divPerShare;
-    // Australian Standard Imputation Credit Allocation Formula: Cash Dividend * (Franking %) * [Corporate Tax Rate / (1 - Corporate Tax Rate)]
     const corporateTaxFactor = (GLOBAL_CORPORATE_TAX_RATE / 100) / (1 - (GLOBAL_CORPORATE_TAX_RATE / 100));
     const frankingCreditsUplift = netCashReceived * (frankingPct / 100) * corporateTaxFactor;
     const grossDividendTotal = netCashReceived + frankingCreditsUplift;
 
-    document.getElementById('div-metric-cash').textContent = parseCurrencyString(netCashReceived);
-    document.getElementById('div-metric-credits').textContent = parseCurrencyString(frankingCreditsUplift);
-    document.getElementById('div-metric-gross').textContent = parseCurrencyString(grossDividendTotal);
+    document.getElementById('div-metric-cash').textContent = formatFinancialAssetValue(netCashReceived);
+    document.getElementById('div-metric-credits').textContent = formatFinancialAssetValue(frankingCreditsUplift);
+    document.getElementById('div-metric-gross').textContent = formatFinancialAssetValue(grossDividendTotal);
   }
 
-  // Calculator Module 3: CGT Event Calculator Engine
   function calculateCgtEngine() {
     const costbase = parseFloat(document.getElementById('cgt-costbase').value) || 0;
     const proceeds = parseFloat(document.getElementById('cgt-proceeds').value) || 0;
     const isDiscountable = document.getElementById('cgt-duration-select').value === 'yes';
     const taxRate = parseFloat(document.getElementById('cgt-tax-rate').value) || 0;
 
-    let netCapitalGain = proceeds - costbase;
-    if (netCapitalGain < 0) netCapitalGain = 0;
-
-    let taxableGain = netCapitalGain;
-    if (isDiscountable) {
-      taxableGain = netCapitalGain * 0.5; // Apply the standard ATO 50% CGT concessions tier discount
-    }
+    let netCapitalGain = Math.max(0, proceeds - costbase);
+    let taxableGain = isDiscountable ? netCapitalGain * 0.5 : netCapitalGain;
 
     const estimatedTaxPayable = taxableGain * (taxRate / 100);
     const netAfterTaxProceeds = proceeds - estimatedTaxPayable;
 
-    document.getElementById('cgt-metric-gain').textContent = parseCurrencyString(netCapitalGain);
-    document.getElementById('cgt-metric-tax').textContent = parseCurrencyString(estimatedTaxPayable);
-    document.getElementById('cgt-metric-net').textContent = parseCurrencyString(netAfterTaxProceeds);
+    document.getElementById('cgt-metric-gain').textContent = formatFinancialAssetValue(netCapitalGain);
+    document.getElementById('cgt-metric-tax').textContent = formatFinancialAssetValue(estimatedTaxPayable);
+    document.getElementById('cgt-metric-net').textContent = formatFinancialAssetValue(netAfterTaxProceeds);
   }
 
-  // Calculator Module 4: Allocation & Sector Breakdown Bar Graph Chart Renderer Engine
   function recomputeAllocationGraph() {
     const inputNodes = document.querySelectorAll('.allocation-input-node');
     const container = document.getElementById('allocation-visual-container');
@@ -1349,6 +1033,7 @@ header {
 
     inputNodes.forEach(node => {
       const sectorLabel = node.getAttribute('data-sector');
+      const translatedLabel = translations[currentLanguage][`lbl_sect_${sectorLabel.toLowerCase().split(' ')[0]}`] || sectorLabel;
       const val = parseFloat(node.value) || 0;
 
       if (val > 40) concentrationTriggered = true;
@@ -1357,8 +1042,8 @@ header {
       blockNode.className = 'allocation-bar-node';
       blockNode.innerHTML = `
         <div class="allocation-bar-headers">
-          <span style="font-weight:500;">${sectorLabel}</span>
-          <span class="font-mono" style="color:var(--asset-accent); font-weight:700;">${val}%</span>
+          <span style="font-weight:500; font-size:13px;">${translatedLabel}</span>
+          <span style="font-family:var(--font-mono); color:var(--asset-accent); font-weight:700;">${val}%</span>
         </div>
         <div class="allocation-bar-track">
           <div class="allocation-bar-fill-node" style="width: ${val}%;"></div>
@@ -1375,7 +1060,6 @@ header {
     }
   }
 
-  // Calculator Module 5: Dollar-Cost Averaging Planner Engine
   function calculateDcaSchedule() {
     const regularBuy = parseFloat(document.getElementById('dca-amount').value) || 0;
     const frequencyFactor = parseInt(document.getElementById('dca-frequency').value) || 12;
@@ -1384,22 +1068,16 @@ header {
 
     const totalPeriods = frequencyFactor * years;
     const capitalInvestedBasis = regularBuy * totalPeriods;
-
-    // Periodic rate component formula calculations
     const periodicRate = (expectedReturnAnnual / 100) / frequencyFactor;
     
-    let compoundedFuturePortfolioValue = 0;
-    if (periodicRate > 0) {
-      compoundedFuturePortfolioValue = regularBuy * ((Math.pow(1 + periodicRate, totalPeriods) - 1) / periodicRate) * (1 + periodicRate);
-    } else {
-      compoundedFuturePortfolioValue = capitalInvestedBasis;
-    }
+    let compoundedFuturePortfolioValue = periodicRate > 0 
+        ? regularBuy * ((Math.pow(1 + periodicRate, totalPeriods) - 1) / periodicRate) * (1 + periodicRate) 
+        : capitalInvestedBasis;
 
-    document.getElementById('dca-metric-invested').textContent = parseCurrencyString(capitalInvestedBasis);
-    document.getElementById('dca-metric-future').textContent = parseCurrencyString(compoundedFuturePortfolioValue);
+    document.getElementById('dca-metric-invested').textContent = formatFinancialAssetValue(capitalInvestedBasis);
+    document.getElementById('dca-metric-future').textContent = formatFinancialAssetValue(compoundedFuturePortfolioValue);
   }
 
-  // Calculator Module 6: Return Attribution Engine
   function calculateReturnAttribution() {
     const initialPrice = parseFloat(document.getElementById('ret-init-price').value) || 1;
     const finalPrice = parseFloat(document.getElementById('ret-final-price').value) || 0;
@@ -1409,7 +1087,6 @@ header {
     const priceReturnPercentage = ((finalPrice - initialPrice) / initialPrice) * 100;
     const dividendReturnPercentage = (dividendsReceived / initialPrice) * 100;
     
-    // Imputation credit tax yield contribution calculation matrix element
     const imputationFactorValue = (GLOBAL_CORPORATE_TAX_RATE / 100) / (1 - (GLOBAL_CORPORATE_TAX_RATE / 100));
     const frankingUpliftCreditsValue = dividendsReceived * (frankingPercentage / 100) * imputationFactorValue;
     const frankingUpliftReturnPercentage = (frankingUpliftCreditsValue / initialPrice) * 100;
@@ -1422,30 +1099,12 @@ header {
     document.getElementById('ret-metric-total').textContent = totalEffectiveReturnCombined.toFixed(2) + '%';
   }
 
-  // Data Actions Dropdown Functional Pipeline Implementations
-  function executeDataExport() {
-    let csvStructuralContent = "data:text/csv;charset=utf-8,";
-    csvStructuralContent += "Ticker,PurchaseDate,CostPrice,Units,CurrentPrice\n";
-    
-    portfolioLedgerState.forEach(pos => {
-      csvStructuralContent += `${pos.ticker},${pos.purchaseDate},${pos.price},${pos.units},${pos.currentPrice}\n`;
-    });
-
-    const encodedDataUriNode = encodeURI(csvStructuralContent);
-    const downloadLinkNode = document.createElement("a");
-    downloadLinkNode.setAttribute("href", encodedDataUriNode);
-    downloadLinkNode.setAttribute("download", `Shares_Portfolio_Ledger_Intel.csv`);
-    document.body.appendChild(downloadLinkNode);
-    downloadLinkNode.click();
-    document.body.removeChild(downloadLinkNode);
-
-    displayToastNotification('toast_export_csv');
-  }
-
-  function executeReportExport() {
-    displayToastNotification('toast_export_report');
-    setTimeout(() => { window.print(); }, 600);
-  }
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', function() {
+    executeLocalizationEngine();
+  });
 </script>
 </body>
 </html>
