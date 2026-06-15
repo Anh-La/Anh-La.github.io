@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gia Phả Họ Lã — Phả Đồ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS (Financial Hub palette) ── */
+:root {
+  --ink:        #0f1117;
+  --ink-dim:    #4a4558;
+  --paper:      #faf8f5;
+  --paper-mid:  #f0ece4;
+  --paper-rim:  #e0d9ce;
+  --red:        #9b2a2a;
+  --red-soft:   #c84b4b;
+  --gold:       #c4943a;
+  --gold-soft:  #d4aa5a;
+  --blue-m:     #2a5a8b;
+  --blue-f:     #7b3b6e;
+  --green:      #2d6b3f;
+
+  --serif:  'DM Serif Display', Georgia, serif;
+  --sans:   'Manrope', 'Segoe UI', system-ui, sans-serif;
+  --mono:   'DM Mono', 'Courier New', monospace;
+
+  --radius: 6px;
+  --shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 52px;
+  border-bottom: 2.5px solid var(--gold);
+  flex-shrink: 0;
+  z-index: 30;
+}
+.site-header h1 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .03em;
+  color: var(--gold-soft);
+  white-space: nowrap;
+}
+.header-sub {
+  font-size: .7rem;
+  color: var(--paper-rim);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-left: 1px solid #333;
+  padding-left: 1rem;
+  display: none;
+}
+@media (min-width: 600px) {
+  .header-sub { display: block; }
+}
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+}
+/* Mobile: collapse header actions to icons */
+.header-actions .btn-label {
+  display: none;
+}
+@media (min-width: 640px) {
+  .header-actions .btn-label { display: inline; }
+}
+
+/* hamburger for mobile sidebar */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--gold-soft);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: .3rem .5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  border-radius: var(--radius);
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.sidebar-toggle:hover { background: rgba(255,255,255,.08); }
+/* Hide toggle when sidebar is always visible */
+@media (min-width: 900px) {
+  .sidebar-toggle { display: none; }
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .4rem .8rem;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius);
+  font-size: .78rem;
+  font-family: var(--sans);
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  transition: background .15s, color .15s, opacity .15s;
+  white-space: nowrap;
+  letter-spacing: .01em;
+  min-height: 36px;
+}
+.btn-gold   { color: var(--gold-soft); }
+.btn-gold:hover { background: var(--gold-soft); color: var(--ink); }
+.btn-red    { color: #e07070; }
+.btn-red:hover { background: #e07070; color: #fff; }
+.btn-green  { color: #6bbf8e; }
+.btn-green:hover { background: #6bbf8e; color: var(--ink); }
+.btn-solid  { background: var(--red); border-color: var(--red); color: #fff; }
+.btn-solid:hover { background: var(--red-soft); }
+.btn-primary { background: var(--blue-m); border-color: var(--blue-m); color: #fff; }
+.btn-primary:hover { background: #1e4a75; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  background: var(--ink);
+  border-bottom: 2px solid var(--gold);
+  padding: 0 1rem;
+  gap: 0;
+  flex-shrink: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: .55rem 1rem;
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+  color: var(--paper-rim);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color .15s, border-color .15s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  white-space: nowrap;
+  min-height: 44px;
+}
+.tab:hover { color: var(--gold-soft); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── LAYOUT ── */
+.main-wrap {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 40;
+  cursor: pointer;
+}
+.sidebar-backdrop.open { display: block; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--paper-mid);
+  border-right: 1px solid var(--paper-rim);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform .25s ease;
+  z-index: 50;
+}
+
+@media (max-width: 899px) {
+  .sidebar {
+    position: fixed;
+    top: 52px; /* header height */
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 20px rgba(0,0,0,.15);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+.sidebar-filters {
+  padding: .75rem 1rem;
+  border-bottom: 1px solid var(--paper-rim);
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+.sidebar-filters label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+}
+.sidebar-filters input,
+.sidebar-filters select {
+  width: 100%;
+  padding: .42rem .6rem;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-size: .84rem;
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 38px;
+}
+.sidebar-filters input:focus,
+.sidebar-filters select:focus {
+  outline: 2px solid var(--gold);
+  border-color: transparent;
+}
+.member-count {
+  font-size: .7rem;
+  font-family: var(--mono);
+  color: var(--ink-dim);
+  padding: .35rem 1rem;
+  border-bottom: 1px solid var(--paper-rim);
+  background: var(--paper);
+  letter-spacing: .04em;
+}
+.member-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: .25rem 0;
+}
+.member-item {
+  padding: .6rem 1rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background .12s, border-color .12s;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+}
+.member-item:hover { background: var(--paper); }
+.member-item.selected { background: #fff; border-left-color: var(--gold); }
+.member-item .m-name {
+  font-size: .84rem;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.member-item.male   .m-name { color: var(--blue-m); }
+.member-item.female .m-name { color: var(--blue-f); }
+.m-gen {
+  font-size: .67rem;
+  color: var(--ink-dim);
+  background: var(--paper-rim);
+  border-radius: 10px;
+  padding: .1rem .4rem;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+
+/* ── CONTENT PANELS ── */
+.panel {
+  flex: 1;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  min-width: 0;
+}
+.panel.active { display: flex; }
+
+/* ── DETAIL VIEW ── */
+.detail-view {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+.detail-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+.no-selection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: .75rem;
+  color: var(--ink-dim);
+  font-size: .9rem;
+}
+.no-selection .big-char {
+  font-size: 4rem;
+  font-family: var(--serif);
+  color: var(--paper-rim);
+}
+
+/* PERSON CARD */
+.person-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+  max-width: 720px;
+}
+.card-header {
+  padding: 1rem 1.25rem .75rem;
+  border-bottom: 2px solid var(--paper-rim);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.card-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.card-avatar.male   { background: #dbeaff; color: var(--blue-m); }
+.card-avatar.female { background: #f5e5f7; color: var(--blue-f); }
+.card-avatar.unknown { background: var(--paper-rim); color: var(--ink-dim); }
+.card-title { flex: 1; min-width: 0; }
+.card-full-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: .25rem;
+  line-height: 1.2;
+}
+.card-meta {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.badge {
+  font-size: .67rem;
+  padding: .15rem .42rem;
+  border-radius: 3px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+.badge-gen    { background: var(--ink); color: var(--gold-soft); }
+.badge-male   { background: #dbeaff; color: var(--blue-m); }
+.badge-female { background: #f5e5f7; color: var(--blue-f); }
+.badge-blood  { background: #ffe8e8; color: var(--red); }
+.badge-adopted{ background: #fffde8; color: #7a6500; }
+.badge-status { background: var(--paper-mid); color: var(--ink-dim); }
+
+.card-body { padding: 1rem 1.25rem; }
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6rem 1.25rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 500px) {
+  .info-grid { grid-template-columns: 1fr; }
+}
+.info-item label {
+  display: block;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: .1rem;
+  font-family: var(--mono);
+}
+.info-item span {
+  font-size: .88rem;
+  color: var(--ink);
+}
+.info-item.full { grid-column: 1 / -1; }
+
+.section-heading {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 1.1rem 0 .55rem;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--paper-rim);
+  font-family: var(--mono);
+}
+.relation-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .3rem .6rem;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: 20px;
+  font-size: .8rem;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+  margin: .2rem .2rem .2rem 0;
+  text-decoration: none;
+  color: inherit;
+  min-height: 32px;
+}
+.relation-chip:hover { background: var(--paper-rim); border-color: var(--gold); }
+.relation-chip .role { font-size: .63rem; color: var(--ink-dim); }
+.relation-chip.male-chip   .chip-name { color: var(--blue-m); }
+.relation-chip.female-chip .chip-name { color: var(--blue-f); }
+
+.card-actions {
+  padding: .7rem 1.25rem;
+  background: var(--paper-mid);
+  border-top: 1px solid var(--paper-rim);
+  display: flex;
+  gap: .45rem;
+  flex-wrap: wrap;
+}
+
+/* ── TABLE VIEW ── */
+.table-toolbar {
+  padding: .65rem 1.25rem;
+  background: var(--paper-mid);
+  border-bottom: 1px solid var(--paper-rim);
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.table-wrap {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: .55rem .8rem;
+  text-align: left;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--mono);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+thead th:hover { background: #1e2330; }
+thead th .sort-arrow { margin-left: .3rem; opacity: .4; }
+thead th.sorted-asc  .sort-arrow::after { content: '▲'; opacity: 1; }
+thead th.sorted-desc .sort-arrow::after { content: '▼'; opacity: 1; }
+tbody tr { cursor: pointer; transition: background .1s; }
+tbody tr:nth-child(even) { background: var(--paper-mid); }
+tbody tr:hover { background: #fffbf4; }
+tbody tr.selected-row { background: #fff8e6; outline: 2px inset var(--gold); }
+tbody td {
+  padding: .45rem .8rem;
+  border-bottom: 1px solid var(--paper-rim);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+td.male-name   { color: var(--blue-m); font-weight: 600; }
+td.female-name { color: var(--blue-f); font-weight: 600; }
+
+/* ── TREE VIEW ── */
+.tree-toolbar {
+  padding: .6rem 1.25rem;
+  background: var(--paper-mid);
+  border-bottom: 1px solid var(--paper-rim);
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+#treeCanvas {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--paper);
+  -webkit-overflow-scrolling: touch;
+}
+.tree-root { display: inline-block; min-width: 100%; }
+.tree-box {
+  background: #fff;
+  border: 1.5px solid var(--paper-rim);
+  border-radius: var(--radius);
+  padding: .45rem .7rem;
+  font-size: .77rem;
+  cursor: pointer;
+  text-align: center;
+  min-width: 100px;
+  max-width: 140px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.tree-box:hover        { border-color: var(--gold); box-shadow: 0 2px 8px rgba(196,148,58,.2); }
+.tree-box.selected-tree{ border-color: var(--gold); background: #fffbf0; box-shadow: 0 2px 12px rgba(196,148,58,.28); }
+.tree-box.male-box     { border-left: 3px solid var(--blue-m); }
+.tree-box.female-box   { border-left: 3px solid var(--blue-f); }
+.tree-box-name { font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .77rem; }
+.tree-box.male-box   .tree-box-name { color: var(--blue-m); }
+.tree-box.female-box .tree-box-name { color: var(--blue-f); }
+.tree-box-sub { font-size: .65rem; color: var(--ink-dim); margin-top: .1rem; font-family: var(--mono); }
+.tree-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── STATS VIEW ── */
+.stats-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: .85rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  box-shadow: var(--shadow);
+}
+.stat-card .s-value {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--red);
+  line-height: 1;
+}
+.stat-card .s-label {
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+}
+.stats-section { margin-bottom: 2rem; }
+.stats-section h3 {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .75rem;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--paper-rim);
+  font-family: var(--mono);
+}
+
+/* ── FORM ── */
+.form-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  max-width: 800px;
+  -webkit-overflow-scrolling: touch;
+}
+.form-heading {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin-bottom: 1.1rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem 1.1rem;
+}
+@media (max-width: 560px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+}
+.form-group { display: flex; flex-direction: column; gap: .28rem; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label {
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: .45rem .65rem;
+  border: 1.5px solid var(--paper-rim);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-size: .88rem;
+  color: var(--ink);
+  font-family: var(--sans);
+  transition: border-color .15s;
+  min-height: 40px;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: #fff;
+}
+.form-group textarea { resize: vertical; min-height: 70px; }
+.form-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid var(--paper-rim);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--paper);
+  border-radius: var(--radius);
+  max-width: 480px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.3);
+}
+.modal-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: .9rem 1.25rem;
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--paper-rim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: .25rem;
+}
+.modal-body { padding: 1.25rem; font-size: .92rem; }
+.modal-footer {
+  padding: .7rem 1.25rem;
+  background: var(--paper-mid);
+  border-top: 1px solid var(--paper-rim);
+  display: flex;
+  gap: .5rem;
+  justify-content: flex-end;
+}
+
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  background: var(--ink);
+  color: var(--gold-soft);
+  padding: .6rem 1rem;
+  border-radius: var(--radius);
+  font-size: .84rem;
+  font-family: var(--sans);
+  z-index: 200;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform .3s, opacity .3s;
+  border-left: 3px solid var(--gold);
+  max-width: 300px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── SCROLLBARS ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--paper-mid); }
+::-webkit-scrollbar-thumb { background: var(--paper-rim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-soft); }
+
+/* ── PRINT ── */
+@media print {
+  .site-header, .tabs, .sidebar, .table-toolbar, .tree-toolbar,
+  .card-actions, #toast, .sidebar-toggle, .sidebar-backdrop { display: none !important; }
+  .main-wrap { display: block; }
+  .panel { display: block !important; }
+  .detail-view { display: block; }
+  html, body { height: auto; overflow: visible; }
+}
+
+/* ── HELPERS ── */
+.flex-gap { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+.mt-sm { margin-top: .5rem; }
+.empty-msg { color: var(--ink-dim); font-size: .82rem; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR BACKDROP (mobile) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">&#9776;</button>
+  <h1><span style="font-family:'Noto Serif CJK TC','Source Han Serif',serif;font-size:1.3rem;color:var(--gold);margin-right:.35rem;line-height:1">呂</span>Gia Phả Họ Lã</h1>
+  <span class="header-sub">Gia phả người Việt</span>
+  <div class="header-actions">
+    <button class="btn btn-gold" onclick="exportCSV()">⬇ <span class="btn-label">Xuất CSV</span></button>
+    <label class="btn btn-green" style="cursor:pointer">⬆ <span class="btn-label">Nhập CSV</span><input type="file" accept=".csv" style="display:none" onchange="importCSV(event)"></label>
+    <button class="btn btn-gold" onclick="exportReport()">📄 <span class="btn-label">Báo cáo</span></button>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('detail',this)">👤 Chi tiết</button>
+  <button class="tab" onclick="switchTab('table',this)">📋 Danh sách</button>
+  <button class="tab" onclick="switchTab('tree',this)">🌳 Phả đồ</button>
+  <button class="tab" onclick="switchTab('stats',this)">📊 Thống kê</button>
+  <button class="tab" onclick="switchTab('add',this)">➕ Thêm thành viên</button>
+</nav>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-filters">
+      <label>Tìm kiếm</label>
+      <input id="searchBox" type="text" placeholder="Tên, vợ/chồng, phòng…" oninput="applyFilters()">
+      <label>Đời</label>
+      <select id="filterGen" onchange="applyFilters()">
+        <option value="">Tất cả đời</option>
+      </select>
+      <label>Phòng</label>
+      <select id="filterBranch" onchange="applyFilters()">
+        <option value="">Tất cả phòng</option>
+      </select>
+      <label>Giới tính</label>
+      <select id="filterSex" onchange="applyFilters()">
+        <option value="">Tất cả</option>
+        <option value="M">Nam (M)</option>
+        <option value="F">Nữ (F)</option>
+      </select>
+    </div>
+    <div class="member-count" id="memberCount">Đang tải…</div>
+    <div class="member-list" id="memberList"></div>
+  </aside>
+
+  <!-- DETAIL PANEL -->
+  <section class="panel active" id="panel-detail">
+    <div class="detail-view">
+      <div class="detail-main" id="detailMain">
+        <div class="no-selection">
+          <div class="big-char">姓</div>
+          <div>Chọn một thành viên để xem chi tiết.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLE PANEL -->
+  <section class="panel" id="panel-table">
+    <div class="table-toolbar">
+      <span style="font-size:.8rem;color:var(--ink-dim)">Hiển thị <strong id="tableCount">0</strong> thành viên</span>
+      <div style="margin-left:auto;display:flex;gap:.4rem">
+        <button class="btn btn-gold" onclick="exportCSV()">⬇ Xuất CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TREE PANEL -->
+  <section class="panel" id="panel-tree">
+    <div class="tree-toolbar">
+      <label style="font-size:.75rem;font-weight:700;color:var(--ink-dim);font-family:var(--mono)">Người gốc:</label>
+      <select id="treeRootSelect" style="font-size:.82rem;padding:.3rem .5rem;border:1px solid var(--paper-rim);border-radius:var(--radius);background:var(--paper);color:var(--ink);min-height:36px" onchange="buildTree()">
+        <option value="">— Chọn người gốc —</option>
+      </select>
+      <label style="font-size:.75rem;font-weight:700;color:var(--ink-dim);font-family:var(--mono);margin-left:.5rem">Số đời:</label>
+      <select id="treeDepth" style="font-size:.82rem;padding:.3rem .5rem;border:1px solid var(--paper-rim);border-radius:var(--radius);background:var(--paper);color:var(--ink);min-height:36px" onchange="buildTree()">
+        <option value="3">3</option>
+        <option value="4" selected>4</option>
+        <option value="5">5</option>
+        <option value="10">All</option>
+      </select>
+    </div>
+    <div id="treeCanvas">
+      <div style="color:var(--ink-dim);font-size:.88rem;padding:2rem">Chọn người gốc ở trên để hiển thị phả đồ.</div>
+    </div>
+  </section>
+
+  <!-- STATS PANEL -->
+  <section class="panel" id="panel-stats">
+    <div class="stats-wrap" id="statsWrap"></div>
+  </section>
+
+  <!-- ADD/EDIT PANEL -->
+  <section class="panel" id="panel-add">
+    <div class="form-wrap">
+      <div class="form-heading">
+        <span id="formTitle">➕ Thêm thành viên mới</span>
+        <button class="btn btn-gold" onclick="cancelEdit()" id="cancelEditBtn" style="display:none">✕ Hủy chỉnh sửa</button>
+      </div>
+      <div class="form-grid">
+        <input type="hidden" id="editId">
+        <div class="form-group full">
+          <label>Họ và tên *</label>
+          <input id="f-full_name" placeholder="vd. Lã Văn An" required>
+        </div>
+        <div class="form-group">
+          <label>Họ</label>
+          <input id="f-surname" placeholder="Lã">
+        </div>
+        <div class="form-group">
+          <label>Tên đệm</label>
+          <input id="f-middle_name" placeholder="Văn">
+        </div>
+        <div class="form-group">
+          <label>Tên</label>
+          <input id="f-first_name" placeholder="An">
+        </div>
+        <div class="form-group">
+          <label>Giới tính</label>
+          <select id="f-sex">
+            <option value="">Không rõ</option>
+            <option value="M">Nam (M)</option>
+            <option value="F">Nữ (F)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Đời (số)</label>
+          <input id="f-generation" type="number" min="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Phòng</label>
+          <input id="f-branch" placeholder="Giáp Phòng Tiên Tổ">
+        </div>
+        <div class="form-group">
+          <label>Tước hiệu</label>
+          <input id="f-title" placeholder="Thượng đẳng">
+        </div>
+        <div class="form-group">
+          <label>Quan hệ</label>
+          <select id="f-relationship">
+            <option value="Blood">Huyết thống</option>
+            <option value="Adopted">Con nuôi</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tình trạng</label>
+          <select id="f-status">
+            <option value="">Không rõ</option>
+            <option value="Married">Đã lập gia đình</option>
+            <option value="Single">Độc thân</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ngày sinh</label>
+          <input id="f-dob" type="text" placeholder="YYYY-MM-DD">
+        </div>
+        <div class="form-group">
+          <label>Ngày mất</label>
+          <input id="f-dod" type="text" placeholder="YYYY hoặc YYYY-MM-DD hoặc Không rõ">
+        </div>
+        <div class="form-group">
+          <label>Cha (Họ và tên)</label>
+          <input id="f-father" placeholder="Họ và tên của cha">
+        </div>
+        <div class="form-group">
+          <label>Mẹ (Họ và tên)</label>
+          <input id="f-mother" placeholder="Họ và tên của mẹ">
+        </div>
+        <div class="form-group">
+          <label>Vợ / Chồng</label>
+          <input id="f-spouse" placeholder="Tên vợ/chồng">
+        </div>
+        <div class="form-group">
+          <label>Ngày sinh vợ/chồng</label>
+          <input id="f-spouse_dob" type="text" placeholder="YYYY-MM-DD">
+        </div>
+        <div class="form-group full">
+          <label>Địa chỉ 1</label>
+          <input id="f-address" placeholder="Số nhà, tên đường">
+        </div>
+        <div class="form-group full">
+          <label>Địa chỉ 2 (Thành phố / Tỉnh)</label>
+          <input id="f-address2" placeholder="Thành phố, Tỉnh">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="saveMember()">💾 Lưu thành viên</button>
+        <button class="btn btn-red" onclick="clearForm()">✕ Xóa form</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end main-wrap -->
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-header">
+      Confirm Delete
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmMsg">Bạn có chắc muốn xóa thành viên này không?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-red btn-solid" onclick="confirmDelete()">Xóa</button>
+      <button class="btn" onclick="closeModal()">Hủy</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA — embedded from La_s_family_tree.xlsx
+// ═══════════════════════════════════════════════════════════
+const SEED_DATA = [{"id":1,"generation":0,"branch":"Giáp Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Toàn","surname":"Lã","middle_name":"Phước","first_name":"Toàn","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Đoan Trang","spouse_dob":""},{"id":2,"generation":0,"branch":"Giáp Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Cao","surname":"Lã","middle_name":"Phước","first_name":"Cao","sex":"M","dob":"2018-03-28","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Lý","spouse_dob":"2018-07-07"},{"id":3,"generation":0,"branch":"Giáp Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Thung","surname":"Lã","middle_name":"Phước","first_name":"Thung","sex":"M","dob":"2018-06-20","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Từ Đa","spouse_dob":"2018-12-22"},{"id":4,"generation":1,"branch":"Giáp Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Lãnh","surname":"Lã","middle_name":"Phước","first_name":"Lãnh","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Phước Toàn","mother":"Đoan Trang","spouse":"Từ Chất","spouse_dob":""},{"id":5,"generation":1,"branch":"Giáp Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Xuân","surname":"Lã","middle_name":"Phước","first_name":"Xuân","sex":"M","dob":"2018-11-28","dod":"","status":"","address":"","address2":"","father":"Lã Phước Toàn","mother":"Đoan Trang","spouse":"Từ Hòa","spouse_dob":"2018-10-26"},{"id":6,"generation":1,"branch":"Ất Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Hiền","surname":"Lã","middle_name":"Phước","first_name":"Hiền","sex":"M","dob":"2018-10-13","dod":"","status":"Married","address":"","address2":"","father":"Lã Phước Toàn","mother":"Đoan Trang","spouse":"","spouse_dob":""},{"id":7,"generation":1,"branch":"Bính Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Thiện","surname":"Lã","middle_name":"Phước","first_name":"Thiện","sex":"M","dob":"2018-11-24","dod":"","status":"Married","address":"","address2":"","father":"Lã Phước Toàn","mother":"Đoan Trang","spouse":"","spouse_dob":""},{"id":8,"generation":1,"branch":"Đinh Phòng Tiên Tổ","title":"Thượng đẳng","relationship":"Blood","full_name":"Lã Phước Quảng","surname":"Lã","middle_name":"Phước","first_name":"Quảng","sex":"M","dob":"2018-12-09","dod":"","status":"","address":"","address2":"","father":"Lã Phước Toàn","mother":"Đoan Trang","spouse":"Từ Phước","spouse_dob":"2018-05-18"},{"id":9,"generation":2,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Thưởng","surname":"Lã","middle_name":"Đình","first_name":"Thưởng","sex":"M","dob":"2018-08-07","dod":"","status":"","address":"","address2":"","father":"Lã Phước Xuân","mother":"Từ Hòa","spouse":"Thiện Quý","spouse_dob":"2018-01-11"},{"id":10,"generation":3,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Dụng","surname":"Lã","middle_name":"Đình","first_name":"Dụng","sex":"M","dob":"2018-11-02","dod":"","status":"","address":"","address2":"","father":"Lã Đình Thưởng","mother":"Thiện Quý","spouse":"Từ Vy","spouse_dob":"2018-04-02"},{"id":11,"generation":3,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Thay","surname":"Lã","middle_name":"Thị","first_name":"Thay","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Thưởng","mother":"Thiện Quý","spouse":"","spouse_dob":""},{"id":12,"generation":4,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Đẩu","surname":"Lã","middle_name":"Đình","first_name":"Đẩu","sex":"M","dob":"2018-03-07","dod":"","status":"","address":"","address2":"","father":"Lã Đình Dụng","mother":"Từ Vy","spouse":"Từ Phẩn","spouse_dob":""},{"id":13,"generation":4,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Mưu","surname":"Lã","middle_name":"Đình","first_name":"Mưu","sex":"M","dob":"2018-02-11","dod":"","status":"","address":"","address2":"","father":"Lã Đình Dụng","mother":"Từ Vy","spouse":"Từ Du","spouse_dob":"2018-12-16"},{"id":14,"generation":4,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Mưu","surname":"Lã","middle_name":"Đình","first_name":"Mưu","sex":"M","dob":"2018-02-11","dod":"","status":"","address":"","address2":"","father":"Lã Đình Dụng","mother":"Từ Vy","spouse":"Từ Chơn","spouse_dob":"2018-07-07"},{"id":15,"generation":4,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Lanh","surname":"Lã","middle_name":"Thị","first_name":"Lanh","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Dụng","mother":"Từ Vy","spouse":"","spouse_dob":""},{"id":16,"generation":4,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Cháy","surname":"Lã","middle_name":"Thị","first_name":"Cháy","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Dụng","mother":"Từ Vy","spouse":"","spouse_dob":""},{"id":17,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Chiêu","surname":"Lã","middle_name":"Đình","first_name":"Chiêu","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"Diệu Thanh","spouse_dob":"2018-10-07"},{"id":18,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Huống","surname":"Lã","middle_name":"Văn","first_name":"Huống","sex":"M","dob":"2018-06-06","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"Trần Thị Xuyến","spouse_dob":"2018-05-01"},{"id":19,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Huống","surname":"Lã","middle_name":"Văn","first_name":"Huống","sex":"M","dob":"2018-06-06","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"Trà Thị Ý","spouse_dob":"2018-08-13"},{"id":20,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Huống","surname":"Lã","middle_name":"Văn","first_name":"Huống","sex":"M","dob":"2018-06-06","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"Đinh Thị Khải","spouse_dob":""},{"id":21,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Trong","surname":"Lã","middle_name":"Văn","first_name":"Trong","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"","spouse_dob":""},{"id":22,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Môi","surname":"Lã","middle_name":"Thị","first_name":"Môi","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Mưu","mother":"Từ Du","spouse":"Trần Văn Khải","spouse_dob":""},{"id":23,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Thôi","surname":"Lã","middle_name":"Thị","first_name":"Thôi","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Mưu","mother":"Từ Du","spouse":"Nguyễn Văn Ta","spouse_dob":""},{"id":24,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Béo","surname":"Lã","middle_name":"Thị","first_name":"Béo","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Mưu","mother":"Từ Du","spouse":"","spouse_dob":""},{"id":25,"generation":5,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Lạnh","surname":"Lã","middle_name":"Thị","first_name":"Lạnh","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Đẩu","mother":"Từ Phẩn","spouse":"","spouse_dob":""},{"id":26,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Tựu","surname":"Lã","middle_name":"Văn","first_name":"Tựu","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Chiêu","mother":"Diệu Thanh","spouse":"","spouse_dob":""},{"id":27,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Nhàn (Giàn)","surname":"Lã","middle_name":"Thị","first_name":"Nhàn (Giàn)","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Chiêu","mother":"Diệu Thanh","spouse":"Nguyễn Văn Truyền","spouse_dob":""},{"id":28,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Vân","surname":"Lã","middle_name":"Thị","first_name":"Vân","sex":"F","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trần Thị Xuyến","spouse":"Trần Văn Tiệp","spouse_dob":""},{"id":29,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Mai","surname":"Lã","middle_name":"Xuân","first_name":"Mai","sex":"M","dob":"1948-02-17","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trần Thị Xuyến","spouse":"Trần Thị Thất","spouse_dob":"1950-07-25"},{"id":30,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Tòng","surname":"Lã","middle_name":"Xuân","first_name":"Tòng","sex":"M","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trần Thị Xuyến","spouse":"Lê Thị Ký","spouse_dob":""},{"id":31,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Tứ","surname":"Lã","middle_name":"Xuân","first_name":"Tứ","sex":"M","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trần Thị Xuyến","spouse":"","spouse_dob":""},{"id":32,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Phúc","surname":"Lã","middle_name":"Xuân","first_name":"Phúc","sex":"M","dob":"2018-03-22","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trà Thị Ý","spouse":"Đoàn Thị Bé","spouse_dob":"1974-12-28"},{"id":33,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Phúc","surname":"Lã","middle_name":"Xuân","first_name":"Phúc","sex":"M","dob":"2018-03-22","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trà Thị Ý","spouse":"Lê Thị Tần","spouse_dob":""},{"id":34,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Nuôi","surname":"Lã","middle_name":"Thị","first_name":"Nuôi","sex":"F","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trà Thị Ý","spouse":"Trần Văn Duy","spouse_dob":""},{"id":35,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Tuyết","surname":"Lã","middle_name":"Thị","first_name":"Tuyết","sex":"F","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Trà Thị Ý","spouse":"","spouse_dob":""},{"id":36,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Adopted","full_name":"Lã Văn Dương","surname":"Lã","middle_name":"Văn","first_name":"Dương","sex":"M","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Đinh Thị Khải","spouse":"","spouse_dob":""},{"id":37,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Bằng","surname":"Lã","middle_name":"Thị","first_name":"Bằng","sex":"F","dob":"","dod":"","status":"","address":"27 Phố Đông Kiều","address2":"Hải Dương","father":"Lã Văn Huống","mother":"Đinh Thị Khải","spouse":"Chinese","spouse_dob":""},{"id":38,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Trọng","surname":"Lã","middle_name":"Văn","first_name":"Trọng","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Văn Huống","mother":"Đinh Thị Khải","spouse":"","spouse_dob":""},{"id":39,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Tài","surname":"Lã","middle_name":"Đình","first_name":"Tài","sex":"M","dob":"2018-02-17","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Thị Ngọc","spouse_dob":""},{"id":40,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Tài","surname":"Lã","middle_name":"Đình","first_name":"Tài","sex":"M","dob":"2018-02-17","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Lê Thị Huy Nghiêm","spouse_dob":""},{"id":41,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Tài","surname":"Lã","middle_name":"Đình","first_name":"Tài","sex":"M","dob":"2018-02-17","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Nguyễn Thị Hoa","spouse_dob":""},{"id":42,"generation":6,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Tài","surname":"Lã","middle_name":"Đình","first_name":"Tài","sex":"M","dob":"2018-02-17","dod":"","status":"","address":"","address2":"","father":"","mother":"","spouse":"Nguyễn Thị Huy An","spouse_dob":""},{"id":43,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Cu","surname":"Lã","middle_name":"Xuân","first_name":"Cu","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Thị Ngọc","spouse":"","spouse_dob":""},{"id":44,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Duyến","surname":"Lã","middle_name":"Thị","first_name":"Duyến","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Thị Ngọc","spouse":"","spouse_dob":""},{"id":45,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Dót","surname":"Lã","middle_name":"Văn","first_name":"Dót","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Lê Thị Huy Nghiêm","spouse":"","spouse_dob":""},{"id":46,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Vy","surname":"Lã","middle_name":"Văn","first_name":"Vy","sex":"M","dob":"1929-11-12","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Lê Thị Huy Nghiêm","spouse":"Trần Thị Thanh","spouse_dob":""},{"id":47,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Vy","surname":"Lã","middle_name":"Văn","first_name":"Vy","sex":"M","dob":"1929-11-12","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Lê Thị Huy Nghiêm","spouse":"Trần Thị Ấu","spouse_dob":""},{"id":48,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Đông","surname":"Lã","middle_name":"Thị","first_name":"Đông","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Nguyễn Thị Hoa","spouse":"Trần Đình Luyến","spouse_dob":""},{"id":49,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Điềm","surname":"Lã","middle_name":"Thị","first_name":"Điềm","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Nguyễn Thị Hoa","spouse":"Lê Xuân Lùng","spouse_dob":""},{"id":50,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Phượng","surname":"Lã","middle_name":"Thị","first_name":"Phượng","sex":"F","dob":"","dod":"","status":"","address":"Làng Hai, Gia Lộc","address2":"Hải Dương","father":"Lã Đình Tài","mother":"Nguyễn Thị Huy An","spouse":"Trần Văn Thiệu","spouse_dob":""},{"id":51,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Long","surname":"Lã","middle_name":"Văn","first_name":"Long","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Tài","mother":"Nguyễn Thị Huy An","spouse":"","spouse_dob":""},{"id":52,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Tiêu","surname":"Lã","middle_name":"Xuân","first_name":"Tiêu","sex":"M","dob":"20dec1897","dod":"1949","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"Trần Thị Tý","spouse_dob":"12aug1899"},{"id":53,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Kha","surname":"Lã","middle_name":"Xuân","first_name":"Kha","sex":"M","dob":"1901-03-20","dod":"1947","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"Lâm Thị Ngò","spouse_dob":"1903-03-29"},{"id":54,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Bính","surname":"Lã","middle_name":"Xuân","first_name":"Bính","sex":"M","dob":"1906-06-01","dod":"1970","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"Lưu Thị An","spouse_dob":"1912-12-23"},{"id":55,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Bông","surname":"Lã","middle_name":"Thị","first_name":"Bông","sex":"F","dob":"2018-10-14","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"","spouse_dob":""},{"id":56,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Nở","surname":"Lã","middle_name":"Thị","first_name":"Nở","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"","spouse_dob":""},{"id":57,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Huế","surname":"Lã","middle_name":"Thị","first_name":"Huế","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"","spouse_dob":""},{"id":58,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Cách","surname":"Lã","middle_name":"Xuân","first_name":"Cách","sex":"M","dob":"2018-02-11","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Mai","mother":"Trần Thị Thất","spouse":"","spouse_dob":""},{"id":59,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Quyến","surname":"Lã","middle_name":"Xuân","first_name":"Quyến","sex":"M","dob":"1910-02-19","dod":"1980","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Lê Thị Tần","spouse":"Lê Thị Nhung","spouse_dob":"2018-07-17"},{"id":60,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Quyến","surname":"Lã","middle_name":"Xuân","first_name":"Quyến","sex":"M","dob":"1910-02-19","dod":"1980","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Lê Thị Tần","spouse":"Nguyễn Thị Châu","spouse_dob":""},{"id":61,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Quý","surname":"Lã","middle_name":"Thị","first_name":"Quý","sex":"F","dob":"","dod":"","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Lê Thị Tần","spouse":"","spouse_dob":""},{"id":62,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Mùi","surname":"Lã","middle_name":"Thị","first_name":"Mùi","sex":"F","dob":"2018-01-14","dod":"","status":"Single","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Lê Thị Tần","spouse":"","spouse_dob":""},{"id":63,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Canh","surname":"Lã","middle_name":"Thị","first_name":"Canh","sex":"F","dob":"","dod":"","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Lê Thị Tần","spouse":"","spouse_dob":""},{"id":64,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Hiền","surname":"Lã","middle_name":"Thị","first_name":"Hiền","sex":"F","dob":"","dod":"","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Đoàn Thị Bé","spouse":"","spouse_dob":""},{"id":65,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Tuyển","surname":"Lã","middle_name":"Xuân","first_name":"Tuyển","sex":"M","dob":"1924-02-17","dod":"1952","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Đoàn Thị Bé","spouse":"","spouse_dob":""},{"id":66,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Bê","surname":"Lã","middle_name":"Thị","first_name":"Bê","sex":"F","dob":"","dod":"","status":"","address":"27 Bắc Kinh (Đông Kiều)","address2":"Hải Dương","father":"Lã Xuân Phúc","mother":"Đoàn Thị Bé","spouse":"Lưu Hồng Trường","spouse_dob":""},{"id":67,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Nghĩa","surname":"Lã","middle_name":"Văn","first_name":"Nghĩa","sex":"M","dob":"1923","dod":"","status":"Married","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Vương Thị Nhạn","spouse_dob":"2018-08-30"},{"id":68,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Nghĩa","surname":"Lã","middle_name":"Văn","first_name":"Nghĩa","sex":"M","dob":"1923","dod":"","status":"Married","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Đoàn Thị Nguyệt","spouse_dob":"2018-10-30"},{"id":69,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Nghĩa","surname":"Lã","middle_name":"Văn","first_name":"Nghĩa","sex":"M","dob":"1923","dod":"","status":"Married","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Nguyễn Thị Cam","spouse_dob":""},{"id":70,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Nghĩa","surname":"Lã","middle_name":"Văn","first_name":"Nghĩa","sex":"M","dob":"1923","dod":"","status":"Married","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Đào Thị Thoa","spouse_dob":""},{"id":71,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Thu","surname":"Lã","middle_name":"Thị","first_name":"Thu","sex":"F","dob":"1925","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"","spouse_dob":""},{"id":72,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Quỳnh","surname":"Lã","middle_name":"Trọng","first_name":"Quỳnh","sex":"M","dob":"1930","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Nguyễn Thị Ký","spouse_dob":"1929"},{"id":73,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Tuất","surname":"Lã","middle_name":"Thị","first_name":"Tuất","sex":"F","dob":"1935","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"","spouse_dob":""},{"id":74,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Khoa","surname":"Lã","middle_name":"Trọng","first_name":"Khoa","sex":"M","dob":"1938","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Trần Thị Khanh","spouse_dob":""},{"id":75,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Tâm","surname":"Lã","middle_name":"Thị","first_name":"Tâm","sex":"F","dob":"1942","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"","spouse_dob":""},{"id":76,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trung Hậu","surname":"Lã","middle_name":"Trung","first_name":"Hậu","sex":"M","dob":"1943","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Ấu","spouse":"Nguyễn Thị Voòng","spouse_dob":"1951"},{"id":77,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Oanh","surname":"Lã","middle_name":"Trọng","first_name":"Oanh","sex":"M","dob":"1934","dod":"","status":"","address":"","address2":"Hải Dương","father":"Lã Xuân Cu","mother":"Trần Thị Thanh","spouse":"Trần Thị Thảo","spouse_dob":""},{"id":78,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Tuynh","surname":"Lã","middle_name":"Trọng","first_name":"Tuynh","sex":"M","dob":"1943","dod":"","status":"","address":"","address2":"Hải Dương","father":"Lã Xuân Cu","mother":"Trần Thị Thanh","spouse":"Nguyễn Thị Cúc","spouse_dob":""},{"id":79,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trung Hiền","surname":"Lã","middle_name":"Trung","first_name":"Hiền","sex":"M","dob":"1947","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Thanh","spouse":"","spouse_dob":""},{"id":80,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Hải","surname":"Lã","middle_name":"Thị","first_name":"Hải","sex":"F","dob":"1951","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Cu","mother":"Trần Thị Thanh","spouse":"","spouse_dob":""},{"id":81,"generation":7,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Adopted","full_name":"Lã Văn Long","surname":"Lã","middle_name":"Văn","first_name":"Long","sex":"M","dob":"2018-02-03","dod":"","status":"","address":"","address2":"","father":"Lã Văn Tựu","mother":"","spouse":"Lê Thị Vy","spouse_dob":"2018-08-02"},{"id":82,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Lia","surname":"Lã","middle_name":"Thị","first_name":"Lia","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Văn Long","mother":"Lê Thị Vy","spouse":"","spouse_dob":""},{"id":83,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Lân","surname":"Lã","middle_name":"Xuân","first_name":"Lân","sex":"M","dob":"1914","dod":"","status":"Married","address":"49 Tăng Bạt Hổ","address2":"Qui Nhơn","father":"Lã Văn Long","mother":"Lê Thị Vy","spouse":"Nguyễn Thị Tý","spouse_dob":"1918"},{"id":84,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Ni","surname":"Lã","middle_name":"Thị","first_name":"Ni","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Văn Long","mother":"Lê Thị Vy","spouse":"","spouse_dob":""},{"id":85,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Thìn","surname":"Lã","middle_name":"Xuân","first_name":"Thìn","sex":"M","dob":"1927","dod":"","status":"Married","address":"Hai Bà Trưng","address2":"Qui Nhơn","father":"Lã Văn Long","mother":"Lê Thị Vy","spouse":"Trần Thị Hưng","spouse_dob":""},{"id":86,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Tháp","surname":"Lã","middle_name":"Xuân","first_name":"Tháp","sex":"M","dob":"1920","dod":"","status":"Married","address":"An Dật, Hồng Khê, Cẩm Bình","address2":"Hải Dương","father":"Lã Xuân Tiêu","mother":"Trần Thị Tý","spouse":"","spouse_dob":""},{"id":87,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Gái","surname":"Lã","middle_name":"Thị","first_name":"Gái","sex":"F","dob":"","dod":"","status":"","address":"An Dật, Hồng Khê, Cẩm Bình","address2":"Hải Dương","father":"Lã Xuân Tiêu","mother":"Trần Thị Tý","spouse":"","spouse_dob":""},{"id":88,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Thơm","surname":"Lã","middle_name":"Xuân","first_name":"Thơm","sex":"M","dob":"1928","dod":"","status":"Married","address":"3 Mạc Đỉnh Chi","address2":"Đà Nẵng","father":"Lã Xuân Kha","mother":"Lâm Thị Ngò","spouse":"","spouse_dob":""},{"id":89,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Quật","surname":"Lã","middle_name":"Xuân","first_name":"Quật","sex":"M","dob":"1930","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Kha","mother":"Lâm Thị Ngò","spouse":"","spouse_dob":""},{"id":90,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Quảng","surname":"Lã","middle_name":"Thị","first_name":"Quảng","sex":"F","dob":"1934","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Bính","mother":"Lưu Thị An","spouse":"","spouse_dob":""},{"id":91,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Giai","surname":"Lã","middle_name":"Xuân","first_name":"Giai","sex":"M","dob":"1936-11-27","dod":"1984","status":"Married","address":"419 Cống Quỳnh","address2":"Hồ Chí Minh","father":"Lã Xuân Bính","mother":"Lưu Thị An","spouse":"","spouse_dob":""},{"id":92,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Lại","surname":"Lã","middle_name":"Thị","first_name":"Lại","sex":"F","dob":"1938","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Bính","mother":"Lưu Thị An","spouse":"","spouse_dob":""},{"id":93,"generation":8,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Đào","surname":"Lã","middle_name":"Thị","first_name":"Đào","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Xuân Bính","mother":"Lưu Thị An","spouse":"","spouse_dob":""},{"id":94,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Đức","surname":"Lã","middle_name":"Trọng","first_name":"Đức","sex":"M","dob":"1941","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Vương Thị Nhạn","spouse":"","spouse_dob":""},{"id":95,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Hòa","surname":"Lã","middle_name":"Trọng","first_name":"Hòa","sex":"","dob":"1943","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Vương Thị Nhạn","spouse":"","spouse_dob":""},{"id":96,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Bích Nga","surname":"Lã","middle_name":"Thị Bích","first_name":"Nga","sex":"F","dob":"1950","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":97,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Lê","surname":"Lã","middle_name":"Thị","first_name":"Lê","sex":"F","dob":"1947","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":98,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Nhung","surname":"Lã","middle_name":"Thị","first_name":"Nhung","sex":"F","dob":"1955","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":99,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Kim Thoa","surname":"Lã","middle_name":"Thị Kim","first_name":"Thoa","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":100,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Thu Cúc","surname":"Lã","middle_name":"Thị Thu","first_name":"Cúc","sex":"F","dob":"1959","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":101,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Hùng","surname":"Lã","middle_name":"Trọng","first_name":"Hùng","sex":"M","dob":"1962","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":102,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Cường","surname":"Lã","middle_name":"Trọng","first_name":"Cường","sex":"M","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":103,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Phú","surname":"Lã","middle_name":"Trọng","first_name":"Phú","sex":"M","dob":"1963","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":104,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Trọng Dục","surname":"Lã","middle_name":"Trọng","first_name":"Dục","sex":"M","dob":"1965","dod":"","status":"","address":"","address2":"","father":"Lã Văn Nghĩa","mother":"Đoàn Thị Nguyệt","spouse":"","spouse_dob":""},{"id":158,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Liên Hạnh","surname":"Lã","middle_name":"Xuân Liên","first_name":"Hạnh","sex":"F","dob":"1962","dod":"","status":"","address":"419 Cống Quỳnh","address2":"Hồ Chí Minh","father":"Lã Xuân Giai","mother":"Đinh Thị Bích Liên","spouse":"","spouse_dob":""},{"id":159,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Vũ","surname":"Lã","middle_name":"Xuân","first_name":"Vũ","sex":"M","dob":"1965","dod":"","status":"","address":"419 Cống Quỳnh","address2":"Hồ Chí Minh","father":"Lã Xuân Giai","mother":"Đinh Thị Bích Liên","spouse":"","spouse_dob":""},{"id":160,"generation":9,"branch":"Giáp Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Xuân Phong","surname":"Lã","middle_name":"Xuân","first_name":"Phong","sex":"M","dob":"1967","dod":"","status":"","address":"419 Cống Quỳnh","address2":"Hồ Chí Minh","father":"Lã Xuân Giai","mother":"Đinh Thị Bích Liên","spouse":"","spouse_dob":""},{"id":162,"generation":2,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Phấn","surname":"Lã","middle_name":"Đình","first_name":"Phấn","sex":"M","dob":"2018-02-26","dod":"","status":"Married","address":"","address2":"","father":"Lã Phước Hiền","mother":"Từ Ái","spouse":"","spouse_dob":""},{"id":163,"generation":3,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Thuyên","surname":"Lã","middle_name":"Đình","first_name":"Thuyên","sex":"M","dob":"2018-06-26","dod":"","status":"","address":"","address2":"","father":"Lã Đình Phấn","mother":"Từ Nghĩa","spouse":"","spouse_dob":""},{"id":164,"generation":3,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Qũy","surname":"Lã","middle_name":"Thị","first_name":"Qũy","sex":"F","dob":"","dod":"","status":"","address":"","address2":"","father":"Lã Đình Phấn","mother":"Từ Nghĩa","spouse":"","spouse_dob":""},{"id":165,"generation":3,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Thị Mỹ","surname":"Lã","middle_name":"Thị","first_name":"Mỹ","sex":"F","dob":"","dod":"","status":"Married","address":"","address2":"","father":"Lã Đình Phấn","mother":"Từ Nghĩa","spouse":"","spouse_dob":""},{"id":177,"generation":3,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Biển","surname":"Lã","middle_name":"Văn","first_name":"Biển","sex":"M","dob":"","dod":"","status":"Married","address":"","address2":"","father":"","mother":"","spouse":"","spouse_dob":""},{"id":182,"generation":3,"branch":"Ất Phòng Biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Cốc","surname":"Lã","middle_name":"Văn","first_name":"Cốc","sex":"M","dob":"","dod":"","status":"Married","address":"","address2":"","father":"","mother":"","spouse":"","spouse_dob":""},{"id":189,"generation":2,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Đình Giản","surname":"Lã","middle_name":"Đình","first_name":"Giản","sex":"M","dob":"2018-07-04","dod":"","status":"Married","address":"","address2":"","father":"","mother":"","spouse":"","spouse_dob":""},{"id":335,"generation":2,"branch":"Đinh Phòng biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Lợi","surname":"Lã","middle_name":"Văn","first_name":"Lợi","sex":"","dob":"","dod":"Unknown","status":"Single","address":"","address2":"","father":"Lã Đình Kính","mother":"Đô Thị Thiểm","spouse":"","spouse_dob":""},{"id":336,"generation":2,"branch":"Đinh Phòng biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Pháp Chấn","surname":"Lã","middle_name":"Pháp","first_name":"Chấn","sex":"","dob":"","dod":"","status":"Married","address":"","address2":"","father":"Lã Đình Kính","mother":"Đô Thị Thiểm","spouse":"","spouse_dob":""},{"id":337,"generation":2,"branch":"Đinh Phòng biệt Tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Văn Biểu","surname":"Lã","middle_name":"Văn","first_name":"Biểu","sex":"","dob":"","dod":"","status":"Married","address":"","address2":"","father":"Lã Đình Kính","mother":"Đô Thị Thiểm","spouse":"","spouse_dob":""},{"id":329,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Quốc Cường","surname":"Lã","middle_name":"Quốc","first_name":"Cường","sex":"","dob":"1994-03-25","dod":"","status":"","address":"","address2":"","father":"Lã Quốc Khánh","mother":"Nguyễn Thị Anh Thương","spouse":"","spouse_dob":""},{"id":330,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Quốc Anh","surname":"Lã","middle_name":"Quốc","first_name":"Anh","sex":"","dob":"1997-09-02","dod":"","status":"","address":"","address2":"","father":"Lã Quốc Khánh","mother":"Nguyễn Thị Anh Thương","spouse":"","spouse_dob":""},{"id":331,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Tuấn Anh","surname":"Lã","middle_name":"Tuấn","first_name":"Anh","sex":"","dob":"1984-06-24","dod":"","status":"","address":"","address2":"","father":"Lã Duy Minh","mother":"Nguyễn Thị Thu Nga","spouse":"","spouse_dob":""},{"id":332,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Minh Anh","surname":"Lã","middle_name":"Minh","first_name":"Anh","sex":"","dob":"1988-02-14","dod":"","status":"","address":"","address2":"","father":"Lã Duy Minh","mother":"Nguyễn Thị Thu Nga","spouse":"","spouse_dob":""},{"id":333,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Việt Dũng","surname":"Lã","middle_name":"Việt","first_name":"Dũng","sex":"","dob":"1990-07-26","dod":"","status":"","address":"","address2":"","father":"Lã Việt Hùng","mother":"Lê Thị Kiều Trang","spouse":"","spouse_dob":""},{"id":334,"generation":8,"branch":"Bính Phòng biệt tổ","title":"Huy kỵ cung lục","relationship":"Blood","full_name":"Lã Việt Trung","surname":"Lã","middle_name":"Việt","first_name":"Trung","sex":"","dob":"2002-08-07","dod":"","status":"","address":"","address2":"","father":"Lã Việt Hùng","mother":"Lê Thị Kiều Trang","spouse":"","spouse_dob":""}];
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+let DB = [];
+let filtered = [];
+let selectedId = null;
+let deleteTargetId = null;
+let sortCol = 'full_name';
+let sortDir = 'asc';
+const BRANCH_COLORS = ['#9b2a2a','#2a5a8b','#2d6b3f','#b5842c','#7b3b6e','#4a7a8a','#6b4a2a','#3b5a3b'];
+
+// ── INIT ──
+function init() {
+  // Load from localStorage or seed
+  try {
+    const saved = localStorage.getItem('la_family_db');
+    DB = saved ? JSON.parse(saved) : [...SEED_DATA];
+  } catch(e) { DB = [...SEED_DATA]; }
+
+  populateFilters();
+  applyFilters();
+  buildStats();
+  populateTreeSelect();
+}
+
+function save() {
+  try { localStorage.setItem('la_family_db', JSON.stringify(DB)); } catch(e) {}
+}
+
+// ── FILTERS ──
+function populateFilters() {
+  const genSel = document.getElementById('filterGen');
+  const brSel  = document.getElementById('filterBranch');
+  const gens   = [...new Set(DB.map(m=>m.generation))].filter(g=>g!=='').sort((a,b)=>a-b);
+  const brs    = [...new Set(DB.map(m=>m.branch))].filter(Boolean).sort();
+  genSel.innerHTML = '<option value="">Tất cả đời</option>' + gens.map(g=>`<option value="${g}">Generation ${g}</option>`).join('');
+  brSel.innerHTML  = '<option value="">Tất cả phòng</option>'    + brs.map(b=>`<option value="${b}">${b}</option>`).join('');
+  populateTreeSelect();
+}
+
+function applyFilters() {
+  const q    = document.getElementById('searchBox').value.toLowerCase();
+  const gen  = document.getElementById('filterGen').value;
+  const br   = document.getElementById('filterBranch').value;
+  const sex  = document.getElementById('filterSex').value;
+
+  filtered = DB.filter(m => {
+    if (!m.full_name || !m.full_name.trim()) return false;
+    if (gen && String(m.generation) !== gen) return false;
+    if (br  && m.branch !== br) return false;
+    if (sex && m.sex !== sex) return false;
+    if (q) {
+      const hay = [m.full_name, m.branch, m.spouse, m.father, m.mother, m.address, m.address2].join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  renderList();
+  renderTable();
+  document.getElementById('memberCount').textContent = `${filtered.length} / ${DB.filter(m=>m.full_name&&m.full_name.trim()).length} thành viên`;
+}
+
+// ── SIDEBAR LIST ──
+function renderList() {
+  const ul = document.getElementById('memberList');
+  ul.innerHTML = filtered.map(m => `
+    <div class="member-item ${m.sex==='M'?'male':m.sex==='F'?'female':''} ${m.id===selectedId?'selected':''}"
+         onclick="selectMember(${m.id})">
+      <span class="m-name">${m.full_name}</span>
+      <span class="m-gen">G${m.generation}</span>
+    </div>`).join('');
+}
+
+// ── SELECT MEMBER ──
+function selectMember(id) {
+  selectedId = id;
+  renderList();
+  renderDetail(id);
+  // Also highlight in table
+  document.querySelectorAll('#tableBody tr').forEach(tr=>{
+    tr.classList.toggle('selected-row', +tr.dataset.id === id);
+  });
+  // Auto-close sidebar on mobile after selection
+  if (window.innerWidth < 900) closeSidebar();
+}
+
+// ── DETAIL ──
+function renderDetail(id) {
+  const m = DB.find(x=>x.id===id);
+  if (!m) return;
+  const el = document.getElementById('detailMain');
+
+  const sexClass = m.sex==='M'?'male':m.sex==='F'?'female':'unknown';
+  const sexIcon  = m.sex==='M'?'♂':m.sex==='F'?'♀':'?';
+  const children = DB.filter(c=>(c.father===m.full_name||c.mother===m.full_name)&&c.full_name&&c.full_name.trim());
+  const siblings  = DB.filter(s=>s.id!==m.id && s.full_name&&s.full_name.trim() &&
+    ((m.father && s.father===m.father)||(m.mother && s.mother===m.mother)));
+
+  const fatherRec = m.father ? DB.find(x=>x.full_name===m.father) : null;
+  const motherRec = m.mother ? DB.find(x=>x.full_name===m.mother) : null;
+
+  el.innerHTML = `
+  <div class="person-card">
+    <div class="card-header">
+      <div class="card-avatar ${sexClass}">${sexIcon}</div>
+      <div class="card-title">
+        <div class="card-full-name">${m.full_name||'—'}</div>
+        <div class="card-meta">
+          <span class="badge badge-gen">Đời ${m.generation}</span>
+          ${m.sex==='M'?'<span class="badge badge-male">Nam</span>':m.sex==='F'?'<span class="badge badge-female">Nữ</span>':''}
+          ${m.relationship?`<span class="badge badge-${m.relationship.toLowerCase()}">${m.relationship}</span>`:''}
+          ${m.status?`<span class="badge badge-status">${m.status}</span>`:''}
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-grid">
+        <div class="info-item"><label>Họ</label><span>${m.surname||'—'}</span></div>
+        <div class="info-item"><label>Tên</label><span>${m.first_name||'—'}</span></div>
+        <div class="info-item"><label>Ngày sinh</label><span>${m.dob||'—'}</span></div>
+        <div class="info-item"><label>Ngày mất</label><span>${m.dod||'—'}</span></div>
+        <div class="info-item"><label>Phòng</label><span>${m.branch||'—'}</span></div>
+        <div class="info-item"><label>Tước hiệu</label><span>${m.title||'—'}</span></div>
+        ${m.spouse?`<div class="info-item"><label>Vợ/chồng</label><span>${m.spouse}</span></div>
+        <div class="info-item"><label>Ngày sinh vợ/chồng</label><span>${m.spouse_dob||'—'}</span></div>`:''}
+        ${(m.address||m.address2)?`<div class="info-item full"><label>Địa chỉ</label><span>${[m.address,m.address2].filter(Boolean).join(', ')}</span></div>`:''}
+      </div>
+
+      <div class="section-heading">Cha mẹ</div>
+      <div>
+        ${m.father?`<span class="relation-chip ${fatherRec?'male-chip':''}" ${fatherRec?`onclick="selectMember(${fatherRec.id})"`:''}>
+          <span class="role">Father</span><span class="chip-name">${m.father}</span></span>`:'<span class="empty-msg">Không rõ cha</span>'}
+        ${m.mother?`<span class="relation-chip" ${motherRec?`onclick="selectMember(${motherRec.id})"`:''}>
+          <span class="role">Mother</span><span class="chip-name">${m.mother}</span></span>`:'<span class="empty-msg"> Không rõ mẹ</span>'}
+      </div>
+
+      ${children.length?`
+      <div class="section-heading">Con cái (${children.length})</div>
+      <div>${children.map(c=>`<span class="relation-chip ${c.sex==='M'?'male-chip':c.sex==='F'?'female-chip':''}" onclick="selectMember(${c.id})">
+        <span class="chip-name">${c.full_name}</span></span>`).join('')}</div>`:''}
+
+      ${siblings.length?`
+      <div class="section-heading">Anh chị em (${siblings.length})</div>
+      <div>${siblings.slice(0,12).map(s=>`<span class="relation-chip ${s.sex==='M'?'male-chip':s.sex==='F'?'female-chip':''}" onclick="selectMember(${s.id})">
+        <span class="chip-name">${s.full_name}</span></span>`).join('')}
+        ${siblings.length>12?`<span class="empty-msg"> +${siblings.length-12} người khác</span>`:''}
+      </div>`:''}
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-primary" onclick="editMember(${m.id})">✏️ Edit</button>
+      <button class="btn btn-red" onclick="askDelete(${m.id})">🗑 Delete</button>
+      <button class="btn btn-gold" onclick="showInTree(${m.id})">🌳 Show in Tree</button>
+    </div>
+  </div>`;
+}
+
+// ── TABLE ──
+const TABLE_COLS = [
+  {k:'full_name',l:'Họ và tên'},{k:'sex',l:'G.tính'},{k:'generation',l:'Đời'},{k:'branch',l:'Phòng'},
+  {k:'dob',l:'Ngày sinh'},{k:'dod',l:'Ngày mất'},{k:'father',l:'Cha'},{k:'mother',l:'Mẹ'},
+  {k:'spouse',l:'Vợ/chồng'},{k:'status',l:'Tình trạng'},{k:'address2',l:'Tỉnh/Thành'}
+];
+function renderTable() {
+  const thead = document.getElementById('tableHead');
+  const tbody = document.getElementById('tableBody');
+  thead.innerHTML = `<tr>${TABLE_COLS.map(c=>`<th onclick="sortTable('${c.k}')" class="${sortCol===c.k?'sorted-'+sortDir:''}">
+    ${c.l}<span class="sort-arrow"></span></th>`).join('')}</tr>`;
+  const sorted = [...filtered].sort((a,b)=>{
+    const av = String(a[sortCol]||'').toLowerCase();
+    const bv = String(b[sortCol]||'').toLowerCase();
+    return sortDir==='asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  tbody.innerHTML = sorted.map(m=>`
+    <tr data-id="${m.id}" onclick="selectMember(${m.id})" class="${m.id===selectedId?'selected-row':''}">
+      <td class="${m.sex==='M'?'male-name':m.sex==='F'?'female-name':''}">${m.full_name}</td>
+      <td>${m.sex||'?'}</td><td>${m.generation}</td><td>${m.branch||''}</td>
+      <td>${m.dob||''}</td><td>${m.dod||''}</td><td>${m.father||''}</td><td>${m.mother||''}</td>
+      <td>${m.spouse||''}</td><td>${m.status||''}</td><td>${m.address2||''}</td>
+    </tr>`).join('');
+  document.getElementById('tableCount').textContent = sorted.length;
+}
+function sortTable(col) {
+  if (sortCol===col) sortDir = sortDir==='asc'?'desc':'asc';
+  else { sortCol=col; sortDir='asc'; }
+  renderTable();
+}
+
+// ── TREE ──
+function populateTreeSelect() {
+  const sel = document.getElementById('treeRootSelect');
+  const valid = DB.filter(m=>m.full_name&&m.full_name.trim()).sort((a,b)=>a.generation-b.generation||a.full_name.localeCompare(b.full_name));
+  sel.innerHTML = '<option value="">— Chọn người gốc —</option>' +
+    valid.map(m=>`<option value="${m.id}">[G${m.generation}] ${m.full_name}</option>`).join('');
+}
+
+function buildTree() {
+  const rootId = +document.getElementById('treeRootSelect').value;
+  const maxDepth = +document.getElementById('treeDepth').value;
+  const canvas = document.getElementById('treeCanvas');
+  if (!rootId) { canvas.innerHTML='<div style="color:var(--ink-dim);padding:2rem">Chọn người gốc ở trên.</div>'; return; }
+  const root = DB.find(m=>m.id===rootId);
+  if (!root) return;
+  canvas.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'tree-root';
+  wrap.appendChild(renderTreeNode(root, 0, maxDepth));
+  canvas.appendChild(wrap);
+}
+
+function renderTreeNode(person, depth, maxDepth) {
+  const group = document.createElement('div');
+  group.className = 'tree-group';
+
+  // Vertical connector from parent
+  if (depth > 0) {
+    const vline = document.createElement('div');
+    vline.style.cssText = 'width:1px;height:20px;background:var(--paper-rim);margin:0 auto;';
+    group.appendChild(vline);
+  }
+
+  const box = document.createElement('div');
+  const sexC = person.sex==='M'?'male-box':person.sex==='F'?'female-box':'';
+  box.className = `tree-box ${sexC} ${person.id===selectedId?'selected-tree':''}`;
+  box.innerHTML = `<div class="tree-box-name">${person.full_name}</div>
+    <div class="tree-box-sub">G${person.generation}${person.dob?' · '+person.dob.slice(0,4):''}</div>`;
+  box.onclick = () => { selectMember(person.id); switchTab('detail', document.querySelector('.tab')); };
+  group.appendChild(box);
+
+  if (depth >= maxDepth) return group;
+
+  const children = DB.filter(c => c.full_name && c.full_name.trim() &&
+    (c.father === person.full_name || c.mother === person.full_name));
+  // Deduplicate children by id
+  const uniqueChildren = [...new Map(children.map(c=>[c.id,c])).values()];
+
+  if (uniqueChildren.length === 0) return group;
+
+  const hline = document.createElement('div');
+  hline.style.cssText = 'height:1px;background:var(--paper-rim);margin-top:16px;';
+  group.appendChild(hline);
+
+  const childRow = document.createElement('div');
+  childRow.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-top:0;';
+  uniqueChildren.forEach(child => {
+    childRow.appendChild(renderTreeNode(child, depth+1, maxDepth));
+  });
+  group.appendChild(childRow);
+  return group;
+}
+
+function showInTree(id) {
+  document.getElementById('treeRootSelect').value = id;
+  buildTree();
+  switchTab('tree', document.querySelectorAll('.tab')[2]);
+}
+
+// ── STATS ──
+function buildStats() {
+  const valid = DB.filter(m=>m.full_name&&m.full_name.trim());
+  const males   = valid.filter(m=>m.sex==='M').length;
+  const females = valid.filter(m=>m.sex==='F').length;
+  const withDob = valid.filter(m=>m.dob).length;
+  const deceased = valid.filter(m=>m.dod).length;
+  const married = valid.filter(m=>m.status==='Married').length;
+  const adopted = valid.filter(m=>m.relationship==='Adopted').length;
+  const withAddr = valid.filter(m=>m.address||m.address2).length;
+
+  const genCounts = {};
+  valid.forEach(m=>{ genCounts[m.generation]=(genCounts[m.generation]||0)+1; });
+  const maxGen = Math.max(...Object.values(genCounts));
+
+  const branchCounts = {};
+  valid.forEach(m=>{ if(m.branch) branchCounts[m.branch]=(branchCounts[m.branch]||0)+1; });
+
+  const branches = Object.entries(branchCounts).sort((a,b)=>b[1]-a[1]);
+
+  document.getElementById('statsWrap').innerHTML = `
+  <h2 style="font-family:var(--serif);font-size:1.5rem;margin-bottom:1.5rem;color:var(--ink)">Thống kê gia phả</h2>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="s-value">${valid.length}</div><div class="s-label">Total Members</div></div>
+    <div class="stat-card"><div class="s-value" style="color:var(--blue-m)">${males}</div><div class="s-label">Nam</div></div>
+    <div class="stat-card"><div class="s-value" style="color:var(--blue-f)">${females}</div><div class="s-label">Nữ</div></div>
+    <div class="stat-card"><div class="s-value" style="color:var(--green)">${Object.keys(genCounts).length}</div><div class="s-label">Số đời</div></div>
+    <div class="stat-card"><div class="s-value">${withDob}</div><div class="s-label">Có ngày sinh</div></div>
+    <div class="stat-card"><div class="s-value" style="color:var(--ink-dim)">${deceased}</div><div class="s-label">Đã mất</div></div>
+    <div class="stat-card"><div class="s-value" style="color:var(--gold)">${married}</div><div class="s-label">Đã lập gia đình</div></div>
+    <div class="stat-card"><div class="s-value">${adopted}</div><div class="s-label">Con nuôi</div></div>
+    <div class="stat-card"><div class="s-value">${withAddr}</div><div class="s-label">Có địa chỉ</div></div>
+    <div class="stat-card"><div class="s-value">${branches.length}</div><div class="s-label">Số phòng</div></div>
+  </div>
+
+  <div class="stats-section">
+    <h3>Thành viên theo đời</h3>
+    <div class="gen-bars">
+      ${Object.entries(genCounts).sort((a,b)=>+a[0]-+b[0]).map(([g,c])=>`
+      <div class="gen-bar-row" style="display:flex;align-items:center;gap:.75rem;margin-bottom:.35rem">
+        <div class="gen-bar-label">Đời ${g}</div>
+        <div class="gen-bar-track" style="flex:1;height:18px;background:var(--paper-mid);border-radius:3px;overflow:hidden">
+          <div class="gen-bar-fill" style="width:${Math.round(c/maxGen*100)}%;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:3px"></div>
+        </div>
+        <div class="gen-bar-count" style="font-size:.75rem;width:36px;text-align:right">${c}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <h3>Thành viên theo phòng</h3>
+    <div class="branch-list">
+      ${branches.map(([b,c],i)=>`
+      <div class="branch-row">
+        <div class="branch-dot" style="background:${BRANCH_COLORS[i%BRANCH_COLORS.length]}"></div>
+        <div style="flex:1">${b}</div>
+        <div style="font-weight:700;color:var(--red)">${c}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── FORM ──
+let editingId = null;
+function editMember(id) {
+  const m = DB.find(x=>x.id===id);
+  if (!m) return;
+  editingId = id;
+  const fields = ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2'];
+  fields.forEach(f=>{ const el=document.getElementById('f-'+f); if(el) el.value=m[f]||''; });
+  document.getElementById('formTitle').textContent = '✏️ Sửa: '+m.full_name;
+  document.getElementById('cancelEditBtn').style.display = '';
+  switchTab('add', document.querySelectorAll('.tab')[4]);
+}
+
+function cancelEdit() {
+  editingId = null;
+  clearForm();
+  document.getElementById('formTitle').textContent = '➕ Thêm thành viên mới';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+
+function saveMember() {
+  const get = id => (document.getElementById('f-'+id)||{}).value?.trim()||'';
+  const fullName = get('full_name');
+  if (!fullName) { toast('Vui lòng nhập họ và tên.','error'); return; }
+
+  const data = {
+    full_name:   fullName,
+    surname:     get('surname'),
+    middle_name: get('middle_name'),
+    first_name:  get('first_name'),
+    sex:         get('sex'),
+    generation:  +get('generation')||0,
+    branch:      get('branch'),
+    title:       get('title'),
+    relationship:get('relationship')||'Blood',
+    status:      get('status'),
+    dob:         get('dob'),
+    dod:         get('dod'),
+    father:      get('father'),
+    mother:      get('mother'),
+    spouse:      get('spouse'),
+    spouse_dob:  get('spouse_dob'),
+    address:     get('address'),
+    address2:    get('address2'),
+  };
+
+  if (editingId) {
+    const idx = DB.findIndex(m=>m.id===editingId);
+    if (idx>=0) { DB[idx]={...DB[idx],...data}; }
+    toast('Đã cập nhật thành viên.');
+    cancelEdit();
+  } else {
+    const newId = Math.max(0,...DB.map(m=>m.id))+1;
+    DB.push({id:newId,...data});
+    toast('Đã thêm thành viên mới.');
+    clearForm();
+  }
+
+  save();
+  populateFilters();
+  applyFilters();
+  buildStats();
+}
+
+function clearForm() {
+  ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2']
+    .forEach(f=>{ const el=document.getElementById('f-'+f); if(el) el.value=''; });
+}
+
+// ── DELETE ──
+function askDelete(id) {
+  deleteTargetId = id;
+  const m = DB.find(x=>x.id===id);
+  document.getElementById('confirmMsg').textContent = `Xóa "${m?.full_name||'thành viên này'}"? Hành động này không thể hoàn tác.`;
+  document.getElementById('confirmModal').classList.add('open');
+}
+function confirmDelete() {
+  if (!deleteTargetId) return;
+  DB = DB.filter(m=>m.id!==deleteTargetId);
+  save();
+  closeModal();
+  selectedId = null;
+  document.getElementById('detailMain').innerHTML = '<div class="no-selection"><div class="big-char">姓</div><div>Đã xóa thành viên.</div></div>';
+  populateFilters();
+  applyFilters();
+  buildStats();
+  toast('Đã xóa thành viên.');
+}
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+  deleteTargetId = null;
+}
+
+// ── EXPORT CSV ──
+function exportCSV() {
+  const cols = ['id','generation','branch','title','relationship','full_name','surname','middle_name','first_name','sex','dob','dod','status','father','mother','spouse','spouse_dob','address','address2'];
+  const header = cols.join(',');
+  const rows = DB.filter(m=>m.full_name&&m.full_name.trim()).map(m =>
+    cols.map(c=>'"'+(String(m[c]||'').replace(/"/g,'""'))+'"').join(',')
+  );
+  download('gia_pha_ho_la.csv', [header,...rows].join('\n'), 'text/csv');
+  toast('Đã xuất CSV.');
+}
+
+// ── IMPORT CSV ──
+function importCSV(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const lines = e.target.result.split('\n').map(l=>l.trim()).filter(Boolean);
+      const header = parseCSVRow(lines[0]);
+      const imported = lines.slice(1).map(l => {
+        const vals = parseCSVRow(l);
+        const obj = {};
+        header.forEach((h,i)=>obj[h.trim()]=(vals[i]||'').trim());
+        obj.generation = +obj.generation||0;
+        obj.id = +obj.id||0;
+        return obj;
+      }).filter(m=>m.full_name);
+      if (!imported.length) { toast('Không tìm thấy dòng hợp lệ.','error'); return; }
+      // Merge: update existing by id, add new
+      imported.forEach(imp => {
+        if (imp.id) {
+          const idx = DB.findIndex(m=>m.id===imp.id);
+          if (idx>=0) DB[idx]={...DB[idx],...imp};
+          else DB.push(imp);
+        } else {
+          imp.id = Math.max(0,...DB.map(m=>m.id))+1;
+          DB.push(imp);
+        }
+      });
+      save();
+      populateFilters();
+      applyFilters();
+      buildStats();
+      toast(`Đã nhập ${imported.length} bản ghi.`);
+    } catch(er) { toast('CSV parse error: '+er.message,'error'); }
+  };
+  reader.readAsText(file, 'UTF-8');
+  evt.target.value='';
+}
+
+function parseCSVRow(row) {
+  const result=[]; let cur=''; let inQ=false;
+  for(let i=0;i<row.length;i++){
+    const c=row[i];
+    if(c==='"'){ if(inQ&&row[i+1]==='"'){cur+='"';i++;} else inQ=!inQ; }
+    else if(c===','&&!inQ){ result.push(cur);cur=''; }
+    else cur+=c;
+  }
+  result.push(cur);
+  return result;
+}
+
+// ── EXPORT REPORT ──
+function exportReport() {
+  const valid = DB.filter(m=>m.full_name&&m.full_name.trim());
+  const genCounts = {};
+  valid.forEach(m=>{ genCounts[m.generation]=(genCounts[m.generation]||0)+1; });
+  const branchCounts = {};
+  valid.forEach(m=>{ if(m.branch) branchCounts[m.branch]=(branchCounts[m.branch]||0)+1; });
+
+  const rows = valid.sort((a,b)=>a.generation-b.generation||a.full_name.localeCompare(b.full_name));
+  let html = `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8">
+<title>Gia Phả Họ Lã — Báo cáo</title>
+<style>
+  body{font-family:'Times New Roman',serif;margin:2cm;color:#1a1410;font-size:10pt}
+  h1{font-size:22pt;text-align:center;color:#9b2a2a;margin-bottom:4px}
+  h2{font-size:13pt;color:#b5842c;border-bottom:1px solid #b5842c;margin-top:20px;padding-bottom:3px}
+  h3{font-size:11pt;color:#2a5a8b;margin:12px 0 4px}
+  .subtitle{text-align:center;color:#5c4a38;font-size:10pt;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:9pt}
+  th{background:#1a1410;color:#faf7f2;padding:5px 8px;text-align:left}
+  td{padding:4px 8px;border-bottom:1px solid #e2d9cc}
+  tr:nth-child(even)td{background:#f0ebe2}
+  .male{color:#2a5a8b;font-weight:bold}
+  .female{color:#7b3b6e;font-weight:bold}
+  .stat-row{display:inline-block;margin:4px 12px 4px 0;font-size:10pt}
+  .stat-val{font-size:16pt;font-weight:bold;color:#9b2a2a;display:block;line-height:1}
+  .stat-lbl{color:#5c4a38;font-size:8pt;text-transform:uppercase;letter-spacing:.05em}
+  @page{margin:1.5cm}
+</style></head><body>
+<h1>🌿 GIA PHẢ HỌ LÃ</h1>
+<div class="subtitle">Gia Phả Họ Lã — Báo cáo đầy đủ · Ngày in: ${new Date().toLocaleDateString('vi-VN')}</div>
+
+<h2>Tổng quan thống kê</h2>
+<div>
+  ${[['Tổng thành viên',valid.length],['Số đời',Object.keys(genCounts).length],
+     ['Nam',valid.filter(m=>m.sex==='M').length],['Nữ',valid.filter(m=>m.sex==='F').length],
+     ['Đã lập gia đình',valid.filter(m=>m.status==='Married').length],
+     ['Đã mất',valid.filter(m=>m.dod).length],
+     ['Con nuôi',valid.filter(m=>m.relationship==='Adopted').length],
+     ['Số phòng',Object.keys(branchCounts).length]
+    ].map(([l,v])=>`<span class="stat-row"><span class="stat-val">${v}</span><span class="stat-lbl">${l}</span></span>`).join('')}
+</div>
+
+<h2>Thành viên theo đời</h2>
+${Object.entries(genCounts).sort((a,b)=>+a[0]-+b[0]).map(([g,c])=>`<div><strong>Generation ${g}:</strong> ${c} member${c!==1?'s':''}</div>`).join('')}
+
+<h2>Các phòng</h2>
+${Object.entries(branchCounts).sort((a,b)=>b[1]-a[1]).map(([b,c])=>`<div><strong>${b}:</strong> ${c}</div>`).join('')}
+
+<h2>Danh sách thành viên đầy đủ</h2>
+<table>
+<thead><tr><th>#</th><th>Họ và tên</th><th>G.tính</th><th>Đời</th><th>Phòng</th><th>Ngày sinh</th><th>Ngày mất</th><th>Cha</th><th>Mẹ</th><th>Vợ/chồng</th><th>Địa chỉ</th></tr></thead>
+<tbody>
+${rows.map((m,i)=>`<tr>
+  <td>${i+1}</td>
+  <td class="${m.sex==='M'?'male':m.sex==='F'?'female':''}">${m.full_name}</td>
+  <td>${m.sex||''}</td><td>${m.generation}</td><td>${m.branch||''}</td>
+  <td>${m.dob||''}</td><td>${m.dod||''}</td><td>${m.father||''}</td><td>${m.mother||''}</td>
+  <td>${m.spouse||''}</td><td>${[m.address,m.address2].filter(Boolean).join(', ')}</td>
+</tr>`).join('')}
+</tbody></table>
+</body></html>`;
+
+  download('gia_pha_ho_la_baocao.html', html, 'text/html');
+  toast('Đã xuất báo cáo.');
+}
+
+// ── HELPERS ──
+function download(name, content, type) {
+  const blob = new Blob(['\uFEFF'+content], {type});
+  const a = Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:name});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+let toastTimer;
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderLeftColor = type==='error'?'var(--red-soft)':'var(--gold)';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── MOBILE SIDEBAR ──
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const b = document.getElementById('sidebarBackdrop');
+  if (s.classList.contains('open')) { closeSidebar(); } else { s.classList.add('open'); b.classList.add('open'); }
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('open');
+}
+
+// ── TABS ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  // sidebar toggle button: show only on sidebar-relevant panels
+  const toggle = document.getElementById('sidebarToggle');
+  const showSidebar = ['detail','table','tree'].includes(name);
+  if (toggle) toggle.style.display = showSidebar ? '' : 'none';
+  // On desktop, preserve existing display logic
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth >= 900) {
+    sidebar.style.display = showSidebar ? '' : 'none';
+  }
+  if (!showSidebar) closeSidebar();
+  if (name==='stats') buildStats();
+}
+
+// ── START ──
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
