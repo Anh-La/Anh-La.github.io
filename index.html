@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Financial Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   
   <style>
     /* ═══════════════════════════════════════════════════════════
@@ -25,8 +26,8 @@
       --text:    #e8e3d8;
       --muted:   #7a7f8e;
       --font-display: 'DM Serif Display', Georgia, serif;
-      --font-body:    'Manrope', sans-serif;
-      --font-mono:    'DM Mono', monospace;
+      --font-body:    'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
+      --font-mono:    'DM Mono', 'Courier New', monospace;
       --radius: 12px;
     }
 
@@ -63,6 +64,9 @@
       border-radius: 8px; cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; gap: 8px;
     }
     .btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.04); }
+
+    .app-card.family-registry:hover { border-color: var(--accent3); }
+    .app-card.family-registry:hover strong { color: var(--accent3); }
 
     /* Horizontal Carousel Strip Framework */
     .app-strip-wrap { position: relative; margin-bottom: 32px; }
@@ -249,6 +253,13 @@
           <span data-i18n="appGlobalSub">Global macroeconomic observatory · GDP, trade &amp; inflation</span>
         </div>
       </a>
+      <a class="app-card family-registry" href="family.html">
+        <span class="icon">🏛️</span>
+        <div>
+          <strong data-i18n="appFamily">Family Registry</strong>
+          <span data-i18n="appFamilySub">Genealogy, demographics &amp; kinship records</span>
+        </div>
+      </a>
     </div>
     <div class="app-strip-dots" id="app-strip-dots" aria-hidden="true"></div>
   </div>
@@ -357,6 +368,8 @@
       appNationSub: "Fiscal & monetary policy simulator",
       appGlobal: "Global Economy",
       appGlobalSub: "Global macroeconomic observatory · GDP, trade & inflation",
+      appFamily: "Family Registry",
+      appFamilySub: "Genealogy, demographics & kinship records",
       assetCash: "Cash (Fiat money)",
       assetTD: "Term Deposit",
       assetBonds: "Bonds & Debt",
@@ -387,6 +400,8 @@
       appNationSub: "Trình giả lập chính sách tài khóa & tiền tệ",
       appGlobal: "Kinh Tế Toàn Cầu",
       appGlobalSub: "Đài quan sát vĩ mô thế giới · GDP, thương mại & lạm phát",
+      appFamily: "Gia Phả Họ Lã",
+      appFamilySub: "Phả hệ, nhân khẩu học & hồ sơ thân tộc",
       assetCash: "Tiền Mặt (Fiat)",
       assetTD: "Tiền Gửi Kỳ Hạn",
       assetBonds: "Trái Phiếu & Nợ",
