@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Họ Lã</title>
+<title>Gia Phả Họ Lã — Family Tree</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,6 +115,10 @@ body {
 .btn-green:hover { background: #6bbf8e; color: var(--ink); }
 .btn-lang  { color: #aed6f1; border-color: #aed6f1; }
 .btn-lang:hover { background: #aed6f1; color: var(--ink); }
+.btn-admin { color: #c9b370; border-color: rgba(181,132,44,0.45); font-size: .72rem; letter-spacing: .05em; }
+.btn-admin:hover { background: rgba(181,132,44,0.15); border-color: var(--gold-soft); }
+.btn-admin.logged-in { color: #6bbf8e; border-color: rgba(107,191,142,0.5); }
+.btn-admin.logged-in:hover { background: rgba(107,191,142,0.15); border-color: #6bbf8e; }
 .btn-hub   { color: var(--gold-soft); border-color: rgba(181,132,44,0.5); text-decoration: none; font-size: .72rem; }
 .btn-hub:hover { background: rgba(181,132,44,0.12); border-color: var(--gold-soft); }
 .btn-hub span:first-child { font-size: .9rem; opacity: .8; }
@@ -176,7 +180,7 @@ body {
 
 /* ── SIDEBAR ── */
 .sidebar {
-  width: 272px;
+  width: 280px;
   flex-shrink: 0;
   background: var(--paper-mid);
   border-right: 1px solid var(--paper-rim);
@@ -185,16 +189,49 @@ body {
   overflow: hidden;
 }
 .sidebar-filters {
-  padding: .65rem .85rem;
-  border-bottom: 1px solid var(--paper-rim);
+  padding: .75rem .9rem .8rem;
+  border-bottom: 2px solid var(--paper-rim);
   display: flex;
   flex-direction: column;
-  gap: .4rem;
+  gap: .55rem;
+  background: var(--paper);
+}
+
+/* Search row with icon */
+.search-wrap {
+  position: relative;
+}
+.search-wrap .search-icon {
+  position: absolute;
+  left: .6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: .95rem;
+  pointer-events: none;
+  line-height: 1;
+}
+.search-wrap input {
+  padding-left: 2rem !important;
+  font-size: .88rem !important;
+  font-weight: 500;
+}
+
+/* Filter group: label + control stacked */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: .22rem;
+}
+.filter-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
 }
 .sidebar-filters label {
-  font-size: .65rem;
+  font-size: .67rem;
   font-weight: 700;
-  letter-spacing: .09em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--ink-dim);
   font-family: var(--font-mono);
@@ -202,37 +239,64 @@ body {
 .sidebar-filters input,
 .sidebar-filters select {
   width: 100%;
-  padding: .34rem .52rem;
-  border: 1px solid var(--paper-rim);
-  border-radius: 4px;
-  background: var(--paper);
-  font-size: .8rem;
+  padding: .5rem .6rem;
+  border: 1.5px solid var(--paper-rim);
+  border-radius: 5px;
+  background: #fff;
+  font-size: .82rem;
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-appearance: none; appearance: none;
+  transition: border-color .15s, box-shadow .15s;
+  min-height: 36px;
 }
 .sidebar-filters select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235c4a38'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right .5rem center;
-  padding-right: 1.5rem;
+  background-position: right .55rem center;
+  padding-right: 1.6rem;
 }
 .sidebar-filters input:focus,
 .sidebar-filters select:focus {
-  outline: 2px solid var(--gold);
-  border-color: transparent;
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(181,132,44,.15);
+}
+.sidebar-filters input::placeholder { color: var(--paper-rim); font-style: italic; }
+
+/* Filter footer: count + clear */
+.filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .32rem .9rem .28rem;
+  border-bottom: 1px solid var(--paper-rim);
+  background: var(--paper-mid);
 }
 .member-count {
-  font-size: .68rem;
+  font-size: .69rem;
   color: var(--ink-dim);
-  padding: .28rem .85rem;
-  border-bottom: 1px solid var(--paper-rim);
-  background: var(--paper);
   font-family: var(--font-mono);
 }
+.btn-clear-filter {
+  display: none;
+  background: none;
+  border: 1px solid var(--paper-rim);
+  border-radius: 3px;
+  color: var(--ink-dim);
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  padding: .15rem .45rem;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.btn-clear-filter:hover { background: var(--paper-rim); color: var(--ink); }
+.btn-clear-filter.visible { display: block; }
+
 .member-list { flex: 1; overflow-y: auto; padding: .18rem 0; }
 .member-item {
-  padding: .48rem .85rem;
+  padding: .52rem .9rem;
   cursor: pointer;
   border-left: 3px solid transparent;
   transition: background .12s, border-color .12s;
@@ -243,7 +307,7 @@ body {
 .member-item:hover { background: var(--paper); }
 .member-item.selected { background: #fff; border-left-color: var(--gold); }
 .member-item .m-name {
-  font-size: .81rem;
+  font-size: .82rem;
   font-weight: 600;
   flex: 1;
   min-width: 0;
@@ -258,10 +322,79 @@ body {
   color: var(--ink-dim);
   background: var(--paper-rim);
   border-radius: 10px;
-  padding: .08rem .36rem;
+  padding: .08rem .38rem;
   flex-shrink: 0;
   font-family: var(--font-mono);
 }
+
+/* ── MOBILE SEARCH BAR (always visible strip) ── */
+.mobile-search-bar {
+  display: none;
+  background: var(--ink);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  padding: .5rem .9rem;
+  gap: .5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+.mobile-search-bar .msb-input-wrap {
+  flex: 1;
+  position: relative;
+}
+.mobile-search-bar .msb-icon {
+  position: absolute;
+  left: .6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: .9rem;
+  pointer-events: none;
+}
+.mobile-search-bar input {
+  width: 100%;
+  padding: .5rem .6rem .5rem 2rem;
+  border: 1.5px solid rgba(181,132,44,.35);
+  border-radius: 5px;
+  background: rgba(255,255,255,.06);
+  color: var(--paper);
+  font-size: .88rem;
+  font-family: var(--font-body);
+  -webkit-appearance: none; appearance: none;
+  min-height: 40px;
+}
+.mobile-search-bar input::placeholder { color: rgba(226,217,204,.45); font-style: italic; }
+.mobile-search-bar input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(255,255,255,.1);
+}
+.msb-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .5rem .72rem;
+  border: 1.5px solid rgba(181,132,44,.45);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--gold-soft);
+  font-size: .73rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 40px;
+  transition: background .15s;
+}
+.msb-filter-btn:hover, .msb-filter-btn.active { background: rgba(181,132,44,.12); border-color: var(--gold); }
+.msb-filter-btn .msb-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: none;
+  flex-shrink: 0;
+}
+.msb-filter-btn .msb-dot.on { display: block; }
 
 /* ── PANELS ── */
 .panel { flex: 1; overflow: hidden; display: none; flex-direction: column; min-width: 0; }
@@ -476,7 +609,11 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 .tree-box-sub { font-size: .63rem; color: var(--ink-dim); margin-top: .07rem; font-family: var(--font-mono); }
 
 /* ── STATS ── */
-.stats-wrap { flex: 1; overflow-y: auto; padding: 1.2rem; }
+#panel-stats { flex-direction: column; overflow: hidden; }
+.stats-wrap { overflow-y: auto; padding: 1.2rem 1.2rem .8rem; flex-shrink: 0; max-height: 52vh; }
+.stats-table-section { display: flex; flex-direction: column; flex: 1; border-top: 2px solid var(--paper-rim); min-height: 0; }
+.stats-table-wrap { flex: 1; overflow: auto; }
+.btn-sm { font-size: .71rem; padding: .26rem .55rem; }
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -490,6 +627,9 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   padding: .85rem .95rem;
   box-shadow: var(--shadow);
 }
+.stat-card.stat-clickable { cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.stat-card.stat-clickable:hover { border-color: var(--gold-soft); box-shadow: 0 2px 8px rgba(181,132,44,.15); }
+.stat-card.stat-clickable.active-filter { border-color: var(--gold); background: #fffbf0; box-shadow: 0 0 0 2px rgba(181,132,44,.25); }
 .s-value {
   font-family: var(--font-display);
   font-size: 1.9rem;
@@ -657,20 +797,49 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   .btn { padding: .28rem .5rem; font-size: .7rem; }
   .sidebar-toggle { display: flex; }
 
+  /* Always-visible mobile search strip */
+  .mobile-search-bar { display: flex; }
+
   .main-wrap { flex-direction: column; overflow: visible; min-height: 0; }
 
+  /* Sidebar becomes a slide-down panel below the mobile search bar */
   .sidebar {
     width: 100%;
     max-height: 0;
     overflow: hidden;
     border-right: none;
-    border-bottom: 1px solid var(--paper-rim);
-    transition: max-height .3s ease;
+    border-bottom: 2px solid var(--gold);
+    transition: max-height .3s cubic-bezier(.4,0,.2,1);
+    flex-shrink: 0;
+    order: -1;
+  }
+  /* Hide the sidebar search input on mobile (we have the MSB instead) */
+  .sidebar .search-wrap { display: none; }
+  .sidebar-filters {
+    padding: .6rem .9rem .7rem;
+    gap: .5rem;
+    background: var(--paper-mid);
+    border-bottom: none;
+  }
+  .sidebar.open { max-height: 380px; overflow-y: auto; }
+
+  /* Hide sidebar member list on mobile — it takes up too much space */
+  .sidebar .member-list { display: none; }
+  .sidebar .filter-footer { display: none; }
+
+  /* Member list moves below the panel on mobile */
+  .mobile-member-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 38vh;
+    border-top: 1px solid var(--paper-rim);
     flex-shrink: 0;
   }
-  .sidebar.open { max-height: 420px; overflow-y: auto; }
 
   .panel { flex: 1; overflow: hidden; }
+  #panel-stats { overflow: hidden; }
+  .stats-wrap { max-height: 44vh; }
   .detail-main { padding: .85rem; }
   .info-grid { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
@@ -679,10 +848,11 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   .table-wrap { overflow-x: auto; }
   table { font-size: .73rem; }
   thead th, tbody td { padding: .35rem .5rem; }
+  .filter-group-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 380px) {
   .stats-grid { grid-template-columns: 1fr; }
-  .header-actions .btn:not(.btn-lang):not(.sidebar-toggle):not(.btn-hub) { display: none; }
+  .header-actions .btn:not(.btn-lang):not(.sidebar-toggle) { display: none; }
 }
 @media print {
   .site-header, .tabs, .sidebar, .table-toolbar, .tree-toolbar, .card-actions, #toast { display: none !important; }
@@ -1047,29 +1217,61 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <div class="brand">
     <span class="logo-nom">呂</span>
     <div class="brand-text">
-      <h1 data-vi="Gia Phả Họ Lã" data-en="Lã Family Tree">Họ Lã</h1>
-      <p data-vi="Gia phả truyền thống Việt Nam" data-en="Vietnamese Family Tree">Gia phả truyền thống Họ Lã</p>
+      <h1 data-vi="Gia Phả Họ Lã" data-en="Lã Family Tree">Gia Phả Họ Lã</h1>
+      <p data-vi="Gia phả truyền thống Việt Nam" data-en="Vietnamese Family Tree">Gia phả truyền thống Việt Nam</p>
     </div>
   </div>
   <div class="header-actions">
-    <a href="index.html" class="btn btn-hub" title="Back to Financial Hub">
-      <span>⬡</span>
-      <span data-vi="Tài Chính" data-en="Financial Hub">Tài Chính</span>
-    </a>
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
     <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 English</button>
+    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">🔒 Admin</button>
   </div>
 </header>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal" style="display:none">
+  <div class="modal-box" style="max-width:340px">
+    <div class="modal-header">
+      <span id="loginModalTitle">🔐 Admin Login</span>
+      <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:1.2rem 1.4rem">
+      <div style="margin-bottom:.9rem">
+        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Password</label>
+        <input type="password" id="adminPasswordInput" placeholder="Enter admin password"
+          style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
+          onkeydown="if(event.key==='Enter') submitAdminLogin()"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
+        <div id="loginError" style="display:none;margin-top:.5rem;font-size:.76rem;color:var(--red-soft);font-weight:600">⚠ Incorrect password. Please try again.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="submitAdminLogin()">🔓 Login</button>
+      <button class="btn btn-gold" onclick="closeLoginModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- TABS -->
 <nav class="tabs">
   <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
-  <button class="tab" onclick="switchTab('table',this)"  data-vi="📋 Bảng"    data-en="📋 Table">📋 Bảng</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="🌳 Cây"      data-en="🌳 Tree">🌳 Cây</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="📊 Thống Kê" data-en="📊 Statistics">📊 Thống Kê</button>
-  <button class="tab" onclick="switchTab('add',this)"      data-vi="➕ Thêm"       data-en="➕ Add">➕ Thêm</button>
+  <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   <button class="tab active" onclick="switchTab('analysis',this)" data-vi="🏠 LãLữ House"  data-en="🏠 LãLữ House">🏠 LãLữ House</button>
 </nav>
+
+<!-- MOBILE SEARCH BAR (shown only on small screens) -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <div class="msb-input-wrap">
+    <span class="msb-icon">🔍</span>
+    <input id="mobileSearchBox" type="text" placeholder="Tìm tên, vợ/chồng…" oninput="onMobileSearch(this.value)" autocomplete="off">
+  </div>
+  <button class="msb-filter-btn" id="msbFilterBtn" onclick="toggleMobileFilters()" data-vi="⚙ Lọc" data-en="⚙ Filter">
+    <span class="msb-dot" id="msbDot"></span>
+    ⚙ Lọc
+  </button>
+</div>
 
 <!-- MAIN -->
 <div class="main-wrap">
@@ -1077,24 +1279,37 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-filters">
-      <label data-vi="Tìm kiếm" data-en="Search">Tìm kiếm</label>
-      <input id="searchBox" type="text" placeholder="Họ tên, vợ/chồng, phòng…" oninput="applyFilters()">
-      <label data-vi="Đời" data-en="Generation">Đời</label>
-      <select id="filterGen" onchange="applyFilters()">
-        <option value="">Tất cả các đời</option>
-      </select>
-      <label data-vi="Phòng" data-en="Branch">Phòng</label>
-      <select id="filterBranch" onchange="applyFilters()">
-        <option value="">Tất cả phòng</option>
-      </select>
-      <label data-vi="Giới tính" data-en="Sex">Giới tính</label>
-      <select id="filterSex" onchange="applyFilters()">
-        <option value="" data-vi="Tất cả" data-en="All">Tất cả</option>
-        <option value="M" data-vi="Nam (M)" data-en="Male (M)">Nam (M)</option>
-        <option value="F" data-vi="Nữ (F)" data-en="Female (F)">Nữ (F)</option>
-      </select>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="searchBox" type="text" placeholder="Họ tên, vợ/chồng, phòng…" oninput="applyFilters()" autocomplete="off">
+      </div>
+      <div class="filter-group-row">
+        <div class="filter-group">
+          <label data-vi="Đời" data-en="Generation">Đời</label>
+          <select id="filterGen" onchange="applyFilters()">
+            <option value="">Tất cả các đời</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label data-vi="Giới tính" data-en="Sex">Giới tính</label>
+          <select id="filterSex" onchange="applyFilters()">
+            <option value="" data-vi="Tất cả" data-en="All">Tất cả</option>
+            <option value="M" data-vi="Nam (M)" data-en="Male (M)">Nam (M)</option>
+            <option value="F" data-vi="Nữ (F)" data-en="Female (F)">Nữ (F)</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label data-vi="Phòng" data-en="Branch">Phòng</label>
+        <select id="filterBranch" onchange="applyFilters()">
+          <option value="">Tất cả phòng</option>
+        </select>
+      </div>
     </div>
-    <div class="member-count" id="memberCount">Đang tải…</div>
+    <div class="filter-footer">
+      <span class="member-count" id="memberCount">Đang tải…</span>
+      <button class="btn-clear-filter" id="clearFilterBtn2" onclick="clearStatsFilter()" data-vi="✕ Xóa lọc" data-en="✕ Clear">✕ Xóa lọc</button>
+    </div>
     <div class="member-list" id="memberList"></div>
   </aside>
 
@@ -1111,23 +1326,28 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </section>
 
   <!-- TABLE PANEL -->
-  <section class="panel" id="panel-table">
-    <div class="table-toolbar">
-      <span style="font-size:.77rem;color:var(--ink-dim)">
-        <span data-vi="Đang hiển thị" data-en="Showing">Đang hiển thị</span>
-        <strong id="tableCount">0</strong>
-        <span data-vi="thành viên" data-en="members">thành viên</span>
-      </span>
-      <div style="margin-left:auto;display:flex;gap:.4rem;align-items:center">
-        <label class="btn btn-green" style="cursor:pointer">
-          <span data-vi="⬆ Nhập CSV" data-en="⬆ Import CSV">⬆ Nhập CSV</span>
-          <input type="file" accept=".csv" style="display:none" onchange="importCSV(event)">
-        </label>
-        <button class="btn btn-gold" onclick="exportCSV()" data-vi="⬇ Xuất CSV" data-en="⬇ Export CSV">⬇ Xuất CSV</button>
+  <!-- STATS + TABLE PANEL (merged) -->
+  <section class="panel" id="panel-stats">
+    <div class="stats-wrap" id="statsWrap"></div>
+    <div class="stats-table-section">
+      <div class="table-toolbar">
+        <span style="font-size:.77rem;color:var(--ink-dim)">
+          <span data-vi="Đang hiển thị" data-en="Showing">Đang hiển thị</span>
+          <strong id="tableCount">0</strong>
+          <span data-vi="thành viên" data-en="members">thành viên</span>
+        </span>
+        <button class="btn btn-sm" onclick="clearStatsFilter()" id="clearFilterBtn" style="display:none" data-vi="✕ Xóa lọc" data-en="✕ Clear filter">✕ Xóa lọc</button>
+        <div style="margin-left:auto;display:flex;gap:.4rem;align-items:center">
+          <label class="btn btn-green" style="cursor:pointer">
+            <span data-vi="⬆ Nhập CSV" data-en="⬆ Import CSV">⬆ Nhập CSV</span>
+            <input type="file" accept=".csv" style="display:none" onchange="importCSV(event)">
+          </label>
+          <button class="btn btn-gold" onclick="exportCSV()" data-vi="⬇ Xuất CSV" data-en="⬇ Export CSV">⬇ Xuất CSV</button>
+        </div>
       </div>
-    </div>
-    <div class="table-wrap">
-      <table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table>
+      <div class="table-wrap stats-table-wrap">
+        <table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table>
+      </div>
     </div>
   </section>
 
@@ -1147,11 +1367,6 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     <div id="treeCanvas">
       <div style="color:var(--ink-dim);font-size:.83rem;padding:2rem" data-vi="Chọn người gốc ở trên để hiển thị cây gia phả." data-en="Select a root person above to render the family tree.">Chọn người gốc ở trên để hiển thị cây gia phả.</div>
     </div>
-  </section>
-
-  <!-- STATS PANEL -->
-  <section class="panel" id="panel-stats">
-    <div class="stats-wrap" id="statsWrap"></div>
   </section>
 
   <!-- ADD/EDIT PANEL -->
@@ -1435,7 +1650,7 @@ const STRINGS = {
     address: 'Địa chỉ', parents: 'Cha Mẹ', children: 'Con Cái', siblings: 'Anh Chị Em',
     father: 'Cha', mother: 'Mẹ', fatherUnknown: 'Cha không rõ', motherUnknown: 'Mẹ không rõ',
     more:          n => `+${n} thêm`,
-    editBtn: '✏️ Sửa', deleteBtn: '🗑 Xóa', treeBtn: '🌳 Xem cây',
+    editBtn: '✏️ Sửa', deleteBtn: '🗑 Xóa', treeBtn: '🌳 Xem cây', finToolsBtn: '💰 Công cụ Tài chính',
     fullName: 'Họ và Tên', sex: 'Giới', gen: 'Đời', branchCol: 'Phòng',
     birth: 'Sinh', death: 'Mất', fatherCol: 'Cha', motherCol: 'Mẹ',
     spouseCol: 'Vợ/Chồng', statusCol: 'Tình trạng', city: 'Tỉnh/TP',
@@ -1490,7 +1705,7 @@ const STRINGS = {
     address: 'Address', parents: 'Parents', children: 'Children', siblings: 'Siblings',
     father: 'Father', mother: 'Mother', fatherUnknown: 'Father unknown', motherUnknown: 'Mother unknown',
     more:          n => `+${n} more`,
-    editBtn: '✏️ Edit', deleteBtn: '🗑 Delete', treeBtn: '🌳 Show in Tree',
+    editBtn: '✏️ Edit', deleteBtn: '🗑 Delete', treeBtn: '🌳 Show in Tree', finToolsBtn: '💰 Financial Tools',
     fullName: 'Full Name', sex: 'Sex', gen: 'Gen', branchCol: 'Branch',
     birth: 'Birth', death: 'Death', fatherCol: 'Father', motherCol: 'Mother',
     spouseCol: 'Spouse', statusCol: 'Status', city: 'City',
@@ -1553,6 +1768,10 @@ function toggleLang() {
   // Update inputs with data-vi/data-en as placeholders? No — only labels have these.
   // Update search placeholder
   document.getElementById('searchBox').placeholder = s('searchPH');
+  const msbInput = document.getElementById('mobileSearchBox');
+  if (msbInput) msbInput.placeholder = LANG === 'vi' ? 'Tìm tên, vợ/chồng…' : 'Search name, spouse…';
+  const msbBtn = document.getElementById('msbFilterBtn');
+  if (msbBtn) msbBtn.innerHTML = `<span class="msb-dot${document.getElementById('msbDot')?.classList.contains('on')?' on':''}" id="msbDot"></span>${LANG === 'vi' ? '⚙ Lọc' : '⚙ Filter'}`;
 
   // Refresh all dynamic rendered content
   populateFilters();
@@ -1670,6 +1889,27 @@ function save() {
 // ── MOBILE SIDEBAR TOGGLE ──
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
+  const btn = document.getElementById('msbFilterBtn');
+  if (btn) btn.classList.toggle('active', document.getElementById('sidebar').classList.contains('open'));
+}
+function toggleMobileFilters() {
+  document.getElementById('sidebar').classList.toggle('open');
+  const btn = document.getElementById('msbFilterBtn');
+  if (btn) btn.classList.toggle('active', document.getElementById('sidebar').classList.contains('open'));
+}
+function onMobileSearch(val) {
+  // Sync to sidebar search box and trigger filters
+  const sb = document.getElementById('searchBox');
+  if (sb) sb.value = val;
+  applyFilters();
+}
+function updateMobileSearchDot() {
+  const dot = document.getElementById('msbDot');
+  if (!dot) return;
+  const gen = document.getElementById('filterGen').value;
+  const br  = document.getElementById('filterBranch').value;
+  const sex = document.getElementById('filterSex').value;
+  dot.classList.toggle('on', !!(gen || br || sex));
 }
 
 // ── FILTERS ──
@@ -1707,6 +1947,14 @@ function applyFilters() {
   renderTable();
   const total = DB.filter(m=>m.full_name&&m.full_name.trim()).length;
   document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, total);
+  // Sync mobile search display
+  const msb = document.getElementById('mobileSearchBox');
+  if (msb && msb !== document.activeElement) msb.value = document.getElementById('searchBox').value;
+  // Update filter active dot and sidebar clear btn
+  updateMobileSearchDot();
+  const hasFilter = !!(q || gen || br || sex);
+  const sbClear = document.getElementById('clearFilterBtn2');
+  if (sbClear) sbClear.classList.toggle('visible', hasFilter);
 }
 
 function applyQuickFilter(type, val) {
@@ -1718,17 +1966,22 @@ function applyQuickFilter(type, val) {
 
   const validMembers = DB.filter(m => m.full_name && m.full_name.trim());
 
+  // Clear active-filter highlight from all cards first
+  document.querySelectorAll('.stat-card.stat-clickable').forEach(c => c.classList.remove('active-filter'));
+
   if (type === 'total' || type === 'clear' || type === 'generations' || type === 'branches') {
     if (genSel) genSel.value = '';
     if (brSel) brSel.value = '';
     if (sexSel) sexSel.value = '';
     applyFilters();
-    const tableTab = Array.from(document.querySelectorAll('.tab')).find(t =>
-      (t.getAttribute('onclick') || '').includes("'table'") || t.textContent.includes('Bảng') || t.textContent.includes('Table')
-    );
-    if (tableTab) switchTab('table', tableTab);
+    hideClearFilterBtn();
+    scrollToStatsTable();
     return;
   }
+
+  // Mark the clicked card as active
+  const clickedCard = document.querySelector(`.stat-clickable[data-filter-type="${type}"]${val ? `[data-filter-val="${val}"]` : ':not([data-filter-val])'}`);
+  if (clickedCard) clickedCard.classList.add('active-filter');
 
   if (type === 'sex') {
     if (sexSel) sexSel.value = val || '';
@@ -1747,38 +2000,55 @@ function applyQuickFilter(type, val) {
     applyFilters();
   } else if (type === 'hasDob') {
     filtered = validMembers.filter(m => m.dob && m.dob.trim());
-    renderList();
-    renderTable();
+    renderList(); renderTable();
     document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, validMembers.length);
   } else if (type === 'deceased') {
     filtered = validMembers.filter(m => m.dod && m.dod.trim());
-    renderList();
-    renderTable();
+    renderList(); renderTable();
     document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, validMembers.length);
   } else if (type === 'married') {
     filtered = validMembers.filter(m => m.status === 'Married');
-    renderList();
-    renderTable();
+    renderList(); renderTable();
     document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, validMembers.length);
   } else if (type === 'adopted') {
     filtered = validMembers.filter(m => m.relationship === 'Adopted');
-    renderList();
-    renderTable();
+    renderList(); renderTable();
     document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, validMembers.length);
   } else if (type === 'hasAddr') {
     filtered = validMembers.filter(m => m.address || m.address2);
-    renderList();
-    renderTable();
+    renderList(); renderTable();
     document.getElementById('memberCount').textContent = s('memberCountOf', filtered.length, validMembers.length);
   }
 
-  // Switch to Table for all special filters
-  const tableTab = Array.from(document.querySelectorAll('.tab')).find(t =>
-    (t.getAttribute('onclick') || '').includes("'table'") || t.textContent.includes('Bảng') || t.textContent.includes('Table')
-  );
-  if (tableTab) {
-    switchTab('table', tableTab);
-  }
+  showClearFilterBtn();
+  scrollToStatsTable();
+}
+
+function showClearFilterBtn() {
+  const btn = document.getElementById('clearFilterBtn');
+  if (btn) btn.style.display = '';
+}
+function hideClearFilterBtn() {
+  const btn = document.getElementById('clearFilterBtn');
+  if (btn) btn.style.display = 'none';
+}
+function clearStatsFilter() {
+  const genSel = document.getElementById('filterGen');
+  const brSel = document.getElementById('filterBranch');
+  const sexSel = document.getElementById('filterSex');
+  const searchBox = document.getElementById('searchBox');
+  const msbBox = document.getElementById('mobileSearchBox');
+  if (genSel) genSel.value = '';
+  if (brSel) brSel.value = '';
+  if (sexSel) sexSel.value = '';
+  if (searchBox) searchBox.value = '';
+  if (msbBox) msbBox.value = '';
+  applyFilters();
+  hideClearFilterBtn();
+}
+function scrollToStatsTable() {
+  const sec = document.querySelector('.stats-table-section');
+  if (sec) setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
 // ── SIDEBAR LIST ──
@@ -1933,6 +2203,7 @@ function renderDetail(id) {
       <button class="btn btn-primary" onclick="editMember(${m.id})">${s('editBtn')}</button>
       <button class="btn btn-red" onclick="askDelete(${m.id})">${s('deleteBtn')}</button>
       <button class="btn btn-gold" onclick="showInTree(${m.id})">${s('treeBtn')}</button>
+      <a href="index.html?member=${encodeURIComponent(m.full_name||'')}" class="btn btn-hub" title="${s('finToolsBtn')}"><span>⬡</span> ${s('finToolsBtn')}</a>
     </div>
   </div>`;
 }
@@ -2020,7 +2291,7 @@ function renderTreeNode(person, depth, maxD) {
 function showInTree(id) {
   document.getElementById('treeRootSelect').value = id;
   buildTree();
-  switchTab('tree', document.querySelectorAll('.tab')[2]);
+  switchTab('tree', document.querySelectorAll('.tab')[1]);
 }
 
 // ── STATS ──
@@ -2114,7 +2385,7 @@ function editMember(id) {
   ft.textContent = s('editTitle', m.full_name);
   loadProfileEntries(m);
   document.getElementById('cancelEditBtn').style.display = '';
-  switchTab('add', document.querySelectorAll('.tab')[4]);
+  switchTab('add', document.querySelectorAll('.tab')[3]);
 }
 function cancelEdit() {
   editingId = null;
@@ -2223,8 +2494,7 @@ function switchTab(id, el) {
   const panel = document.getElementById('panel-' + id);
   if (panel) panel.classList.add('active');
   if (el) el.classList.add('active');
-  if (id === 'table')    renderTable();
-  if (id === 'stats')    buildStats();
+  if (id === 'stats')    { buildStats(); renderTable(); }
   if (id === 'tree')     { populateTreeSelect(); buildTree(); }
   if (id === 'analysis') buildAnalysis();
 }
@@ -2640,10 +2910,10 @@ function _wireAnalysisInteractions(wrap, ctx) {
   }
 
   function goToTableFiltered(filterFn, label) {
-    // Apply sidebar filter by name search then switch to table
+    // Apply sidebar filter by name search then switch to stats (which contains the table)
     const searchBox = document.getElementById('searchBox');
     if (searchBox) { searchBox.value = ''; }
-    switchTab('table', document.querySelectorAll('.tab')[1]);
+    switchTab('stats', document.querySelectorAll('.tab')[2]);
     // Highlight relevant rows after render
     setTimeout(() => {
       document.querySelectorAll('#tableBody tr').forEach(tr => {
@@ -2651,6 +2921,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
         const m = DB.find(x => x.id === id);
         tr.style.background = (m && filterFn(m)) ? '#fff8e6' : '';
       });
+      scrollToStatsTable();
     }, 60);
   }
 
@@ -3588,6 +3859,74 @@ function exportReport() {
     }
   })();
 }
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN AUTH
+// ═══════════════════════════════════════════════════════════
+const ADMIN_PASS = 'Lahouse,123';
+let isAdmin = false;
+
+function toggleAdminAuth() {
+  if (isAdmin) {
+    // Logout
+    isAdmin = false;
+    updateAdminUI();
+    toast(LANG === 'vi' ? 'Đã đăng xuất admin.' : 'Admin logged out.');
+  } else {
+    // Show login modal
+    document.getElementById('loginModal').style.display = 'flex';
+    document.getElementById('adminPasswordInput').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    setTimeout(() => document.getElementById('adminPasswordInput').focus(), 60);
+  }
+}
+
+function submitAdminLogin() {
+  const val = document.getElementById('adminPasswordInput').value;
+  if (val === ADMIN_PASS) {
+    isAdmin = true;
+    closeLoginModal();
+    updateAdminUI();
+    toast(LANG === 'vi' ? '✅ Đã đăng nhập admin.' : '✅ Admin logged in.');
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('adminPasswordInput').select();
+  }
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').style.display = 'none';
+}
+
+function updateAdminUI() {
+  const btn = document.getElementById('adminBtn');
+  const addTab = document.getElementById('addTab');
+  if (isAdmin) {
+    btn.textContent = '🔓 Logout';
+    btn.classList.add('logged-in');
+    if (addTab) addTab.style.display = '';
+  } else {
+    btn.textContent = '🔒 Admin';
+    btn.classList.remove('logged-in');
+    if (addTab) addTab.style.display = 'none';
+    // If currently on Add tab, redirect to analysis
+    const addPanel = document.getElementById('panel-add');
+    if (addPanel && addPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+  }
+}
+
+// Close login modal on overlay click
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('loginModal');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeLoginModal();
+    });
+  }
+});
 
 // ── START ──
 window.onload = init;
