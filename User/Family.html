@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gia Phả Họ Lã — Family Tree</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS (aligned with Financial Hub) ── */
 :root {
@@ -21,8 +22,8 @@
   --blue-m:     #2a5a8b;
   --blue-f:     #7b3b6e;
   --green:      #2d6b3f;
-  --serif:      'DM Serif Display', Georgia, serif;
-  --sans:       'Manrope', 'Segoe UI', system-ui, sans-serif;
+  --serif:      'Lora', Georgia, serif;
+  --sans:       'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
   --mono:       'DM Mono', 'Courier New', monospace;
   --radius:     6px;
   --shadow:     0 1px 4px rgba(0,0,0,.08);
@@ -685,6 +686,355 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   .main-wrap { display: block; }
   .panel { display: block !important; }
 }
+
+/* ── Profile timeline (detail view) ── */
+.profile-block { margin-top: .3rem; }
+.timeline-list { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .5rem; }
+.timeline-entry { display: flex; align-items: flex-start; gap: .75rem; padding: .5rem .75rem; background: var(--paper-mid); border-radius: 5px; border-left: 3px solid var(--gold); }
+.timeline-year { font-family: var(--mono); font-size: .72rem; color: var(--gold); min-width: 46px; padding-top: .1rem; flex-shrink: 0; font-weight: 600; }
+.timeline-text { font-size: .83rem; color: var(--ink); line-height: 1.45; }
+
+/* ── Simple profile fields (Physical / Contact / Social / Bio) ── */
+.simple-field-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .45rem; }
+.simple-field-row label { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); font-family: var(--mono); min-width: 110px; flex-shrink: 0; }
+.simple-field-row input,
+.simple-field-row select,
+.simple-field-row textarea {
+  flex: 1; background: var(--paper); border: 1px solid var(--paper-rim); border-radius: 4px;
+  padding: .38rem .6rem; font-size: .82rem; color: var(--ink); font-family: var(--sans);
+}
+.simple-field-row select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235c4a38'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .5rem center;
+  padding-right: 1.5rem; -webkit-appearance: none; appearance: none;
+}
+.simple-field-row input:focus,
+.simple-field-row select:focus,
+.simple-field-row textarea:focus { outline: none; border-color: var(--gold); }
+.simple-field-row textarea { resize: vertical; min-height: 64px; }
+/* Tag-style chips for hobbies/food/music in detail view */
+.tag-chip {
+  display: inline-block; background: var(--paper-mid); border: 1px solid var(--paper-rim);
+  border-radius: 99px; padding: .18rem .65rem; font-size: .75rem; color: var(--ink);
+  margin: .18rem .14rem;
+}
+
+/* ── ANALYSIS PANEL ── */
+.analysis-wrap {
+  flex: 1; overflow-y: auto; padding: 1.2rem;
+  background: var(--paper);
+}
+.analysis-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 820px) { .analysis-cols { grid-template-columns: 1fr; } }
+.an-card {
+  background: var(--paper);
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.an-page-title {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--ink);
+  margin-bottom: .18rem;
+}
+.an-page-sub {
+  font-size: .74rem;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  letter-spacing: .04em;
+}
+.an-section-block {
+  margin-bottom: 1.35rem;
+}
+.an-section-title {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .55rem;
+  padding-bottom: .26rem;
+  border-bottom: 1px solid var(--paper-rim);
+  font-family: var(--mono);
+}
+.an-card-head {
+  background: var(--ink);
+  color: var(--gold-soft);
+  font-family: var(--mono);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .45rem .8rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  border-bottom: 2px solid var(--gold);
+}
+.an-card-body { padding: .8rem; }
+.an-stat-row {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .3rem 0;
+  border-bottom: 1px solid var(--paper-rim);
+  font-size: .81rem;
+}
+.an-stat-row:last-child { border-bottom: none; }
+.an-stat-label { flex: 1; color: var(--ink-dim); font-size: .77rem; }
+.an-stat-val { font-weight: 700; font-family: var(--mono); color: var(--ink); min-width: 28px; text-align: right; }
+.an-stat-bar-track { width: 80px; height: 7px; background: var(--paper-rim); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.an-stat-bar-fill  { height: 100%; border-radius: 3px; }
+.an-spark-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 54px;
+  padding: .4rem 0 0;
+}
+.an-spark-bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  min-height: 4px;
+  cursor: default;
+  position: relative;
+  transition: opacity .15s;
+}
+.an-spark-bar:hover { opacity: .72; }
+.an-spark-label { display: flex; gap: 3px; margin-top: .18rem; }
+.an-spark-lbl {
+  flex: 1;
+  font-size: .52rem;
+  text-align: center;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+}
+.hist-timeline { display: flex; flex-direction: column; gap: 0; }
+.hist-item {
+  display: flex;
+  gap: .65rem;
+  position: relative;
+  padding: .52rem 0 .52rem .1rem;
+  border-left: 2px solid var(--paper-rim);
+  margin-left: .5rem;
+}
+.hist-item:last-child { border-left-color: transparent; }
+.hist-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: -.57rem;
+  margin-top: .24rem;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1.5px var(--paper-rim);
+}
+.hist-content { flex: 1; padding-left: .3rem; }
+.hist-era {
+  font-size: .6rem;
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .08rem;
+}
+.hist-title { font-size: .83rem; font-weight: 600; color: var(--ink); margin-bottom: .1rem; }
+.hist-body  { font-size: .77rem; color: var(--ink-dim); line-height: 1.48; }
+.hist-overlap {
+  display: inline-block;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: 3px;
+  font-size: .63rem;
+  font-family: var(--mono);
+  padding: .04rem .3rem;
+  color: var(--red);
+  margin-top: .18rem;
+}
+.an-insight {
+  background: #fffbf0;
+  border: 1px solid #e8d9b0;
+  border-left: 3px solid var(--gold);
+  border-radius: 5px;
+  padding: .6rem .82rem;
+  font-size: .8rem;
+  color: var(--ink);
+  line-height: 1.55;
+  margin-bottom: .52rem;
+}
+.an-insight strong { color: var(--red); }
+.an-origin-box {
+  background: var(--ink);
+  color: var(--gold-soft);
+  border-radius: 5px;
+  padding: .75rem .9rem;
+  margin-bottom: .7rem;
+}
+.an-origin-char  { font-family: var(--serif); font-size: 2.6rem; line-height: 1; margin-bottom: .22rem; color: var(--gold); }
+.an-origin-pinyin { font-family: var(--mono); font-size: .7rem; color: var(--paper-rim); letter-spacing: .08em; }
+.an-origin-meaning { font-size: .78rem; margin-top: .32rem; color: var(--paper); line-height: 1.5; }
+.an-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.an-mini-card {
+  background: var(--paper-mid);
+  border-radius: 5px;
+  padding: .5rem .65rem;
+  border: 1px solid var(--paper-rim);
+}
+.an-mini-val { font-family: var(--serif); font-size: 1.45rem; color: var(--red); line-height: 1; }
+.an-mini-lbl { font-size: .6rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-dim); margin-top: .1rem; }
+.an-rank-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .32rem;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: 20px;
+  padding: .16rem .58rem;
+  font-size: .74rem;
+  margin: .16rem .16rem 0 0;
+}
+.an-rank-num {
+  font-family: var(--mono);
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--ink);
+  border-radius: 10px;
+  padding: .04rem .28rem;
+}
+
+/* ── LãLữ House interactive elements ── */
+.an-card { transition: box-shadow .18s, transform .18s; }
+.an-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.11); }
+
+.an-insight {
+  cursor: pointer;
+  transition: border-left-color .15s, background .15s, transform .12s;
+}
+.an-insight:hover {
+  background: #fffbec;
+  border-left-color: var(--red);
+  transform: translateX(3px);
+}
+.an-insight.expanded { background: #fffbec; border-left-color: var(--red); }
+
+.an-mini-card {
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s, transform .12s;
+}
+.an-mini-card:hover {
+  background: var(--paper-rim);
+  box-shadow: 0 2px 8px rgba(0,0,0,.09);
+  transform: translateY(-2px);
+}
+.an-mini-card.active-filter {
+  background: var(--ink);
+  border-color: var(--gold);
+}
+.an-mini-card.active-filter .an-mini-val,
+.an-mini-card.active-filter .an-mini-lbl { color: var(--gold-soft); }
+
+.an-stat-row {
+  cursor: pointer;
+  transition: background .13s, padding-left .13s;
+  border-radius: 3px;
+}
+.an-stat-row:hover { background: var(--paper-mid); padding-left: .35rem; }
+.an-stat-row.active-filter { background: #fff8e6; padding-left: .35rem; outline: 1px solid var(--gold); }
+
+.an-spark-bar { transition: opacity .15s, transform .12s; cursor: pointer; }
+.an-spark-bar:hover { opacity: .72; transform: scaleY(1.06); transform-origin: bottom; }
+.an-spark-bar.active-gen { opacity: 1; outline: 2px solid var(--gold); outline-offset: 1px; }
+
+.gen-detail-row { cursor: pointer; transition: background .13s, padding-left .13s; border-radius: 3px; }
+.gen-detail-row:hover { background: var(--paper-mid); padding-left: .4rem; }
+.gen-detail-row.active-filter { background: #fff8e6; padding-left: .4rem; outline: 1px solid var(--gold); }
+
+.an-rank-pill {
+  cursor: pointer;
+  transition: background .14s, border-color .14s, transform .12s;
+}
+.an-rank-pill:hover { background: var(--paper-rim); border-color: var(--gold-soft); transform: scale(1.04); }
+.an-rank-pill.active-filter { background: var(--ink); border-color: var(--gold); color: var(--gold-soft); }
+.an-rank-pill.active-filter .an-rank-num { background: var(--gold); color: var(--ink); }
+
+.hist-item { cursor: pointer; transition: background .14s; border-radius: 4px; padding-right: .5rem; }
+.hist-item:hover { background: var(--paper-mid); }
+.hist-item.hist-expanded { background: var(--paper-mid); }
+.hist-item .hist-body { max-height: 0; overflow: hidden; transition: max-height .3s ease, opacity .25s; opacity: 0; }
+.hist-item.hist-expanded .hist-body { max-height: 200px; opacity: 1; }
+.hist-item .hist-toggle { font-size: .6rem; font-family: var(--mono); color: var(--gold); margin-left: .4rem; transition: transform .2s; display: inline-block; }
+.hist-item.hist-expanded .hist-toggle { transform: rotate(90deg); }
+
+/* Popover for mini-cards and stat rows */
+.an-popover {
+  position: fixed;
+  z-index: 300;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: .6rem .85rem;
+  font-size: .76rem;
+  font-family: var(--sans);
+  max-width: 280px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.28);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .15s, transform .15s;
+  line-height: 1.55;
+}
+.an-popover.visible { opacity: 1; transform: translateY(0); }
+.an-popover strong { color: var(--gold-soft); }
+
+/* Member list drawer */
+.an-member-drawer {
+  margin-top: .55rem;
+  border-top: 1px solid var(--paper-rim);
+  padding-top: .45rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.an-member-drawer.open { max-height: 300px; overflow-y: auto; }
+.an-member-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  background: var(--paper);
+  border: 1px solid var(--paper-rim);
+  border-radius: 20px;
+  padding: .18rem .55rem;
+  font-size: .73rem;
+  margin: .14rem .12rem 0 0;
+  cursor: pointer;
+  transition: background .13s, border-color .13s;
+}
+.an-member-chip:hover { background: #fff8e6; border-color: var(--gold); }
+.an-member-chip .chip-gen { font-family: var(--mono); font-size: .6rem; color: var(--gold); }
+
+/* ── Profile sections (form) ── */
+.profile-sections { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.2rem; border-top: 1px solid var(--paper-rim); padding-top: 1rem; }
+.profile-section { background: var(--paper-mid); border-radius: 7px; padding: .85rem 1rem; }
+.profile-section-header { font-size: .72rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--gold); margin-bottom: .65rem; }
+.entry-add-row { display: flex; gap: .5rem; margin-top: .6rem; align-items: center; flex-wrap: wrap; }
+.entry-add-row input { background: var(--paper); border: 1px solid var(--paper-rim); border-radius: 4px; padding: .38rem .6rem; font-size: .82rem; color: var(--ink); font-family: var(--sans); }
+.entry-add-row input:focus { outline: none; border-color: var(--gold); }
+.timeline-entry-edit { display: flex; align-items: center; gap: .6rem; padding: .35rem .6rem; background: var(--paper); border-radius: 4px; margin-bottom: .3rem; border-left: 2px solid var(--gold); }
+.te-year { font-family: var(--mono); font-size: .7rem; color: var(--gold); min-width: 44px; flex-shrink: 0; }
+.te-desc { font-size: .81rem; flex: 1; color: var(--ink); }
+.te-remove { background: none; border: none; color: var(--ink-dim); cursor: pointer; font-size: .8rem; flex-shrink: 0; padding: 0 .2rem; }
+.te-remove:hover { color: var(--red-soft); }
+.te-empty { font-size: .78rem; color: var(--ink-dim); padding: .25rem .5rem; }
+.btn-sm { padding: .32rem .7rem; font-size: .78rem; }
+
 </style>
 </head>
 <body>
@@ -701,22 +1051,17 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <div class="header-actions">
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
     <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 English</button>
-    <button class="btn btn-gold" onclick="exportCSV()" data-vi="⬇ Xuất CSV" data-en="⬇ Export CSV">⬇ Xuất CSV</button>
-    <label class="btn btn-green" style="cursor:pointer">
-      <span data-vi="⬆ Nhập CSV" data-en="⬆ Import CSV">⬆ Nhập CSV</span>
-      <input type="file" accept=".csv" style="display:none" onchange="importCSV(event)">
-    </label>
-    <button class="btn btn-gold" onclick="exportReport()" data-vi="📄 Báo cáo" data-en="📄 Report">📄 Báo cáo</button>
   </div>
 </header>
 
 <!-- TABS -->
 <nav class="tabs">
-  <button class="tab active" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
+  <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('table',this)"  data-vi="📋 Bảng"    data-en="📋 Table">📋 Bảng</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="🌳 Cây"      data-en="🌳 Tree">🌳 Cây</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="📊 Thống Kê" data-en="📊 Statistics">📊 Thống Kê</button>
-  <button class="tab" onclick="switchTab('add',this)"    data-vi="➕ Thêm"      data-en="➕ Add">➕ Thêm</button>
+  <button class="tab" onclick="switchTab('add',this)"      data-vi="➕ Thêm"       data-en="➕ Add">➕ Thêm</button>
+  <button class="tab active" onclick="switchTab('analysis',this)" data-vi="🏠 LãLữ House"  data-en="🏠 LãLữ House">🏠 LãLữ House</button>
 </nav>
 
 <!-- MAIN -->
@@ -747,7 +1092,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </aside>
 
   <!-- DETAIL PANEL -->
-  <section class="panel active" id="panel-detail">
+  <section class="panel" id="panel-detail">
     <div class="detail-view">
       <div class="detail-main" id="detailMain">
         <div class="no-selection">
@@ -766,7 +1111,11 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
         <strong id="tableCount">0</strong>
         <span data-vi="thành viên" data-en="members">thành viên</span>
       </span>
-      <div style="margin-left:auto">
+      <div style="margin-left:auto;display:flex;gap:.4rem;align-items:center">
+        <label class="btn btn-green" style="cursor:pointer">
+          <span data-vi="⬆ Nhập CSV" data-en="⬆ Import CSV">⬆ Nhập CSV</span>
+          <input type="file" accept=".csv" style="display:none" onchange="importCSV(event)">
+        </label>
         <button class="btn btn-gold" onclick="exportCSV()" data-vi="⬇ Xuất CSV" data-en="⬇ Export CSV">⬇ Xuất CSV</button>
       </div>
     </div>
@@ -890,6 +1239,138 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
           <input id="f-address2" placeholder="Thành phố, Tỉnh">
         </div>
       </div>
+
+      <!-- ── Physical / Contact / Social / Bio ── -->
+      <div class="profile-sections" style="margin-top:1rem">
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="💪 Thông tin thể chất" data-en="💪 Physical Info">💪 Thông tin thể chất / Physical</div>
+          <div class="simple-field-row">
+            <label data-vi="Chiều cao (cm)" data-en="Height (cm)">Chiều cao (cm)</label>
+            <input type="number" id="f-height" placeholder="170" min="50" max="250">
+          </div>
+          <div class="simple-field-row">
+            <label data-vi="Cân nặng (kg)" data-en="Weight (kg)">Cân nặng (kg)</label>
+            <input type="number" id="f-weight" placeholder="65" min="1" max="300">
+          </div>
+          <div class="simple-field-row">
+            <label data-vi="Nhóm máu" data-en="Blood Type">Nhóm máu</label>
+            <select id="f-blood_type">
+              <option value="" data-vi="Không rõ" data-en="Unknown">Không rõ</option>
+              <option value="A+">A+</option><option value="A-">A-</option>
+              <option value="B+">B+</option><option value="B-">B-</option>
+              <option value="AB+">AB+</option><option value="AB-">AB-</option>
+              <option value="O+">O+</option><option value="O-">O-</option>
+            </select>
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="📞 Liên hệ" data-en="📞 Contact">📞 Liên hệ / Contact</div>
+          <div class="simple-field-row">
+            <label data-vi="Điện thoại" data-en="Phone">Điện thoại</label>
+            <input type="text" id="f-phone" placeholder="+84 90 123 4567">
+          </div>
+          <div class="simple-field-row">
+            <label data-vi="Email" data-en="Email">Email</label>
+            <input type="email" id="f-email" placeholder="ten@email.com">
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🌐 Mạng xã hội" data-en="🌐 Social Media">🌐 Mạng xã hội / Social</div>
+          <div class="simple-field-row">
+            <label>Facebook</label>
+            <input type="text" id="f-social_fb" placeholder="facebook.com/ten">
+          </div>
+          <div class="simple-field-row">
+            <label>Instagram</label>
+            <input type="text" id="f-social_ig" placeholder="@username">
+          </div>
+          <div class="simple-field-row">
+            <label>TikTok</label>
+            <input type="text" id="f-social_tt" placeholder="@username">
+          </div>
+          <div class="simple-field-row">
+            <label data-vi="Khác" data-en="Other">Khác / Other</label>
+            <input type="text" id="f-social_other" placeholder="Twitter, YouTube…">
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="📝 Tiểu sử ngắn" data-en="📝 Short Bio">📝 Tiểu sử ngắn / Bio</div>
+          <div class="simple-field-row" style="align-items:flex-start">
+            <label style="padding-top:.3rem" data-vi="Tiểu sử" data-en="Bio">Tiểu sử</label>
+            <textarea id="f-bio" placeholder="Vài dòng giới thiệu về thành viên này…" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Profile Sections ── -->
+      <div class="profile-sections" id="profileSections">
+        <!-- Skills -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="💼 Kỹ năng" data-en="💼 Skills">💼 Kỹ năng / Skills</div>
+          <div id="skillsEntries"></div>
+          <div class="entry-add-row">
+            <input type="number" id="sk-year" style="width:84px" data-vi-ph="Năm" data-en-ph="Year" placeholder="Năm">
+            <input type="text"   id="sk-desc" style="flex:1"    data-vi-ph="Vd: Lãnh đạo, tiếng Anh…" data-en-ph="e.g. Leadership…" placeholder="Vd: Lãnh đạo, tiếng Anh…">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('skills')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Qualifications -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🎓 Bằng cấp / Chứng chỉ" data-en="🎓 Qualifications">🎓 Bằng cấp / Chứng chỉ</div>
+          <div id="qualsEntries"></div>
+          <div class="entry-add-row">
+            <input type="number" id="ql-year" style="width:84px" placeholder="Năm">
+            <input type="text"   id="ql-desc" style="flex:1"    placeholder="Vd: Đại học Luật, MBA…">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('qualifications')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Education -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="📚 Lịch sử học tập" data-en="📚 Education History">📚 Lịch sử học tập / Education</div>
+          <div id="eduEntries"></div>
+          <div class="entry-add-row">
+            <input type="number" id="ed-year" style="width:84px" placeholder="Năm">
+            <input type="text"   id="ed-desc" style="flex:1"    placeholder="Vd: Đại học Bách Khoa – Kỹ thuật">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('education')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Work Experience -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🏢 Kinh nghiệm làm việc" data-en="🏢 Work Experience">🏢 Kinh nghiệm làm việc / Work</div>
+          <div id="workEntries"></div>
+          <div class="entry-add-row">
+            <input type="number" id="wk-year" style="width:84px" placeholder="Năm">
+            <input type="text"   id="wk-desc" style="flex:1"    placeholder="Vd: Giám đốc – Công ty ABC">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('work')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Hobbies -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🎨 Sở thích" data-en="🎨 Hobbies">🎨 Sở thích / Hobbies</div>
+          <div id="hobbiesEntries"></div>
+          <div class="entry-add-row">
+            <input type="text" id="hb-desc" style="flex:1" placeholder="Vd: Đọc sách, Du lịch, Nấu ăn…">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('hobbies')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Favorite Food -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🍜 Món ăn yêu thích" data-en="🍜 Favorite Food">🍜 Món ăn yêu thích / Favorite Food</div>
+          <div id="foodEntries"></div>
+          <div class="entry-add-row">
+            <input type="text" id="fd-desc" style="flex:1" placeholder="Vd: Phở bò, Bánh mì, Sushi…">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('food')">＋ Thêm</button>
+          </div>
+        </div>
+        <!-- Favorite Music -->
+        <div class="profile-section">
+          <div class="profile-section-header" data-vi="🎵 Âm nhạc yêu thích" data-en="🎵 Favorite Music">🎵 Âm nhạc yêu thích / Favorite Music</div>
+          <div id="musicEntries"></div>
+          <div class="entry-add-row">
+            <input type="text" id="mu-desc" style="flex:1" placeholder="Vd: Nhạc trữ tình, V-pop, Jazz…">
+            <button class="btn btn-gold btn-sm" onclick="addProfileEntry('music')">＋ Thêm</button>
+          </div>
+        </div>
       <div class="form-actions">
         <button class="btn btn-primary" onclick="saveMember()">
           <span data-vi="💾 Lưu thành viên" data-en="💾 Save Member">💾 Lưu thành viên</span>
@@ -901,9 +1382,16 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     </div>
   </section>
 
-</div>
+  <!-- ANALYSIS PANEL -->
+  <section class="panel active" id="panel-analysis">
+    <div class="analysis-wrap" id="analysisWrap">
+      <div style="color:var(--ink-dim);font-size:.86rem;padding:2rem;text-align:center">
+        Đang tải phân tích…
+      </div>
+    </div>
+  </section>
 
-<!-- CONFIRM MODAL -->
+</div>
 <div class="modal-overlay" id="confirmModal">
   <div class="modal-box">
     <div class="modal-header">
@@ -969,6 +1457,18 @@ const STRINGS = {
     fullRegister: 'Danh sách đầy đủ',
     memberCount:   (n,s) => `Đời ${n}: ${s} thành viên`,
     statusMarried: 'Đã kết hôn', statusSingle: 'Độc thân',
+    skills: 'Kỹ năng', qualifications: 'Bằng cấp / Chứng chỉ',
+    education: 'Lịch sử học tập', workExp: 'Kinh nghiệm làm việc',
+    hobbies: 'Sở thích', favoriteFood: 'Món ăn yêu thích', favoriteMusic: 'Âm nhạc yêu thích',
+    addSkill: 'Thêm kỹ năng', addQual: 'Thêm bằng cấp',
+    addEdu: 'Thêm quá trình học', addWork: 'Thêm kinh nghiệm',
+    yearPH: 'Năm', descPH: 'Mô tả',
+    skillPH: 'Vd: Lãnh đạo, tiếng Anh…', qualPH: 'Vd: Đại học Luật, MBA…',
+    eduPH: 'Vd: Đại học Bách Khoa – Kỹ thuật', workPH: 'Vd: Giám đốc – Công ty ABC',
+    profileSections: 'Hồ Sơ Chi Tiết',
+    height: 'Chiều cao', weight: 'Cân nặng', bloodType: 'Nhóm máu',
+    phone: 'Điện thoại', email: 'Email', bio: 'Tiểu sử',
+    social: 'Mạng xã hội',
   },
   en: {
     memberCountOf: (f,t) => `${f} of ${t} members`,
@@ -1012,6 +1512,18 @@ const STRINGS = {
     fullRegister: 'Complete Member Register',
     memberCount:   (n,s) => `Generation ${n}: ${s} member${s!==1?'s':''}`,
     statusMarried: 'Married', statusSingle: 'Single',
+    skills: 'Skills', qualifications: 'Qualifications',
+    education: 'Education History', workExp: 'Work Experience',
+    hobbies: 'Hobbies', favoriteFood: 'Favorite Food', favoriteMusic: 'Favorite Music',
+    addSkill: 'Add Skill', addQual: 'Add Qualification',
+    addEdu: 'Add Education', addWork: 'Add Work Entry',
+    yearPH: 'Year', descPH: 'Description',
+    skillPH: 'e.g. Leadership, English…', qualPH: 'e.g. Law Degree, MBA…',
+    eduPH: 'e.g. Hanoi Univ of Tech – Engineering', workPH: 'e.g. Director – ABC Company',
+    profileSections: 'Detailed Profile',
+    height: 'Height', weight: 'Weight', bloodType: 'Blood Type',
+    phone: 'Phone', email: 'Email', bio: 'Bio',
+    social: 'Social Media',
   }
 };
 
@@ -1066,6 +1578,70 @@ let sortDir = 'asc';
 const BRANCH_COLORS = ['#9b2a2a','#2a5a8b','#2d6b3f','#b5842c','#7b3b6e','#4a7a8a','#6b4a2a','#3b5a3b'];
 
 // ── INIT ──
+
+// ─── Profile Timeline State ───────────────────────────────
+let profileEntries = {skills:[], qualifications:[], education:[], work:[], hobbies:[], food:[], music:[]};
+
+const PROF_CFG = {
+  skills:        {listId:'skillsEntries', yearId:'sk-year', descId:'sk-desc', hasYear:true},
+  qualifications:{listId:'qualsEntries',  yearId:'ql-year', descId:'ql-desc', hasYear:true},
+  education:     {listId:'eduEntries',    yearId:'ed-year', descId:'ed-desc', hasYear:true},
+  work:          {listId:'workEntries',   yearId:'wk-year', descId:'wk-desc', hasYear:true},
+  hobbies:       {listId:'hobbiesEntries', yearId:null,     descId:'hb-desc', hasYear:false},
+  food:          {listId:'foodEntries',    yearId:null,     descId:'fd-desc', hasYear:false},
+  music:         {listId:'musicEntries',   yearId:null,     descId:'mu-desc', hasYear:false},
+};
+
+function renderProfileEntries(type) {
+  const cfg = PROF_CFG[type];
+  const el = document.getElementById(cfg.listId);
+  if (!el) return;
+  const arr = profileEntries[type];
+  if (!arr.length) { el.innerHTML = '<div class="te-empty">—</div>'; return; }
+  if (!cfg.hasYear) {
+    el.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.3rem">'
+      + arr.map((e,i) => `<span class="tag-chip">${e.desc}
+          <button class="te-remove" onclick="removeProfileEntry('${type}',${i})" style="margin-left:.3rem">✕</button>
+        </span>`).join('')
+      + '</div>';
+  } else {
+    el.innerHTML = arr.map((e,i) => `<div class="timeline-entry-edit">
+        <span class="te-year">${e.year||'—'}</span>
+        <span class="te-desc">${e.desc}</span>
+        <button class="te-remove" onclick="removeProfileEntry('${type}',${i})">✕</button>
+      </div>`).join('');
+  }
+}
+
+function addProfileEntry(type) {
+  const cfg = PROF_CFG[type];
+  const year = cfg.hasYear ? ((document.getElementById(cfg.yearId)||{}).value?.trim() || '') : '';
+  const desc = (document.getElementById(cfg.descId)||{}).value?.trim() || '';
+  if (!desc) return;
+  profileEntries[type].push({year, desc});
+  if (cfg.hasYear) profileEntries[type].sort((a,b)=>(+a.year||0)-(+b.year||0));
+  renderProfileEntries(type);
+  if (cfg.yearId && document.getElementById(cfg.yearId)) document.getElementById(cfg.yearId).value = '';
+  if (document.getElementById(cfg.descId)) document.getElementById(cfg.descId).value = '';
+}
+
+function removeProfileEntry(type, idx) {
+  profileEntries[type].splice(idx, 1);
+  renderProfileEntries(type);
+}
+
+function loadProfileEntries(m) {
+  ['skills','qualifications','education','work','hobbies','food','music'].forEach(t => {
+    profileEntries[t] = (Array.isArray(m[t]) ? m[t] : []).slice();
+    renderProfileEntries(t);
+  });
+}
+
+function clearProfileEntries() {
+  profileEntries = {skills:[], qualifications:[], education:[], work:[], hobbies:[], food:[], music:[]};
+  ['skills','qualifications','education','work','hobbies','food','music'].forEach(t => renderProfileEntries(t));
+}
+
 function init() {
   try {
     const saved = localStorage.getItem('la_family_db_v2');
@@ -1075,6 +1651,9 @@ function init() {
   applyFilters();
   buildStats();
   populateTreeSelect();
+  // Open LãLữ House (analysis) as the home page
+  const analysisTab = document.querySelector('.tab.active');
+  switchTab('analysis', analysisTab);
 }
 
 function save() {
@@ -1236,6 +1815,67 @@ function renderDetail(id) {
   const relLabel = m.relationship==='Blood' ? s('blood') : m.relationship==='Adopted' ? s('adopted') : m.relationship;
   const statusLabel = m.status==='Married' ? s('statusMarried') : m.status==='Single' ? s('statusSingle') : m.status||'';
 
+  // ── Profile timeline ──
+  const profileSecs = [
+    {key:'skills',       icon:'💼', label:s('skills')},
+    {key:'qualifications',icon:'🎓',label:s('qualifications')},
+    {key:'education',    icon:'📚', label:s('education')},
+    {key:'work',         icon:'🏢', label:s('workExp')},
+  ];
+  const profileHTML = profileSecs.map(({key,icon,label}) => {
+    const entries = (m[key]||[]).slice().sort((a,b)=>(+a.year||0)-(+b.year||0));
+    if (!entries.length) return '';
+    return '<div class="section-heading">'+icon+' '+label+'</div>'
+         + '<div class="timeline-list">'+entries.map(e=>
+           '<div class="timeline-entry">'
+           +'<div class="timeline-year">'+(e.year||'?')+'</div>'
+           +'<div class="timeline-text">'+(e.desc||'')+'</div>'
+           +'</div>').join('')+'</div>';
+  }).join('');
+
+  // ── Tag sections (hobbies / food / music) ──
+  const tagSecs = [
+    {key:'hobbies', icon:'🎨', label:s('hobbies')},
+    {key:'food',    icon:'🍜', label:s('favoriteFood')},
+    {key:'music',   icon:'🎵', label:s('favoriteMusic')},
+  ];
+  const tagHTML = tagSecs.map(({key,icon,label}) => {
+    const arr = (m[key]||[]);
+    if (!arr.length) return '';
+    return '<div class="section-heading">'+icon+' '+label+'</div>'
+         + '<div style="margin-bottom:.6rem">'
+         + arr.map(e=>`<span class="tag-chip">${e.desc||e}</span>`).join('')
+         + '</div>';
+  }).join('');
+
+  // ── Physical / Contact / Social / Bio ──
+  const hasBio = m.bio && m.bio.trim();
+  const hasPhysical = m.height || m.weight || m.blood_type;
+  const hasContact = m.phone || m.email;
+  const hasSocial = m.social_fb || m.social_ig || m.social_tt || m.social_other;
+
+  const physicalHTML = hasPhysical ? `
+    <div class="section-heading">💪 ${LANG==='vi'?'Thể chất':'Physical'}</div>
+    <div class="info-grid" style="margin-bottom:.7rem">
+      ${m.height?`<div class="info-item"><label>${s('height')} (cm)</label><span>${m.height}</span></div>`:''}
+      ${m.weight?`<div class="info-item"><label>${s('weight')} (kg)</label><span>${m.weight}</span></div>`:''}
+      ${m.blood_type?`<div class="info-item"><label>${s('bloodType')}</label><span>${m.blood_type}</span></div>`:''}
+    </div>` : '';
+
+  const contactHTML = (hasContact||hasSocial) ? `
+    <div class="section-heading">📞 ${LANG==='vi'?'Liên hệ & Mạng xã hội':'Contact & Social'}</div>
+    <div class="info-grid" style="margin-bottom:.7rem">
+      ${m.phone?`<div class="info-item"><label>${s('phone')}</label><span>${m.phone}</span></div>`:''}
+      ${m.email?`<div class="info-item"><label>${s('email')}</label><span><a href="mailto:${m.email}" style="color:var(--blue-m)">${m.email}</a></span></div>`:''}
+      ${m.social_fb?`<div class="info-item"><label>Facebook</label><span>${m.social_fb}</span></div>`:''}
+      ${m.social_ig?`<div class="info-item"><label>Instagram</label><span>${m.social_ig}</span></div>`:''}
+      ${m.social_tt?`<div class="info-item"><label>TikTok</label><span>${m.social_tt}</span></div>`:''}
+      ${m.social_other?`<div class="info-item"><label>${s('social')}</label><span>${m.social_other}</span></div>`:''}
+    </div>` : '';
+
+  const bioHTML = hasBio ? `
+    <div class="section-heading">📝 ${s('bio')}</div>
+    <div style="font-size:.85rem;line-height:1.6;color:var(--ink);background:var(--paper-mid);border-radius:5px;padding:.65rem .85rem;margin-bottom:.7rem;border-left:3px solid var(--gold)">${m.bio}</div>` : '';
   el.innerHTML = `
   <div class="person-card">
     <div class="card-header">
@@ -1276,6 +1916,11 @@ function renderDetail(id) {
       <div>${siblings.slice(0,12).map(ss=>`<span class="relation-chip ${ss.sex==='M'?'male-chip':ss.sex==='F'?'female-chip':''}" onclick="selectMember(${ss.id})">
         <span class="chip-name">${ss.full_name}</span></span>`).join('')}
         ${siblings.length>12?`<span class="empty-msg"> ${s('more',siblings.length-12)}</span>`:''}</div>`:''}
+      \${bioHTML}
+      \${physicalHTML}
+      \${contactHTML}
+      \${profileHTML}
+      \${tagHTML}
     </div>
     <div class="card-actions">
       <button class="btn btn-primary" onclick="editMember(${m.id})">${s('editBtn')}</button>
@@ -1453,12 +2098,14 @@ function editMember(id) {
   const m = DB.find(x => x.id === id);
   if (!m) return;
   editingId = id;
-  ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2']
+  ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2',
+   'height','weight','blood_type','phone','email','social_fb','social_ig','social_tt','social_other','bio']
     .forEach(f=>{ const el=document.getElementById('f-'+f); if(el) el.value=m[f]||''; });
   const ft = document.getElementById('formTitle');
   ft.dataset.vi = `✏️ Sửa: ${m.full_name}`;
   ft.dataset.en = `✏️ Edit: ${m.full_name}`;
   ft.textContent = s('editTitle', m.full_name);
+  loadProfileEntries(m);
   document.getElementById('cancelEditBtn').style.display = '';
   switchTab('add', document.querySelectorAll('.tab')[4]);
 }
@@ -1482,6 +2129,23 @@ function saveMember() {
     status:      get('status'), dob: get('dob'), dod: get('dod'),
     father:      get('father'), mother: get('mother'), spouse: get('spouse'),
     spouse_dob:  get('spouse_dob'), address: get('address'), address2: get('address2'),
+    // Physical
+    height:      get('height'), weight: get('weight'), blood_type: get('blood_type'),
+    // Contact
+    phone:       get('phone'), email: get('email'),
+    // Social
+    social_fb:   get('social_fb'), social_ig: get('social_ig'),
+    social_tt:   get('social_tt'), social_other: get('social_other'),
+    // Bio
+    bio:         get('bio'),
+    // Profile entries
+    skills:      profileEntries.skills.slice(),
+    qualifications: profileEntries.qualifications.slice(),
+    education:   profileEntries.education.slice(),
+    work:        profileEntries.work.slice(),
+    hobbies:     profileEntries.hobbies.slice(),
+    food:        profileEntries.food.slice(),
+    music:       profileEntries.music.slice(),
   };
   if (editingId) {
     const idx = DB.findIndex(m=>m.id===editingId);
@@ -1495,8 +2159,10 @@ function saveMember() {
   save(); populateFilters(); applyFilters(); buildStats();
 }
 function clearForm() {
-  ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2']
+  ['full_name','surname','middle_name','first_name','sex','generation','branch','title','relationship','status','dob','dod','father','mother','spouse','spouse_dob','address','address2',
+   'height','weight','blood_type','phone','email','social_fb','social_ig','social_tt','social_other','bio']
     .forEach(f=>{ const el=document.getElementById('f-'+f); if(el) el.value=''; });
+  clearProfileEntries();
 }
 
 // ── DELETE ──
@@ -1550,10 +2216,658 @@ function switchTab(id, el) {
   const panel = document.getElementById('panel-' + id);
   if (panel) panel.classList.add('active');
   if (el) el.classList.add('active');
-  if (id === 'table')  renderTable();
-  if (id === 'stats')  buildStats();
-  if (id === 'tree')   { populateTreeSelect(); buildTree(); }
+  if (id === 'table')    renderTable();
+  if (id === 'stats')    buildStats();
+  if (id === 'tree')     { populateTreeSelect(); buildTree(); }
+  if (id === 'analysis') buildAnalysis();
 }
+
+// ── ANALYSIS POPOVER ──
+(function() {
+  let _pop = null;
+  window._anPopover = {
+    show(el, html) {
+      if (!_pop) {
+        _pop = document.createElement('div');
+        _pop.className = 'an-popover';
+        document.body.appendChild(_pop);
+      }
+      _pop.innerHTML = html;
+      const r = el.getBoundingClientRect();
+      _pop.style.left = Math.min(r.left, window.innerWidth - 300) + 'px';
+      _pop.style.top  = (r.bottom + 8) + 'px';
+      requestAnimationFrame(() => _pop.classList.add('visible'));
+    },
+    hide() { if (_pop) _pop.classList.remove('visible'); }
+  };
+})();
+
+// ── ANALYSIS ──
+function buildAnalysis() {
+  const wrap = document.getElementById('analysisWrap');
+  if (!wrap) return;
+
+  const vi = LANG === 'vi';
+
+  const valid = DB.filter(m => m.full_name && m.full_name.trim());
+  if (!valid.length) {
+    wrap.innerHTML = `<div style="color:var(--ink-dim);padding:2rem;text-align:center">${vi ? 'Chưa có dữ liệu để phân tích.' : 'No data available for analysis.'}</div>`;
+    return;
+  }
+
+  // ── Compute core metrics ──
+  const byGen = {};
+  valid.forEach(m => { (byGen[m.generation] = byGen[m.generation] || []).push(m); });
+  const sortedGens = Object.keys(byGen).map(Number).sort((a,b) => a - b);
+
+  const totalM   = valid.filter(m => m.sex === 'M').length;
+  const totalF   = valid.filter(m => m.sex === 'F').length;
+  const deceased = valid.filter(m => m.dod && m.dod.trim()).length;
+  const living   = valid.length - deceased;
+  const married  = valid.filter(m => m.status === 'Married').length;
+  const adopted  = valid.filter(m => m.relationship === 'Adopted').length;
+  const branches = [...new Set(valid.map(m => m.branch).filter(Boolean))];
+
+  // Birth-year members
+  const withDobYear = valid.filter(m => /^\d{4}/.test(m.dob || ''));
+  const getYear = m => parseInt(m.dob);
+  const oldest   = withDobYear.length ? withDobYear.reduce((a,b)=>getYear(a)<getYear(b)?a:b) : null;
+  const youngest = withDobYear.length ? withDobYear.reduce((a,b)=>getYear(a)>getYear(b)?a:b) : null;
+  const spanYears = (oldest && youngest) ? getYear(youngest) - getYear(oldest) : null;
+
+  // Longevity
+  const withLifespan = valid.filter(m => /^\d{4}/.test(m.dob||'') && /^\d{4}/.test(m.dod||''));
+  const lifespans = withLifespan.map(m => parseInt(m.dod) - parseInt(m.dob)).filter(y => y > 0 && y < 130);
+  const avgLifespan  = lifespans.length ? Math.round(lifespans.reduce((a,b)=>a+b,0)/lifespans.length) : null;
+  const maxLifespan  = lifespans.length ? Math.max(...lifespans) : null;
+  const longestLiver = withLifespan.find(m => (parseInt(m.dod)-parseInt(m.dob)) === maxLifespan) || null;
+
+  // Generation growth
+  const genCounts    = sortedGens.map(g => byGen[g].length);
+  const maxGen       = Math.max(...genCounts);
+  const largestGenIdx = sortedGens[genCounts.indexOf(maxGen)];
+
+  // Geographic spread from address2
+  const cities = valid.map(m => (m.address2 || '').trim()).filter(Boolean);
+  const cityCount = {};
+  cities.forEach(c => { cityCount[c] = (cityCount[c]||0)+1; });
+  const topCities = Object.entries(cityCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const geoMax = topCities.length ? topCities[0][1] : 1;
+
+  // Given-name frequency
+  const firstNames = valid.map(m => (m.first_name || m.full_name.split(' ').pop() || '').trim()).filter(Boolean);
+  const nameCount = {};
+  firstNames.forEach(n => { nameCount[n] = (nameCount[n]||0)+1; });
+  const topNames = Object.entries(nameCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const nameMax  = topNames.length ? topNames[0][1] : 1;
+
+  // Vietnamese historical eras
+  const VIET_HISTORY = [
+    { label:'Trước 1427',  labelEn:'Pre-1427',   start:0,    end:1426, name:'Early Dynasties',            nameVi:'Thời Lý–Trần–Hồ',               color:'#7b3b6e',
+      desc: vi ? 'Thời kỳ hình thành Đại Việt: văn hóa Phật giáo, kháng cự ảnh hưởng Trung Hoa và nền tảng Nho học Việt Nam.' : 'Formative era of Đại Việt: Buddhist culture, Chinese governance resistance, and the founding of Vietnamese Confucian scholarship.' },
+    { label:'1427–1527',   labelEn:'1427–1527',   start:1427, end:1526, name:'Early Lê Dynasty',           nameVi:'Lê Sơ (1428–1527)',              color:'#9b2a2a',
+      desc: vi ? 'Thời hoàng kim: cải cách pháp luật của Lê Thánh Tông, Bộ luật Hồng Đức và mở rộng lãnh thổ về phía Nam. Các kỳ thi Nho giáo định hình gia tộc trí thức.' : 'A golden age: Lê Thánh Tông\'s legal reforms, Hồng Đức Code, and southward expansion. Confucian civil exams shaped elite families.' },
+    { label:'1527–1592',   labelEn:'1527–1592',   start:1527, end:1591, name:'Mạc–Lê Conflict',           nameVi:'Mạc–Lê tranh quyền',             color:'#5c4a38',
+      desc: vi ? 'Phân mảnh chính trị. Nhà Mạc cướp ngôi và cuộc phục hồi nhà Lê chia cắt miền Bắc. Các dòng họ trí thức phải điều hướng giữa hai phe.' : 'Political fragmentation. The Mạc usurpation and Lê restoration split the north. Literate families navigated divided loyalties.' },
+    { label:'1592–1789',   labelEn:'1592–1789',   start:1592, end:1788, name:'Lê-Trịnh / Nguyễn Lords', nameVi:'Lê–Trịnh & Chúa Nguyễn',         color:'#2a5a8b',
+      desc: vi ? 'Việt Nam chia đôi: chúa Trịnh trị vì miền Bắc, chúa Nguyễn ở phương Nam. Giao thương, truyền đạo Công giáo và mở rộng dần về phương Nam.' : 'Vietnam split: Trịnh lords ruled the north, Nguyễn lords the south. Trade, Catholic missionaries, and gradual southern expansion defined the era.' },
+    { label:'1789–1802',   labelEn:'1789–1802',   start:1789, end:1801, name:'Tây Sơn Uprising',          nameVi:'Phong trào Tây Sơn',             color:'#2d6b3f',
+      desc: vi ? 'Nguyễn Huệ đánh tan quân Thanh tại Đống Đa (1789). Một cuộc cách mạng nông dân thống nhất Việt Nam trong chốc lát trước khi Nguyễn Ánh giành quyền.' : 'Nguyễn Huệ repelled the Qing army at Đống Đa (1789). A peasant revolution that briefly unified Vietnam before Nguyễn Ánh prevailed.' },
+    { label:'1802–1884',   labelEn:'1802–1884',   start:1802, end:1883, name:'Nguyễn Dynasty',            nameVi:'Triều Nguyễn (1802–1884)',        color:'#b5842c',
+      desc: vi ? 'Gia Long thống nhất đất nước. Huế trở thành kinh đô. Thể chế Nho giáo và Quốc Sử Quán chuẩn hóa việc ghi chép gia phả.' : 'Gia Long unified Vietnam. Huế became the imperial capital. Confucian institutions standardised genealogy records.' },
+    { label:'1884–1945',   labelEn:'1884–1945',   start:1884, end:1944, name:'French Colonial Period',    nameVi:'Thời Pháp thuộc (1884–1945)',     color:'#4a7a8a',
+      desc: vi ? 'Hiện đại hóa thuộc địa: đường sắt, chữ Quốc ngữ và di cư đô thị. Nhiều gia đình chuyển từ làng xã lên Hà Nội và Sài Gòn.' : 'Colonial modernity: railways, romanised Quốc ngữ script, and urban migration. Many families moved from villages to Hà Nội & Sài Gòn.' },
+    { label:'1945–1975',   labelEn:'1945–1975',   start:1945, end:1974, name:'War & Independence',        nameVi:'Thời chiến (1945–1975)',          color:'#c84b4b',
+      desc: vi ? 'Độc lập (1945), chia cắt vĩ tuyến 17 (1954) và Chiến tranh Việt Nam. Di cư ồ ạt, gia đình chia lìa Nam–Bắc và biến động xã hội lớn.' : 'Independence (1945), partition at the 17th parallel (1954), and the Vietnam War. Massive displacement and north–south family separations.' },
+    { label:'1975–1986',   labelEn:'1975–1986',   start:1975, end:1985, name:'Post-Reunification',        nameVi:'Hậu thống nhất (1975–1986)',      color:'#5c4a38',
+      desc: vi ? 'Thống nhất dưới CHXHCN Việt Nam. Tập thể hóa, làn sóng thuyền nhân và chiến tranh biên giới định hình thập niên này.' : 'Reunification under the Socialist Republic. Collectivisation, the boat-people crisis, and border wars shaped this decade.' },
+    { label:'1986–nay',    labelEn:'1986–now',    start:1986, end:2099, name:'Đổi Mới & Modern Era',     nameVi:'Đổi Mới & Hiện đại (1986–nay)',  color:'#2d6b3f',
+      desc: vi ? 'Đổi Mới biến đổi nền kinh tế. Đô thị hóa, cộng đồng hải ngoại và kết nối kỹ thuật số định hình cuộc sống các thế hệ trẻ.' : 'Đổi Mới transformed Vietnam\'s economy. Urbanisation, diaspora communities, and digital connectivity define family life for younger generations.' },
+  ];
+
+  const dynOverlap = VIET_HISTORY.map(era => ({
+    ...era,
+    count: withDobYear.filter(m => { const y=getYear(m); return y>=era.start && y<=era.end; }).length
+  }));
+
+  // ── Auto-generated bilingual insights ──
+  const insights = [];
+  if (spanYears !== null) insights.push(
+    vi ? `Huyết mạch họ Lã trải dài <strong>${spanYears} năm</strong> lịch sử được ghi chép, từ năm ${getYear(oldest)} đến ${getYear(youngest)}.`
+       : `The Lã bloodline spans <strong>${spanYears} years</strong> of recorded history, from ${getYear(oldest)} to ${getYear(youngest)}.`
+  );
+  if (sortedGens.length >= 3) insights.push(
+    vi ? `Với <strong>${sortedGens.length} đời</strong> được lưu lại, đây là gia phả ${sortedGens.length >= 6 ? 'nhiều thế kỷ, rất đồ sộ' : sortedGens.length >= 4 ? 'nhiều thế hệ, được ghi chép tốt' : 'đang phát triển'}.`
+       : `With <strong>${sortedGens.length} generations</strong> documented, this is a ${sortedGens.length >= 6 ? 'deep, multi-century' : sortedGens.length >= 4 ? 'well-documented multi-generational' : 'growing'} family record.`
+  );
+  const mfRatio = totalF > 0 ? (totalM/totalF).toFixed(2) : '∞';
+  if (totalM && totalF) insights.push(
+    vi ? `Tỉ lệ giới tính: <strong>${totalM} nam : ${totalF} nữ</strong> (${mfRatio}:1) — ${totalM > totalF ? 'đa số nam, đặc trưng của gia phả theo phụ hệ Việt Nam' : 'tỉ lệ nữ cao, phản ánh cách ghi chép hiện đại và toàn diện'}.`
+       : `Gender ratio is <strong>${totalM}M : ${totalF}F</strong> (${mfRatio}:1) — ${totalM > totalF ? 'male-majority, typical of patrilineal Vietnamese clan books' : 'high female representation, suggesting modern or inclusive record-keeping'}.`
+  );
+  if (avgLifespan) insights.push(
+    vi ? `Tuổi thọ trung bình của những thành viên có đủ ngày sinh và mất là <strong>${avgLifespan} tuổi</strong>${longestLiver ? ` — thọ nhất: ${longestLiver.full_name} (${maxLifespan} tuổi)` : ''}.`
+       : `Average lifespan among members with birth and death years is <strong>${avgLifespan} years</strong>${longestLiver ? ` — longest-lived: ${longestLiver.full_name} at ${maxLifespan} years` : ''}.`
+  );
+  if (largestGenIdx !== undefined) insights.push(
+    vi ? `Đời ${largestGenIdx} là thế hệ đông nhất với <strong>${maxGen} thành viên</strong>, gợi ý một đỉnh nhân khẩu học trong lịch sử phát triển dòng họ.`
+       : `Generation ${largestGenIdx} is the largest cohort with <strong>${maxGen} members</strong>, indicating a demographic peak in the family's growth.`
+  );
+  if (branches.length > 1) insights.push(
+    vi ? `Dòng họ đã phân thành <strong>${branches.length} phòng (chi)</strong>: ${branches.slice(0,3).join(', ')}${branches.length>3?` và ${branches.length-3} phòng khác`:''}.`
+       : `The family has branched into <strong>${branches.length} distinct phòng</strong>: ${branches.slice(0,3).join(', ')}${branches.length>3?` and ${branches.length-3} more`:''}.`
+  );
+  const activeEras = dynOverlap.filter(e=>e.count>0);
+  if (activeEras.length) insights.push(
+    vi ? `Thành viên sinh ra trong <strong>${activeEras.length} giai đoạn lịch sử Việt Nam</strong>, từ ${activeEras[0].nameVi} đến ${activeEras[activeEras.length-1].nameVi}.`
+       : `Members were born across <strong>${activeEras.length} Vietnamese historical era${activeEras.length!==1?'s':''}</strong>, from the ${activeEras[0].name} to the ${activeEras[activeEras.length-1].name}.`
+  );
+  if (topCities.length) insights.push(
+    vi ? `Thành viên có mặt ở <strong>${topCities.length} địa phương</strong>. Phổ biến nhất: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
+       : `Members recorded across <strong>${topCities.length} location${topCities.length!==1?'s':''}</strong>. Most common: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
+  );
+
+  // ── Helper render functions ──
+  const pct = (n, total) => total ? Math.round(n/total*100) : 0;
+  const bar  = (p, color) => `<div class="an-stat-bar-track"><div class="an-stat-bar-fill" style="width:${p}%;background:${color}"></div></div>`;
+
+  const card = (headIcon, headText, bodyHTML) =>
+    `<div class="an-card">
+       <div class="an-card-head"><span>${headIcon}</span>${headText}</div>
+       <div class="an-card-body">${bodyHTML}</div>
+     </div>`;
+
+  const statRow = (label, val, p, color) =>
+    `<div class="an-stat-row">
+       <span class="an-stat-label">${label}</span>
+       ${bar(p, color)}
+       <span class="an-stat-val">${val}</span>
+     </div>`;
+
+  const emptyMsg = txt => `<div class="empty-msg" style="padding:.4rem 0">${txt}</div>`;
+
+  // ── Section: Insights ──
+  const insightsHTML = `
+    <div class="an-section-block">
+      <div class="an-section-title">💡 ${vi ? 'Nhận Định Huyết Thống' : 'Bloodline Insights'}</div>
+      ${insights.length ? insights.map(i=>`<div class="an-insight">${i}</div>`).join('') : emptyMsg(vi ? 'Chưa đủ dữ liệu để tạo nhận định.' : 'Not enough data to generate insights.')}
+    </div>`;
+
+  // ── Section: Surname origin ──
+  const originHTML = card('族', vi ? 'Nguồn Gốc Họ Lã · Surname Origin' : 'Surname Origin · Nguồn Gốc Họ Lã',
+    `<div class="an-origin-box">
+       <div class="an-origin-char">呂 / 吕</div>
+       <div class="an-origin-pinyin">LǙ (Mandarin) · LÃ (Vietnamese)</div>
+       <div class="an-origin-meaning">${vi
+         ? 'Một trong những họ Trung Hoa cổ nhất, bắt nguồn từ nước Lǚ thời Tây Chu (khoảng thế kỷ 11 TCN). Chữ 呂 mô tả xương sống — biểu tượng cho sự thẳng thắn, vững chắc và sự tiếp nối dòng tộc.'
+         : 'One of the oldest Chinese clan names, traced to the state of Lǚ in ancient Zhou dynasty China (c. 11th century BC). The character depicts a spine — symbolising uprightness and lineage continuity.'}</div>
+     </div>
+     ${statRow(vi ? 'Phiên âm tiếng Việt' : 'Vietnamese romanisation', 'Lã · Lữ · Lư', 0, 'transparent')}
+     ${statRow(vi ? 'Nghĩa chữ' : 'Character meaning', vi ? 'Xương sống / Cột sống' : 'Backbone / Spine', 0, 'transparent')}
+     ${statRow(vi ? 'Nước gốc' : 'Origin state', 'Lǚ (呂國), Zhou China', 0, 'transparent')}
+     ${statRow(vi ? 'Thủy tổ huyền thoại' : 'Legendary ancestor', 'Lǚ Shang (Jiang Ziya)', 0, 'transparent')}
+     ${statRow(vi ? 'Nhân vật lịch sử nổi bật' : 'Notable figures', 'Lã Gia (Nam Việt), Lǚ Buwei (Tần)', 0, 'transparent')}
+     <div style="margin-top:.75rem">
+       <div class="an-section-title" style="margin-bottom:.4rem">${vi ? 'Tỉ lệ họ Lã tại Việt Nam' : 'Vietnamese Surname Prevalence'}</div>
+       <span class="an-rank-pill"><span class="an-rank-num">~39</span>${vi ? 'Xếp hạng toàn quốc' : 'Ranked nationally'}</span>
+       <span class="an-rank-pill"><span class="an-rank-num">~1%</span>${vi ? 'Dân số' : 'of population'}</span>
+       <span class="an-rank-pill"><span class="an-rank-num">Bắc Bộ</span>${vi ? 'Phổ biến nhất' : 'Most common'}</span>
+     </div>`
+  );
+
+  // ── Section: Bloodline demographics ──
+  const demoHTML = card('📊', vi ? 'Nhân Khẩu Học Huyết Thống · Demographics' : 'Bloodline Demographics · Nhân Khẩu Học',
+    `<div class="an-mini-grid" style="margin-bottom:.75rem">
+       <div class="an-mini-card">
+         <div class="an-mini-val">${valid.length}</div>
+         <div class="an-mini-lbl">${vi ? 'Tổng thành viên' : 'Total Recorded'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val" style="color:var(--green)">${living}</div>
+         <div class="an-mini-lbl">${vi ? 'Còn sống' : 'Living'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val" style="color:var(--blue-m)">${totalM}</div>
+         <div class="an-mini-lbl">${vi ? 'Nam ♂' : 'Male ♂'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val" style="color:var(--blue-f)">${totalF}</div>
+         <div class="an-mini-lbl">${vi ? 'Nữ ♀' : 'Female ♀'}</div>
+       </div>
+       ${avgLifespan ? `<div class="an-mini-card"><div class="an-mini-val">${avgLifespan}<span style="font-size:.85rem"> ${vi?'tuổi':'yr'}</span></div><div class="an-mini-lbl">${vi ? 'Tuổi thọ TB' : 'Avg Lifespan'}</div></div>` : ''}
+       ${sortedGens.length ? `<div class="an-mini-card"><div class="an-mini-val">${sortedGens.length}</div><div class="an-mini-lbl">${vi ? 'Số đời' : 'Generations'}</div></div>` : ''}
+     </div>
+     ${statRow(vi ? 'Đã mất' : 'Deceased on record', deceased, pct(deceased,valid.length), 'var(--ink-dim)')}
+     ${statRow(vi ? 'Đã kết hôn' : 'Married', married, pct(married,valid.length), 'var(--gold)')}
+     ${statRow(vi ? 'Con nuôi' : 'Adopted members', adopted, pct(adopted,valid.length), 'var(--blue-f)')}
+     ${statRow(vi ? 'Có ngày sinh' : 'Birth date known', withDobYear.length, pct(withDobYear.length,valid.length), 'var(--green)')}
+     ${spanYears !== null ? `<div style="margin-top:.65rem;font-size:.77rem;color:var(--ink-dim);line-height:1.5">
+       ${vi ? 'Cụ tổ xa nhất' : 'Oldest recorded'}: <strong style="color:var(--red)">${oldest.full_name}</strong> (${vi?'sinh':'b.'} ${getYear(oldest)})
+       &nbsp;·&nbsp;
+       ${vi ? 'Trẻ nhất' : 'Youngest'}: <strong style="color:var(--green)">${youngest.full_name}</strong> (${vi?'sinh':'b.'} ${getYear(youngest)})
+     </div>` : ''}`
+  );
+
+  // ── Section: Generation growth ──
+  const sparkBarsM = genCounts.map((c,i) => {
+    const h = maxGen ? Math.round((c/maxGen)*100) : 0;
+    const mC = byGen[sortedGens[i]].filter(m=>m.sex==='M').length;
+    const fC = byGen[sortedGens[i]].filter(m=>m.sex==='F').length;
+    return `<div class="an-spark-bar" data-gen="${sortedGens[i]}" style="height:${h}%;background:linear-gradient(to top,var(--red),var(--gold))" title="${vi?'Đời':'Gen'} ${sortedGens[i]}: ${c} ${vi?'thành viên':'members'}"></div>`;
+  }).join('');
+  const sparkLabels = sortedGens.map(g=>`<div class="an-spark-lbl">G${g}</div>`).join('');
+
+  const growthHTML = card('📈', vi ? 'Tăng Trưởng Theo Đời · Generation Growth' : 'Generation Growth · Tăng Trưởng Theo Đời',
+    `<div class="an-spark-row">${sparkBarsM}</div>
+     <div class="an-spark-label">${sparkLabels}</div>
+     <div style="margin-top:.65rem;display:flex;flex-direction:column;gap:.18rem">
+       ${sortedGens.map((g,i) => {
+         const prev = i > 0 ? genCounts[i-1] : null;
+         const diff = prev !== null ? genCounts[i] - prev : null;
+         const arrow = diff === null ? ''
+           : diff > 0 ? `<span style="color:var(--green);font-family:var(--mono);font-size:.7rem">▲${diff}</span>`
+           : diff < 0 ? `<span style="color:var(--red);font-family:var(--mono);font-size:.7rem">▼${Math.abs(diff)}</span>`
+           : `<span style="color:var(--ink-dim);font-family:var(--mono);font-size:.7rem">—</span>`;
+         const mCount = byGen[g].filter(m=>m.sex==='M').length;
+         const fCount = byGen[g].filter(m=>m.sex==='F').length;
+         const dCount = byGen[g].filter(m=>m.dod).length;
+         return `<div class="gen-detail-row" data-gen="${g}" style="display:flex;align-items:center;gap:.5rem;font-size:.77rem;padding:.2rem 0;border-bottom:1px solid var(--paper-rim)">
+           <span style="font-family:var(--mono);color:var(--gold);min-width:32px;font-weight:700">G${g}</span>
+           <span style="flex:1;color:var(--ink-dim)">${mCount}♂ · ${fCount}♀${dCount ? ` · ${dCount} ${vi?'mất':'dec.'}` : ''}</span>
+           <span style="font-weight:700;font-family:var(--mono);color:var(--ink)">${genCounts[i]}</span>
+           ${arrow}
+         </div>`;
+       }).join('')}
+     </div>`
+  );
+
+  // ── Section: Geographic distribution ──
+  const geoHTML = card('📍', vi ? 'Phân Bố Địa Lý · Geographic Spread' : 'Geographic Spread · Phân Bố Địa Lý',
+    topCities.length
+      ? topCities.map(([city, count]) =>
+          `<div class="an-stat-row" data-city="${city}">
+             <span class="an-stat-label">${city}</span>
+             ${bar(pct(count, geoMax), 'var(--blue-m)')}
+             <span class="an-stat-val">${count}</span>
+           </div>`
+        ).join('') +
+        `<div style="margin-top:.55rem;font-size:.72rem;color:var(--ink-dim)">
+           ${Object.keys(cityCount).length} ${vi ? `địa phương được ghi nhận trong gia phả.` : `unique location${Object.keys(cityCount).length!==1?'s':''} recorded across the family.`}
+         </div>`
+      : emptyMsg(vi ? 'Chưa có dữ liệu địa lý. Thêm Tỉnh/TP vào hồ sơ thành viên.' : 'No location data recorded. Add City/Province in member profiles.')
+  );
+
+  // ── Section: Common given names ──
+  const namesHTML = card('👤', vi ? 'Tên Phổ Biến · Common Given Names' : 'Common Given Names · Tên Phổ Biến',
+    topNames.length
+      ? topNames.map(([name, count]) =>
+          `<div class="an-stat-row" data-name="${name}">
+             <span class="an-stat-label">${name}</span>
+             ${bar(pct(count, nameMax), 'var(--blue-f)')}
+             <span class="an-stat-val">${count}</span>
+           </div>`
+        ).join('')
+      : emptyMsg(vi ? 'Chưa có dữ liệu tên.' : 'No name data available.')
+  );
+
+  // ── Section: Vietnamese historical context ──
+  const activeHistItems = dynOverlap.map(era => {
+    const members = withDobYear.filter(m => { const y=getYear(m); return y>=era.start && y<=era.end; });
+    return { ...era, members };
+  });
+
+  const histHTML = card('🏛️', vi ? 'Bối Cảnh Lịch Sử Việt Nam · Historical Context' : 'Historical Context · Bối Cảnh Lịch Sử Việt Nam',
+    `<div style="font-size:.77rem;color:var(--ink-dim);margin-bottom:.7rem;line-height:1.55">
+       ${vi
+         ? 'Huyết mạch họ Lã được chiếu theo lịch sử các triều đại Việt Nam. Nhấn vào mỗi giai đoạn để xem chi tiết và danh sách thành viên.'
+         : 'The Lã bloodline mapped against Vietnamese dynastic history. Click each era to expand details and family members.'}
+     </div>
+     <div class="hist-timeline">
+       ${activeHistItems.map(era => `
+         <div class="hist-item" data-era="${vi?era.label:era.labelEn}">
+           <div class="hist-dot" style="background:${era.color};box-shadow:0 0 0 2px ${era.color}33"></div>
+           <div class="hist-content">
+             <div class="hist-era">${vi ? era.label : era.labelEn} <span class="hist-toggle">▶</span></div>
+             <div class="hist-title" style="color:${era.color}">${vi ? era.nameVi : era.name}</div>
+             <div class="hist-body">${era.desc}
+               ${era.members.length
+                 ? `<div class="an-member-drawer">
+                      ${era.members.map(m=>`<span class="an-member-chip" data-id="${m.id}"><span class="chip-gen">G${m.generation}</span>${m.full_name}</span>`).join('')}
+                    </div>`
+                 : `<div style="margin-top:.4rem;font-size:.72rem;color:var(--ink-dim);font-style:italic">${vi?'Chưa có thành viên sinh trong giai đoạn này':'No births recorded in this era'}</div>`}
+             </div>
+             ${era.members.length ? `<div class="hist-overlap" style="cursor:pointer">👥 ${era.members.length} ${vi?'thành viên':'member'}${era.members.length!==1&&!vi?'s':''}</div>` : ''}
+           </div>
+         </div>`).join('')}
+     </div>`
+  );
+
+  // ── Section: Cultural context ──
+  const GLOSSARY = [
+    { term:'Gia Phả', def: vi ? 'Sách ghi chép gia tộc' : 'Genealogical record', detail: vi ? 'Hệ thống ghi chép dòng họ, được lưu giữ từ thời nhà Lý (1009). Ghi lại dòng dõi, tước hiệu, nơi an táng và vai trò tế lễ.' : 'Clan record system kept since the Lý dynasty (1009 AD), recording lineage, honorifics, burial sites and ritual roles.' },
+    { term:'Phòng', def: vi ? 'Chi nhánh dòng họ' : 'Lineage branch', detail: vi ? 'Phân nhánh dòng họ từ các người con trai khác nhau của tổ tiên. Mỗi phòng có bàn thờ và nghi lễ riêng.' : 'Branch descending from different sons of an ancestor. Each phòng maintains its own altar and ceremonies.' },
+    { term:'Đời / Hệ', def: vi ? 'Bậc thế hệ' : 'Generation rank', detail: vi ? 'Đời đầu tiên là thủy tổ, mỗi đời con tiếp nối. Số đời xác định vị trí trong gia phả và quyền ưu tiên trong tế lễ.' : 'Generation 1 is the founding ancestor; each successive generation inherits. The rank determines precedence in ceremonies.' },
+    { term:'Tiên Tổ', def: vi ? 'Thủy tổ sáng lập' : 'Founding ancestor', detail: vi ? 'Người đầu tiên của dòng họ được ghi nhận. Toàn bộ gia phả bắt đầu từ tiên tổ.' : 'The first recorded person of the clan. The entire gia phả traces back to this ancestor.' },
+    { term:'Huyết thống', def: vi ? 'Huyết mạch trực hệ' : 'Blood lineage', detail: vi ? 'Quan hệ trực tiếp từ cha mẹ đến con cái qua các thế hệ, phân biệt với con nuôi hoặc thành viên kết hôn vào dòng họ.' : 'Direct biological descent from parent to child across generations, distinct from adopted or married-in members.' },
+    { term:'Tổ tiên', def: vi ? 'Tổ tiên, ông bà' : 'Ancestors', detail: vi ? 'Tất cả những người đã khuất trong dòng họ. Tín ngưỡng thờ cúng tổ tiên là nền tảng của văn hóa gia đình Việt Nam.' : 'All deceased members of the clan. Ancestor veneration is the cornerstone of Vietnamese family culture.' },
+    { term:'Thờ cúng', def: vi ? 'Thờ phụng tổ tiên' : 'Ancestor veneration', detail: vi ? 'Nghi lễ dâng hương, cúng giỗ vào ngày mất và các dịp lễ tết để tưởng nhớ và cầu sự phù hộ của tổ tiên.' : 'Ritual offering of incense and food on death anniversaries and festivals to honour and seek blessings from ancestors.' },
+    { term:'Hội đồng', def: vi ? 'Hội đồng dòng họ' : 'Clan council', detail: vi ? 'Ban lãnh đạo của dòng họ gồm các trưởng phòng và bậc cao niên, điều phối việc tế lễ, giải quyết tranh chấp và duy trì gia phả.' : 'Clan leadership comprising heads of each phòng and elders, coordinating ceremonies, disputes and gia phả maintenance.' },
+  ];
+
+  const cultureHTML = card('📜', vi ? 'Truyền Thống Gia Phả · Gia Phả Tradition' : 'Gia Phả Tradition · Truyền Thống Gia Phả',
+    `<div class="an-insight" data-insight="giaPha">
+       ${vi
+         ? `<strong>Gia phả</strong> (家譜) là sách ghi chép gia tộc của các gia đình quý tộc và học thức từ thời nhà Lý (1009). Sách ghi lại dòng dõi, tước hiệu, nơi an táng, nguồn gốc chi nhánh và vai trò tế lễ trong dòng họ.`
+         : `<strong>Gia phả</strong> (家譜) — Vietnamese genealogical records — have been kept by scholarly families since the Lý dynasty (1009 AD). They record lineage, honorifics, burial sites, branch origins, and ritual roles within each clan.`}
+     </div>
+     <div class="an-insight" data-insight="surname">
+       ${vi
+         ? `Họ <strong>Lã / 呂</strong> bắt nguồn từ nước Lǚ cổ đại của Trung Hoa. Tại Việt Nam, dòng họ này du nhập qua quá trình di cư thời Bắc thuộc (111 TCN – 938 SCN) và được bản địa hóa qua nhiều thế kỷ giao lưu văn hóa Hán–Việt.`
+         : `The <strong>Lã / 呂</strong> clan trace origins to the ancient Chinese state of Lǚ. In Vietnam, the surname entered via migration during the Chinese administrative period (111 BC – 938 AD) and was naturalised through centuries of Sino-Vietnamese cultural exchange.`}
+     </div>
+     <div class="an-insight" data-insight="naming">
+       ${vi
+         ? `Truyền thống đặt tên Việt Nam đặt <strong>họ đứng đầu</strong> (Họ), theo sau là tên đệm (Tên đệm) và tên chính (Tên). Tên đệm thường mã hóa bậc thế hệ, chi nhánh hoặc đức hạnh Nho giáo — biến nó thành một mã phả hệ sống.`
+         : `Vietnamese naming convention places the <strong>clan surname first</strong> (Họ), followed by a generational middle name (Tên đệm) and given name (Tên). The middle name encodes generation rank, branch identity, or Confucian virtues — a living genealogical code.`}
+     </div>
+     <div class="an-insight" data-insight="phong">
+       ${vi
+         ? `Khái niệm <strong>phòng</strong> (房 — chi nhánh dòng tộc) phân chia dòng họ theo dòng dõi từ các người con trai khác nhau của tổ tiên. Mỗi phòng duy trì sổ sách riêng, bàn thờ và nghĩa vụ tế lễ — bảo tồn bản sắc gia tộc qua không gian và thời gian.`
+         : `The concept of <strong>phòng</strong> (房 — lineage branch) divides a clan by descent from different sons of an ancestor. Each phòng maintains its own sub-records, ancestor altar, and ceremonial obligations — preserving family identity across geography and time.`}
+     </div>
+     <div style="margin-top:.6rem">
+       <div class="an-section-title" style="margin-bottom:.4rem">${vi ? 'Thuật ngữ gia phả — nhấn để xem giải nghĩa' : 'Genealogy Glossary — click a term to see its meaning'}</div>
+       <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+         ${GLOSSARY.map(({term,def,detail})=>`<span class="an-rank-pill" data-def="${detail.replace(/"/g,'&quot;')}" data-term="${term}"><span class="an-rank-num" style="background:var(--gold);color:var(--ink)">${term}</span>${def}</span>`).join('')}
+       </div>
+     </div>`
+  );
+
+  // ── Compose full layout ──
+  wrap.innerHTML = `
+    <div class="an-section-block">
+      <div class="an-page-title">🏠 LãLữ House</div>
+      <div class="an-page-sub">Họ Lã · ${valid.length} ${vi?'thành viên':'members'} · ${sortedGens.length} ${vi?'đời':'generations'} · ${vi?'nhấn vào các mục để khám phá':'click any card or item to explore'}</div>
+    </div>
+
+    ${insightsHTML}
+
+    <div class="analysis-cols">
+      ${originHTML}
+      ${demoHTML}
+    </div>
+
+    <div class="analysis-cols" style="margin-top:1rem">
+      ${growthHTML}
+      ${geoHTML}
+    </div>
+
+    <div class="analysis-cols" style="margin-top:1rem">
+      ${namesHTML}
+      ${cultureHTML}
+    </div>
+
+    <div style="margin-top:1rem">
+      ${histHTML}
+    </div>
+  `;
+
+  // ── Wire up interactions ──
+  _wireAnalysisInteractions(wrap, {
+    vi, valid, byGen, sortedGens, genCounts, cityCount, nameCount,
+    withDobYear, getYear, deceased, living, married, adopted, branches,
+    oldest, youngest, avgLifespan, longestLiver, maxLifespan, topCities, topNames
+  });
+}
+
+function _wireAnalysisInteractions(wrap, ctx) {
+  const { vi, valid, byGen, sortedGens, genCounts, cityCount, nameCount,
+    withDobYear, getYear, deceased, living, married, adopted, branches,
+    oldest, youngest, avgLifespan, longestLiver, maxLifespan, topCities, topNames } = ctx;
+
+  const pop = window._anPopover;
+
+  function goToMember(id) {
+    selectMember(id);
+    switchTab('detail', document.querySelector('.tab'));
+  }
+
+  function goToTableFiltered(filterFn, label) {
+    // Apply sidebar filter by name search then switch to table
+    const searchBox = document.getElementById('searchBox');
+    if (searchBox) { searchBox.value = ''; }
+    switchTab('table', document.querySelectorAll('.tab')[1]);
+    // Highlight relevant rows after render
+    setTimeout(() => {
+      document.querySelectorAll('#tableBody tr').forEach(tr => {
+        const id = +tr.dataset.id;
+        const m = DB.find(x => x.id === id);
+        tr.style.background = (m && filterFn(m)) ? '#fff8e6' : '';
+      });
+    }, 60);
+  }
+
+  // ── Insight cards: hover highlight, click to show matching members ──
+  wrap.querySelectorAll('.an-insight').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('expanded');
+    });
+  });
+
+  // ── Demographic mini-cards: click to filter table ──
+  const miniCards = wrap.querySelectorAll('.an-mini-card');
+  miniCards.forEach(card => {
+    const lbl = card.querySelector('.an-mini-lbl');
+    if (!lbl) return;
+    const labelText = lbl.textContent.trim();
+
+    let filterFn = null;
+    let tip = '';
+
+    if (labelText.includes('♂') || labelText === 'Male ♂') {
+      filterFn = m => m.sex === 'M';
+      tip = vi ? '<strong>Nam</strong> — nhấn để xem trong bảng' : '<strong>Male members</strong> — click to highlight in table';
+    } else if (labelText.includes('♀') || labelText === 'Female ♀') {
+      filterFn = m => m.sex === 'F';
+      tip = vi ? '<strong>Nữ</strong> — nhấn để xem trong bảng' : '<strong>Female members</strong> — click to highlight in table';
+    } else if (labelText.match(/Còn sống|Living/)) {
+      filterFn = m => !m.dod || !m.dod.trim();
+      tip = vi ? '<strong>Còn sống</strong> — chưa có ngày mất' : '<strong>Living members</strong> — no death date recorded';
+    } else if (labelText.match(/Số đời|Generations/)) {
+      tip = vi ? `<strong>${sortedGens.length} đời</strong> — từ đời ${sortedGens[0]} đến đời ${sortedGens[sortedGens.length-1]}` : `<strong>${sortedGens.length} generations</strong> — from G${sortedGens[0]} to G${sortedGens[sortedGens.length-1]}`;
+    } else if (labelText.match(/Tổng|Total/)) {
+      filterFn = () => true;
+      tip = vi ? `<strong>${valid.length} thành viên</strong> trong gia phả — nhấn để xem tất cả` : `<strong>${valid.length} members</strong> in the family — click to view all`;
+    } else if (labelText.match(/Tuổi thọ|Lifespan/)) {
+      tip = vi
+        ? `Tuổi thọ trung bình: <strong>${avgLifespan} tuổi</strong>${longestLiver ? `<br>Thọ nhất: <strong>${longestLiver.full_name}</strong> (${maxLifespan} tuổi)` : ''}`
+        : `Average lifespan: <strong>${avgLifespan} years</strong>${longestLiver ? `<br>Longest-lived: <strong>${longestLiver.full_name}</strong> (${maxLifespan} yr)` : ''}`;
+    }
+
+    card.addEventListener('mouseenter', () => { if (tip) pop.show(card, tip); });
+    card.addEventListener('mouseleave', () => pop.hide());
+    if (filterFn) {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        miniCards.forEach(c => c.classList.remove('active-filter'));
+        card.classList.toggle('active-filter');
+        goToTableFiltered(filterFn, labelText);
+      });
+    }
+  });
+
+  // ── Stat rows (deceased, married, adopted, birth date known) ──
+  const statRowDefs = [
+    { key: vi?'Đã mất':'Deceased', fn: m => m.dod && m.dod.trim(), tip: vi?'<strong>Đã mất</strong> — có ngày mất':'<strong>Deceased</strong> — have a recorded death date' },
+    { key: vi?'Đã kết hôn':'Married',  fn: m => m.status === 'Married', tip: vi?'<strong>Đã kết hôn</strong>':'<strong>Married members</strong>' },
+    { key: vi?'Con nuôi':'Adopted',   fn: m => m.relationship === 'Adopted', tip: vi?'<strong>Con nuôi</strong>':'<strong>Adopted members</strong>' },
+    { key: vi?'Có ngày sinh':'Birth date', fn: m => /^\d{4}/.test(m.dob||''), tip: vi?'<strong>Có ngày sinh</strong> được ghi nhận':'Members with a <strong>recorded birth date</strong>' },
+  ];
+  wrap.querySelectorAll('.an-stat-row').forEach(row => {
+    const lbl = row.querySelector('.an-stat-label');
+    if (!lbl) return;
+    const labelText = lbl.textContent.trim();
+    const def = statRowDefs.find(d => labelText.startsWith(d.key));
+    if (!def) return;
+    row.addEventListener('mouseenter', () => pop.show(row, def.tip + (vi?' — nhấn để lọc':' — click to filter')));
+    row.addEventListener('mouseleave', () => pop.hide());
+    row.addEventListener('click', () => {
+      wrap.querySelectorAll('.an-stat-row').forEach(r=>r.classList.remove('active-filter'));
+      row.classList.toggle('active-filter');
+      goToTableFiltered(def.fn, labelText);
+    });
+  });
+
+  // ── Geo stat rows ──
+  wrap.querySelectorAll('.an-stat-row[data-city]').forEach(row => {
+    const city = row.dataset.city;
+    const count = cityCount[city] || 0;
+    const members = valid.filter(m => (m.address2||'').trim() === city);
+    const tip = `<strong>${city}</strong> — ${count} ${vi?'thành viên':'member'}${count!==1&&!vi?'s':''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
+    row.addEventListener('mouseenter', () => pop.show(row, tip));
+    row.addEventListener('mouseleave', () => pop.hide());
+    row.addEventListener('click', () => {
+      wrap.querySelectorAll('.an-stat-row[data-city]').forEach(r=>r.classList.remove('active-filter'));
+      row.classList.toggle('active-filter');
+      goToTableFiltered(m => (m.address2||'').trim() === city, city);
+    });
+  });
+
+  // ── Name stat rows ──
+  wrap.querySelectorAll('.an-stat-row[data-name]').forEach(row => {
+    const name = row.dataset.name;
+    const count = nameCount[name] || 0;
+    const members = valid.filter(m => (m.first_name || m.full_name.split(' ').pop() || '').trim() === name);
+    const tip = `${vi?'Tên':'Given name'} <strong>${name}</strong> — ${count} ${vi?'người':'person'}${count!==1&&!vi?'s':''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
+    row.addEventListener('mouseenter', () => pop.show(row, tip));
+    row.addEventListener('mouseleave', () => pop.hide());
+    row.addEventListener('click', () => {
+      wrap.querySelectorAll('.an-stat-row[data-name]').forEach(r=>r.classList.remove('active-filter'));
+      row.classList.toggle('active-filter');
+      goToTableFiltered(m => (m.first_name || m.full_name.split(' ').pop() || '').trim() === name, name);
+    });
+  });
+
+  // ── Spark bars and generation detail rows ──
+  function handleGenClick(genNum) {
+    const g = +genNum;
+    const members = byGen[g] || [];
+    // Show members in a popover list & navigate to table
+    wrap.querySelectorAll('.an-spark-bar,.gen-detail-row').forEach(el => {
+      el.classList.toggle('active-gen', +el.dataset.gen === g);
+      el.classList.toggle('active-filter', +el.dataset.gen === g);
+    });
+    goToTableFiltered(m => m.generation === g, `Gen ${g}`);
+  }
+
+  wrap.querySelectorAll('.an-spark-bar').forEach(bar => {
+    const g = +bar.dataset.gen;
+    const members = byGen[g] || [];
+    const mC = members.filter(m=>m.sex==='M').length;
+    const fC = members.filter(m=>m.sex==='F').length;
+    bar.addEventListener('mouseenter', () => pop.show(bar, `<strong>${vi?'Đời':'Generation'} ${g}</strong><br>${members.length} ${vi?'thành viên':'members'} · ${mC}♂ ${fC}♀<br>${vi?'Nhấn để lọc bảng':'Click to filter table'}`));
+    bar.addEventListener('mouseleave', () => pop.hide());
+    bar.addEventListener('click', () => handleGenClick(g));
+  });
+
+  wrap.querySelectorAll('.gen-detail-row').forEach(row => {
+    const g = +row.dataset.gen;
+    const members = byGen[g] || [];
+    row.addEventListener('mouseenter', () => pop.show(row, `<strong>${vi?'Đời':'Gen'} ${g}</strong> — ${members.length} ${vi?'thành viên':'members'}<br>${vi?'Nhấn để xem trong bảng':'Click to filter table'}`));
+    row.addEventListener('mouseleave', () => pop.hide());
+    row.addEventListener('click', () => handleGenClick(g));
+  });
+
+  // ── Historical era items: expand/collapse on click ──
+  wrap.querySelectorAll('.hist-item').forEach(item => {
+    item.addEventListener('click', e => {
+      // If clicking a member chip, navigate to that member
+      const chip = e.target.closest('.an-member-chip');
+      if (chip) {
+        e.stopPropagation();
+        goToMember(+chip.dataset.id);
+        return;
+      }
+      const wasExpanded = item.classList.contains('hist-expanded');
+      wrap.querySelectorAll('.hist-item').forEach(i => {
+        i.classList.remove('hist-expanded');
+        const drawer = i.querySelector('.an-member-drawer');
+        if (drawer) drawer.classList.remove('open');
+      });
+      if (!wasExpanded) {
+        item.classList.add('hist-expanded');
+        const drawer = item.querySelector('.an-member-drawer');
+        if (drawer) drawer.classList.add('open');
+      }
+    });
+  });
+
+  // ── Glossary pills: click to show/hide definition in a panel ──
+  let activeGlossaryPill = null;
+  wrap.querySelectorAll('.an-rank-pill[data-def]').forEach(pill => {
+    pill.addEventListener('mouseenter', () => pop.show(pill, `<strong>${pill.dataset.term}</strong><br>${pill.dataset.def}`));
+    pill.addEventListener('mouseleave', () => pop.hide());
+    pill.addEventListener('click', e => {
+      pop.hide();
+      if (activeGlossaryPill === pill) {
+        pill.classList.remove('active-filter');
+        activeGlossaryPill = null;
+        return;
+      }
+      wrap.querySelectorAll('.an-rank-pill[data-def]').forEach(p => p.classList.remove('active-filter'));
+      pill.classList.add('active-filter');
+      activeGlossaryPill = pill;
+      pop.show(pill, `<strong>${pill.dataset.term}</strong><br>${pill.dataset.def}`);
+      setTimeout(() => pop.hide(), 3000);
+    });
+  });
+
+  // ── Insight strong tags: make names clickable ──
+  wrap.querySelectorAll('.an-insight strong').forEach(strong => {
+    const text = strong.textContent.trim();
+    const member = valid.find(m => m.full_name === text || m.full_name.startsWith(text));
+    if (member) {
+      strong.style.cssText = 'cursor:pointer;text-decoration:underline dotted';
+      strong.title = vi ? `Xem hồ sơ ${member.full_name}` : `View profile: ${member.full_name}`;
+      strong.addEventListener('click', e => { e.stopPropagation(); goToMember(member.id); });
+    }
+  });
+
+  // ── Origin box character: animate on hover ──
+  const originChar = wrap.querySelector('.an-origin-char');
+  if (originChar) {
+    originChar.style.cssText += ';cursor:default;transition:transform .3s,color .3s;display:inline-block';
+    originChar.addEventListener('mouseenter', () => {
+      originChar.style.transform = 'scale(1.18) rotate(-3deg)';
+      originChar.style.color = 'var(--gold-soft)';
+    });
+    originChar.addEventListener('mouseleave', () => {
+      originChar.style.transform = '';
+      originChar.style.color = '';
+    });
+    pop.hide();
+    originChar.addEventListener('click', () => pop.show(originChar, vi
+      ? '<strong>呂</strong> — chữ Hán mô tả hai đốt xương sống chồng lên nhau, biểu trưng cho sự thẳng thắn và sức mạnh của dòng tộc.'
+      : '<strong>呂</strong> — depicts two vertebrae stacked, symbolising backbone, uprightness and the strength of the clan lineage.'));
+  }
+
+  // ── Card headers: hover effect ──
+  wrap.querySelectorAll('.an-card-head').forEach(head => {
+    head.style.cursor = 'default';
+  });
+
+  // ── Branch pills in insights: click to filter ──
+  wrap.querySelectorAll('.an-insight').forEach(insight => {
+    const text = insight.innerHTML;
+    branches.forEach(branch => {
+      if (text.includes(branch)) {
+        // branches already surfaced in the text — no extra wiring needed beyond the existing goToTableFiltered
+      }
+    });
+  });
+}
+
+
 
 // ── EXPORT CSV ──
 function exportCSV() {
@@ -1612,28 +2926,660 @@ function importCSV(event) {
 
 // ── EXPORT REPORT ──
 function exportReport() {
-  const valid = DB.filter(m => m.full_name && m.full_name.trim());
-  const byGen = {};
-  valid.forEach(m => { (byGen[m.generation] = byGen[m.generation]||[]).push(m); });
-  const lines = [
-    s('reportTitle'),
-    '='.repeat(50), '',
-    `${s('totalMembers')}: ${valid.length}`,
-    `${s('maleMembers')}: ${valid.filter(m=>m.sex==='M').length}`,
-    `${s('femaleMembers')}: ${valid.filter(m=>m.sex==='F').length}`,
-    `${s('generations')}: ${Object.keys(byGen).length}`,
-    '', s('fullRegister'), '-'.repeat(50),
-    ...Object.entries(byGen).sort((a,b)=>+a[0]-+b[0]).flatMap(([g, ms]) => [
-      '', `── ${s('genLabel',g)} (${ms.length}) ──`,
-      ...ms.map(m => `  • ${m.full_name}${m.sex?' ['+m.sex+']':''}${m.dob?' b.'+m.dob:''}${m.dod?' d.'+m.dod:''}${m.branch?' | '+m.branch:''}${m.father||m.mother?' | '+[m.father&&(s('father')+': '+m.father),m.mother&&(s('mother')+': '+m.mother)].filter(Boolean).join(', '):''}`)
-    ])
-  ];
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8;'})),
-    download: 'gia_pha_ho_la_report.txt'
+  const loadScript = (src) => new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve;
+    s.onerror = () => reject(new Error('Failed to load ' + src));
+    document.head.appendChild(s);
   });
-  a.click(); URL.revokeObjectURL(a.href);
-  toast(s('reportExported'));
+
+  (async () => {
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const PW = doc.internal.pageSize.getWidth();
+      const PH = doc.internal.pageSize.getHeight();
+      const M = 15;
+      const CW = PW - M * 2;
+      const isVi = LANG === 'vi';
+
+      // ── Colour palette ──
+      const C = {
+        ink:     [26,  20,  16],
+        dim:     [92,  74,  56],
+        paper:   [250, 247, 242],
+        rim:     [226, 217, 204],
+        paperMid:[240, 236, 228],
+        gold:    [181, 132, 44],
+        goldSoft:[212, 168, 75],
+        red:     [155, 42,  42],
+        blueM:   [42,  90, 139],
+        blueF:   [123, 59, 110],
+        green:   [45, 107,  63],
+        teal:    [74, 122, 138],
+        brown:   [92,  74,  56],
+        white:   [255, 255, 255],
+        muted:   [150, 140, 130],
+      };
+      const hex2rgb = h => { const n=parseInt(h.replace('#',''),16); return [(n>>16)&255,(n>>8)&255,n&255]; };
+
+      // ── Shared helpers ──
+      const sf = (size, style='normal', color=C.ink) => {
+        doc.setFontSize(size); doc.setFont('helvetica', style); doc.setTextColor(...color);
+      };
+      const fillRect = (x,y,w,h,color) => { doc.setFillColor(...color); doc.rect(x,y,w,h,'F'); };
+      const hline = (y, color=C.rim, lw=0.3) => {
+        doc.setDrawColor(...color); doc.setLineWidth(lw);
+        doc.line(M, y, PW-M, y);
+      };
+      const pageFooter = (label) => {
+        hline(PH-10, C.rim);
+        sf(7,'normal',C.muted);
+        doc.text('GIA PHẢ HỌ LÃ  •  Lã Family Tree', M, PH-5);
+        doc.text(label, PW-M, PH-5, { align:'right' });
+      };
+      const sectionBanner = (title, y, bgColor=C.ink, textColor=C.goldSoft) => {
+        fillRect(0, y, PW, 18, bgColor);
+        fillRect(0, y+18, PW, 1.5, C.gold);
+        sf(12,'bold',textColor);
+        doc.text(title, M, y+12.5);
+        return y + 26;
+      };
+      // Safe text wrap — keeps text in bounds
+      const wrapText = (text, x, y, maxW, lineH=5, fontSz=8, style='normal', color=C.ink) => {
+        sf(fontSz, style, color);
+        const lines = doc.splitTextToSize(text, maxW);
+        doc.text(lines, x, y);
+        return y + lines.length * lineH;
+      };
+      // Mini horizontal bar
+      const miniBar = (x, y, w, pct, color, trackH=3.5) => {
+        doc.setFillColor(...C.rim);
+        doc.roundedRect(x, y, w, trackH, 1, 1, 'F');
+        if (pct > 0) {
+          doc.setFillColor(...color);
+          doc.roundedRect(x, y, Math.max(w*pct/100, 2), trackH, 1, 1, 'F');
+        }
+      };
+
+      // ── Shared data computation (same logic as buildAnalysis) ──
+      const valid     = DB.filter(m => m.full_name && m.full_name.trim());
+      const byGen     = {};
+      valid.forEach(m => { (byGen[m.generation] = byGen[m.generation]||[]).push(m); });
+      const sortedGens = Object.keys(byGen).map(Number).sort((a,b)=>a-b);
+
+      const totalM    = valid.filter(m=>m.sex==='M').length;
+      const totalF    = valid.filter(m=>m.sex==='F').length;
+      const deceased  = valid.filter(m=>m.dod&&m.dod.trim()).length;
+      const living    = valid.length - deceased;
+      const married   = valid.filter(m=>m.status==='Married').length;
+      const adopted   = valid.filter(m=>m.relationship==='Adopted').length;
+      const branches  = [...new Set(valid.map(m=>m.branch).filter(Boolean))];
+      const withDob   = valid.filter(m=>m.dob&&m.dob.trim()).length;
+      const withAddr  = valid.filter(m=>m.address||m.address2).length;
+
+      const withYear  = valid.filter(m=>/^\d{4}/.test(m.dob||''));
+      const gY        = m => parseInt(m.dob);
+      const oldest    = withYear.length ? withYear.reduce((a,b)=>gY(a)<gY(b)?a:b) : null;
+      const youngest  = withYear.length ? withYear.reduce((a,b)=>gY(a)>gY(b)?a:b) : null;
+      const spanYears = (oldest&&youngest) ? gY(youngest)-gY(oldest) : null;
+
+      const withLifespan = valid.filter(m=>/^\d{4}/.test(m.dob||'')&&/^\d{4}/.test(m.dod||''));
+      const lifespans    = withLifespan.map(m=>parseInt(m.dod)-parseInt(m.dob)).filter(y=>y>0);
+      const avgLifespan  = lifespans.length ? Math.round(lifespans.reduce((a,b)=>a+b,0)/lifespans.length) : null;
+      const maxLifespan  = lifespans.length ? Math.max(...lifespans) : null;
+      const longestLiver = withLifespan.find(m=>(parseInt(m.dod)-parseInt(m.dob))===maxLifespan)||null;
+
+      const genCounts  = sortedGens.map(g=>byGen[g].length);
+      const maxGenCnt  = Math.max(...genCounts, 1);
+      const largestGen = sortedGens[genCounts.indexOf(maxGenCnt)];
+
+      const cities   = valid.map(m=>(m.address2||'').trim()).filter(Boolean);
+      const cityCount= {};
+      cities.forEach(c=>{ cityCount[c]=(cityCount[c]||0)+1; });
+      const topCities = Object.entries(cityCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+      const firstNames = valid.map(m=>(m.first_name||m.full_name.split(' ').pop()||'').trim()).filter(Boolean);
+      const nameCount  = {};
+      firstNames.forEach(n=>{ nameCount[n]=(nameCount[n]||0)+1; });
+      const topNames   = Object.entries(nameCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+      const VIET_HISTORY = [
+        { label:'Pre-1427',  start:0,    end:1426, name:'Lý–Trần–Hồ Dynasties',        nameVi:'Thời Lý–Trần–Hồ',               color:'#7b3b6e', desc:'Formative era of Đại Việt. Buddhist culture, Chinese administrative resistance, and the rise of Vietnamese Confucian scholarship defined this long period.' },
+        { label:'1427–1527', start:1427, end:1526, name:'Early Lê Dynasty',             nameVi:'Lê Sơ (1428–1527)',              color:'#9b2a2a', desc:'A golden age of Đại Việt. Lê Thánh Tông codified the Hồng Đức legal system. Civil exams shaped scholarly families like the Lã clan.' },
+        { label:'1527–1592', start:1527, end:1591, name:'Mạc–Lê Conflict',              nameVi:'Mạc–Lê tranh quyền',            color:'#5c4a38', desc:'Political fragmentation as the Mạc usurped the Lê throne. Literate families navigated divided loyalties between northern courts.' },
+        { label:'1592–1789', start:1592, end:1788, name:'Lê-Trịnh / Nguyễn Lords Era', nameVi:'Lê–Trịnh & Chúa Nguyễn',       color:'#2a5a8b', desc:'Vietnam split between Trịnh lords (north) and Nguyễn lords (south). Trade expansion, Catholic missions, and southward colonisation shaped migration.' },
+        { label:'1789–1802', start:1789, end:1801, name:'Tây Sơn Uprising',             nameVi:'Phong trào Tây Sơn',            color:'#2d6b3f', desc:'Nguyễn Huệ repelled the Qing invasion at Đống Đa (1789). A peasant revolution briefly unified Vietnam before Nguyễn Ánh prevailed.' },
+        { label:'1802–1884', start:1802, end:1883, name:'Nguyễn Dynasty',               nameVi:'Triều Nguyễn (1802–1884)',       color:'#b5842c', desc:'Gia Long unified Vietnam under Huế. The National History Bureau standardised genealogy (gia phả) records. Classic era of clan documentation.' },
+        { label:'1884–1945', start:1884, end:1944, name:'French Colonial Period',       nameVi:'Thời Pháp thuộc (1884–1945)',    color:'#4a7a8a', desc:'Colonial modernity: railways, Quốc ngữ romanisation, and urban migration. Families relocated from villages to Hà Nội, Hải Phòng, and Sài Gòn.' },
+        { label:'1945–1975', start:1945, end:1974, name:'War & Independence Era',       nameVi:'Thời chiến (1945–1975)',         color:'#c84b4b', desc:'Independence (1945), partition at the 17th parallel (1954), and the Vietnam War. Massive displacement and north–south family separations defined this era.' },
+        { label:'1975–1986', start:1975, end:1985, name:'Post-Reunification',           nameVi:'Hậu thống nhất (1975–1986)',     color:'#5c4a38', desc:'Reunification under the Socialist Republic. Collectivisation, the boat-people crisis, and border conflicts with Cambodia and China reshaped families.' },
+        { label:'1986–now',  start:1986, end:2099, name:'Đổi Mới & Modern Era',        nameVi:'Đổi Mới & Hiện đại (1986–nay)', color:'#2d6b3f', desc:'Economic liberalisation transformed Vietnam. Urbanisation, diaspora communities, and digital connectivity now define the youngest generations.' },
+      ];
+      const dynOverlap = VIET_HISTORY.map(era => ({
+        ...era,
+        members: withYear.filter(m=>{ const y=gY(m); return y>=era.start&&y<=era.end; })
+      }));
+
+      // ── Gen-level insight lines (for per-gen analysis page) ──
+      const genInsight = (gen, members) => {
+        const lines = [];
+        const male   = members.filter(m=>m.sex==='M').length;
+        const female = members.filter(m=>m.sex==='F').length;
+        const dead   = members.filter(m=>m.dod).length;
+        const mar    = members.filter(m=>m.status==='Married').length;
+        const years  = members.filter(m=>/^\d{4}/.test(m.dob||'')).map(m=>parseInt(m.dob)).sort((a,b)=>a-b);
+        const hasAddr= members.filter(m=>m.address||m.address2).length;
+        if (male&&female) lines.push(`Gender: ${male}M / ${female}F — ${male>female?'male-leaning':male<female?'female-leaning':'balanced'}`);
+        else if (male)   lines.push(`Gender: ${male} male only`);
+        else if (female) lines.push(`Gender: ${female} female only`);
+        if (years.length>1) lines.push(`Birth span: ${years[0]} – ${years[years.length-1]} (${years[years.length-1]-years[0]} yrs)`);
+        else if (years.length===1) lines.push(`Birth year: ${years[0]}`);
+        if (mar)    lines.push(`Married: ${mar} of ${members.length} (${Math.round(mar/members.length*100)}%)`);
+        if (dead)   lines.push(`Deceased: ${dead} of ${members.length} (${Math.round(dead/members.length*100)}%)`);
+        if (hasAddr) lines.push(`Address recorded: ${hasAddr} member${hasAddr!==1?'s':''}`);
+        const nxt = byGen[gen+1];
+        if (nxt) {
+          const d = nxt.length - members.length;
+          lines.push(d>0?`↑ Next generation grew by ${d}`:(d<0?`↓ Next generation shrank by ${Math.abs(d)}`:`→ Next generation same size`));
+        }
+        return lines;
+      };
+
+      // ── Key trend bullets ──
+      const trendLines = [];
+      trendLines.push(`${valid.length} recorded members across ${sortedGens.length} generation${sortedGens.length!==1?'s':''}`);
+      if (branches.length) trendLines.push(`${branches.length} family branch${branches.length!==1?'es':''}: ${branches.slice(0,4).join(', ')}${branches.length>4?' …':''}`);
+      if (oldest)    trendLines.push(`Earliest recorded birth: ${oldest.full_name} (${gY(oldest)})`);
+      if (youngest)  trendLines.push(`Latest recorded birth: ${youngest.full_name} (${gY(youngest)})`);
+      if (spanYears) trendLines.push(`Bloodline spans ${spanYears} years of recorded history`);
+      trendLines.push(`Largest generation: Gen ${largestGen} with ${byGen[largestGen].length} member${byGen[largestGen].length!==1?'s':''}`);
+      if (avgLifespan) trendLines.push(`Avg lifespan (with DOB+DOD): ${avgLifespan} years${longestLiver?` — longest: ${longestLiver.full_name} at ${maxLifespan} yrs`:''}`);
+      if (withDob  < valid.length) trendLines.push(`Birth date missing for ${valid.length-withDob} member${valid.length-withDob!==1?'s':''}`);
+      if (withAddr < valid.length) trendLines.push(`Address missing for ${valid.length-withAddr} member${valid.length-withAddr!==1?'s':''}`);
+      if (adopted) trendLines.push(`${adopted} adopted member${adopted!==1?'s':''} in the record`);
+      const activeEras = dynOverlap.filter(e=>e.members.length>0);
+      if (activeEras.length) trendLines.push(`Births span ${activeEras.length} Vietnamese historical eras (${activeEras[0].name} → ${activeEras[activeEras.length-1].name})`);
+
+      // ════════════════════════════════════════════════════════
+      //  PAGE 1 — COVER + EXECUTIVE SUMMARY
+      // ════════════════════════════════════════════════════════
+      fillRect(0, 0, PW, 46, C.ink);
+      fillRect(0, 46, PW, 2, C.gold);
+      sf(28,'bold',C.goldSoft); doc.text('呂', M, 24);
+      sf(18,'bold',C.goldSoft); doc.text('GIA PHẢ HỌ LÃ', M+22, 20);
+      sf(9,'normal',C.white);   doc.text('Lã Family Tree  •  Full Analysis Report', M+22, 27);
+      sf(8,'italic',C.rim);
+      const dateStr = new Date().toLocaleDateString(isVi?'vi-VN':'en-US',{year:'numeric',month:'long',day:'numeric'});
+      doc.text(`Generated: ${dateStr}`, PW-M, 40, { align:'right' });
+
+      let y = 58;
+
+      // — Family Snapshot KPIs —
+      sf(11,'bold',C.ink); doc.text('FAMILY SNAPSHOT', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+      const kpis = [
+        { val: String(valid.length),       lbl:'Total Members',  color:C.red   },
+        { val: `${totalM}M / ${totalF}F`,  lbl:'Gender Split',   color:C.blueM },
+        { val: String(sortedGens.length),  lbl:'Generations',    color:C.green },
+        { val: String(married),            lbl:'Married',        color:C.gold  },
+        { val: String(deceased),           lbl:'Deceased',       color:C.dim   },
+        { val: String(branches.length),    lbl:'Branches',       color:C.blueF },
+      ];
+      const kW=(CW-5*3)/6, kH=17;
+      kpis.forEach((k,i)=>{
+        const kx=M+i*(kW+3), ky=y;
+        doc.setFillColor(...C.paper); doc.setDrawColor(...C.rim);
+        doc.roundedRect(kx,ky,kW,kH,2,2,'FD');
+        sf(13,'bold',k.color); doc.text(k.val, kx+kW/2, ky+9, {align:'center'});
+        sf(5.5,'normal',C.dim); doc.text(k.lbl.toUpperCase(), kx+kW/2, ky+14, {align:'center'});
+      });
+      y += kH+5;
+
+      // — Data Coverage bars —
+      sf(11,'bold',C.ink); doc.text('DATA COVERAGE', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+      const covItems = [
+        { lbl:'Birth date recorded', n:withDob,  p:valid.length?Math.round(withDob/valid.length*100):0,  color:C.blueM },
+        { lbl:'Address recorded',    n:withAddr, p:valid.length?Math.round(withAddr/valid.length*100):0, color:C.green },
+        { lbl:'Marital status known',n:married,  p:valid.length?Math.round(married/valid.length*100):0,  color:C.gold  },
+        { lbl:'Deceased noted',      n:deceased, p:valid.length?Math.round(deceased/valid.length*100):0, color:C.dim   },
+      ];
+      const bTrack=CW*0.44, lbW=CW*0.40;
+      covItems.forEach(ci=>{
+        sf(8,'normal',C.ink); doc.text(ci.lbl, M, y+4.5);
+        const tx=M+lbW;
+        miniBar(tx, y+1, bTrack, ci.p, ci.color, 4);
+        sf(7,'bold',ci.color); doc.text(`${ci.p}%  (${ci.n})`, tx+bTrack+3, y+4.5);
+        y += 7.5;
+      });
+      y += 4;
+
+      // — Key Trends —
+      sf(11,'bold',C.ink); doc.text('KEY TRENDS & OBSERVATIONS', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+      trendLines.forEach(line => {
+        if (y > PH-18) { pageFooter('Page 1'); doc.addPage(); pageFooter(`Page ${doc.internal.getNumberOfPages()}`); y = M+8; }
+        doc.setFillColor(...C.gold); doc.circle(M+2, y+2.5, 1,'F');
+        sf(8,'normal',C.ink); doc.text(line, M+6, y+5);
+        y += 6.5;
+      });
+      pageFooter('Page 1');
+
+      // ════════════════════════════════════════════════════════
+      //  PAGE 2+ — PER-GENERATION ANALYSIS
+      // ════════════════════════════════════════════════════════
+      doc.addPage();
+      y = sectionBanner('PER-GENERATION ANALYSIS  ·  PHÂN TÍCH THEO ĐỜI', 0);
+
+      for (let gi=0; gi<sortedGens.length; gi++) {
+        const gen     = sortedGens[gi];
+        const members = byGen[gen].slice().sort((a,b)=>a.full_name.localeCompare(b.full_name));
+        const mC=members.filter(m=>m.sex==='M').length;
+        const fC=members.filter(m=>m.sex==='F').length;
+        const dC=members.filter(m=>m.dod).length;
+        const marC=members.filter(m=>m.status==='Married').length;
+        const dobC=members.filter(m=>m.dob).length;
+        const adrC=members.filter(m=>m.address||m.address2).length;
+        const iLines=genInsight(gen, members);
+
+        if (y+12+30>PH-14) { pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+4; }
+
+        // Gen header bar
+        fillRect(M, y, CW, 9, C.gold);
+        sf(9,'bold',C.white); doc.text(isVi?`ĐỜI ${gen}`:`GENERATION ${gen}`, M+4, y+6.2);
+        sf(8,'normal',C.ink); doc.text(`${members.length} member${members.length!==1?'s':''}`, PW-M-4, y+6.2, {align:'right'});
+        y += 12;
+
+        // Metric pills
+        const pills=[
+          {val:mC,lbl:'Male',   color:C.blueM},
+          {val:fC,lbl:'Female', color:C.blueF},
+          {val:marC,lbl:'Married',color:C.gold},
+          {val:dC,lbl:'Deceased',color:C.dim},
+          {val:dobC,lbl:'w/DOB', color:C.green},
+          {val:adrC,lbl:'w/Addr',color:C.teal},
+        ];
+        const pW2=(CW-5*3)/6, pH2=12;
+        pills.forEach((p,i)=>{
+          const px=M+i*(pW2+3);
+          doc.setFillColor(...C.paper); doc.setDrawColor(...C.rim);
+          doc.roundedRect(px,y,pW2,pH2,1.5,1.5,'FD');
+          sf(10,'bold',p.color); doc.text(String(p.val), px+pW2/2, y+7, {align:'center'});
+          sf(5.5,'normal',C.dim); doc.text(p.lbl.toUpperCase(), px+pW2/2, y+11, {align:'center'});
+        });
+        y += pH2+3;
+
+        // Insights block
+        if (iLines.length) {
+          const insH=iLines.length*5.5+5;
+          doc.setFillColor(248,245,240); doc.setDrawColor(...C.rim);
+          doc.roundedRect(M,y,CW,insH,2,2,'FD');
+          fillRect(M,y,2.5,insH,C.gold);
+          iLines.forEach((ln,li)=>{ sf(7.5,'normal',C.dim); doc.text(`• ${ln}`, M+6, y+4.5+li*5.5); });
+          y += insH+4;
+        }
+
+        // Member table
+        const tRows=members.map(m=>[
+          m.full_name,
+          m.sex==='M'?'M':m.sex==='F'?'F':'?',
+          m.dob?m.dob.slice(0,4):'—',
+          m.dod?`d.${m.dod.slice(0,4)}`:'Living',
+          m.status==='Married'?'Yes':m.status==='Single'?'No':'?',
+          (m.branch||'—').slice(0,18),
+          (m.address2||m.address||'—').slice(0,20),
+        ]);
+        if (y+18>PH-14) { pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+4; }
+        doc.autoTable({
+          startY:y,
+          head:[['Full Name','Sex','Born','Status','Married','Branch','Location']],
+          body:tRows, theme:'plain',
+          styles:{ fontSize:7.5, cellPadding:{top:2,bottom:2,left:2,right:1}, textColor:C.ink, lineColor:C.rim, lineWidth:0.25, overflow:'ellipsize' },
+          headStyles:{ fillColor:C.ink, textColor:C.goldSoft, fontStyle:'bold', fontSize:7, cellPadding:{top:2.5,bottom:2.5,left:2,right:1} },
+          columnStyles:{
+            0:{cellWidth:42,fontStyle:'bold'},
+            1:{cellWidth:8, halign:'center'},
+            2:{cellWidth:14,halign:'center'},
+            3:{cellWidth:20,halign:'center'},
+            4:{cellWidth:14,halign:'center'},
+            5:{cellWidth:30},
+            6:{cellWidth:'auto'},
+          },
+          alternateRowStyles:{fillColor:C.paper},
+          margin:{left:M,right:M},
+          didDrawPage:()=>{ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); }
+        });
+        y = doc.lastAutoTable.finalY+9;
+        if (gi<sortedGens.length-1 && y>PH-50) {
+          pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+4;
+        }
+      }
+      pageFooter(`Page ${doc.internal.getNumberOfPages()}`);
+
+      // ════════════════════════════════════════════════════════
+      //  PAGE — BLOODLINE ANALYSIS (mirrors Analysis tab)
+      // ════════════════════════════════════════════════════════
+      doc.addPage();
+      y = sectionBanner('BLOODLINE ANALYSIS  ·  PHÂN TÍCH HUYẾT THỐNG', 0, C.ink, C.goldSoft);
+
+      // ── Auto Insights ──
+      const anInsights = [];
+      if (spanYears!==null) anInsights.push(`The Lã bloodline spans ${spanYears} years of recorded history, from ${gY(oldest)} to ${gY(youngest)}.`);
+      if (sortedGens.length>=2) anInsights.push(`${sortedGens.length} generations documented — ${sortedGens.length>=6?'a deep, multi-century':'a well-documented multi-generational'} family record.`);
+      const mfRatio = totalF>0?(totalM/totalF).toFixed(2):'all-male';
+      if (totalM&&totalF) anInsights.push(`Gender ratio: ${totalM}M : ${totalF}F (${mfRatio}:1) — ${totalM>totalF?'male-majority records, typical of patrilineal Vietnamese clan books':'female representation is high, suggesting modern or inclusive record-keeping'}.`);
+      if (avgLifespan) anInsights.push(`Average lifespan (from members with both birth and death years): ${avgLifespan} years.${longestLiver?` Longest-lived: ${longestLiver.full_name} at ${maxLifespan} years.`:''}`);
+      if (largestGen!==undefined) anInsights.push(`Generation ${largestGen} is the largest cohort with ${maxGenCnt} member${maxGenCnt!==1?'s':''}, suggesting a demographic peak.`);
+      if (branches.length>1) anInsights.push(`The family has branched into ${branches.length} distinct phòng (lineage branches): ${branches.slice(0,4).join(', ')}${branches.length>4?' and more':''}.`);
+      if (activeEras.length) anInsights.push(`Family births span ${activeEras.length} Vietnamese historical eras — from the ${activeEras[0].name} to the ${activeEras[activeEras.length-1].name}.`);
+      if (topCities.length) anInsights.push(`Members recorded in ${Object.keys(cityCount).length} location${Object.keys(cityCount).length!==1?'s':''}. Most common: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`);
+
+      sf(11,'bold',C.ink); doc.text('KEY INSIGHTS', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 7;
+      anInsights.forEach(line=>{
+        if (y>PH-18){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+        const boxH = doc.splitTextToSize(line, CW-12).length * 5 + 7;
+        doc.setFillColor(255,251,240); doc.setDrawColor(232,217,176);
+        doc.roundedRect(M,y,CW,boxH,2,2,'FD');
+        fillRect(M,y,2.5,boxH,C.gold);
+        sf(8,'normal',C.ink);
+        const wrapped = doc.splitTextToSize(line, CW-12);
+        doc.text(wrapped, M+6, y+5);
+        y += boxH+3;
+      });
+      y += 3;
+
+      // ── Surname Origin ──
+      if (y>PH-60){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      sf(11,'bold',C.ink); doc.text('SURNAME ORIGIN  ·  NGUỒN GỐC HỌ LÃ', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+
+      // Dark origin box
+      const originH = 36;
+      fillRect(M, y, CW, originH, C.ink);
+      sf(28,'bold',C.gold); doc.text('呂 / 吕', M+6, y+18);
+      sf(8,'normal',C.goldSoft); doc.text('LÃ (Vietnamese)  ·  LǙ (Mandarin)', M+52, y+11);
+      sf(7.5,'normal',[200,190,175]);
+      const originDesc = doc.splitTextToSize('One of the oldest Chinese clan names, traced to the state of Lǚ in Zhou dynasty China (c. 11th century BC). The character depicts a spine — symbolising backbone, uprightness, and lineage continuity. In Vietnam the surname entered via the Chinese administrative period (111 BC–938 AD) and was naturalised through centuries of Sino-Vietnamese cultural exchange.', CW-58);
+      doc.text(originDesc, M+52, y+18);
+      y += originH+5;
+
+      // Origin fact rows
+      const originFacts = [
+        ['Vietnamese variants',     'Lã · Lữ · Lư'],
+        ['Character meaning',       'Backbone / Spine (脊梁)'],
+        ['Origin state',            'Lǚ (呂國), Zhou dynasty China'],
+        ['Legendary ancestor',      'Lǚ Shang (Jiang Ziya) — strategist to King Wen'],
+        ['Notable Vietnamese figure','Lã Gia — Prime Minister of Nanyue kingdom (2nd c. BC)'],
+        ['Notable Chinese figure',  'Lǚ Buwei — Chancellor of Qin (3rd c. BC)'],
+        ['Vietnamese prevalence',   '~39th most common surname · c. 1% of population'],
+        ['Regional concentration',  'Most common in Bắc Bộ (northern Vietnam)'],
+      ];
+      const fW2 = CW/2-3;
+      originFacts.forEach((f,i)=>{
+        if (y>PH-16){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+        const col = i%2, row2 = Math.floor(i/2);
+        if (col===0) {
+          // Draw both cells for this row
+          const fy = y;
+          // left
+          doc.setFillColor(...C.paper); doc.setDrawColor(...C.rim);
+          doc.roundedRect(M, fy, fW2, 9, 1, 1, 'FD');
+          sf(6.5,'bold',C.dim); doc.text(f[0].toUpperCase(), M+3, fy+4);
+          sf(7.5,'normal',C.ink); doc.text(f[1].slice(0,36), M+3, fy+7.5);
+          // right (peek ahead)
+          const next = originFacts[i+1];
+          if (next) {
+            doc.setFillColor(...C.paper); doc.setDrawColor(...C.rim);
+            doc.roundedRect(M+fW2+3, fy, fW2, 9, 1, 1, 'FD');
+            sf(6.5,'bold',C.dim); doc.text(next[0].toUpperCase(), M+fW2+6, fy+4);
+            sf(7.5,'normal',C.ink); doc.text(next[1].slice(0,36), M+fW2+6, fy+7.5);
+          }
+          y += 12;
+        }
+      });
+      y += 4;
+
+      // ── Demographics grid ──
+      if (y>PH-55){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      sf(11,'bold',C.ink); doc.text('BLOODLINE DEMOGRAPHICS', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+
+      const demoStats=[
+        {val:String(valid.length), lbl:'Total Recorded', color:C.red},
+        {val:String(living),       lbl:'Living',         color:C.green},
+        {val:String(totalM),       lbl:'Male ♂',         color:C.blueM},
+        {val:String(totalF),       lbl:'Female ♀',       color:C.blueF},
+        ...(avgLifespan?[{val:`${avgLifespan}yr`,lbl:'Avg Lifespan',color:C.brown}]:[]),
+        {val:String(sortedGens.length),lbl:'Generations',color:C.teal},
+      ];
+      const dsW=(CW-(demoStats.length-1)*3)/demoStats.length, dsH=16;
+      demoStats.forEach((d,i)=>{
+        const dx=M+i*(dsW+3);
+        doc.setFillColor(...C.paper); doc.setDrawColor(...C.rim);
+        doc.roundedRect(dx,y,dsW,dsH,2,2,'FD');
+        sf(12,'bold',d.color); doc.text(d.val, dx+dsW/2, y+9, {align:'center'});
+        sf(5.5,'normal',C.dim); doc.text(d.lbl.toUpperCase(), dx+dsW/2, y+13.5, {align:'center'});
+      });
+      y += dsH+5;
+
+      // Coverage bars
+      const demoBars = [
+        {lbl:'Deceased on record', n:deceased, p:valid.length?Math.round(deceased/valid.length*100):0, color:C.dim},
+        {lbl:'Married',            n:married,  p:valid.length?Math.round(married/valid.length*100):0,  color:C.gold},
+        {lbl:'Adopted',            n:adopted,  p:valid.length?Math.round(adopted/valid.length*100):0,  color:C.blueF},
+        {lbl:'Birth date known',   n:withDob,  p:valid.length?Math.round(withDob/valid.length*100):0,  color:C.green},
+      ];
+      const dbLW=CW*0.38, dbTrack=CW*0.4;
+      demoBars.forEach(db=>{
+        sf(8,'normal',C.ink); doc.text(db.lbl, M, y+4.5);
+        const tx2=M+dbLW;
+        miniBar(tx2,y+1,dbTrack,db.p,db.color,4);
+        sf(7,'bold',db.color); doc.text(`${db.p}%  (${db.n})`, tx2+dbTrack+3, y+4.5);
+        y+=7.5;
+      });
+      if (oldest&&youngest) {
+        y+=2; sf(7.5,'normal',C.dim);
+        doc.text(`Oldest: ${oldest.full_name} (b. ${gY(oldest)})  ·  Youngest: ${youngest.full_name} (b. ${gY(youngest)})`, M, y);
+        y+=7;
+      }
+      y+=4;
+
+      // ── Generation Growth Table ──
+      if (y>PH-55){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      sf(11,'bold',C.ink); doc.text('GENERATION GROWTH', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+
+      const growthRows = sortedGens.map((g,i)=>{
+        const cnt=genCounts[i];
+        const prev=i>0?genCounts[i-1]:null;
+        const diff=prev!==null?cnt-prev:null;
+        const mC2=byGen[g].filter(m=>m.sex==='M').length;
+        const fC2=byGen[g].filter(m=>m.sex==='F').length;
+        const dC2=byGen[g].filter(m=>m.dod).length;
+        const trend=diff===null?'—':diff>0?`▲ +${diff}`:diff<0?`▼ ${diff}`:'→ 0';
+        return [`Gen ${g}`, String(cnt), `${mC2}M / ${fC2}F`, String(dC2), trend];
+      });
+      doc.autoTable({
+        startY:y,
+        head:[['Generation','Members','Gender Split','Deceased','vs. Prev Gen']],
+        body:growthRows, theme:'plain',
+        styles:{fontSize:8, cellPadding:{top:2.5,bottom:2.5,left:3,right:2}, textColor:C.ink, lineColor:C.rim, lineWidth:0.25},
+        headStyles:{fillColor:C.ink, textColor:C.goldSoft, fontStyle:'bold', fontSize:7.5},
+        columnStyles:{
+          0:{cellWidth:35,fontStyle:'bold',textColor:C.gold},
+          1:{cellWidth:22,halign:'center'},
+          2:{cellWidth:36,halign:'center'},
+          3:{cellWidth:22,halign:'center'},
+          4:{cellWidth:'auto',halign:'center'},
+        },
+        alternateRowStyles:{fillColor:C.paper},
+        margin:{left:M,right:M},
+        didDrawPage:()=>{ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); }
+      });
+      y = doc.lastAutoTable.finalY+8;
+
+      // ── Geographic & Name distribution ──
+      if (y>PH-50){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      const halfW = (CW-6)/2;
+
+      sf(11,'bold',C.ink); doc.text('GEOGRAPHIC SPREAD', M, y);
+      fillRect(M, y+2, halfW, 0.6, C.gold);
+      sf(11,'bold',C.ink); doc.text('COMMON GIVEN NAMES', M+halfW+6, y);
+      fillRect(M+halfW+6, y+2, halfW, 0.6, C.gold);
+      y += 8;
+
+      const geoMax2 = topCities.length ? topCities[0][1] : 1;
+      const nameMax2 = topNames.length ? topNames[0][1] : 1;
+      const rowH2 = 7;
+      const maxRows = Math.max(topCities.length, topNames.length, 1);
+      for (let ri=0; ri<maxRows; ri++){
+        if (y>PH-16){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+        // Geo row
+        if (ri<topCities.length){
+          const [city,cnt2]=topCities[ri];
+          sf(7.5,'normal',C.ink); doc.text(city.slice(0,20), M, y+5);
+          miniBar(M+46, y+1.5, halfW-52, Math.round(cnt2/geoMax2*100), C.blueM, 3.5);
+          sf(7,'bold',C.blueM); doc.text(String(cnt2), M+halfW-2, y+5, {align:'right'});
+        }
+        // Name row
+        if (ri<topNames.length){
+          const [nm,cnt3]=topNames[ri];
+          sf(7.5,'normal',C.ink); doc.text(nm.slice(0,16), M+halfW+6, y+5);
+          miniBar(M+halfW+42, y+1.5, halfW-48, Math.round(cnt3/nameMax2*100), C.blueF, 3.5);
+          sf(7,'bold',C.blueF); doc.text(String(cnt3), PW-M, y+5, {align:'right'});
+        }
+        y += rowH2;
+      }
+      y += 6;
+      pageFooter(`Page ${doc.internal.getNumberOfPages()}`);
+
+      // ════════════════════════════════════════════════════════
+      //  PAGE — HISTORICAL CONTEXT
+      // ════════════════════════════════════════════════════════
+      doc.addPage();
+      y = sectionBanner('HISTORICAL CONTEXT  ·  BỐI CẢNH LỊCH SỬ VIỆT NAM', 0, C.ink, C.goldSoft);
+
+      sf(8,'italic',C.dim);
+      const introText = 'The Lã bloodline is mapped against Vietnamese dynastic history below. Each era shaped family structure, naming conventions, migration patterns, and the keeping of gia phả (genealogical records). Eras with recorded family births are highlighted.';
+      const introLines = doc.splitTextToSize(introText, CW);
+      doc.text(introLines, M, y); y += introLines.length*5+6;
+
+      // Timeline entries
+      dynOverlap.forEach(era=>{
+        const hasMembers = era.members.length>0;
+        const eraBodyH = doc.splitTextToSize(era.desc, CW-24).length*4.8 + (hasMembers?8:7) + 16;
+        if (y+eraBodyH > PH-14){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+6; }
+
+        // Era card background
+        const cardBg = hasMembers ? [255,251,240] : [247,244,240];
+        doc.setFillColor(...cardBg);
+        doc.setDrawColor(...C.rim);
+        doc.roundedRect(M, y, CW, eraBodyH, 2, 2, 'FD');
+
+        // Left accent stripe in era colour
+        const eraRgb = hex2rgb(era.color);
+        fillRect(M, y, 3, eraBodyH, eraRgb);
+
+        // Era label
+        sf(6.5,'bold',eraRgb); doc.text(era.label.toUpperCase(), M+7, y+5);
+        // Dynasty name
+        sf(9,'bold',C.ink); doc.text(era.name, M+7, y+10);
+        sf(7.5,'normal',C.dim); doc.text(`· ${era.nameVi}`, M+7+doc.getTextWidth(era.name)+2, y+10);
+
+        // Description
+        sf(7.5,'normal',C.ink);
+        const descLines = doc.splitTextToSize(era.desc, CW-24);
+        doc.text(descLines, M+7, y+15);
+
+        // Member overlap badge
+        const bY = y+15+descLines.length*4.8+2;
+        if (hasMembers){
+          fillRect(M+7, bY, CW-14, 6, eraRgb);
+          sf(7,'bold',C.white);
+          const mNames = era.members.slice(0,5).map(m=>m.full_name).join(', ')+(era.members.length>5?` +${era.members.length-5} more`:'');
+          doc.text(`${era.members.length} family member${era.members.length!==1?'s':''} born in this era — ${mNames}`, M+10, bY+4.2);
+        } else {
+          doc.setFillColor(...C.rim);
+          doc.roundedRect(M+7, bY, CW-14, 5, 1, 1, 'F');
+          sf(6.5,'italic',C.dim); doc.text('No births recorded in this era', M+10, bY+3.5);
+        }
+        y += eraBodyH+4;
+      });
+
+      // ── Cultural Vocabulary ──
+      if (y>PH-55){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      sf(11,'bold',C.ink); doc.text('GIA PHẢ TRADITION & KEY TERMS', M, y);
+      fillRect(M, y+2, CW, 0.6, C.gold); y += 8;
+
+      const cultureParagraphs = [
+        ['Gia Phả (家譜)', 'Vietnamese genealogical records have been kept by noble and scholarly families since the Lý dynasty (1009 AD). They record lineage, honorifics, burial sites, branch origins, and ritual roles within each clan.'],
+        ['Naming Convention', 'Vietnamese tradition places the clan surname first (Họ), followed by a generational middle name (Tên đệm) and given name (Tên). The middle name often encodes generation rank, branch identity, or Confucian virtues — making it a living genealogical code.'],
+        ['Phòng (房 — Branch)', 'The concept of phòng divides a clan by descent from different sons of a common ancestor. Each phòng maintains its own sub-records, ancestor altar, and ceremonial obligations, preserving family identity across geography and generations.'],
+        ['Ancestor Veneration', 'Thờ cúng tổ tiên (ancestor veneration) is central to Vietnamese family life. Death anniversaries (ngày giỗ), Tết offerings, and the maintenance of the family altar sustain the spiritual bond between the living and the deceased.'],
+      ];
+      cultureParagraphs.forEach(([title, body])=>{
+        if (y>PH-30){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+        sf(8,'bold',C.gold); doc.text(title, M, y);
+        y += 4.5;
+        const bLines = doc.splitTextToSize(body, CW);
+        sf(7.5,'normal',C.ink); doc.text(bLines, M, y);
+        y += bLines.length*4.8+5;
+      });
+
+      // Key vocabulary table
+      if (y>PH-40){ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); doc.addPage(); y=M+8; }
+      const vocabRows = [
+        ['Gia Phả',    '家譜', 'Genealogical record'],
+        ['Phòng',      '房',   'Lineage branch'],
+        ['Đời / Hệ',   '世',   'Generation rank'],
+        ['Tiên Tổ',    '先祖', 'Founding ancestor'],
+        ['Huyết thống','血統', 'Blood lineage'],
+        ['Tổ tiên',    '祖先', 'Ancestors'],
+        ['Thờ cúng',   '祭祀', 'Ancestor veneration'],
+        ['Hội đồng',   '會同', 'Clan council'],
+        ['Ngày giỗ',   '忌日', 'Death anniversary'],
+        ['Bàn thờ',    '香案', 'Ancestor altar'],
+      ];
+      doc.autoTable({
+        startY:y,
+        head:[['Vietnamese','Chữ Hán','English Meaning']],
+        body:vocabRows, theme:'plain',
+        styles:{fontSize:8, cellPadding:{top:2.5,bottom:2.5,left:3,right:2}, textColor:C.ink, lineColor:C.rim, lineWidth:0.25},
+        headStyles:{fillColor:C.ink, textColor:C.goldSoft, fontStyle:'bold', fontSize:7.5},
+        columnStyles:{
+          0:{cellWidth:45,fontStyle:'bold',textColor:C.gold},
+          1:{cellWidth:30,halign:'center',textColor:C.dim},
+          2:{cellWidth:'auto'},
+        },
+        alternateRowStyles:{fillColor:C.paper},
+        margin:{left:M,right:M},
+        didDrawPage:()=>{ pageFooter(`Page ${doc.internal.getNumberOfPages()}`); }
+      });
+      y = doc.lastAutoTable.finalY+10;
+
+      // ── Closing note ──
+      if (y>PH-22){ doc.addPage(); y=M+10; }
+      hline(y, C.rim); y+=6;
+      sf(7.5,'italic',C.dim);
+      doc.text('This report was generated from the Lã Family Tree web application. It covers the Executive Summary, Per-Generation Analysis,', M, y);
+      doc.text('Bloodline Analysis, and Vietnamese Historical Context sections — matching the Analysis tab in the interactive app.', M, y+5);
+      pageFooter(`Page ${doc.internal.getNumberOfPages()}`);
+
+      // ── Save ──
+      doc.save(`Gia_Pha_Ho_La_${new Date().toISOString().slice(0,10)}.pdf`);
+      toast(s('reportExported'));
+
+    } catch (err) {
+      console.error(err);
+      toast('Failed to generate PDF. Please try again.', 'error');
+    }
+  })();
 }
 
 // ── START ──
