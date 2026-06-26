@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tax Letter of Advice — Universal Group / NovaTech Acquisition</title>
+<title>Universal Group</title>
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,6 +56,63 @@
     min-height: 100vh;
   }
 
+  /* ─── MOBILE TOP BAR ──────────────────────────────────────────── */
+  .mobile-topbar {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 52px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+  .mobile-topbar .firm {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.01em;
+  }
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 6px;
+    border-radius: var(--radius);
+    transition: background 0.15s;
+  }
+  .hamburger:hover { background: var(--gold-dim); }
+  .hamburger span {
+    display: block;
+    height: 2px;
+    background: var(--text-muted);
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.2s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ─── NAV OVERLAY (mobile) ──────────────────────────────────── */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 150;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .nav-overlay.visible { opacity: 1; }
+
   /* ─── SIDEBAR ────────────────────────────────────────────────── */
   .sidebar {
     width: 280px;
@@ -103,7 +160,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 14px;
+    padding: 9px 14px;
     margin: 1px 6px;
     border-radius: var(--radius);
     color: var(--text-muted);
@@ -408,7 +465,7 @@
 
   /* ─── PRINT ──────────────────────────────────────────────────── */
   @media print {
-    .sidebar { display: none; }
+    .sidebar, .mobile-topbar, .nav-overlay { display: none !important; }
     .main { max-width: 100%; padding: 20px; }
     body { background: #fff; color: #000; }
     .card, .alert, .structure {
@@ -417,12 +474,75 @@
     }
   }
 
-  /* ─── RESPONSIVE ─────────────────────────────────────────────── */
-  @media (max-width: 820px) {
-    .shell { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: relative; }
-    .main { padding: 0 20px 60px; }
-    .cover-meta { gap: 20px; }
+  /* ─── RESPONSIVE — tablet ────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .main { padding: 0 24px 80px; }
+  }
+
+  /* ─── RESPONSIVE — mobile ────────────────────────────────────── */
+  @media (max-width: 700px) {
+    /* Show mobile top bar, hide desktop sidebar */
+    .mobile-topbar { display: flex; }
+    .nav-overlay { display: block; pointer-events: none; }
+    .nav-overlay.visible { pointer-events: auto; }
+
+    /* Sidebar becomes a fixed off-canvas drawer */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      width: 280px;
+      z-index: 160;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.4);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-brand {
+      padding-top: 64px; /* clear the topbar */
+    }
+
+    /* Main content fills full width, offset for topbar */
+    .shell { display: block; }
+    .main {
+      padding: 68px 16px 80px;
+      max-width: 100%;
+    }
+
+    /* Cover heading & meta */
+    .cover { padding: 24px 0 28px; }
+    .cover-meta { gap: 14px; flex-wrap: wrap; }
+    .meta-item { min-width: calc(50% - 7px); }
+    .cover-title { font-size: clamp(1.4rem, 5vw, 1.9rem); }
+
+    /* Section scroll-margin compensates for sticky topbar */
+    .section, .cover { scroll-margin-top: 64px; }
+
+    /* Tables scroll horizontally */
+    .card { overflow-x: auto; padding: 16px; }
+    .calc-table { min-width: 420px; }
+
+    /* Exec rows stack nicely */
+    .exec-row { flex-direction: column; gap: 8px; }
+    .exec-badge { width: auto; align-self: flex-start; }
+
+    /* Structure diagram */
+    .structure { font-size: 0.68rem; padding: 14px; }
+
+    /* Rec grid single column */
+    .rec-grid { grid-template-columns: 1fr; }
+
+    /* Alerts */
+    .alert { flex-direction: column; gap: 8px; padding: 14px; }
+
+    /* Step list */
+    .step-num { min-width: 26px; }
+
+    /* Nav links larger tap target on mobile */
+    .nav-link { padding: 12px 14px; font-size: 0.9rem; }
+    .nav-section { padding: 18px 14px 8px; }
   }
 
   /* ─── SCROLLBAR ──────────────────────────────────────────────── */
@@ -467,10 +587,21 @@
 <body>
 <div class="shell">
 
+  <!-- ══════════════ MOBILE TOPBAR ══════════════ -->
+  <div class="mobile-topbar" id="mobileTopbar">
+    <span class="firm">Anh La</span>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- NAV OVERLAY (mobile backdrop) -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
   <!-- ══════════════ SIDEBAR ══════════════ -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <div class="firm">CTA3 Advisory</div>
+      <div class="firm">Anh La</div>
       <div class="sub">Tax Letter of Advice</div>
     </div>
 
@@ -1308,24 +1439,83 @@
   </main>
 </div>
 
-<!-- Sidebar active-link highlight on scroll -->
+<!-- Navigation JS: hamburger menu, overlay, scroll-spy, smooth scroll -->
 <script>
-  const sections = document.querySelectorAll('.section[id], .cover[id], .cover');
-  const links = document.querySelectorAll('.nav-link');
+  /* ── Element refs ── */
+  const sidebar      = document.getElementById('sidebar');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navOverlay   = document.getElementById('navOverlay');
+  const navLinks     = document.querySelectorAll('.nav-link');
 
+  /* ── Hamburger toggle ── */
+  function openNav() {
+    sidebar.classList.add('open');
+    navOverlay.classList.add('visible');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    sidebar.classList.remove('open');
+    navOverlay.classList.remove('visible');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    sidebar.classList.contains('open') ? closeNav() : openNav();
+  });
+
+  /* Close when tapping the backdrop */
+  navOverlay.addEventListener('click', closeNav);
+
+  /* Close sidebar and navigate when a nav link is clicked (mobile) */
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.getElementById(href.slice(1));
+        if (target) {
+          closeNav();
+          /* Small delay lets the drawer animate closed before scroll */
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
+    });
+  });
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeNav();
+  });
+
+  /* ── Scroll-spy (active link highlight) ── */
   const ids = ['cover','facts','exec','item1','item2','item3','item4','item5','item6','item7','item8','item9','conduct','nextsteps'];
 
+  function getScrollOffset() {
+    /* On mobile, account for the fixed topbar */
+    return window.innerWidth <= 700 ? 80 : 60;
+  }
+
   function onScroll() {
+    const offset = getScrollOffset();
     let current = '';
     for (const id of ids) {
       const el = document.getElementById(id);
       if (!el) continue;
-      if (window.scrollY >= el.offsetTop - 60) current = id;
+      if (window.scrollY >= el.getBoundingClientRect().top + window.scrollY - offset) {
+        current = id;
+      }
     }
-    links.forEach(l => {
+    navLinks.forEach(l => {
       l.classList.toggle('active', l.getAttribute('href') === '#' + current);
     });
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 </script>
