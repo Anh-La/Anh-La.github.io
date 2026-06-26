@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gia Phả Họ Lã — Family Tree</title>
+<title>Họ Lã</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1217,14 +1217,14 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <div class="brand">
     <span class="logo-nom">呂</span>
     <div class="brand-text">
-      <h1 data-vi="Gia Phả Họ Lã" data-en="Lã Family Tree">Gia Phả Họ Lã</h1>
-      <p data-vi="Gia phả truyền thống Việt Nam" data-en="Vietnamese Family Tree">Gia phả truyền thống Việt Nam</p>
+      <h1 data-vi="Họ Lã" data-en="Lã House">Họ Lã</h1>
+      <p data-vi="Gia phả truyền thống" data-en="Blood line">Gia phả truyền thống</p>
     </div>
   </div>
   <div class="header-actions">
-    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
-    <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 English</button>
-    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">🔒 Admin</button>
+    <--button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰<--/button>
+    <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">English</button>
+    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Admin</button>
   </div>
 </header>
 
@@ -1232,7 +1232,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 <div class="modal-overlay" id="loginModal" style="display:none">
   <div class="modal-box" style="max-width:340px">
     <div class="modal-header">
-      <span id="loginModalTitle">🔐 Admin Login</span>
+      <span id="loginModalTitle">Admin Login</span>
       <button class="modal-close" onclick="closeLoginModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:1.2rem 1.4rem">
@@ -1246,7 +1246,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" onclick="submitAdminLogin()">🔓 Login</button>
+      <button class="btn btn-primary" onclick="submitAdminLogin()">Login</button>
       <button class="btn btn-gold" onclick="closeLoginModal()">Cancel</button>
     </div>
   </div>
@@ -1254,11 +1254,12 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 
 <!-- TABS -->
 <nav class="tabs">
+  <button class="tab active" onclick="switchTab('analysis',this)" data-vi="Tổng quan"  data-en="Overview">Overview</button>
   <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
-  <button class="tab" onclick="switchTab('tree',this)"   data-vi="🌳 Cây"      data-en="🌳 Tree">🌳 Cây</button>
-  <button class="tab" onclick="switchTab('stats',this)"  data-vi="📊 Thống Kê" data-en="📊 Statistics">📊 Thống Kê</button>
+  <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
+  <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
-  <button class="tab active" onclick="switchTab('analysis',this)" data-vi="🏠 LãLữ House"  data-en="🏠 LãLữ House">🏠 LãLữ House</button>
+  
 </nav>
 
 <!-- MOBILE SEARCH BAR (shown only on small screens) -->
@@ -1267,7 +1268,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     <span class="msb-icon">🔍</span>
     <input id="mobileSearchBox" type="text" placeholder="Tìm tên, vợ/chồng…" oninput="onMobileSearch(this.value)" autocomplete="off">
   </div>
-  <button class="msb-filter-btn" id="msbFilterBtn" onclick="toggleMobileFilters()" data-vi="⚙ Lọc" data-en="⚙ Filter">
+  <button class="msb-filter-btn" id="msbFilterBtn" onclick="toggleMobileFilters()" data-vi="Tìm" data-en="Filter">
     <span class="msb-dot" id="msbDot"></span>
     ⚙ Lọc
   </button>
@@ -1281,7 +1282,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     <div class="sidebar-filters">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input id="searchBox" type="text" placeholder="Họ tên, vợ/chồng, phòng…" oninput="applyFilters()" autocomplete="off">
+        <input id="searchBox" type="text" placeholder="Họ tên vợ/chồng/anh/chị/con, đời…" oninput="applyFilters()" autocomplete="off">
       </div>
       <div class="filter-group-row">
         <div class="filter-group">
@@ -1300,9 +1301,9 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
         </div>
       </div>
       <div class="filter-group">
-        <label data-vi="Phòng" data-en="Branch">Phòng</label>
+        <label data-vi="Phòng" data-en="Branch">Chi</label>
         <select id="filterBranch" onchange="applyFilters()">
-          <option value="">Tất cả phòng</option>
+          <option value="">Tất cả các chi</option>
         </select>
       </div>
     </div>
@@ -1503,16 +1504,16 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
             <input type="text" id="f-social_fb" placeholder="facebook.com/ten">
           </div>
           <div class="simple-field-row">
-            <label>Instagram</label>
+            <label>X (Twitter)</label>
             <input type="text" id="f-social_ig" placeholder="@username">
           </div>
           <div class="simple-field-row">
-            <label>TikTok</label>
+            <label>Zalo</label>
             <input type="text" id="f-social_tt" placeholder="@username">
           </div>
           <div class="simple-field-row">
             <label data-vi="Khác" data-en="Other">Khác / Other</label>
-            <input type="text" id="f-social_other" placeholder="Twitter, YouTube…">
+            <input type="text" id="f-social_other" placeholder="Titok, YouTube…">
           </div>
         </div>
         <div class="profile-section">
@@ -1531,7 +1532,6 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
           <div class="profile-section-header" data-vi="💼 Kỹ năng" data-en="💼 Skills">💼 Kỹ năng / Skills</div>
           <div id="skillsEntries"></div>
           <div class="entry-add-row">
-            <input type="number" id="sk-year" style="width:84px" data-vi-ph="Năm" data-en-ph="Year" placeholder="Năm">
             <input type="text"   id="sk-desc" style="flex:1"    data-vi-ph="Vd: Lãnh đạo, tiếng Anh…" data-en-ph="e.g. Leadership…" placeholder="Vd: Lãnh đạo, tiếng Anh…">
             <button class="btn btn-gold btn-sm" onclick="addProfileEntry('skills')">＋ Thêm</button>
           </div>
