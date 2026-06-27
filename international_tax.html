@@ -581,6 +581,93 @@
     transition: color 0.15s;
   }
   .back-btn:hover { color: var(--gold); }
+
+  /* ─── SIDEBAR FILTER DROPDOWNS ───────────────────────────────── */
+  .filter-group {
+    padding: 10px 12px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .filter-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .filter-select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    padding: 7px 10px;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899aa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .filter-select:hover, .filter-select:focus {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+  .filter-select option {
+    background: var(--surface2);
+    color: var(--text-muted);
+  }
+
+  /* ─── COLLAPSIBLE SECTIONS ───────────────────────────────────── */
+  .section-collapse-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    gap: 10px;
+    padding: 4px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .section-collapse-header:hover .section-title { color: var(--gold-light); }
+  .section-collapse-header .collapse-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.25s;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+  }
+  .section-collapse-header:hover .collapse-icon {
+    background: var(--gold-dim);
+    color: var(--gold);
+    border-color: rgba(201,169,110,0.35);
+  }
+  .section-collapse-header.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+  }
+  .section-collapse-body {
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
+    max-height: 5000px;
+    opacity: 1;
+    padding-top: 18px;
+  }
+  .section-collapse-body.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
 </style>
 </head>
 
@@ -605,70 +692,84 @@
       <div class="sub">Tax Letter of Advice</div>
     </div>
 
-    <!-- Collapsible Section: Tax Cases -->
-    <div class="filter-section">
-      <div class="filter-header" onclick="toggleFilterSection(this)">
-        <span>Tax Case</span>
-      </div>
-      <div class="filter-content">
-        <label class="filter-item">
-          <input type="checkbox" value="universal" checked />
-          <span>Universal Inc</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="futuro" />
-          <span>Futuro</span>
-        </label>
-      </div>
+    <!-- Filter: Tax Case -->
+    <div class="filter-group">
+      <span class="filter-label">Tax Case</span>
+      <select class="filter-select" id="taxCaseFilter" onchange="applyFilters()">
+        <option value="all">All Cases</option>
+        <option value="universal" selected>Universal Inc</option>
+        <option value="futuro">Futuro</option>
+      </select>
     </div>
 
-    <!-- Collapsible Section: Countries -->
-    <div class="filter-section">
-      <div class="filter-header" onclick="toggleFilterSection(this)">
-        <span>Countries</span>
-      </div>
-      <div class="filter-content">
-        <label class="filter-item">
-          <input type="checkbox" value="AU" checked />
-          <span>Australia</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="CA" />
-          <span>Canada</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="ID" />
-          <span>Indonesia</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="LV" />
-          <span>Latvia</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="BE" />
-          <span>Belgium</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="IN" />
-          <span>India</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="UK" />
-          <span>United Kingdom</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="IE" />
-          <span>Ireland</span>
-        </label>
-        <label class="filter-item">
-          <input type="checkbox" value="NZ" />
-          <span>New Zealand</span>
-        </label>
-      </div>
+    <!-- Filter: Country -->
+    <div class="filter-group">
+      <span class="filter-label">Country</span>
+      <select class="filter-select" id="countryFilter" onchange="applyFilters()">
+        <option value="all" selected>All Countries</option>
+        <option value="AU">Australia</option>
+        <option value="CA">Canada</option>
+        <option value="ID">Indonesia</option>
+        <option value="LV">Latvia</option>
+        <option value="BE">Belgium</option>
+        <option value="IN">India</option>
+        <option value="UK">United Kingdom</option>
+        <option value="IE">Ireland</option>
+        <option value="NZ">New Zealand</option>
+      </select>
     </div>
+
+    <!-- Navigation -->
+    <div class="nav-section">Contents</div>
+    <a class="nav-link" href="#cover" onclick="closeMobileSidebar()">
+      <span class="dot risk-info"></span>Cover
+    </a>
+    <a class="nav-link" href="#facts" onclick="closeMobileSidebar()">
+      <span class="dot risk-info"></span>Relevant Facts
+    </a>
+    <a class="nav-link" href="#exec" onclick="closeMobileSidebar()">
+      <span class="dot risk-info"></span>Executive Summary
+    </a>
+
+    <div class="nav-section">Issues</div>
+    <a class="nav-link" href="#item1" onclick="expandAndScroll('item1');closeMobileSidebar()">
+      <span class="dot risk-high"></span>01 &middot; UA Residency
+    </a>
+    <a class="nav-link" href="#item2" onclick="expandAndScroll('item2');closeMobileSidebar()">
+      <span class="dot risk-high"></span>02 &middot; Employee PE Risk
+    </a>
+    <a class="nav-link" href="#item3" onclick="expandAndScroll('item3');closeMobileSidebar()">
+      <span class="dot risk-high"></span>03 &middot; Indonesian Server PE
+    </a>
+    <a class="nav-link" href="#item4" onclick="expandAndScroll('item4');closeMobileSidebar()">
+      <span class="dot risk-high"></span>04 &middot; Latvian WHT Shortfall
+    </a>
+    <a class="nav-link" href="#item5" onclick="expandAndScroll('item5');closeMobileSidebar()">
+      <span class="dot risk-high"></span>05 &middot; Belgian Share Sale
+    </a>
+    <a class="nav-link" href="#item6" onclick="expandAndScroll('item6');closeMobileSidebar()">
+      <span class="dot risk-med"></span>06 &middot; India MAP
+    </a>
+    <a class="nav-link" href="#item7" onclick="expandAndScroll('item7');closeMobileSidebar()">
+      <span class="dot risk-med"></span>07 &middot; IP Transfer Canada
+    </a>
+    <a class="nav-link" href="#item8" onclick="expandAndScroll('item8');closeMobileSidebar()">
+      <span class="dot risk-med"></span>08 &middot; Pre-Sale Dividend
+    </a>
+    <a class="nav-link" href="#item9" onclick="expandAndScroll('item9');closeMobileSidebar()">
+      <span class="dot risk-low"></span>09 &middot; Profit Repatriation
+    </a>
+
+    <div class="nav-section">Appendix</div>
+    <a class="nav-link" href="#conduct" onclick="expandAndScroll('conduct');closeMobileSidebar()">
+      <span class="dot risk-info"></span>Professional Conduct
+    </a>
+    <a class="nav-link" href="#nextsteps" onclick="expandAndScroll('nextsteps');closeMobileSidebar()">
+      <span class="dot risk-info"></span>Recommendations
+    </a>
 
     <div class="sidebar-footer">
-      Law as at April 2026 · All amounts AUD unless noted.<br/>
+      Law as at April 2026 &middot; All amounts AUD unless noted.<br/>
       Advice is preliminary and jurisdiction-specific local counsel is required.
     </div>
   </aside>
@@ -707,13 +808,20 @@
 
     <!-- RELEVANT FACTS -->
     <div class="section" id="facts">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">FACTS</div>
         <div class="section-title-group">
           <h2 class="section-title">Relevant Facts</h2>
           <span class="section-tag tag-info">Group Structure</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="alert info">
         <span class="alert-icon">ℹ️</span>
@@ -852,19 +960,28 @@
           <li>Post-acquisition: profit repatriation from NovaTech → UA → Universal Inc (Canada).</li>
         </ul>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- EXECUTIVE SUMMARY -->
     <div class="section" id="exec">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">EXEC</div>
         <div class="section-title-group">
           <h2 class="section-title">Executive Summary</h2>
           <span class="section-tag tag-info">9 Issues at a Glance</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <div class="exec-row">
@@ -931,20 +1048,29 @@
           </div>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
     <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:28px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">The Law &amp; Application to the Facts</p>
 
     <!-- ══ ITEM 1 ══ -->
     <div class="section" id="item1">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">01</div>
         <div class="section-title-group">
           <h2 class="section-title">Residency of UA — Overseas Board of Directors</h2>
           <span class="section-tag tag-high">High Risk</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -988,19 +1114,28 @@
           <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20189/NAT/ATO/00001" target="_blank" rel="noopener" title="PCG 2018/9 — ATO compliance approach for CMAC; provides safe harbour guidance and risk indicators for determining where CMAC is located.">PCG 2018/9</a><sup class="fn" tabindex="0">[5]<span class="fn-tip">PCG 2018/9 — ATO compliance approach for CMAC; provides safe harbour guidance and risk indicators for determining where CMAC is located.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 2 ══ -->
     <div class="section" id="item2">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">02</div>
         <div class="section-title-group">
           <h2 class="section-title">Employee PE Risk in Overseas Jurisdictions</h2>
           <span class="section-tag tag-high">High Risk</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1053,19 +1188,28 @@
           <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20231/NAT/ATO/00001" target="_blank" rel="noopener" title="PCG 2023/1 — Hybrid and remote working arrangements and PE risk: ATO compliance approach; regular and recurring use of a home office for the employer's business creates PE risk.">PCG 2023/1</a><sup class="fn" tabindex="0">[13]<span class="fn-tip">PCG 2023/1 — Hybrid and remote working arrangements and PE risk: ATO compliance approach; regular and recurring use of a home office for the employer's business creates PE risk.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 3 ══ -->
     <div class="section" id="item3">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">03</div>
         <div class="section-title-group">
           <h2 class="section-title">Indonesian Data Centre Servers — Fixed Place of Business PE</h2>
           <span class="section-tag tag-high">High Risk</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1100,19 +1244,28 @@
           <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/indonesia" target="_blank" rel="noopener" title="AUS–Indonesia DTA — Convention for the Avoidance of Double Taxation; relevant PE article must be assessed for the Indonesian data centre server exposure.">AUS-Indonesia DTA</a>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 4 ══ -->
     <div class="section" id="item4">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">04</div>
         <div class="section-title-group">
           <h2 class="section-title">Latvian Royalty Payment — WHT Shortfall</h2>
           <span class="section-tag tag-high">High Risk · Immediate Action</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1171,19 +1324,28 @@
           <a class="law-chip" href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/cth/HCA/" target="_blank" rel="noopener" title="FCT v PepsiCo Inc [2025] HCA 30 — High Court confirmed that payments characterised as royalties under the domestic definition in s 6(1) ITAA 1936 attract WHT under s 128B, even where parties characterise the arrangement differently.">FCT v PepsiCo [2025] HCA 30</a><sup class="fn" tabindex="0">[26]<span class="fn-tip">FCT v PepsiCo Inc [2025] HCA 30 — High Court confirmed payments characterised as royalties under the domestic definition in s 6(1) ITAA 1936 attract WHT under s 128B, even where parties characterise the arrangement differently.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 5 ══ -->
     <div class="section" id="item5">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">05</div>
         <div class="section-title-group">
           <h2 class="section-title">Belgian Share Sale — CGT Treatment in FY25</h2>
           <span class="section-tag tag-high">High Risk · Amend Return</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1236,19 +1398,28 @@
           <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="s 115-10 ITAA 1997 — CGT discount (50%) is available to individuals, trusts and super funds only; NOT available to companies. NovaTech is a company; full $10m gain is assessable.">ITAA 1997 s 50% CGT Discount</a><sup class="fn" tabindex="0">[35]<span class="fn-tip">s 115-10 ITAA 1997 — CGT discount (50%) is available to individuals, trusts and super funds only; NOT available to companies. NovaTech is a company; full $10m gain is assessable.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 6 ══ -->
     <div class="section" id="item6">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">06</div>
         <div class="section-title-group">
           <h2 class="section-title">India Transfer Pricing — MAP &amp; Double Taxation</h2>
           <span class="section-tag tag-med">Medium Risk · Time-Sensitive</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1285,19 +1456,28 @@
           <a class="law-chip" href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/cth/FCAFC/" target="_blank" rel="noopener" title="Oracle Corporation Australia Pty Ltd v CoT [2025] FCAFC 145 — Full Federal Court affirmed that Australian courts may stay domestic proceedings pending completion of a MAP process where double taxation would otherwise result.">Oracle Corporation [2025] FCAFC 145</a><sup class="fn" tabindex="0">[41]<span class="fn-tip">Oracle Corporation Australia Pty Ltd v CoT [2025] FCAFC 145 — Full Federal Court affirmed that Australian courts may stay domestic proceedings pending completion of a MAP process where double taxation would otherwise result.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 7 ══ -->
     <div class="section" id="item7">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">07</div>
         <div class="section-title-group">
           <h2 class="section-title">IP Transfer to Canada — Australian Tax Implications</h2>
           <span class="section-tag tag-med">Medium Risk · Structural Planning</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1339,19 +1519,28 @@
           <span class="law-chip">R&amp;D Tax Incentive</span>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 8 ══ -->
     <div class="section" id="item8">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">08</div>
         <div class="section-title-group">
           <h2 class="section-title">Pre-Sale Partially Franked Dividend — WHT Implications</h2>
           <span class="section-tag tag-med">Medium Risk · Planning Opportunity</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1400,19 +1589,28 @@
           <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/ireland" target="_blank" rel="noopener" title="AUS–Ireland DTA — dividend WHT article; treaty-reduced rate applies to unfranked dividend paid to Ben Purvis as an Irish resident direct shareholder.">AUS-Ireland DTA</a><sup class="fn" tabindex="0">[59]<span class="fn-tip">AUS–Ireland DTA — dividend WHT article; treaty-reduced rate applies to unfranked dividend paid to Ben Purvis as an Irish resident direct shareholder.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ ITEM 9 ══ -->
     <div class="section" id="item9">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">09</div>
         <div class="section-title-group">
           <h2 class="section-title">Post-Acquisition Profit Repatriation — NovaTech to Universal Inc</h2>
           <span class="section-tag tag-low">Planning Opportunity</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="card">
         <p class="card-title">Applicable Law Analysis</p>
@@ -1468,19 +1666,28 @@
           <span class="law-chip">TD 2020/7 (FITO &amp; CG)</span>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ APPENDIX — CODE OF CONDUCT ══ -->
     <div class="section" id="conduct">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">APP</div>
         <div class="section-title-group">
           <h2 class="section-title">Appendix — Code of Professional Conduct (TASA 2009)</h2>
           <span class="section-tag tag-info">Professional Standards</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="alert danger">
         <span class="alert-icon">⚠️</span>
@@ -1525,19 +1732,28 @@
           <a class="law-chip" href="https://www.tpb.gov.au/" target="_blank" rel="noopener" title="TPB investigation and administrative sanctions (Subdiv 60-E TASA 2009): written caution (s 30-15), orders (s 30-20), suspension (s 30-25), or termination of registration (s 30-30). Self-reporting of significant breaches required under ss 30-35 and 30-40 (effective 1 July 2024).">Tax Practitioners Board (TPB)</a><sup class="fn" tabindex="0">[78]<span class="fn-tip">TPB investigation and administrative sanctions (Subdiv 60-E TASA 2009): written caution (s 30-15), orders (s 30-20), suspension (s 30-25), or termination of registration (s 30-30). Self-reporting of significant breaches required under ss 30-35 and 30-40.</span></sup>
         </div>
       </div>
+    
     </div>
+  </div>
 
     <div class="divider"></div>
 
     <!-- ══ RECOMMENDATIONS ══ -->
     <div class="section" id="nextsteps">
-      <div class="section-header">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
         <div class="section-num">REC</div>
         <div class="section-title-group">
           <h2 class="section-title">Recommendations &amp; Next Steps</h2>
           <span class="section-tag tag-info">Action Plan</span>
         </div>
+      
       </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
 
       <div class="alert info">
         <span class="alert-icon">📋</span>
@@ -1578,8 +1794,121 @@
           <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Replace current tax agent</strong> and appoint new advisers</div></div>
         </div>
       </div>
+    
     </div>
+  </div>
   </main>
 </div>
+
+<script>
+/* ── MOBILE SIDEBAR ──────────────────────────────────────────── */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const sidebar      = document.getElementById('sidebar');
+const navOverlay   = document.getElementById('navOverlay');
+
+function openMobileSidebar() {
+  sidebar.classList.add('open');
+  navOverlay.classList.add('visible');
+  hamburgerBtn.classList.add('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileSidebar() {
+  sidebar.classList.remove('open');
+  navOverlay.classList.remove('visible');
+  hamburgerBtn.classList.remove('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+hamburgerBtn && hamburgerBtn.addEventListener('click', function() {
+  sidebar.classList.contains('open') ? closeMobileSidebar() : openMobileSidebar();
+});
+navOverlay && navOverlay.addEventListener('click', closeMobileSidebar);
+
+/* ── SIDEBAR NAV ACTIVE STATE ────────────────────────────────── */
+function updateActiveNav() {
+  const links = document.querySelectorAll('.nav-link[href^="#"]');
+  const scrollPos = window.scrollY + 100;
+  let active = null;
+  links.forEach(link => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target && target.offsetTop <= scrollPos) active = link;
+  });
+  links.forEach(l => l.classList.remove('active'));
+  if (active) active.classList.add('active');
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+
+/* ── COLLAPSIBLE SECTIONS ────────────────────────────────────── */
+function toggleSection(headerEl) {
+  const body = headerEl.nextElementSibling;
+  if (!body) return;
+  const isCollapsed = body.classList.contains('collapsed');
+  if (isCollapsed) {
+    body.classList.remove('collapsed');
+    headerEl.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    headerEl.classList.add('collapsed');
+  }
+}
+
+function expandAndScroll(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const header = section.querySelector('.section-collapse-header');
+  const body   = section.querySelector('.section-collapse-body');
+  if (header && body && body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    header.classList.remove('collapsed');
+  }
+  setTimeout(() => {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+  return false;
+}
+
+/* ── FILTER LOGIC ────────────────────────────────────────────── */
+// Map section ids to their relevant countries and tax case
+const sectionMeta = {
+  facts:     { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  exec:      { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  item1:     { taxCase: 'universal', countries: ['AU','CA'] },
+  item2:     { taxCase: 'universal', countries: ['AU','NZ','ID'] },
+  item3:     { taxCase: 'universal', countries: ['AU','ID'] },
+  item4:     { taxCase: 'universal', countries: ['AU','LV'] },
+  item5:     { taxCase: 'universal', countries: ['AU','BE'] },
+  item6:     { taxCase: 'universal', countries: ['AU','IN'] },
+  item7:     { taxCase: 'universal', countries: ['AU','CA'] },
+  item8:     { taxCase: 'universal', countries: ['AU','UK','IE'] },
+  item9:     { taxCase: 'universal', countries: ['AU','CA'] },
+  conduct:   { taxCase: 'universal', countries: ['AU'] },
+  nextsteps: { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+};
+
+function applyFilters() {
+  const taxCase = document.getElementById('taxCaseFilter').value;
+  const country = document.getElementById('countryFilter').value;
+
+  Object.keys(sectionMeta).forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const meta = sectionMeta[id];
+    const divider = section.previousElementSibling;
+
+    // Check tax case
+    const caseMatch = taxCase === 'all' || meta.taxCase === taxCase;
+    // Check country
+    const countryMatch = country === 'all' || meta.countries.includes(country);
+
+    const visible = caseMatch && countryMatch;
+    section.style.display = visible ? '' : 'none';
+    if (divider && divider.classList.contains('divider')) {
+      divider.style.display = visible ? '' : 'none';
+    }
+  });
+}
+</script>
 </body>
 </html>
