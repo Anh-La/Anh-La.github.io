@@ -4,789 +4,1217 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>International Tax</title>
-
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
 <style>
-  /* ─── TOKENS ─────────────────────────────────────────────────── */
   :root {
-    --bg:            #0d1117;
-    --surface:       #161b22;
-    --surface2:      #1c2230;
-    --border:        #2a3444;
-    --border-light:  #303d52;
-    --gold:          #c9a96e;
-    --gold-light:    #e2c898;
-    --gold-dim:      rgba(201,169,110,0.15);
-    --red:           #e05c5c;
-    --red-dim:       rgba(224,92,92,0.12);
-    --green:         #4caf7d;
-    --green-dim:     rgba(76,175,125,0.12);
-    --amber:         #f0a050;
-    --amber-dim:     rgba(240,160,80,0.12);
-    --blue:          #5b8dee;
-    --blue-dim:      rgba(91,141,238,0.12);
-    --text:          #e2e8f0;
-    --text-muted:    #8899aa;
-    --text-dim:      #566470;
-    --radius:        8px;
-    --radius-lg:     14px;
-    --font-display:  'Playfair Display', Georgia, serif;
-    --font-body:     'Inter', system-ui, sans-serif;
-    --font-mono:     'JetBrains Mono', 'Courier New', monospace;
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--border:#2a3444;--border-light:#303d52;
+    --gold:#c9a96e;--gold-light:#e2c898;--gold-dim:rgba(201,169,110,0.15);
+    --red:#e05c5c;--red-dim:rgba(224,92,92,0.12);--green:#4caf7d;--green-dim:rgba(76,175,125,0.12);
+    --amber:#f0a050;--amber-dim:rgba(240,160,80,0.12);--blue:#5b8dee;--blue-dim:rgba(91,141,238,0.12);
+    --text:#e2e8f0;--text-muted:#8899aa;--text-dim:#566470;
+    --radius:8px;--radius-lg:14px;
+    --font-display:'Playfair Display',Georgia,serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono','Courier New',monospace;
   }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.75;min-height:100vh}
+  .shell{display:flex;min-height:100vh}
+  /* Mobile topbar */
+  .mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:var(--surface);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;padding:0 16px}
+  .mobile-topbar .firm{font-family:var(--font-display);font-size:1rem;color:var(--gold);letter-spacing:.01em}
+  .hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;border:none;background:none;padding:6px;border-radius:var(--radius);transition:background .15s}
+  .hamburger:hover{background:var(--gold-dim)}
+  .hamburger span{display:block;height:2px;background:var(--text-muted);border-radius:2px;transition:transform .25s,opacity .2s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  /* Overlay */
+  .nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;opacity:0;transition:opacity .25s;pointer-events:none}
+  .nav-overlay.visible{opacity:1;pointer-events:auto}
+  /* Sidebar */
+  .sidebar{width:280px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+  .sidebar-brand{padding:28px 22px 20px;border-bottom:1px solid var(--border)}
+  .sidebar-brand .firm{font-family:var(--font-display);font-size:1.25rem;color:var(--gold);letter-spacing:.01em;line-height:1.3}
+  .sidebar-brand .sub{font-size:.72rem;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+  /* Case Tabs */
+  .case-tabs{display:flex;padding:10px 12px;gap:0;border-bottom:1px solid var(--border)}
+  .case-tab{flex:1;padding:7px 4px;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.04em;cursor:pointer;border:1px solid var(--border-light);background:var(--surface2);color:var(--text-dim);transition:all .15s}
+  .case-tab:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+  .case-tab:last-child{border-radius:0 var(--radius) var(--radius) 0;border-left:none}
+  .case-tab:nth-child(2){border-left:none}
+  .case-tab:hover{background:var(--gold-dim);color:var(--gold-light);border-color:rgba(201,169,110,.4)}
+  .case-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.5)}
+  /* Filters */
+  .filter-group{padding:10px 12px 6px;border-bottom:1px solid var(--border)}
+  .filter-label{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block}
+  .filter-select{width:100%;background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius);color:var(--text-muted);font-family:var(--font-body);font-size:.78rem;padding:7px 10px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899aa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;transition:border-color .15s,color .15s}
+  .filter-select:hover,.filter-select:focus{border-color:var(--gold);color:var(--gold-light)}
+  .filter-select option{background:var(--surface2);color:var(--text-muted)}
 
-  /* ─── RESET ──────────────────────────────────────────────────── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.75;
-    min-height: 100vh;
+  /* Nav */
+  .nav-section{padding:16px 14px 8px;font-size:.65rem;font-weight:600;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase}
+  .nav-link{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:var(--radius);color:var(--text-muted);text-decoration:none;font-size:.82rem;font-weight:400;transition:background .15s,color .15s;cursor:pointer}
+  .nav-link:hover{background:var(--gold-dim);color:var(--gold-light)}
+  .nav-link.active{background:var(--gold-dim);color:var(--gold);font-weight:500}
+  .nav-link .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--border-light)}
+  .nav-link .dot.risk-high{background:var(--red)}
+  .nav-link .dot.risk-med{background:var(--amber)}
+  .nav-link .dot.risk-low{background:var(--green)}
+  .nav-link .dot.risk-info{background:var(--blue)}
+  .nav-futuro,.nav-universal{display:none}
+  .sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-dim);line-height:1.5}
+  /* Case wrappers */
+  .case-wrapper{display:none}
+  .case-wrapper.visible{display:block}
+  /* Case divider */
+  .case-divider{display:none;height:3px;background:linear-gradient(90deg,var(--border),var(--gold-dim),var(--border));margin:0}
+  .case-divider.visible{display:block}
+  /* Main */
+  .main{flex:1;overflow-x:hidden;padding:0 40px 80px;max-width:900px}
+  /* Cover */
+  .cover{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+  .cover-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .cover-title{font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--text);line-height:1.2;font-weight:700;margin-bottom:10px}
+  .cover-subtitle{font-size:1rem;color:var(--text-muted);margin-bottom:30px}
+  .cover-meta{display:flex;gap:32px;flex-wrap:wrap}
+  .meta-item{display:flex;flex-direction:column;gap:2px}
+  .meta-label{font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+  .meta-value{font-size:.82rem;color:var(--text-muted)}
+  /* Sections */
+  .section{margin-bottom:48px;scroll-margin-top:24px}
+  .section-num{font-family:var(--font-mono);font-size:.72rem;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(201,169,110,.25);border-radius:4px;padding:3px 8px;flex-shrink:0;margin-top:6px}
+  .section-title-group{flex:1}
+  .section-title{font-family:var(--font-display);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3}
+  .section-tag{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:2px 9px;border-radius:20px;margin-top:6px}
+  .tag-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,92,92,.3)}
+  .tag-med{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(240,160,80,.3)}
+  .tag-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,125,.3)}
+  .tag-info{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(91,141,238,.3)}
+  .divider{height:1px;background:var(--border);margin:36px 0}
+  /* Cards */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:16px}
+  .card-title{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+  .card p,.card li{font-size:.88rem;color:var(--text-muted);line-height:1.75}
+  .card ul,.card ol{padding-left:20px}
+  .card ul li,.card ol li{margin-bottom:6px}
+  /* Opinion */
+  .opinion-box{background:rgba(201,169,110,.07);border:1px solid rgba(201,169,110,.3);border-left:3px solid var(--gold);border-radius:var(--radius);padding:18px 22px;margin-bottom:16px}
+  .opinion-box .opinion-label{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block}
+  .opinion-box p{font-size:.87rem;color:#d4bb8a;line-height:1.75;margin-bottom:8px}
+  .opinion-box p:last-child{margin-bottom:0}
+  .opinion-box strong{color:var(--gold-light)}
+  /* Alerts */
+  .alert{display:flex;gap:14px;padding:16px 20px;border-radius:var(--radius);margin-bottom:16px;border-left-width:3px;border-left-style:solid}
+  .alert-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+  .alert-body{flex:1;font-size:.86rem;line-height:1.65}
+  .alert-body strong{font-weight:600;display:block;margin-bottom:2px}
+  .alert.danger{background:var(--red-dim);border-color:var(--red);color:#f4a0a0}
+  .alert.warning{background:var(--amber-dim);border-color:var(--amber);color:#f5c98a}
+  .alert.success{background:var(--green-dim);border-color:var(--green);color:#87d4a6}
+  .alert.info{background:var(--blue-dim);border-color:var(--blue);color:#9bbaf4}
+  /* Law chips */
+  .law-chip{display:inline-block;font-family:var(--font-mono);font-size:.74rem;background:var(--surface2);border:1px solid var(--border-light);color:var(--gold-light);border-radius:4px;padding:2px 8px;margin:2px;cursor:default;text-decoration:none}
+  a.law-chip:hover{border-color:var(--gold);color:var(--gold)}
+  .law-ref-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  /* Tables */
+  .calc-table{width:100%;border-collapse:collapse;font-size:.84rem;margin:14px 0}
+  .calc-table th{background:var(--surface2);padding:9px 14px;text-align:left;font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)}
+  .calc-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top}
+  .calc-table tr:last-child td{border-bottom:none}
+  .calc-table .mono{font-family:var(--font-mono);font-size:.8rem}
+  .calc-table .highlight-green{color:var(--green);font-weight:600}
+  .calc-table .highlight-red{color:var(--red);font-weight:600}
+  .calc-table .highlight-amber{color:var(--amber);font-weight:600}
+  .calc-table .total{font-weight:600;color:var(--red);background:var(--red-dim)}
+  .calc-table .total-positive{font-weight:600;color:var(--green);background:var(--green-dim)}
+  /* Steps */
+  .step-list{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .step-num{width:26px;height:26px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,169,110,.35);color:var(--gold);font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+  .step-text{font-size:.86rem;color:var(--text-muted);line-height:1.65}
+  .step-text strong{color:var(--text);font-weight:600}
+  /* Exec summary */
+  .exec-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+  .exec-row:last-child{border-bottom:none}
+  .exec-badge{font-family:var(--font-mono);font-size:.68rem;font-weight:500;padding:4px 9px;border-radius:4px;flex-shrink:0;width:64px;text-align:center;margin-top:1px}
+  .exec-content{flex:1}
+  .exec-heading{font-size:.87rem;font-weight:600;color:var(--text);margin-bottom:3px}
+  .exec-body{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+  /* Structure */
+  .structure{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);line-height:2;overflow-x:auto}
+  .structure .hl{color:var(--gold);font-weight:500}
+  .structure .hl2{color:var(--blue)}
+  .structure .hl3{color:var(--green)}
+  .structure .hl4{color:var(--amber)}
+  /* Prose */
+  .prose p{color:var(--text-muted);font-size:.9rem;line-height:1.8;margin-bottom:12px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text);font-weight:600}
+  .prose em{color:var(--gold-light);font-style:italic}
+  /* Collapse */
+  .section-collapse-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:10px;padding:4px 0 16px;border-bottom:1px solid var(--border);margin-bottom:0}
+  .section-collapse-header:hover .section-title{color:var(--gold-light)}
+  .section-collapse-header .collapse-icon{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .25s;color:var(--text-dim);font-size:.7rem}
+  .section-collapse-header:hover .collapse-icon{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.35)}
+  .section-collapse-header.collapsed .collapse-icon{transform:rotate(-90deg)}
+  .section-collapse-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s;max-height:5000px;opacity:1;padding-top:18px}
+  .section-collapse-body.collapsed{max-height:0;opacity:0;padding-top:0}
+  /* Rec grid */
+  .rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+  .rec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  .rec-card .rec-icon{font-size:1.4rem;margin-bottom:8px}
+  .rec-card .rec-heading{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:4px}
+  .rec-card .rec-text{font-size:.78rem;color:var(--text-muted);line-height:1.6}
+  /* Print */
+  @media print{.sidebar,.mobile-topbar,.nav-overlay{display:none!important}.main{max-width:100%;padding:20px}body{background:#fff;color:#000}.card,.alert,.structure,.opinion-box{background:#f8f8f8!important;border:1px solid #ccc!important}}
+  /* Responsive */
+  @media(max-width:900px){.main{padding:0 24px 80px}}
+  @media(max-width:700px){
+    .mobile-topbar{display:flex}
+    .nav-overlay{display:block}
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:280px;z-index:160;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.4)}
+    .sidebar.open{transform:translateX(0)}
+    .sidebar-brand{padding-top:64px}
+    .shell{display:block}
+    .main{padding:68px 16px 80px;max-width:100%}
+    .cover{padding:24px 0 28px}
+    .cover-meta{gap:14px;flex-wrap:wrap}
+    .meta-item{min-width:calc(50% - 7px)}
+    .cover-title{font-size:clamp(1.4rem,5vw,1.9rem)}
+    .section,.cover{scroll-margin-top:64px}
+    .card{overflow-x:auto;padding:16px}
+    .calc-table{min-width:420px}
+    .exec-row{flex-direction:column;gap:8px}
+    .exec-badge{width:auto;align-self:flex-start}
+    .alert{flex-direction:column;gap:8px;padding:14px}
+    .step-num{min-width:26px}
+    .nav-link{padding:12px 14px;font-size:.9rem}
+    .nav-section{padding:18px 14px 8px}
+    .rec-grid{grid-template-columns:1fr}
+    .structure{font-size:.68rem;padding:14px}
   }
-
-  /* ─── LAYOUT ─────────────────────────────────────────────────── */
-  .shell {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  /* ─── MOBILE TOP BAR ──────────────────────────────────────────── */
-  .mobile-topbar {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 200;
-    height: 52px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-  }
-  .mobile-topbar .firm {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    color: var(--gold);
-    letter-spacing: 0.01em;
-  }
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    border: none;
-    background: none;
-    padding: 6px;
-    border-radius: var(--radius);
-    transition: background 0.15s;
-  }
-  .hamburger:hover { background: var(--gold-dim); }
-  .hamburger span {
-    display: block;
-    height: 2px;
-    background: var(--text-muted);
-    border-radius: 2px;
-    transition: transform 0.25s, opacity 0.2s;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  /* ─── NAV OVERLAY (mobile) ──────────────────────────────────── */
-  .nav-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 150;
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .nav-overlay.visible { opacity: 1; }
-
-  /* ─── SIDEBAR ────────────────────────────────────────────────── */
-  .sidebar {
-    width: 280px;
-    min-width: 260px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    flex-shrink: 0;
-  }
-
-  .sidebar-brand {
-    padding: 28px 22px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sidebar-brand .firm {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    color: var(--gold);
-    letter-spacing: 0.01em;
-    line-height: 1.3;
-  }
-  .sidebar-brand .sub {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  .nav-section {
-    padding: 16px 14px 8px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--text-dim);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 14px;
-    margin: 1px 6px;
-    border-radius: var(--radius);
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 400;
-    transition: background 0.15s, color 0.15s;
-    cursor: pointer;
-  }
-  .nav-link:hover {
-    background: var(--gold-dim);
-    color: var(--gold-light);
-  }
-  .nav-link.active {
-    background: var(--gold-dim);
-    color: var(--gold);
-    font-weight: 500;
-  }
-  .nav-link .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    background: var(--border-light);
-  }
-  .nav-link .dot.risk-high  { background: var(--red); }
-  .nav-link .dot.risk-med   { background: var(--amber); }
-  .nav-link .dot.risk-low   { background: var(--green); }
-  .nav-link .dot.risk-info  { background: var(--blue); }
-
-  .sidebar-footer {
-    margin-top: auto;
-    padding: 16px 18px;
-    border-top: 1px solid var(--border);
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    line-height: 1.5;
-  }
-
-  /* ─── MAIN ───────────────────────────────────────────────────── */
-  .main {
-    flex: 1;
-    overflow-x: hidden;
-    padding: 0 40px 80px;
-    max-width: 900px;
-  }
-
-  /* ─── COVER / HEADER ─────────────────────────────────────────── */
-  .cover {
-    padding: 56px 0 40px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 44px;
-  }
-  .cover-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-  .cover-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-    color: var(--text);
-    line-height: 1.2;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  .cover-subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-  }
-  .cover-meta {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  .meta-item { display: flex; flex-direction: column; gap: 2px; }
-  .meta-label {
-    font-size: 0.67rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  .meta-value { font-size: 0.82rem; color: var(--text-muted); }
-
-  /* ─── SECTIONS ───────────────────────────────────────────────── */
-  .section {
-    margin-bottom: 48px;
-    scroll-margin-top: 24px;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .section-num {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--gold);
-    background: var(--gold-dim);
-    border: 1px solid rgba(201,169,110,0.25);
-    border-radius: 4px;
-    padding: 3px 8px;
-    flex-shrink: 0;
-    margin-top: 6px;
-  }
-  .section-title-group { flex: 1; }
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .section-tag {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 2px 9px;
-    border-radius: 20px;
-    margin-top: 6px;
-  }
-  .tag-high   { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(224,92,92,0.3); }
-  .tag-med    { background: var(--amber-dim);  color: var(--amber); border: 1px solid rgba(240,160,80,0.3); }
-  .tag-low    { background: var(--green-dim);  color: var(--green); border: 1px solid rgba(76,175,125,0.3); }
-  .tag-info   { background: var(--blue-dim);   color: var(--blue);  border: 1px solid rgba(91,141,238,0.3); }
-
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 36px 0;
-  }
-
-  /* ─── CARDS ──────────────────────────────────────────────────── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px 28px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-  }
-  .card p, .card li {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    line-height: 1.75;
-  }
-  .card ul, .card ol { padding-left: 20px; }
-  .card ul li, .card ol li { margin-bottom: 6px; }
-
-  /* ─── ALERT BOXES ────────────────────────────────────────────── */
-  .alert {
-    display: flex;
-    gap: 14px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    margin-bottom: 16px;
-    border-left-width: 3px;
-    border-left-style: solid;
-  }
-  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-  .alert-body { flex: 1; font-size: 0.86rem; line-height: 1.65; }
-  .alert-body strong { font-weight: 600; display: block; margin-bottom: 2px; }
-  .alert.danger  { background: var(--red-dim);   border-color: var(--red);   color: #f4a0a0; }
-  .alert.warning { background: var(--amber-dim);  border-color: var(--amber); color: #f5c98a; }
-  .alert.success { background: var(--green-dim);  border-color: var(--green); color: #87d4a6; }
-  .alert.info    { background: var(--blue-dim);   border-color: var(--blue);  color: #9bbaf4; }
-
-  /* ─── LAW CITE ───────────────────────────────────────────────── */
-  .law-chip {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    background: var(--surface2);
-    border: 1px solid var(--border-light);
-    color: var(--gold-light);
-    border-radius: 4px;
-    padding: 2px 8px;
-    margin: 2px;
-    cursor: default;
-  }
-
-  .law-ref-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 10px 0;
-  }
-
-  /* ─── CALC TABLE ─────────────────────────────────────────────── */
-  .calc-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.84rem;
-    margin: 14px 0;
-  }
-  .calc-table th {
-    background: var(--surface2);
-    padding: 9px 14px;
-    text-align: left;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--border);
-  }
-  .calc-table td {
-    padding: 9px 14px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-muted);
-    vertical-align: top;
-  }
-  .calc-table tr:last-child td { border-bottom: none; }
-  .calc-table .mono { font-family: var(--font-mono); font-size: 0.8rem; }
-  .calc-table .total {
-    font-weight: 600;
-    color: var(--red);
-    background: var(--red-dim);
-  }
-  .calc-table .total-positive {
-    font-weight: 600;
-    color: var(--green);
-    background: var(--green-dim);
-  }
-
-  /* ─── STEP LIST ──────────────────────────────────────────────── */
-  .step-list { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
-  .step {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .step-num {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--gold-dim);
-    border: 1px solid rgba(201,169,110,0.35);
-    color: var(--gold);
-    font-size: 0.72rem;
-    font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .step-text { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
-  .step-text strong { color: var(--text); font-weight: 600; }
-
-  /* ─── EXEC SUMMARY TABLE ─────────────────────────────────────── */
-  .exec-row {
-    display: flex;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    align-items: flex-start;
-  }
-  .exec-row:last-child { border-bottom: none; }
-  .exec-badge {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 500;
-    padding: 4px 9px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    width: 64px;
-    text-align: center;
-    margin-top: 1px;
-  }
-  .exec-content { flex: 1; }
-  .exec-heading { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .exec-body { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
-
-  /* ─── STRUCTURE DIAGRAM ──────────────────────────────────────── */
-  .structure {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 2;
-    overflow-x: auto;
-  }
-  .structure .hl { color: var(--gold); font-weight: 500; }
-  .structure .hl2 { color: var(--blue); }
-  .structure .hl3 { color: var(--green); }
-
-  /* ─── PRINT ──────────────────────────────────────────────────── */
-  @media print {
-    .sidebar, .mobile-topbar, .nav-overlay { display: none !important; }
-    .main { max-width: 100%; padding: 20px; }
-    body { background: #fff; color: #000; }
-    .card, .alert, .structure {
-      background: #f8f8f8 !important;
-      border: 1px solid #ccc !important;
-    }
-  }
-
-  /* ─── RESPONSIVE — tablet ────────────────────────────────────── */
-  @media (max-width: 900px) {
-    .main { padding: 0 24px 80px; }
-  }
-
-  /* ─── RESPONSIVE — mobile ────────────────────────────────────── */
-  @media (max-width: 700px) {
-    /* Show mobile top bar, hide desktop sidebar */
-    .mobile-topbar { display: flex; }
-    .nav-overlay { display: block; pointer-events: none; }
-    .nav-overlay.visible { pointer-events: auto; }
-
-    /* Sidebar becomes a fixed off-canvas drawer */
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 100vh;
-      width: 280px;
-      z-index: 160;
-      transform: translateX(-100%);
-      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 4px 0 24px rgba(0,0,0,0.4);
-    }
-    .sidebar.open {
-      transform: translateX(0);
-    }
-    .sidebar-brand {
-      padding-top: 64px; /* clear the topbar */
-    }
-
-    /* Main content fills full width, offset for topbar */
-    .shell { display: block; }
-    .main {
-      padding: 68px 16px 80px;
-      max-width: 100%;
-    }
-
-    /* Cover heading & meta */
-    .cover { padding: 24px 0 28px; }
-    .cover-meta { gap: 14px; flex-wrap: wrap; }
-    .meta-item { min-width: calc(50% - 7px); }
-    .cover-title { font-size: clamp(1.4rem, 5vw, 1.9rem); }
-
-    /* Section scroll-margin compensates for sticky topbar */
-    .section, .cover { scroll-margin-top: 64px; }
-
-    /* Tables scroll horizontally */
-    .card { overflow-x: auto; padding: 16px; }
-    .calc-table { min-width: 420px; }
-
-    /* Exec rows stack nicely */
-    .exec-row { flex-direction: column; gap: 8px; }
-    .exec-badge { width: auto; align-self: flex-start; }
-
-    /* Structure diagram */
-    .structure { font-size: 0.68rem; padding: 14px; }
-
-    /* Rec grid single column */
-    .rec-grid { grid-template-columns: 1fr; }
-
-    /* Alerts */
-    .alert { flex-direction: column; gap: 8px; padding: 14px; }
-
-    /* Step list */
-    .step-num { min-width: 26px; }
-
-    /* Nav links larger tap target on mobile */
-    .nav-link { padding: 12px 14px; font-size: 0.9rem; }
-    .nav-section { padding: 18px 14px 8px; }
-  }
-
-  /* ─── SCROLLBAR ──────────────────────────────────────────────── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
-
-  /* ─── PROSE HELPERS ──────────────────────────────────────────── */
-  .prose p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 12px; }
-  .prose p:last-child { margin-bottom: 0; }
-  .prose strong { color: var(--text); font-weight: 600; }
-  .prose em { color: var(--gold-light); font-style: italic; }
-
-  /* ─── RECOMMENDATION CHIPS ───────────────────────────────────── */
-  .rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
-  .rec-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-  }
-  .rec-card .rec-icon { font-size: 1.4rem; margin-bottom: 8px; }
-  .rec-card .rec-heading { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .rec-card .rec-text { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
-
-  /* ─── BACK TO TOP ─────────────────────────────────────────────── */
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 28px;
-    transition: color 0.15s;
-  }
-  .back-btn:hover { color: var(--gold); }
-
-  /* ─── SIDEBAR FILTER DROPDOWNS ───────────────────────────────── */
-  .filter-group {
-    padding: 10px 12px 6px;
-    border-bottom: 1px solid var(--border);
-  }
-  .filter-label {
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-    display: block;
-  }
-  .filter-select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius);
-    color: var(--text-muted);
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    padding: 7px 10px;
-    cursor: pointer;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899aa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    padding-right: 28px;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .filter-select:hover, .filter-select:focus {
-    border-color: var(--gold);
-    color: var(--gold-light);
-  }
-  .filter-select option {
-    background: var(--surface2);
-    color: var(--text-muted);
-  }
-
-  /* ─── COLLAPSIBLE SECTIONS ───────────────────────────────────── */
-  .section-collapse-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    user-select: none;
-    gap: 10px;
-    padding: 4px 0 16px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 0;
-  }
-  .section-collapse-header:hover .section-title { color: var(--gold-light); }
-  .section-collapse-header .collapse-icon {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--surface2);
-    border: 1px solid var(--border-light);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.15s, transform 0.25s;
-    color: var(--text-dim);
-    font-size: 0.7rem;
-  }
-  .section-collapse-header:hover .collapse-icon {
-    background: var(--gold-dim);
-    color: var(--gold);
-    border-color: rgba(201,169,110,0.35);
-  }
-  .section-collapse-header.collapsed .collapse-icon {
-    transform: rotate(-90deg);
-  }
-  .section-collapse-body {
-    overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
-    max-height: 5000px;
-    opacity: 1;
-    padding-top: 18px;
-  }
-  .section-collapse-body.collapsed {
-    max-height: 0;
-    opacity: 0;
-    padding-top: 0;
-  }
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
 </style>
 </head>
-
 <body>
 <div class="shell">
 
-  <!-- ══════════════ MOBILE TOPBAR ══════════════ -->
+  <!-- MOBILE TOPBAR -->
   <div class="mobile-topbar" id="mobileTopbar">
-    <span class="firm">Anh La</span>
+    <span class="firm" id="mobileTitle">Anh La</span>
     <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-
-  <!-- NAV OVERLAY (mobile backdrop) -->
   <div class="nav-overlay" id="navOverlay"></div>
 
-  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <div class="firm">Anh La</div>
-      <div class="sub">Tax Letter of Advice</div>
+      <div class="sub" id="sidebarSub">International Tax Issues</div>
     </div>
 
-    <!-- Filter: Tax Case -->
-    <div class="filter-group">
-      <span class="filter-label">Tax Case</span>
-      <select class="filter-select" id="taxCaseFilter" onchange="applyFilters()">
-        <option value="all">All Cases</option>
-        <option value="universal" selected>Universal Inc</option>
-        <option value="futuro">Futuro</option>
-      </select>
+    <div class="case-tabs">
+      <div class="case-tab active" data-case="all" onclick="switchCase('all')">Instructions</div>
+      <div class="case-tab" data-case="futuro" onclick="switchCase('futuro')">Futuro</div>
+      <div class="case-tab" data-case="universal" onclick="switchCase('universal')">Universal</div>
     </div>
 
-    <!-- Filter: Country -->
     <div class="filter-group">
       <span class="filter-label">Country</span>
-      <select class="filter-select" id="countryFilter" onchange="applyFilters()">
+      <select class="filter-select" id="countryFilter" onchange="applyFilters(true)">
         <option value="all" selected>All Countries</option>
         <option value="AU">Australia</option>
+        <option value="UK">United Kingdom</option>
+        <option value="FR">France</option>
+        <option value="PL">Poland</option>
+        <option value="CN">China</option>
         <option value="CA">Canada</option>
         <option value="ID">Indonesia</option>
         <option value="LV">Latvia</option>
         <option value="BE">Belgium</option>
         <option value="IN">India</option>
-        <option value="UK">United Kingdom</option>
         <option value="IE">Ireland</option>
         <option value="NZ">New Zealand</option>
       </select>
     </div>
 
-    <!-- Navigation -->
-    <div class="nav-section">Contents</div>
-    <a class="nav-link" href="#cover" onclick="closeMobileSidebar()">
-      <span class="dot risk-info"></span>Cover
-    </a>
-    <a class="nav-link" href="#facts" onclick="closeMobileSidebar()">
-      <span class="dot risk-info"></span>Relevant Facts
-    </a>
-    <a class="nav-link" href="#exec" onclick="closeMobileSidebar()">
-      <span class="dot risk-info"></span>Executive Summary
-    </a>
+    <!-- NAV: Futuro -->
+    <div class="nav-futuro" id="navFuturo">
+      <div class="nav-section">Futuro Group</div>
+      <a class="nav-link f-nav" href="#f-cover" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Cover</a>
+      <a class="nav-link f-nav" href="#f-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Facts &amp; Structure</a>
+      <a class="nav-link f-nav" href="#f-exec" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Executive Summary</a>
+      <div class="nav-section">Issues</div>
+      <a class="nav-link f-nav" href="#f-issue1" onclick="expandAndScrollGlobal('f-issue1');closeMobileSidebar()"><span class="dot risk-low"></span>01 &middot; Selznick Share Sale</a>
+      <a class="nav-link f-nav" href="#f-issue2" onclick="expandAndScrollGlobal('f-issue2');closeMobileSidebar()"><span class="dot risk-med"></span>02 &middot; Selznick Dividend &amp; CFC</a>
+      <a class="nav-link f-nav" href="#f-issue3" onclick="expandAndScrollGlobal('f-issue3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Hecht Residency</a>
+      <a class="nav-link f-nav" href="#f-issue4" onclick="expandAndScrollGlobal('f-issue4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Blighty PE</a>
+      <a class="nav-link f-nav" href="#f-issue5" onclick="expandAndScrollGlobal('f-issue5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Blighty PE Tax</a>
+      <a class="nav-link f-nav" href="#f-issue6" onclick="expandAndScrollGlobal('f-issue6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; Wider Impacts</a>
+      <div class="nav-section">Appendix</div>
+      <a class="nav-link f-nav" href="#f-conduct" onclick="expandAndScrollGlobal('f-conduct');closeMobileSidebar()"><span class="dot risk-high"></span>TASA Conduct</a>
+      <a class="nav-link f-nav" href="#f-footnotes" onclick="expandAndScrollGlobal('f-footnotes');closeMobileSidebar()"><span class="dot risk-info"></span>Legal References</a>
+    </div>
 
-    <div class="nav-section">Issues</div>
-    <a class="nav-link" href="#item1" onclick="expandAndScroll('item1');closeMobileSidebar()">
-      <span class="dot risk-high"></span>01 &middot; UA Residency
-    </a>
-    <a class="nav-link" href="#item2" onclick="expandAndScroll('item2');closeMobileSidebar()">
-      <span class="dot risk-high"></span>02 &middot; Employee PE Risk
-    </a>
-    <a class="nav-link" href="#item3" onclick="expandAndScroll('item3');closeMobileSidebar()">
-      <span class="dot risk-high"></span>03 &middot; Indonesian Server PE
-    </a>
-    <a class="nav-link" href="#item4" onclick="expandAndScroll('item4');closeMobileSidebar()">
-      <span class="dot risk-high"></span>04 &middot; Latvian WHT Shortfall
-    </a>
-    <a class="nav-link" href="#item5" onclick="expandAndScroll('item5');closeMobileSidebar()">
-      <span class="dot risk-high"></span>05 &middot; Belgian Share Sale
-    </a>
-    <a class="nav-link" href="#item6" onclick="expandAndScroll('item6');closeMobileSidebar()">
-      <span class="dot risk-med"></span>06 &middot; India MAP
-    </a>
-    <a class="nav-link" href="#item7" onclick="expandAndScroll('item7');closeMobileSidebar()">
-      <span class="dot risk-med"></span>07 &middot; IP Transfer Canada
-    </a>
-    <a class="nav-link" href="#item8" onclick="expandAndScroll('item8');closeMobileSidebar()">
-      <span class="dot risk-med"></span>08 &middot; Pre-Sale Dividend
-    </a>
-    <a class="nav-link" href="#item9" onclick="expandAndScroll('item9');closeMobileSidebar()">
-      <span class="dot risk-low"></span>09 &middot; Profit Repatriation
-    </a>
-
-    <div class="nav-section">Appendix</div>
-    <a class="nav-link" href="#conduct" onclick="expandAndScroll('conduct');closeMobileSidebar()">
-      <span class="dot risk-info"></span>Professional Conduct
-    </a>
-    <a class="nav-link" href="#nextsteps" onclick="expandAndScroll('nextsteps');closeMobileSidebar()">
-      <span class="dot risk-info"></span>Recommendations
-    </a>
+    <!-- NAV: Universal -->
+    <div class="nav-universal" id="navUniversal">
+      <div class="nav-section">Universal Inc</div>
+      <a class="nav-link u-nav" href="#u-cover" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Cover</a>
+      <a class="nav-link u-nav" href="#u-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Relevant Facts</a>
+      <a class="nav-link u-nav" href="#u-exec" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Executive Summary</a>
+      <div class="nav-section">Issues</div>
+      <a class="nav-link u-nav" href="#u-item1" onclick="expandAndScrollGlobal('u-item1');closeMobileSidebar()"><span class="dot risk-high"></span>01 &middot; UA Residency</a>
+      <a class="nav-link u-nav" href="#u-item2" onclick="expandAndScrollGlobal('u-item2');closeMobileSidebar()"><span class="dot risk-high"></span>02 &middot; Employee PE Risk</a>
+      <a class="nav-link u-nav" href="#u-item3" onclick="expandAndScrollGlobal('u-item3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Indonesian Server PE</a>
+      <a class="nav-link u-nav" href="#u-item4" onclick="expandAndScrollGlobal('u-item4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Latvian WHT</a>
+      <a class="nav-link u-nav" href="#u-item5" onclick="expandAndScrollGlobal('u-item5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Belgian Share Sale</a>
+      <a class="nav-link u-nav" href="#u-item6" onclick="expandAndScrollGlobal('u-item6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; India MAP</a>
+      <a class="nav-link u-nav" href="#u-item7" onclick="expandAndScrollGlobal('u-item7');closeMobileSidebar()"><span class="dot risk-med"></span>07 &middot; IP Transfer Canada</a>
+      <a class="nav-link u-nav" href="#u-item8" onclick="expandAndScrollGlobal('u-item8');closeMobileSidebar()"><span class="dot risk-med"></span>08 &middot; Pre-Sale Dividend</a>
+      <a class="nav-link u-nav" href="#u-item9" onclick="expandAndScrollGlobal('u-item9');closeMobileSidebar()"><span class="dot risk-low"></span>09 &middot; Profit Repatriation</a>
+      <div class="nav-section">Appendix</div>
+      <a class="nav-link u-nav" href="#u-conduct" onclick="expandAndScrollGlobal('u-conduct');closeMobileSidebar()"><span class="dot risk-info"></span>Professional Conduct</a>
+      <a class="nav-link u-nav" href="#u-nextsteps" onclick="expandAndScrollGlobal('u-nextsteps');closeMobileSidebar()"><span class="dot risk-info"></span>Recommendations</a>
+    </div>
 
     <div class="sidebar-footer">
       Law as at April 2026 &middot; All amounts AUD unless noted.<br/>
-      Advice is preliminary and jurisdiction-specific local counsel is required.
+      Advice is preliminary and confidential.
     </div>
   </aside>
 
-  <!-- ══════════════ MAIN ══════════════ -->
-  <main class="main">
+  <!-- CONTENT AREA -->
+  <div id="contentArea" style="flex:1;overflow-x:hidden;display:flex;flex-direction:column;">
+
+    <!-- ══ FUTURO CASE WRAPPER ══ -->
+    <div class="case-wrapper visible" id="caseWrapperFuturo">
+      <main class="main">
+
 
     <!-- COVER -->
-    <div class="cover" id="cover">
-      <div class="cover-eyebrow">CTA3 Advisory · Confidential</div>
-      <h1 class="cover-title">International Tax Implications<br/>for the Universal Group</h1>
-      <p class="cover-subtitle">Letter of Advice — NovaTech Industries Pty Ltd Acquisition</p>
+    <div class="cover" id="f-cover">
+      <div class="cover-eyebrow">Futuro Group &middot; Sample</div>
+      <h1 class="cover-title">International Tax — Australian Income Tax Implications</h1>
+      <p class="cover-subtitle">Letter of Advice</p>
+      <div class="cover-meta">
+        <div class="meta-item"><span class="meta-label">To</span><span class="meta-value">Directors, Futuro Pty Ltd</span></div>
+        <div class="meta-item"><span class="meta-label">From</span><span class="meta-value">[Tax agent Name]</span></div>
+        <div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">April 2026</span></div>
+        <div class="meta-item"><span class="meta-label">Issues</span><span class="meta-value">6 Discrete Issues</span></div>
+      </div>
+    </div>
+
+    <!-- SALUTATION & SCOPE -->
+    <div class="section" style="margin-bottom:32px;">
+      <div class="card">
+        <p class="card-title">Salutation &amp; Scope</p>
+        <div class="prose">
+          <p><strong>Dear Directors,</strong></p>
+          <p>This letter of advice (<strong>'LOA'</strong>) has been prepared by [Tax agent Name] as registered tax agent for the Australian entities within the Futuro group. This advice is addressed to the Directors of <strong>Futuro Pty Ltd ('Futuro')</strong> and addresses all relevant Australian income tax implications arising from the transactions and structural changes described in the facts provided to us.</p>
+          <p>This advice incorporates Australian domestic income tax law, applicable double tax agreements (DTAs) as modified by the OECD Multilateral Instrument (MLI), relevant case law, ATO public rulings, and recent legislative developments. It is prepared as at April 2026. Treaty interpretation is guided by TR 2001/13 and the synthesised text of relevant treaties. References are made to the 2025 OECD Model Tax Convention Commentary.</p>
+          <p>Australia has bilateral double tax treaties with both the United Kingdom and France. Both are covered agreements under the MLI. The Australia–UK treaty MLI provisions have been effective from 1 January 2019. The Australia–France and Australia–Poland treaties have also been modified by the MLI.</p>
+          <p><strong>This advice is preliminary.</strong> It is based solely on the facts provided and has not been independently verified. Should any material facts differ, we may need to revise our conclusions.</p>
+          <p>Yours sincerely,<br/><strong>[Tax agent Name] — Registered Tax Agent</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FACTS & STRUCTURE -->
+    <div class="section" id="f-facts">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">FACTS</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Facts &amp; Group Structure</h2>
+            <span class="section-tag tag-info">Group Overview</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="alert info">
+          <span class="alert-icon">ℹ️</span>
+          <div class="alert-body">
+            <strong>Please confirm facts</strong>
+            This advice is based solely on the facts as provided. Please advise if any information is incorrect or incomplete so that we may update our conclusions accordingly.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Group Structure — ASCII Diagram</p>
+          <div class="structure">
+<span class="hl4">Blighty Ltd (UK)</span>  ──50%──┐     ┌──50%──  <span class="hl3">Snags Pty Ltd (AU)</span>
+                            │     │                 └─ 100% owned by Chinese investor
+                            ▼     ▼
+                    <span class="hl">Futuro Pty Ltd (AU)</span>  ◄── Australian resident
+                       │              │
+                  ──60%──          ──40%──
+                       │              │
+                       ▼              ▼
+            <span class="hl2">Selznick SARL (FR)</span>      <span class="hl4">Hecht sp. z o.o (PL)</span>
+            French tax resident      Polish incorporated
+            Active AI / analytics    Historically AU resident (CMAC)
+            Profitable several yrs   Management shifting to Poland ⚠️
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Group Entities</p>
+          <table class="calc-table">
+            <thead><tr><th>Entity</th><th>Jurisdiction</th><th>Ownership</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Futuro Pty Ltd</strong></td><td>Australia</td><td class="mono">Head entity</td><td>Australian incorporated &amp; resident</td></tr>
+              <tr><td>Blighty Ltd</td><td>United Kingdom</td><td class="mono">50% of Futuro</td><td>UK incorporated; 3 UK-resident sibling directors</td></tr>
+              <tr><td>Snags Pty Ltd</td><td>Australia</td><td class="mono">50% of Futuro</td><td>Australian resident; 100% Chinese investor-owned</td></tr>
+              <tr><td>Hecht sp. z o.o</td><td>Poland</td><td class="mono">40% (Futuro)</td><td>Polish incorporated; historically AU resident via CMAC ⚠️</td></tr>
+              <tr><td>Selznick SARL</td><td>France</td><td class="mono">60% (Futuro)</td><td>French tax resident; active AI research &amp; analytics</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Key Transactions &amp; Events (mid-2026)</p>
+          <ul>
+            <li>Selznick sold a long-term (&gt;12 months) <strong>15% shareholding</strong> in an Australian software company (no voting rights; no Australian real property). Selznick then paid a dividend from overall taxed profits to Futuro and other shareholders. French domestic WHT would ordinarily apply.</li>
+            <li>Management of Hecht has changed significantly — more activities now conducted in Poland. Regular dividends paid to Futuro before and after the change, with Polish WHT deducted.</li>
+            <li>Blighty intends to construct an <strong>Industry 4.0 manufacturing facility in Queensland</strong> in collaboration with University of Queensland Affiliate ('UQA'). No Australian incorporated entity will be established. Blighty will borrow A$55m from WestNat Bank (UK) at 4% interest, plus internal funds. Leased sales offices in each capital city; Australian bank account opened. All sales contract approvals finalised in the UK. Hardware sold globally.</li>
+            <li>Blighty will recharge the WestNat interest to the venture and notionally charge interest on internal funds. Blighty will pay UQA a royalty based on annual sales turnover.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="section" id="f-exec">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">EXEC</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Executive Summary</h2>
+            <span class="section-tag tag-info">6 Issues at a Glance</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+        <div class="card">
+          <div class="exec-row">
+            <span class="exec-badge tag-low">Issue 1</span>
+            <div class="exec-content">
+              <div class="exec-heading">Sale of Australian Shares by Selznick</div>
+              <div class="exec-body">No Australian CGT — shares are not Taxable Australian Property (TAP). Principal asset test fails (no Australian real property). No FRCGW withholding obligation.</div>
+            </div>
+          </div>
+          <div class="exec-row">
+            <span class="exec-badge tag-med">Issue 2</span>
+            <div class="exec-content">
+              <div class="exec-heading">Selznick Dividend to Futuro — CFC Analysis</div>
+              <div class="exec-body">Selznick is a CFC (Futuro holds 60%). If the active income test is passed, the dividend is NANE under Subdiv 768-A. French WHT at 5% (or 15% if no voting rights) is irrecoverable. CFI elections strongly recommended for tax-free pass-through to non-resident shareholders.</div>
+            </div>
+          </div>
+          <div class="exec-row">
+            <span class="exec-badge tag-high">Issue 3</span>
+            <div class="exec-content">
+              <div class="exec-heading">Hecht Residency Change — Urgent Action Required</div>
+              <div class="exec-body">MLI replaces automatic tiebreaker with MAP. Competent authority process must be initiated immediately. Failure risks dual taxation without treaty relief. CGT event I1 triggered if Hecht ceases Australian residency — deemed disposal of all assets at market value.</div>
+            </div>
+          </div>
+          <div class="exec-row">
+            <span class="exec-badge tag-high">Issue 4</span>
+            <div class="exec-content">
+              <div class="exec-heading">Blighty PE in Australia</div>
+              <div class="exec-body">Blighty will very likely have a PE via the Queensland manufacturing facility and leased offices. Preparatory/auxiliary exceptions do not apply. Dependent agent PE risk from Australian staff involvement in sales process.</div>
+            </div>
+          </div>
+          <div class="exec-row">
+            <span class="exec-badge tag-high">Issue 5</span>
+            <div class="exec-content">
+              <div class="exec-heading">Australian Tax Implications of Blighty PE</div>
+              <div class="exec-body">Article 7 AUS-UK treaty taxes attributable profits. External WestNat interest deductible; notional internal interest is NOT. Interest WHT at 10% on PE-to-Blighty payments. PE assets are TAP — subject to CGT on disposal. No WHT on branch profit remittances.</div>
+            </div>
+          </div>
+          <div class="exec-row">
+            <span class="exec-badge tag-med">Issue 6</span>
+            <div class="exec-content">
+              <div class="exec-heading">Wider Australian Income Tax Impacts</div>
+              <div class="exec-body">WHT compliance on all cross-border payments. CFI elections for Futuro and Snags. Division 820 thin capitalisation applies (A$2.2m interest exceeds $2m de minimis). WestNat loan must be confirmed as debt under Division 974.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:28px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">The Law &amp; Application to the Facts</p>
+
+    <!-- ══ ISSUE 1 ══ -->
+    <div class="section" id="f-issue1">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">01</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Sale of Australian Shares by Selznick</h2>
+            <span class="section-tag tag-low">Low Risk · CGT Exempt</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="card">
+          <p class="card-title">Applicable Law — Division 855 &amp; Taxable Australian Property</p>
+          <div class="prose">
+            <p>Under <strong>Division 855, ITAA 1997</strong>, a foreign resident can disregard a capital gain or loss from a CGT event if the relevant asset is not 'Taxable Australian Property' (TAP). Section 855-10 provides that foreign residents are not subject to Australian CGT on non-TAP assets.</p>
+            <p>For shares in an Australian company to constitute TAP as an <strong>indirect Australian real property interest</strong> under s 855-25, two cumulative tests must both be satisfied:</p>
+            <p><strong>Non-portfolio interest test:</strong> The taxpayer and its associates (under s 318, ITAA 1936) must hold, in aggregate, a 10% or more associate-inclusive direct participation interest in the entity.</p>
+            <p><strong>Principal asset test (s 855-30):</strong> The market value of the entity's assets must be principally attributable (more than 50%) to Australian real property.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Application to Facts</p>
+          <div class="prose">
+            <p>Selznick holds a <strong>15% interest</strong> in the Australian software company with <strong>no voting rights</strong>. The non-portfolio interest test may technically be met (15% ≥ 10%), but must consider the associate-inclusive test carefully — if Selznick's associates hold no additional interests, the result remains to be confirmed.</p>
+            <p>Critically, the <strong>principal asset test plainly fails</strong>: the facts expressly state the software company has <strong>no real property in Australia</strong>. The shares therefore do not constitute an indirect Australian real property interest, are not TAP, and Selznick is entitled to disregard any capital gain under s 855-10.</p>
+          </div>
+        </div>
+
+        <div class="alert success">
+          <span class="alert-icon">✅</span>
+          <div class="alert-body">
+            <strong>No Australian CGT</strong>
+            The shares are not TAP — the principal asset test is not satisfied (no Australian real property). No FRCGW withholding obligation arises on the purchaser. Selznick should maintain documentation confirming the software company's asset composition in the event of ATO review.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Additional Considerations</p>
+          <div class="prose">
+            <p><strong>FRCGW regime:</strong> If CGT were to apply (e.g. additional associate holdings triggered the non-portfolio interest test), the foreign resident capital gains withholding (FRCGW) regime would apply. Following amendments effective 1 January 2025, the FRCGW rate is <strong>15%</strong> with no minimum transaction value threshold. Selznick would need to obtain a variation notice from the ATO.</p>
+            <p><strong>CGT Discount:</strong> As a foreign resident company, Selznick would not be entitled to the CGT discount under s 115-10. However, France may provide a foreign tax credit for Australian CGT paid under Article 23 of the Australia-France treaty.</p>
+            <p><strong>Treaty position:</strong> Under Article 13 of the Australia-France treaty, Australia retains the right to tax gains from alienation of shares deriving more than 50% of their value from immovable property in Australia. As the software company has no Australian real property, this article grants Australia no taxing rights — consistent with the domestic law analysis.</p>
+          </div>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 1</span>
+          <p>No Australian CGT applies to Selznick's sale of shares in the Australian software company. The shares are not TAP as the principal asset test is not satisfied (no Australian real property). The sale proceeds are not assessable in Australia. No FRCGW withholding obligation arises on the purchaser.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">ITAA 1997 Div 855</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 855-10 (Foreign Residents &amp; CGT)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 855-25 (Indirect ARPI)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 855-30 (Principal Asset Test)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 318 ITAA 1936 (Associates)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 115-10 ITAA 1997 (No CGT Discount)</a>
+            <span class="law-chip">FRCGW — 15% rate (from 1 Jan 2025)</span>
+            <span class="law-chip">AUS-France DTA Art 13</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ISSUE 2 ══ -->
+    <div class="section" id="f-issue2">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">02</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Selznick Dividend to Futuro — CFC Analysis &amp; Choices</h2>
+            <span class="section-tag tag-med">Medium Risk · Planning Opportunity</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="card">
+          <p class="card-title">A. Is Selznick a Controlled Foreign Company (CFC)?</p>
+          <div class="prose">
+            <p>Futuro holds a <strong>60% interest</strong> in Selznick. Under <strong>s 340, ITAA 1936</strong>, a company is a CFC if Australian residents have, in aggregate, an associate-inclusive control interest of greater than 50%. Futuro's 60% holding (as an attributable taxpayer under s 361) plainly satisfies this test. <strong>Selznick is a CFC.</strong></p>
+            <p>France is a 'listed country' for CFC purposes under s 320 and the relevant ITAA 1936 regulations (updated 2025). Futuro's attribution interest is 60% per s 362.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">B. Active Income Test</p>
+          <div class="prose">
+            <p>The CFC rules only require attribution of 'tainted income' to Futuro where Selznick <strong>fails</strong> the active income test (AIT) under s 432. The AIT is failed where the ratio of tainted income to total income exceeds 5%.</p>
+            <p>Selznick is described as an active AI research company deriving income from data analytics activities. On this basis, there are strong grounds to conclude the AIT is <strong>satisfied (not failed)</strong>, meaning no CFC attribution of income has occurred historically.</p>
+          </div>
+        </div>
+
+        <div class="alert warning">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-body">
+            <strong>Confirm Active Income Test</strong>
+            Insufficient information exists to state this categorically. Futuro must confirm that Selznick's data analytics activities constitute active business income and that the tainted income ratio does not exceed 5%. The distinction between passive royalties and genuinely active income is critical.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">C. Treatment of the Dividend</p>
+          <table class="calc-table">
+            <thead><tr><th>Scenario</th><th>AIT Result</th><th>Australian Tax Treatment</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Scenario 1</strong> — AIT satisfied</td>
+                <td class="highlight-green">No prior attribution</td>
+                <td>Dividend is <strong>NANE</strong> under Subdiv 768-A, ITAA 1997 — not included in assessable income (Futuro holds ≥10%)</td>
+              </tr>
+              <tr>
+                <td><strong>Scenario 2</strong> — AIT failed</td>
+                <td class="highlight-red">Prior attribution occurred</td>
+                <td>Dividend exempt under <strong>s 23AI, ITAA 1936</strong> to the extent of previously attributed amounts. Futuro must maintain attribution account.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <p class="card-title">D. French WHT — Australia-France DTA</p>
+          <div class="prose">
+            <p>French domestic law would ordinarily impose WHT on dividends paid to a non-resident. Under <strong>Article 10(2)(a) of the Australia-France DTA</strong>, the WHT rate is reduced to <strong>5%</strong> where the recipient holds ≥10% of the voting power, subject to the MLI 365-day holding period condition (Article 8, MLI). Futuro holds 60% of Selznick.</p>
+            <p><strong>Critical issue:</strong> The facts state that Selznick's shares carry <strong>no voting power</strong>. If Futuro's 60% holding carries no voting rights, the reduced 5% rate may not be available and the standard <strong>15% rate</strong> under Article 10(2)(b) would apply. This must be confirmed by French advisers.</p>
+            <p><strong>FITO availability:</strong> No FITO under Division 770 is available for the French WHT — whether the dividend is NANE under Subdiv 768-A or exempt under s 23AI, no Australian income tax arises on the dividend. The French WHT is an <strong>irrecoverable cost</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">E. Conduit Foreign Income (CFI) — Group Planning</p>
+          <div class="prose">
+            <p>The group should elect the <strong>CFI rules under Division 802, ITAA 1997</strong> to allow tax-free pass-through of foreign income to non-resident shareholders. All of Futuro's shareholders are either directly or indirectly non-residents (Blighty is UK resident; Snags is 100% owned by a Chinese investor). The CFI rules are highly relevant.</p>
+            <p>CFI income can include NANE dividends under Subdiv 768-A. Where Futuro and Snags designate unfranked dividends as CFI, those dividends are exempt from Australian WHT when paid to non-resident shareholders. Declarations must be made <strong>at or before</strong> the time of distribution. CFI tracking accounts must be reduced under s 802-45 when CFI distributions are made.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">WHT Rates Without CFI Election</p>
+          <table class="calc-table">
+            <thead><tr><th>Payment</th><th>Treaty</th><th>WHT Rate</th></tr></thead>
+            <tbody>
+              <tr><td>Futuro → Blighty (unfranked)</td><td>AUS-UK DTA Art 10</td><td class="highlight-amber mono">5%</td></tr>
+              <tr><td>Snags → Chinese investor</td><td>AUS-China DTA</td><td class="highlight-amber mono">Treaty rate</td></tr>
+              <tr><td>Futuro → Blighty (CFI elected)</td><td>Div 802 election</td><td class="highlight-green mono">Nil</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 2</span>
+          <p>Selznick is a CFC of Futuro. Subject to the AIT being satisfied, the dividend should be NANE income under Subdivision 768-A, ITAA 1997. French WHT at 5% (or 15% if no voting rights attach) will be an irrecoverable cost — no FITO is available. The group should elect the CFI rules to allow tax-free pass-through of foreign income to non-resident shareholders (Blighty and the Chinese investor). CFI declarations must be made by Futuro and Snags prior to or at the time of each distribution.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 340 ITAA 1936 (CFC Control)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 361 ITAA 1936 (Attributable Taxpayer)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 362 ITAA 1936 (Attribution Interest)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 432 ITAA 1936 (Active Income Test)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 23AI ITAA 1936 (Previously Attributed Income)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Subdiv 768-A ITAA 1997 (NANE Dividends)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 770 ITAA 1997 (FITO)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 802 ITAA 1997 (CFI)</a>
+            <span class="law-chip">AUS-France DTA Art 10(2)</span>
+            <span class="law-chip">MLI Art 8 (365-day holding)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ISSUE 3 ══ -->
+    <div class="section" id="f-issue3">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">03</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Hecht Residency Change — Domestic &amp; Treaty Considerations</h2>
+            <span class="section-tag tag-high">High Risk · Urgent Action</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="alert danger">
+          <span class="alert-icon">🚨</span>
+          <div class="alert-body">
+            <strong>Immediate Action Required — MAP Process</strong>
+            The management changes at Hecht are critical. The MLI MAP process must be initiated with the ATO immediately. Until a competent authority agreement is reached, Hecht risks dual taxation in both Australia and Poland without treaty relief.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">A. Historical Position — Hecht as Australian Resident</p>
+          <div class="prose">
+            <p>Hecht is incorporated in Poland but has historically been managed by Australian resident directors through <strong>central management and control (CMAC)</strong> located in Australia. Under <strong>s 6(1), ITAA 1936</strong>, a company whose CMAC is in Australia is an Australian tax resident. As a dual resident (also Polish tax resident by incorporation), the Australia-Poland DTA tiebreaker had applied, with effective management in Australia determining Australian residency.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">B. MLI Modification — Mutual Agreement Process</p>
+          <div class="prose">
+            <p>The Australia-Poland DTA is a covered agreement for MLI purposes. <strong>Article 4 of the MLI</strong> has replaced the prior automatic tiebreaker rule (based on place of effective management) with a <strong>mutual agreement process (MAP)</strong>. The ATO and Polish tax authorities must now agree on the country of residence for treaty purposes.</p>
+            <p>Given the significant shift of management activities to Poland, Hecht may no longer have its effective management in Australia. Futuro must initiate the competent authority MAP process with the ATO as soon as possible. The OECD released an updated MAP Manual in November 2025 providing detailed guidance.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">C. Consequences of Dual Residency Without MAP Agreement</p>
+          <div class="prose">
+            <p>In the absence of a competent authority agreement, Hecht will be treated as tax resident in <strong>both Australia and Poland</strong>. No treaty benefits will be available to resolve the conflict. Both jurisdictions could seek to tax Hecht's entire income, and no treaty-based credit relief would be available — creating significant double taxation risk.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">D. Treatment of Dividends</p>
+          <table class="calc-table">
+            <thead><tr><th>Period</th><th>Hecht Status</th><th>Treatment of Dividends to Futuro</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Before change</strong></td>
+                <td>Australian resident</td>
+                <td>Ordinary intercorporate dividends. May carry franking credits. Polish WHT deducted → FITO claim for Futuro.</td>
+              </tr>
+              <tr>
+                <td><strong>After change</strong> (if solely Polish resident)</td>
+                <td>Foreign company</td>
+                <td>NANE treatment under Subdiv 768-A potentially applies (Futuro holds 40% ≥ 10%). Polish WHT under AUS-Poland DTA Art 10 at treaty-reduced rates.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert danger">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-body">
+            <strong>CGT Event I1 — Deemed Disposal Risk</strong>
+            If Hecht ceases to be an Australian tax resident, <strong>CGT event I1 under s 104-160, ITAA 1997</strong> will be triggered — a deemed disposal of ALL of Hecht's CGT assets at market value at the time of ceasing residency. Hecht holds a wide range of property assets (factories and office buildings) across Europe. The capital gain will be assessed in Australia. Obtain a market valuation of Hecht's European property assets urgently and consider seeking a private ruling from the ATO.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Recommendations</p>
+          <div class="step-list">
+            <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Initiate the MAP process with the ATO immediately</strong> under the Australia-Poland DTA (as modified by MLI Art 4). Provide all information regarding changed management structure, board meeting locations, and decision-making processes.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Obtain an urgent market valuation</strong> of Hecht's European property assets to quantify potential CGT event I1 exposure.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Seek a private ruling from the ATO</strong> regarding the timing, quantum, and any rollover relief available for CGT event I1.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Review FITO claims</strong> for Polish WHT deducted on dividends paid to Futuro — confirm treaty-reduced rates under AUS-Poland DTA Art 10 have been correctly applied.</div></div>
+          </div>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 3</span>
+          <p>The management changes at Hecht are critical and require urgent action. The MLI MAP process must be initiated with the ATO immediately. Until a competent authority agreement is reached, Hecht risks dual taxation without treaty relief. If Hecht ceases to be an Australian resident, CGT event I1 will trigger a deemed disposal of all of Hecht's assets at market value, potentially creating a significant CGT liability. The group must obtain a market valuation of Hecht's European property assets as a priority.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 6(1) ITAA 1936 (Residency — CMAC)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 104-160 ITAA 1997 (CGT Event I1)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Subdiv 768-A ITAA 1997 (NANE)</a>
+            <span class="law-chip">MLI Art 4(1) — MAP Tiebreaker</span>
+            <span class="law-chip">AUS-Poland DTA Art 10 (Dividends)</span>
+            <span class="law-chip">OECD MAP Manual (Nov 2025)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ISSUE 4 ══ -->
+    <div class="section" id="f-issue4">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">04</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Does Blighty Have a Permanent Establishment in Australia?</h2>
+            <span class="section-tag tag-high">High Risk · PE Confirmed</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="card">
+          <p class="card-title">Applicable Law — Article 5, Australia-UK DTA</p>
+          <div class="prose">
+            <p>Whether Blighty has an Australian PE must be determined under <strong>Article 5 of the Australia-UK DTA</strong>. The general rule is that a PE exists where there is a fixed place of business through which the business of the enterprise is wholly or partly carried on. <strong>TR 2002/5</strong> confirms that a PE requires: (i) a place of business; (ii) that is 'fixed' (geographic and temporal permanence); and (iii) through which business is carried on.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">PE Risk Assessment</p>
+          <table class="calc-table">
+            <thead><tr><th>Basis</th><th>PE Type</th><th>Assessment</th></tr></thead>
+            <tbody>
+              <tr><td>Queensland manufacturing facility</td><td>Fixed place (Art 5(2))</td><td class="highlight-red">PE confirmed — factory specifically listed in Art 5(2)</td></tr>
+              <tr><td>Leased offices in each capital city</td><td>Fixed place (Art 5(2))</td><td class="highlight-red">PE confirmed — offices with geographic &amp; temporal permanence</td></tr>
+              <tr><td>Preparatory/auxiliary exception</td><td>Art 5(4) exception</td><td class="highlight-green">Does NOT apply — manufacturing and sales are core activities</td></tr>
+              <tr><td>Australian staff sales involvement</td><td>Dependent agent (Art 5(5))</td><td class="highlight-amber">Risk — monitor if staff habitually conclude or effectively conclude contracts</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert danger">
+          <span class="alert-icon">🏭</span>
+          <div class="alert-body">
+            <strong>PE Confirmed — Queensland Manufacturing Facility &amp; Offices</strong>
+            Blighty will have at least one PE in Australia. Both the manufacturing facility and the leased offices satisfy geographic and temporal permanence (TR 2002/5, paras 9, 17–19). The activities — manufacturing hardware and conducting sales — are the core business and cannot be characterised as preparatory or auxiliary. The Art 5(4) exception does not apply.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Single vs Multiple PEs</p>
+          <div class="prose">
+            <p>The manufacturing facility and multiple offices may constitute a single cohesive PE or multiple PEs. Para 22 of the 2017 OECD Commentary on Article 5 addresses this: where there is sufficient geographic and commercial coherence between separate places of business, they may constitute a single PE. As all Australian activities relate to Blighty's manufacturing and global sales operations, there is a strong argument for a single integrated PE.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Dependent Agent PE Risk</p>
+          <div class="prose">
+            <p>While all sales contract approvals are finalised in the UK, <strong>Article 5(5)</strong> provides that a deemed PE exists where a person in Australia habitually exercises authority to conclude contracts on Blighty's behalf. Even if Australian staff are involved in negotiating and effectively concluding contracts (with formal sign-off in the UK), the OECD Commentary (para 88) suggests this may be sufficient. This risk must be carefully monitored and Australian staff authority tightly defined.</p>
+          </div>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 4</span>
+          <p>Blighty will have a PE in Australia by reason of both the Queensland manufacturing facility and the leased sales offices. These constitute fixed places of business with geographic and temporal permanence through which Blighty's business is carried on. The preparatory/auxiliary exceptions do not apply. A dependent agent PE may also arise depending on the role of Australian staff in the sales process. Blighty should establish governance arrangements to limit PE scope, particularly around contract approval authority.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 5 (PE)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 5(2) (Fixed Places)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 5(4) (Exceptions)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 5(5) (Dependent Agent)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20025/NAT/ATO/00001" target="_blank" rel="noopener">TR 2002/5 (PE Concepts)</a>
+            <span class="law-chip">OECD Commentary Art 5 paras 17–22, 88</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ISSUE 5 ══ -->
+    <div class="section" id="f-issue5">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">05</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Australian Income Tax Implications of the Blighty PE</h2>
+            <span class="section-tag tag-high">High Risk · Compliance Critical</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="card">
+          <p class="card-title">A. Attribution of Business Profits — Article 7</p>
+          <div class="prose">
+            <p><strong>Article 7 of the Australia-UK Convention</strong> gives Australia the right to tax business profits attributable to the PE. Article 7(2) requires profits to be determined as if the PE were a distinct and independent enterprise dealing at arm's length with Blighty. Under <strong>Division 764, ITAA 1997</strong>, income from the PE is treated as Australian-sourced.</p>
+            <p>As the hardware is manufactured in Australia, sold from Australian offices, and income flows through an Australian bank account, a <strong>significant portion of the income will be Australian-sourced</strong> and attributable to the PE — consistent with <em>Lewis Berger &amp; Sons</em> (source of manufacturing income partly in the place of manufacture).</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">B. Deductibility of Expenses</p>
+          <table class="calc-table">
+            <thead><tr><th>Expense Type</th><th>Treatment</th><th>Basis</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>External interest recharge (WestNat A$55m @ 4%)</td>
+                <td class="highlight-green">Deductible</td>
+                <td>Genuinely attributable to Australian operations — Art 7(3) &amp; s 8-1; TR 2011/1 para 3.42</td>
+              </tr>
+              <tr>
+                <td>Notional internal interest on internal funds</td>
+                <td class="highlight-red">NOT deductible</td>
+                <td>Internal charges between head office and PE not recognised — <em>Max Factor</em>; TR 2001/11; ATO ID 2012/90</td>
+              </tr>
+              <tr>
+                <td>Royalties to UQA (Australian university)</td>
+                <td class="highlight-green">Deductible</td>
+                <td>UQA is Australian resident — no WHT applies (WHT is for non-residents only). Deductible subject to arm's length terms.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert danger">
+          <span class="alert-icon">💰</span>
+          <div class="alert-body">
+            <strong>Notional Internal Interest — Not Deductible</strong>
+            Blighty's intention to charge notional interest on internal funds provided to the venture will NOT be deductible. The PE is not a separate legal entity from Blighty — internal charges between a head office and its PE are not recognised as actual outgoings for Australian income tax purposes. This position was confirmed in <em>Max Factor &amp; Co v FCT (1984) 84 ATC 4060</em> and TR 2001/11 / ATO ID 2012/90.
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">C. Withholding Tax on Interest Paid by PE to Blighty</p>
+          <div class="prose">
+            <p>When the PE remits interest to Blighty (a non-resident), <strong>s 128B(2)(b)(ii), ITAA 1936</strong> imposes Australian interest WHT. This is reduced to <strong>10%</strong> under <strong>Article 11(2) of the Australia-UK Convention</strong>. If WHT is not withheld and remitted, the corresponding interest deduction will be denied under <strong>s 26-25, ITAA 1997</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">D. Repatriation of PE Profits &amp; CGT on PE Assets</p>
+          <div class="prose">
+            <p><strong>Branch profit remittances:</strong> Any repatriation of after-tax profits from the Australian PE to Blighty in the UK is not assessable income — it merely represents Blighty moving its own funds (<em>Max Factor</em>). There is no equivalent of dividend WHT for branch remittances under Australian law.</p>
+            <p><strong>CGT on PE assets:</strong> Assets used in carrying on Blighty's business through the Australian PE are <strong>TAP under s 855-15, ITAA 1997</strong>. Any disposal of those PE assets (including the manufacturing facility) will be subject to Australian CGT, even though Blighty is a foreign resident. The 50% CGT discount is not available to a foreign resident company.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">WHT Summary — Blighty PE Cross-Border Payments</p>
+          <table class="calc-table">
+            <thead><tr><th>Payment</th><th>Direction</th><th>WHT Rate</th><th>Treaty</th></tr></thead>
+            <tbody>
+              <tr><td>Interest on WestNat debt (recharge)</td><td>PE → Blighty (UK)</td><td class="highlight-amber mono">10%</td><td>AUS-UK Art 11(2)</td></tr>
+              <tr><td>Royalty to UQA</td><td>PE → UQA (AU)</td><td class="highlight-green mono">Nil</td><td>UQA is AU resident</td></tr>
+              <tr><td>Branch profit remittance</td><td>PE → Blighty (UK)</td><td class="highlight-green mono">Nil</td><td>No branch WHT in Australia</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 5</span>
+          <p>Australia will tax the business profits of Blighty's PE under Article 7 of the Australia-UK treaty. Income from hardware manufactured in Australia will be substantially Australian-sourced. External interest recharged from the WestNat loan is deductible; notional internal interest is not. Interest WHT at 10% (treaty rate) applies on interest paid by the PE to Blighty — failure to withhold will deny the deduction. PE assets are TAP and subject to Australian CGT on disposal. No WHT applies on branch profit remittances to the UK.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 7 (Business Profits)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">AUS-UK DTA Art 11(2) (10% Interest WHT)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 764 ITAA 1997 (PE Source)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 855-15 ITAA 1997 (PE Assets as TAP)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 128B(2)(b)(ii) ITAA 1936 (Interest WHT)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 26-25 ITAA 1997 (Deduction Denied)</a>
+            <span class="law-chip">TR 2011/1 (Cross-Border TP, para 3.42)</span>
+            <span class="law-chip">TR 2001/11 &amp; ATO ID 2012/90</span>
+            <span class="law-chip">Max Factor v FCT (1984) 84 ATC 4060</span>
+            <span class="law-chip">Lewis Berger &amp; Sons v FCT (1959) 101 CLR 529</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ISSUE 6 ══ -->
+    <div class="section" id="f-issue6">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">06</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Wider Australian Income Tax Impacts</h2>
+            <span class="section-tag tag-med">Medium Risk · Compliance &amp; Planning</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="card">
+          <p class="card-title">A. Withholding Tax Obligations — Overview</p>
+          <div class="prose">
+            <p>Under <strong>s 128B, ITAA 1936</strong>, WHT applies to dividends, interest and royalties paid to non-residents. Failure to withhold triggers disallowance of deductions under <strong>s 26-25, ITAA 1997</strong>. The group faces compliance obligations on multiple cross-border flows.</p>
+          </div>
+          <table class="calc-table" style="margin-top:12px;">
+            <thead><tr><th>Payment Flow</th><th>WHT Rate</th><th>Treaty / Basis</th><th>CFI Available?</th></tr></thead>
+            <tbody>
+              <tr><td>Futuro → Blighty (unfranked dividend)</td><td class="highlight-amber mono">5%</td><td>AUS-UK DTA Art 10 (Blighty holds ≥10%)</td><td class="highlight-green">Yes — Nil if CFI elected</td></tr>
+              <tr><td>Snags → Chinese investor (dividend)</td><td class="highlight-amber mono">Treaty rate</td><td>AUS-China DTA</td><td class="highlight-green">Yes — Nil if CFI elected</td></tr>
+              <tr><td>PE interest → Blighty</td><td class="highlight-amber mono">10%</td><td>AUS-UK DTA Art 11(2)</td><td>No</td></tr>
+              <tr><td>Hecht → Futuro (post-change, if foreign)</td><td class="highlight-amber mono">Treaty rate</td><td>AUS-Poland DTA Art 10</td><td>FITO available</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <p class="card-title">B. Debt/Equity — Division 974</p>
+          <div class="prose">
+            <p>The WestNat Bank loan must be properly characterised as a <strong>debt interest under Division 974, ITAA 1997</strong> rather than an equity interest, for the interest deduction to be available. On the facts (a third-party bank loan at commercial terms), characterisation as debt is expected but should be formally confirmed — particularly if any equity-like features are introduced.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">C. Thin Capitalisation — Division 820</p>
+          <div class="prose">
+            <p><strong>Division 820, ITAA 1997</strong> (as amended by the Treasury Laws Amendment (Making Multinationals Pay Their Fair Share) Act 2024) restricts interest deductions where debt levels exceed the arm's length threshold.</p>
+          </div>
+          <table class="calc-table" style="margin-top:12px;">
+            <thead><tr><th>Item</th><th class="mono">Amount</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>WestNat Bank loan</td><td class="mono">A$55,000,000</td><td>@ 4% p.a. interest</td></tr>
+              <tr><td>Annual interest (external)</td><td class="mono">A$2,200,000</td><td>A$55m × 4%</td></tr>
+              <tr><td>De minimis threshold (s 820-35)</td><td class="mono">A$2,000,000</td><td>Exceeded by $200,000 ✗</td></tr>
+              <tr><td>Classification</td><td class="mono">Inward investing</td><td>s 820-185 — inward investing financial entity</td></tr>
+              <tr><td>Applicable test</td><td class="mono">EBITDA 30% / ALT</td><td>Revised thin cap regime — Subdiv 820-EAA &amp; DDCR under s 820-31</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert warning">
+          <span class="alert-icon">📊</span>
+          <div class="alert-body">
+            <strong>Thin Capitalisation Modelling Required — Priority</strong>
+            The $2m de minimis is exceeded (A$2.2m interest). Division 820 will apply. Blighty's Australian tax adviser must model the thin capitalisation position under the applicable safe harbour (30% EBITDA test) and arm's length debt test before the manufacturing facility commences operations. A portion of interest deductions may be denied if Australian operations are over-leveraged.
+          </div>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">Opinion — Issue 6</span>
+          <p>The group faces significant WHT compliance obligations on all cross-border payments. CFI elections are strongly recommended for Futuro and Snags to minimise WHT costs on dividends paid to non-resident shareholders. Division 820 thin capitalisation will apply (de minimis exceeded) and a portion of interest deductions may be at risk. The WestNat loan should be confirmed as debt under Division 974. Detailed thin capitalisation modelling is required as a priority before the manufacturing facility commences operations.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">s 128B ITAA 1936 (WHT)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 26-25 ITAA 1997 (Deduction Denied)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 974 ITAA 1997 (Debt/Equity)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 820 ITAA 1997 (Thin Cap)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 820-35 (De Minimis $2m)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">s 820-185 (Inward Investing Entity)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Subdiv 820-EAA &amp; s 820-31 (DDCR)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Div 802 ITAA 1997 (CFI)</a>
+            <span class="law-chip">AUS-UK DTA Art 10, Art 11</span>
+            <span class="law-chip">AUS-China DTA</span>
+            <span class="law-chip">AUS-Poland DTA Art 10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ TASA APPENDIX ══ -->
+    <div class="section" id="f-conduct">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">APP</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Appendix — TASA 2009 Code of Professional Conduct</h2>
+            <span class="section-tag tag-high">Professional Standards · Breach Alert</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+
+        <div class="alert danger">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-body">
+            <strong>Multiple Code Breaches Identified</strong>
+            The engagement of an external specialist adviser raised serious breaches under the <strong>Tax Agent Services Act 2009 (Cth) Code of Professional Conduct</strong>. TaxRUs must urgently address these issues and consider self-reporting to the Tax Practitioners Board (TPB).
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">A. Confidentiality — Unauthorised Disclosure</p>
+          <div class="prose">
+            <p>Bridget discussed specific client details (name, nature of advice, facts of the matter) with a prospective external specialist <strong>over dinner in a public restaurant</strong>. Under <strong>s 30-10, TASA 2009</strong>, a registered tax practitioner must not disclose any information relating to a client's affairs without the client's permission.</p>
+            <p>Discussing confidential client matters in a public setting where conversations could be overheard constitutes both an unauthorised disclosure and a breach of the confidentiality obligation — regardless of any perceived professional necessity. The client (Futuro) should have been consulted and given its consent before any disclosure to a third party specialist. This breach is clear and cannot be remedied retrospectively.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">B. Competence — Due Diligence on Specialist</p>
+          <div class="prose">
+            <p>The TASA 2009 Code requires that a registered tax practitioner only provide tax agent services if they have the requisite competence and skills. Where a task is outsourced, it remains the responsibility of the <strong>original registered adviser (TaxRUs)</strong> — not the client — to ensure the specialist has the relevant knowledge, expertise, and qualifications.</p>
+            <p>Relying on a specialist with only academic experience of the MLI, without verifying their references, background, or practical expertise, breaches the competence obligation. TaxRUs cannot offload this responsibility to the client or to the specialist.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">C. Disqualified Entities — Code Item 17, 2024 Determination</p>
+          <div class="prose">
+            <p>The <strong>Tax Agent Services (Code of Professional Conduct) Determination 2024</strong> introduced 8 additional obligations under Code item 17. One obligation (Code item 17(1)(c)) requires tax practitioners to make reasonable enquiries to determine whether individuals they engage are <strong>'disqualified entities'</strong> (i.e., persons previously deregistered or subject to sanctions).</p>
+            <p>TaxRUs failed to check the specialist's registration status, references, or background. This is a specific, actionable breach of the 2024 Determination.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">D. Breach Reporting Obligations</p>
+          <div class="prose">
+            <p>Effective <strong>1 July 2024</strong>, ss 30-35 and 30-40, TASA 2009 require registered tax practitioners to self-report 'significant breaches' of the Code to the TPB, and to report significant breaches by other registered practitioners. TPB(I) 43/2024 provides detailed guidance on self-reporting.</p>
+            <p>The confidentiality breach, the competence breach, and the disqualified entities failure each potentially constitute reportable breaches. <strong>Failure to report will constitute a further breach</strong> of Code item 2 and may amount to a criminal offence under the Taxation Administration Act 1953.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-title">E. Consequences &amp; Sanctions</p>
+          <table class="calc-table">
+            <thead><tr><th>Sanction (Subdiv 60-E, TASA 2009)</th><th>Likelihood</th></tr></thead>
+            <tbody>
+              <tr><td>Written caution (s 30-15)</td><td class="highlight-green">Likely — first breach, confidentiality obligation</td></tr>
+              <tr><td>Order to attend ethics course (s 30-20)</td><td class="highlight-green">Likely — multiple interconnected breaches</td></tr>
+              <tr><td>Suspension of registration (s 30-25)</td><td class="highlight-amber">Possible — disqualified entities failure</td></tr>
+              <tr><td>Termination of registration (s 30-30)</td><td class="highlight-green">Unlikely on these facts absent deliberate misconduct</td></tr>
+              <tr><td>Criminal sanctions (TAA 1953)</td><td class="highlight-red">Risk if breach reporting obligations are not complied with</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="opinion-box">
+          <span class="opinion-label">TASA File Note Conclusion</span>
+          <p>Four specific Code of Professional Conduct breaches have been identified: (1) <strong>Confidentiality</strong> — unauthorised disclosure in a public place without client consent; (2) <strong>Competence</strong> — failure to verify the specialist's qualifications and practical experience; (3) <strong>Disqualified entities</strong> — failure to conduct reasonable enquiries under the 2024 Determination, Code item 17; (4) <strong>Breach reporting</strong> — failure to self-report these breaches to the TPB under ss 30-35 and 30-40, TASA 2009.</p>
+          <p>TaxRUs must urgently address these issues, seek client consent retroactively where possible, implement appropriate compliance procedures, and consider whether self-reporting to the TPB is required. Most likely sanctions: written caution + ethics course order.</p>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Legal References</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener">TASA 2009 s 30-10 (Code)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener">TASA 2009 ss 30-35 &amp; 30-40 (Breach Reporting)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener">Subdiv 60-E TASA 2009 (Sanctions)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/F2024L00878" target="_blank" rel="noopener">Code of Professional Conduct Determination 2024</a>
+            <span class="law-chip">TPB(I) 43/2024 — Self-reporting guidance</span>
+            <span class="law-chip">TAA 1953 — Criminal penalties</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ FOOTNOTES ══ -->
+    <div class="section" id="f-footnotes">
+      <div class="section-collapse-header" onclick="toggleSection(this)">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1;">
+          <div class="section-num">REF</div>
+          <div class="section-title-group">
+            <h2 class="section-title">Legal References &amp; Footnotes</h2>
+            <span class="section-tag tag-info">Full Citations</span>
+          </div>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-collapse-body">
+        <div class="card">
+          <p class="card-title">Legislation</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener">Income Tax Assessment Act 1997 (Cth)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener">Income Tax Assessment Act 1936 (Cth)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener">Tax Agent Services Act 2009 (Cth)</a>
+            <a class="law-chip" href="https://www.legislation.gov.au/Details/F2024L00878" target="_blank" rel="noopener">TASA Determination 2024 (Code item 17)</a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Key Provisions</p>
+          <table class="calc-table">
+            <thead><tr><th>Reference</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">Div 855 / ss 855-10, 855-25, 855-30</td><td>Foreign residents &amp; CGT — TAP, indirect ARPI, principal asset test</td></tr>
+              <tr><td class="mono">s 960-195; s 318 ITAA 1936</td><td>Associate-inclusive participation interests; meaning of 'associate'</td></tr>
+              <tr><td class="mono">s 115-10</td><td>CGT discount — not available to foreign resident companies</td></tr>
+              <tr><td class="mono">ss 340, 349, 361, 362, 432 ITAA 1936</td><td>CFC — control test, attribution interest, active income test</td></tr>
+              <tr><td class="mono">s 23AI / Subdiv 768-A; Div 770; Div 802</td><td>CFC exemptions, NANE dividends, FITO, CFI</td></tr>
+              <tr><td class="mono">s 6(1) ITAA 1936; s 104-160</td><td>Company residency (CMAC); CGT event I1</td></tr>
+              <tr><td class="mono">Art 4 MLI; AUS-Poland DTA Art 10</td><td>MLI MAP tiebreaker; dividend WHT</td></tr>
+              <tr><td class="mono">AUS-UK DTA Arts 5, 7, 10, 11</td><td>PE, business profits, dividend WHT, interest WHT</td></tr>
+              <tr><td class="mono">Div 764; s 855-15</td><td>PE source of income; PE assets as TAP</td></tr>
+              <tr><td class="mono">s 128B / s 26-25</td><td>WHT liability; deduction denial</td></tr>
+              <tr><td class="mono">Div 974; Div 820; ss 820-35, 820-185, 820-31</td><td>Debt/equity; thin capitalisation; de minimis; inward entity; DDCR</td></tr>
+              <tr><td class="mono">s 30-10, ss 30-35/40, Subdiv 60-E TASA</td><td>Code of conduct; breach reporting; sanctions</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Case Law &amp; ATO Guidance</p>
+          <table class="calc-table">
+            <thead><tr><th>Reference</th><th>Relevance</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">Max Factor v FCT (1984) 84 ATC 4060</td><td>PE repatriation not assessable; notional internal interest not deductible</td></tr>
+              <tr><td class="mono">Lewis Berger &amp; Sons v FCT (1959) 101 CLR 529</td><td>Source of manufacturing income — partly place of manufacture</td></tr>
+              <tr><td class="mono">TR 2001/13</td><td>Interpretation of Australia's DTAs</td></tr>
+              <tr><td class="mono">TR 2002/5</td><td>PE concepts — geographic and temporal permanence</td></tr>
+              <tr><td class="mono">TR 2011/1 (para 3.42)</td><td>Deductibility of external interest recharged to PE</td></tr>
+              <tr><td class="mono">TR 2001/11; ATO ID 2012/90</td><td>Notional internal interest — not deductible</td></tr>
+              <tr><td class="mono">TPB(I) 43/2024</td><td>Self-reporting significant breaches under TASA 2009</td></tr>
+              <tr><td class="mono">OECD MAP Manual (Nov 2025)</td><td>Competent authority process under MLI Art 4</td></tr>
+              <tr><td class="mono">OECD Commentary on Art 5 (2025)</td><td>PE — fixed place, preparatory/auxiliary, dependent agent</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Treaties</p>
+          <div class="law-ref-row">
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener">Australia-United Kingdom DTA (2003, as modified by MLI from 1 Jan 2019)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/france" target="_blank" rel="noopener">Australia-France DTA (2006, as modified by MLI)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/poland" target="_blank" rel="noopener">Australia-Poland DTA (1992, as modified by MLI)</a>
+            <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/china" target="_blank" rel="noopener">Australia-China DTA</a>
+            <a class="law-chip" href="https://www.oecd.org/tax/treaties/multilateral-instrument-for-beps-tax-treaties.htm" target="_blank" rel="noopener">OECD Multilateral Instrument (MLI)</a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <p class="card-title">Disclaimer</p>
+          <div class="prose">
+            <p>This advice is confidential and prepared solely for Futuro Pty Ltd and the Futuro Group. It constitutes legal and tax advice subject to professional privilege. The authors' liability is limited to the amount of professional fees paid in connection with this engagement. This advice should not be acted upon without seeking further confirmation of the facts.</p>
+            <p><em>TaxRUs &middot; April 2026</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+      </main>
+    </div>
+
+    <!-- DIVIDER between cases (shown in "all" mode) -->
+    <div class="case-divider visible" id="caseDivider">
+      <div style="display:flex;align-items:center;gap:16px;padding:24px 40px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;">Universal Inc &mdash; Letter of Advice</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+    </div>
+
+    <!-- ══ UNIVERSAL CASE WRAPPER ══ -->
+    <div class="case-wrapper visible" id="caseWrapperUniversal">
+      <main class="main">
+
+
+    <!-- COVER -->
+    <div class="cover" id="u-cover">
+      <div class="cover-eyebrow">Universal Group · Sample</div>
+      <h1 class="cover-title">International Tax Implications<br/></h1>
+      <p class="cover-subtitle">Letter of Advice</p>
       <div class="cover-meta">
         <div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">17 April 2026</span></div>
         <div class="meta-item"><span class="meta-label">Addressee</span><span class="meta-value">The Board of Directors</span></div>
-        <div class="meta-item"><span class="meta-label">Reference</span><span class="meta-value">ID 173216</span></div>
-        <div class="meta-item"><span class="meta-label">Issues</span><span class="meta-value">9 Discrete Items</span></div>
+        <div class="meta-item"><span class="meta-label">Reference</span><span class="meta-value">CTA 3</span></div>
+        <div class="meta-item"><span class="meta-label">Issues</span><span class="meta-value">9 Discrete Issues</span></div>
       </div>
     </div>
 
@@ -799,7 +1227,7 @@
           <p>We refer to your instructions to advise on the Australian income tax aspects of the proposed acquisition of <strong>NovaTech Industries Pty Ltd ('NovaTech')</strong> by <strong>Universal Australia Pty Ltd ('UA')</strong>, a new Australian holding company to be incorporated as a wholly owned subsidiary of Universal Inc (the 'Universal Group'). This letter constitutes our initial letter of advice based on the due diligence findings brought to our attention.</p>
           <p>This advice addresses <strong>nine discrete issues</strong>. It is based on Australian income tax law as at April 2026, applicable double tax agreements ('DTAs') given force of law by the <em>International Tax Agreements Act 1953</em> (Cth), s 4<sup class="fn" tabindex="0">[2]<span class="fn-tip">International Tax Agreements Act 1953 (Cth), s 4 — gives force of law to Australia's double tax agreements as scheduled treaties.</span></sup>, DTAs modified by the OECD Multilateral Instrument ('MLI'), relevant case law, ATO public rulings, and the OECD Model Tax Convention Commentary (November 2025 update). Treaty interpretation is guided by TR 2001/13.<sup class="fn" tabindex="0">[3]<span class="fn-tip">TR 2001/13 — Income tax: interpreting Australia's double tax agreements; principles of treaty interpretation under the Vienna Convention on the Law of Treaties.</span></sup></p>
           <p><strong>This advice is preliminary.</strong> Several issues require further investigation and local counsel in relevant overseas jurisdictions.</p>
-          <p>Yours sincerely,<br/><strong>Tax Manager, CTA3 Advisory</strong></p>
+          <p>Yours sincerely,<br/><strong>[Tax Manager name]</strong></p>
         </div>
       </div>
     </div>
@@ -807,7 +1235,7 @@
     <div class="divider"></div>
 
     <!-- RELEVANT FACTS -->
-    <div class="section" id="facts">
+    <div class="section" id="u-facts">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -836,7 +1264,7 @@
         <div class="org-chart-wrap">
 <svg viewBox="0 0 760 780" width="760" height="780" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
   <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <marker id="u-arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
       <path d="M1,1 L7,4 L1,7 Z" fill="#303d52"/>
     </marker>
   </defs>
@@ -967,7 +1395,7 @@
     <div class="divider"></div>
 
     <!-- EXECUTIVE SUMMARY -->
-    <div class="section" id="exec">
+    <div class="section" id="u-exec">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1056,7 +1484,7 @@
     <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:28px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">The Law &amp; Application to the Facts</p>
 
     <!-- ══ ITEM 1 ══ -->
-    <div class="section" id="item1">
+    <div class="section" id="u-item1">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1121,7 +1549,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 2 ══ -->
-    <div class="section" id="item2">
+    <div class="section" id="u-item2">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1195,7 +1623,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 3 ══ -->
-    <div class="section" id="item3">
+    <div class="section" id="u-item3">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1251,7 +1679,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 4 ══ -->
-    <div class="section" id="item4">
+    <div class="section" id="u-item4">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1331,7 +1759,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 5 ══ -->
-    <div class="section" id="item5">
+    <div class="section" id="u-item5">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1405,7 +1833,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 6 ══ -->
-    <div class="section" id="item6">
+    <div class="section" id="u-item6">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1463,7 +1891,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 7 ══ -->
-    <div class="section" id="item7">
+    <div class="section" id="u-item7">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1526,7 +1954,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 8 ══ -->
-    <div class="section" id="item8">
+    <div class="section" id="u-item8">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1596,7 +2024,7 @@
     <div class="divider"></div>
 
     <!-- ══ ITEM 9 ══ -->
-    <div class="section" id="item9">
+    <div class="section" id="u-item9">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1673,7 +2101,7 @@
     <div class="divider"></div>
 
     <!-- ══ APPENDIX — CODE OF CONDUCT ══ -->
-    <div class="section" id="conduct">
+    <div class="section" id="u-conduct">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1739,7 +2167,7 @@
     <div class="divider"></div>
 
     <!-- ══ RECOMMENDATIONS ══ -->
-    <div class="section" id="nextsteps">
+    <div class="section" id="u-nextsteps">
     <div class="section-collapse-header" onclick="toggleSection(this)">
       <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
         
@@ -1797,11 +2225,129 @@
     
     </div>
   </div>
-  </main>
-</div>
+  
+      </main>
+    </div>
+
+  </div><!-- end contentArea -->
+</div><!-- end shell -->
 
 <script>
-/* ── MOBILE SIDEBAR ──────────────────────────────────────────── */
+/* ═══════════ STATE ═══════════ */
+let currentCase = 'all';
+
+
+const futuroMeta = {
+  'f-cover':     { countries: ['AU','UK','FR','PL','CN'] },
+  'f-facts':     { countries: ['AU','UK','FR','PL','CN'] },
+  'f-exec':      { countries: ['AU','UK','FR','PL','CN'] },
+  'f-issue1':    { countries: ['AU','FR'] },
+  'f-issue2':    { countries: ['AU','FR','UK','CN'] },
+  'f-issue3':    { countries: ['AU','PL'] },
+  'f-issue4':    { countries: ['AU','UK'] },
+  'f-issue5':    { countries: ['AU','UK'] },
+  'f-issue6':    { countries: ['AU','UK','PL','CN'] },
+  'f-conduct':   { countries: ['AU'] },
+  'f-footnotes': { countries: ['AU','UK','FR','PL','CN'] },
+};
+
+
+const universalMeta = {
+  'u-cover':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-facts':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-exec':      { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-item1':     { countries: ['AU','CA'] },
+  'u-item2':     { countries: ['AU','NZ','ID'] },
+  'u-item3':     { countries: ['AU','ID'] },
+  'u-item4':     { countries: ['AU','LV'] },
+  'u-item5':     { countries: ['AU','BE'] },
+  'u-item6':     { countries: ['AU','IN'] },
+  'u-item7':     { countries: ['AU','CA'] },
+  'u-item8':     { countries: ['AU','UK','IE'] },
+  'u-item9':     { countries: ['AU','CA'] },
+  'u-conduct':   { countries: ['AU'] },
+  'u-nextsteps': { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+};
+
+
+/* ═══════════ CASE SWITCHING ═══════════ */
+function switchCase(caseKey) {
+  currentCase = caseKey;
+
+  // Update tab active states
+  document.querySelectorAll('.case-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.case === caseKey);
+  });
+
+  const wrapF = document.getElementById('caseWrapperFuturo');
+  const wrapU = document.getElementById('caseWrapperUniversal');
+  const divider = document.getElementById('caseDivider');
+  const navF = document.getElementById('navFuturo');
+  const navU = document.getElementById('navUniversal');
+  const mobileTitle = document.getElementById('mobileTitle');
+  const sidebarSub = document.getElementById('sidebarSub');
+
+  if (caseKey === 'all') {
+    wrapF.classList.add('visible');
+    wrapU.classList.add('visible');
+    divider.classList.add('visible');
+    navF.style.display = 'block';
+    navU.style.display = 'block';
+    mobileTitle.textContent = 'Tax Advice';
+    sidebarSub.textContent = 'International Tax Advisory';
+  } else if (caseKey === 'futuro') {
+    wrapF.classList.add('visible');
+    wrapU.classList.remove('visible');
+    divider.classList.remove('visible');
+    navF.style.display = 'block';
+    navU.style.display = 'none';
+    mobileTitle.textContent = 'TaxRUs';
+    sidebarSub.textContent = 'Letter of Advice — Futuro Group';
+  } else if (caseKey === 'universal') {
+    wrapF.classList.remove('visible');
+    wrapU.classList.add('visible');
+    divider.classList.remove('visible');
+    navF.style.display = 'none';
+    navU.style.display = 'block';
+    mobileTitle.textContent = 'CTA3 Advisory';
+    sidebarSub.textContent = 'Letter of Advice — Universal Inc';
+  }
+
+  // Re-apply country filter
+  applyFilters(true);
+
+  // Scroll to top of content
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════ FILTER LOGIC ═══════════ */
+function applyFilters(silent) {
+  const country = document.getElementById('countryFilter').value;
+
+  // Filter Futuro sections
+  Object.keys(futuroMeta).forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const meta = futuroMeta[id];
+    const divider = section.previousElementSibling;
+    const countryMatch = country === 'all' || meta.countries.includes(country);
+    section.style.display = countryMatch ? '' : 'none';
+    if (divider && divider.classList.contains('divider')) divider.style.display = countryMatch ? '' : 'none';
+  });
+
+  // Filter Universal sections
+  Object.keys(universalMeta).forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const meta = universalMeta[id];
+    const divider = section.previousElementSibling;
+    const countryMatch = country === 'all' || meta.countries.includes(country);
+    section.style.display = countryMatch ? '' : 'none';
+    if (divider && divider.classList.contains('divider')) divider.style.display = countryMatch ? '' : 'none';
+  });
+}
+
+/* ═══════════ MOBILE SIDEBAR ═══════════ */
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const sidebar      = document.getElementById('sidebar');
 const navOverlay   = document.getElementById('navOverlay');
@@ -1825,7 +2371,7 @@ hamburgerBtn && hamburgerBtn.addEventListener('click', function() {
 });
 navOverlay && navOverlay.addEventListener('click', closeMobileSidebar);
 
-/* ── SIDEBAR NAV ACTIVE STATE ────────────────────────────────── */
+/* ═══════════ SIDEBAR ACTIVE STATE ═══════════ */
 function updateActiveNav() {
   const links = document.querySelectorAll('.nav-link[href^="#"]');
   const scrollPos = window.scrollY + 100;
@@ -1838,9 +2384,8 @@ function updateActiveNav() {
   if (active) active.classList.add('active');
 }
 window.addEventListener('scroll', updateActiveNav, { passive: true });
-updateActiveNav();
 
-/* ── COLLAPSIBLE SECTIONS ────────────────────────────────────── */
+/* ═══════════ COLLAPSIBLE SECTIONS ═══════════ */
 function toggleSection(headerEl) {
   const body = headerEl.nextElementSibling;
   if (!body) return;
@@ -1854,7 +2399,7 @@ function toggleSection(headerEl) {
   }
 }
 
-function expandAndScroll(sectionId) {
+function expandAndScrollGlobal(sectionId) {
   const section = document.getElementById(sectionId);
   if (!section) return;
   const header = section.querySelector('.section-collapse-header');
@@ -1863,52 +2408,15 @@ function expandAndScroll(sectionId) {
     body.classList.remove('collapsed');
     header.classList.remove('collapsed');
   }
-  setTimeout(() => {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 50);
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   return false;
 }
 
-/* ── FILTER LOGIC ────────────────────────────────────────────── */
-// Map section ids to their relevant countries and tax case
-const sectionMeta = {
-  facts:     { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-  exec:      { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-  item1:     { taxCase: 'universal', countries: ['AU','CA'] },
-  item2:     { taxCase: 'universal', countries: ['AU','NZ','ID'] },
-  item3:     { taxCase: 'universal', countries: ['AU','ID'] },
-  item4:     { taxCase: 'universal', countries: ['AU','LV'] },
-  item5:     { taxCase: 'universal', countries: ['AU','BE'] },
-  item6:     { taxCase: 'universal', countries: ['AU','IN'] },
-  item7:     { taxCase: 'universal', countries: ['AU','CA'] },
-  item8:     { taxCase: 'universal', countries: ['AU','UK','IE'] },
-  item9:     { taxCase: 'universal', countries: ['AU','CA'] },
-  conduct:   { taxCase: 'universal', countries: ['AU'] },
-  nextsteps: { taxCase: 'universal', countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-};
-
-function applyFilters() {
-  const taxCase = document.getElementById('taxCaseFilter').value;
-  const country = document.getElementById('countryFilter').value;
-
-  Object.keys(sectionMeta).forEach(id => {
-    const section = document.getElementById(id);
-    if (!section) return;
-    const meta = sectionMeta[id];
-    const divider = section.previousElementSibling;
-
-    // Check tax case
-    const caseMatch = taxCase === 'all' || meta.taxCase === taxCase;
-    // Check country
-    const countryMatch = country === 'all' || meta.countries.includes(country);
-
-    const visible = caseMatch && countryMatch;
-    section.style.display = visible ? '' : 'none';
-    if (divider && divider.classList.contains('divider')) {
-      divider.style.display = visible ? '' : 'none';
-    }
-  });
-}
+/* ═══════════ INIT ═══════════ */
+// Show both navs by default (all cases mode)
+document.getElementById('navFuturo').style.display = 'block';
+document.getElementById('navUniversal').style.display = 'block';
+updateActiveNav();
 </script>
 </body>
 </html>
