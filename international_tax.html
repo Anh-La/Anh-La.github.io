@@ -45,12 +45,7 @@
   .case-tab:nth-child(2){border-left:none}
   .case-tab:hover{background:var(--gold-dim);color:var(--gold-light);border-color:rgba(201,169,110,.4)}
   .case-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.5)}
-  /* Filters */
-  .filter-group{padding:10px 12px 6px;border-bottom:1px solid var(--border)}
-  .filter-label{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block}
-  .filter-select{width:100%;background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius);color:var(--text-muted);font-family:var(--font-body);font-size:.78rem;padding:7px 10px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899aa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;transition:border-color .15s,color .15s}
-  .filter-select:hover,.filter-select:focus{border-color:var(--gold);color:var(--gold-light)}
-  .filter-select option{background:var(--surface2);color:var(--text-muted)}
+
 
   /* Nav */
   .nav-section{padding:16px 14px 8px;font-size:.65rem;font-weight:600;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase}
@@ -63,6 +58,7 @@
   .nav-link .dot.risk-low{background:var(--green)}
   .nav-link .dot.risk-info{background:var(--blue)}
   .nav-futuro,.nav-universal{display:none}
+  .nav-instructions{display:none}
   .sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-dim);line-height:1.5}
   /* Case wrappers */
   .case-wrapper{display:none}
@@ -197,6 +193,51 @@
   ::-webkit-scrollbar{width:6px}
   ::-webkit-scrollbar-track{background:var(--bg)}
   ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  /* ── INSTRUCTIONS PANEL ── */
+  .inst-hero{padding:52px 40px 36px;border-bottom:2px solid var(--border);background:linear-gradient(135deg,#0d1117 0%,#111827 60%,#0d1117 100%);position:relative;overflow:hidden}
+  .inst-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 70%);pointer-events:none}
+  .inst-eyebrow{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .inst-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:8px}
+  .inst-sub{color:var(--text-muted);font-size:.9rem;max-width:680px;line-height:1.7;margin-bottom:24px}
+  .inst-meta{display:flex;flex-wrap:wrap;gap:24px}
+  .inst-meta-item{display:flex;flex-direction:column;gap:2px}
+  .inst-meta-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .inst-meta-val{font-size:.82rem;color:var(--text-muted)}
+  .inst-body{padding:0 40px 80px;max-width:900px}
+  .inst-section{margin:40px 0 0}
+  .inst-section-title{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  /* Issue index grid */
+  .issue-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px}
+  .issue-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;gap:10px;align-items:flex-start;text-decoration:none;transition:border-color .15s,background .15s;cursor:default}
+  .issue-card:hover{border-color:rgba(201,169,110,.35);background:var(--gold-dim)}
+  .issue-card .ic-num{font-family:var(--font-mono);font-size:.68rem;font-weight:500;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(201,169,110,.2);border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:1px}
+  .issue-card .ic-label{font-size:.8rem;color:var(--text-muted);line-height:1.4}
+  .issue-card .ic-sub{font-size:.7rem;color:var(--text-dim);margin-top:3px}
+  /* Pillar legend */
+  .pillar-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:4px}
+  .pillar-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .pillar-block .pb-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .pillar-block .pb-text{font-size:.8rem;color:var(--text-muted);line-height:1.6}
+  /* Risk legend */
+  .risk-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .rl-item{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px}
+  .rl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .rl-dot.crit{background:var(--red)}
+  .rl-dot.high{background:#e07020}
+  .rl-dot.med{background:var(--amber)}
+  .rl-dot.low{background:var(--green)}
+  .rl-label{font-size:.78rem;color:var(--text-muted)}
+  /* Framework steps */
+  .fw-steps{display:flex;flex-direction:column;gap:0;margin-top:4px}
+  .fw-step{display:flex;gap:14px;align-items:stretch}
+  .fw-step .fw-step-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+  .fw-step .fw-step-line .fw-step-dot{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,169,110,.35);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fw-step .fw-step-line .fw-step-connector{flex:1;width:2px;background:var(--border);margin:4px auto}
+  .fw-step:last-child .fw-step-connector{display:none}
+  .fw-step .fw-step-content{padding:4px 0 20px}
+  .fw-step .fw-step-heading{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:3px}
+  .fw-step .fw-step-body{font-size:.82rem;color:var(--text-muted);line-height:1.65}
+  @media(max-width:700px){.inst-hero{padding:28px 16px 24px}.inst-body{padding:0 16px 60px}.inst-meta{gap:14px}.issue-index{grid-template-columns:1fr 1fr}.pillar-legend{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -224,41 +265,34 @@
       <div class="case-tab" data-case="universal" onclick="switchCase('universal')">Universal</div>
     </div>
 
-    <div class="filter-group">
-      <span class="filter-label">Country</span>
-      <select class="filter-select" id="countryFilter" onchange="applyFilters(true)">
-        <option value="all" selected>All Countries</option>
-        <option value="AU">Australia</option>
-        <option value="UK">United Kingdom</option>
-        <option value="FR">France</option>
-        <option value="PL">Poland</option>
-        <option value="CN">China</option>
-        <option value="CA">Canada</option>
-        <option value="ID">Indonesia</option>
-        <option value="LV">Latvia</option>
-        <option value="BE">Belgium</option>
-        <option value="IN">India</option>
-        <option value="IE">Ireland</option>
-        <option value="NZ">New Zealand</option>
-      </select>
+    <!-- NAV: Instructions -->
+    <div class="nav-instructions" id="navInstructions">
+      <div class="nav-section">Framework Guide</div>
+      <a class="nav-link" href="#inst-overview" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Overview &amp; Scope</a>
+      <a class="nav-link" href="#inst-structure" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Issue Structure</a>
+      <a class="nav-link" href="#inst-how-to" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>How to Use</a>
+      <a class="nav-link" href="#inst-issues" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Issue Index (T1–T21 + PC)</a>
+      <a class="nav-link" href="#inst-risk" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Risk Legend</a>
+      <a class="nav-link" href="#inst-legislation" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Legislation &amp; Sources</a>
     </div>
 
     <!-- NAV: Futuro -->
+
     <div class="nav-futuro" id="navFuturo">
       <div class="nav-section">Futuro Group</div>
       <a class="nav-link f-nav" href="#f-cover" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Cover</a>
-      <a class="nav-link f-nav" href="#f-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Facts &amp; Structure</a>
+      <a class="nav-link f-nav" href="#f-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Facts &amp; Group Structure</a>
       <a class="nav-link f-nav" href="#f-exec" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Executive Summary</a>
       <div class="nav-section">Issues</div>
-      <a class="nav-link f-nav" href="#f-issue1" onclick="expandAndScrollGlobal('f-issue1');closeMobileSidebar()"><span class="dot risk-low"></span>01 &middot; Selznick Share Sale</a>
-      <a class="nav-link f-nav" href="#f-issue2" onclick="expandAndScrollGlobal('f-issue2');closeMobileSidebar()"><span class="dot risk-med"></span>02 &middot; Selznick Dividend &amp; CFC</a>
-      <a class="nav-link f-nav" href="#f-issue3" onclick="expandAndScrollGlobal('f-issue3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Hecht Residency</a>
-      <a class="nav-link f-nav" href="#f-issue4" onclick="expandAndScrollGlobal('f-issue4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Blighty PE</a>
-      <a class="nav-link f-nav" href="#f-issue5" onclick="expandAndScrollGlobal('f-issue5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Blighty PE Tax</a>
-      <a class="nav-link f-nav" href="#f-issue6" onclick="expandAndScrollGlobal('f-issue6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; Wider Impacts</a>
+      <a class="nav-link f-nav" href="#f-issue1" onclick="expandAndScrollGlobal('f-issue1');closeMobileSidebar()"><span class="dot risk-low"></span>01 &middot; Sale of Australian Shares by Selznick</a>
+      <a class="nav-link f-nav" href="#f-issue2" onclick="expandAndScrollGlobal('f-issue2');closeMobileSidebar()"><span class="dot risk-med"></span>02 &middot; Selznick Dividend to Futuro — CFC Analysis &amp; Choices</a>
+      <a class="nav-link f-nav" href="#f-issue3" onclick="expandAndScrollGlobal('f-issue3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Hecht Residency Change — Domestic &amp; Treaty Considerations</a>
+      <a class="nav-link f-nav" href="#f-issue4" onclick="expandAndScrollGlobal('f-issue4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Does Blighty Have a Permanent Establishment in Australia?</a>
+      <a class="nav-link f-nav" href="#f-issue5" onclick="expandAndScrollGlobal('f-issue5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Australian Income Tax Implications of the Blighty PE</a>
+      <a class="nav-link f-nav" href="#f-issue6" onclick="expandAndScrollGlobal('f-issue6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; Wider Australian Income Tax Impacts</a>
       <div class="nav-section">Appendix</div>
-      <a class="nav-link f-nav" href="#f-conduct" onclick="expandAndScrollGlobal('f-conduct');closeMobileSidebar()"><span class="dot risk-high"></span>TASA Conduct</a>
-      <a class="nav-link f-nav" href="#f-footnotes" onclick="expandAndScrollGlobal('f-footnotes');closeMobileSidebar()"><span class="dot risk-info"></span>Legal References</a>
+      <a class="nav-link f-nav" href="#f-conduct" onclick="expandAndScrollGlobal('f-conduct');closeMobileSidebar()"><span class="dot risk-high"></span>TASA 2009 — Code of Professional Conduct</a>
+      <a class="nav-link f-nav" href="#f-footnotes" onclick="expandAndScrollGlobal('f-footnotes');closeMobileSidebar()"><span class="dot risk-info"></span>Legal References &amp; Footnotes</a>
     </div>
 
     <!-- NAV: Universal -->
@@ -268,18 +302,18 @@
       <a class="nav-link u-nav" href="#u-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Relevant Facts</a>
       <a class="nav-link u-nav" href="#u-exec" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Executive Summary</a>
       <div class="nav-section">Issues</div>
-      <a class="nav-link u-nav" href="#u-item1" onclick="expandAndScrollGlobal('u-item1');closeMobileSidebar()"><span class="dot risk-high"></span>01 &middot; UA Residency</a>
-      <a class="nav-link u-nav" href="#u-item2" onclick="expandAndScrollGlobal('u-item2');closeMobileSidebar()"><span class="dot risk-high"></span>02 &middot; Employee PE Risk</a>
-      <a class="nav-link u-nav" href="#u-item3" onclick="expandAndScrollGlobal('u-item3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Indonesian Server PE</a>
-      <a class="nav-link u-nav" href="#u-item4" onclick="expandAndScrollGlobal('u-item4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Latvian WHT</a>
-      <a class="nav-link u-nav" href="#u-item5" onclick="expandAndScrollGlobal('u-item5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Belgian Share Sale</a>
-      <a class="nav-link u-nav" href="#u-item6" onclick="expandAndScrollGlobal('u-item6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; India MAP</a>
-      <a class="nav-link u-nav" href="#u-item7" onclick="expandAndScrollGlobal('u-item7');closeMobileSidebar()"><span class="dot risk-med"></span>07 &middot; IP Transfer Canada</a>
-      <a class="nav-link u-nav" href="#u-item8" onclick="expandAndScrollGlobal('u-item8');closeMobileSidebar()"><span class="dot risk-med"></span>08 &middot; Pre-Sale Dividend</a>
-      <a class="nav-link u-nav" href="#u-item9" onclick="expandAndScrollGlobal('u-item9');closeMobileSidebar()"><span class="dot risk-low"></span>09 &middot; Profit Repatriation</a>
+      <a class="nav-link u-nav" href="#u-item1" onclick="expandAndScrollGlobal('u-item1');closeMobileSidebar()"><span class="dot risk-high"></span>01 &middot; Residency of UA — Overseas Board of Directors</a>
+      <a class="nav-link u-nav" href="#u-item2" onclick="expandAndScrollGlobal('u-item2');closeMobileSidebar()"><span class="dot risk-high"></span>02 &middot; Employee PE Risk in Overseas Jurisdictions</a>
+      <a class="nav-link u-nav" href="#u-item3" onclick="expandAndScrollGlobal('u-item3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Indonesian Data Centre Servers — Fixed Place of Business PE</a>
+      <a class="nav-link u-nav" href="#u-item4" onclick="expandAndScrollGlobal('u-item4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Latvian Royalty Payment — WHT Shortfall</a>
+      <a class="nav-link u-nav" href="#u-item5" onclick="expandAndScrollGlobal('u-item5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Belgian Share Sale — CGT Treatment in FY25</a>
+      <a class="nav-link u-nav" href="#u-item6" onclick="expandAndScrollGlobal('u-item6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; India Transfer Pricing — MAP &amp; Double Taxation</a>
+      <a class="nav-link u-nav" href="#u-item7" onclick="expandAndScrollGlobal('u-item7');closeMobileSidebar()"><span class="dot risk-med"></span>07 &middot; IP Transfer to Canada — Australian Tax Implications</a>
+      <a class="nav-link u-nav" href="#u-item8" onclick="expandAndScrollGlobal('u-item8');closeMobileSidebar()"><span class="dot risk-med"></span>08 &middot; Pre-Sale Partially Franked Dividend — WHT Implications</a>
+      <a class="nav-link u-nav" href="#u-item9" onclick="expandAndScrollGlobal('u-item9');closeMobileSidebar()"><span class="dot risk-low"></span>09 &middot; Post-Acquisition Profit Repatriation — NovaTech to Universal Inc</a>
       <div class="nav-section">Appendix</div>
-      <a class="nav-link u-nav" href="#u-conduct" onclick="expandAndScrollGlobal('u-conduct');closeMobileSidebar()"><span class="dot risk-info"></span>Professional Conduct</a>
-      <a class="nav-link u-nav" href="#u-nextsteps" onclick="expandAndScrollGlobal('u-nextsteps');closeMobileSidebar()"><span class="dot risk-info"></span>Recommendations</a>
+      <a class="nav-link u-nav" href="#u-conduct" onclick="expandAndScrollGlobal('u-conduct');closeMobileSidebar()"><span class="dot risk-info"></span>Code of Professional Conduct (TASA 2009)</a>
+      <a class="nav-link u-nav" href="#u-nextsteps" onclick="expandAndScrollGlobal('u-nextsteps');closeMobileSidebar()"><span class="dot risk-info"></span>Recommendations &amp; Next Steps</a>
     </div>
 
     <div class="sidebar-footer">
@@ -291,8 +325,179 @@
   <!-- CONTENT AREA -->
   <div id="contentArea" style="flex:1;overflow-x:hidden;display:flex;flex-direction:column;">
 
+    <!-- ══ INSTRUCTIONS CASE WRAPPER ══ -->
+    <div class="case-wrapper" id="caseWrapperInstructions">
+
+      <!-- HERO BANNER -->
+      <div class="inst-hero" id="inst-overview">
+        <div class="inst-eyebrow">Australian International Tax — Generalised Framework</div>
+        <h1 class="inst-title">Letter of Advice — Tax Issue Analysis</h1>
+        <p class="inst-sub">A generalised framework mapping each tax issue to the applicable Australian law, the method for applying facts to that law, and the key risk indicators — with statutory and ATO references linked in footnotes. Use the <strong>Futuro</strong> and <strong>Universal</strong> tabs to navigate the two case studies contained in this document.</p>
+        <div class="inst-meta">
+          <div class="inst-meta-item"><span class="inst-meta-label">Jurisdiction</span><span class="inst-meta-val">Australia (ITAA 1936 / ITAA 1997 / TASA 2009)</span></div>
+          <div class="inst-meta-item"><span class="inst-meta-label">Treaty Framework</span><span class="inst-meta-val">OECD Model / MLI / ATO Public Rulings</span></div>
+          <div class="inst-meta-item"><span class="inst-meta-label">Issues Covered</span><span class="inst-meta-val">21 Tax Issues + TASA Professional Conduct</span></div>
+          <div class="inst-meta-item"><span class="inst-meta-label">Law as at</span><span class="inst-meta-val">April 2026</span></div>
+          <div class="inst-meta-item"><span class="inst-meta-label">Cases</span><span class="inst-meta-val">Futuro Group (6 issues) · Universal Inc (9 issues)</span></div>
+        </div>
+      </div>
+
+      <div class="inst-body">
+
+        <!-- HOW TO USE -->
+        <div class="inst-section" id="inst-how-to">
+          <div class="inst-section-title">How to Use This Document</div>
+          <div class="fw-steps">
+            <div class="fw-step">
+              <div class="fw-step-line"><div class="fw-step-dot">1</div><div class="fw-step-connector"></div></div>
+              <div class="fw-step-content">
+                <div class="fw-step-heading">Select a Case Tab</div>
+                <div class="fw-step-body">Use the <strong>Futuro</strong> or <strong>Universal</strong> tabs at the top of the sidebar to load the relevant letter of advice. Each case is self-contained with its own facts, executive summary, issues, and appendix.</div>
+              </div>
+            </div>
+            <div class="fw-step">
+              <div class="fw-step-line"><div class="fw-step-dot">2</div><div class="fw-step-connector"></div></div>
+              <div class="fw-step-content">
+                <div class="fw-step-heading">Navigate via the Sidebar</div>
+                <div class="fw-step-body">Click any nav link to jump directly to a section. Each issue link is prefixed with a colour-coded risk dot (red = High, amber = Medium, green = Low, blue = Info). The active section is highlighted as you scroll.</div>
+              </div>
+            </div>
+            <div class="fw-step">
+              <div class="fw-step-line"><div class="fw-step-dot">3</div><div class="fw-step-connector"></div></div>
+              <div class="fw-step-content">
+                <div class="fw-step-heading">Read the Issue Structure</div>
+                <div class="fw-step-body">Each issue follows a consistent three-pillar format: <strong>General Rule → Apply Facts to Law → Key Risk Indicators</strong>, followed by detailed legal analysis, step-by-step application, opinion, recommendation, and hyperlinked footnotes.</div>
+              </div>
+            </div>
+            <div class="fw-step">
+              <div class="fw-step-line"><div class="fw-step-dot">4</div><div class="fw-step-connector"></div></div>
+              <div class="fw-step-content">
+                <div class="fw-step-heading">Expand / Collapse Sections</div>
+                <div class="fw-step-body">Click the collapse header on any section to toggle it open or closed. This lets you focus on specific issues without scrolling past material you have already reviewed.</div>
+              </div>
+            </div>
+            <div class="fw-step">
+              <div class="fw-step-line"><div class="fw-step-dot">5</div><div class="fw-step-connector"></div></div>
+              <div class="fw-step-content">
+                <div class="fw-step-heading">Follow the Footnote Links</div>
+                <div class="fw-step-body">Inline superscript footnotes (e.g. <sup style="font-size:.7em;color:var(--gold)">[1]</sup>) are hyperlinked directly to legislation.gov.au, ato.gov.au, jade.io, and oecd.org. Hover over footnote chips for inline tooltips in supported browsers.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ISSUE STRUCTURE -->
+        <div class="inst-section" id="inst-structure">
+          <div class="inst-section-title">Standard Issue Structure</div>
+          <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:14px;line-height:1.7;">Every tax issue in this document is structured identically, allowing rapid cross-referencing between cases. The three-pillar header provides a quick summary; the body provides the full legal analysis.</p>
+          <div class="pillar-legend">
+            <div class="pillar-block">
+              <div class="pb-label">Pillar 1 — General Rule</div>
+              <div class="pb-text">The core statutory rule or test that governs the issue. States the law in abstract, without reference to the specific facts.</div>
+            </div>
+            <div class="pillar-block">
+              <div class="pb-label">Pillar 2 — Apply Facts to Law</div>
+              <div class="pb-text">Identifies the fact-specific questions and analytical steps required to apply the General Rule to the client's circumstances.</div>
+            </div>
+            <div class="pillar-block">
+              <div class="pb-label">Pillar 3 — Key Risk Indicators</div>
+              <div class="pb-text">Red-flag indicators that signal heightened tax risk, disclosure obligations, or penalty exposure. Guides risk rating and prioritisation.</div>
+            </div>
+            <div class="pillar-block">
+              <div class="pb-label">The Law</div>
+              <div class="pb-text">Full statutory analysis with legislative references, case law, ATO rulings, and OECD Commentary — all hyperlinked in footnotes.</div>
+            </div>
+            <div class="pillar-block">
+              <div class="pb-label">Applying Facts to Law</div>
+              <div class="pb-text">Structured, step-by-step application of the law to the specific client facts. Each step is numbered and maps to the statutory tests.</div>
+            </div>
+            <div class="pillar-block">
+              <div class="pb-label">Opinion &amp; Recommendation</div>
+              <div class="pb-text">Concluded position, risk quantification, and specific, practical action steps for compliance, remediation, or restructuring.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ISSUE INDEX -->
+        <div class="inst-section" id="inst-issues">
+          <div class="inst-section-title">Full Issue Index — Generalised Framework (T1–T21 + PC)</div>
+          <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:14px;line-height:1.7;">The following 21 tax issues and TASA Professional Conduct section form the complete analytical framework. Each is addressed in one or both case studies.</p>
+          <div class="issue-index">
+            <div class="issue-card"><span class="ic-num">T1</span><div><div class="ic-label">Company Residency / CMAC</div><div class="ic-sub">ITAA 1936 s 6(1) · MLI MAP</div></div></div>
+            <div class="issue-card"><span class="ic-num">T2</span><div><div class="ic-label">Employee PE Risk</div><div class="ic-sub">OECD Art 5 · BEPS Action 7 · PCG 2023/1</div></div></div>
+            <div class="issue-card"><span class="ic-num">T3</span><div><div class="ic-label">Server PE — Indonesia</div><div class="ic-sub">OECD Art 5(4) · TR 2002/5</div></div></div>
+            <div class="issue-card"><span class="ic-num">T4</span><div><div class="ic-label">WHT Shortfall — Royalties</div><div class="ic-sub">ITAA 1936 s 128B · PepsiCo HCA 2025</div></div></div>
+            <div class="issue-card"><span class="ic-num">T5</span><div><div class="ic-label">CGT — Foreign Shares</div><div class="ic-sub">ITAA 1997 Div 855 · FRCGW</div></div></div>
+            <div class="issue-card"><span class="ic-num">T6</span><div><div class="ic-label">Transfer Pricing MAP</div><div class="ic-sub">ITAA 1997 Subdiv 815-B · DTA Art 25</div></div></div>
+            <div class="issue-card"><span class="ic-num">T7</span><div><div class="ic-label">IP Transfer &amp; Royalties</div><div class="ic-sub">ITAA 1997 Subdiv 815-B · TR 2024/D1</div></div></div>
+            <div class="issue-card"><span class="ic-num">T8</span><div><div class="ic-label">Pre-Sale Dividend WHT</div><div class="ic-sub">ITAA 1936 s 128B · DTA Art 10</div></div></div>
+            <div class="issue-card"><span class="ic-num">T9</span><div><div class="ic-label">Post-Acq Repatriation</div><div class="ic-sub">ITAA 1997 Subdiv 768-A · Div 802</div></div></div>
+            <div class="issue-card"><span class="ic-num">T10</span><div><div class="ic-label">Corporate Residency &amp; CM&amp;C</div><div class="ic-sub">TR 2018/5 · PCG 2018/9</div></div></div>
+            <div class="issue-card"><span class="ic-num">T11</span><div><div class="ic-label">Foreign Dividends — NANE &amp; FITO</div><div class="ic-sub">ITAA 1997 ss 768-5, 770-10</div></div></div>
+            <div class="issue-card"><span class="ic-num">T12</span><div><div class="ic-label">Cross-Border Loan — Div 974</div><div class="ic-sub">ITAA 1997 s 974-20 · FRT · DDCR</div></div></div>
+            <div class="issue-card"><span class="ic-num">T13</span><div><div class="ic-label">Capitalised Interest &amp; WHT</div><div class="ic-sub">ITAA 1997 s 974-55 · s 26-25</div></div></div>
+            <div class="issue-card"><span class="ic-num">T14</span><div><div class="ic-label">PE — Foreign Co. in Australia</div><div class="ic-sub">OECD Art 5 · TR 2002/5 · PCG 2023/1</div></div></div>
+            <div class="issue-card"><span class="ic-num">T15</span><div><div class="ic-label">CGT on Share Disposal — FRCGW</div><div class="ic-sub">ITAA 1997 s 855-25 · TAA Subdiv 14-D</div></div></div>
+            <div class="issue-card"><span class="ic-num">T16</span><div><div class="ic-label">PE Residency Changes &amp; MLI</div><div class="ic-sub">MLI Art 4 · DTA Tie-Breaker</div></div></div>
+            <div class="issue-card"><span class="ic-num">T17</span><div><div class="ic-label">PE — Fixed Place &amp; Agent</div><div class="ic-sub">OECD Art 5(1)(5) · BEPS Action 7</div></div></div>
+            <div class="issue-card"><span class="ic-num">T18</span><div><div class="ic-label">PE Tax — Profit Attribution</div><div class="ic-sub">OECD Art 7 · AOA · ITAA 1997 s 8-1</div></div></div>
+            <div class="issue-card"><span class="ic-num">T19</span><div><div class="ic-label">CFC Dividends — Aus Parent</div><div class="ic-sub">ITAA 1936 Part X · s 432 AIT</div></div></div>
+            <div class="issue-card"><span class="ic-num">T20</span><div><div class="ic-label">Sale of Aus Shares — Non-Resident</div><div class="ic-sub">ITAA 1997 Div 855 · s 855-30</div></div></div>
+            <div class="issue-card"><span class="ic-num">T21</span><div><div class="ic-label">WHT, Thin Cap, DDCR &amp; CFI</div><div class="ic-sub">ITAA 1997 Div 820 · Div 802 · s 26-25</div></div></div>
+            <div class="issue-card"><span class="ic-num">PC</span><div><div class="ic-label">TASA Professional Conduct</div><div class="ic-sub">TASA 2009 s 30-10 · 2024 Determination</div></div></div>
+          </div>
+        </div>
+
+        <!-- RISK LEGEND -->
+        <div class="inst-section" id="inst-risk">
+          <div class="inst-section-title">Risk Rating Legend</div>
+          <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:14px;line-height:1.7;">Each issue carries a risk rating based on the severity of potential tax exposure, penalty risk, and the urgency of required action. Risk ratings are indicated by coloured dots in the sidebar navigation and risk bars within each issue.</p>
+          <div class="risk-legend">
+            <div class="rl-item"><div class="rl-dot crit"></div><div><div class="rl-label" style="font-weight:600;color:var(--red)">Critical</div><div style="font-size:.72rem;color:var(--text-dim)">Multiple serious breaches; immediate escalation required</div></div></div>
+            <div class="rl-item"><div class="rl-dot high"></div><div><div class="rl-label" style="font-weight:600;color:#e07020">High — Action Required</div><div style="font-size:.72rem;color:var(--text-dim)">Material tax exposure; specific remediation steps must be taken</div></div></div>
+            <div class="rl-item"><div class="rl-dot med"></div><div><div class="rl-label" style="font-weight:600;color:var(--amber)">Medium — Manageable</div><div style="font-size:.72rem;color:var(--text-dim)">Risk present but can be mitigated with proper structuring</div></div></div>
+            <div class="rl-item"><div class="rl-dot low"></div><div><div class="rl-label" style="font-weight:600;color:var(--green)">Low — Monitor</div><div style="font-size:.72rem;color:var(--text-dim)">Minimal risk under current facts; ongoing monitoring advised</div></div></div>
+          </div>
+        </div>
+
+        <!-- LEGISLATION & SOURCES -->
+        <div class="inst-section" id="inst-legislation">
+          <div class="inst-section-title">Primary Legislation &amp; Sources</div>
+          <div class="card" style="margin-top:0">
+            <div class="card-title">Domestic Law</div>
+            <div class="prose">
+              <p><strong>ITAA 1936</strong> — Income Tax Assessment Act 1936 (Cth): company residency (s 6(1)), interest WHT (s 128B), CFC rules (Part X), royalty WHT provisions.</p>
+              <p><strong>ITAA 1997</strong> — Income Tax Assessment Act 1997 (Cth): CGT (Pts 3-1, 3-3), NANE foreign dividends (Subdiv 768-A), thin capitalisation (Div 820), debt/equity (Div 974), transfer pricing (Subdiv 815-B), DDCR, CFI (Div 802), general deductions (s 8-1).</p>
+              <p><strong>TAA 1953</strong> — Taxation Administration Act 1953 (Cth): FRCGW (Sch 1 Subdiv 14-D), penalties (Sch 1 Div 284), withholding obligations (Sch 1 s 12-245).</p>
+              <p><strong>TASA 2009</strong> — Tax Agent Services Act 2009 (Cth): Code of Professional Conduct (s 30-10), self-reporting (ss 30-35, 30-40), TPB sanctions (Subdiv 60-E).</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Treaty Framework &amp; OECD Sources</div>
+            <div class="prose">
+              <p><strong>OECD Model Tax Convention (2025 Commentary)</strong> — Articles 5 (PE), 7 (Business Profits), 10 (Dividends), 11 (Interest), 12 (Royalties), 25 (MAP).</p>
+              <p><strong>MLI</strong> — Multilateral Convention to Implement Tax Treaty Related Measures to Prevent BEPS: Art 4 (dual residency MAP tie-breaker), Art 7 (PPT anti-abuse), Art 9 (PE — dependent agents).</p>
+              <p><strong>International Tax Agreements Act 1953</strong> — gives force of law to Australia's bilateral double tax agreements (s 4).</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Key ATO Public Rulings &amp; Guidelines</div>
+            <div class="prose">
+              <p><strong>TR 97/16</strong> — CMAC of a company. <strong>TR 2018/5</strong> — Central management and control test of residency. <strong>PCG 2018/9</strong> — Residency and director governance. <strong>TR 2001/13</strong> — Interpreting Australia's DTAs. <strong>TR 2002/5</strong> — Permanent establishments in Australia. <strong>PCG 2023/1</strong> — Remote work and PE risk. <strong>TR 2014/6</strong> — Transfer pricing benchmarking. <strong>TR 2024/D1</strong> — Royalties: software and IP payments.</p>
+            </div>
+          </div>
+          <div class="alert info" style="margin-top:4px">
+            <div class="alert-icon">ℹ</div>
+            <div class="alert-body"><strong>Disclaimer</strong> This advice is preliminary and based solely on the facts provided. It is prepared as at April 2026 and has not been independently verified. Should any material facts differ, conclusions may need to be revised. All amounts are in AUD unless otherwise stated.</div>
+          </div>
+        </div>
+
+      </div><!-- /inst-body -->
+    </div><!-- /caseWrapperInstructions -->
+
     <!-- ══ FUTURO CASE WRAPPER ══ -->
-    <div class="case-wrapper visible" id="caseWrapperFuturo">
+
+    <div class="case-wrapper" id="caseWrapperFuturo">
       <main class="main">
 
 
@@ -1192,7 +1397,7 @@
     </div>
 
     <!-- DIVIDER between cases (shown in "all" mode) -->
-    <div class="case-divider visible" id="caseDivider">
+    <div class="case-divider" id="caseDivider">
       <div style="display:flex;align-items:center;gap:16px;padding:24px 40px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
         <div style="flex:1;height:1px;background:var(--border);"></div>
         <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;">Universal Inc &mdash; Letter of Advice</span>
@@ -1201,7 +1406,7 @@
     </div>
 
     <!-- ══ UNIVERSAL CASE WRAPPER ══ -->
-    <div class="case-wrapper visible" id="caseWrapperUniversal">
+    <div class="case-wrapper" id="caseWrapperUniversal">
       <main class="main">
 
 
@@ -2237,38 +2442,6 @@
 let currentCase = 'all';
 
 
-const futuroMeta = {
-  'f-cover':     { countries: ['AU','UK','FR','PL','CN'] },
-  'f-facts':     { countries: ['AU','UK','FR','PL','CN'] },
-  'f-exec':      { countries: ['AU','UK','FR','PL','CN'] },
-  'f-issue1':    { countries: ['AU','FR'] },
-  'f-issue2':    { countries: ['AU','FR','UK','CN'] },
-  'f-issue3':    { countries: ['AU','PL'] },
-  'f-issue4':    { countries: ['AU','UK'] },
-  'f-issue5':    { countries: ['AU','UK'] },
-  'f-issue6':    { countries: ['AU','UK','PL','CN'] },
-  'f-conduct':   { countries: ['AU'] },
-  'f-footnotes': { countries: ['AU','UK','FR','PL','CN'] },
-};
-
-
-const universalMeta = {
-  'u-cover':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-  'u-facts':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-  'u-exec':      { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-  'u-item1':     { countries: ['AU','CA'] },
-  'u-item2':     { countries: ['AU','NZ','ID'] },
-  'u-item3':     { countries: ['AU','ID'] },
-  'u-item4':     { countries: ['AU','LV'] },
-  'u-item5':     { countries: ['AU','BE'] },
-  'u-item6':     { countries: ['AU','IN'] },
-  'u-item7':     { countries: ['AU','CA'] },
-  'u-item8':     { countries: ['AU','UK','IE'] },
-  'u-item9':     { countries: ['AU','CA'] },
-  'u-conduct':   { countries: ['AU'] },
-  'u-nextsteps': { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
-};
-
 
 /* ═══════════ CASE SWITCHING ═══════════ */
 function switchCase(caseKey) {
@@ -2279,73 +2452,43 @@ function switchCase(caseKey) {
     t.classList.toggle('active', t.dataset.case === caseKey);
   });
 
+  const wrapI = document.getElementById('caseWrapperInstructions');
   const wrapF = document.getElementById('caseWrapperFuturo');
   const wrapU = document.getElementById('caseWrapperUniversal');
   const divider = document.getElementById('caseDivider');
+  const navI = document.getElementById('navInstructions');
   const navF = document.getElementById('navFuturo');
   const navU = document.getElementById('navUniversal');
   const mobileTitle = document.getElementById('mobileTitle');
   const sidebarSub = document.getElementById('sidebarSub');
 
+  // Hide all first
+  [wrapI, wrapF, wrapU].forEach(w => w && w.classList.remove('visible'));
+  divider && divider.classList.remove('visible');
+  [navI, navF, navU].forEach(n => n && (n.style.display = 'none'));
+
   if (caseKey === 'all') {
-    wrapF.classList.add('visible');
-    wrapU.classList.add('visible');
-    divider.classList.add('visible');
-    navF.style.display = 'block';
-    navU.style.display = 'block';
+    wrapI.classList.add('visible');
+    navI.style.display = 'block';
     mobileTitle.textContent = 'Tax Advice';
-    sidebarSub.textContent = 'International Tax Advisory';
+    sidebarSub.textContent = 'Framework Instructions';
   } else if (caseKey === 'futuro') {
     wrapF.classList.add('visible');
-    wrapU.classList.remove('visible');
-    divider.classList.remove('visible');
     navF.style.display = 'block';
-    navU.style.display = 'none';
     mobileTitle.textContent = 'TaxRUs';
     sidebarSub.textContent = 'Letter of Advice — Futuro Group';
   } else if (caseKey === 'universal') {
-    wrapF.classList.remove('visible');
     wrapU.classList.add('visible');
-    divider.classList.remove('visible');
-    navF.style.display = 'none';
     navU.style.display = 'block';
     mobileTitle.textContent = 'CTA3 Advisory';
     sidebarSub.textContent = 'Letter of Advice — Universal Inc';
   }
 
-  // Re-apply country filter
-  applyFilters(true);
-
   // Scroll to top of content
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ═══════════ FILTER LOGIC ═══════════ */
-function applyFilters(silent) {
-  const country = document.getElementById('countryFilter').value;
 
-  // Filter Futuro sections
-  Object.keys(futuroMeta).forEach(id => {
-    const section = document.getElementById(id);
-    if (!section) return;
-    const meta = futuroMeta[id];
-    const divider = section.previousElementSibling;
-    const countryMatch = country === 'all' || meta.countries.includes(country);
-    section.style.display = countryMatch ? '' : 'none';
-    if (divider && divider.classList.contains('divider')) divider.style.display = countryMatch ? '' : 'none';
-  });
-
-  // Filter Universal sections
-  Object.keys(universalMeta).forEach(id => {
-    const section = document.getElementById(id);
-    if (!section) return;
-    const meta = universalMeta[id];
-    const divider = section.previousElementSibling;
-    const countryMatch = country === 'all' || meta.countries.includes(country);
-    section.style.display = countryMatch ? '' : 'none';
-    if (divider && divider.classList.contains('divider')) divider.style.display = countryMatch ? '' : 'none';
-  });
-}
 
 /* ═══════════ MOBILE SIDEBAR ═══════════ */
 const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -2413,9 +2556,9 @@ function expandAndScrollGlobal(sectionId) {
 }
 
 /* ═══════════ INIT ═══════════ */
-// Show both navs by default (all cases mode)
-document.getElementById('navFuturo').style.display = 'block';
-document.getElementById('navUniversal').style.display = 'block';
+// Start on Instructions tab (all = instructions)
+document.getElementById('caseWrapperInstructions').classList.add('visible');
+document.getElementById('navInstructions').style.display = 'block';
 updateActiveNav();
 </script>
 </body>
