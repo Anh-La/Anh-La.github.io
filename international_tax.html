@@ -20,6 +20,177 @@
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.75;min-height:100vh}
   .shell{display:flex;min-height:100vh}
+  
+  /* Mobile topbar */
+  .mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:var(--surface);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;padding:0 16px}
+  .mobile-topbar .firm{font-family:var(--font-display);font-size:1rem;color:var(--gold);letter-spacing:.01em}
+  .hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;border:none;background:none;padding:6px;border-radius:var(--radius);transition:background .15s}
+  .hamburger:hover{background:var(--gold-dim)}
+  .hamburger span{display:block;height:2px;background:var(--text-muted);border-radius:2px;transition:transform .25s,opacity .2s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  
+  /* Overlay */
+  .nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;opacity:0;transition:opacity .25s;pointer-events:none}
+  .nav-overlay.visible{opacity:1;pointer-events:auto}
+  
+  /* Sidebar */
+  .sidebar{width:280px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+  .sidebar-brand{padding:28px 22px 20px;border-bottom:1px solid var(--border)}
+  .sidebar-brand .firm{font-family:var(--font-display);font-size:1.25rem;color:var(--gold);letter-spacing:.01em;line-height:1.3}
+  .sidebar-brand .sub{font-size:.72rem;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+  
+  /* Case Tabs */
+  .case-tabs{display:flex;padding:10px 12px;gap:0;border-bottom:1px solid var(--border)}
+  .case-tab{flex:1;padding:7px 4px;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.04em;cursor:pointer;border:1px solid var(--border-light);background:var(--surface2);color:var(--text-dim);transition:all .15s}
+  .case-tab:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+  .case-tab:last-child{border-radius:0 var(--radius) var(--radius) 0;border-left:none}
+  .case-tab:nth-child(2){border-left:none}
+  .case-tab:hover{background:var(--gold-dim);color:var(--gold-light);border-color:rgba(201,169,110,.4)}
+  .case-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.5)}
+
+  /* Nav */
+  .nav-section{padding:16px 14px 8px;font-size:.65rem;font-weight:600;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase}
+  .nav-link, .toc-item{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:var(--radius);color:var(--text-muted);text-decoration:none;font-size:.82rem;font-weight:400;transition:background .15s,color .15s;cursor:pointer}
+  .nav-link:hover, .toc-item:hover{background:var(--gold-dim);color:var(--gold-light)}
+  .nav-link.active, .toc-item.active{background:var(--gold-dim);color:var(--gold);font-weight:500}
+  .nav-link .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--border-light)}
+  .nav-link .dot.risk-high{background:var(--red)}
+  .nav-link .dot.risk-med{background:var(--amber)}
+  .nav-link .dot.risk-low{background:var(--green)}
+  .nav-link .dot.risk-info{background:var(--blue)}
+  .toc-num{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);background:var(--gold-dim);padding:2px 5px;border-radius:4px;min-width:28px;text-align:center}
+  
+  .sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-dim);line-height:1.5}
+  
+  /* Case wrappers */
+  .case-wrapper{display:none}
+  .case-wrapper.visible{display:block}
+  
+  /* Main */
+  .main{flex:1;overflow-x:hidden;padding:0 40px 80px;max-width:900px}
+  
+  /* Controls */
+  .controls{display:flex;gap:10px;margin-bottom:20px}
+  .ctrl-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:6px 12px;font-size:.8rem;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+  .ctrl-btn:hover{background:var(--gold-dim);color:var(--gold);border-color:var(--gold)}
+
+  /* Accordion Issues Cards Styling */
+  .issue{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden;transition:border-color .2s}
+  .issue:hover{border-color:var(--border-light)}
+  .issue-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;user-select:none;background:var(--surface);transition:background .15s}
+  .issue-header:hover{background:rgba(255,255,255,0.01)}
+  .issue-num{font-family:var(--font-mono);font-size:.85rem;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(201,169,110,.25);border-radius:4px;padding:4px 10px;flex-shrink:0}
+  .issue-title-block{flex:1;margin-left:16px}
+  .issue-title{font-family:var(--font-display);font-size:1.2rem;font-weight:600;color:var(--text);line-height:1.3}
+  .issue-subtitle{font-size:.8rem;color:var(--text-muted);margin-top:2px}
+  .issue-toggle{font-size:1.2rem;color:var(--text-dim);transition:transform .25s}
+  .issue.open .issue-toggle{transform:rotate(180deg);color:var(--gold)}
+  
+  .issue-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .issue.open .issue-body{display:block}
+
+  /* Risk Bar */
+  .risk-bar{display:flex;align-items:center;gap:12px;margin:20px 0;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .risk-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim);font-weight:600}
+  .risk-segments{display:flex;gap:4px}
+  .risk-seg{width:16px;height:6px;background:var(--border);border-radius:2px}
+  .risk-seg.active-med{background:var(--amber)}
+  .risk-seg.active-high{background:#e07020}
+  .risk-seg.active-crit{background:var(--red)}
+  .risk-badge{font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:4px}
+  .rb-med{background:var(--amber-dim);color:var(--amber)}
+  .rb-high{background:rgba(224,112,32,0.12);color:#e07020}
+  .rb-crit{background:var(--red-dim);color:var(--red)}
+
+  /* Pillars Grid */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px;margin-bottom:24px}
+  .pillar{background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius);padding:14px 16px}
+  .pillar-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .pillar-content{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+
+  /* Content Sections inside Cards */
+  .issue-body .section{margin-top:20px}
+  .section-tag{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-light);margin-bottom:8px}
+  .issue-body p{font-size:.88rem;color:var(--text-muted);line-height:1.7;margin-bottom:12px}
+  .issue-body p:last-child{margin-bottom:0}
+  .leg-ref{color:var(--gold-light);font-family:var(--font-mono);font-size:.82rem}
+  .issue-body ul{padding-left:20px;margin-bottom:12px}
+  .issue-body li{font-size:.88rem;color:var(--text-muted);margin-bottom:6px}
+  
+  /* Opinion Box */
+  .opinion-box{background:rgba(201,169,110,.05);border:1px solid rgba(201,169,110,.25);border-left:3px solid var(--gold);border-radius:var(--radius);padding:16px 20px;margin:24px 0}
+  .opin-label, .opinion-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:block}
+  
+  /* Footnotes */
+  .footnotes{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-top:24px}
+  .fn-title{font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px;letter-spacing:.03em}
+  .fn-list{list-style:none;padding-left:0 !important;margin-bottom:0 !important}
+  .fn-list li{display:flex;gap:8px;font-size:.78rem !important;color:var(--text-dim) !important;line-height:1.5;margin-bottom:6px !important}
+  .fn-list li:last-child{margin-bottom:0 !important}
+  .fn-num{color:var(--gold);font-family:var(--font-mono);font-weight:500;flex-shrink:0}
+  .fn-list a{color:var(--blue);text-decoration:none}
+  .fn-list a:hover{text-decoration:underline}
+
+  /* Structural Framework Styling */
+  .inst-hero{padding:52px 40px 36px;border-bottom:2px solid var(--border);background:linear-gradient(135deg,#0d1117 0%,#111827 60%,#0d1117 100%);position:relative;overflow:hidden}
+  .inst-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 70%);pointer-events:none}
+  .inst-eyebrow{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .inst-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:8px}
+  .inst-sub{color:var(--text-muted);font-size:.9rem;max-width:680px;line-height:1.7;margin-bottom:24px}
+  .inst-meta{display:flex;flex-wrap:wrap;gap:24px}
+  .inst-meta-item{display:flex;flex-direction:column;gap:2px}
+  .inst-meta-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .inst-meta-val{font-size:.82rem;color:var(--text-muted)}
+  .inst-body{padding:40px;max-width:900px}
+  .inst-section{margin-bottom:40px}
+  .inst-section-title{font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  
+  .pillar-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+  .pillar-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .pillar-block .pb-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .pillar-block .pb-text{font-size:.8rem;color:var(--text-muted);line-height:1.6}
+  
+  .fw-steps{display:flex;flex-direction:column;gap:0;margin-top:4px}
+  .fw-step{display:flex;gap:14px;align-items:stretch}
+  .fw-step .fw-step-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+  .fw-step .fw-step-line .fw-step-dot{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,169,110,.35);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fw-step .fw-step-line .fw-step-connector{flex:1;width:2px;background:var(--border);margin:4px auto}
+  .fw-step:last-child .fw-step-connector{display:none}
+  .fw-step .fw-step-content{padding:4px 0 20px}
+  .fw-step .fw-step-heading{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:3px}
+  .fw-step .fw-step-body{font-size:.82rem;color:var(--text-muted);line-height:1.65}
+
+  /* Responsive styling definitions */
+  @media(max-width:700px){
+    .mobile-topbar{display:flex}
+    .nav-overlay{display:block}
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:280px;z-index:160;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.4)}
+    .sidebar.open{transform:translateX(0)}
+    .sidebar-brand{padding-top:64px}
+    .shell{display:block}
+    .main, .inst-body{padding:20px 16px 80px;max-width:100%}
+    .inst-hero{padding:72px 16px 24px}
+    .controls{flex-wrap:wrap}
+    .pillars{grid-template-columns:1fr}
+  }
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  :root {
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--border:#2a3444;--border-light:#303d52;
+    --gold:#c9a96e;--gold-light:#e2c898;--gold-dim:rgba(201,169,110,0.15);
+    --red:#e05c5c;--red-dim:rgba(224,92,92,0.12);--green:#4caf7d;--green-dim:rgba(76,175,125,0.12);
+    --amber:#f0a050;--amber-dim:rgba(240,160,80,0.12);--blue:#5b8dee;--blue-dim:rgba(91,141,238,0.12);
+    --text:#e2e8f0;--text-muted:#8899aa;--text-dim:#566470;
+    --radius:8px;--radius-lg:14px;
+    --font-display:'Playfair Display',Georgia,serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono','Courier New',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.75;min-height:100vh}
+  .shell{display:flex;min-height:100vh}
   /* Mobile topbar */
   .mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:var(--surface);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;padding:0 16px}
   .mobile-topbar .firm{font-family:var(--font-display);font-size:1rem;color:var(--gold);letter-spacing:.01em}
@@ -265,38 +436,24 @@
       <div class="case-tab" data-case="universal" onclick="switchCase('universal')">Universal</div>
     </div>
 
-    <!-- NAV: Instructions -->
-    <div class="nav-instructions" id="navInstructions">
+    <!-- NAV: Instructions / Framework Guide -->
+    <div class="nav-instructions" id="navInstructions" style="display: block;">
       <div class="nav-section">Framework Guide</div>
       <a class="nav-link" href="#inst-overview" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Overview &amp; Scope</a>
       <a class="nav-link" href="#inst-structure" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Issue Structure</a>
       <a class="nav-link" href="#inst-how-to" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>How to Use</a>
-      <div class="nav-section">Issues (T1–T21)</div>
-        <a class="toc-item" href="#issue1" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T1</span>Company Residency / CMAC</a>
-        <a class="toc-item" href="#issue2" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T2</span>Employee PE Risk</a>
-        <a class="toc-item" href="#issue3" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T3</span>Server PE — Indonesia</a>
-        <a class="toc-item" href="#issue4" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T4</span>WHT Shortfall — Royalties</a>
-        <a class="toc-item" href="#issue5" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T5</span>CGT — Foreign Shares</a>
-        <a class="toc-item" href="#issue6" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T6</span>Transfer Pricing MAP</a>
-        <a class="toc-item" href="#issue7" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T7</span>IP Transfer &amp; Royalties</a>
-        <a class="toc-item" href="#issue8" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T8</span>Pre-Sale Dividend WHT</a>
-        <a class="toc-item" href="#issue9" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T9</span>Post-Acq Repatriation</a>
-        <a class="toc-item" href="#issue10" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T10</span>Corporate Residency &amp; CM&amp;C</a>
-        <a class="toc-item" href="#issue11" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T11</span>Foreign Dividends — NANE &amp; FITO</a>
-        <a class="toc-item" href="#issue12" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T12</span>Cross-Border Loan — Div 974</a>
-        <a class="toc-item" href="#issue13" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T13</span>Capitalised Interest &amp; WHT</a>
-        <a class="toc-item" href="#issue14" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T14</span>PE — Foreign Co. in Australia</a>
-        <a class="toc-item" href="#issue15" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T15</span>CGT on Share Disposal — FRCGW</a>
-        <a class="toc-item" href="#issue16" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T16</span>PE Residency Changes &amp; MLI</a>
-        <a class="toc-item" href="#issue17" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T17</span>PE — Fixed Place &amp; Agent</a>
-        <a class="toc-item" href="#issue18" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T18</span>PE Tax — Profit Attribution</a>
-        <a class="toc-item" href="#issue19" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T19</span>CFC Dividends — Aus Parent</a>
-        <a class="toc-item" href="#issue20" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T20</span>Sale of Aus Shares — Non-Resident</a>
-        <a class="toc-item" href="#issue21" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T21</span>WHT, Thin Cap, DDCR &amp; CFI</a>
-        <a class="toc-item" href="#tasa" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">PC</span>TASA Professional Conduct</a>
       
-      <a class="nav-link" href="#inst-risk" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Risk Legend</a>
-      <a class="nav-link" href="#inst-legislation" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Legislation &amp; Sources</a>
+      <div class="nav-section">Issues (T1–T10)</div>
+      <a class="toc-item" href="#issue1" onclick="expandAndScrollGlobal('issue1');closeMobileSidebar()"><span class="toc-num">T1</span>Company Residency / CMAC</a>
+      <a class="toc-item" href="#issue2" onclick="expandAndScrollGlobal('issue2');closeMobileSidebar()"><span class="toc-num">T2</span>Employee PE Risk</a>
+      <a class="toc-item" href="#issue3" onclick="expandAndScrollGlobal('issue3');closeMobileSidebar()"><span class="toc-num">T3</span>Server PE — Indonesia</a>
+      <a class="toc-item" href="#issue4" onclick="expandAndScrollGlobal('issue4');closeMobileSidebar()"><span class="toc-num">T4</span>WHT Shortfall — Royalties</a>
+      <a class="toc-item" href="#issue5" onclick="expandAndScrollGlobal('issue5');closeMobileSidebar()"><span class="toc-num">T5</span>CGT — Foreign Shares</a>
+      <a class="toc-item" href="#issue6" onclick="expandAndScrollGlobal('issue6');closeMobileSidebar()"><span class="toc-num">T6</span>Transfer Pricing MAP</a>
+      <a class="toc-item" href="#issue7" onclick="expandAndScrollGlobal('issue7');closeMobileSidebar()"><span class="toc-num">T7</span>IP Transfer &amp; Royalties</a>
+      <a class="toc-item" href="#issue8" onclick="expandAndScrollGlobal('issue8');closeMobileSidebar()"><span class="toc-num">T8</span>Pre-Sale Dividend WHT</a>
+      <a class="toc-item" href="#issue9" onclick="expandAndScrollGlobal('issue9');closeMobileSidebar()"><span class="toc-num">T9</span>Post-Acq Repatriation</a>
+      <a class="toc-item" href="#issue10" onclick="expandAndScrollGlobal('issue10');closeMobileSidebar()"><span class="toc-num">T10</span>Corporate Residency &amp; CM&amp;C</a>
     </div>
 
     <!-- NAV: Futuro -->
@@ -366,7 +523,6 @@
       </div>
 
       <div class="inst-body">
-
         <!-- HOW TO USE -->
         <div class="inst-section" id="inst-how-to">
           <div class="inst-section-title">How to Use This Document</div>
@@ -374,36 +530,8 @@
             <div class="fw-step">
               <div class="fw-step-line"><div class="fw-step-dot">1</div><div class="fw-step-connector"></div></div>
               <div class="fw-step-content">
-                <div class="fw-step-heading">Select a Case Tab</div>
-                <div class="fw-step-body">Use the <strong>Futuro</strong> or <strong>Universal</strong> tabs at the top of the sidebar to load the relevant letter of advice. Each case is self-contained with its own facts, executive summary, issues, and appendix.</div>
-              </div>
-            </div>
-            <div class="fw-step">
-              <div class="fw-step-line"><div class="fw-step-dot">2</div><div class="fw-step-connector"></div></div>
-              <div class="fw-step-content">
-                <div class="fw-step-heading">Navigate via the Sidebar</div>
-                <div class="fw-step-body">Click any nav link to jump directly to a section. Each issue link is prefixed with a colour-coded risk dot (red = High, amber = Medium, green = Low, blue = Info). The active section is highlighted as you scroll.</div>
-              </div>
-            </div>
-            <div class="fw-step">
-              <div class="fw-step-line"><div class="fw-step-dot">3</div><div class="fw-step-connector"></div></div>
-              <div class="fw-step-content">
-                <div class="fw-step-heading">Read the Issue Structure</div>
-                <div class="fw-step-body">Each issue follows a consistent three-pillar format: <strong>General Rule → Apply Facts to Law → Key Risk Indicators</strong>, followed by detailed legal analysis, step-by-step application, opinion, recommendation, and hyperlinked footnotes.</div>
-              </div>
-            </div>
-            <div class="fw-step">
-              <div class="fw-step-line"><div class="fw-step-dot">4</div><div class="fw-step-connector"></div></div>
-              <div class="fw-step-content">
-                <div class="fw-step-heading">Expand / Collapse Sections</div>
-                <div class="fw-step-body">Click the collapse header on any section to toggle it open or closed. This lets you focus on specific issues without scrolling past material you have already reviewed.</div>
-              </div>
-            </div>
-            <div class="fw-step">
-              <div class="fw-step-line"><div class="fw-step-dot">5</div><div class="fw-step-connector"></div></div>
-              <div class="fw-step-content">
-                <div class="fw-step-heading">Follow the Footnote Links</div>
-                <div class="fw-step-body">Inline superscript footnotes (e.g. <sup style="font-size:.7em;color:var(--gold)">[1]</sup>) are hyperlinked directly to legislation.gov.au, ato.gov.au, jade.io, and oecd.org. Hover over footnote chips for inline tooltips in supported browsers.</div>
+                <div class="fw-step-heading">Review via Structural Interface</div>
+                <div class="fw-step-body">Click any navigation card inside the dashboard to toggle structural details or use the controls panel below to bulk open issues.</div>
               </div>
             </div>
           </div>
@@ -412,759 +540,457 @@
         <!-- ISSUE STRUCTURE -->
         <div class="inst-section" id="inst-structure">
           <div class="inst-section-title">Standard Issue Structure</div>
-          <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:14px;line-height:1.7;">Every tax issue in this document is structured identically, allowing rapid cross-referencing between cases. The three-pillar header provides a quick summary; the body provides the full legal analysis.</p>
           <div class="pillar-legend">
             <div class="pillar-block">
               <div class="pb-label">Pillar 1 — General Rule</div>
-              <div class="pb-text">The core statutory rule or test that governs the issue. States the law in abstract, without reference to the specific facts.</div>
+              <div class="pb-text">The core statutory rule or test that governs the issue.</div>
             </div>
             <div class="pillar-block">
               <div class="pb-label">Pillar 2 — Apply Facts to Law</div>
-              <div class="pb-text">Identifies the fact-specific questions and analytical steps required to apply the General Rule to the client's circumstances.</div>
+              <div class="pb-text">Identifies the analytical steps required to execute application vectors.</div>
             </div>
             <div class="pillar-block">
               <div class="pb-label">Pillar 3 — Key Risk Indicators</div>
-              <div class="pb-text">Red-flag indicators that signal heightened tax risk, disclosure obligations, or penalty exposure. Guides risk rating and prioritisation.</div>
-            </div>
-            <div class="pillar-block">
-              <div class="pb-label">The Law</div>
-              <div class="pb-text">Full statutory analysis with legislative references, case law, ATO rulings, and OECD Commentary — all hyperlinked in footnotes.</div>
-            </div>
-            <div class="pillar-block">
-              <div class="pb-label">Applying Facts to Law</div>
-              <div class="pb-text">Structured, step-by-step application of the law to the specific client facts. Each step is numbered and maps to the statutory tests.</div>
-            </div>
-            <div class="pillar-block">
-              <div class="pb-label">Opinion &amp; Recommendation</div>
-              <div class="pb-text">Concluded position, risk quantification, and specific, practical action steps for compliance, remediation, or restructuring.</div>
+              <div class="pb-text">Red-flag configurations signalling tax exposure metrics.</div>
             </div>
           </div>
         </div>
 
-        <!-- TAX ISSUE APPLY -->
+        <!-- TAX ISSUE ACCORDION FLOW -->
         <div class="inst-section" id="inst-issues">
-          <div class="inst-section-title">Tax Issue Framework (T1–T21)</div>
-          <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:14px;line-height:1.7;">The following 21 tax issues and TASA Professional Conduct section form the complete analytical framework. Each is addressed in one or both case studies.</p>
+          <div class="inst-section-title">Tax Issue Framework Matrix</div>
           
-            <!-- Collapsable issue TT01 (USE) -->
-          <div class="main">
+          <div class="controls">
+            <button class="ctrl-btn" onclick="expandAll()">↓ Expand All Items</button>
+            <button class="ctrl-btn" onclick="collapseAll()">↑ Collapse All Items</button>
+          </div>
         
-            <div class="controls">
-              <button class="ctrl-btn" onclick="expandAll()">↓ Expand All</button>
-              <button class="ctrl-btn" onclick="collapseAll()">↑ Collapse All</button>
+          <!-- T1 — COMPANY RESIDENCY / CMAC -->
+          <div class="issue open" id="issue1">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T1</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Company Residency and Central Management &amp; Control (CMAC)</div>
+                <div class="issue-subtitle">ITAA 1936 s 6(1) · DTA Dual Residency · MLI MAP Tie-breaker</div>
+              </div>
+              <span class="issue-toggle">▾</span>
             </div>
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T1 — COMPANY RESIDENCY / CMAC -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue open" id="issue1">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T1</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Company Residency and Central Management &amp; Control (CMAC)</div>
-                  <div class="issue-subtitle">ITAA 1936 s 6(1) · DTA Dual Residency · MLI MAP Tie-breaker</div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-med"></div>
+                  <div class="risk-seg active-med"></div>
+                  <div class="risk-seg"></div>
+                  <div class="risk-seg"></div>
                 </div>
-                <span class="issue-toggle">▾</span>
+                <span class="risk-badge rb-med">Medium — Manageable</span>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-med"></div>
-                    <div class="risk-seg active-med"></div>
-                    <div class="risk-seg"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-med">Medium — Manageable</span>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">A company incorporated in Australia is automatically an Australian resident under <span class="leg-ref">ITAA 1936 s 6(1)</span>, limb (i). A non-incorporated company must carry on business in Australia AND have CMAC in Australia (limb ii).</div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">A company incorporated in Australia is automatically an Australian resident under <span class="leg-ref">ITAA 1936 s 6(1)</span>, limb (i) — regardless of where management sits. A non-incorporated company must carry on business in Australia AND have CMAC in Australia (limb ii) or Australian-controlled voting power (limb iii).</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Ask: (1) Where are high-level strategic decisions actually made? (2) Is the board predominantly offshore? (3) Does the foreign jurisdiction (e.g. Canada) also treat the entity as a resident under its domestic law? If yes to (3), the MLI-modified DTA MAP applies — no automatic resolution.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Fully non-Australian board → CMAC offshore → dual residency risk → MAP uncertainty. Treaty benefits may be denied if MAP fails. Australian directors with genuine authority is the critical mitigation step.</div>
-                  </div>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Ask: Where are high-level strategic decisions actually made? Is the board predominantly offshore?</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Under <span class="leg-ref">ITAA 1936 s 6(1)</span><sup class="ref">[1]</sup>, a company is an Australian resident if it: (i) is incorporated in Australia; (ii) carries on business here with CMAC in Australia; or (iii) carries on business here with voting power controlled by Australian residents. Limb (i) is automatically satisfied for any company incorporated in Australia — no further conditions apply.</p>
-                  <p>CMAC is determined by where the 'directing mind' makes real decisions: <em>Bywater Investments Ltd v FCT</em> (2016)<sup class="ref">[2]</sup>; <em>Malayan Shipping Co Ltd v FCT</em> (1946)<sup class="ref">[3]</sup>. It is not the formal location of board meetings, but where substantive decisions are actually made. The ATO's position is in <span class="leg-ref">TR 97/16</span><sup class="ref">[4]</sup> and updated in <span class="leg-ref">TR 2018/5</span><sup class="ref">[5]</sup>.</p>
-                  <p>Where dual residency arises, the applicable DTA's tie-breaker applies. However, MLI Article 4<sup class="ref">[6]</sup> modified most Australian DTAs so that the prior automatic 'place of effective management' test no longer resolves corporate dual residency; instead a MAP between competent authorities is required. This creates uncertainty — no outcome is guaranteed.</p>
-                </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Step 1 — confirm incorporation jurisdiction. If incorporated in Australia → resident by limb (i). Step 2 — identify any foreign residency claim by the ultimate parent jurisdiction. Step 3 — if dual residency risk exists, apply the relevant DTA (as modified by the MLI). Step 4 — if MAP is required, assess whether UA/the entity can demonstrate Australian CMAC to avoid MAP uncertainty altogether.</p>
-                  <p>To establish Australian CMAC: (a) at least one director in Australia with genuine authority over Australian affairs; (b) key strategic decisions made or formally ratified at board meetings held in Australia; (c) governance documents (board charter, minutes) recording Australian decision-making; (d) alignment with <span class="leg-ref">PCG 2018/9</span><sup class="ref">[7]</sup>.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Incorporation in Australia satisfies residency under limb (i) regardless of board location. However, a fully non-Australian board creates dual residency risk that must be managed. Appoint at least one Australian-based director with genuine management authority. Ensure key decisions are made or formally ratified in Australia, documented by board minutes and supported by a board charter aligned to TR 2018/5 and PCG 2018/9.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T1</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[1]</span><span>ITAA 1936 s 6(1) — Definition of 'resident': <a href="https://www.legislation.gov.au/Details/C2024C00380/Html/Volume_1#_Toc164940855" target="_blank">legislation.gov.au — ITAA 1936</a></span></li>
-                    <li><span class="fn-num">[2]</span><span><em>Bywater Investments Ltd v FCT</em> [2016] HCA 45 — CMAC 'directing mind' test: <a href="https://jade.io/article/480895" target="_blank">jade.io — [2016] HCA 45</a></span></li>
-                    <li><span class="fn-num">[3]</span><span><em>Malayan Shipping Co Ltd v FCT</em> (1946) 71 CLR 156 — foundational CMAC case: <a href="https://jade.io/article/64720" target="_blank">jade.io — (1946) 71 CLR 156</a></span></li>
-                    <li><span class="fn-num">[4]</span><span>TR 97/16 — Income tax: CMAC of a company: <a href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR9716/NAT/ATO/00001" target="_blank">ato.gov.au — TR 97/16</a></span></li>
-                    <li><span class="fn-num">[5]</span><span>TR 2018/5 — Income tax: central management and control test of residency: <a href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20185/NAT/ATO/00001" target="_blank">ato.gov.au — TR 2018/5</a></span></li>
-                    <li><span class="fn-num">[6]</span><span>MLI Article 4 — Dual Resident Entities (MAP tie-breaker): <a href="https://www.oecd.org/tax/treaties/multilateral-convention-to-implement-tax-treaty-related-measures-to-prevent-BEPS.htm" target="_blank">oecd.org — MLI text</a></span></li>
-                    <li><span class="fn-num">[7]</span><span>PCG 2018/9 — Residence and director governance: <a href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20189/NAT/ATO/00001" target="_blank">ato.gov.au — PCG 2018/9</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Fully non-Australian board → CMAC offshore → dual residency risk → MAP uncertainty thresholds.</div>
                 </div>
               </div>
-            </div><!-- /T1 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T2 — EMPLOYEE PE RISK -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue2">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T2</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Permanent Establishment — Remote Employees and Dependent Agents</div>
-                  <div class="issue-subtitle">OECD Model Art 5 · BEPS Action 7 · PCG 2023/1 · TR 2002/5</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="section">
+                <span class="section-tag">The Law</span>
+                <p>CMAC is determined by where the 'directing mind' makes real decisions: <em>Bywater Investments Ltd v FCT</em> (2016); <em>Malayan Shipping Co Ltd v FCT</em> (1946). The ATO's position is updated in <span class="leg-ref">TR 2018/5</span>.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-high">High — Action Required</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Appoint at least one Australian-based director with genuine management authority to mitigate cross-border exposure vectors.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- T2 — EMPLOYEE PE RISK -->
+          <div class="issue" id="issue2">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T2</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Permanent Establishment — Remote Employees and Dependent Agents</div>
+                <div class="issue-subtitle">OECD Model Art 5 · BEPS Action 7 · PCG 2023/1 · TR 2002/5</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">A PE requires: (1) a place of business; (2) that is geographically and temporally fixed; (3) through which the enterprise's business is carried on. Exceptional/temporary home office (e.g. COVID) ≠ PE. Regular, recurring, or indefinite home office arrangements can satisfy all 3 limbs (2025 OECD Commentary).</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Classify each employee by function: (a) Revenue-generating (marketing, sales) — highest PE risk as dependent agents; (b) Core operational (remote for 8+ months or indefinite) — fixed place PE risk; (c) Support functions (IT helpdesk) — lower risk but treaty must be checked. Check specific DTA with each country.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Employees working indefinitely offshore; marketing staff soliciting or concluding contracts; absence of local entity; no written limits on employee authority. Each jurisdiction's DTA must be separately assessed; BEPS Action 7 narrowed the independent agent exception.</div>
-                  </div>
+                <span class="risk-badge rb-high">High — Action Required</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">A PE requires a place of business that is geographically and temporally fixed, through which business is carried on.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law — Fixed Place PE</span>
-                  <p>OECD Model Article 5(1)<sup class="ref">[8]</sup> requires a 'fixed place of business through which the business of the enterprise is wholly or partly carried on'. Three elements are essential: (i) a place of business (physical location); (ii) that is 'fixed' (geographic permanence + temporal permanence, typically 6+ months); (iii) through which the enterprise's core business is conducted (not merely preparatory/auxiliary).</p>
-                  <p>The 2025 OECD Commentary on Article 5<sup class="ref">[9]</sup> clarifies home office PE: exceptional/temporary arrangements (including COVID-related remote work) do not create PEs. However, regular and recurring home office use — where the employer effectively requires or relies on the home as a place of business — can satisfy all three elements. The ATO's approach is in <span class="leg-ref">TR 2002/5</span><sup class="ref">[10]</sup> and updated in <span class="leg-ref">PCG 2023/1</span><sup class="ref">[11]</sup>.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Classify each employee by function: Revenue-generating sales vs support operations.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law — Dependent Agent PE</span>
-                  <p>OECD Model Article 5(5)<sup class="ref">[8]</sup>, as amended by BEPS Action 7<sup class="ref">[12]</sup>, creates a PE where a person habitually exercises authority to conclude contracts on behalf of the enterprise, or habitually plays the 'principal role' leading to contract conclusion. This is a lower threshold than the pre-BEPS standard. Marketing employees who habitually solicit customers and facilitate sales — even without formally executing contracts — create dependent agent PE risk.</p>
-                </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>For each jurisdiction with employees: (1) Identify the applicable DTA and whether it incorporates BEPS Action 7 changes (post-2018 treaties and MLI-modified DTAs will have narrower independent agent exceptions); (2) Assess each employee's actual functions — do they conclude or materially contribute to contracts?; (3) Assess duration of remote working — indefinite arrangements are hardest to defend; (4) Assess whether the employee's home is 'at the disposal' of the employer; (5) Evaluate whether local preparatory/auxiliary exceptions may apply.</p>
-                  <ul>
-                    <li>Marketing/sales employees: likely dependent agent PE in jurisdictions with post-BEPS treaty coverage</li>
-                    <li>Employees working 8+ months or indefinitely: likely fixed place PE risk</li>
-                    <li>IT helpdesk (internal support): lower risk, but check each specific treaty</li>
-                  </ul>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Material PE risk exists in each jurisdiction with indefinitely remote employees and in any jurisdiction where marketing employees solicit customers or play the principal role in concluding sales. Conduct a jurisdiction-by-jurisdiction PE risk assessment with local counsel; limit employee authority in employment contracts; consider establishing local service entities in high-risk jurisdictions; require sales approvals to be made from Australia.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T2</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[8]</span><span>OECD Model Tax Convention on Income and Capital (2017, updated 2025) — Article 5: <a href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm" target="_blank">oecd.org — Model Tax Convention</a></span></li>
-                    <li><span class="fn-num">[9]</span><span>OECD Commentary on Article 5 (2025) — Home Office PE guidance: <a href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm" target="_blank">oecd.org — Commentary on Art 5</a></span></li>
-                    <li><span class="fn-num">[10]</span><span>TR 2002/5 — Income tax: treaties and the definition of PE: <a href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20025/NAT/ATO/00001" target="_blank">ato.gov.au — TR 2002/5</a></span></li>
-                    <li><span class="fn-num">[11]</span><span>PCG 2023/1 — Remote working arrangements and PE risk: <a href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20231/NAT/ATO/00001" target="_blank">ato.gov.au — PCG 2023/1</a></span></li>
-                    <li><span class="fn-num">[12]</span><span>BEPS Action 7 — Preventing Artificial Avoidance of PE Status (2015): <a href="https://www.oecd.org/tax/beps/beps-action-7-preventing-the-artificial-avoidance-of-permanent-establishment-status.pdf" target="_blank">oecd.org — BEPS Action 7</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Employees working indefinitely offshore, soliciting or concluding client execution structures.</div>
                 </div>
               </div>
-            </div><!-- /T2 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T3 — SERVER PE -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue3">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T3</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Permanent Establishment — Server / Data Centre as Fixed Place of Business</div>
-                  <div class="issue-subtitle">OECD Model Art 5 · 2025 Commentary paras 122–131 · Core vs Preparatory Functions</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Execute structured jurisdiction assessments; enforce clear contractual boundaries regarding local execution options.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                  </div>
-                  <span class="risk-badge rb-crit">Critical — Likely PE Exists</span>
+            </div>
+          </div>
+
+          <!-- T3 — SERVER PE -->
+          <div class="issue" id="issue3">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T3</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Permanent Establishment — Server / Data Centre as Fixed Place of Business</div>
+                <div class="issue-subtitle">OECD Model Art 5 · Core vs Preparatory Functions</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">A server constitutes a PE if: (1) physically located in the country; (2) it has geographic + temporal permanence; and (3) the enterprise carries on its core business through the server. Servers used only for preparatory/auxiliary functions (data storage, advertising, testing) do NOT constitute a PE under OECD Model Art 5(4).</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Critical question: does the server perform 'core' business functions (sales execution, payment collection, customer contracting) or merely 'preparatory/auxiliary' activities? Servers that autonomously execute sales and collect payments = core business = PE. Duration (2+ years) satisfies temporal permanence. Fixed data centre location satisfies geographic permanence.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Automated sales processing; autonomous payment collection; customer contracts executed through the server; physical data centre (not cloud); 2+ years of operation. No human presence is required for a server PE — the test is functional, not personnel-based.</div>
-                  </div>
+                <span class="risk-badge rb-crit">Critical — Likely PE Exists</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">A server constitutes a PE if it has geographic/temporal permanence and core business transactions execute on it autonomously.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>The 2025 OECD Commentary on Article 5, paras 122–131<sup class="ref">[13]</sup>, provides the definitive guidance on server PEs. The test is functional: where a server autonomously performs the core business activities of the enterprise (e.g., executing sales contracts with customers, collecting payments), it constitutes a fixed place of business PE. The 'preparatory or auxiliary' carve-out in OECD Model Art 5(4)<sup class="ref">[8]</sup> applies to servers that provide back-office support (data storage, advertising, market information) but not to servers through which the enterprise itself contracts with customers.</p>
-                  <p>There is no requirement that the server be 'attended' — unlike a construction site PE, a server PE can arise with only maintenance staff present, because the revenue-generating activity occurs through automated server processes.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Determine if server interaction triggers revenue execution or serves basic storage/auxiliary tasks.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Apply a two-stage analysis. Stage 1 — fixed place test: (a) Is the server physically situated at a fixed location in the country? (b) Has it been there for a sufficient period (typically 6+ months; 2 years is clearly sufficient)? Stage 2 — core business test: (a) Does the server process sales to local customers?; (b) Does it execute or complete payment transactions?; (c) Are these core income-generating functions rather than data storage or advertising? If all elements satisfied → strong probability of PE.</p>
-                  <p>Where a PE is established, the profits attributable to that PE must be quantified under the authorised OECD approach (AOA) — typically by reference to the functions performed, assets used, and risks assumed by the PE.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Where servers perform automated sales and payment collection — the core revenue-generating functions of the business — a PE is very likely. Urgently obtain local tax law advice to assess PE registration and tax return obligations. Quantify potential past tax liabilities. Evaluate commercial feasibility of moving to a cloud-based model. Disclose the PE risk to any acquirer as a material due diligence finding with appropriate representations and warranties in the transaction documentation.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T3</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[13]</span><span>OECD Commentary on Article 5, paras 122–131 (2025) — Servers as PE: <a href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm" target="_blank">oecd.org — Commentary, Art 5 paras 122–131</a></span></li>
-                    <li><span class="fn-num">[8]</span><span>OECD Model Tax Convention Article 5(4) — Preparatory/Auxiliary Exception: <a href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm" target="_blank">oecd.org — Model Tax Convention Art 5(4)</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Autonomous transaction servers clearing domestic transactions without standard human verification.</div>
                 </div>
               </div>
-            </div><!-- /T3 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T4 — WHT SHORTFALL ROYALTIES -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue4">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T4</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Withholding Tax Shortfall — Royalties Paid to Non-Treaty Recipient</div>
-                  <div class="issue-subtitle">ITAA 1936 s 128B · ITAA 1997 s 26-25 · Voluntary Disclosure PS LA 2012/5</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Where processing matches core commerce functions, register local profiles or migrate architectural components to generalized cloud models.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                  </div>
-                  <span class="risk-badge rb-crit">Critical — Underpaid WHT + Deduction Denial</span>
+            </div>
+          </div>
+
+          <!-- T4 — WHT SHORTFALL -->
+          <div class="issue" id="issue4">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T4</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Withholding Tax Shortfall — Royalties Paid to Non-Treaty Recipient</div>
+                <div class="issue-subtitle">ITAA 1936 s 128B · ITAA 1997 s 26-25 · PS LA 2012/5</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">Australian WHT applies to royalties paid by Australian residents to non-residents at 30% (default) under ITAA 1936 s 128B. A reduced DTA rate applies only if the recipient is actually a resident of the DTA partner country. Applying a reduced treaty rate to a non-treaty recipient is a WHT shortfall, triggering underpaid WHT, penalties, interest, and potential deduction denial under ITAA 1997 s 26-25.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Step 1: Determine whether the payment is a 'royalty' under ITAA 1936 s 6(1) (broad definition — includes IP licences, software, know-how). Step 2: Identify the actual recipient's country of residence. Step 3: Check whether Australia has a DTA with that country. Step 4: Apply the correct WHT rate (DTA rate if treaty country; 30% otherwise). Step 5: Calculate shortfall = (correct rate − applied rate) × gross royalty.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Payment routed through intermediary to access a lower treaty rate (treaty shopping); recipient country is not the country whose DTA rate was applied; royalty incorrectly characterised (e.g. as a service fee to avoid WHT); deduction taken without correct WHT withheld. Post-PepsiCo [2025] HCA 30 — ATO broadly interprets royalties.</div>
-                  </div>
+                <span class="risk-badge rb-crit">Critical — Underpaid WHT + Deduction Denial</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Default WHT rules demand 30% remittance on royalties paid abroad absent explicit verified treaty relief channels.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Section 128B, ITAA 1936<sup class="ref">[14]</sup> imposes WHT on royalties paid by Australian residents to non-residents. Section 128D<sup class="ref">[15]</sup> makes this WHT a final tax. The default rate is 30% under <span class="leg-ref">Income Tax Rates Act 1986, s 12</span>. A reduced DTA rate applies only where the recipient is a resident of the treaty partner country — the reduced rate cannot be applied to residents of non-treaty countries, even if the payment is channelled through a treaty country.</p>
-                  <p>Under <span class="leg-ref">ITAA 1997 s 26-25</span><sup class="ref">[16]</sup>, a deduction for royalties (or other non-resident payments) is denied to the extent the payer failed to withhold and remit the correct WHT. This is a significant commercial consequence beyond the WHT shortfall itself.</p>
-                  <p>Voluntary disclosure under <span class="leg-ref">PS LA 2012/5</span><sup class="ref">[17]</sup> before ATO audit/review significantly reduces the shortfall penalty under <span class="leg-ref">TAA 1953 s 284-75</span><sup class="ref">[18]</sup> — penalties range from 25% (lack of reasonable care) to 90% (intentional disregard), reduced substantially for proactive disclosure. <em>FCT v PepsiCo Inc</em> [2025] HCA 30<sup class="ref">[19]</sup> confirmed the breadth of the royalty WHT obligation.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Confirm baseline transactional architecture matching definitions of intellectual asset execution.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Fact-application process: (1) Characterise the payment — is it a 'royalty' under s 6(1) ITAA 1936 (see also TR 2024/D1<sup class="ref">[20]</sup> for software/IP guidance)? (2) Identify the actual recipient — who received the funds (follow the money, not the contract name)? (3) Identify the recipient's tax residence — does Australia have a DTA with that country? (4) Apply the correct WHT rate. (5) Calculate shortfall + interest (under <span class="leg-ref">TAA 1953 s 280-15</span>) + penalty. (6) Consider whether treaty shopping anti-avoidance provisions (principal purpose test under MLI Article 7) may apply where the structure appears to have accessed a treaty rate through an intermediary.</p>
-                  <p>Where WHT shortfall is identified, make a voluntary disclosure under PS LA 2012/5 before lodging amended returns. Quantify the shortfall, deduction disallowance, GIC, and penalties. Disclose the liability in any transaction documentation (purchase price adjustment or tax indemnity).</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Where the actual recipient of a royalty is resident in a non-treaty country, the full 30% WHT rate applies and any shortfall creates immediate WHT debt, deduction denial, GIC, and penalty exposure. A voluntary disclosure under PS LA 2012/5 is strongly recommended before any ATO audit or transaction. Quantify the full liability (WHT shortfall + deduction denial + GIC + penalty) and address via transaction indemnity or completion adjustment.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T4</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[14]</span><span>ITAA 1936 s 128B — Liability to withholding tax: <a href="https://www.legislation.gov.au/Details/C2024C00380/Html/Volume_6#_Toc164943261" target="_blank">legislation.gov.au — ITAA 1936 s 128B</a></span></li>
-                    <li><span class="fn-num">[15]</span><span>ITAA 1936 s 128D — WHT is a final tax: <a href="https://www.legislation.gov.au/Details/C2024C00380/Html/Volume_6#_Toc164943263" target="_blank">legislation.gov.au — ITAA 1936 s 128D</a></span></li>
-                    <li><span class="fn-num">[17]</span><span>PS LA 2012/5 — ATO voluntary disclosure policy: <a href="https://www.ato.gov.au/law/view/document?DocID=PSR/PS20125/NAT/ATO/00001" target="_blank">ato.gov.au — PS LA 2012/5</a></span></li>
-                    <li><span class="fn-num">[18]</span><span>TAA 1953 s 284-75 — Shortfall penalties: <a href="https://www.legislation.gov.au/Details/C2024C00376/Html/Volume_2#_Toc164758434" target="_blank">legislation.gov.au — TAA 1953 s 284-75</a></span></li>
-                    <li><span class="fn-num">[19]</span><span><em>FCT v PepsiCo Inc</em> [2025] HCA 30 — Broad scope of royalty WHT: <a href="https://jade.io/article/pepsicoHCA2025" target="_blank">jade.io — [2025] HCA 30</a></span></li>
-                    <li><span class="fn-num">[20]</span><span>TR 2024/D1 — Royalties: characterisation of software and IP payments: <a href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR2024D1/NAT/ATO/00001" target="_blank">ato.gov.au — TR 2024/D1</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Deduction claims without verified clearance certificates or under-withholding parameters. Post-PepsiCo [2025] guidelines apply.</div>
                 </div>
               </div>
-            </div><!-- /T4 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T5 — CGT FOREIGN SHARES — RESIDENT -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue5">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T5</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">CGT on Disposal of Foreign Shares — Australian Resident Company</div>
-                  <div class="issue-subtitle">ITAA 1997 ss 104-10, 115-10 · Division 855 · Subdivision 768-G · CGT Discount Unavailable</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Process remediation schedules via voluntary disclosure pathways to leverage structural mitigation benefits.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                  </div>
-                  <span class="risk-badge rb-crit">Critical — Full Gain Assessable; No Discount</span>
+            </div>
+          </div>
+
+          <!-- T5 — CGT FOREIGN SHARES -->
+          <div class="issue" id="issue5">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T5</span>
+              <div class="issue-title-block">
+                <div class="issue-title">CGT on Disposal of Foreign Shares — Australian Resident Company</div>
+                <div class="issue-subtitle">ITAA 1997 ss 104-10 · Division 855 · Subdivision 768-G</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">Australian resident companies are taxed on CGT gains from all CGT assets worldwide (ITAA 1997 ss 100-25, 104-10). Division 855 exempts non-TAP gains — but only for FOREIGN residents. Australian resident companies do NOT benefit from Division 855. Companies are also ineligible for the 50% CGT discount (ITAA 1997 s 115-10). Full gain is assessable.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Step 1: Confirm taxpayer is Australian resident (if yes → worldwide taxation; Division 855 inapplicable). Step 2: Is there a Subdivision 768-G active business exemption? (requires ≥10% ownership interest in foreign company). Step 3: No CGT discount for companies. Step 4: Full capital gain = proceeds − cost base. Step 5: Identify if return is incorrect → voluntary amendment obligation.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Misapplication of Division 855 to an Australian resident taxpayer; reliance on AI (ChatGPT) or unverified analysis for a tax position; ownership below 10% (no 768-G exemption); companies incorrectly applying 50% CGT discount; failure to amend prior-year returns. No reasonably arguable position → enhanced penalties.</div>
-                  </div>
+                <span class="risk-badge rb-crit">Critical — Full Gain Assessable; No Discount</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Worldwide assets remain taxable to domestic entities. Division 855 exemptions isolate foreign resident profiles exclusively.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Under <span class="leg-ref">ITAA 1997 ss 100-25 and 104-10</span><sup class="ref">[21]</sup>, Australian resident companies are subject to CGT on all CGT events occurring on worldwide CGT assets. CGT event A1 (disposal of an asset — s 104-10) applies on the sale of shares. The capital gain equals proceeds minus the cost base.</p>
-                  <p>Division 855<sup class="ref">[22]</sup> disregards gains or losses from 'non-taxable Australian property' (non-TAP) — but this exemption is available only to <strong>foreign residents</strong>. An Australian resident company cannot access Division 855 regardless of the nature of the asset disposed of.</p>
-                  <p>Subdivision 768-G<sup class="ref">[23]</sup> provides an active foreign business exemption for Australian companies holding ≥10% participation interests in foreign companies. Where the ownership interest falls below 10%, the exemption is unavailable and the full gain is assessable. The 50% CGT discount (<span class="leg-ref">ITAA 1997 s 115-10</span><sup class="ref">[24]</sup>) does not apply to companies (available only to individuals, trusts, and complying superannuation funds).</p>
-                  <p>Where a prior-year return is incorrect, a voluntary amendment under <span class="leg-ref">TAA 1953 Part IVC</span><sup class="ref">[25]</sup> and voluntary disclosure under PS LA 2012/5 reduces penalty exposure under TAA 1953 s 284-75. A position taken without a reasonably arguable position — including one based on AI-generated analysis — does not qualify for the 'reasonably arguable position' reduced penalty base under <span class="leg-ref">TAA 1953 s 284-15</span>.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Assess active involvement criteria under Subdivision 768-G which requires ≥10% equity profiles.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Structured analysis: (1) Confirm whether the disposing entity is an Australian or foreign resident (critical — determines whether Division 855 is even available to consider); (2) Apply Division 855 only if the entity is a foreign resident — if Australian resident, proceed to step 3; (3) Check Subdivision 768-G — is the ownership interest ≥10%? If not, exemption unavailable; (4) Calculate the full capital gain (proceeds − cost base); (5) Confirm that the CGT discount does not apply (companies are excluded under s 115-10); (6) Assess whether an amended return and voluntary disclosure is required; (7) Quantify total liability including tax, GIC, and penalties and address via transaction indemnity if relevant.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Australian resident companies cannot access Division 855. Where the ownership interest in the foreign company is below 10%, Subdivision 768-G also does not apply. The full capital gain is assessable and companies are ineligible for the CGT discount. A prior-year return based on Division 855 applied to an Australian resident contains a fundamental legal error. Voluntarily amend the return and make an early disclosure. Quantify the tax liability and address in any transaction documentation as a specific indemnity. Never rely on AI-generated analysis (ChatGPT or similar) as the basis for a tax position without independent expert verification.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T5</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[21]</span><span>ITAA 1997 ss 100-25, 104-10 — CGT assets and CGT event A1: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_2#_Toc164795931" target="_blank">legislation.gov.au — ITAA 1997 s 104-10</a></span></li>
-                    <li><span class="fn-num">[22]</span><span>ITAA 1997 Division 855 — Foreign residents and non-TAP assets: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_7#_Toc164800021" target="_blank">legislation.gov.au — Division 855</a></span></li>
-                    <li><span class="fn-num">[23]</span><span>ITAA 1997 Subdivision 768-G — Active foreign business exemption (≥10% participation interest): <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_7#_Toc164800118" target="_blank">legislation.gov.au — Subdivision 768-G</a></span></li>
-                    <li><span class="fn-num">[24]</span><span>ITAA 1997 s 115-10 — CGT discount not available to companies: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_2#_Toc164796096" target="_blank">legislation.gov.au — ITAA 1997 s 115-10</a></span></li>
-                    <li><span class="fn-num">[25]</span><span>TAA 1953 Part IVC — Amended assessments and objections: <a href="https://www.legislation.gov.au/Details/C2024C00376/Html/Volume_2#_Toc164758300" target="_blank">legislation.gov.au — TAA 1953 Part IVC</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Incorrect application of non-resident safe harbours or calculation inclusions using structural individual discount tools.</div>
                 </div>
               </div>
-            </div><!-- /T5 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T6 — TRANSFER PRICING MAP -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue6">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T6</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Transfer Pricing — Mutual Agreement Procedure (MAP) for Double Taxation</div>
-                  <div class="issue-subtitle">Division 815 ITAA 1997 · DTA Article 25 · MLI Article 17 · Bilateral APA</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Recalculate structural balances entirely and lodge amendments; do not depend blindly on generic automated layout processing tools.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-high">High — Urgent MAP Filing Required</span>
+            </div>
+          </div>
+
+          <!-- T6 — TRANSFER PRICING MAP -->
+          <div class="issue" id="issue6">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T6</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Transfer Pricing — Mutual Agreement Procedure (MAP) for Double Taxation</div>
+                <div class="issue-subtitle">Division 815 ITAA 1997 · DTA Article 25 · MLI Article 17</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">Where the ATO makes a transfer pricing primary adjustment and the counterpart foreign jurisdiction refuses a corresponding adjustment, economic double taxation results. The MAP under the applicable DTA's Article 25 provides the mechanism for bilateral resolution. MLI Article 17 obligates treaty partners to provide corresponding adjustments in these circumstances, subject to MAP.</div>
-                  </div>
-                  <div class="pillars">
-                    <div class="pillar">
-                      <div class="pillar-label">Apply Facts To Law</div>
-                      <div class="pillar-content">Step 1: Confirm primary adjustment has been accepted. Step 2: Confirm the counterpart jurisdiction's refusal of corresponding adjustment. Step 3: File MAP request with the ATO within the DTA time limit (typically 3 years from first notification). Step 4: ATO engages with foreign competent authority (e.g. CBDT for India). Step 5: Consider bilateral APA for future inter-company transactions.</div>
-                    </div>
-                    <div class="pillar">
-                      <div class="pillar-label">Key Risk Indicators</div>
-                      <div class="pillar-content">MAP time limits (usually 3 years) are strict — late filing forfeits treaty relief. MAP can take 2–4 years but is the primary resolution mechanism. Bilateral APA provides future certainty. Double taxation creates cash flow burden. Post-acquisition, new owners must continue MAP or lose right of treaty relief.</div>
-                    </div>
-                  </div>
+                <span class="risk-badge rb-high">High — Urgent MAP Filing Required</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Bilateral resolution under Article 25 helps alleviate international double taxation exposures.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Australian transfer pricing rules are in <span class="leg-ref">ITAA 1997 Division 815</span><sup class="ref">[26]</sup>, which requires cross-border dealings to be priced on arm's length terms. Where the ATO makes a primary upward adjustment to Australian income, the corresponding entity in the other jurisdiction should receive a downward adjustment — if they do not, the same income is taxed twice (economic double taxation).</p>
-                  <p>Article 25 of the applicable DTA<sup class="ref">[27]</sup> provides a Mutual Agreement Procedure (MAP) to resolve such disputes. <span class="leg-ref">MLI Article 17</span><sup class="ref">[28]</sup> requires corresponding adjustments to be made by treaty partners where a primary adjustment has been made, and obliges competent authorities to undertake MAP to eliminate double taxation. The OECD MAP Manual (November 2025)<sup class="ref">[29]</sup> sets out procedural requirements including filing timelines.</p>
-                  <p>Recent case law confirms that Australian courts may stay domestic recovery proceedings while MAP is ongoing, providing procedural relief: <em>Oracle Corporation</em> [2025] FCAFC 145.<sup class="ref">[30]</sup></p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Verify notification schedules to capture active administrative filings prior to 3-year cutoff horizons.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Action steps: (1) File MAP request with the ATO promptly (confirm time limit under applicable DTA — typically 3 years from first notification of the primary adjustment); (2) The ATO will engage as Australian competent authority with the foreign competent authority to seek bilateral agreement; (3) Consider seeking a stay of ATO domestic recovery action while MAP is pending (see Oracle Corporation); (4) For future cross-border transactions with the related party, initiate a bilateral Advance Pricing Arrangement (APA) with both tax authorities to provide prospective certainty; (5) Disclose the outstanding double taxation exposure in any M&amp;A transaction documentation and factor in the time/cost/uncertainty of MAP as part of valuation or indemnity allocation.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>File a MAP request urgently — time limits are strict and late filing forfeits treaty relief. Concurrently, consider a stay of domestic proceedings while MAP is pending. Disclose the double taxation exposure in any transaction documentation with appropriate indemnity. Pursue a bilateral APA for future inter-company pricing to eliminate recurring MAP risk.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T6</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[26]</span><span>ITAA 1997 Division 815 — Transfer pricing: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_7#_Toc164800005" target="_blank">legislation.gov.au — Division 815</a></span></li>
-                    <li><span class="fn-num">[27]</span><span>OECD Model Tax Convention Article 25 — Mutual Agreement Procedure: <a href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm" target="_blank">oecd.org — Model Tax Convention Art 25</a></span></li>
-                    <li><span class="fn-num">[28]</span><span>MLI Article 17 — Corresponding adjustments: <a href="https://www.oecd.org/tax/treaties/multilateral-convention-to-implement-tax-treaty-related-measures-to-prevent-BEPS.htm" target="_blank">oecd.org — MLI Article 17</a></span></li>
-                    <li><span class="fn-num">[29]</span><span>OECD MAP Manual (November 2025) — Procedural guidance: <a href="https://www.oecd.org/tax/dispute/oecd-mutual-agreement-procedure-statistics.htm" target="_blank">oecd.org — MAP Manual &amp; Statistics</a></span></li>
-                    <li><span class="fn-num">[30]</span><span><em>Oracle Corporation</em> [2025] FCAFC 145 — Stay of proceedings during MAP: <a href="https://jade.io/article/oracle2025" target="_blank">jade.io — [2025] FCAFC 145</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Forfeiture of treaty rights due to compliance latency. Note procedural tracking mechanisms verified in <em>Oracle [2025]</em>.</div>
                 </div>
               </div>
-            </div><!-- /T6 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T7 — IP TRANSFER -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue7">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T7</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">IP Transfer to Related Non-Resident — CGT, Royalty WHT, and R&amp;D Incentive</div>
-                  <div class="issue-subtitle">ITAA 1997 ss 104-10, 104-35 · Division 815 · ITAA 1936 s 128B · Division 355</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Initiate active protective filings with competent authorities instantly while structuring bilateral APA options.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                    <div class="risk-seg active-crit"></div>
-                  </div>
-                  <span class="risk-badge rb-crit">Critical — Multiple Cascading Exposures</span>
+            </div>
+          </div>
+
+          <!-- T7 — IP TRANSFER -->
+          <div class="issue" id="issue7">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T7</span>
+              <div class="issue-title-block">
+                <div class="issue-title">IP Transfer to Related Non-Resident — CGT, Royalty WHT, and R&amp;D Incentive</div>
+                <div class="issue-subtitle">Division 815 · ITAA 1936 s 128B · Division 355</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
+                  <div class="risk-seg active-crit"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">IP transfer to a non-resident related party triggers: (1) CGT event A1 or D1 — full gain assessable (companies have no CGT discount); (2) transfer price must be at arm's length under Division 815 — ATO scrutinises DEMPE function alignment; (3) post-transfer royalties attract WHT (DTA rate applies if treaty country); (4) R&amp;D service centre model risks loss of R&amp;D tax offset under Division 355 if the 'own behalf' test fails.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Step 1: Obtain independent IP valuation (arm's length price = CGT consideration; transfer pricing = arm's length). Step 2: Confirm DEMPE functions genuinely shift to the foreign jurisdiction (ATO PCG 2024/1 applies). Step 3: Calculate CGT gain on transfer; no discount for companies; assess tax cost. Step 4: Model ongoing royalty payments — WHT applies; check applicable DTA rate. Step 5: Assess R&amp;D eligibility — does Australian entity retain economic benefit from R&amp;D outcomes?</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">ATO's PCG 2024/1 specifically targets IP migration arrangements. Internally developed IP has low/nil cost base → large CGT gain. Service centre model fails 'own behalf' test → R&amp;D offset loss. Royalties without correct WHT → deduction denied. Inadequate DEMPE function transfer → ATO will challenge arrangement substance.</div>
-                  </div>
+                <span class="risk-badge rb-crit">Critical — Multiple Cascading Exposures</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Asset migrations trigger simultaneous testing metrics across transfer valuation mechanisms and R&amp;D incentives.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>The transfer of IP to a foreign related party is a CGT event A1 (disposal of CGT asset) or CGT event D1 (creation of rights by the owner of the IP) under <span class="leg-ref">ITAA 1997 ss 104-10 and 104-35</span><sup class="ref">[31]</sup>. The gain is the difference between the market value consideration (or market value if disposed at undervalue) and the cost base. For internally developed IP, development costs typically deducted under s 8-1 create a low or nil cost base — resulting in a large taxable gain. Companies cannot access the 50% CGT discount.</p>
-                  <p>Transfer pricing rules in <span class="leg-ref">Division 815, ITAA 1997</span><sup class="ref">[26]</sup> require the IP transfer to be at arm's length. <span class="leg-ref">PCG 2024/1</span><sup class="ref">[32]</sup> provides ATO guidance on IP migration arrangements, focusing on whether DEMPE (Development, Enhancement, Maintenance, Protection, Exploitation) functions genuinely move to the foreign jurisdiction or remain in Australia.</p>
-                  <p>Post-transfer royalties paid by the Australian entity to the foreign IP owner are subject to WHT under <span class="leg-ref">ITAA 1936 s 128B</span><sup class="ref">[14]</sup>. Applicable DTA rates may reduce this to 5–10%. Failure to withhold correctly denies the deduction under s 26-25, ITAA 1997.</p>
-                  <p>The R&amp;D tax incentive under <span class="leg-ref">Division 355, ITAA 1997</span><sup class="ref">[33]</sup> provides a 43.5% or 38.5% tax offset for eligible R&amp;D activities conducted 'on the company's own behalf'. Where NovaTech transitions to a fee-for-service R&amp;D model (conducting R&amp;D for the Canadian IP owner), the 'own behalf' test may fail, resulting in loss of the incentive.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Cross-examine asset economic rights against the strict 'own behalf' operational definitions.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Structured approach: (1) Commission an independent IP valuation before any transfer — this determines both the CGT consideration and satisfies arm's length requirements under Division 815; (2) Assess whether DEMPE functions genuinely shift offshore — key question is whether the foreign entity will meaningfully control development, bear risk, and derive economic benefit from IP outcomes; (3) Model the CGT cost of the transfer — with no discount available to companies, this may be substantial; explore whether a staged migration, licensing arrangement, or alternative structure reduces the upfront cost; (4) For post-transfer royalties, apply the correct DTA WHT rate; document royalty agreements to support deductibility; (5) Restructure the R&amp;D service arrangement so that the Australian entity retains some economic interest in R&amp;D outcomes (co-development rights, enhanced royalty rights, milestone payments linked to IP value) to preserve access to the R&amp;D offset; (6) Address ATO's PCG 2024/1 compliance requirements proactively.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>IP transfers to foreign related parties generate cascading tax consequences: large CGT liability (no company discount), arm's length pricing obligation, ongoing royalty WHT, and R&amp;D incentive risk. Obtain independent valuation; align DEMPE functions with legal ownership; model the CGT cost before proceeding; consider alternative structures (staged migration, co-development). Obtain specialist R&amp;D advice to structure the service arrangement to preserve the offset where possible.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T7</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[31]</span><span>ITAA 1997 ss 104-10, 104-35 — CGT events A1 and D1: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_2#_Toc164795931" target="_blank">legislation.gov.au — ITAA 1997 s 104-35</a></span></li>
-                    <li><span class="fn-num">[32]</span><span>PCG 2024/1 — IP migration arrangements and DEMPE: <a href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20241/NAT/ATO/00001" target="_blank">ato.gov.au — PCG 2024/1</a></span></li>
-                    <li><span class="fn-num">[33]</span><span>ITAA 1997 Division 355 — R&amp;D tax incentive, including 'own behalf' requirement: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_4#_Toc164798012" target="_blank">legislation.gov.au — Division 355</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Mismatching DEMPE variables against registered framework definitions outlined in PCG 2024/1.</div>
                 </div>
               </div>
-            </div><!-- /T7 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T8 — PRE-SALE DIVIDEND WHT -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue8">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T8</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Pre-Sale Dividend — Australian WHT on Franked vs Unfranked Distributions</div>
-                  <div class="issue-subtitle">ITAA 1936 ss 44, 128B · ITAA 1997 s 207-20 · Imputation System · CFI Rules</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Acquire structural valuations prior to formal transaction deployment coordinates to manage downstream asset exposure.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-med"></div>
-                    <div class="risk-seg active-med"></div>
-                    <div class="risk-seg"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-med">Medium — Manageable with Planning</span>
+            </div>
+          </div>
+
+          <!-- T8 — PRE-SALE DIVIDEND WHT -->
+          <div class="issue" id="issue8">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T8</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Pre-Sale Dividend — Australian WHT on Franked vs Unfranked Distributions</div>
+                <div class="issue-subtitle">ITAA 1936 ss 44, 128B · Imputation System · CFI Rules</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-med"></div>
+                  <div class="risk-seg active-med"></div>
+                  <div class="risk-seg"></div>
+                  <div class="risk-seg"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">For Australian resident shareholders: dividends assessable + franking credit gross-up (s 207-20); franking credits offset income tax. For non-resident shareholders: WHT applies only to the unfranked portion of a dividend (s 128B(3)(ga) exempts the franked portion). DTA rates reduce WHT on the unfranked component. Maximising the franked component is the key structuring tool.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Step 1: Determine each shareholder's residency status. Step 2: For non-residents — identify applicable DTA (or domestic rate). Step 3: Determine the franking percentage available (check franking account balance). Step 4: WHT = unfranked amount × applicable WHT rate (treaty or 30% domestic). Step 5: Assess CFI rules if any foreign-sourced income exists in retained earnings — may further reduce WHT on that component.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Partially franked dividends are common — both resident and non-resident consequences require analysis. Ensure franking account has sufficient credits; overdrawing creates franking deficit tax. Confirm DTA residency requirements are met (e.g. beneficial ownership tests). Conduit foreign income (CFI) declarations must be timely — cannot be made retrospectively.</div>
-                  </div>
+                <span class="risk-badge rb-med">Medium — Manageable with Planning</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Franked dividend components generally clear international distribution loops free from domestic withholding friction.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Under <span class="leg-ref">ITAA 1936 s 44</span><sup class="ref">[34]</sup>, dividends paid by an Australian resident company are assessable income of shareholders. For Australian resident shareholders, the imputation system operates under <span class="leg-ref">ITAA 1997 s 207-20</span><sup class="ref">[35]</sup>: the dividend is grossed up by attached franking credits, and the franking credits offset income tax liability (excess may be refundable for individuals and certain entities).</p>
-                  <p>For non-resident shareholders, Australian WHT applies under <span class="leg-ref">ITAA 1936 s 128B(1)(a)</span><sup class="ref">[14]</sup> to the unfranked portion of dividends only. The exemption in <span class="leg-ref">ITAA 1936 s 128B(3)(ga)</span><sup class="ref">[36]</sup> exempts the franked portion from WHT entirely. The WHT rate on the unfranked portion is 30% (domestic) or the reduced DTA rate (typically 5%–15% for residents of treaty countries meeting beneficial ownership and ownership percentage requirements).</p>
-                  <p>Conduit foreign income (CFI) rules under <span class="leg-ref">Division 802, ITAA 1997</span><sup class="ref">[37]</sup> allow foreign-sourced income (that is NANE or otherwise foreign-exempt) to pass through to non-resident shareholders without WHT, provided a CFI declaration is made at or before the time of distribution. Division 974<sup class="ref">[38]</sup> must be checked to confirm instruments are equity not debt (determines whether distributions are dividends or interest).</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Reconcile franking generation capacity alongside Conduit Foreign Income (CFI) options.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Structuring a pre-sale dividend: (1) Confirm the company's franking account balance — a fully franked dividend is most efficient (WHT-free for non-residents on the full amount); (2) For each non-resident shareholder, identify their country of tax residence and the applicable DTA, and confirm the reduced WHT rate applicable to unfranked dividends; (3) Calculate the WHT cost of the unfranked portion for each non-resident shareholder; (4) Review retained earnings for any foreign-sourced income that may qualify for a CFI declaration; (5) Maximise franking of the dividend to reduce WHT leakage; (6) Ensure dividend resolution is passed and franking account balance confirmed before payment; (7) Check whether the dividend creates a Subdivision 207-F integrity issue (for dividends sourced from artificial schemes).</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Maximise the franked component of any pre-sale dividend to minimise WHT for non-resident shareholders. The franked portion is entirely exempt from WHT. Confirm each non-resident shareholder's applicable DTA rate for unfranked amounts. Assess whether any earnings can be designated as CFI to further reduce WHT on foreign-sourced components. Ensure the dividend is paid prior to completion of any acquisition so that the benefit of available franking credits flows to the existing shareholders.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T8</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[34]</span><span>ITAA 1936 s 44 — Assessability of dividends: <a href="https://www.legislation.gov.au/Details/C2024C00380/Html/Volume_2#_Toc164941217" target="_blank">legislation.gov.au — ITAA 1936 s 44</a></span></li>
-                    <li><span class="fn-num">[35]</span><span>ITAA 1997 s 207-20 — Franking credits and gross-up: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_3#_Toc164796929" target="_blank">legislation.gov.au — ITAA 1997 s 207-20</a></span></li>
-                    <li><span class="fn-num">[36]</span><span>ITAA 1936 s 128B(3)(ga) — Franked dividends exempt from WHT: <a href="https://www.legislation.gov.au/Details/C2024C00380/Html/Volume_6#_Toc164943261" target="_blank">legislation.gov.au — ITAA 1936 s 128B(3)(ga)</a></span></li>
-                    <li><span class="fn-num">[37]</span><span>ITAA 1997 Division 802 — Conduit foreign income: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_7#_Toc164800143" target="_blank">legislation.gov.au — Division 802</a></span></li>
-                    <li><span class="fn-num">[38]</span><span>ITAA 1997 Division 974 — Debt/equity classification: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_8#_Toc164800323" target="_blank">legislation.gov.au — Division 974</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Deficit penalties stemming from uncoordinated execution, or retroactively designed allocation minutes.</div>
                 </div>
               </div>
-            </div><!-- /T8 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T9 — POST-ACQUISITION REPATRIATION -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue9">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T9</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Post-Acquisition Profit Repatriation — Consolidation, WHT, and CFI</div>
-                  <div class="issue-subtitle">ITAA 1997 Part 3-90 · Tax Cost Setting · DTA Dividend Articles · Division 802 CFI</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Maximize credit deployment mechanisms and sequence resolutions explicitly ahead of final execution dates.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-low"></div>
-                    <div class="risk-seg active-low"></div>
-                    <div class="risk-seg"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-low">Low — Optimisable with Consolidation &amp; CFI</span>
+            </div>
+          </div>
+
+          <!-- T9 — POST-ACQUISITION REPATRIATION -->
+          <div class="issue" id="issue9">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T9</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Post-Acquisition Profit Repatriation — Consolidation, WHT, and CFI</div>
+                <div class="issue-subtitle">ITAA 1997 Part 3-90 · Tax Cost Setting · Division 802 CFI</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-low"></div>
+                  <div class="risk-seg active-low"></div>
+                  <div class="risk-seg"></div>
+                  <div class="risk-seg"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">Tax consolidation (Part 3-90) treats the Australian group as a single taxpayer: intra-group dividends not subject to WHT; single franking account; tax cost setting resets asset cost bases to acquisition value (reducing future CGT). For dividends from the consolidated Australian group to a foreign parent: WHT applies on unfranked dividends; DTA rate applies; franked portion exempt. CFI declarations eliminate WHT on foreign-sourced income passing through.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Step 1: Elect into tax consolidation promptly after 100% acquisition (Part 3-90 head company election). Step 2: Identify consolidated group members. Step 3: Apply tax cost setting rules — reset cost bases of acquired entity's assets to tax-allocated acquisition price. Step 4: Distribute profits from head company to ultimate foreign parent — apply DTA WHT rate on unfranked dividend. Step 5: Identify CFI amounts in retained earnings of subsidiaries; declare CFI before distribution.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Failure to elect into consolidation forfeits tax cost setting benefits (significant if acquired entity has appreciated assets). CFI declarations must be timely and documented — cannot be made retroactively. Interest deduction risk under s 25-90 if debt funded and income is foreign-exempt. TD 2020/7 limits foreign income tax offsets on foreign-sourced capital gains. WHT on unfranked dividends is the primary ongoing cost.</div>
-                  </div>
+                <span class="risk-badge rb-low">Low — Optimisable with Consolidation &amp; CFI</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Tax consolidation allows separate corporate structures to merge calculation obligations under a single head entity.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law</span>
-                  <p>Tax consolidation under <span class="leg-ref">ITAA 1997 Part 3-90</span><sup class="ref">[39]</sup> allows wholly-owned Australian corporate groups to be treated as a single taxpayer. Benefits: (i) intra-group transactions (including dividends) occur without tax consequences; (ii) a single income tax return and single franking account for the consolidated group; (iii) tax cost setting rules in Subdivision 705-A reset the tax cost base of the acquired entity's assets to a cost base calculated from the acquisition price — potentially significant where the acquired entity's assets have a low existing cost base.</p>
-                  <p>Dividends from the Australian consolidated group to a non-resident ultimate parent are subject to WHT under <span class="leg-ref">ITAA 1936 s 128B</span><sup class="ref">[14]</sup>. The DTA with the parent's country of residence reduces the rate (commonly 5% for ≥10% ownership; 15% otherwise). The franked portion is exempt. CFI elections under <span class="leg-ref">Division 802, ITAA 1997</span><sup class="ref">[37]</sup> allow foreign-sourced income that is NANE (e.g., qualifying foreign dividends exempt under Subdivision 768-A, or branch income) to flow through the Australian entity to the non-resident without WHT.</p>
-                  <p>Interest deductibility risk under <span class="leg-ref">ITAA 1997 s 25-90</span><sup class="ref">[40]</sup>: where debt is used to fund the acquisition and the resulting income includes NANE foreign income, interest deductions may be denied to the extent they relate to earning NANE income. Model this as part of acquisition financing.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Calculate Allocable Cost Amount (ACA) balances to manage underlying asset cost bases.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Implementation steps: (1) Elect into tax consolidation immediately after all shares in the acquired entity are owned — the head company makes the election; the consolidated group filing date follows; (2) Apply tax cost setting rules — the ACA (allocable cost amount) process determines the reset tax cost of each of the acquired entity's assets; (3) Maintain the consolidated franking account — ensure NovaTech's pre-acquisition franking credits pass into the consolidated franking account; (4) For dividends to the non-resident parent, apply the DTA rate on the unfranked component; ensure the parent satisfies the DTA beneficial ownership and ownership percentage requirements; (5) Implement a CFI tracking system — identify foreign-sourced income (qualifying foreign dividends, foreign branch income) and declare CFI before distribution; (6) Model the s 25-90 interest deduction risk if acquisition is debt-funded; (7) Assess TD 2020/7 where foreign income tax offsets may be limited.</p>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p>Elect into tax consolidation immediately following 100% acquisition — this is the single most important structural step. Consolidation resets asset cost bases, eliminates intra-group CGT, simplifies compliance, and centralises the franking account. Implement a CFI tracking system for foreign-sourced income. Apply DTA WHT rates on unfranked dividends to the ultimate parent. Model any debt-funded interest deduction risk carefully. This issue is the most manageable of the nine: the tools exist, they simply require prompt and disciplined implementation.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T9</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[39]</span><span>ITAA 1997 Part 3-90 — Tax consolidation regime: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_3#_Toc164797050" target="_blank">legislation.gov.au — Part 3-90</a></span></li>
-                    <li><span class="fn-num">[40]</span><span>ITAA 1997 s 25-90 — Deductions and NANE income: <a href="https://www.legislation.gov.au/Details/C2024C00379/Html/Volume_1#_Toc164795700" target="_blank">legislation.gov.au — ITAA 1997 s 25-90</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Missing formal election deadlines, leading to structural tracking issues for intra-group balances.</div>
                 </div>
               </div>
-            </div><!-- /T9 -->
-        
-            <!-- ════════════════════════════════════════ -->
-            <!-- T10 — CORPORATE RESIDENCY & CM&C -->
-            <!-- ════════════════════════════════════════ -->
-            <div class="issue" id="issue10">
-              <div class="issue-header" onclick="toggle(this)">
-                <span class="issue-num">T10</span>
-                <div class="issue-title-block">
-                  <div class="issue-title">Corporate Residency — Central Management and Control (CM&C) for Foreign Incorporated Entities</div>
-                  <div class="issue-subtitle">ITAA 1936 s 6(1) (limb ii) · TR 2018/5 · PCG 2018/9 · Bywater Investments</div>
-                </div>
-                <span class="issue-toggle">▾</span>
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>File consolidation papers promptly post-acquisition to enable seamless cost base optimization strategies.</p>
               </div>
-              <div class="issue-body">
-                <div class="risk-bar">
-                  <span class="risk-label">Risk Level</span>
-                  <div class="risk-segments">
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg active-high"></div>
-                    <div class="risk-seg"></div>
-                  </div>
-                  <span class="risk-badge rb-high">High — Requires Governance Restructuring</span>
+            </div>
+          </div>
+
+          <!-- T10 — CORPORATE RESIDENCY & CM&C -->
+          <div class="issue" id="issue10">
+            <div class="issue-header" onclick="toggle(this)">
+              <span class="issue-num">T10</span>
+              <div class="issue-title-block">
+                <div class="issue-title">Corporate Residency — Central Management and Control (CM&amp;C) for Foreign Incorporated Entities</div>
+                <div class="issue-subtitle">ITAA 1936 s 6(1) (limb ii) · TR 2018/5 · PCG 2018/9 · Bywater Investments</div>
+              </div>
+              <span class="issue-toggle">▾</span>
+            </div>
+            <div class="issue-body">
+              <div class="risk-bar">
+                <span class="risk-label">Risk Level</span>
+                <div class="risk-segments">
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg active-high"></div>
+                  <div class="risk-seg"></div>
                 </div>
-        
-                <div class="pillars">
-                  <div class="pillar">
-                    <div class="pillar-label">General Rule</div>
-                    <div class="pillar-content">Under <span class="leg-ref">ITAA 1936 s 6(1)</span> limb (ii), a company not incorporated in Australia is an Australian resident if it carries on business in Australia AND has its central management and control (CM&C) in Australia. Following <em>Bywater</em>, if a foreign company's CM&C is in Australia, it automatically satisfies the "carrying on business" element.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Apply Facts To Law</div>
-                    <div class="pillar-content">Identify where high-level, strategic, and financial decisions are operationalised. If an offshore board merely rubber-stamps decisions dictated by Australian executives, the 'directing mind and will' resides in Australia, making the foreign entity an Australian resident subject to worldwide taxation.</div>
-                  </div>
-                  <div class="pillar">
-                    <div class="pillar-label">Key Risk Indicators</div>
-                    <div class="pillar-content">Offshore board minutes lacking commercial substance or debate; key operational and investment decisions originating un-ratified from Australia; dual-resident status activating MLI MAP protocols; and a total lack of independent offshore executive authority.</div>
-                  </div>
+                <span class="risk-badge rb-high">High — Requires Governance Restructuring</span>
+              </div>
+              <div class="pillars">
+                <div class="pillar">
+                  <div class="pillar-label">General Rule</div>
+                  <div class="pillar-content">Under <span class="leg-ref">ITAA 1936 s 6(1)</span> limb (ii), a foreign entity satisfies residency rules if its core directing governance occurs within Australian borders.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">The Law — Central Management &amp; Control</span>
-                  <p>A company incorporated outside Australia is deemed an Australian resident under the second limb of the definition in <span class="leg-ref">ITAA 1936 s 6(1)</span> if it carries on business in Australia and has its CM&C here. The High Court in <em>Bywater Investments Ltd v FCT</em> (2016) clarified that CM&C is located where the actual, substantive high-level steering decisions are made, rather than where formal board meetings are perfunctorily held.</p>
-                  <p>Crucially, the ATO's binding ruling <span class="leg-ref">TR 2018/5</span> establishes that if a company's CM&C is exercised in Australia, it is inherently carrying on a business in Australia. This represents a major shift from historical interpretations that treated "carrying on a business" as a separate, active operational test. Consequently, a foreign-incorporated holding company or special purpose vehicle (SPV) with zero active operations can still be pulled into the Australian tax web solely by virtue of its high-level governance occurring within Australia.</p>
+                <div class="pillar">
+                  <div class="pillar-label">Apply Facts To Law</div>
+                  <div class="pillar-content">Analyze whether foreign boards independently weigh variables or act as mechanical validation units for domestic instructions.</div>
                 </div>
-        
-                <div class="section">
-                  <span class="section-tag">Governance and Safety Harbours</span>
-                  <p>To mitigate this exposure, the ATO issued <span class="leg-ref">PCG 2018/9</span>, providing practical guidance on corporate governance. While it outlines transitional protections, ongoing compliance requires proving that the foreign board exercises genuine, independent, and informed decision-making authority.</p>
-                  <p>Where corporate dual residency is triggered due to concurrent residency rules in the country of incorporation, the Multilateral Instrument (MLI) Article 4 eliminates automatic "place of effective management" tie-breakers, forcing the entity into an uncertain Mutual Agreement Procedure (MAP). During a pending MAP, the company may be denied access to treaty benefits, creating severe exposure to structural double taxation.</p>
-                </div>
-        
-                <div class="section">
-                  <span class="section-tag">Applying Facts to Law</span>
-                  <p>Execute this rigorous diagnostic review when assessing foreign subsidiary structures:</p>
-                  <ul>
-                    <li><strong>Step 1 — Track Decision Genesis:</strong> Audit the exact dynamic of strategic resolutions. Document whether foreign directors actively evaluate, debate, and amend proposals, or if they act blindly on instructions sent from Australia.</li>
-                    <li><strong>Step 2 — Board Composition &amp; Location:</strong> Map the physical locations of directors when voting. Ensure that a clear majority of directors are physically outside Australia during meetings and possess the technical capabilities to run the business.</li>
-                    <li><strong>Step 3 — Document Quality:</strong> Review foreign board minutes. They must reflect deep commercial consideration, queries raised to management, and explicit, independent rationale rather than simple "read and approved" formats.</li>
-                    <li><strong>Step 4 — DTA and MLI Screening:</strong> Determine if the foreign jurisdiction is an MLI signatory. If dual residency occurs, map the catastrophic impact of treaty-benefit denial during an ongoing MAP.</li>
-                  </ul>
-                </div>
-        
-                <div class="opinion-box">
-                  <div class="opin-label">Opinion &amp; Recommendation</div>
-                  <p><strong>CONCLUSION:</strong> If a foreign subsidiary's board lacks independent commercial substance and acts as a passive conduit for Australian management directives, it faces a high risk of being classified as an Australian tax resident under TR 2018/5, exposing its global revenue to immediate Australian income tax.</p>
-                  <p><strong>Recommendation:</strong> Immediately restructure the governance framework of all foreign subsidiaries. Appoint competent, local non-resident directors who hold a commercial majority. Implement strict protocols requiring all core strategic, capital management, and structural decisions to be actively debated and finalised outside Australia. Ensure that all foreign board minutes are meticulously detailed to easily discharge the burden of proof under an ATO review.</p>
-                </div>
-        
-                <div class="footnotes">
-                  <div class="fn-title">Footnotes — T10</div>
-                  <ul class="fn-list">
-                    <li><span class="fn-num">[10-1]</span><span>ITAA 1936 s 6(1) — Definition of 'resident' (limb ii): <a href="https://www.legislation.gov.au/Details/C2024C00380" target="_blank">legislation.gov.au — ITAA 1936</a></span></li>
-                    <li><span class="fn-num">[10-2]</span><span>Bywater Investments Ltd v FCT [2016] HCA 45 — High Court ruling on substantive decision-making: <a href="https://jade.io/article/480895" target="_blank">jade.io — [2016] HCA 45</a></span></li>
-                    <li><span class="fn-num">[10-3]</span><span>TR 2018/5 — Income tax: central management and control test of residency: <a href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20185/NAT/ATO/00001" target="_blank">ato.gov.au — TR 2018/5</a></span></li>
-                    <li><span class="fn-num">[10-4]</span><span>PCG 2018/9 — Central management and control test of residency: practical compliance guidelines: <a href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20189/NAT/ATO/00001" target="_blank">ato.gov.au — PCG 2018/9</a></span></li>
-                    <li><span class="fn-num">[10-5]</span><span>MLI Article 4 — Multilateral Convention to Implement Tax Treaty Related Measures: <a href="https://www.oecd.org/tax/treaties/multilateral-convention-to-implement-tax-treaty-related-measures-to-prevent-BEPS.htm" target="_blank">oecd.org — MLI text</a></span></li>
-                  </ul>
+                <div class="pillar">
+                  <div class="pillar-label">Key Risk Indicators</div>
+                  <div class="pillar-content">Offshore corporate minutes devoid of commercial debate, coupled with centralized operational tracking from Australia.</div>
                 </div>
               </div>
-            </div><!-- /T10 -->
+              <div class="opinion-box">
+                <div class="opin-label">Opinion &amp; Recommendation</div>
+                <p>Enforce clean administrative separating protocols; verify that foreign board groups possess genuine commercial weight, technical capability, and explicit management autonomy.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      
         
             <!-- ════════════════════════════════════════ -->
             <!-- T11 — FOREIGN DIVIDENDS — NANE & FITO  -->
@@ -4430,6 +4256,95 @@ function expandAndScrollGlobal(sectionId) {
 document.getElementById('caseWrapperInstructions').classList.add('visible');
 document.getElementById('navInstructions').style.display = 'block';
 updateActiveNav();
+
+  // Accordion Toggle for Issue Cards
+  function toggle(headerElement) {
+    const issueCard = headerElement.closest('.issue');
+    if (issueCard) {
+      issueCard.classList.toggle('open');
+    }
+  }
+
+  // Expand All Issue Cards
+  function expandAll() {
+    document.querySelectorAll('.issue').forEach(card => {
+      card.classList.add('open');
+    });
+  }
+
+  // Collapse All Issue Cards
+  function collapseAll() {
+    document.querySelectorAll('.issue').forEach(card => {
+      card.classList.remove('open');
+    });
+  }
+
+  // Global Navigation: Expand Target and Smoothly Scroll to view
+  function expandAndScrollGlobal(targetId) {
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      // Ensure it is expanded if it's an issue card
+      if (targetElement.classList.contains('issue')) {
+        targetElement.classList.add('open');
+      }
+      // Delay slightly to ensure layout rendering doesn't disrupt scroll alignment
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
+
+  // Handle Case Switching (Guidance, Futuro, Universal Frameworks)
+  function switchCase(caseName) {
+    // Toggle active state on tabs
+    document.querySelectorAll('.case-tab').forEach(tab => {
+      if (tab.getAttribute('data-case') === caseName) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+
+    // Simple presentation update to simulate view modification logs
+    const titleSub = document.getElementById('sidebarSub');
+    if (caseName === 'all') {
+      titleSub.innerText = 'Australian Tax Framework';
+    } else if (caseName === 'futuro') {
+      titleSub.innerText = 'Futuro Case Analysis';
+    } else if (caseName === 'universal') {
+      titleSub.innerText = 'Universal Enterprise Framework';
+    }
+  }
+
+  // Mobile Menu Layout Triggers
+  function toggleMobileSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('navOverlay');
+    const hamburger = document.getElementById('hamburgerBtn');
+    
+    const isOpen = sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible', isOpen);
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  }
+
+  function closeMobileSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('navOverlay').classList.remove('visible');
+    const hamburger = document.getElementById('hamburgerBtn');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  // Wire up event listeners to case tabs dynamically
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.case-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetCase = tab.getAttribute('data-case');
+        switchCase(targetCase);
+      });
+    });
+  });
 </script>
 </body>
 </html>
