@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>International Tax — Universal Inc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--border:#2a3444;--border-light:#303d52;
+    --gold:#c9a96e;--gold-light:#e2c898;--gold-dim:rgba(201,169,110,0.15);
+    --red:#e05c5c;--red-dim:rgba(224,92,92,0.12);--green:#4caf7d;--green-dim:rgba(76,175,125,0.12);
+    --amber:#f0a050;--amber-dim:rgba(240,160,80,0.12);--blue:#5b8dee;--blue-dim:rgba(91,141,238,0.12);
+    --text:#e2e8f0;--text-muted:#8899aa;--text-dim:#566470;
+    --radius:8px;--radius-lg:14px;
+    --font-display:'Playfair Display',Georgia,serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono','Courier New',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.75;min-height:100vh}
+  .shell{display:flex;min-height:100vh}
+  /* Mobile topbar */
+  .mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:var(--surface);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;padding:0 16px}
+  .mobile-topbar .firm{font-family:var(--font-display);font-size:1rem;color:var(--gold);letter-spacing:.01em}
+  .hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;border:none;background:none;padding:6px;border-radius:var(--radius);transition:background .15s}
+  .hamburger:hover{background:var(--gold-dim)}
+  .hamburger span{display:block;height:2px;background:var(--text-muted);border-radius:2px;transition:transform .25s,opacity .2s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  /* Overlay */
+  .nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;opacity:0;transition:opacity .25s;pointer-events:none}
+  .nav-overlay.visible{opacity:1;pointer-events:auto}
+  /* Sidebar */
+  .sidebar{width:280px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+  .sidebar-brand{padding:28px 22px 20px;border-bottom:1px solid var(--border)}
+  .sidebar-brand .firm{font-family:var(--font-display);font-size:1.25rem;color:var(--gold);letter-spacing:.01em;line-height:1.3}
+  .sidebar-brand .sub{font-size:.72rem;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+  /* Case Tabs */
+  .case-tabs{display:flex;padding:10px 12px;gap:0;border-bottom:1px solid var(--border)}
+  .case-tab{flex:1;padding:7px 4px;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.04em;cursor:pointer;border:1px solid var(--border-light);background:var(--surface2);color:var(--text-dim);transition:all .15s}
+  .case-tab:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+  .case-tab:last-child{border-radius:0 var(--radius) var(--radius) 0;border-left:none}
+  .case-tab:nth-child(2){border-left:none}
+  .case-tab:hover{background:var(--gold-dim);color:var(--gold-light);border-color:rgba(201,169,110,.4)}
+  .case-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.5)}
+  /* Filters */
+  .filter-group{padding:10px 12px 6px;border-bottom:1px solid var(--border)}
+  .filter-label{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block}
+  .filter-select{width:100%;background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius);color:var(--text-muted);font-family:var(--font-body);font-size:.78rem;padding:7px 10px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238899aa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;transition:border-color .15s,color .15s}
+  .filter-select:hover,.filter-select:focus{border-color:var(--gold);color:var(--gold-light)}
+  .filter-select option{background:var(--surface2);color:var(--text-muted)}
+
+  /* Nav */
+  .nav-section{padding:16px 14px 8px;font-size:.65rem;font-weight:600;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase}
+  .nav-link{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:var(--radius);color:var(--text-muted);text-decoration:none;font-size:.82rem;font-weight:400;transition:background .15s,color .15s;cursor:pointer}
+  .nav-link:hover{background:var(--gold-dim);color:var(--gold-light)}
+  .nav-link.active{background:var(--gold-dim);color:var(--gold);font-weight:500}
+  .nav-link .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--border-light)}
+  .nav-link .dot.risk-high{background:var(--red)}
+  .nav-link .dot.risk-med{background:var(--amber)}
+  .nav-link .dot.risk-low{background:var(--green)}
+  .nav-link .dot.risk-info{background:var(--blue)}
+  .nav-futuro,.nav-universal{display:none}
+  .nav-instructions{display:none}
+  .sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-dim);line-height:1.5}
+  /* Case wrappers */
+  .case-wrapper{display:none}
+  .case-wrapper.visible{display:block}
+  /* Case divider */
+  .case-divider{display:none;height:3px;background:linear-gradient(90deg,var(--border),var(--gold-dim),var(--border));margin:0}
+  .case-divider.visible{display:block}
+  /* Main */
+  .main{flex:1;overflow-x:hidden;padding:0 40px 80px;max-width:900px}
+  /* Cover */
+  .cover{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+  .cover-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .cover-title{font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--text);line-height:1.2;font-weight:700;margin-bottom:10px}
+  .cover-subtitle{font-size:1rem;color:var(--text-muted);margin-bottom:30px}
+  .cover-meta{display:flex;gap:32px;flex-wrap:wrap}
+  .meta-item{display:flex;flex-direction:column;gap:2px}
+  .meta-label{font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+  .meta-value{font-size:.82rem;color:var(--text-muted)}
+  /* Sections */
+  .section{margin-bottom:48px;scroll-margin-top:24px}
+  .section-num{font-family:var(--font-mono);font-size:.72rem;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(201,169,110,.25);border-radius:4px;padding:3px 8px;flex-shrink:0;margin-top:6px}
+  .section-title-group{flex:1}
+  .section-title{font-family:var(--font-display);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3}
+  .section-tag{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:2px 9px;border-radius:20px;margin-top:6px}
+  .tag-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,92,92,.3)}
+  .tag-med{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(240,160,80,.3)}
+  .tag-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,125,.3)}
+  .tag-info{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(91,141,238,.3)}
+  .divider{height:1px;background:var(--border);margin:36px 0}
+  /* Cards */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:16px}
+  .card-title{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+  .card p,.card li{font-size:.88rem;color:var(--text-muted);line-height:1.75}
+  .card ul,.card ol{padding-left:20px}
+  .card ul li,.card ol li{margin-bottom:6px}
+  /* Opinion */
+  .opinion-box{background:rgba(201,169,110,.07);border:1px solid rgba(201,169,110,.3);border-left:3px solid var(--gold);border-radius:var(--radius);padding:18px 22px;margin-bottom:16px}
+  .opinion-box .opinion-label{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block}
+  .opinion-box p{font-size:.87rem;color:#d4bb8a;line-height:1.75;margin-bottom:8px}
+  .opinion-box p:last-child{margin-bottom:0}
+  .opinion-box strong{color:var(--gold-light)}
+  /* Alerts */
+  .alert{display:flex;gap:14px;padding:16px 20px;border-radius:var(--radius);margin-bottom:16px;border-left-width:3px;border-left-style:solid}
+  .alert-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+  .alert-body{flex:1;font-size:.86rem;line-height:1.65}
+  .alert-body strong{font-weight:600;display:block;margin-bottom:2px}
+  .alert.danger{background:var(--red-dim);border-color:var(--red);color:#f4a0a0}
+  .alert.warning{background:var(--amber-dim);border-color:var(--amber);color:#f5c98a}
+  .alert.success{background:var(--green-dim);border-color:var(--green);color:#87d4a6}
+  .alert.info{background:var(--blue-dim);border-color:var(--blue);color:#9bbaf4}
+  /* Law chips */
+  .law-chip{display:inline-block;font-family:var(--font-mono);font-size:.74rem;background:var(--surface2);border:1px solid var(--border-light);color:var(--gold-light);border-radius:4px;padding:2px 8px;margin:2px;cursor:default;text-decoration:none}
+  a.law-chip:hover{border-color:var(--gold);color:var(--gold)}
+  .law-ref-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  /* Tables */
+  .calc-table{width:100%;border-collapse:collapse;font-size:.84rem;margin:14px 0}
+  .calc-table th{background:var(--surface2);padding:9px 14px;text-align:left;font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)}
+  .calc-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top}
+  .calc-table tr:last-child td{border-bottom:none}
+  .calc-table .mono{font-family:var(--font-mono);font-size:.8rem}
+  .calc-table .highlight-green{color:var(--green);font-weight:600}
+  .calc-table .highlight-red{color:var(--red);font-weight:600}
+  .calc-table .highlight-amber{color:var(--amber);font-weight:600}
+  .calc-table .total{font-weight:600;color:var(--red);background:var(--red-dim)}
+  .calc-table .total-positive{font-weight:600;color:var(--green);background:var(--green-dim)}
+  /* Steps */
+  .step-list{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .step-num{width:26px;height:26px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,169,110,.35);color:var(--gold);font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+  .step-text{font-size:.86rem;color:var(--text-muted);line-height:1.65}
+  .step-text strong{color:var(--text);font-weight:600}
+  /* Exec summary */
+  .exec-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+  .exec-row:last-child{border-bottom:none}
+  .exec-badge{font-family:var(--font-mono);font-size:.68rem;font-weight:500;padding:4px 9px;border-radius:4px;flex-shrink:0;width:64px;text-align:center;margin-top:1px}
+  .exec-content{flex:1}
+  .exec-heading{font-size:.87rem;font-weight:600;color:var(--text);margin-bottom:3px}
+  .exec-body{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+  /* Structure */
+  .structure{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);line-height:2;overflow-x:auto}
+  .structure .hl{color:var(--gold);font-weight:500}
+  .structure .hl2{color:var(--blue)}
+  .structure .hl3{color:var(--green)}
+  .structure .hl4{color:var(--amber)}
+  /* Prose */
+  .prose p{color:var(--text-muted);font-size:.9rem;line-height:1.8;margin-bottom:12px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text);font-weight:600}
+  .prose em{color:var(--gold-light);font-style:italic}
+  /* Collapse */
+  .section-collapse-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:10px;padding:4px 0 16px;border-bottom:1px solid var(--border);margin-bottom:0}
+  .section-collapse-header:hover .section-title{color:var(--gold-light)}
+  .section-collapse-header .collapse-icon{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .25s;color:var(--text-dim);font-size:.7rem}
+  .section-collapse-header:hover .collapse-icon{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,.35)}
+  .section-collapse-header.collapsed .collapse-icon{transform:rotate(-90deg)}
+  .section-collapse-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s;max-height:5000px;opacity:1;padding-top:18px}
+  .section-collapse-body.collapsed{max-height:0;opacity:0;padding-top:0}
+  /* Rec grid */
+  .rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+  .rec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  .rec-card .rec-icon{font-size:1.4rem;margin-bottom:8px}
+  .rec-card .rec-heading{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:4px}
+  .rec-card .rec-text{font-size:.78rem;color:var(--text-muted);line-height:1.6}
+  /* Print */
+  @media print{.sidebar,.mobile-topbar,.nav-overlay{display:none!important}.main{max-width:100%;padding:20px}body{background:#fff;color:#000}.card,.alert,.structure,.opinion-box{background:#f8f8f8!important;border:1px solid #ccc!important}}
+  /* Responsive */
+  @media(max-width:900px){.main{padding:0 24px 80px}}
+  @media(max-width:700px){
+    .mobile-topbar{display:flex}
+    .nav-overlay{display:block}
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:280px;z-index:160;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.4)}
+    .sidebar.open{transform:translateX(0)}
+    .sidebar-brand{padding-top:64px}
+    .shell{display:block}
+    .main{padding:68px 16px 80px;max-width:100%}
+    .cover{padding:24px 0 28px}
+    .cover-meta{gap:14px;flex-wrap:wrap}
+    .meta-item{min-width:calc(50% - 7px)}
+    .cover-title{font-size:clamp(1.4rem,5vw,1.9rem)}
+    .section,.cover{scroll-margin-top:64px}
+    .card{overflow-x:auto;padding:16px}
+    .calc-table{min-width:420px}
+    .exec-row{flex-direction:column;gap:8px}
+    .exec-badge{width:auto;align-self:flex-start}
+    .alert{flex-direction:column;gap:8px;padding:14px}
+    .step-num{min-width:26px}
+    .nav-link{padding:12px 14px;font-size:.9rem}
+    .nav-section{padding:18px 14px 8px}
+    .rec-grid{grid-template-columns:1fr}
+    .structure{font-size:.68rem;padding:14px}
+  }
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  /* ── INSTRUCTIONS PANEL ── */
+  .inst-hero{padding:52px 40px 36px;border-bottom:2px solid var(--border);background:linear-gradient(135deg,#0d1117 0%,#111827 60%,#0d1117 100%);position:relative;overflow:hidden}
+  .inst-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 70%);pointer-events:none}
+  .inst-eyebrow{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .inst-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:8px}
+  .inst-sub{color:var(--text-muted);font-size:.9rem;max-width:680px;line-height:1.7;margin-bottom:24px}
+  .inst-meta{display:flex;flex-wrap:wrap;gap:24px}
+  .inst-meta-item{display:flex;flex-direction:column;gap:2px}
+  .inst-meta-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .inst-meta-val{font-size:.82rem;color:var(--text-muted)}
+  .inst-body{padding:0 40px 80px;max-width:900px}
+  .inst-section{margin:40px 0 0}
+  .inst-section-title{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  /* Issue index grid */
+  .issue-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px}
+  .issue-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;gap:10px;align-items:flex-start;text-decoration:none;transition:border-color .15s,background .15s;cursor:default}
+  .issue-card:hover{border-color:rgba(201,169,110,.35);background:var(--gold-dim)}
+  .issue-card .ic-num{font-family:var(--font-mono);font-size:.68rem;font-weight:500;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(201,169,110,.2);border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:1px}
+  .issue-card .ic-label{font-size:.8rem;color:var(--text-muted);line-height:1.4}
+  .issue-card .ic-sub{font-size:.7rem;color:var(--text-dim);margin-top:3px}
+  /* Pillar legend */
+  .pillar-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:4px}
+  .pillar-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .pillar-block .pb-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .pillar-block .pb-text{font-size:.8rem;color:var(--text-muted);line-height:1.6}
+  /* Risk legend */
+  .risk-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .rl-item{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px}
+  .rl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .rl-dot.crit{background:var(--red)}
+  .rl-dot.high{background:#e07020}
+  .rl-dot.med{background:var(--amber)}
+  .rl-dot.low{background:var(--green)}
+  .rl-label{font-size:.78rem;color:var(--text-muted)}
+  /* Framework steps */
+  .fw-steps{display:flex;flex-direction:column;gap:0;margin-top:4px}
+  .fw-step{display:flex;gap:14px;align-items:stretch}
+  .fw-step .fw-step-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+  .fw-step .fw-step-line .fw-step-dot{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,169,110,.35);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fw-step .fw-step-line .fw-step-connector{flex:1;width:2px;background:var(--border);margin:4px auto}
+  .fw-step:last-child .fw-step-connector{display:none}
+  .fw-step .fw-step-content{padding:4px 0 20px}
+  .fw-step .fw-step-heading{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:3px}
+  .fw-step .fw-step-body{font-size:.82rem;color:var(--text-muted);line-height:1.65}
+  @media(max-width:700px){.inst-hero{padding:28px 16px 24px}.inst-body{padding:0 16px 60px}.inst-meta{gap:14px}.issue-index{grid-template-columns:1fr 1fr}.pillar-legend{grid-template-columns:1fr}}
+
+  /* Cross-file case tabs (now real links between the 3 documents) */
+  a.case-tab{text-decoration:none;display:flex;align-items:center;justify-content:center}
+  .inst-inline-link{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.4);transition:color .15s,border-color .15s}
+  .inst-inline-link:hover{color:var(--gold-light);border-color:var(--gold-light)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- MOBILE TOPBAR -->
+  <div class="mobile-topbar" id="mobileTopbar">
+    <span class="firm" id="mobileTitle">Internaltional Tax</span>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="firm">Internaltional Tax</div>
+      <div class="sub" id="sidebarSub">Universal Inc</div>
+    </div>
+    <div class="case-tabs">
+      <a class="case-tab" href="international_tax_framework.html">Instructions</a>
+      <a class="case-tab" href="international_tax_futuro.html">Futuro</a>
+    </div>
+
+    <div id="navUniversal">
+      <div class="nav-section">Universal Inc</div>
+      <a class="nav-link u-nav" href="#u-cover" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Cover</a>
+      <a class="nav-link u-nav" href="#u-facts" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Relevant Facts</a>
+      <a class="nav-link u-nav" href="#u-exec" onclick="closeMobileSidebar()"><span class="dot risk-info"></span>Executive Summary</a>
+      <div class="nav-section">Issues</div>
+      <a class="nav-link u-nav" href="#u-item1" onclick="expandAndScrollGlobal('u-item1');closeMobileSidebar()"><span class="dot risk-high"></span>01 &middot; UA Residency</a>
+      <a class="nav-link u-nav" href="#u-item2" onclick="expandAndScrollGlobal('u-item2');closeMobileSidebar()"><span class="dot risk-high"></span>02 &middot; Employee PE Risk</a>
+      <a class="nav-link u-nav" href="#u-item3" onclick="expandAndScrollGlobal('u-item3');closeMobileSidebar()"><span class="dot risk-high"></span>03 &middot; Indonesian Server PE</a>
+      <a class="nav-link u-nav" href="#u-item4" onclick="expandAndScrollGlobal('u-item4');closeMobileSidebar()"><span class="dot risk-high"></span>04 &middot; Latvian WHT</a>
+      <a class="nav-link u-nav" href="#u-item5" onclick="expandAndScrollGlobal('u-item5');closeMobileSidebar()"><span class="dot risk-high"></span>05 &middot; Belgian Share Sale</a>
+      <a class="nav-link u-nav" href="#u-item6" onclick="expandAndScrollGlobal('u-item6');closeMobileSidebar()"><span class="dot risk-med"></span>06 &middot; India MAP</a>
+      <a class="nav-link u-nav" href="#u-item7" onclick="expandAndScrollGlobal('u-item7');closeMobileSidebar()"><span class="dot risk-med"></span>07 &middot; IP Transfer Canada</a>
+      <a class="nav-link u-nav" href="#u-item8" onclick="expandAndScrollGlobal('u-item8');closeMobileSidebar()"><span class="dot risk-med"></span>08 &middot; Pre-Sale Dividend</a>
+      <a class="nav-link u-nav" href="#u-item9" onclick="expandAndScrollGlobal('u-item9');closeMobileSidebar()"><span class="dot risk-low"></span>09 &middot; Profit Repatriation</a>
+      <div class="nav-section">Appendix</div>
+      <a class="nav-link u-nav" href="#u-conduct" onclick="expandAndScrollGlobal('u-conduct');closeMobileSidebar()"><span class="dot risk-info"></span>Professional Conduct</a>
+      <a class="nav-link u-nav" href="#u-nextsteps" onclick="expandAndScrollGlobal('u-nextsteps');closeMobileSidebar()"><span class="dot risk-info"></span>Recommendations</a>
+    </div>
+
+    <div class="sidebar-footer">
+      Law as at April 2026 &middot; All amounts AUD unless noted.<br/>
+      Advice is preliminary and confidential.
+    </div>
+  </aside>
+
+  <!-- CONTENT AREA -->
+  <div id="contentArea" style="flex:1;overflow-x:hidden;display:flex;flex-direction:column;">
+    <div class="case-wrapper visible" id="caseWrapperUniversal">
+      <main class="main">
+
+
+    <!-- COVER -->
+    <div class="cover" id="u-cover">
+      <div class="cover-eyebrow">Universal Group · Sample</div>
+      <h1 class="cover-title">International Tax Implications<br/></h1>
+      <p class="cover-subtitle">Letter of Advice</p>
+      <div class="cover-meta">
+        <div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">17 April 2026</span></div>
+        <div class="meta-item"><span class="meta-label">Addressee</span><span class="meta-value">The Board of Directors</span></div>
+        <div class="meta-item"><span class="meta-label">Reference</span><span class="meta-value">CTA 3</span></div>
+        <div class="meta-item"><span class="meta-label">Issues</span><span class="meta-value">9 Discrete Issues</span></div>
+      </div>
+    </div>
+
+    <!-- SALUTATION -->
+    <div class="section" style="margin-bottom:32px;">
+      <div class="card">
+        <p class="card-title">Salutation &amp; Scope</p>
+        <div class="prose">
+          <p><strong>Dear Sir/Madam,</strong></p>
+          <p>We refer to your instructions to advise on the Australian income tax aspects of the proposed acquisition of <strong>NovaTech Industries Pty Ltd ('NovaTech')</strong> by <strong>Universal Australia Pty Ltd ('UA')</strong>, a new Australian holding company to be incorporated as a wholly owned subsidiary of Universal Inc (the 'Universal Group'). This letter constitutes our initial letter of advice based on the due diligence findings brought to our attention.</p>
+          <p>This advice addresses <strong>nine discrete issues</strong>. It is based on Australian income tax law as at April 2026, applicable double tax agreements ('DTAs') given force of law by the <em>International Tax Agreements Act 1953</em> (Cth), s 4<sup class="fn" tabindex="0">[2]<span class="fn-tip">International Tax Agreements Act 1953 (Cth), s 4 — gives force of law to Australia's double tax agreements as scheduled treaties.</span></sup>, DTAs modified by the OECD Multilateral Instrument ('MLI'), relevant case law, ATO public rulings, and the OECD Model Tax Convention Commentary (November 2025 update). Treaty interpretation is guided by TR 2001/13.<sup class="fn" tabindex="0">[3]<span class="fn-tip">TR 2001/13 — Income tax: interpreting Australia's double tax agreements; principles of treaty interpretation under the Vienna Convention on the Law of Treaties.</span></sup></p>
+          <p><strong>This advice is preliminary.</strong> Several issues require further investigation and local counsel in relevant overseas jurisdictions.</p>
+          <p>Yours sincerely,<br/><strong>[Tax Manager name]</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- RELEVANT FACTS -->
+    <div class="section" id="u-facts">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">FACTS</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Relevant Facts</h2>
+          <span class="section-tag tag-info">Group Structure</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="alert info">
+        <span class="alert-icon">ℹ️</span>
+        <div class="alert-body">
+          <strong>Please confirm facts</strong>
+          Please advise if any information appears incorrect or incomplete so that we may update our advice accordingly.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Universal Group Structure</p>
+        <div class="org-chart-wrap">
+<svg viewBox="0 0 760 780" width="760" height="780" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="u-arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#303d52"/>
+    </marker>
+  </defs>
+
+  <!-- ── Universal Inc (Canada) ── -->
+  <rect x="240" y="20" width="280" height="64" rx="10" fill="#1c2230" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="380" y="45" text-anchor="middle" fill="#e2c898" font-size="14" font-weight="600">Universal Inc</text>
+  <text x="380" y="63" text-anchor="middle" fill="#8899aa" font-size="11">(Canada — Head Company)</text>
+
+  <!-- Universal Inc → US Subsidiaries -->
+  <line x1="310" y1="84" x2="130" y2="168" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Universal Inc → UK Subsidiaries -->
+  <line x1="450" y1="84" x2="630" y2="168" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Universal Inc → UA -->
+  <line x1="380" y1="84" x2="380" y2="168" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── US Subsidiaries ── -->
+  <rect x="30" y="168" width="200" height="52" rx="10" fill="#1c2230" stroke="#303d52" stroke-width="1.5"/>
+  <text x="130" y="192" text-anchor="middle" fill="#8899aa" font-size="13" font-weight="500">US Subsidiaries</text>
+  <text x="130" y="208" text-anchor="middle" fill="#566470" font-size="10">(existing)</text>
+
+  <!-- ── UK Subsidiaries ── -->
+  <rect x="530" y="168" width="200" height="52" rx="10" fill="#1c2230" stroke="#303d52" stroke-width="1.5"/>
+  <text x="630" y="192" text-anchor="middle" fill="#8899aa" font-size="13" font-weight="500">UK Subsidiaries</text>
+  <text x="630" y="208" text-anchor="middle" fill="#566470" font-size="10">(existing)</text>
+
+  <!-- ── UA ── -->
+  <rect x="235" y="168" width="290" height="108" rx="10" fill="#1c2230" stroke="#c9a96e" stroke-width="1.8"/>
+  <text x="380" y="191" text-anchor="middle" fill="#e2c898" font-size="13" font-weight="600">UA (Universal Australia Pty Ltd)</text>
+  <text x="380" y="207" text-anchor="middle" fill="#566470" font-size="10">(To Be Incorporated)</text>
+  <!-- divider -->
+  <line x1="245" y1="214" x2="515" y2="214" stroke="#2a3444" stroke-width="1"/>
+  <text x="380" y="228" text-anchor="middle" fill="#8899aa" font-size="10">– 3 US Directors  · 1 Canadian Director</text>
+  <text x="380" y="88" text-anchor="middle" fill="#8899aa" font-size="10">– 1 UK Director</text>
+  <text x="380" y="256" text-anchor="middle" fill="#e05c5c" font-size="10" font-weight="600">– No Australian Directors ⚠️</text>
+
+  <!-- UA → NovaTech -->
+  <line x1="380" y1="276" x2="380" y2="348" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── NovaTech ── -->
+  <rect x="195" y="348" width="370" height="90" rx="10" fill="#1c2230" stroke="#5b8dee" stroke-width="1.8"/>
+  <text x="380" y="372" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700">NovaTech Industries Pty Ltd</text>
+  <text x="380" y="389" text-anchor="middle" fill="#8899aa" font-size="11">(Australia — Incorp. 2014)</text>
+  <line x1="205" y1="397" x2="555" y2="397" stroke="#2a3444" stroke-width="1"/>
+  <text x="380" y="411" text-anchor="middle" fill="#566470" font-size="10">400,000 × $1 Ordinary Shares · 30% Taxpayer</text>
+  <text x="380" y="425" text-anchor="middle" fill="#566470" font-size="10">Assets: Minority Investments · Goodwill · Intangible IP</text>
+
+  <!-- NovaTech → 4 shareholders (fan out) -->
+  <!-- left-most: Povey -->
+  <line x1="280" y1="438" x2="90" y2="530" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Emerald -->
+  <line x1="340" y1="438" x2="265" y2="530" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Heath Sheeran -->
+  <line x1="420" y1="438" x2="490" y2="530" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Ben Purvis -->
+  <line x1="480" y1="438" x2="660" y2="530" stroke="#303d52" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── Povey Industries Ltd ── -->
+  <rect x="10" y="530" width="160" height="64" rx="8" fill="#1c2230" stroke="#303d52" stroke-width="1.3"/>
+  <text x="90" y="554" text-anchor="middle" fill="#8899aa" font-size="11" font-weight="600">Povey Industries Ltd</text>
+  <text x="90" y="570" text-anchor="middle" fill="#566470" font-size="10">(Australia · 25%)</text>
+
+  <!-- ── Emerald Ltd ── -->
+  <rect x="190" y="530" width="150" height="64" rx="8" fill="#1c2230" stroke="#303d52" stroke-width="1.3"/>
+  <text x="265" y="554" text-anchor="middle" fill="#8899aa" font-size="11" font-weight="600">Emerald Ltd</text>
+  <text x="265" y="570" text-anchor="middle" fill="#566470" font-size="10">(UK · 25%)</text>
+
+  <!-- ── Heath Sheeran ── -->
+  <rect x="415" y="530" width="155" height="64" rx="8" fill="#1c2230" stroke="#303d52" stroke-width="1.3"/>
+  <text x="492" y="554" text-anchor="middle" fill="#8899aa" font-size="11" font-weight="600">Heath Sheeran</text>
+  <text x="492" y="570" text-anchor="middle" fill="#566470" font-size="10">(Australia · 25%)</text>
+
+  <!-- ── Ben Purvis ── -->
+  <rect x="588" y="530" width="155" height="64" rx="8" fill="#1c2230" stroke="#303d52" stroke-width="1.3"/>
+  <text x="665" y="554" text-anchor="middle" fill="#8899aa" font-size="11" font-weight="600">Ben Purvis</text>
+  <text x="665" y="570" text-anchor="middle" fill="#566470" font-size="10">(Ireland · 25%)</text>
+
+  <!-- Heath Sheeran → sub-note box -->
+  <line x1="492" y1="594" x2="492" y2="640" stroke="#2a3444" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="400" y="640" width="185" height="70" rx="7" fill="#161b22" stroke="#2a3444" stroke-width="1"/>
+  <text x="492" y="658" text-anchor="middle" fill="#566470" font-size="9.5">• Minority Investments</text>
+  <text x="492" y="673" text-anchor="middle" fill="#566470" font-size="9.5">• Goodwill</text>
+  <text x="492" y="688" text-anchor="middle" fill="#566470" font-size="9.5">• Intangible IP</text>
+
+  <!-- Legend -->
+  <rect x="10" y="730" width="12" height="12" rx="2" fill="#1c2230" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="28" y="741" fill="#566470" font-size="9.5">Key entity</text>
+  <rect x="110" y="730" width="12" height="12" rx="2" fill="#1c2230" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="128" y="741" fill="#566470" font-size="9.5">Acquirer (UA)</text>
+  <rect x="230" y="730" width="12" height="12" rx="2" fill="#1c2230" stroke="#303d52" stroke-width="1.5"/>
+  <text x="248" y="741" fill="#566470" font-size="9.5">Existing / Shareholder</text>
+</svg>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p class="card-title">NovaTech Shareholders (Pre-Acquisition)</p>
+        <table class="calc-table">
+          <thead>
+            <tr><th>Shareholder</th><th>Jurisdiction</th><th>Holding</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Povey Industries Ltd</td><td>Australia</td><td class="mono">25%</td></tr>
+            <tr><td>Emerald Ltd</td><td>UK</td><td class="mono">25%</td></tr>
+            <tr><td>Heath Sheeran</td><td>Australian resident</td><td class="mono">25%</td></tr>
+            <tr><td>Ben Purvis</td><td>Irish resident</td><td class="mono">25%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p class="card-title">Key Transactions &amp; Events</p>
+        <ul>
+          <li>Remote employees in NZ and South-East Asia (up to 8 months or indefinitely); local marketing staff actively soliciting in Asia; IT helpdesk offshore.</li>
+          <li>Data centre with servers in Indonesia — operational for ~2 years; local staff for maintenance only; servers run automated core functions (sales &amp; payments).</li>
+          <li>FY24 royalty of $650,000 paid with 5% WHT withheld — paid to a <strong>Latvian entity</strong> (no Australia-Latvia DTA).</li>
+          <li>FY25 sale of 9% Belgian software company shareholding for A$12m (cost A$2m); A$10m gain <em>incorrectly excluded</em> based on ChatGPT analysis.</li>
+          <li>ATO transfer pricing review (FY24) — primary adjustment accepted; Indian authorities refuse corresponding adjustment (double-tax risk).</li>
+          <li>Post-acquisition: IP transfer to Canada; NovaTech to pay annual royalties and operate as R&amp;D service centre.</li>
+          <li>Pre-sale partially franked dividend anticipated to four current shareholders.</li>
+          <li>Post-acquisition: profit repatriation from NovaTech → UA → Universal Inc (Canada).</li>
+        </ul>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="section" id="u-exec">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">EXEC</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Executive Summary</h2>
+          <span class="section-tag tag-info">9 Issues at a Glance</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <div class="exec-row">
+          <span class="exec-badge tag-high">Item 1</span>
+          <div class="exec-content">
+            <div class="exec-heading">UA Residency</div>
+            <div class="exec-body">Australian resident by incorporation but significant dual residency risk — all directors offshore. Appoint an Australian director immediately.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-high">Item 2</span>
+          <div class="exec-content">
+            <div class="exec-heading">Employee PE Risk</div>
+            <div class="exec-body">Material PE risk in NZ and South-East Asia from indefinite remote workers and marketing staff concluding contracts. Immediate jurisdiction-by-jurisdiction assessment required.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-high">Item 3</span>
+          <div class="exec-content">
+            <div class="exec-heading">Indonesian Server PE</div>
+            <div class="exec-body">Servers performing core business functions (sales &amp; payments) very likely constitute a fixed-place PE in Indonesia. Urgent local tax advice required.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-high">Item 4</span>
+          <div class="exec-content">
+            <div class="exec-heading">Latvian WHT Shortfall</div>
+            <div class="exec-body">~$162,500 shortfall — 30% rate applies (no DTA), not 5%. <em>FCT v PepsiCo [2025] HCA 30</em> reinforces broad royalty WHT scope. Voluntary disclosure before the sale is critical.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-high">Item 5</span>
+          <div class="exec-content">
+            <div class="exec-heading">Belgian Share Sale</div>
+            <div class="exec-body">Div 855 inapplicable (NovaTech is AUS resident); 768-G exemption fails (9% &lt; 10%). Full A$10m gain assessable in FY25 — amend the return now.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-med">Item 6</span>
+          <div class="exec-content">
+            <div class="exec-heading">India MAP</div>
+            <div class="exec-body">Double taxation risk from India refusing corresponding TP adjustment. Initiate MAP under Art 25 (AUS-India DTA) &amp; Art 17 (MLI) urgently.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-med">Item 7</span>
+          <div class="exec-content">
+            <div class="exec-heading">IP Transfer to Canada</div>
+            <div class="exec-body">CGT event A1 — potentially substantial gain; ATO scrutiny under PCG 2024/1 (DEMPE). Royalties at 5% WHT. R&amp;D incentive eligibility at risk.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-med">Item 8</span>
+          <div class="exec-content">
+            <div class="exec-heading">Pre-Sale Dividend</div>
+            <div class="exec-body">Franked portion WHT-free; unfranked at 5% (UK-Emerald), treaty rate (IRE-Ben Purvis). Maximise franking; consider CFI for foreign-sourced income.</div>
+          </div>
+        </div>
+        <div class="exec-row">
+          <span class="exec-badge tag-low">Item 9</span>
+          <div class="exec-content">
+            <div class="exec-heading">Post-Acquisition Profit Repatriation</div>
+            <div class="exec-body">Form consolidated group immediately. NovaTech → UA dividends: no WHT. UA → Universal Inc: 5% WHT on unfranked. Use CFI and manage s 25-90 interest deductibility.</div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:28px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">The Law &amp; Application to the Facts</p>
+
+    <!-- ══ ITEM 1 ══ -->
+    <div class="section" id="u-item1">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">01</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Residency of UA — Overseas Board of Directors</h2>
+          <span class="section-tag tag-high">High Risk</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>Under <strong>s 6(1) ITAA 1936</strong>, a company is an Australian resident if it is incorporated in Australia, or if it carries on business in Australia and either has its <strong>central management and control (CMAC)</strong> in Australia or its voting power is controlled by Australian residents. UA's Australian incorporation alone is sufficient under the first limb — regardless of where management is exercised.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body">
+          <strong>Dual Residency Risk</strong>
+          UA is wholly owned by Universal Inc (Canada). Canadian domestic law may also treat UA as a Canadian resident, triggering potential dual residency governed by Article 4 of the AUS-Canada DTA. Post-MLI modification, the automatic "place of effective management" tie-breaker has been replaced by a <strong>Mutual Agreement Procedure (MAP)</strong> — creating outcome uncertainty if no agreement is reached.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">CMAC Analysis</p>
+        <div class="prose">
+          <p>Under TR 2018/5, CMAC is determined by where high-level strategic decisions are actually made. UA's proposed board — <strong>3 US directors, 1 Canadian, 1 UK director, NO Australian directors</strong> — strongly indicates that substantive decision-making will occur entirely outside Australia, heightening the dual residency risk. <sup class="fn" tabindex="0">[6]<span class="fn-tip">Bywater Investments Ltd v FCT (2016) 260 CLR 169 — CMAC determined by where real decision-making by the directing mind occurs, not the location of formal board meetings; rubber-stamping by an overseas board does not change CMAC.</span></sup><sup class="fn" tabindex="0">[7]<span class="fn-tip">Malayan Shipping Co Ltd v FCT (1946) 71 CLR 156 — CMAC is the place where the highest form of control and direction of the company's affairs is exercised.</span></sup></p>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Appoint an Australian-based director</strong> with genuine authority to participate in high-level decisions — immediately, before incorporation of UA.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Hold substantive board meetings in Australia</strong> or ensure key decisions are formally made or ratified in Australia, supported by clear minutes.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Implement governance documentation</strong> (board charter, decision protocols) aligned with TR 2018/5 and PCG 2018/9.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Monitor the MAP process</strong> under the AUS-Canada DTA and seek to establish CMAC in Australia before any dual-residency competent authority engagement is triggered.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener" title="s 6(1) ITAA 1936 — resident company definition: incorporated in Australia; or carries on business in Australia with CMAC in Australia; or controlled by Australian residents.">ITAA 1936 s 6(1)</a><sup class="fn" tabindex="0">[1]<span class="fn-tip">s 6(1) ITAA 1936 — resident company definition: incorporated in Australia; or carries on business in Australia with CMAC in Australia; or controlled by Australian residents.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/canada" target="_blank" rel="noopener" title="AUS–Canada DTA Art 4 (Residence) — dual residency tie-breaker modified by MLI Art 4(1): competent authority MAP replaces automatic effective-management test.">AUS-Canada DTA Art 4</a><sup class="fn" tabindex="0">[9]<span class="fn-tip">AUS–Canada DTA Art 4 (Residence) — dual residency tie-breaker modified by MLI Art 4(1): competent authority MAP replaces automatic effective-management test.</span></sup>
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/multilateral-instrument-for-beps-tax-treaties.htm" target="_blank" rel="noopener" title="MLI Art 4(1) — dual resident entities: the automatic tiebreaker (place of effective management) is replaced by a MAP for covered treaties.">MLI (tie-breaker)</a><sup class="fn" tabindex="0">[8]<span class="fn-tip">MLI Art 4(1) — dual resident entities: the automatic tiebreaker (place of effective management) is replaced by a MAP for covered treaties.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20185/NAT/ATO/00001" target="_blank" rel="noopener" title="TR 2018/5 — Commissioner's primary ruling on central management and control (CMAC); CMAC is where the highest-level decisions of the company are actually made.">TR 2018/5</a><sup class="fn" tabindex="0">[4]<span class="fn-tip">TR 2018/5 — Commissioner's primary ruling on central management and control (CMAC); CMAC is where the highest-level decisions of the company are actually made.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20189/NAT/ATO/00001" target="_blank" rel="noopener" title="PCG 2018/9 — ATO compliance approach for CMAC; provides safe harbour guidance and risk indicators for determining where CMAC is located.">PCG 2018/9</a><sup class="fn" tabindex="0">[5]<span class="fn-tip">PCG 2018/9 — ATO compliance approach for CMAC; provides safe harbour guidance and risk indicators for determining where CMAC is located.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 2 ══ -->
+    <div class="section" id="u-item2">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">02</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Employee PE Risk in Overseas Jurisdictions</h2>
+          <span class="section-tag tag-high">High Risk</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>A permanent establishment generally arises where an enterprise has a <strong>fixed place of business</strong> through which its business is carried on. Under OECD Model Art 5 and TR 2002/5, three elements are required: (1) a physical place of business, (2) sufficient permanence, and (3) the business is conducted through that location.</p>
+          <p>Under the updated OECD Commentary, remote working arrangements that are <strong>regular, recurring, or indefinite</strong> — rather than temporarily exceptional (e.g., COVID-19) — are more likely to satisfy the permanence requirement. PCG 2023/1 aligns the ATO's position with this view.</p>
+          <p>Under <strong>Art 5(5) (as amended by BEPS Action 7)</strong>, a <em>dependent agent PE</em> arises where employees habitually play the principal role leading to contract conclusion — even without formally signing contracts. This creates particular risk for marketing employees actively soliciting and negotiating agreements.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body">
+          <strong>Material PE Risk — NZ and South-East Asia</strong>
+          Employees working remotely for up to 8 months or indefinitely, and marketing staff actively concluding customer agreements, face a heightened PE creation risk. Each jurisdiction's specific DTA must be assessed alongside local domestic law.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Employee-Type Risk Matrix</p>
+        <table class="calc-table">
+          <thead>
+            <tr><th>Employee Type</th><th>Location</th><th>PE Risk Level</th><th>Key Issue</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Remote workers (general)</td><td>NZ / SE Asia</td><td style="color:var(--amber)">Medium–High</td><td>8+ months permanence</td></tr>
+            <tr><td>Marketing / sales staff</td><td>SE Asia</td><td style="color:var(--red)">High</td><td>Contract conclusion activities</td></tr>
+            <tr><td>IT helpdesk</td><td>Overseas</td><td style="color:var(--green)">Lower</td><td>Internal support functions only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Undertake a jurisdiction-specific PE risk assessment</strong> with local tax advisers across all relevant overseas locations.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Review and tighten employment contracts</strong> to restrict authority in relation to contract negotiation and formal conclusion of agreements.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Centralise key commercial approvals</strong> (particularly sales sign-off) in Australia to preserve the "place of business" nexus in Australia.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">In higher-risk jurisdictions, consider <strong>establishing local service entities</strong> to formalise operations and manage tax exposure appropriately.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-full-version-9a5b369e-en.htm" target="_blank" rel="noopener" title="OECD Model Art 5 Commentary (Nov 2025, paras 1–22) — fixed place of business PE: requires (i) a place of business; (ii) geographic & temporal permanence; (iii) through which the enterprise's business is carried on.">OECD Model Art 5</a><sup class="fn" tabindex="0">[10]<span class="fn-tip">OECD Model Art 5 Commentary (Nov 2025, paras 1–22) — fixed place of business PE: requires (i) a place of business; (ii) geographic & temporal permanence; (iii) through which the enterprise's business is carried on.</span></sup>
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-full-version-9a5b369e-en.htm" target="_blank" rel="noopener" title="Art 5(5) as amended by BEPS Action 7 — dependent agent PE: a PE exists where a person habitually plays the principal role leading to conclusion of contracts routinely concluded without material modification by the enterprise.">OECD Art 5(5) (Dependent Agent)</a><sup class="fn" tabindex="0">[14]<span class="fn-tip">Art 5(5) as amended by BEPS Action 7 — dependent agent PE: a PE exists where a person habitually plays the principal role leading to conclusion of contracts routinely concluded without material modification by the enterprise.</span></sup>
+          <a class="law-chip" href="https://www.oecd.org/tax/beps/beps-actions/action7/" target="_blank" rel="noopener" title="BEPS Action 7 — Preventing the Artificial Avoidance of PE Status: amends OECD Model Art 5 to counter commissionnaire arrangements and other strategies that artificially avoid PE status.">BEPS Action 7</a><sup class="fn" tabindex="0">[14]<span class="fn-tip">BEPS Action 7 — Preventing the Artificial Avoidance of PE Status: amends OECD Model Art 5 to counter commissionnaire arrangements and other strategies that artificially avoid PE status.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR20025/NAT/ATO/00001" target="_blank" rel="noopener" title="TR 2002/5 — ATO ruling on Australia's tax treaties; meaning of 'permanent establishment'; paras 9, 17–19 on geographic and temporal permanence.">TR 2002/5</a><sup class="fn" tabindex="0">[11]<span class="fn-tip">TR 2002/5 — ATO ruling on Australia's tax treaties; meaning of 'permanent establishment'; paras 9, 17–19 on geographic and temporal permanence.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20231/NAT/ATO/00001" target="_blank" rel="noopener" title="PCG 2023/1 — Hybrid and remote working arrangements and PE risk: ATO compliance approach; regular and recurring use of a home office for the employer's business creates PE risk.">PCG 2023/1</a><sup class="fn" tabindex="0">[13]<span class="fn-tip">PCG 2023/1 — Hybrid and remote working arrangements and PE risk: ATO compliance approach; regular and recurring use of a home office for the employer's business creates PE risk.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 3 ══ -->
+    <div class="section" id="u-item3">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">03</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Indonesian Data Centre Servers — Fixed Place of Business PE</h2>
+          <span class="section-tag tag-high">High Risk</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>Under the OECD Commentary on Art 5, a server can constitute a PE where it is <strong>physically located</strong> in a jurisdiction, has <strong>sufficient geographic and temporal permanence</strong>, and is used to carry on the <strong>core business activities</strong> of the enterprise. A distinction is drawn between preparatory/auxiliary functions (e.g., data storage, system support) and substantive business operations.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">🚨</span>
+        <div class="alert-body">
+          <strong>Strong Likelihood of Indonesian PE</strong>
+          NovaTech's Indonesian servers: (1) have been physically located there for ~2 years — permanence satisfied; (2) perform automated <strong>core business functions</strong> (sales to Indonesian customers + payment processing) — not merely preparatory or auxiliary; (3) operations are carried on through the servers located in Indonesia. This falls squarely within the OECD definition of a fixed-place PE.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Seek local Indonesian tax advice immediately</strong> to determine whether PE registration and tax filing obligations exist and quantify liabilities from prior periods.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Consider <strong>migrating to a cloud-based model</strong> (with no fixed physical server in Indonesia) to reduce future PE risk.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Disclose this issue clearly in due diligence</strong> documentation; incorporate appropriate representations, warranties, and indemnities in the share purchase agreement (SPA).</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Quantify any potential <strong>purchase price adjustment</strong> to reflect Indonesian tax liabilities.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-full-version-9a5b369e-en.htm" target="_blank" rel="noopener" title="OECD Commentary on Art 5, paras 122–131 (2025 Update) — servers as PE: a server can constitute a PE if it is fixed, has sufficient permanence, and the enterprise's business is carried on 'through' it.">OECD Model Art 5 Commentary</a><sup class="fn" tabindex="0">[15]<span class="fn-tip">OECD Commentary on Art 5, paras 122–131 (2025 Update) — servers as PE: a server can constitute a PE if it is fixed, has sufficient permanence, and the enterprise's business is carried on 'through' it.</span></sup>
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-full-version-9a5b369e-en.htm" target="_blank" rel="noopener" title="OECD Art 5 Commentary paras 122–131 — preparatory/auxiliary activities (e.g., data storage, advertising) do not constitute a PE; servers performing core business functions (sales, payments) do.">OECD Server PE Guidance</a><sup class="fn" tabindex="0">[15]<span class="fn-tip">OECD Art 5 Commentary paras 122–131 — preparatory/auxiliary activities (e.g., data storage, advertising) do not constitute a PE; servers performing core business functions (sales, payments) do.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/indonesia" target="_blank" rel="noopener" title="AUS–Indonesia DTA — Convention for the Avoidance of Double Taxation; relevant PE article must be assessed for the Indonesian data centre server exposure.">AUS-Indonesia DTA</a>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 4 ══ -->
+    <div class="section" id="u-item4">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">04</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Latvian Royalty Payment — WHT Shortfall</h2>
+          <span class="section-tag tag-high">High Risk · Immediate Action</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>Under <strong>s 128B ITAA 1936</strong>, WHT applies to royalties paid by an Australian resident to a non-resident. The tax is a <strong>final tax</strong> under s 128D. Where <strong>no DTA applies</strong>, the default rate is <strong>30%</strong> of the gross royalty. Australia has no DTA with Latvia — the 5% rate applied (available only to French DTA residents) was incorrect.</p>
+          <p>The High Court in <strong>FCT v PepsiCo Inc [2025] HCA 30</strong><sup class="fn" tabindex="0">[26]<span class="fn-tip">FCT v PepsiCo Inc [2025] HCA 30 — High Court confirmed payments characterised as royalties under the domestic definition in s 6(1) ITAA 1936 attract WHT under s 128B, even where parties characterise the arrangement differently.</span></sup> confirmed that the royalty definition is interpreted broadly; WHT obligations apply based on the legal character of the payment. TR 2024/D1 provides guidance on software, IP, and licensing royalty characterisation.</p>
+          <p>Under <strong>s 26-25 ITAA 1997</strong><sup class="fn" tabindex="0">[27]<span class="fn-tip">s 26-25 ITAA 1997 — deduction for a royalty paid to a non-resident is denied to the extent that the correct amount of WHT was not withheld and remitted to the ATO.</span></sup>, a deduction for royalty payments is denied to the extent WHT has not been correctly withheld and remitted — creating additional tax exposure.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">💰</span>
+        <div class="alert-body">
+          <strong>WHT Shortfall Calculation</strong>
+        </div>
+      </div>
+
+      <table class="calc-table">
+        <thead>
+          <tr><th>Item</th><th class="mono">Amount</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>FY24 royalty payment</td><td class="mono">$650,000</td><td>Paid to Latvian entity</td></tr>
+          <tr><td>Correct WHT rate (no DTA)</td><td class="mono">30%</td><td>Default — no AUS-Latvia DTA</td></tr>
+          <tr><td>WHT that should have been withheld</td><td class="mono">$195,000</td><td>$650,000 × 30%</td></tr>
+          <tr><td>WHT actually withheld</td><td class="mono">$32,500</td><td>$650,000 × 5% (AUS-France rate — incorrect)</td></tr>
+          <tr class="total"><td><strong>WHT Shortfall</strong></td><td class="mono"><strong>$162,500</strong></td><td>Plus potential penalties &amp; interest</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert warning">
+        <span class="alert-icon">🔍</span>
+        <div class="alert-body">
+          <strong>Treaty Shopping Risk</strong>
+          If payments were routed through France to access the 5% rate, the ATO may apply anti-avoidance rules including the <strong>Principal Purpose Test</strong> under the MLI. This increases exposure beyond the straightforward WHT shortfall.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Confirm royalty characterisation</strong> under TR 2024/D1 and PepsiCo principles — review the underlying agreement.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Make a voluntary disclosure to the ATO immediately</strong> — ideally before the transaction, to minimise penalties and demonstrate good-faith compliance.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Quantify full exposure</strong> including WHT shortfall, potential denial of royalty deduction under s 26-25, interest, and penalties.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Disclose to Universal</strong> via due diligence; address through a purchase price adjustment or vendor tax indemnity in the SPA.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener" title="s 128B ITAA 1936 — liability to WHT: royalties paid by an Australian resident to a non-resident are subject to WHT at 30% (non-treaty country) of the gross amount.">ITAA 1936 s 128B</a><sup class="fn" tabindex="0">[19]<span class="fn-tip">s 128B ITAA 1936 — liability to WHT: royalties paid by an Australian resident to a non-resident are subject to WHT at 30% (non-treaty country) of the gross amount.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00242" target="_blank" rel="noopener" title="s 128D ITAA 1936 — royalty WHT is a final tax; no further Australian income tax liability on the royalty in the hands of the non-resident.">ITAA 1936 s 128D</a><sup class="fn" tabindex="0">[20]<span class="fn-tip">s 128D ITAA 1936 — royalty WHT is a final tax; no further Australian income tax liability on the royalty in the hands of the non-resident.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="s 26-25 ITAA 1997 — deduction for a royalty paid to a non-resident is denied to the extent that the correct amount of WHT was not withheld and remitted to the ATO.">ITAA 1997 s 26-25</a><sup class="fn" tabindex="0">[27]<span class="fn-tip">s 26-25 ITAA 1997 — deduction for a royalty paid to a non-resident is denied to the extent that the correct amount of WHT was not withheld and remitted to the ATO.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR2024D1/NAT/ATO/00001" target="_blank" rel="noopener" title="TR 2024/D1 — Commissioner's draft ruling on royalties: character of payments in respect of software and IP rights; when software licensing payments constitute 'royalties' for WHT purposes.">TR 2024/D1</a><sup class="fn" tabindex="0">[25]<span class="fn-tip">TR 2024/D1 — Commissioner's draft ruling on royalties: character of payments in respect of software and IP rights; when software licensing payments constitute 'royalties' for WHT purposes.</span></sup>
+          <a class="law-chip" href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/cth/HCA/" target="_blank" rel="noopener" title="FCT v PepsiCo Inc [2025] HCA 30 — High Court confirmed that payments characterised as royalties under the domestic definition in s 6(1) ITAA 1936 attract WHT under s 128B, even where parties characterise the arrangement differently.">FCT v PepsiCo [2025] HCA 30</a><sup class="fn" tabindex="0">[26]<span class="fn-tip">FCT v PepsiCo Inc [2025] HCA 30 — High Court confirmed payments characterised as royalties under the domestic definition in s 6(1) ITAA 1936 attract WHT under s 128B, even where parties characterise the arrangement differently.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 5 ══ -->
+    <div class="section" id="u-item5">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">05</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Belgian Share Sale — CGT Treatment in FY25</h2>
+          <span class="section-tag tag-high">High Risk · Amend Return</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p><strong>Division 855</strong> disregards gains on taxable Australian property for <em>foreign residents</em>. NovaTech is an <strong>Australian resident</strong> — Div 855 has no application here. The exclusion of the A$10m gain was incorrect.</p>
+          <p><strong>Subdivision 768-G</strong> allows an Australian company to disregard gains on foreign company shares where the taxpayer holds at least a <strong>10% participation interest</strong>. NovaTech held only <strong>9%</strong> — below the statutory threshold. This exemption is unavailable.</p>
+          <p>As NovaTech is a company, it is <strong>not eligible for the 50% CGT discount</strong>. The full A$10m gain is therefore assessable in FY25.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">🚨</span>
+        <div class="alert-body">
+          <strong>Reliance on ChatGPT for Tax Advice</strong>
+          The exclusion of the A$10m capital gain was based on a ChatGPT analysis — not professional tax advice. This is an incorrect and potentially negligent approach that has resulted in a material understatement of taxable income. An amended return must be lodged.
+        </div>
+      </div>
+
+      <table class="calc-table">
+        <thead>
+          <tr><th>Item</th><th class="mono">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Sale proceeds — Belgian shares</td><td class="mono">A$12,000,000</td></tr>
+          <tr><td>Cost base</td><td class="mono">(A$2,000,000)</td></tr>
+          <tr><td>Capital gain (gross)</td><td class="mono">A$10,000,000</td></tr>
+          <tr><td>Less: Div 855 exemption</td><td class="mono">Nil — inapplicable</td></tr>
+          <tr><td>Less: Subdiv 768-G exemption</td><td class="mono">Nil — 9% &lt; 10% threshold</td></tr>
+          <tr><td>Less: 50% CGT discount</td><td class="mono">Nil — company taxpayer</td></tr>
+          <tr class="total"><td><strong>Assessable capital gain FY25</strong></td><td class="mono"><strong>A$10,000,000</strong></td></tr>
+          <tr class="total"><td><strong>Approximate tax payable (at 30%)</strong></td><td class="mono"><strong>~A$3,000,000</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Lodge an amended FY25 income tax return</strong> to include the full A$10m capital gain and pay the associated tax liability promptly.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Consider a voluntary disclosure</strong> to the ATO to minimise penalties applicable to the understatement.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Disclose to Universal</strong> in due diligence; address via purchase price adjustment or specific vendor tax indemnity in the SPA.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 855 ITAA 1997 — applies to foreign residents only; a foreign resident may disregard a capital gain on non-TAP assets. NovaTech is Australian-resident; Div 855 has no application.">ITAA 1997 Div 855</a><sup class="fn" tabindex="0">[30]<span class="fn-tip">Div 855 ITAA 1997 — applies to foreign residents only; a foreign resident may disregard a capital gain on non-TAP assets. NovaTech is Australian-resident; Div 855 has no application.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Subdiv 768-G ITAA 1997 — active business exemption: Australian resident may disregard gain on foreign company shares only if ≥10% participation interest is held. NovaTech held only 9% — below threshold.">ITAA 1997 Subdiv 768-G</a><sup class="fn" tabindex="0">[32]<span class="fn-tip">Subdiv 768-G ITAA 1997 — active business exemption: Australian resident may disregard gain on foreign company shares only if ≥10% participation interest is held. NovaTech held only 9% — below threshold.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="CGT event A1 — s 104-10 ITAA 1997: occurs on disposal of a CGT asset including shares; capital gain = capital proceeds minus cost base.">ITAA 1997 CGT event A1</a><sup class="fn" tabindex="0">[29]<span class="fn-tip">CGT event A1 — s 104-10 ITAA 1997: occurs on disposal of a CGT asset including shares; capital gain = capital proceeds minus cost base.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="s 115-10 ITAA 1997 — CGT discount (50%) is available to individuals, trusts and super funds only; NOT available to companies. NovaTech is a company; full $10m gain is assessable.">ITAA 1997 s 50% CGT Discount</a><sup class="fn" tabindex="0">[35]<span class="fn-tip">s 115-10 ITAA 1997 — CGT discount (50%) is available to individuals, trusts and super funds only; NOT available to companies. NovaTech is a company; full $10m gain is assessable.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 6 ══ -->
+    <div class="section" id="u-item6">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">06</div>
+        <div class="section-title-group">
+          <h2 class="section-title">India Transfer Pricing — MAP &amp; Double Taxation</h2>
+          <span class="section-tag tag-med">Medium Risk · Time-Sensitive</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>NovaTech accepted an ATO <strong>transfer pricing primary adjustment</strong> under Division 815. The Indian tax authorities have refused to make a corresponding downward adjustment, resulting in <strong>economic double taxation</strong> — the same income taxed in both Australia and India.</p>
+          <p>The AUS-India DTA provides a <strong>Mutual Agreement Procedure (MAP)</strong> under <strong>Article 25</strong>.<sup class="fn" tabindex="0">[43]<span class="fn-tip">AUS–India DTA Art 25 — MAP: competent authorities must endeavour to resolve double taxation cases; time limit for MAP request typically 3 years from first notification; BEPS Action 14 minimum standard requires resolution within 24 months.</span></sup> MLI Article 17 requires treaty partners to make corresponding adjustments to eliminate double taxation from TP adjustments. In <strong>Oracle Corporation [2025] FCAFC 145</strong>, the Full Federal Court confirmed that Australian court proceedings may be stayed while MAP is ongoing — providing procedural relief.</p>
+        </div>
+      </div>
+
+      <div class="alert warning">
+        <span class="alert-icon">⏳</span>
+        <div class="alert-body">
+          <strong>Time Limit — Act Immediately</strong>
+          A MAP request must generally be lodged with the ATO within <strong>three years</strong> of the initial adjustment. Missing this deadline may permanently extinguish treaty relief and leave NovaTech bearing the full double-tax burden.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Lodge a MAP request with the ATO immediately</strong> under Art 25 (AUS-India DTA) to initiate bilateral negotiations with the Indian competent authority.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Consider <strong>seeking a stay of domestic recovery action</strong> in Australia while MAP is ongoing, as supported by Oracle Corporation [2025].</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">For ongoing related-party transactions, consider a <strong>bilateral Advance Pricing Arrangement (APA)</strong> with both ATO and Indian authorities to prevent future disputes.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Disclose MAP risk and cost/uncertainty</strong> to Universal in due diligence; factor into transaction pricing or indemnity provisions.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 815 ITAA 1997 — transfer pricing rules; arm's length conditions for cross-border related party dealings; s 815-130 permits Commissioner to substitute arm's length pricing.">Div 815 ITAA 1997</a><sup class="fn" tabindex="0">[39]<span class="fn-tip">Div 815 ITAA 1997 — transfer pricing rules; arm's length conditions for cross-border related party dealings; s 815-130 permits Commissioner to substitute arm's length pricing.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/india" target="_blank" rel="noopener" title="AUS–India DTA Art 25 — MAP: competent authorities must endeavour to resolve cases of taxation not in accordance with the Convention; time limit for MAP request typically 3 years from first notification.">AUS-India DTA Art 25</a><sup class="fn" tabindex="0">[43]<span class="fn-tip">AUS–India DTA Art 25 — MAP: competent authorities must endeavour to resolve cases of taxation not in accordance with the Convention; time limit for MAP request typically 3 years from first notification.</span></sup>
+          <a class="law-chip" href="https://www.oecd.org/tax/treaties/multilateral-instrument-for-beps-tax-treaties.htm" target="_blank" rel="noopener" title="MLI Art 17 — corresponding adjustments: where a primary TP adjustment is made by one treaty partner, the other must make a corresponding adjustment to avoid double taxation, subject to MAP.">MLI Art 17</a><sup class="fn" tabindex="0">[42]<span class="fn-tip">MLI Art 17 — corresponding adjustments: where a primary TP adjustment is made by one treaty partner, the other must make a corresponding adjustment to avoid double taxation, subject to MAP.</span></sup>
+          <a class="law-chip" href="https://www.austlii.edu.au/cgi-bin/viewdb/au/cases/cth/FCAFC/" target="_blank" rel="noopener" title="Oracle Corporation Australia Pty Ltd v CoT [2025] FCAFC 145 — Full Federal Court affirmed that Australian courts may stay domestic proceedings pending completion of a MAP process where double taxation would otherwise result.">Oracle Corporation [2025] FCAFC 145</a><sup class="fn" tabindex="0">[41]<span class="fn-tip">Oracle Corporation Australia Pty Ltd v CoT [2025] FCAFC 145 — Full Federal Court affirmed that Australian courts may stay domestic proceedings pending completion of a MAP process where double taxation would otherwise result.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 7 ══ -->
+    <div class="section" id="u-item7">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">07</div>
+        <div class="section-title-group">
+          <h2 class="section-title">IP Transfer to Canada — Australian Tax Implications</h2>
+          <span class="section-tag tag-med">Medium Risk · Structural Planning</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>The IP transfer will trigger <strong>CGT event A1</strong>. For internally developed IP, the cost base may be nil or low (development costs already deducted), generating a <strong>substantial taxable gain</strong>. As a company, NovaTech has no access to the 50% CGT discount. The transfer must occur at <strong>arm's length value</strong> under Division 815 — undervaluation will attract ATO adjustment.</p>
+          <p>The ATO will scrutinise the arrangement under <strong>PCG 2024/1</strong>, focusing on whether DEMPE functions (Development, Enhancement, Maintenance, Protection, Exploitation) have genuinely shifted to Canada, or whether NovaTech retains the economic substance while Canada merely holds the legal title.</p>
+          <p>Post-transfer royalties paid to Canada will require correct characterisation under <strong>TR 2024/D1</strong>. The <strong>AUS-Canada DTA</strong> reduces royalty WHT to <strong>5%</strong> — failure to correctly withhold and remit would deny NovaTech the royalty deduction under s 26-25.</p>
+          <p>If NovaTech operates as an R&amp;D service centre for Canada, it may <strong>lose eligibility for the Australian R&amp;D tax incentive</strong><sup class="fn" tabindex="0">[52]<span class="fn-tip">s 355-210 ITAA 1997 — R&D must be conducted by the entity for its own benefit ('on own behalf' rule); where NovaTech conducts R&D as a service for a foreign IP owner, NovaTech does not conduct R&D 'on its own behalf' and cannot claim the incentive.</span></sup>, which requires that R&amp;D be conducted for the taxpayer's own benefit.</p>
+        </div>
+      </div>
+
+      <div class="alert warning">
+        <span class="alert-icon">🔬</span>
+        <div class="alert-body">
+          <strong>ATO Audit Risk — IP Migration</strong>
+          The ATO has flagged IP migration as a high-priority audit target under PCG 2024/1. If NovaTech retains DEMPE substance in Australia while IP legal ownership shifts to Canada, the ATO is likely to challenge the arm's length pricing and profit allocation.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Obtain <strong>independent IP valuation</strong> to support the transfer price and document the arm's-length basis robustly.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Align DEMPE functions with legal ownership</strong> in Canada — Canadian personnel must genuinely direct development, enhancement, and exploitation decisions.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Carefully structure intercompany R&amp;D arrangements so <strong>NovaTech retains an economic interest</strong> in R&amp;D outcomes (e.g., co-development, enhanced rights), preserving R&amp;D tax incentive eligibility.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Correctly <strong>withhold 5% WHT on royalty payments</strong> to Canada under the AUS-Canada DTA and document treaty eligibility.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Consider a <strong>staged or alternative migration approach</strong> to manage the timing and magnitude of the upfront CGT liability.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="CGT event A1 — s 104-10 ITAA 1997: occurs on disposal of a CGT asset including shares; capital gain = capital proceeds minus cost base.">ITAA 1997 CGT event A1</a><sup class="fn" tabindex="0">[29]<span class="fn-tip">CGT event A1 — s 104-10 ITAA 1997: occurs on disposal of a CGT asset including shares; capital gain = capital proceeds minus cost base.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 815 ITAA 1997 — transfer pricing: arm's length standard required for IP transfer; undervalue corrected by the transfer pricing rules; s 815-130.">ITAA 1997 Div 815 (TP)</a><sup class="fn" tabindex="0">[39]<span class="fn-tip">Div 815 ITAA 1997 — transfer pricing: arm's length standard required for IP transfer; undervalue corrected by the transfer pricing rules; s 815-130.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=COG/PCG20241/NAT/ATO/00001" target="_blank" rel="noopener" title="PCG 2024/1 — Intangibles migration: ATO scrutinises whether DEMPE functions (Development, Enhancement, Maintenance, Protection, Exploitation) have genuinely shifted; high-risk indicators include retaining R&D in Australia while transferring IP legal title.">PCG 2024/1 (DEMPE)</a><sup class="fn" tabindex="0">[47]<span class="fn-tip">PCG 2024/1 — Intangibles migration: ATO scrutinises whether DEMPE functions (Development, Enhancement, Maintenance, Protection, Exploitation) have genuinely shifted; high-risk indicators include retaining R&D in Australia while transferring IP legal title.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/law/view/document?DocID=TXR/TR2024D1/NAT/ATO/00001" target="_blank" rel="noopener" title="TR 2024/D1 — royalty characterisation for WHT purposes; relevant to post-acquisition royalty payments from NovaTech to Universal Inc Canada.">TR 2024/D1 (Royalties)</a><sup class="fn" tabindex="0">[25]<span class="fn-tip">TR 2024/D1 — royalty characterisation for WHT purposes; relevant to post-acquisition royalty payments from NovaTech to Universal Inc Canada.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/canada" target="_blank" rel="noopener" title="AUS–Canada DTA Art 10 (Dividends) — WHT reduced to 5% where recipient holds ≥10% of voting power (Universal Inc will hold 100% of UA); only the unfranked portion is subject to WHT.">AUS-Canada DTA (5% WHT)</a><sup class="fn" tabindex="0">[64]<span class="fn-tip">AUS–Canada DTA Art 10 (Dividends) — WHT reduced to 5% where recipient holds ≥10% of voting power (Universal Inc will hold 100% of UA); only the unfranked portion is subject to WHT.</span></sup>
+          <span class="law-chip">R&amp;D Tax Incentive</span>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 8 ══ -->
+    <div class="section" id="u-item8">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">08</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Pre-Sale Partially Franked Dividend — WHT Implications</h2>
+          <span class="section-tag tag-med">Medium Risk · Planning Opportunity</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>For <strong>Australian resident shareholders</strong> (Povey Industries Ltd and Heath Sheeran), dividends are assessable income with a gross-up for attached franking credits — franking credits offset income tax liabilities.</p>
+          <p>For <strong>non-resident shareholders</strong>, WHT applies to the <em>unfranked portion only</em><sup class="fn" tabindex="0">[55]<span class="fn-tip">s 128B(1)(a) ITAA 1936 — dividend WHT applies to unfranked dividends paid to non-resident shareholders. s 128B(3)(ga) — no WHT applies to the franked portion.</span></sup> — the franked portion is exempt from WHT. Applicable rates:<br/>
+          — <strong>Emerald Ltd (UK)</strong>: 5% WHT on unfranked portion under AUS-UK DTA.<br/>
+          — <strong>Ben Purvis (Irish resident)</strong>: reduced treaty rate under AUS-Ireland DTA.</p>
+          <p>Under <strong>Division 974</strong>, any instruments classified as debt rather than equity may cause payments to be treated as interest instead of dividends — with different WHT consequences.</p>
+          <p>The <strong>conduit foreign income (CFI)</strong> rules may allow certain unfranked dividends sourced from foreign income to be paid to non-residents <em>free of WHT</em>, materially improving after-tax outcomes for offshore shareholders.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">WHT Exposure by Shareholder</p>
+        <table class="calc-table">
+          <thead>
+            <tr><th>Shareholder</th><th>Residency</th><th>Franked Portion</th><th>Unfranked WHT Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Povey Industries Ltd</td><td>Australia</td><td>No WHT</td><td>N/A — assessable income</td></tr>
+            <tr><td>Heath Sheeran</td><td>Australia</td><td>No WHT</td><td>N/A — assessable income</td></tr>
+            <tr><td>Emerald Ltd</td><td>UK</td><td>Exempt from WHT</td><td>5% (AUS-UK DTA)</td></tr>
+            <tr><td>Ben Purvis</td><td>Ireland</td><td>Exempt from WHT</td><td>Reduced rate (AUS-Ireland DTA)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Maximise the franked component</strong> of the pre-sale dividend — this eliminates WHT exposure for non-resident shareholders on the franked portion.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Confirm capital structure classification</strong> under Div 974 to ensure distributions are correctly treated as dividends, not interest.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Evaluate whether any dividend component can be <strong>designated as conduit foreign income</strong> to eliminate WHT on foreign-sourced earnings paid to non-residents.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Advise non-resident shareholders</strong> of their expected net dividend after WHT, accounting for applicable DTA rates.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="s 44 ITAA 1936 — dividends paid by an Australian resident company to shareholders are included in assessable income. s 207-20 ITAA 1997 — franking credit gross-up and tax offset for resident shareholders.">ITAA 1997 Div 7A</a><sup class="fn" tabindex="0">[54]<span class="fn-tip">s 44 ITAA 1936 — dividends paid by an Australian resident company to shareholders are included in assessable income. s 207-20 ITAA 1997 — franking credit gross-up and tax offset for resident shareholders.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 974 ITAA 1997 — debt/equity classification: instruments reclassified as debt trigger interest WHT (s 128B at 10%) rather than dividend WHT; must be confirmed for any preference shares or convertible instruments.">ITAA 1997 Div 974 (Debt/Equity)</a><sup class="fn" tabindex="0">[57]<span class="fn-tip">Div 974 ITAA 1997 — debt/equity classification: instruments reclassified as debt trigger interest WHT (s 128B at 10%) rather than dividend WHT; must be confirmed for any preference shares or convertible instruments.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 802 ITAA 1997 — CFI declarations for NovaTech's foreign-source NANE income; s 802-17 exempts CFI from WHT on distribution to Universal Inc; tracking accounts maintained under s 802-45.">ITAA 1997 CFI Rules</a><sup class="fn" tabindex="0">[63]<span class="fn-tip">Div 802 ITAA 1997 — CFI declarations for NovaTech's foreign-source NANE income; s 802-17 exempts CFI from WHT on distribution to Universal Inc; tracking accounts maintained under s 802-45.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/united-kingdom" target="_blank" rel="noopener" title="AUS–UK DTA Art 10 — dividend WHT reduced to 5% where recipient holds ≥10% of the voting power (Emerald Ltd, UK, 25% shareholder, qualifies); 15% otherwise.">AUS-UK DTA (5% WHT)</a><sup class="fn" tabindex="0">[58]<span class="fn-tip">AUS–UK DTA Art 10 — dividend WHT reduced to 5% where recipient holds ≥10% of the voting power (Emerald Ltd, UK, 25% shareholder, qualifies); 15% otherwise.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/ireland" target="_blank" rel="noopener" title="AUS–Ireland DTA — dividend WHT article; treaty-reduced rate applies to unfranked dividend paid to Ben Purvis as an Irish resident direct shareholder.">AUS-Ireland DTA</a><sup class="fn" tabindex="0">[59]<span class="fn-tip">AUS–Ireland DTA — dividend WHT article; treaty-reduced rate applies to unfranked dividend paid to Ben Purvis as an Irish resident direct shareholder.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ITEM 9 ══ -->
+    <div class="section" id="u-item9">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">09</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Post-Acquisition Profit Repatriation — NovaTech to Universal Inc</h2>
+          <span class="section-tag tag-low">Planning Opportunity</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p><strong>Tax Consolidation (Part 3-90):</strong> UA and NovaTech should form an Australian tax consolidated group immediately post-acquisition. Benefits include: single tax return for the group, pooled franking account, tax cost setting rules resetting NovaTech's asset costs to reflect the acquisition price (reducing future CGT exposure), and no tax consequences on intra-group transactions.</p>
+          <p><strong>Intra-group dividends (NovaTech → UA):</strong> Both are Australian residents — no WHT applies. Dividends can be franked using the consolidated franking account.</p>
+          <p><strong>Outbound dividends (UA → Universal Inc, Canada):</strong> Under the AUS-Canada DTA, WHT on unfranked dividends is reduced to <strong>5%</strong> (subject to ownership requirements). Franked dividends are exempt from WHT. CFI can eliminate WHT on qualifying foreign-source income components.</p>
+          <p><strong>Interest deductibility (s 25-90):</strong> Where borrowing funds generate NANE income (e.g., foreign dividends), interest deductions may be partially denied — careful financing modelling required.</p>
+          <p><strong>TD 2020/7</strong> limits foreign income tax offsets (FITOs) in respect of capital gains — relevant where NovaTech derives assessable foreign-source capital gains.</p>
+        </div>
+      </div>
+
+      <div class="alert success">
+        <span class="alert-icon">✅</span>
+        <div class="alert-body">
+          <strong>Planning Opportunity — Tax Consolidated Group</strong>
+          Forming the consolidated group immediately post-acquisition maximises efficiency and minimises WHT leakage. The sooner consolidation is elected, the sooner the group benefits from reset asset costs, pooled franking credits, and streamlined compliance.
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Repatriation Pathway — WHT Summary</p>
+        <table class="calc-table">
+          <thead>
+            <tr><th>Dividend Flow</th><th>WHT — Franked</th><th>WHT — Unfranked</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>NovaTech → UA (intra-group AUS)</td><td class="mono">Nil</td><td class="mono">Nil</td><td>Both AUS residents — no WHT</td></tr>
+            <tr><td>UA → Universal Inc (Canada)</td><td class="mono">Nil</td><td class="mono">5%</td><td>AUS-Canada DTA</td></tr>
+            <tr><td>UA → Universal Inc (CFI portion)</td><td class="mono">Nil</td><td class="mono">Nil</td><td>CFI designation eliminates WHT</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendations</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Form the Australian tax consolidated group</strong> (UA head entity + NovaTech) immediately after acquisition closes.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Maximise franking credits</strong> within the consolidated group to minimise WHT on distributions to Universal Inc (Canada).</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Track and designate CFI</strong> on foreign-source NANE income components to eliminate WHT on qualifying outbound dividends.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Model interest deductibility</strong> carefully under s 25-90 as part of acquisition financing to avoid unexpected deduction limitations.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Manage <strong>foreign tax credit positions</strong> (FITO limitations under TD 2020/7) for any assessable foreign capital gains.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Part 3-90 ITAA 1997 — tax consolidation: single tax return & franking account; Subdiv 705-A resets NovaTech's asset cost bases to reflect acquisition price, potentially reducing future CGT exposure.">ITAA 1997 Part 3-90 (Consolidation)</a><sup class="fn" tabindex="0">[60]<span class="fn-tip">Part 3-90 ITAA 1997 — tax consolidation: single tax return & franking account; Subdiv 705-A resets NovaTech's asset cost bases to reflect acquisition price, potentially reducing future CGT exposure.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="Div 802 ITAA 1997 — CFI declarations for NovaTech's foreign-source NANE income; s 802-17 exempts CFI from WHT on distribution to Universal Inc; tracking accounts maintained under s 802-45.">ITAA 1997 CFI Rules</a><sup class="fn" tabindex="0">[63]<span class="fn-tip">Div 802 ITAA 1997 — CFI declarations for NovaTech's foreign-source NANE income; s 802-17 exempts CFI from WHT on distribution to Universal Inc; tracking accounts maintained under s 802-45.</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00179" target="_blank" rel="noopener" title="s 25-90 ITAA 1997 — debt deductions incurred in deriving NANE foreign income may be denied; relevant where UA borrows to fund the NovaTech acquisition and NovaTech derives exempt foreign dividends.">ITAA 1997 s 25-90</a><sup class="fn" tabindex="0">[61]<span class="fn-tip">s 25-90 ITAA 1997 — debt deductions incurred in deriving NANE foreign income may be denied; relevant where UA borrows to fund the NovaTech acquisition and NovaTech derives exempt foreign dividends.</span></sup>
+          <a class="law-chip" href="https://www.ato.gov.au/businesses-and-organisations/international-tax-for-business/in-detail/double-tax-agreements/canada" target="_blank" rel="noopener" title="AUS–Canada DTA Art 10 (Dividends) — WHT reduced to 5% where recipient holds ≥10% of voting power (Universal Inc will hold 100% of UA); only the unfranked portion is subject to WHT.">AUS-Canada DTA (5% WHT)</a><sup class="fn" tabindex="0">[64]<span class="fn-tip">AUS–Canada DTA Art 10 (Dividends) — WHT reduced to 5% where recipient holds ≥10% of voting power (Universal Inc will hold 100% of UA); only the unfranked portion is subject to WHT.</span></sup>
+          <span class="law-chip">TD 2020/7 (FITO &amp; CG)</span>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ APPENDIX — CODE OF CONDUCT ══ -->
+    <div class="section" id="u-conduct">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">APP</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Appendix — Code of Professional Conduct (TASA 2009)</h2>
+          <span class="section-tag tag-info">Professional Standards</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="alert danger">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body">
+          <strong>Serious Concern — Existing Tax Agent Conduct</strong>
+          The current tax agent's advice to the CFO not to disclose the Latvian WHT shortfall raises <strong>serious breaches</strong> under the Tax Agent Services Act 2009 (TASA) Code of Professional Conduct.<sup class="fn" tabindex="0">[68]<span class="fn-tip">TASA 2009 s 30-10 — Code of Professional Conduct: sets out obligations of registered tax agents; amended in 2024 to strengthen obligations and introduce breach reporting requirements.</span></sup>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Applicable Law Analysis</p>
+        <div class="prose">
+          <p>The TASA Code requires tax practitioners to: <strong>act with honesty and integrity</strong>, comply with taxation laws, provide clients with appropriate advice on their obligations, and ensure clients are informed of their rights. The 2024 updated professional standards expressly prohibit advising clients to adopt positions that result in false or misleading statements to tax authorities.</p>
+          <p>Advising concealment of a known tax error: (a) reflects a lack of professional integrity; (b) breaches the duty of care and competence; (c) may constitute obstruction of the proper administration of the tax system — one of the more serious TASA breaches.</p>
+          <p>Serious breaches may trigger <strong>mandatory reporting obligations to the TPB</strong>. Sanctions can include formal cautions, enforced training, suspension, or termination of registration.<sup class="fn" tabindex="0">[78]<span class="fn-tip">Subdiv 60-E TASA 2009 — TPB sanctions: s 30-15 written caution; s 30-20 orders; s 30-25 suspension of registration; s 30-30 termination of registration. Self-reporting of significant breaches required under ss 30-35 and 30-40.</span></sup> Further legal consequences may arise in severe cases.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Identified Breaches</p>
+        <ul>
+          <li>Advised client to conceal a known WHT shortfall — inconsistent with honesty and integrity obligations.</li>
+          <li>Failed to advise the client of their obligation to correct the error and the benefits of voluntary disclosure.</li>
+          <li>May have been involved in preparing tax filings while aware of the incorrect WHT rate — compounding the breach.</li>
+          <li>Advising non-disclosure constitutes a breach of the duty to support proper tax administration.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Recommendation</p>
+        <div class="prose">
+          <p>Universal should <strong>discontinue engagement with the current tax agent</strong> following the acquisition and appoint a new adviser with appropriate governance and compliance standards. If the agent was knowingly involved in the incorrect filing, a referral to the TPB for investigation should be considered.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Legal References</p>
+        <div class="law-ref-row">
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener" title="TASA 2009 s 30-10 — Code of Professional Conduct: sets out obligations of registered tax agents including honesty (s 30-10(1)), compliance (s 30-10(2)), client advisory obligations (s 30-10(5)), competence (s 30-10(7)), and non-obstruction (s 30-10(13)).">Tax Agent Services Act 2009</a><sup class="fn" tabindex="0">[68]<span class="fn-tip">TASA 2009 s 30-10 — Code of Professional Conduct: sets out obligations of registered tax agents including honesty (s 30-10(1)), compliance (s 30-10(2)), client advisory obligations (s 30-10(5)), competence (s 30-10(7)), and non-obstruction (s 30-10(13)).</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/C2024C00206" target="_blank" rel="noopener" title="TASA 2009 Code of Professional Conduct — advising concealment of a known tax shortfall breaches: honesty & integrity (s 30-10(1)); client advisory obligations (s 30-10(5)); non-obstruction (s 30-10(13)).">TASA Code of Professional Conduct</a><sup class="fn" tabindex="0">[68]<span class="fn-tip">TASA 2009 Code of Professional Conduct — advising concealment of a known tax shortfall breaches: honesty & integrity (s 30-10(1)); client advisory obligations (s 30-10(5)); non-obstruction (s 30-10(13)).</span></sup>
+          <a class="law-chip" href="https://www.legislation.gov.au/Details/F2024L00878" target="_blank" rel="noopener" title="Tax Agent Services (Code of Professional Conduct) Determination 2024 (effective 1 August 2024) — introduced 8 additional obligations under Code item 17, including prohibition on advising a client to make false or misleading statements to the Commissioner.">2024 Professional Standards Update</a><sup class="fn" tabindex="0">[74]<span class="fn-tip">Tax Agent Services (Code of Professional Conduct) Determination 2024 (effective 1 August 2024) — introduced 8 additional obligations under Code item 17, including prohibition on advising a client to make false or misleading statements to the Commissioner.</span></sup>
+          <a class="law-chip" href="https://www.tpb.gov.au/" target="_blank" rel="noopener" title="TPB investigation and administrative sanctions (Subdiv 60-E TASA 2009): written caution (s 30-15), orders (s 30-20), suspension (s 30-25), or termination of registration (s 30-30). Self-reporting of significant breaches required under ss 30-35 and 30-40 (effective 1 July 2024).">Tax Practitioners Board (TPB)</a><sup class="fn" tabindex="0">[78]<span class="fn-tip">TPB investigation and administrative sanctions (Subdiv 60-E TASA 2009): written caution (s 30-15), orders (s 30-20), suspension (s 30-25), or termination of registration (s 30-30). Self-reporting of significant breaches required under ss 30-35 and 30-40.</span></sup>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ RECOMMENDATIONS ══ -->
+    <div class="section" id="u-nextsteps">
+    <div class="section-collapse-header" onclick="toggleSection(this)">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1;margin-bottom:0;">
+        
+        <div class="section-num">REC</div>
+        <div class="section-title-group">
+          <h2 class="section-title">Recommendations &amp; Next Steps</h2>
+          <span class="section-tag tag-info">Action Plan</span>
+        </div>
+      
+      </div>
+      <span class="collapse-icon">▾</span>
+    </div>
+    <div class="section-collapse-body">
+
+
+      <div class="alert info">
+        <span class="alert-icon">📋</span>
+        <div class="alert-body">
+          <strong>Priority Sequencing</strong>
+          Actions are grouped by timing. Immediate actions (pre-transaction) are critical to avoid compounding exposure and ensuring clean due diligence.
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;">
+        <p class="card-title">🔴 Immediate — Pre-Transaction</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Voluntary disclosure — Latvian WHT shortfall</strong> ($162,500 + deduction risk): disclose to ATO before the sale to minimise penalties.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Amend FY25 tax return</strong> to include the A$10m Belgian share sale capital gain (~A$3m tax payable + interest).</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Lodge MAP request with ATO</strong> under the AUS-India DTA for the transfer pricing double-taxation issue.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Appoint Australian-based director</strong> to UA with genuine decision-making authority to establish CMAC in Australia.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Engage Indonesian local tax counsel</strong> to assess PE registration, prior tax liabilities, and remediation options.</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;">
+        <p class="card-title">🟡 Pre-Closing — Due Diligence &amp; Transaction Documents</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Disclose all identified tax exposures (Items 1–6) to Universal via <strong>due diligence data room</strong>; obtain appropriate representations, warranties, and indemnities in the SPA.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Undertake <strong>jurisdiction-by-jurisdiction PE risk assessment</strong> with local advisers across NZ, SE Asia, and Indonesia.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Obtain <strong>independent IP valuation</strong> for the proposed Canadian IP transfer — document DEMPE function alignment.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Confirm dividend franking account balance and <strong>maximise pre-sale franked dividend</strong> to minimise non-resident WHT.</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;">
+        <p class="card-title">🟢 Post-Acquisition — Structural Optimisation</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Form Australian tax consolidated group</strong> (UA + NovaTech) on Day 1 post-close to maximise structural efficiency.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Implement <strong>CFI tracking and designation processes</strong> to minimise WHT on outbound dividends to Canada.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Model acquisition <strong>financing structure</strong> carefully — manage s 25-90 interest deductibility risks and FITO positions.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Review R&amp;D intercompany arrangements to <strong>preserve Australian R&amp;D tax incentive eligibility</strong> post-IP transfer.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Replace current tax agent</strong> and appoint new advisers</div></div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  
+
+      </main>
+    </div><!-- /caseWrapperUniversal -->
+
+  </div><!-- end contentArea -->
+</div><!-- end shell -->
+
+<script>
+/* ═══════════ MOBILE SIDEBAR ═══════════ */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const sidebar      = document.getElementById('sidebar');
+const navOverlay   = document.getElementById('navOverlay');
+
+function openMobileSidebar() {
+  sidebar.classList.add('open');
+  navOverlay.classList.add('visible');
+  hamburgerBtn.classList.add('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileSidebar() {
+  sidebar.classList.remove('open');
+  navOverlay.classList.remove('visible');
+  hamburgerBtn.classList.remove('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+hamburgerBtn && hamburgerBtn.addEventListener('click', function() {
+  sidebar.classList.contains('open') ? closeMobileSidebar() : openMobileSidebar();
+});
+navOverlay && navOverlay.addEventListener('click', closeMobileSidebar);
+
+/* ═══════════ SIDEBAR ACTIVE STATE ═══════════ */
+function updateActiveNav() {
+  const links = document.querySelectorAll('.nav-link[href^="#"]');
+  const scrollPos = window.scrollY + 100;
+  let active = null;
+  links.forEach(link => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target && target.offsetTop <= scrollPos) active = link;
+  });
+  links.forEach(l => l.classList.remove('active'));
+  if (active) active.classList.add('active');
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+/* ═══════════ COLLAPSIBLE SECTIONS ═══════════ */
+function toggleSection(headerEl) {
+  const body = headerEl.nextElementSibling;
+  if (!body) return;
+  const isCollapsed = body.classList.contains('collapsed');
+  if (isCollapsed) {
+    body.classList.remove('collapsed');
+    headerEl.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    headerEl.classList.add('collapsed');
+  }
+}
+
+function expandAndScrollGlobal(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const header = section.querySelector('.section-collapse-header');
+  const body   = section.querySelector('.section-collapse-body');
+  if (header && body && body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    header.classList.remove('collapsed');
+  }
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  return false;
+}
+
+/* ═══════════ STATE ═══════════ */
+const universalMeta = {
+  'u-cover':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-facts':     { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-exec':      { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+  'u-item1':     { countries: ['AU','CA'] },
+  'u-item2':     { countries: ['AU','NZ','ID'] },
+  'u-item3':     { countries: ['AU','ID'] },
+  'u-item4':     { countries: ['AU','LV'] },
+  'u-item5':     { countries: ['AU','BE'] },
+  'u-item6':     { countries: ['AU','IN'] },
+  'u-item7':     { countries: ['AU','CA'] },
+  'u-item8':     { countries: ['AU','UK','IE'] },
+  'u-item9':     { countries: ['AU','CA'] },
+  'u-conduct':   { countries: ['AU'] },
+  'u-nextsteps': { countries: ['AU','CA','ID','LV','BE','IN','UK','IE','NZ'] },
+};
+
+/* ═══════════ FILTER LOGIC ═══════════ */
+function applyFilters(silent) {
+  const country = document.getElementById('countryFilter').value;
+  Object.keys(universalMeta).forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const meta = universalMeta[id];
+    const divider = section.previousElementSibling;
+    const countryMatch = country === 'all' || meta.countries.includes(country);
+    section.style.display = countryMatch ? '' : 'none';
+    if (divider && divider.classList.contains('divider')) divider.style.display = countryMatch ? '' : 'none';
+  });
+}
+
+/* ═══════════ INIT ═══════════ */
+updateActiveNav();
+</script>
+</body>
+</html>
