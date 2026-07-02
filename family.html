@@ -788,6 +788,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-soft); }
 
 .empty-msg { color: var(--ink-dim); font-size: .78rem; font-style: italic; }
+.mobile-member-list { display: none; }
 
 /* ── MOBILE ── */
 @media (max-width: 680px) {
@@ -1272,6 +1273,9 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     ⚙ Lọc
   </button>
 </div>
+
+<!-- MOBILE SEARCH RESULTS (shown only on small screens, below the search/filter bar) -->
+<div class="mobile-member-list" id="mobileMemberList"></div>
 
 <!-- MAIN -->
 <div class="main-wrap">
@@ -2052,12 +2056,15 @@ function scrollToStatsTable() {
 
 // ── SIDEBAR LIST ──
 function renderList() {
-  document.getElementById('memberList').innerHTML = filtered.map(m => `
+  const html = filtered.map(m => `
     <div class="member-item ${m.sex==='M'?'male':m.sex==='F'?'female':''} ${m.id===selectedId?'selected':''}"
          onclick="selectMember(${m.id})">
       <span class="m-name">${m.full_name}</span>
       <span class="m-gen">G${m.generation}</span>
     </div>`).join('');
+  document.getElementById('memberList').innerHTML = html;
+  const mobileList = document.getElementById('mobileMemberList');
+  if (mobileList) mobileList.innerHTML = html;
 }
 
 // ── SELECT MEMBER ──
