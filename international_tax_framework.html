@@ -137,6 +137,64 @@
   .sidebar::-webkit-scrollbar-track { background: transparent; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+  /* ── SIDEBAR BRAND ── */
+  .sidebar-brand { margin-bottom: 1rem; }
+  .sidebar-brand .firm {
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: 0.01em;
+    line-height: 1.25;
+  }
+  .sidebar-brand .sub {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 3px;
+  }
+
+  /* ── CASE TABS (Futuro / Universal) ── */
+  .case-tabs {
+    display: flex;
+    gap: 3px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .case-tab {
+    flex: 1;
+    position: relative;
+    text-align: center;
+    padding: 0.5rem 0.6rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    color: var(--text-soft);
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  }
+  .case-tab:hover {
+    color: var(--accent-dim);
+    background: rgba(255,255,255,0.04);
+  }
+  .case-tab:active { transform: scale(0.97); }
+  .case-tab.active {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+    color: #14181f;
+    font-weight: 700;
+    box-shadow: 0 2px 12px rgba(201,169,110,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .case-tab.active:hover { color: #14181f; }
+
   .sidebar-title {
     font-family: var(--font-mono);
     font-size: 0.68rem;
@@ -524,13 +582,86 @@
   .s-possible { background: rgba(240,160,80,0.15); color: var(--risk-med); border: 1px solid rgba(240,160,80,0.3); }
   .s-sup { background: rgba(76,175,125,0.12); color: var(--risk-low); border: 1px solid rgba(76,175,125,0.25); }
 
+  /* ── MOBILE MENU BUTTON ── */
+  .mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    color: var(--accent);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.5);
+  }
+  .mobile-menu-btn svg { width: 20px; height: 20px; }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .sidebar-overlay.active { display: block; opacity: 1; }
+
+  .sidebar-close-btn {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-soft);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    .sidebar { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .sidebar-close-btn { display: flex; }
+    .sidebar {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: min(82vw, 300px);
+      max-height: none;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      z-index: 1000;
+      padding: 1.25rem 1.25rem 2rem;
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    .sidebar.mobile-open { transform: translateX(0); }
+    .sidebar-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
     .main { padding-left: 0; }
     .pillars { grid-template-columns: 1fr; }
     .layout { padding: 0 1rem; }
-    .banner { padding: 1.5rem; }
+    .banner { padding: 1.5rem; padding-left: 4rem; }
+  }
+  @media (min-width: 901px) {
+    .sidebar-top-row { display: contents; }
   }
 
   @media print {
@@ -596,6 +727,44 @@
   .issue-card .ic-label { font-size: .8rem; color: var(--text-soft); line-height: 1.4; }
   .issue-card .ic-sub { font-size: .7rem; color: var(--text-dim); margin-top: 3px; }
 
+  /* ── ISSUE CATEGORY GROUPS ── */
+  .issue-cat-groups { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+  .issue-cat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px 18px;
+    transition: border-color .2s;
+  }
+  .issue-cat:hover { border-color: var(--border-light); }
+  .issue-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .issue-cat-icon {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    background: var(--gold-dim); border: 1px solid rgba(201,169,110,.3); color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: .66rem; font-weight: 700;
+  }
+  .issue-cat-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--heading); line-height: 1.3; }
+  .issue-cat-count {
+    margin-left: auto; flex-shrink: 0; white-space: nowrap;
+    font-family: var(--font-mono); font-size: .62rem; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border);
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .issue-cat-summary { font-size: .82rem; color: var(--text-soft); line-height: 1.7; margin: 0 0 12px; }
+  .issue-cat-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  a.issue-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 5px 10px 5px 8px; text-decoration: none; font-size: .76rem; color: var(--text-soft);
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  a.issue-chip:hover { border-color: rgba(201,169,110,.4); background: var(--gold-dim); color: var(--gold-light); }
+  a.issue-chip .chip-num {
+    font-family: var(--font-mono); font-size: .64rem; font-weight: 700; color: var(--gold);
+    background: var(--gold-dim); border-radius: 3px; padding: 1px 5px;
+  }
+
   /* Risk legend */
   .risk-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
   .rl-item { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px; }
@@ -644,13 +813,24 @@
   </div>
 </div>
 
+<!-- MOBILE MENU BUTTON -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open contents menu" aria-expanded="false" aria-controls="mainSidebar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+</button>
+
+<!-- OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="sidebar-brand">
-      <div class="firm">Internaltional Tax</div>
-      <div class="sub" id="sidebarSub">Framework</div>
+  <nav class="sidebar" id="mainSidebar">
+    <div class="sidebar-top-row">
+      <div class="sidebar-brand">
+        <div class="firm">Internaltional Tax</div>
+        <div class="sub" id="sidebarSub">Framework</div>
+      </div>
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close contents menu">✕</button>
     </div>
     <div class="case-tabs">
       <a class="case-tab active" href="international_tax_futuro.html">Futuro</a>
@@ -768,30 +948,119 @@
 
     <div class="inst-section" id="inst-issues">
       <div class="inst-section-title">Full Issue Index — Generalised Framework (T1–T21 + PC)</div>
-      <p class="inst-intro">The following 21 tax issues and TASA Professional Conduct section form the complete analytical framework. Click any card to jump to that issue.</p>
-      <div class="issue-index">
-        <a class="issue-card" href="#issue1"><span class="ic-num">T1</span><div><div class="ic-label">Company Residency / CMAC</div><div class="ic-sub">ITAA 1936 s 6(1) · MLI MAP</div></div></a>
-        <a class="issue-card" href="#issue2"><span class="ic-num">T2</span><div><div class="ic-label">Employee PE Risk</div><div class="ic-sub">OECD Art 5 · BEPS Action 7 · PCG 2023/1</div></div></a>
-        <a class="issue-card" href="#issue3"><span class="ic-num">T3</span><div><div class="ic-label">Server PE — Indonesia</div><div class="ic-sub">OECD Art 5(4) · TR 2002/5</div></div></a>
-        <a class="issue-card" href="#issue4"><span class="ic-num">T4</span><div><div class="ic-label">WHT Shortfall — Royalties</div><div class="ic-sub">ITAA 1936 s 128B · PepsiCo HCA 2025</div></div></a>
-        <a class="issue-card" href="#issue5"><span class="ic-num">T5</span><div><div class="ic-label">CGT — Foreign Shares</div><div class="ic-sub">ITAA 1997 Div 855 · FRCGW</div></div></a>
-        <a class="issue-card" href="#issue6"><span class="ic-num">T6</span><div><div class="ic-label">Transfer Pricing MAP</div><div class="ic-sub">ITAA 1997 Subdiv 815-B · DTA Art 25</div></div></a>
-        <a class="issue-card" href="#issue7"><span class="ic-num">T7</span><div><div class="ic-label">IP Transfer &amp; Royalties</div><div class="ic-sub">ITAA 1997 Subdiv 815-B · TR 2024/D1</div></div></a>
-        <a class="issue-card" href="#issue8"><span class="ic-num">T8</span><div><div class="ic-label">Pre-Sale Dividend WHT</div><div class="ic-sub">ITAA 1936 s 128B · DTA Art 10</div></div></a>
-        <a class="issue-card" href="#issue9"><span class="ic-num">T9</span><div><div class="ic-label">Post-Acq Repatriation</div><div class="ic-sub">ITAA 1997 Subdiv 768-A · Div 802</div></div></a>
-        <a class="issue-card" href="#issue10"><span class="ic-num">T10</span><div><div class="ic-label">Corporate Residency &amp; CM&amp;C</div><div class="ic-sub">TR 2018/5 · PCG 2018/9</div></div></a>
-        <a class="issue-card" href="#issue11"><span class="ic-num">T11</span><div><div class="ic-label">Foreign Dividends — NANE &amp; FITO</div><div class="ic-sub">ITAA 1997 ss 768-5, 770-10</div></div></a>
-        <a class="issue-card" href="#issue12"><span class="ic-num">T12</span><div><div class="ic-label">Cross-Border Loan — Div 974</div><div class="ic-sub">ITAA 1997 s 974-20 · FRT · DDCR</div></div></a>
-        <a class="issue-card" href="#issue13"><span class="ic-num">T13</span><div><div class="ic-label">Capitalised Interest &amp; WHT</div><div class="ic-sub">ITAA 1997 s 974-55 · s 26-25</div></div></a>
-        <a class="issue-card" href="#issue14"><span class="ic-num">T14</span><div><div class="ic-label">PE — Foreign Co. in Australia</div><div class="ic-sub">OECD Art 5 · TR 2002/5 · PCG 2023/1</div></div></a>
-        <a class="issue-card" href="#issue15"><span class="ic-num">T15</span><div><div class="ic-label">CGT on Share Disposal — FRCGW</div><div class="ic-sub">ITAA 1997 s 855-25 · TAA Subdiv 14-D</div></div></a>
-        <a class="issue-card" href="#issue16"><span class="ic-num">T16</span><div><div class="ic-label">PE Residency Changes &amp; MLI</div><div class="ic-sub">MLI Art 4 · DTA Tie-Breaker</div></div></a>
-        <a class="issue-card" href="#issue17"><span class="ic-num">T17</span><div><div class="ic-label">PE — Fixed Place &amp; Agent</div><div class="ic-sub">OECD Art 5(1)(5) · BEPS Action 7</div></div></a>
-        <a class="issue-card" href="#issue18"><span class="ic-num">T18</span><div><div class="ic-label">PE Tax — Profit Attribution</div><div class="ic-sub">OECD Art 7 · AOA · ITAA 1997 s 8-1</div></div></a>
-        <a class="issue-card" href="#issue19"><span class="ic-num">T19</span><div><div class="ic-label">CFC Dividends — Aus Parent</div><div class="ic-sub">ITAA 1936 Part X · s 432 AIT</div></div></a>
-        <a class="issue-card" href="#issue20"><span class="ic-num">T20</span><div><div class="ic-label">Sale of Aus Shares — Non-Resident</div><div class="ic-sub">ITAA 1997 Div 855 · s 855-30</div></div></a>
-        <a class="issue-card" href="#issue21"><span class="ic-num">T21</span><div><div class="ic-label">WHT, Thin Cap, DDCR &amp; CFI</div><div class="ic-sub">ITAA 1997 Div 820 · Div 802 · s 26-25</div></div></a>
-        <a class="issue-card" href="#tasa"><span class="ic-num">PC</span><div><div class="ic-label">TASA Professional Conduct</div><div class="ic-sub">TASA 2009 s 30-10 · 2024 Determination</div></div></a>
+      <p class="inst-intro">The 21 tax issues and TASA Professional Conduct section are grouped below by shared legal theme. Click any issue to jump straight to it.</p>
+      <div class="issue-cat-groups">
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">RES</div>
+            <div class="issue-cat-title">Residency &amp; Central Management</div>
+            <div class="issue-cat-count">2 issues</div>
+          </div>
+          <p class="issue-cat-summary">Where a company's central management and control sits determines Australian tax residency itself — the threshold question that every other issue in the framework sits behind.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue1"><span class="chip-num">T1</span>Company Residency / CMAC</a>
+            <a class="issue-chip" href="#issue10"><span class="chip-num">T10</span>Corporate Residency &amp; CM&amp;C</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">PE</div>
+            <div class="issue-cat-title">Permanent Establishment</div>
+            <div class="issue-cat-count">6 issues</div>
+          </div>
+          <p class="issue-cat-summary">Covers how a PE arises — through people, servers, fixed places or dependent agents — under Article 5 and the MLI, and how profits are then attributed to it once one exists.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue2"><span class="chip-num">T2</span>Employee PE Risk</a>
+            <a class="issue-chip" href="#issue3"><span class="chip-num">T3</span>Server PE — Indonesia</a>
+            <a class="issue-chip" href="#issue14"><span class="chip-num">T14</span>PE — Foreign Co. in Australia</a>
+            <a class="issue-chip" href="#issue16"><span class="chip-num">T16</span>PE Residency Changes &amp; MLI</a>
+            <a class="issue-chip" href="#issue17"><span class="chip-num">T17</span>PE — Fixed Place &amp; Agent</a>
+            <a class="issue-chip" href="#issue18"><span class="chip-num">T18</span>PE Tax — Profit Attribution</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">TP</div>
+            <div class="issue-cat-title">Transfer Pricing &amp; IP</div>
+            <div class="issue-cat-count">2 issues</div>
+          </div>
+          <p class="issue-cat-summary">Arm's length pricing of intercompany dealings under Subdivision 815-B, including the transfer and licensing of intellectual property and resolution of disputes through MAP.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue6"><span class="chip-num">T6</span>Transfer Pricing MAP</a>
+            <a class="issue-chip" href="#issue7"><span class="chip-num">T7</span>IP Transfer &amp; Royalties</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">WHT</div>
+            <div class="issue-cat-title">Cross-Border Withholding Tax</div>
+            <div class="issue-cat-count">3 issues</div>
+          </div>
+          <p class="issue-cat-summary">Section 128B withholding exposure on royalty, dividend and interest payments flowing offshore, including treaty rate reductions and shortfalls flagged by recent case law.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue4"><span class="chip-num">T4</span>WHT Shortfall — Royalties</a>
+            <a class="issue-chip" href="#issue8"><span class="chip-num">T8</span>Pre-Sale Dividend WHT</a>
+            <a class="issue-chip" href="#issue13"><span class="chip-num">T13</span>Capitalised Interest &amp; WHT</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">FIN</div>
+            <div class="issue-cat-title">Financing, Thin Cap &amp; Debt Deductions</div>
+            <div class="issue-cat-count">2 issues</div>
+          </div>
+          <p class="issue-cat-summary">Characterisation of cross-border loans under Division 974, and the thin capitalisation and debt deduction creation rules that can deny interest deductions on related-party financing.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue12"><span class="chip-num">T12</span>Cross-Border Loan — Div 974</a>
+            <a class="issue-chip" href="#issue21"><span class="chip-num">T21</span>WHT, Thin Cap, DDCR &amp; CFI</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">CGT</div>
+            <div class="issue-cat-title">CGT &amp; Share Disposals</div>
+            <div class="issue-cat-count">3 issues</div>
+          </div>
+          <p class="issue-cat-summary">Capital gains treatment of foreign and Australian share disposals under Division 855, including the foreign resident capital gains withholding regime on sale proceeds.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue5"><span class="chip-num">T5</span>CGT — Foreign Shares</a>
+            <a class="issue-chip" href="#issue15"><span class="chip-num">T15</span>CGT on Share Disposal — FRCGW</a>
+            <a class="issue-chip" href="#issue20"><span class="chip-num">T20</span>Sale of Aus Shares — Non-Resident</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">DIV</div>
+            <div class="issue-cat-title">Dividends, Repatriation &amp; CFC</div>
+            <div class="issue-cat-count">3 issues</div>
+          </div>
+          <p class="issue-cat-summary">NANE and FITO treatment of inbound foreign dividends, post-acquisition profit repatriation, and attribution of CFC dividend income back to the Australian parent.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#issue9"><span class="chip-num">T9</span>Post-Acq Repatriation</a>
+            <a class="issue-chip" href="#issue11"><span class="chip-num">T11</span>Foreign Dividends — NANE &amp; FITO</a>
+            <a class="issue-chip" href="#issue19"><span class="chip-num">T19</span>CFC Dividends — Aus Parent</a>
+          </div>
+        </div>
+
+        <div class="issue-cat">
+          <div class="issue-cat-head">
+            <div class="issue-cat-icon">PC</div>
+            <div class="issue-cat-title">Professional Conduct</div>
+            <div class="issue-cat-count">1 issue</div>
+          </div>
+          <p class="issue-cat-summary">TASA 2009 obligations on the advising practitioner — self-reporting duties, the Code of Professional Conduct, and TPB sanctions for advice-related breaches.</p>
+          <div class="issue-cat-chips">
+            <a class="issue-chip" href="#tasa"><span class="chip-num">PC</span>TASA Professional Conduct</a>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -2723,6 +2992,46 @@
 
   function collapseAll() {
     document.querySelectorAll('.issue').forEach(el => el.classList.remove('open'));
+  }
+
+  // ── MOBILE SIDEBAR ──
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const mainSidebar = document.getElementById('mainSidebar');
+
+  function openSidebar() {
+    mainSidebar.classList.add('mobile-open');
+    sidebarOverlay.classList.add('active');
+    mobileMenuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    mainSidebar.classList.remove('mobile-open');
+    sidebarOverlay.classList.remove('active');
+    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', openSidebar);
+    sidebarCloseBtn.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Close the panel after tapping a contents link
+    mainSidebar.querySelectorAll('a.toc-item, a.case-tab').forEach(link => {
+      link.addEventListener('click', closeSidebar);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Reset state if the viewport is resized back to desktop width
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) closeSidebar();
+    });
   }
 </script>
 </body>
