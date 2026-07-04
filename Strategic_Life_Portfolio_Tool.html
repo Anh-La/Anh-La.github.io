@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Life Portfolio • Life Strategy Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;
+            --accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--accent5:#b67fff;
+            --text:#e8e3d8;--muted:#7a7f8e;
+            --font-display:'DM Serif Display',Georgia,serif;
+            --font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;
+            --radius:12px;
+            --primary: var(--accent);
+        }
+
+        body {
+            font-family: var(--font-body), system_ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .heading-serif {
+            font-family: var(--font-display), Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: -.02em;
+        }
+
+        .section-header {
+            font-family: var(--font-display), Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: 0;
+            color: var(--accent);
+        }
+
+        .life-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .life-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .matrix-container {
+            background: linear-gradient(145deg, var(--surface) 0%, var(--card) 100%);
+            box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.2);
+        }
+
+        .sl u-row {
+            transition: background-color 0.1s ease;
+        }
+        
+        .slu-row:hover {
+            background-color: var(--surface);
+        }
+
+        .metric-value {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .quadrant-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 9px;
+            border-radius: 9999px;
+            letter-spacing: -.5px;
+        }
+
+        .portfolio-bubble {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .portfolio-bubble:hover {
+            filter: brightness(1.1) saturate(1.2);
+            transform: scale(1.08);
+            z-index: 10;
+        }
+
+        .nav-tab {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-tab.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .nav-tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), #d4b87a);
+            border-radius: 3px;
+        }
+
+        .input-slider {
+            accent-color: var(--accent);
+        }
+
+        .hbr-pink {
+            color: var(--accent);
+        }
+
+        .framework-bg {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
+        }
+
+        .stat-card {
+            background: var(--surface);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+        }
+
+        .modern-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .modern-table th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        
+        .modern-table td {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .life-gradient {
+            background: linear-gradient(90deg, var(--accent), #d4b87a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tooltip {
+            position: absolute;
+            z-index: 50;
+            padding: 8px 12px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 10px rgb(0 0 0 / 0.4);
+            pointer-events: none;
+            white-space: nowrap;
+            transform: translateY(-8px);
+            border: 1px solid var(--border);
+        }
+
+        .matrix-grid {
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 25% 25%;
+        }
+
+        /* Stage tabs for life stage recommendations */
+        .stage-tab {
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--muted);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .stage-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .stage-tab.active {
+            background: linear-gradient(to right, var(--accent), #d4b87a);
+            color: #000;
+            border-color: transparent;
+            box-shadow: 0 4px 6px -1px rgb(200 169 110 / 0.25);
+        }
+
+        /* Print / PDF Report optimizations */
+        @media print {
+            nav, .sticky, button, .fa-plus, .fa-times, input, textarea, canvas, #top-priorities-list, .px-8.pt-8.pb-16 > div:first-child {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                font-size: 11pt;
+            }
+            .section-header {
+                font-size: 16pt !important;
+                margin-bottom: 8pt;
+            }
+            table {
+                font-size: 9pt;
+                page-break-inside: avoid;
+            }
+            .life-card, .stat-card, .bg-white {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+            .max-w-screen-2xl {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* ============ Wealth Builder design-system match + Contrast Improvements ============ */
+        html { background: var(--bg); }
+        .bg-slate-50, .bg-slate-50\/50 { background: var(--card) !important; }
+        .bg-white { background: var(--surface) !important; }
+        .bg-slate-100, .bg-slate-200 { background: var(--surface) !important; }
+
+        .border-slate-100, .border-slate-200, .border-slate-300, .border-pink-200 { border-color: var(--border) !important; }
+
+        .text-slate-400, .text-slate-500 { color: var(--muted) !important; }
+        .text-slate-600, .text-slate-700, .text-slate-800, .text-slate-900 { color: var(--text) !important; }
+
+        /* Stronger contrast for dynamic cards and buttons */
+        .text-pink-600, .text-rose-600, .text-pink-700 { color: var(--accent) !important; }
+        .bg-pink-600, .bg-rose-600, .hover\:bg-pink-600:hover { background: var(--accent) !important; color: #0a0c10 !important; }
+        .bg-pink-50, .bg-pink-100, .bg-rose-50, .bg-rose-100, .bg-pink-50\/30 { background: rgba(200,169,110,.12) !important; }
+
+        /* emerald / success */
+        .text-emerald-600, .text-emerald-700 { color: var(--accent3) !important; font-weight: 600; }
+
+        /* Better readability in matrix and tooltips */
+        .tooltip { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border); }
+
+        input, textarea, select { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text) !important; }
+        input::placeholder, textarea::placeholder { color: var(--muted) !important; }
+
+        nav.bg-white { background: rgba(10,12,16,.85) !important; backdrop-filter: blur(12px); border-color: var(--border) !important; }
+        table.modern-table thead th { background: var(--surface) !important; color: var(--text) !important; }
+        .divide-slate-100 > * + * { border-color: var(--border) !important; }
+
+        ::-webkit-scrollbar { height: 10px; width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-11 h-11 bg-gradient-to-br from-pink-600 to-rose-600 rounded-2xl flex items-center justify-center shadow-inner">
+                        <i class="fa-solid fa-chart-line text-white text-3xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-3xl tracking-tighter heading-serif" data-i18n="brandStrategic">Strategic</span>
+                        <span class="font-bold text-3xl tracking-tighter text-pink-600 heading-serif" data-i18n="brandLife">Life</span>
+                        <span class="font-semibold text-xl text-slate-500" data-i18n="brandPortfolio">Portfolio</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-x-2 text-sm">
+                    <div class="px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-3xl text-xs font-semibold flex items-center gap-x-1.5">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span data-i18n="navHbrBadge">Based on HBR Life Strategy</span>
+                    </div>
+                    <button onclick="toggleLanguage()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-3xl transition-colors border border-slate-300">
+                        <span data-i18n="btnLangToggle">🌐 Tiếng Việt</span>
+                    </button>
+                    <button onclick="resetAllData()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-3xl transition-colors">
+                        <i class="fa-solid fa-undo text-xs"></i>
+                        <span data-i18n="btnReset">Reset</span>
+                    </button>
+                    <button onclick="loadExampleData()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-3xl transition-all active:scale-[0.985]">
+                        <i class="fa-solid fa-magic"></i>
+                        <span data-i18n="btnLoadExample">Load Example</span>
+                    </button>
+                    <button onclick="exportData()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-xs font-semibold bg-slate-900 hover:bg-black text-white rounded-3xl transition-all">
+                        <i class="fa-solid fa-download"></i>
+                        <span data-i18n="btnExportJson">Export JSON</span>
+                    </button>
+                    <button onclick="generatePDFReport()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-xs font-semibold bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white rounded-3xl transition-all shadow-sm">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span data-i18n="btnPdfReport">PDF Report</span>
+                    </button>
+                </div>
+            </div>
+            <div class="px-8 pb-3 -mt-1">
+                <a href="index.html" style="color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.5px;display:inline-flex;align-items:center;gap:5px" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">← <span data-i18n="backToHub">Hub</span></a>
+                <span style="color:var(--border);margin:0 8px">·</span>
+                <a href="wealth-builder.html" style="color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.5px" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'"><span data-i18n="linkToWealth">Personal Wealth Builder</span> →</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+        
+        <!-- Hero Header -->
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-y-4 mb-8">
+            <div>
+                <div class="inline-flex items-center gap-x-2 px-4 py-1 bg-white shadow-sm border border-slate-200 rounded-3xl text-xs font-semibold tracking-widest mb-3">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span data-i18n="heroKicker">HARVARD BUSINESS REVIEW FRAMEWORK</span>
+                </div>
+                <h1 class="text-6xl font-bold tracking-tighter heading-serif" data-i18n="heroTitle">Design the life<br>you actually want.</h1>
+                <p class="mt-3 max-w-lg text-lg text-slate-600" data-i18n="heroSub">Apply corporate strategy tools to your personal life. Assess your portfolio of 16 Strategic Life Units and make intentional choices.</p>
+            </div>
+            
+            <div class="flex items-center gap-x-3">
+                <div onclick="document.getElementById('assessment-section').scrollIntoView({ behavior: 'smooth' })" 
+                     class="cursor-pointer group flex items-center gap-x-3 bg-white border border-slate-200 hover:border-pink-300 px-5 h-14 rounded-3xl transition-all shadow-sm">
+                    <div>
+                        <div class="text-xs text-slate-500" data-i18n="ctaStartHere">Start here</div>
+                        <div class="font-semibold text-pink-600 group-hover:text-pink-700" data-i18n="ctaAssess">Assess Your Portfolio →</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7 Questions Comparison -->
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div>
+                    <span class="font-semibold text-xl" data-i18n="q7Title">The 7 Strategic Questions</span>
+                    <span class="text-sm text-slate-500 ml-2" data-i18n="q7Sub">Corporate Strategy → Life Strategy</span>
+                </div>
+                <button onclick="document.getElementById('questions-modal').showModal()" 
+                        class="text-xs flex items-center gap-x-1.5 text-pink-600 hover:text-pink-700 font-medium">
+                    <i class="fa-solid fa-info-circle"></i> 
+                    <span data-i18n="q7WhyLink">Why this works</span>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                <!-- Corporate -->
+                <div class="bg-white border border-slate-200 rounded-3xl p-5">
+                    <div class="flex items-center gap-x-2 mb-4">
+                        <i class="fa-solid fa-building text-slate-400"></i>
+                        <span class="font-bold text-sm tracking-wider text-slate-500">CORPORATE STRATEGY</span>
+                    </div>
+                    <div class="space-y-[3px] text-sm">
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">1.</span> <span>How does the organization define success?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">2.</span> <span>What is our purpose?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">3.</span> <span>What is our vision?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">4.</span> <span>How do we assess our business portfolio?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">5.</span> <span>What can we learn from benchmarks?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">6.</span> <span>What portfolio choices can we make?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-slate-400">7.</span> <span>How can we ensure successful, sustained change?</span></div>
+                    </div>
+                </div>
+                
+                <!-- Life Strategy -->
+                <div class="bg-gradient-to-br from-pink-600 to-rose-600 text-white rounded-3xl p-5 shadow-xl shadow-pink-900/30">
+                    <div class="flex items-center gap-x-2 mb-4">
+                        <i class="fa-solid fa-user text-pink-200"></i>
+                        <span class="font-bold text-sm tracking-wider text-pink-200">YOUR LIFE STRATEGY</span>
+                    </div>
+                    <div class="space-y-[3px] text-sm text-white/95">
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">1.</span> <span class="font-medium">How do I define a great life?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">2.</span> <span class="font-medium">What is my life purpose?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">3.</span> <span class="font-medium">What is my life vision?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">4.</span> <span class="font-medium">How do I assess my life portfolio?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">5.</span> <span class="font-medium">What can I learn from benchmarks?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">6.</span> <span class="font-medium">What portfolio choices can I make?</span></div>
+                        <div class="flex gap-3"><span class="font-mono w-4 text-pink-300">7.</span> <span class="font-medium">How can I ensure successful, sustained life change?</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLAs & SLUs Reference -->
+        <div id="reference-section" class="mb-10">
+            <div class="flex justify-between items-end mb-4 px-1">
+                <div>
+                    <span class="section-header" data-i18n="sec16Title">The 16 Strategic Life Units</span>
+                    <p class="text-sm text-slate-500" data-i18n="sec16Sub">Grouped into 6 Strategic Life Areas (SLAs)</p>
+                </div>
+                <div class="text-xs px-3 py-1 bg-white border border-slate-200 rounded-2xl text-slate-500" data-i18n="sec16Track">16 total units • Track time, importance &amp; satisfaction</div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+                <!-- Dynamically populated by JS -->
+            </div>
+        </div>
+
+        <!-- ASSESSMENT SECTION -->
+        <div id="assessment-section" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4 px-1">
+                <div>
+                    <span class="section-header" data-i18n="secAssessTitle">Life Portfolio Assessment</span>
+                    <span class="ml-3 text-xs font-mono px-3 py-1 bg-pink-100 text-pink-700 rounded-3xl" data-i18n="secAssessStep">STEP 4 OF THE FRAMEWORK</span>
+                </div>
+                <div class="flex items-center gap-x-2 text-xs">
+                    <div class="flex items-center bg-white border px-3 rounded-3xl h-9 text-xs">
+                        <span class="text-slate-500 mr-2" data-i18n="totalWeekHours">Total week hours</span>
+                        <input id="total-hours" type="number" value="168" 
+                               class="w-14 font-mono text-center font-semibold bg-transparent focus:outline-none"
+                               onchange="updateAllCalculations()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Table -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden mb-6">
+                <table class="modern-table w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th class="px-5 py-3.5 text-left w-52" data-i18n="thSlu">Strategic Life Unit</th>
+                            <th class="px-3 py-3.5 text-center w-20" data-i18n="thHoursWk">Hours / wk</th>
+                            <th class="px-3 py-3.5 text-center w-16" data-i18n="thPctWeek">% Week</th>
+                            <th class="px-3 py-3.5 text-center w-20" data-i18n="thImportance">Importance</th>
+                            <th class="px-3 py-3.5 text-center w-20" data-i18n="thSatisfaction">Satisfaction</th>
+                            <th class="px-3 py-3.5 text-center w-16" data-i18n="thGap">Gap</th>
+                            <th class="px-3 py-3.5 text-center w-20" data-i18n="thPriority">Priority</th>
+                            <th class="px-4 py-3.5 text-center w-28" data-i18n="thQuadrant">Quadrant</th>
+                            <th class="px-4 py-3.5 text-left" data-i18n="thNotes">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assessment-table-body" class="text-sm divide-y divide-slate-100">
+                        <!-- Populated dynamically by JavaScript -->
+                    </tbody>
+                    <tfoot class="bg-slate-50 border-t font-medium text-xs">
+                        <tr>
+                            <td colspan="2" class="px-5 py-3 text-right font-semibold text-slate-600" data-i18n="totalsAverages">TOTALS &amp; AVERAGES</td>
+                            <td id="total-hours-cell" class="px-3 py-3 text-center font-mono font-bold">0.0</td>
+                            <td id="total-percent-cell" class="px-3 py-3 text-center font-mono font-bold">100%</td>
+                            <td id="avg-imp-cell" class="px-3 py-3 text-center font-mono font-bold text-pink-700">—</td>
+                            <td id="avg-sat-cell" class="px-3 py-3 text-center font-mono font-bold text-emerald-700">—</td>
+                            <td id="avg-gap-cell" class="px-3 py-3 text-center font-mono font-bold">—</td>
+                            <td colspan="2" class="px-4"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="flex justify-end gap-x-2 text-xs mb-8">
+                <button onclick="sortTableByPriority()" 
+                        class="px-4 h-9 flex items-center gap-x-2 text-xs font-semibold border border-slate-300 hover:bg-white rounded-3xl transition-colors">
+                    <i class="fa-solid fa-sort-amount-down"></i> 
+                    <span data-i18n="btnSortPriority">Sort by Priority (highest first)</span>
+                </button>
+                <button onclick="clearAllInputs()" 
+                        class="px-4 h-9 flex items-center gap-x-2 text-xs font-semibold border border-slate-300 hover:bg-white text-red-600 rounded-3xl transition-colors">
+                    <i class="fa-solid fa-trash"></i> 
+                    <span data-i18n="btnClearAll">Clear All</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE MATRIX VISUAL -->
+        <div class="mb-10">
+            <div class="flex justify-between items-center mb-3 px-1">
+                <div>
+                    <span class="section-header" data-i18n="secMatrixTitle">Strategic Life Portfolio Matrix</span>
+                    <span class="text-xs ml-2 text-slate-500" data-i18n="secMatrixSub">Importance vs Satisfaction • Bubble size = time invested</span>
+                </div>
+                <div class="flex items-center gap-1 text-[10px]">
+                    <div class="flex items-center gap-x-1.5 px-3 py-1 bg-white border border-slate-200 rounded-3xl">
+                        <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></div>
+                        <span class="font-medium text-emerald-700" data-i18n="legendStrength">Strength</span>
+                    </div>
+                    <div class="flex items-center gap-x-1.5 px-3 py-1 bg-white border border-slate-200 rounded-3xl">
+                        <div class="w-2.5 h-2.5 bg-rose-500 rounded-full"></div>
+                        <span class="font-medium text-rose-700" data-i18n="legendInvest">Invest / Priority</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <div class="flex gap-6">
+                    <!-- Matrix -->
+                    <div class="relative flex-shrink-0" style="width: 520px; height: 520px;">
+                        <canvas id="portfolio-matrix" width="520" height="520" class="rounded-2xl border border-slate-100 shadow-inner cursor-crosshair"></canvas>
+                        
+                        <!-- Axis Labels -->
+                        <div class="absolute -left-2 top-1/2 -rotate-90 text-[10px] font-bold tracking-[1.5px] text-slate-400" style="transform-origin: center;">IMPORTANCE →</div>
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-[1.5px] text-slate-400">SATISFACTION →</div>
+                        
+                        <div class="absolute top-3 left-3 text-[10px] font-mono text-emerald-600/70 font-bold">HIGH</div>
+                        <div class="absolute bottom-3 left-3 text-[10px] font-mono text-emerald-600/70 font-bold">LOW</div>
+                        <div class="absolute top-3 right-3 text-[10px] font-mono text-emerald-600/70 font-bold">HIGH</div>
+                    </div>
+                    
+                    <div class="flex-1 pt-2">
+                        <div class="text-xs font-semibold mb-3 text-slate-600" data-i18n="howToReadMatrix">HOW TO READ THE MATRIX</div>
+                        
+                        <div class="space-y-4 text-sm">
+                            <div class="flex gap-3">
+                                <div class="w-5 h-5 mt-0.5 flex-shrink-0 rounded bg-emerald-100 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up text-emerald-600 text-xs"></i></div>
+                                <div>
+                                    <div class="font-semibold text-emerald-700" data-i18n="quad1Title">High Importance + High Satisfaction</div>
+                                    <div class="text-xs text-slate-500" data-i18n="quad1Desc">Your strengths. Protect and leverage these areas.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-5 h-5 mt-0.5 flex-shrink-0 rounded bg-rose-100 flex items-center justify-center"><i class="fa-solid fa-bullseye text-rose-600 text-xs"></i></div>
+                                <div>
+                                    <div class="font-semibold text-rose-700" data-i18n="quad2Title">High Importance + Low Satisfaction</div>
+                                    <div class="text-xs text-slate-500" data-i18n="quad2Desc">Highest leverage opportunities. Invest time, energy or new approaches here.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-5 h-5 mt-0.5 flex-shrink-0 rounded bg-amber-100 flex items-center justify-center"><i class="fa-solid fa-clock text-amber-600 text-xs"></i></div>
+                                <div>
+                                    <div class="font-semibold text-amber-700" data-i18n="quad3Title">Low Importance + High Satisfaction</div>
+                                    <div class="text-xs text-slate-500" data-i18n="quad3Desc">Enjoyable but review time allocation — are you over-investing?</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-5 h-5 mt-0.5 flex-shrink-0 rounded bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-minus text-slate-500 text-xs"></i></div>
+                                <div>
+                                    <div class="font-semibold text-slate-600" data-i18n="quad4Title">Low Importance + Low Satisfaction</div>
+                                    <div class="text-xs text-slate-500" data-i18n="quad4Desc">Low priority. Consider reducing time spent.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto pt-6 text-[10px] text-slate-400">
+                            Bubble size reflects % of your week. Larger = more time invested. Hover bubbles for details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD / INSIGHTS -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-10">
+            
+            <!-- Stats -->
+            <div class="xl:col-span-5 bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="font-semibold mb-4 flex items-center gap-x-2">
+                    <i class="fa-solid fa-chart-bar text-pink-600"></i>
+                    <span data-i18n="portfolioHealthSnapshot">Portfolio Health Snapshot</span>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="stat-card border border-slate-100 rounded-2xl p-4 text-center">
+                        <div class="text-xs text-slate-500" data-i18n="avgImportance">AVG IMPORTANCE</div>
+                        <div id="dash-avg-imp" class="text-4xl font-bold text-pink-600 metric-value mt-1">—</div>
+                    </div>
+                    <div class="stat-card border border-slate-100 rounded-2xl p-4 text-center">
+                        <div class="text-xs text-slate-500" data-i18n="avgSatisfaction">AVG SATISFACTION</div>
+                        <div id="dash-avg-sat" class="text-4xl font-bold text-emerald-600 metric-value mt-1">—</div>
+                    </div>
+                    <div class="stat-card border border-slate-100 rounded-2xl p-4 text-center">
+                        <div class="text-xs text-slate-500" data-i18n="avgGap">AVG GAP</div>
+                        <div id="dash-avg-gap" class="text-4xl font-bold text-amber-600 metric-value mt-1">—</div>
+                    </div>
+                </div>
+                
+                <div class="mt-5 text-xs text-center text-slate-500">
+                    <span data-i18n="positiveGapNote">Positive gap = areas where importance exceeds current satisfaction</span>
+                </div>
+            </div>
+            
+            <!-- Top Priorities -->
+            <div class="xl:col-span-7 bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex justify-between mb-4">
+                    <div class="font-semibold flex items-center gap-x-2">
+                        <i class="fa-solid fa-tachometer-alt text-rose-600"></i>
+                        <span data-i18n="topPrioritiesTitle">Top Priorities to Invest In</span>
+                    </div>
+                    <span class="text-xs px-3 py-1 rounded-3xl bg-rose-50 text-rose-600 font-medium self-start" data-i18n="highestPriorityFirst">Highest priority score first</span>
+                </div>
+                
+                <div id="top-priorities-list" class="space-y-2 text-sm">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION PLAN -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-7">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <span class="section-header" data-i18n="secActionPlanTitle">Your Life Strategy Action Plan</span>
+                    <p class="text-xs text-slate-500" data-i18n="secActionPlanSub">Select 3–5 priorities from above and define concrete next steps</p>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left text-xs font-semibold text-slate-500 border-b">
+                            <th class="pb-3 pr-4 w-56" data-i18n="thPrioritySlu">Priority SLU</th>
+                            <th class="pb-3 pr-4" data-i18n="thCurrentState">Current State</th>
+                            <th class="pb-3 pr-4" data-i18n="thDesiredState">Desired State (3–6 mo)</th>
+                            <th class="pb-3 pr-4" data-i18n="thKeyActions">Key Actions</th>
+                            <th class="pb-3 pr-4 w-40" data-i18n="thSuccessMetrics">Success Metrics</th>
+                            <th class="pb-3 w-8"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="action-plan-body" class="text-sm">
+                        <!-- Rows added dynamically or static template -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pt-4 flex justify-end">
+                <button onclick="addActionPlanRow()" 
+                        class="text-xs flex items-center gap-x-2 px-5 h-9 bg-pink-600 hover:bg-pink-700 transition-colors text-white rounded-3xl text-xs font-semibold">
+                    <i class="fa-solid fa-plus"></i> 
+                    <span data-i18n="btnAddActionRow">ADD ANOTHER ACTION ROW</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- NEW: Age-Specific Actionable Steps Section -->
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-4 px-1">
+                <div>
+                    <span class="section-header" data-i18n="secStageTitle">Recommended Actionable Steps by Life Stage</span>
+                    <p class="text-xs text-slate-500 mt-0.5" data-i18n="secStageSub">Evidence-based, specific tactics matched to your priorities + typical life stage. Click + to add directly to your Action Plan.</p>
+                </div>
+                <div class="text-[10px] px-3 py-1 bg-rose-50 text-rose-600 rounded-3xl font-medium" data-i18n="stageCalibrated">Calibrated for working parents in career acceleration phase</div>
+            </div>
+
+            <!-- Stage Selector Tabs -->
+            <div class="flex flex-wrap gap-2 mb-4" id="stage-tabs">
+                <button onclick="switchLifeStage('current')" class="stage-tab active" data-stage="current">
+                    <i class="fa-solid fa-child mr-1.5"></i> <span data-i18n="stageCurrent">Current (Ages 35–42)</span>
+                </button>
+                <button onclick="switchLifeStage('next')" class="stage-tab" data-stage="next">
+                    <i class="fa-solid fa-chart-line mr-1.5"></i> <span data-i18n="stageNext">Next (Ages 43–52)</span>
+                </button>
+                <button onclick="switchLifeStage('legacy')" class="stage-tab" data-stage="legacy">
+                    <i class="fa-solid fa-seedling mr-1.5"></i> <span data-i18n="stageLegacy">Legacy (Ages 53–65+)</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Stage Content -->
+            <div id="stage-content" class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[320px]">
+                <!-- Populated by JS: switchLifeStage() -->
+            </div>
+            
+            <div class="mt-3 text-[10px] text-center text-slate-400">
+                <span data-i18n="stageFooterNote">These are high-leverage starting points. Customize timing, metrics, and details in your Action Plan above. Review &amp; update quarterly.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Questions Modal -->
+    <dialog id="questions-modal" class="rounded-3xl p-0 w-full max-w-2xl shadow-2xl">
+        <div class="p-8">
+            <div class="flex justify-between mb-6">
+                <div class="font-bold text-xl" data-i18n="modalWhyTitle">Why these 7 questions work</div>
+                <button onclick="document.getElementById('questions-modal').close()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times fa-lg"></i></button>
+            </div>
+            <div class="prose prose-sm text-slate-600">
+                <p>Corporate strategy has evolved over decades into a rigorous, repeatable process. This framework translates that discipline to personal life.</p>
+                <p class="mt-3">By answering the same questions organizations use to allocate capital and talent, you create clarity, identify misalignments, and make deliberate portfolio choices about how you spend your finite time and energy.</p>
+                <div class="mt-4 p-4 bg-pink-50 text-pink-800 text-xs rounded-2xl">
+                    The assessment step (question 4) is the most actionable: it turns vague feelings of “life balance” into a data-driven view you can act on immediately.
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <footer style="border-top:1px solid var(--border);padding:20px 32px;color:var(--muted);background:rgba(17,19,24,.6);backdrop-filter:blur(10px);font-family:var(--font-body)">
+        <div style="max-width:1400px;margin:0 auto;display:flex;gap:40px;flex-wrap:wrap">
+            <div style="min-width:220px">
+                <div style="font-size:12px;color:var(--text);font-weight:900;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px" data-i18n="footerRelated">Related resources</div>
+                <a href="index.html" style="color:var(--accent2);text-decoration:none;font-weight:700" data-i18n="footerHub">Financial Hub</a><br/>
+                <a href="wealth-builder.html" style="color:var(--accent2);text-decoration:none;font-weight:700" data-i18n="footerWealthBuilder">Personal Wealth Builder</a>
+            </div>
+            <div class="footer-col">
+                <div style="font-size:12px;color:var(--text);font-weight:900;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px" data-i18n="footerAbout">About this tool</div>
+                <div style="font-size:12px;line-height:1.5;max-width:560px" data-i18n="footerAboutText">Based on the Harvard Business Review Life Strategy framework. Prepared for personal planning purposes only — not professional advice.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent-pink', '#E91E63');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'serif-custom': ['Playfair Display', 'Georgia', 'serif']
+                        }
+                    }
+                }
+            };
+        }
+
+        // ============ Bilingual support (EN / Vietnamese) ============
+        const i18n = {
+            en: {
+                brandStrategic: "Strategic", brandLife: "Life", brandPortfolio: "Portfolio",
+                navHbrBadge: "Based on HBR Life Strategy",
+                btnLangToggle: "🌐 Tiếng Việt",
+                btnReset: "Reset", btnLoadExample: "Load Example", btnExportJson: "Export JSON", btnPdfReport: "PDF Report",
+                backToHub: "Hub", linkToWealth: "Personal Wealth Builder",
+                heroKicker: "HARVARD BUSINESS REVIEW FRAMEWORK",
+                heroTitle: "Design the life<br>you actually want.",
+                heroSub: "Apply corporate strategy tools to your personal life. Assess your portfolio of 16 Strategic Life Units and make intentional choices.",
+                ctaStartHere: "Start here", ctaAssess: "Assess Your Portfolio →",
+                q7Title: "The 7 Strategic Questions", q7Sub: "Corporate Strategy → Life Strategy", q7WhyLink: "Why this works",
+                sec16Title: "The 16 Strategic Life Units", sec16Sub: "Grouped into 6 Strategic Life Areas (SLAs)",
+                sec16Track: "16 total units • Track time, importance &amp; satisfaction",
+                secAssessTitle: "Life Portfolio Assessment", secAssessStep: "STEP 4 OF THE FRAMEWORK",
+                totalWeekHours: "Total week hours",
+                thSlu: "Strategic Life Unit", thHoursWk: "Hours / wk", thPctWeek: "% Week", thImportance: "Importance",
+                thSatisfaction: "Satisfaction", thGap: "Gap", thPriority: "Priority", thQuadrant: "Quadrant", thNotes: "Notes",
+                totalsAverages: "TOTALS &amp; AVERAGES",
+                btnSortPriority: "Sort by Priority (highest first)", btnClearAll: "Clear All",
+                secMatrixTitle: "Strategic Life Portfolio Matrix",
+                secMatrixSub: "Importance vs Satisfaction • Bubble size = time invested",
+                legendStrength: "Strength", legendInvest: "Invest / Priority",
+                howToReadMatrix: "HOW TO READ THE MATRIX",
+                quad1Title: "High Importance + High Satisfaction", quad1Desc: "Your strengths. Protect and leverage these areas.",
+                quad2Title: "High Importance + Low Satisfaction", quad2Desc: "Highest leverage opportunities. Invest time, energy or new approaches here.",
+                quad3Title: "Low Importance + High Satisfaction", quad3Desc: "Enjoyable but review time allocation — are you over-investing?",
+                quad4Title: "Low Importance + Low Satisfaction", quad4Desc: "Low priority. Consider reducing time spent.",
+                portfolioHealthSnapshot: "Portfolio Health Snapshot",
+                avgImportance: "AVG IMPORTANCE", avgSatisfaction: "AVG SATISFACTION", avgGap: "AVG GAP",
+                positiveGapNote: "Positive gap = areas where importance exceeds current satisfaction",
+                topPrioritiesTitle: "Top Priorities to Invest In", highestPriorityFirst: "Highest priority score first",
+                secActionPlanTitle: "Your Life Strategy Action Plan",
+                secActionPlanSub: "Select 3–5 priorities from above and define concrete next steps",
+                thPrioritySlu: "Priority SLU", thCurrentState: "Current State", thDesiredState: "Desired State (3–6 mo)",
+                thKeyActions: "Key Actions", thSuccessMetrics: "Success Metrics",
+                btnAddActionRow: "ADD ANOTHER ACTION ROW",
+                secStageTitle: "Recommended Actionable Steps by Life Stage",
+                secStageSub: "Evidence-based, specific tactics matched to your priorities + typical life stage. Click + to add directly to your Action Plan.",
+                stageCalibrated: "Calibrated for working parents in career acceleration phase",
+                stageCurrent: "Current (Ages 35–42)", stageNext: "Next (Ages 43–52)", stageLegacy: "Legacy (Ages 53–65+)",
+                stageFooterNote: "These are high-leverage starting points. Customize timing, metrics, and details in your Action Plan above. Review &amp; update quarterly.",
+                modalWhyTitle: "Why these 7 questions work",
+                footerRelated: "Related resources", footerHub: "Financial Hub", footerWealthBuilder: "Personal Wealth Builder",
+                footerAbout: "About this tool",
+                footerAboutText: "Based on the Harvard Business Review Life Strategy framework. Prepared for personal planning purposes only — not professional advice."
+            },
+            vi: {
+                brandStrategic: "Chiến Lược", brandLife: "Cuộc Sống", brandPortfolio: "Danh Mục",
+                navHbrBadge: "Dựa trên khung HBR Life Strategy",
+                btnLangToggle: "🌐 English",
+                btnReset: "Đặt lại", btnLoadExample: "Tải ví dụ", btnExportJson: "Xuất JSON", btnPdfReport: "Báo cáo PDF",
+                backToHub: "Trang chủ", linkToWealth: "Công cụ Quản lý Tài sản",
+                heroKicker: "KHUNG HARVARD BUSINESS REVIEW",
+                heroTitle: "Thiết kế cuộc sống<br>bạn thực sự mong muốn.",
+                heroSub: "Áp dụng công cụ chiến lược doanh nghiệp vào cuộc sống cá nhân. Đánh giá danh mục 16 Đơn Vị Cuộc Sống Chiến Lược và đưa ra lựa chọn có chủ đích.",
+                ctaStartHere: "Bắt đầu tại đây", ctaAssess: "Đánh Giá Danh Mục Của Bạn →",
+                q7Title: "7 Câu Hỏi Chiến Lược", q7Sub: "Chiến Lược Doanh Nghiệp → Chiến Lược Cuộc Sống", q7WhyLink: "Vì sao hiệu quả",
+                sec16Title: "16 Đơn Vị Cuộc Sống Chiến Lược", sec16Sub: "Được nhóm thành 6 Lĩnh Vực Cuộc Sống Chiến Lược (SLA)",
+                sec16Track: "16 đơn vị • Theo dõi thời gian, mức độ quan trọng &amp; sự hài lòng",
+                secAssessTitle: "Đánh Giá Danh Mục Cuộc Sống", secAssessStep: "BƯỚC 4 CỦA KHUNG",
+                totalWeekHours: "Tổng số giờ trong tuần",
+                thSlu: "Đơn Vị Cuộc Sống Chiến Lược", thHoursWk: "Giờ / tuần", thPctWeek: "% Tuần", thImportance: "Mức quan trọng",
+                thSatisfaction: "Hài lòng", thGap: "Khoảng cách", thPriority: "Ưu tiên", thQuadrant: "Góc phần tư", thNotes: "Ghi chú",
+                totalsAverages: "TỔNG &amp; TRUNG BÌNH",
+                btnSortPriority: "Sắp xếp theo ưu tiên (cao nhất trước)", btnClearAll: "Xóa tất cả",
+                secMatrixTitle: "Ma Trận Danh Mục Cuộc Sống Chiến Lược",
+                secMatrixSub: "Mức quan trọng và Hài lòng • Kích thước bong bóng = thời gian đầu tư",
+                legendStrength: "Điểm mạnh", legendInvest: "Đầu tư / Ưu tiên",
+                howToReadMatrix: "CÁCH ĐỌC MA TRẬN",
+                quad1Title: "Quan trọng cao + Hài lòng cao", quad1Desc: "Điểm mạnh của bạn. Bảo vệ và tận dụng những lĩnh vực này.",
+                quad2Title: "Quan trọng cao + Hài lòng thấp", quad2Desc: "Cơ hội đòn bẩy cao nhất. Đầu tư thời gian, năng lượng hoặc cách tiếp cận mới tại đây.",
+                quad3Title: "Quan trọng thấp + Hài lòng cao", quad3Desc: "Thú vị nhưng nên xem lại phân bổ thời gian — bạn có đang đầu tư quá mức?",
+                quad4Title: "Quan trọng thấp + Hài lòng thấp", quad4Desc: "Ưu tiên thấp. Cân nhắc giảm thời gian dành cho việc này.",
+                portfolioHealthSnapshot: "Tổng Quan Sức Khỏe Danh Mục",
+                avgImportance: "MỨC QUAN TRỌNG TB", avgSatisfaction: "HÀI LÒNG TB", avgGap: "KHOẢNG CÁCH TB",
+                positiveGapNote: "Khoảng cách dương = lĩnh vực có mức quan trọng vượt quá sự hài lòng hiện tại",
+                topPrioritiesTitle: "Ưu Tiên Hàng Đầu Cần Đầu Tư", highestPriorityFirst: "Điểm ưu tiên cao nhất trước",
+                secActionPlanTitle: "Kế Hoạch Hành Động Chiến Lược Cuộc Sống",
+                secActionPlanSub: "Chọn 3–5 ưu tiên ở trên và xác định các bước tiếp theo cụ thể",
+                thPrioritySlu: "SLU Ưu Tiên", thCurrentState: "Tình Trạng Hiện Tại", thDesiredState: "Tình Trạng Mong Muốn (3–6 tháng)",
+                thKeyActions: "Hành Động Chính", thSuccessMetrics: "Thước Đo Thành Công",
+                btnAddActionRow: "THÊM DÒNG HÀNH ĐỘNG",
+                secStageTitle: "Các Bước Hành Động Đề Xuất Theo Giai Đoạn Cuộc Sống",
+                secStageSub: "Các chiến thuật cụ thể, dựa trên bằng chứng, phù hợp với ưu tiên và giai đoạn cuộc sống của bạn. Nhấn + để thêm trực tiếp vào Kế Hoạch Hành Động.",
+                stageCalibrated: "Hiệu chỉnh cho phụ huynh đang đi làm trong giai đoạn phát triển sự nghiệp",
+                stageCurrent: "Hiện tại (35–42 tuổi)", stageNext: "Tiếp theo (43–52 tuổi)", stageLegacy: "Di sản (53–65+ tuổi)",
+                stageFooterNote: "Đây là những điểm khởi đầu có đòn bẩy cao. Tùy chỉnh thời gian, thước đo và chi tiết trong Kế Hoạch Hành Động ở trên. Xem lại &amp; cập nhật hàng quý.",
+                modalWhyTitle: "Vì sao 7 câu hỏi này hiệu quả",
+                footerRelated: "Tài nguyên liên quan", footerHub: "Trung Tâm Tài Chính", footerWealthBuilder: "Công cụ Quản lý Tài sản",
+                footerAbout: "Về công cụ này",
+                footerAboutText: "Dựa trên khung Harvard Business Review Life Strategy. Chỉ dùng cho mục đích lập kế hoạch cá nhân — không phải tư vấn chuyên nghiệp."
+            }
+        };
+
+        function applyLanguage(lang) {
+            const dict = i18n[lang] || i18n.en;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) el.innerHTML = dict[key];
+            });
+            document.documentElement.setAttribute('lang', lang === 'vi' ? 'vi' : 'en');
+        }
+
+        function toggleLanguage() {
+            const current = localStorage.getItem('slpLanguage') || 'en';
+            const next = current === 'en' ? 'vi' : 'en';
+            localStorage.setItem('slpLanguage', next);
+            applyLanguage(next);
+        }
+
+        function initLanguage() {
+            applyLanguage(localStorage.getItem('slpLanguage') || 'en');
+        }
+
+        // Data Model - 16 SLUs
+        let slus = [
+            { id: 1, sla: "1. Relationships", slu: "Significant other", hours: 0, importance: 8, satisfaction: 7, notes: "" },
+            { id: 2, sla: "1. Relationships", slu: "Family", hours: 0, importance: 9, satisfaction: 7, notes: "" },
+            { id: 3, sla: "1. Relationships", slu: "Friendship", hours: 0, importance: 6, satisfaction: 5, notes: "" },
+            { id: 4, sla: "2. Body, mind, and spirituality", slu: "Physical health/sports", hours: 0, importance: 8, satisfaction: 6, notes: "" },
+            { id: 5, sla: "2. Body, mind, and spirituality", slu: "Mental health/mindfulness", hours: 0, importance: 7, satisfaction: 5, notes: "" },
+            { id: 6, sla: "2. Body, mind, and spirituality", slu: "Spirituality/faith", hours: 0, importance: 5, satisfaction: 6, notes: "" },
+            { id: 7, sla: "3. Community and society", slu: "Community/citizenship", hours: 0, importance: 5, satisfaction: 4, notes: "" },
+            { id: 8, sla: "3. Community and society", slu: "Societal engagement", hours: 0, importance: 4, satisfaction: 3, notes: "" },
+            { id: 9, sla: "4. Job, learning, and finances", slu: "Job/career", hours: 0, importance: 9, satisfaction: 7, notes: "" },
+            { id: 10, sla: "4. Job, learning, and finances", slu: "Education/learning", hours: 0, importance: 8, satisfaction: 6, notes: "" },
+            { id: 11, sla: "4. Job, learning, and finances", slu: "Finances", hours: 0, importance: 8, satisfaction: 7, notes: "" },
+            { id: 12, sla: "5. Interests and entertainment", slu: "Hobbies/Interests", hours: 0, importance: 6, satisfaction: 5, notes: "" },
+            { id: 13, sla: "5. Interests and entertainment", slu: "Online entertainment", hours: 0, importance: 3, satisfaction: 6, notes: "" },
+            { id: 14, sla: "5. Interests and entertainment", slu: "Offline entertainment", hours: 0, importance: 5, satisfaction: 6, notes: "" },
+            { id: 15, sla: "6. Personal care", slu: "Physiological needs", hours: 0, importance: 7, satisfaction: 6, notes: "" },
+            { id: 16, sla: "6. Personal care", slu: "Activities of daily living", hours: 0, importance: 5, satisfaction: 4, notes: "" }
+        ];
+
+        // Calculate derived values for a single SLU
+        function calculateDerived(sluObj, totalHours) {
+            const percent = totalHours > 0 ? (sluObj.hours / totalHours) : 0;
+            const gap = sluObj.importance - sluObj.satisfaction;
+            const priority = sluObj.importance * (10 - sluObj.satisfaction);
+            
+            let quadrant = "Low Priority";
+            let quadrantColor = "bg-slate-200 text-slate-600";
+            
+            if (sluObj.importance >= 6 && sluObj.satisfaction >= 6) {
+                quadrant = "Strength";
+                quadrantColor = "bg-emerald-100 text-emerald-700";
+            } else if (sluObj.importance >= 6 && sluObj.satisfaction < 6) {
+                quadrant = "Invest";
+                quadrantColor = "bg-rose-100 text-rose-700";
+            } else if (sluObj.importance < 6 && sluObj.satisfaction >= 6) {
+                quadrant = "Review Time";
+                quadrantColor = "bg-amber-100 text-amber-700";
+            }
+            
+            return { percent, gap, priority, quadrant, quadrantColor };
+        }
+
+        // Get total hours from input
+        function getTotalHours() {
+            const input = parseFloat(document.getElementById('total-hours').value) || 168;
+            return Math.max(1, input);
+        }
+
+        // Update a single SLU from inputs
+        function updateSLUFromInputs(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (!row) return;
+            
+            const slu = slus.find(s => s.id === id);
+            if (!slu) return;
+            
+            slu.hours = parseFloat(row.querySelector('.hours-input').value) || 0;
+            slu.importance = parseInt(row.querySelector('.imp-input').value) || 0;
+            slu.satisfaction = parseInt(row.querySelector('.sat-input').value) || 0;
+            slu.notes = row.querySelector('.notes-input').value || "";
+            
+            // Re-render everything
+            updateAllCalculations();
+        }
+
+        // Render the main assessment table
+        function renderAssessmentTable() {
+            const tbody = document.getElementById('assessment-table-body');
+            tbody.innerHTML = '';
+            const totalHours = getTotalHours();
+            
+            slus.forEach(slu => {
+                const derived = calculateDerived(slu, totalHours);
+                
+                const tr = document.createElement('tr');
+                tr.className = `slu-row border-b border-slate-100 text-sm`;
+                tr.dataset.id = slu.id;
+                
+                tr.innerHTML = `
+                    <td class="px-5 py-3">
+                        <div class="font-semibold text-slate-800">${slu.slu}</div>
+                        <div class="text-[10px] text-slate-500">${slu.sla}</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        <input type="number" step="0.5" min="0" value="${slu.hours}" 
+                               class="hours-input w-16 text-center font-mono bg-yellow-50 border border-yellow-200 focus:border-pink-400 rounded-xl px-2 py-1 text-sm focus:outline-none">
+                    </td>
+                    <td class="px-3 py-3 text-center font-mono text-xs text-slate-500">
+                        ${(derived.percent * 100).toFixed(1)}%
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="flex items-center justify-center gap-x-1.5">
+                            <input type="range" min="0" max="10" step="1" value="${slu.importance}" 
+                                   class="imp-slider w-14 accent-pink-600">
+                            <input type="number" min="0" max="10" value="${slu.importance}" 
+                                   class="imp-input w-9 text-center font-mono bg-yellow-50 border border-yellow-200 focus:border-pink-400 rounded-xl px-1 py-0.5 text-sm focus:outline-none">
+                        </div>
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="flex items-center justify-center gap-x-1.5">
+                            <input type="range" min="0" max="10" step="1" value="${slu.satisfaction}" 
+                                   class="sat-slider w-14 accent-emerald-600">
+                            <input type="number" min="0" max="10" value="${slu.satisfaction}" 
+                                   class="sat-input w-9 text-center font-mono bg-yellow-50 border border-yellow-200 focus:border-pink-400 rounded-xl px-1 py-0.5 text-sm focus:outline-none">
+                        </div>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="font-mono text-sm font-semibold ${derived.gap > 0 ? 'text-rose-600' : derived.gap < 0 ? 'text-emerald-600' : 'text-slate-400'}">
+                            ${derived.gap > 0 ? '+' : ''}${derived.gap.toFixed(0)}
+                        </span>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="font-mono text-xs font-bold px-2 py-px rounded bg-slate-100">${derived.priority.toFixed(0)}</span>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="quadrant-badge ${derived.quadrantColor}">${derived.quadrant}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <input type="text" value="${slu.notes}" placeholder="Reflections..." 
+                               class="notes-input text-xs w-full bg-transparent border-b border-slate-200 focus:border-pink-300 px-1 py-0.5 focus:outline-none">
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+                
+                // Attach listeners
+                const hoursInput = tr.querySelector('.hours-input');
+                const impSlider = tr.querySelector('.imp-slider');
+                const impNumber = tr.querySelector('.imp-input');
+                const satSlider = tr.querySelector('.sat-slider');
+                const satNumber = tr.querySelector('.sat-input');
+                const notesInput = tr.querySelector('.notes-input');
+                
+                hoursInput.oninput = () => updateSLUFromInputs(slu.id);
+                impSlider.oninput = () => { impNumber.value = impSlider.value; updateSLUFromInputs(slu.id); };
+                impNumber.oninput = () => { impSlider.value = impNumber.value; updateSLUFromInputs(slu.id); };
+                satSlider.oninput = () => { satNumber.value = satSlider.value; updateSLUFromInputs(slu.id); };
+                satNumber.oninput = () => { satSlider.value = satNumber.value; updateSLUFromInputs(slu.id); };
+                notesInput.oninput = () => updateSLUFromInputs(slu.id);
+            });
+            
+            // Update footer totals
+            updateFooterTotals();
+        }
+
+        function updateFooterTotals() {
+            const totalHours = getTotalHours();
+            let sumHours = 0;
+            let sumImp = 0;
+            let sumSat = 0;
+            let sumGap = 0;
+            
+            slus.forEach(slu => {
+                sumHours += slu.hours;
+                sumImp += slu.importance;
+                sumSat += slu.satisfaction;
+                sumGap += (slu.importance - slu.satisfaction);
+            });
+            
+            const avgImp = slus.length > 0 ? (sumImp / slus.length) : 0;
+            const avgSat = slus.length > 0 ? (sumSat / slus.length) : 0;
+            const avgGap = slus.length > 0 ? (sumGap / slus.length) : 0;
+            
+            document.getElementById('total-hours-cell').textContent = sumHours.toFixed(1);
+            document.getElementById('total-percent-cell').textContent = totalHours > 0 ? ((sumHours / totalHours) * 100).toFixed(0) + '%' : '—';
+            document.getElementById('avg-imp-cell').textContent = avgImp.toFixed(1);
+            document.getElementById('avg-sat-cell').textContent = avgSat.toFixed(1);
+            document.getElementById('avg-gap-cell').innerHTML = (avgGap >= 0 ? '+' : '') + avgGap.toFixed(1);
+            
+            // Dashboard stats
+            document.getElementById('dash-avg-imp').textContent = avgImp.toFixed(1);
+            document.getElementById('dash-avg-sat').textContent = avgSat.toFixed(1);
+            document.getElementById('dash-avg-gap').innerHTML = (avgGap >= 0 ? '+' : '') + avgGap.toFixed(1);
+        }
+
+        // Render the beautiful interactive matrix using Canvas
+        function renderPortfolioMatrix() {
+            const canvas = document.getElementById('portfolio-matrix');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d', { alpha: true });
+            const w = canvas.width;
+            const h = canvas.height;
+            const totalHours = getTotalHours();
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            // Background gradient + grid
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#f8fafc');
+            grad.addColorStop(1, '#f1e7ff15');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+            
+            // Grid lines (25% increments)
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 4; i++) {
+                const y = (h / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+                
+                const x = (w / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+            }
+            
+            // Quadrant labels (improved contrast on dark background)
+            ctx.fillStyle = 'rgba(232, 227, 216, 0.35)'; // var(--text) with low opacity
+            ctx.font = '600 11px Inter, system-ui';
+            ctx.fillText('HIGH IMPORTANCE', 12, 22);
+            ctx.fillText('HIGH SATISFACTION', w - 130, h - 14);
+            
+            // Draw bubbles
+            const maxBubble = 52;
+            const minBubble = 8;
+            
+            slus.forEach((slu, index) => {
+                const derived = calculateDerived(slu, totalHours);
+                if (slu.hours <= 0 && slu.importance < 4) return; // hide very low activity
+                
+                const x = (slu.satisfaction / 10) * (w - 60) + 30;
+                const y = ((10 - slu.importance) / 10) * (h - 60) + 30;
+                
+                // Size based on percent of week
+                const sizeFactor = Math.max(0.08, Math.sqrt(derived.percent));
+                const radius = Math.max(minBubble, Math.min(maxBubble, sizeFactor * 48));
+                
+                // Color by quadrant
+                let color = '#64748b';
+                if (derived.quadrant === "Strength") color = '#10b981';
+                else if (derived.quadrant === "Invest") color = '#f43f5e';
+                else if (derived.quadrant === "Review Time") color = '#f59e0b';
+                
+                // Shadow
+                ctx.shadowColor = 'rgba(15, 23, 42, 0.15)';
+                ctx.shadowBlur = 12;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 3;
+                
+                // Bubble
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                
+                // Inner highlight
+                ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.35, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.35)';
+                ctx.fill();
+                
+                // Label (only if reasonably large)
+                if (radius > 18) {
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '700 9.5px Inter, system-ui';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(slu.slu.split(' ')[0], x, y + 3.5);
+                }
+                
+                // Store position for hover detection
+                slu._matrixX = x;
+                slu._matrixY = y;
+                slu._matrixR = radius;
+            });
+            
+            // Hover tooltip logic
+            canvas.onmousemove = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                let found = null;
+                for (let slu of slus) {
+                    if (!slu._matrixX) continue;
+                    const dx = mouseX - slu._matrixX;
+                    const dy = mouseY - slu._matrixY;
+                    if (dx*dx + dy*dy < slu._matrixR * slu._matrixR) {
+                        found = slu;
+                        break;
+                    }
+                }
+                
+                // Remove old tooltip
+                const oldTip = document.getElementById('matrix-tooltip');
+                if (oldTip) oldTip.remove();
+                
+                if (found) {
+                    const derived = calculateDerived(found, totalHours);
+                    const tip = document.createElement('div');
+                    tip.id = 'matrix-tooltip';
+                    tip.className = 'tooltip';
+                    tip.style.left = (e.clientX + 12) + 'px';
+                    tip.style.top = (e.clientY - 10) + 'px';
+                    tip.innerHTML = `
+                        <div class="font-semibold">${found.slu}</div>
+                        <div class="text-emerald-300 text-xs">${derived.quadrant} • ${ (derived.percent*100).toFixed(1) }% of week</div>
+                        <div class="text-xs mt-px">Imp: ${found.importance} &nbsp;•&nbsp; Sat: ${found.satisfaction} &nbsp;•&nbsp; Gap: ${derived.gap}</div>
+                    `;
+                    document.body.appendChild(tip);
+                    
+                    setTimeout(() => {
+                        if (tip && tip.parentNode) tip.parentNode.removeChild(tip);
+                    }, 2200);
+                }
+            };
+            
+            canvas.onmouseleave = function() {
+                const tip = document.getElementById('matrix-tooltip');
+                if (tip) tip.remove();
+            };
+        }
+
+        // Update top priorities list
+        function updateTopPriorities() {
+            const container = document.getElementById('top-priorities-list');
+            container.innerHTML = '';
+            
+            const totalHours = getTotalHours();
+            const sorted = [...slus]
+                .map(s => ({...s, derived: calculateDerived(s, totalHours)}))
+                .sort((a, b) => b.derived.priority - a.derived.priority)
+                .slice(0, 5);
+            
+            sorted.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between px-4 py-[7px] rounded-2xl ${item.derived.quadrant === 'Invest' ? 'bg-rose-50' : 'bg-slate-50'}`;
+                
+                div.innerHTML = `
+                    <div class="flex items-center gap-x-3">
+                        <div class="font-mono text-xs w-4 text-center font-bold text-slate-400">${idx + 1}</div>
+                        <div>
+                            <div class="font-semibold">${item.slu}</div>
+                            <div class="text-[10px] text-slate-500">${item.sla}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-x-4 text-xs">
+                        <div class="text-center">
+                            <div class="font-mono font-bold">${item.importance}</div>
+                            <div class="text-[9px] -mt-px text-slate-400">imp</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-mono font-bold">${item.satisfaction}</div>
+                            <div class="text-[9px] -mt-px text-slate-400">sat</div>
+                        </div>
+                        <div>
+                            <span class="quadrant-badge ${item.derived.quadrantColor}">${item.derived.quadrant}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Full update function
+        function updateAllCalculations() {
+            renderAssessmentTable();
+            renderPortfolioMatrix();
+            updateTopPriorities();
+            updateFooterTotals();
+            
+            // Persist
+            saveToLocalStorage();
+        }
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('lifePortfolioData', JSON.stringify({
+                    slus: slus,
+                    totalHours: document.getElementById('total-hours').value
+                }));
+            } catch(e) {}
+        }
+
+        // Load from localStorage
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('lifePortfolioData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.slus && data.slus.length === 16) {
+                        slus = data.slus;
+                    }
+                    if (data.totalHours) {
+                        document.getElementById('total-hours').value = data.totalHours;
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // Load the example data
+        function loadExampleData() {
+            const example = [
+                { id: 1, hours: 6, importance: 8, satisfaction: 7, notes: "High importance but time squeezed" },
+                { id: 2, hours: 22, importance: 9, satisfaction: 7, notes: "Core priority with young child" },
+                { id: 3, hours: 3, importance: 6, satisfaction: 5, notes: "" },
+                { id: 4, hours: 5, importance: 8, satisfaction: 6, notes: "" },
+                { id: 5, hours: 2, importance: 7, satisfaction: 5, notes: "" },
+                { id: 6, hours: 1, importance: 4, satisfaction: 6, notes: "" },
+                { id: 7, hours: 2, importance: 5, satisfaction: 4, notes: "" },
+                { id: 8, hours: 1, importance: 4, satisfaction: 3, notes: "" },
+                { id: 9, hours: 48, importance: 9, satisfaction: 7, notes: "High investment, meaningful work" },
+                { id: 10, hours: 6, importance: 8, satisfaction: 6, notes: "CTA + PE upskilling" },
+                { id: 11, hours: 4, importance: 8, satisfaction: 7, notes: "" },
+                { id: 12, hours: 3, importance: 6, satisfaction: 5, notes: "Family tree project is a passion" },
+                { id: 13, hours: 7, importance: 3, satisfaction: 6, notes: "Audit opportunity?" },
+                { id: 14, hours: 2, importance: 5, satisfaction: 6, notes: "" },
+                { id: 15, hours: 56, importance: 7, satisfaction: 6, notes: "Sleep ~7.5h avg" },
+                { id: 16, hours: 10, importance: 5, satisfaction: 4, notes: "Chores & admin - streamline?" }
+            ];
+            
+            example.forEach(ex => {
+                const target = slus.find(s => s.id === ex.id);
+                if (target) {
+                    target.hours = ex.hours;
+                    target.importance = ex.importance;
+                    target.satisfaction = ex.satisfaction;
+                    target.notes = ex.notes || "";
+                }
+            });
+            
+            document.getElementById('total-hours').value = 168;
+            updateAllCalculations();
+            
+            // Toast
+            showToast("Example data loaded for a Western Sydney working parent");
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-3 rounded-3xl flex items-center gap-x-2 shadow-xl z-[100]`;
+            toast.innerHTML = `<span>${message}</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all .3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 2600);
+        }
+
+        // Sort table by priority
+        function sortTableByPriority() {
+            const totalHours = getTotalHours();
+            slus.sort((a, b) => {
+                const pa = calculateDerived(a, totalHours).priority;
+                const pb = calculateDerived(b, totalHours).priority;
+                return pb - pa;
+            });
+            renderAssessmentTable();
+            renderPortfolioMatrix();
+        }
+
+        function clearAllInputs() {
+            if (!confirm("Clear all hours, ratings and notes?")) return;
+            
+            slus.forEach(s => {
+                s.hours = 0;
+                s.importance = 5;
+                s.satisfaction = 5;
+                s.notes = "";
+            });
+            updateAllCalculations();
+        }
+
+        function resetAllData() {
+            if (!confirm("Reset everything to defaults (including saved data)?")) return;
+            localStorage.removeItem('lifePortfolioData');
+            location.reload();
+        }
+
+        function exportData() {
+            const data = {
+                exportedAt: new Date().toISOString(),
+                totalHours: getTotalHours(),
+                slus: slus
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'strategic-life-portfolio.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Render SLA reference cards
+        function renderSLACards() {
+            const container = document.querySelector('#reference-section .grid');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            const groups = {};
+            slus.forEach(slu => {
+                if (!groups[slu.sla]) groups[slu.sla] = [];
+                groups[slu.sla].push(slu.slu);
+            });
+            
+            Object.keys(groups).forEach((slaName, idx) => {
+                const card = document.createElement('div');
+                card.className = `life-card bg-white border border-slate-200 p-4 rounded-3xl text-sm`;
+                
+                const iconMap = {
+                    "1. Relationships": "fa-heart",
+                    "2. Body, mind, and spirituality": "fa-spa",
+                    "3. Community and society": "fa-users",
+                    "4. Job, learning, and finances": "fa-briefcase",
+                    "5. Interests and entertainment": "fa-palette",
+                    "6. Personal care": "fa-bed"
+                };
+                
+                card.innerHTML = `
+                    <div class="flex items-start gap-x-3">
+                        <div class="mt-0.5 w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-pink-100 to-white flex items-center justify-center text-pink-600">
+                            <i class="fa-solid ${iconMap[slaName] || 'fa-layer-group'}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-sm tracking-tight">${slaName}</div>
+                            <div class="mt-1.5 text-xs leading-snug text-slate-600">
+                                ${groups[slaName].join(' • ')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Simple action plan rows
+        function addActionPlanRow(sluName = "", current = "", desired = "", actions = "", metrics = "") {
+            const tbody = document.getElementById('action-plan-body');
+            const row = document.createElement('tr');
+            row.className = 'border-b border-slate-100';
+            
+            row.innerHTML = `
+                <td class="pr-4 py-3">
+                    <input type="text" value="${sluName}" placeholder="e.g. Family" 
+                           class="w-full text-sm px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl focus:outline-none">
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea placeholder="Current state..." class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">${current}</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea placeholder="Desired future..." class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">${desired}</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea placeholder="Actions & experiments..." class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">${actions}</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <input type="text" value="${metrics}" placeholder="How you'll measure" 
+                           class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl focus:outline-none">
+                </td>
+                <td class="py-3 text-center">
+                    <button onclick="this.closest('tr').remove()" class="text-rose-400 hover:text-rose-600"><i class="fa-solid fa-times"></i></button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Initialize action plan with one example row
+        function initActionPlan() {
+            const tbody = document.getElementById('action-plan-body');
+            tbody.innerHTML = '';
+            
+            // Add one pre-filled example row
+            addActionPlanRow(
+                "Family", 
+                "High importance (9) but satisfaction 7 due to fatigue & rushed evenings", 
+                "Consistent high-quality presence 4 evenings + weekends feeling fully present", 
+                "• No screens after 8pm\n• 20-min connection ritual after dinner\n• Sunday planning breakfast", 
+                "Weekly energy score + son's feedback"
+            );
+        }
+
+        // ============================================
+        // NEW: Life Stage Recommendations Data & Logic
+        // ============================================
+        const stageData = {
+            current: {
+                key: 'current',
+                label: 'Current Stage (Ages 35–42)',
+                subtitle: 'Young Family + Career Acceleration • Western Sydney Professional Parent',
+                intro: 'Your portfolio shows high importance on Family (9) and Job/Career (9) with meaningful gaps. Focus on protecting presence with your 6-year-old while building optionality through PE skills and financial modeling. Small, consistent rituals compound faster than big overhauls.',
+                actions: [
+                    {
+                        slu: "Family",
+                        title: "Protect 3 High-Quality Family Anchors per Week",
+                        detail: "Tue & Thu: 20-min post-dinner connection ritual (no screens, conversation prompts or reading together). Sunday: 90-min morning micro-adventure (park, bike path, or simple home project). Log energy/engagement score 1-10 weekly.",
+                        metric: "Son's weekly feedback + your presence score ≥8.5 by month 3",
+                        why: "Closes satisfaction gap on highest-importance SLU during critical early childhood window."
+                    },
+                    {
+                        slu: "Job / Career + Education/Learning",
+                        title: "6-Month Private Equity Upskilling Sprint",
+                        detail: "Block 5 focused hrs/week: (1) Complete structured LBO modeling course, (2) Build 2 full public-deal case models, (3) Attend 1-2 AVCJ or equivalent events/quarter, (4) Conduct 4 informational coffees with VPs/Principals in target funds. Track applications & network growth in simple CRM.",
+                        metric: "2 case models complete + 4 meaningful conversations by Q3; update LinkedIn positioning",
+                        why: "Direct bridge from current fund tax role to senior PE Analyst/Associate track."
+                    },
+                    {
+                        slu: "Physical Health",
+                        title: "Parent-Athlete Longevity Routine",
+                        detail: "Minimum 4 training sessions/week (2 strength + 2 Zone 2 cardio). Make 2 sessions family-inclusive: weekend bike at Penrith Lakes or family walk + playground. Add 1 recovery session (mobility/yoga/sauna). Use simple habit tracker. Prioritize sleep 7.5h+ consistency.",
+                        metric: "≥80% adherence to 4x/week + resting HR improvement or energy journal",
+                        why: "Importance 8, current satisfaction 6. Sustainable energy for parenting + high-cognitive career demands."
+                    },
+                    {
+                        slu: "Hobbies / Interests (Family Tree Project)",
+                        title: "Treat Genealogy as Legacy Infrastructure Project",
+                        detail: "Allocate 3 focused hours/week. Milestones: (Q1) Complete core La/Phuoc branch data entry & relationships, (Q2) Generate first professional PDF executive summary for relatives, (Q3) Add interactive profile fields (bio, photos, stories). Consider lightweight public version later.",
+                        metric: "First PDF report delivered to family members by end of quarter",
+                        why: "High personal meaning + cultural continuity; currently under-invested relative to importance for identity."
+                    },
+                    {
+                        slu: "Finances",
+                        title: "Quarterly Personal Portfolio Review & Modeling",
+                        detail: "Run your own 'Life Financial Model': Update super contributions to max concessional, model 3 early retirement scenarios (lump sum targets $800k–$1.2M+), stress-test with rental vs buy in growth Western Sydney corridors. Review Bitcoin/infra allocation conviction. Use your tax expertise as edge.",
+                        metric: "Updated 3-scenario model + documented rebalancing decision each quarter",
+                        why: "Links career income directly to family security and optionality goals."
+                    }
+                ]
+            },
+            next: {
+                key: 'next',
+                label: 'Next Stage (Ages 43–52)',
+                subtitle: 'Peak Earning + Child Education Transition + Health Optimization',
+                intro: 'Anticipate higher income but rising time demands from child’s schooling/sports and career leadership. Shift from “build” to “compound & protect”. Focus on healthspan extension and strategic career capital deployment.',
+                actions: [
+                    {
+                        slu: "Family",
+                        title: "School-Age Partnership System",
+                        detail: "Establish weekly 1:1 'State of the Child' check-ins (15 min). Co-create responsibility chart with increasing autonomy. Plan 1 dedicated parent-child trip or experience per school term. Maintain screen-free dinner baseline.",
+                        metric: "Child self-reports high agency + connection; minimal behavioral escalation at school",
+                        why: "Prepares for adolescent years while maintaining bond built in early childhood."
+                    },
+                    {
+                        slu: "Job / Career",
+                        title: "Leadership & Deal Flow Positioning",
+                        detail: "Target VP/Principal track or bridge role (Big 4 TAS/M&A or boutique PE). Build personal brand via 1 thought piece or talk per year on AI/automation in PE or fund tax efficiency. Mentor 1 junior annually. Maintain network density from previous stage.",
+                        metric: "Promotion or role move within 18–24 months of entering stage; 2+ inbound opportunities/year",
+                        why: "Leverage upskilling done in 30s for accelerated trajectory and compensation step-up."
+                    },
+                    {
+                        slu: "Physical Health + Mental",
+                        title: "Healthspan Protocol (Preventive)",
+                        detail: "Annual comprehensive health panel + VO2 max or functional testing. Strength training 3x/week non-negotiable (preserve muscle for metabolism & longevity). Zone 2 cardio 150+ min/week. Prioritize sleep architecture and recovery. Consider CGM or advanced biomarkers if data-driven.",
+                        metric: "Stable or improving key biomarkers; maintain training consistency >85%",
+                        why: "Critical decade for preventing chronic issues that derail later freedom and family time."
+                    },
+                    {
+                        slu: "Finances",
+                        title: "Wealth Compounding & Tax Efficiency Engine",
+                        detail: "Maximize super + carry-forward contributions. Model SMSF or advanced structures if scale justifies. Increase investment in high-conviction themes (tech infra, Bitcoin ecosystem). Quarterly rebalancing discipline. Review insurance & estate planning.",
+                        metric: "Net worth trajectory on track for early retirement target; tax drag minimized",
+                        why: "Peak earning years are the highest-leverage period for compounding toward financial independence."
+                    },
+                    {
+                        slu: "Community / Societal Engagement",
+                        title: "Strategic Contribution & Network",
+                        detail: "Choose 1-2 high-impact involvements (e.g. school P&C or board, industry association committee, or Vietnam-Australia business/cultural bridge). Align with strengths in tax/PE and family values. Limit to avoid dilution.",
+                        metric: "Meaningful impact + relationships that also expand professional optionality",
+                        why: "Builds legacy and reciprocity while child is school-age and observing contribution."
+                    }
+                ]
+            },
+            legacy: {
+                key: 'legacy',
+                label: 'Legacy Stage (Ages 53–65+)',
+                subtitle: 'Freedom, Mentorship, Family Continuity & Personal Projects',
+                intro: 'Transition from accumulation to distribution of time, capital, and wisdom. Protect health aggressively, deepen key relationships, and decide what “enough” looks like for retirement while staying intellectually engaged.',
+                actions: [
+                    {
+                        slu: "Family",
+                        title: "Multi-Generational Presence & Wisdom Transfer",
+                        detail: "If grandchildren arrive: structured grandparent time (regular sleepovers, skill-sharing days). For adult child: become trusted advisor rather than manager — ask great questions, offer perspective only when invited. Annual family summit or reunion tradition.",
+                        metric: "Adult child describes relationship as supportive & low-friction; grandchildren have rich memories",
+                        why: "The ultimate ROI on earlier Family SLU investment."
+                    },
+                    {
+                        slu: "Job / Career",
+                        title: "Portfolio Career or Advisory Practice",
+                        detail: "Design post-corporate identity: selective advisory/consulting to 2-3 PE or funds (tax structuring, operational due diligence), teaching/mentoring next generation of analysts, or contributing to Bitcoin open-source/regulatory projects in Vietnam or Australia. Keep 10-15 hrs/week max if desired.",
+                        metric: " intellectually stimulating work that adds value without full-time demands",
+                        why: "Maintains identity, income supplement, and social contribution without burnout risk."
+                    },
+                    {
+                        slu: "Physical Health + Spirituality/Mind",
+                        title: "Healthspan Maximization & Purposeful Aging",
+                        detail: "Aggressive preventive + reversal focus: strength training 3-4x, protein optimization, sleep, social connection, purpose. Explore meditation, nature immersion, or faith practices more deeply. Annual 'longevity audit' with specialist if available.",
+                        metric: "Independent living + high function into 80s; low medication burden",
+                        why: "Health is the ultimate non-negotiable for enjoying legacy stage with family."
+                    },
+                    {
+                        slu: "Finances",
+                        title: "Decumulation & Estate Architecture",
+                        detail: "Implement sustainable withdrawal strategy (e.g. 3.5-4% rule or guardrails). Optimize Age Pension bridge if applicable. Update will, enduring power of attorney, and family communication about inheritance philosophy (values > assets). Consider philanthropic vehicle if meaningful.",
+                        metric: "Clear, documented plan that reduces family decision burden later",
+                        why: "Closes the loop on decades of financial discipline; turns money into tool for family flourishing."
+                    },
+                    {
+                        slu: "Hobbies / Interests + Community",
+                        title: "Mastery Projects & Knowledge Legacy",
+                        detail: "Deepen 1-2 passions (family history book or digital archive, travel with purpose, writing, music, gardening). Create shareable outputs: family memoir, photo book, recorded stories, or community workshop. Mentor in areas of expertise.",
+                        metric: "At least one meaningful 'body of work' completed and shared with family/community",
+                        why: "Satisfies need for generativity and leaves tangible + intangible inheritance beyond wealth."
+                    }
+                ]
+            }
+        };
+
+        function switchLifeStage(stageKey) {
+            // Update active tab
+            document.querySelectorAll('#stage-tabs .stage-tab').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.stage === stageKey) btn.classList.add('active');
+            });
+            
+            const container = document.getElementById('stage-content');
+            const stage = stageData[stageKey];
+            if (!stage) return;
+            
+            let html = `
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <div class="font-bold text-xl tracking-tight text-[var(--text)]">${stage.label}</div>
+                        <div class="text-sm text-[var(--muted)]">${stage.subtitle}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="inline-flex items-center px-3 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-2xl text-xs font-medium text-[var(--accent)]">
+                            <i class="fa-solid fa-lightbulb mr-1.5"></i> High-leverage tactics
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-[var(--muted)] mb-5 leading-relaxed">${stage.intro}</p>
+                
+                <div class="space-y-4">
+            `;
+            
+            stage.actions.forEach((action, idx) => {
+                html += `
+                    <div class="group border border-[var(--border)] hover:border-[var(--accent)] rounded-2xl p-4 transition-colors bg-[var(--card)]">
+                        <div class="flex items-start gap-x-4">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] font-mono text-xs font-bold mt-0.5">
+                                ${idx + 1}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="font-semibold text-[var(--text)]">${action.title}</span>
+                                        <span class="ml-2 text-[10px] px-2 py-px rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)] font-mono">${action.slu}</span>
+                                    </div>
+                                    <button onclick="addSuggestedActionToPlan('${action.slu}', '${action.title.replace(/'/g, "\\'")}', '${action.detail.replace(/'/g, "\\'").replace(/\n/g, " ")}', '${action.metric.replace(/'/g, "\\'")}'); event.stopImmediatePropagation();" 
+                                            class="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 text-xs font-semibold px-3 h-7 bg-[var(--accent)] hover:bg-[#e11d48] text-[#0a0c10] border border-[var(--accent)] hover:border-[#e11d48] rounded-2xl transition-all active:scale-[0.985]">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                        <span class="hidden sm:inline">Add to Plan</span>
+                                    </button>
+                                </div>
+                                <div class="mt-2 text-sm text-[var(--text)] leading-snug opacity-90">${action.detail}</div>
+                                
+                                <div class="mt-3 flex flex-wrap items-center gap-x-4 text-xs">
+                                    <div>
+                                        <span class="font-medium text-[var(--accent3)]">Success metric:</span> 
+                                        <span class="text-[var(--text)]">${action.metric}</span>
+                                    </div>
+                                    <div class="text-[var(--muted)]">•</div>
+                                    <div class="text-[var(--muted)] italic">${action.why}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        function addSuggestedActionToPlan(slu, title, detail, metric) {
+            const tbody = document.getElementById('action-plan-body');
+            
+            // Create a nice pre-filled row
+            const row = document.createElement('tr');
+            row.className = 'border-b border-slate-100 bg-pink-50/30';
+            
+            row.innerHTML = `
+                <td class="pr-4 py-3">
+                    <input type="text" value="${slu}" class="w-full text-sm px-3 py-2 border border-pink-200 focus:border-pink-400 rounded-2xl focus:outline-none font-medium">
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">Current state based on latest assessment</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">${title} — ${detail.substring(0, 120)}...</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <textarea class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl h-[52px] focus:outline-none">${detail}</textarea>
+                </td>
+                <td class="pr-4 py-3">
+                    <input type="text" value="${metric}" class="w-full text-xs px-3 py-2 border border-slate-200 focus:border-pink-400 rounded-2xl focus:outline-none">
+                </td>
+                <td class="py-3 text-center">
+                    <button onclick="this.closest('tr').remove()" class="text-rose-400 hover:text-rose-600"><i class="fa-solid fa-times"></i></button>
+                </td>
+            `;
+            tbody.appendChild(row);
+            
+            // Scroll to action plan
+            document.getElementById('action-plan-body').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Toast confirmation
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 bg-emerald-600 text-white text-xs px-5 py-3 rounded-3xl flex items-center gap-x-2 shadow-xl z-[100]`;
+            toast.innerHTML = `<span>Added to Action Plan. Customize the details above.</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'all .3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 2200);
+        }
+
+        // ============================================
+        // NEW: Generate Professional PDF Report
+        // ============================================
+        function generatePDFReport() {
+            const totalHours = parseFloat(document.getElementById('total-hours').value) || 168;
+            
+            // Collect current SLU data with derived values
+            const reportData = slus.map(slu => {
+                const derived = calculateDerived(slu, totalHours);
+                return {
+                    ...slu,
+                    percent: derived.percent,
+                    gap: derived.gap,
+                    priority: derived.priority,
+                    quadrant: derived.quadrant
+                };
+            });
+            
+            // Top priorities
+            const sortedPriorities = [...reportData]
+                .sort((a, b) => b.priority - a.priority)
+                .slice(0, 5);
+            
+            // Collect action plan rows
+            const actionRows = [];
+            document.querySelectorAll('#action-plan-body tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input, textarea');
+                if (inputs.length >= 5) {
+                    actionRows.push({
+                        slu: inputs[0].value || '',
+                        current: inputs[1].value || '',
+                        desired: inputs[2].value || '',
+                        actions: inputs[3].value || '',
+                        metrics: inputs[4].value || ''
+                    });
+                }
+            });
+            
+            // Capture matrix as image
+            const canvas = document.getElementById('portfolio-matrix');
+            const matrixImage = canvas ? canvas.toDataURL('image/png') : '';
+            
+            // Calculate summary stats
+            let sumImp = 0, sumSat = 0, sumGap = 0, sumHours = 0;
+            reportData.forEach(d => {
+                sumImp += d.importance;
+                sumSat += d.satisfaction;
+                sumGap += d.gap;
+                sumHours += d.hours;
+            });
+            const avgImp = (sumImp / reportData.length).toFixed(1);
+            const avgSat = (sumSat / reportData.length).toFixed(1);
+            const avgGap = (sumGap / reportData.length).toFixed(1);
+            
+            // Build the report HTML
+            const reportHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Life Portfolio Report • ${new Date().toLocaleDateString('en-AU')}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .heading-serif { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
+        .section-header { font-size: 1.1rem; font-weight: 700; color: #1e2937; }
+        .modern-table { border-collapse: separate; border-spacing: 0; }
+        .modern-table th { background: #0f172a; color: white; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: .5px; }
+        .quadrant-badge { font-size: 0.65rem; font-weight: 700; padding: 1px 8px; border-radius: 9999px; }
+        @media print {
+            .no-print { display: none !important; }
+            body { font-size: 10pt; }
+            .page-break { page-break-before: always; }
+            table { page-break-inside: avoid; }
+            .avoid-break { page-break-inside: avoid; }
+        }
+        .report-header { background: linear-gradient(135deg, #1e2937 0%, #334155 100%); }
+    </style>
+</head>
+<body class="bg-white text-slate-800">
+    <!-- Report Header -->
+    <div class="report-header text-white px-10 pt-8 pb-6">
+        <div class="max-w-[1100px] mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <div class="w-12 h-12 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line text-white text-3xl"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-3xl tracking-tighter">Strategic Life Portfolio</div>
+                    <div class="text-pink-300 text-sm tracking-[2px] font-medium">HARVARD BUSINESS REVIEW FRAMEWORK • PERSONALISED REPORT</div>
+                </div>
+            </div>
+            <div class="text-right text-sm">
+                <div class="font-mono">${new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                <div class="text-white/60 text-xs">Confidential • For personal strategy use only</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-[1100px] mx-auto px-10 pt-8 pb-16">
+        
+        <!-- Executive Summary -->
+        <div class="mb-8">
+            <div class="flex items-end justify-between mb-3">
+                <div class="section-header">Executive Summary</div>
+                <div class="text-xs px-3 py-1 bg-emerald-100 text-emerald-700 rounded-3xl font-semibold">Total Week Hours: ${totalHours}</div>
+            </div>
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center">
+                    <div class="text-xs text-slate-500">AVG IMPORTANCE</div>
+                    <div class="text-4xl font-bold text-pink-600 mt-1">${avgImp}</div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center">
+                    <div class="text-xs text-slate-500">AVG SATISFACTION</div>
+                    <div class="text-4xl font-bold text-emerald-600 mt-1">${avgSat}</div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center">
+                    <div class="text-xs text-slate-500">AVG GAP</div>
+                    <div class="text-4xl font-bold text-amber-600 mt-1">${avgGap}</div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center">
+                    <div class="text-xs text-slate-500">HOURS TRACKED</div>
+                    <div class="text-4xl font-bold text-slate-700 mt-1 font-mono">${sumHours.toFixed(1)}</div>
+                    <div class="text-[10px] text-slate-400">of ${totalHours} hrs</div>
+                </div>
+            </div>
+            
+            <div class="prose prose-sm max-w-none text-slate-600 bg-slate-50 border border-slate-100 rounded-2xl p-5 text-[13px]">
+                Your life portfolio shows strong alignment in core areas (Family, Career, Health) with clear opportunities to close satisfaction gaps. 
+                ${parseFloat(avgGap) > 1.2 ? 'The average gap of ' + avgGap + ' indicates meaningful headroom for intentional reallocation of time and energy.' : 'Gaps are modest — focus on protecting current strengths while making targeted investments.'} 
+                Top priority areas cluster around high-importance, lower-satisfaction SLUs. Use the detailed recommendations and captured matrix below to guide quarterly reviews.
+            </div>
+        </div>
+
+        <!-- Full Assessment Table -->
+        <div class="mb-8 avoid-break">
+            <div class="section-header mb-3 flex items-center gap-x-2">
+                <span>Complete Strategic Life Units Assessment</span>
+            </div>
+            <table class="modern-table w-full text-sm border border-slate-200 rounded-2xl overflow-hidden">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-3 text-left">Strategic Life Unit</th>
+                        <th class="px-3 py-3 text-center w-20">Hours/wk</th>
+                        <th class="px-3 py-3 text-center w-16">% Week</th>
+                        <th class="px-3 py-3 text-center w-16">Imp</th>
+                        <th class="px-3 py-3 text-center w-16">Sat</th>
+                        <th class="px-3 py-3 text-center w-14">Gap</th>
+                        <th class="px-3 py-3 text-center w-20">Priority</th>
+                        <th class="px-4 py-3 text-center">Quadrant</th>
+                        <th class="px-4 py-3 text-left">Notes</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm divide-y divide-slate-100">
+                    ${reportData.map(d => `
+                        <tr>
+                            <td class="px-4 py-2.5">
+                                <div class="font-semibold">${d.slu}</div>
+                                <div class="text-[10px] text-slate-500">${d.sla}</div>
+                            </td>
+                            <td class="px-3 py-2.5 text-center font-mono">${d.hours}</td>
+                            <td class="px-3 py-2.5 text-center font-mono text-xs text-slate-500">${(d.percent * 100).toFixed(1)}%</td>
+                            <td class="px-3 py-2.5 text-center font-bold">${d.importance}</td>
+                            <td class="px-3 py-2.5 text-center font-bold">${d.satisfaction}</td>
+                            <td class="px-3 py-2.5 text-center font-mono font-semibold ${d.gap > 0 ? 'text-rose-600' : d.gap < 0 ? 'text-emerald-600' : 'text-slate-400'}">${d.gap > 0 ? '+' : ''}${d.gap}</td>
+                            <td class="px-3 py-2.5 text-center"><span class="font-mono text-xs font-bold px-2 py-px rounded bg-slate-100">${d.priority.toFixed(0)}</span></td>
+                            <td class="px-4 py-2.5 text-center">
+                                <span class="quadrant-badge ${d.quadrant === 'Strength' ? 'bg-emerald-100 text-emerald-700' : d.quadrant === 'Invest' ? 'bg-rose-100 text-rose-700' : d.quadrant === 'Review Time' ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-600'}">${d.quadrant}</span>
+                            </td>
+                            <td class="px-4 py-2.5 text-xs text-slate-600">${d.notes || '—'}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Matrix Visual -->
+        <div class="mb-8 avoid-break">
+            <div class="section-header mb-3">Strategic Life Portfolio Matrix</div>
+            <div class="bg-white border border-slate-200 rounded-3xl p-4">
+                ${matrixImage ? `<img src="${matrixImage}" class="mx-auto rounded-2xl shadow-inner border border-slate-100" style="max-width: 520px; width: 100%;">` : '<div class="text-center text-slate-400 py-8">Matrix visualization not captured</div>'}
+                <div class="text-center text-xs text-slate-500 mt-3">Bubble size = % of week • Color = Quadrant (Green=Strength, Rose=Invest/Priority, Amber=Review Time)</div>
+            </div>
+        </div>
+
+        <!-- Top Priorities -->
+        <div class="mb-8 avoid-break">
+            <div class="section-header mb-3">Top 5 Priorities to Invest In</div>
+            <div class="space-y-2">
+                ${sortedPriorities.map((p, i) => `
+                    <div class="flex items-center justify-between px-5 py-3 bg-white border border-slate-200 rounded-2xl">
+                        <div class="flex items-center gap-x-3">
+                            <div class="font-mono w-5 text-center font-bold text-slate-400">${i+1}</div>
+                            <div>
+                                <div class="font-semibold">${p.slu}</div>
+                                <div class="text-xs text-slate-500">${p.sla}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-x-5 text-sm">
+                            <div class="text-center"><div class="font-mono font-bold">${p.importance}</div><div class="text-[9px] text-slate-400 -mt-0.5">imp</div></div>
+                            <div class="text-center"><div class="font-mono font-bold">${p.satisfaction}</div><div class="text-[9px] text-slate-400 -mt-0.5">sat</div></div>
+                            <div><span class="quadrant-badge ${p.quadrant === 'Invest' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${p.quadrant}</span></div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="mb-8 avoid-break">
+            <div class="section-header mb-3">Your Current Action Plan</div>
+            ${actionRows.length > 0 ? `
+                <table class="w-full text-sm border border-slate-200 rounded-2xl overflow-hidden">
+                    <thead class="bg-slate-50">
+                        <tr class="text-left text-xs font-semibold text-slate-500">
+                            <th class="px-4 py-2.5">Priority SLU</th>
+                            <th class="px-4 py-2.5">Desired State (3–6 mo)</th>
+                            <th class="px-4 py-2.5">Key Actions</th>
+                            <th class="px-4 py-2.5 w-56">Success Metrics</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        ${actionRows.map(r => `
+                            <tr>
+                                <td class="px-4 py-3 font-medium">${r.slu}</td>
+                                <td class="px-4 py-3 text-xs">${r.desired}</td>
+                                <td class="px-4 py-3 text-xs">${r.actions}</td>
+                                <td class="px-4 py-3 text-xs font-medium text-emerald-700">${r.metrics}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            ` : `<div class="text-sm text-slate-500 italic p-4 bg-slate-50 rounded-2xl border">No action rows defined yet. Use the suggestions below or add your own in the tool.</div>`}
+        </div>
+
+        <!-- Recommended Steps (Current Stage) -->
+        <div class="avoid-break">
+            <div class="section-header mb-3">Recommended Actionable Steps — Current Life Stage</div>
+            <p class="text-xs text-slate-500 mb-4">These high-specificity tactics are pre-populated from your assessment gaps. They were added to inspire your custom plan above.</p>
+            
+            <div class="grid grid-cols-1 gap-3">
+                ${stageData.current.actions.slice(0, 4).map((a, idx) => `
+                    <div class="border border-slate-200 rounded-2xl p-4 text-sm">
+                        <div class="flex justify-between">
+                            <div class="font-semibold">${a.title}</div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-white border text-slate-500 font-mono self-start">${a.slu}</span>
+                        </div>
+                        <div class="mt-1.5 text-slate-600 text-xs leading-relaxed">${a.detail}</div>
+                        <div class="mt-2 text-emerald-600 text-xs font-medium">Metric: ${a.metric}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-12 pt-6 border-t text-center text-xs text-slate-400">
+            Generated from Strategic Life Portfolio tool • Based on Harvard Business Review Life Strategy framework<br>
+            Review this report quarterly. Life changes — your portfolio should too. • Data as of ${new Date().toLocaleDateString('en-AU')}
+        </div>
+
+    </div>
+
+    <!-- Print Controls -->
+    <div class="no-print fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border shadow-xl rounded-3xl px-5 py-2 flex items-center gap-x-3 text-sm z-50">
+        <button onclick="window.print()" class="flex items-center gap-x-2 px-6 h-10 bg-pink-600 hover:bg-pink-700 text-white rounded-3xl text-sm font-semibold transition-colors">
+            <i class="fa-solid fa-print mr-2"></i> Print or Save as PDF
+        </button>
+        <button onclick="window.close()" class="px-5 h-10 text-slate-600 hover:text-slate-800 font-medium">Close</button>
+    </div>
+
+    <script>
+        // Tailwind init for report
+        function initReportTailwind() {
+            document.documentElement.style.setProperty('--accent-pink', '#E91E63');
+            tailwind.config = { theme: { extend: { fontFamily: { 'serif-custom': ['Playfair Display', 'Georgia', 'serif'] } } } };
+        }
+        window.onload = function() {
+            initReportTailwind();
+            // Optional: auto-trigger print dialog after short delay for convenience (commented for user control)
+            // setTimeout(() => { /* window.print(); */ }, 800);
+        };
+    <\/script>
+</body>
+</html>`;
+            
+            // Open new window and write report
+            const reportWin = window.open('', '_blank', 'width=1200,height=900');
+            if (!reportWin) {
+                alert("Please allow pop-ups to generate the PDF report.");
+                return;
+            }
+            reportWin.document.open();
+            reportWin.document.write(reportHTML);
+            reportWin.document.close();
+            
+            // Optional toast in main window
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-6 py-3 rounded-3xl flex items-center gap-x-2 shadow-xl z-[100]`;
+            toast.innerHTML = `<span>PDF Report opened in new tab. Use the Print button to save as PDF.</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'all .3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 3800);
+        }
+
+        // Main initialization
+        function initializeApp() {
+            initializeTailwind();
+            initLanguage();
+            
+            // Load saved data first
+            loadFromLocalStorage();
+            
+            // Render everything
+            renderSLACards();
+            renderAssessmentTable();
+            renderPortfolioMatrix();
+            updateTopPriorities();
+            initActionPlan();
+            
+            // Total hours listener
+            const totalHoursInput = document.getElementById('total-hours');
+            totalHoursInput.addEventListener('input', () => {
+                updateAllCalculations();
+            });
+            
+            // Keyboard support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "?" && document.activeElement.tagName === "BODY") {
+                    e.preventDefault();
+                    document.getElementById('assessment-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            
+            // Initial toast hint (only first time)
+            if (!localStorage.getItem('lifePortfolioData')) {
+                setTimeout(() => {
+                    // showToast("Tip: Try the 'Load Example' button to see how it works");
+                }, 4200);
+            }
+            
+            // Make sure matrix resizes nicely if window changes (optional)
+            window.addEventListener('resize', () => {
+                // For simplicity we keep fixed canvas size
+            });
+            
+            // Initialize the Life Stage recommendations section with default (current) view
+            setTimeout(() => {
+                const stageContent = document.getElementById('stage-content');
+                if (stageContent && stageContent.innerHTML.trim() === '') {
+                    switchLifeStage('current');
+                }
+            }, 150);
+            
+            console.log('%c[Strategic Life Portfolio] Fully functional HTML tool initialized with age-specific actions & PDF report.', 'color:#64748b');
+        }
+
+        // Boot the app
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
