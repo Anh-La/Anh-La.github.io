@@ -127,53 +127,95 @@
     /* ── Project group ── */
     .project-group { margin-bottom: 48px; }
 
-    /* ── Project card ── */
-    .project-list { display: flex; flex-direction: column; gap: 2px; }
+    /* ── Section label with carousel nav ── */
+    .section-label { justify-content: space-between; }
+    .section-label-text { display: flex; align-items: center; gap: 10px; }
+    .section-label-text::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--accent);
+      opacity: .6;
+    }
+    .section-label::before { display: none; }
 
-    .project-card {
+    .carousel-nav { display: flex; gap: 6px; }
+    .nav-btn {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border-hi);
+      color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .nav-btn:active { transform: scale(.94); }
+
+    /* ── Horizontal carousel track ── */
+    .carousel-track {
       display: flex;
-      align-items: center;
-      gap: 0;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scroll-behavior: smooth;
+      padding: 4px 4px 14px;
+      margin: 0 -4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .carousel-track::-webkit-scrollbar { height: 5px; }
+    .carousel-track::-webkit-scrollbar-track { background: transparent; }
+    .carousel-track::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+
+    /* ── Project card (carousel item) ── */
+    .project-card {
+      flex: 0 0 252px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
       text-decoration: none;
       color: inherit;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
+      padding: 18px 18px 16px;
       transition: border-color .18s, transform .18s, box-shadow .18s;
       position: relative;
     }
     .project-card:hover {
       border-color: var(--border-hi);
-      transform: translateX(3px);
-      box-shadow: 0 4px 20px rgba(0,0,0,.35);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 26px rgba(0,0,0,.4);
     }
 
-    /* Coloured left bar — the signature element */
+    /* Coloured top bar — the signature element */
     .project-card::before {
       content: '';
-      display: block;
-      width: 3px;
-      align-self: stretch;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
       background: var(--c, var(--accent));
-      flex-shrink: 0;
       opacity: .7;
       transition: opacity .18s;
     }
     .project-card:hover::before { opacity: 1; }
 
     .card-icon {
-      font-size: 20px;
-      padding: 0 18px;
+      width: 46px; height: 46px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
       line-height: 1;
+      background: color-mix(in srgb, var(--c, var(--accent)) 16%, transparent);
+      margin-bottom: 14px;
       flex-shrink: 0;
     }
 
-    .card-body {
-      flex: 1;
-      padding: 16px 16px 16px 0;
-      min-width: 0;
-    }
+    .card-body { min-width: 0; flex: 1; display: flex; flex-direction: column; }
 
     .card-name {
       font-size: 14px;
@@ -182,8 +224,9 @@
       line-height: 1.3;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       flex-wrap: wrap;
+      margin-bottom: 6px;
     }
 
     .card-tag {
@@ -200,36 +243,57 @@
     .card-desc {
       font-size: 12px;
       color: var(--muted);
-      margin-top: 3px;
-      line-height: 1.45;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .card-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .card-features li {
+      font-size: 10.5px;
+      color: var(--muted);
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+    .card-features li::before {
+      content: '✓';
+      color: var(--c, var(--accent));
+      flex-shrink: 0;
+      font-weight: 600;
+      opacity: .85;
     }
 
     .card-arrow {
-      font-size: 13px;
-      color: var(--muted);
-      padding: 0 18px 0 12px;
-      flex-shrink: 0;
-      opacity: 0;
-      transition: opacity .18s, transform .18s;
+      margin-top: 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--c, var(--accent));
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      opacity: .85;
+      transition: gap .18s;
     }
-    .project-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+    .project-card:hover .card-arrow { gap: 8px; opacity: 1; }
 
-    /* ── Asset calculator grid ── */
-    .asset-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 8px;
-    }
-
+    /* ── Asset calculator carousel ── */
     .asset-tile {
+      flex: 0 0 108px;
+      scroll-snap-align: start;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 9px;
       text-align: center;
       text-decoration: none;
       color: inherit;
@@ -241,20 +305,16 @@
     }
     .asset-tile:hover {
       border-color: var(--blue);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
-    .asset-tile::before {
-      content: '';
-      display: block;
-      width: 28px; height: 2px;
-      background: var(--blue);
-      border-radius: 2px;
-      opacity: 0;
-      transition: opacity .18s;
+    .asset-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      line-height: 1;
+      background: color-mix(in srgb, var(--blue) 16%, transparent);
     }
-    .asset-tile:hover::before { opacity: 1; }
-
-    .asset-icon { font-size: 22px; line-height: 1; }
     .asset-name {
       font-size: 11px;
       font-weight: 500;
@@ -291,8 +351,8 @@
     @media (max-width: 600px) {
       .shell { padding: 36px 16px 72px; }
       .site-header { margin-bottom: 40px; }
-      .card-desc { display: none; }
-      .asset-grid { grid-template-columns: repeat(3, 1fr); }
+      .project-card { flex-basis: 220px; }
+      .carousel-nav { display: none; }
     }
   </style>
 </head>
@@ -310,14 +370,26 @@
 
   <!-- SECTION 1 — MAIN APPS -->
   <div class="project-group" id="group-apps">
-    <div class="section-label" data-i18n="labelApps">Applications</div>
-    <div class="project-list" id="list-apps"></div>
+    <div class="section-label">
+      <span class="section-label-text" data-i18n="labelApps">Applications</span>
+      <span class="carousel-nav">
+        <button class="nav-btn" onclick="scrollCarousel('list-apps', -1)" aria-label="Scroll left">‹</button>
+        <button class="nav-btn" onclick="scrollCarousel('list-apps', 1)" aria-label="Scroll right">›</button>
+      </span>
+    </div>
+    <div class="carousel-track" id="list-apps"></div>
   </div>
 
   <!-- SECTION 2 — ASSET CALCULATORS -->
   <div class="project-group" id="group-assets">
-    <div class="section-label" data-i18n="labelAssets">Asset Class Calculators</div>
-    <div class="asset-grid" id="grid-assets"></div>
+    <div class="section-label">
+      <span class="section-label-text" data-i18n="labelAssets">Asset Class Calculators</span>
+      <span class="carousel-nav">
+        <button class="nav-btn" onclick="scrollCarousel('grid-assets', -1)" aria-label="Scroll left">‹</button>
+        <button class="nav-btn" onclick="scrollCarousel('grid-assets', 1)" aria-label="Scroll right">›</button>
+      </span>
+    </div>
+    <div class="carousel-track" id="grid-assets"></div>
   </div>
 
   <!-- FOOTER -->
@@ -363,16 +435,24 @@
       name: { en: 'Personal Wealth Builder',   vi: 'Quản Lý Tài Sản Cá Nhân' },
       desc: { en: 'Cashflow, budget, tax, debt & net worth tracker',
               vi: 'Theo dõi dòng tiền, ngân sách, thuế, nợ & giá trị tài sản ròng' },
+      features: {
+        en: ['Net worth & cashflow dashboard', 'Debt payoff & budget planner', 'Automated tax estimate'],
+        vi: ['Bảng theo dõi tài sản ròng & dòng tiền', 'Kế hoạch trả nợ & ngân sách', 'Ước tính thuế tự động'],
+      },
       tagColor: '#c8a96e',
     },
     {
-      icon: '💼',
+      icon: '🧭',
       color: '#c8a96e',
       href: 'Strategic_Life_Portfolio_Tool',
-      tag: { en: 'Personal Life Plan',  vi: 'Quản Lý Cuộc Đời' },
+      tag: { en: 'Life Plan',  vi: 'Kế Hoạch Đời' },
       name: { en: 'Personal Life Plan',   vi: 'Quản Lý Cuộc Đời' },
-      desc: { en: 'Cashflow, budget, tax, debt & net worth tracker',
-              vi: 'Theo dõi dòng tiền, ngân sách, thuế, nợ & giá trị tài sản ròng' },
+      desc: { en: 'Strategic life-stage roadmap linking goals, finances & timing',
+              vi: 'Lộ trình chiến lược theo giai đoạn cuộc đời, gắn mục tiêu với tài chính' },
+      features: {
+        en: ['Life-stage goal roadmap', 'Scenario & what-if modeling', 'Milestone progress tracking'],
+        vi: ['Lộ trình mục tiêu theo giai đoạn', 'Mô phỏng kịch bản giả định', 'Theo dõi tiến độ cột mốc'],
+      },
       tagColor: '#c8a96e',
     },
     {
@@ -383,6 +463,10 @@
       name: { en: 'Lã Family Registry',        vi: 'Gia Phả Họ Lã' },
       desc: { en: 'Family tree, demographics, kinship records & statistics across generations',
               vi: 'Cây gia phả, nhân khẩu học, hồ sơ thân tộc & thống kê qua các thế hệ' },
+      features: {
+        en: ['Interactive multi-generation tree', 'Birth, marriage & lineage records', 'Demographic stats by branch'],
+        vi: ['Cây gia phả nhiều thế hệ tương tác', 'Hồ sơ sinh, kết hôn & huyết thống', 'Thống kê theo chi họ'],
+      },
       tagColor: '#4ecb8a',
     },
     {
@@ -393,6 +477,10 @@
       name: { en: 'Small Business Finance',    vi: 'Tài Chính Doanh Nghiệp Nhỏ' },
       desc: { en: 'Cashflow, tax planning & financial statements for SMEs',
               vi: 'Dòng tiền, kế hoạch thuế & báo cáo tài chính cho doanh nghiệp vừa và nhỏ' },
+      features: {
+        en: ['13-week cashflow forecast', 'P&L / balance sheet builder', 'Tax provisioning calculator'],
+        vi: ['Dự báo dòng tiền 13 tuần', 'Lập báo cáo lãi lỗ / cân đối', 'Tính trích lập thuế'],
+      },
       tagColor: '#ff9f43',
     },
     {
@@ -403,6 +491,10 @@
       name: { en: 'SMSF Dashboard',            vi: 'Bảng Điều Khiển SMSF' },
       desc: { en: 'Self-managed super fund compliance, contributions & performance',
               vi: 'Tuân thủ, đóng góp & hiệu suất quỹ hưu bổng tự quản' },
+      features: {
+        en: ['Contribution caps tracker', 'Investment strategy monitor', 'Pension phase drawdown calc'],
+        vi: ['Theo dõi hạn mức đóng góp', 'Giám sát chiến lược đầu tư', 'Tính rút giai đoạn hưu'],
+      },
       tagColor: '#c8a96e',
     },
     {
@@ -413,6 +505,10 @@
       name: { en: 'Nation State Simulator',    vi: 'Mô Phỏng Quốc Gia' },
       desc: { en: 'Fiscal & monetary policy simulator — budgets, rates & economic levers',
               vi: 'Trình giả lập chính sách tài khóa & tiền tệ — ngân sách, lãi suất & đòn bẩy kinh tế' },
+      features: {
+        en: ['Fiscal & monetary policy levers', 'Interest rate & inflation modeling', 'GDP growth scenario engine'],
+        vi: ['Đòn bẩy chính sách tài khóa & tiền tệ', 'Mô hình lãi suất & lạm phát', 'Kịch bản tăng trưởng GDP'],
+      },
       tagColor: '#b67fff',
     },
     {
@@ -423,6 +519,10 @@
       name: { en: 'Global Economy Observatory', vi: 'Đài Quan Sát Kinh Tế Toàn Cầu' },
       desc: { en: 'Macroeconomic map — GDP, trade flows & inflation by region',
               vi: 'Bản đồ kinh tế vĩ mô — GDP, dòng thương mại & lạm phát theo khu vực' },
+      features: {
+        en: ['Regional GDP comparison map', 'Trade flow visualization', 'Inflation & rate heatmaps'],
+        vi: ['Bản đồ so sánh GDP theo khu vực', 'Trực quan hóa dòng thương mại', 'Bản đồ nhiệt lạm phát & lãi suất'],
+      },
       tagColor: '#ff9f43',
     },
     {
@@ -433,6 +533,10 @@
       name: { en: 'International Tax', vi: 'Thuế Quốc Tế' },
       desc: { en: 'Tax issues: residency, PE risk, WHT, transfer pricing, post-acquisition structure',
               vi: 'Vấn đề thuế: cư trú thuế, rủi ro PE, WHT, định giá chuyển nhượng, cơ cấu hậu thâu tóm' },
+      features: {
+        en: ['Tax residency & PE risk test', 'Transfer pricing analysis', 'Withholding tax & structure planner'],
+        vi: ['Kiểm tra cư trú thuế & rủi ro PE', 'Phân tích định giá chuyển nhượng', 'Hoạch định thuế khấu trừ'],
+      },
       tagColor: '#e06b6b',
     },
   ];
@@ -457,7 +561,7 @@
       if (T[lang][key]) el.textContent = T[lang][key];
     });
 
-    // App list
+    // App carousel
     const listEl = document.getElementById('list-apps');
     listEl.innerHTML = '';
     APPS.forEach(app => {
@@ -465,21 +569,22 @@
       a.href = app.href;
       a.className = 'project-card';
       a.style.setProperty('--c', app.color);
+      const featureItems = app.features[lang].map(f => `<li>${f}</li>`).join('');
       a.innerHTML = `
         <span class="card-icon">${app.icon}</span>
         <div class="card-body">
           <div class="card-name">
             ${app.name[lang]}
-            <span class="card-tag" style="color:${app.tagColor};border-color:${app.tagColor}40;background:${app.tagColor}10">${app.tag[lang]}</span>
           </div>
           <div class="card-desc">${app.desc[lang]}</div>
+          <ul class="card-features">${featureItems}</ul>
+          <span class="card-arrow">${lang === 'en' ? 'Open' : 'Mở'} →</span>
         </div>
-        <span class="card-arrow">→</span>
       `;
       listEl.appendChild(a);
     });
 
-    // Asset grid
+    // Asset carousel
     const gridEl = document.getElementById('grid-assets');
     gridEl.innerHTML = '';
     ASSETS.forEach(asset => {
@@ -496,6 +601,11 @@
     // Footer count
     const fc = document.getElementById('footer-count');
     fc.textContent = T[lang].footerCount(APPS.length, ASSETS.length);
+  }
+
+  function scrollCarousel(id, dir) {
+    const el = document.getElementById(id);
+    el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: 'smooth' });
   }
 
   function toggleLang() {
