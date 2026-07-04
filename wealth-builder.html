@@ -126,6 +126,106 @@
     .empty-state .icon{font-size:32px;margin-bottom:12px}
     @media(max-width:900px){main{padding:20px 16px}.grid-4,.grid-3{grid-template-columns:1fr 1fr}header,nav{padding-left:16px;padding-right:16px}}
     @media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.site-footer{padding:18px 16px}}
+
+    /* Framework Styles (adapted to match wealth-builder theme) */
+    .framework-hero {
+      background: linear-gradient(135deg, #111318, #1a1f29);
+      color: var(--text);
+      padding: 48px 32px;
+      border-radius: var(--radius);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .framework-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(200,169,110,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .pyramid-container .pyramid-layer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 12px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .pyramid-container .pyramid-layer:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .pyramid-layer.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(200,169,110,0.3);
+    }
+    .phase-tab {
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .phase-tab.active {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+    }
+    .strategy-card {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: var(--radius);
+    }
+    .wealth-flywheel {
+      position: relative;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fw-circle{position:absolute;width:112px;height:112px;border-radius:50%;color:#000;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.4)}
+    .fw-circle:hover{transform:scale(1.06)}
+    .fw-circle-1{top:0;left:50%;transform:translateX(-50%)}
+    .fw-circle-1:hover{transform:translateX(-50%) scale(1.06)}
+    .fw-circle-2{top:50%;right:0;transform:translateY(-50%)}
+    .fw-circle-2:hover{transform:translateY(-50%) scale(1.06)}
+    .fw-circle-3{bottom:0;left:50%;transform:translateX(-50%)}
+    .fw-circle-3:hover{transform:translateX(-50%) scale(1.06)}
+    .fw-circle-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;opacity:.75}
+    .fw-circle-label{font-weight:700;font-size:12px;line-height:1.25;margin-top:4px}
+    .fw-circle-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;
+      background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-align:center;
+      box-shadow:inset 0 2px 8px rgba(0,0,0,.45)}
+    .life-stage-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;
+      text-align:left;cursor:pointer;transition:all .2s ease;color:var(--text);font-family:var(--font-body)}
+    .life-stage-btn:hover{border-color:var(--accent)}
+    .life-stage-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+    .life-stage-btn .lsb-name{font-weight:700;font-size:13px}
+    .life-stage-btn .lsb-sub{font-size:11px;opacity:.7;margin-top:3px}
+    .alloc-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 6px;font-size:11px;
+      font-weight:700;text-align:center;cursor:pointer;transition:all .15s ease;color:var(--text);font-family:var(--font-body)}
+    .alloc-btn:hover{border-color:var(--accent)}
+    .alloc-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+    .fw-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px}
+    .fw-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;
+      z-index:2000;padding:20px}
+    .fw-modal-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:480px;
+      width:100%;box-shadow:0 25px 60px rgba(0,0,0,.5);max-height:86vh;overflow-y:auto}
+    .fw-modal-close{background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0}
+    .fw-modal-close:hover{color:var(--text)}
+    .fw-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);
+      border:1px solid var(--border);color:var(--text);padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;
+      box-shadow:0 15px 30px rgba(0,0,0,.4);z-index:2100;transition:transform .3s ease;display:flex;align-items:center;gap:8px}
+    .fw-toast.show{transform:translateX(-50%) translateY(0)}
+    .strategy-card .fw-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);letter-spacing:1px;font-weight:700}
+    .strategy-card ul{margin:6px 0 0 18px;font-size:12px;color:var(--muted);line-height:1.7}
   </style>
   </head>
   <body>
@@ -152,7 +252,8 @@
       <a href="index" class="back-link" title="Back to Hub">← Hub</a>
     </div>
   <nav>
-    <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard" data-i18n="tabDashboard">📊 Dashboard</div>
+    <div class="tab active" onclick="showPage('framework')" id="tab-framework">🏛️ Wealth Framework</div>
+    <div class="tab" onclick="showPage('dashboard')" id="tab-dashboard" data-i18n="tabDashboard">📊 Dashboard</div>
     <div class="tab" onclick="showPage('portfolio')" id="tab-portfolio" data-i18n="tabPortfolio">💼 Portfolio</div>
     <div class="tab" onclick="showPage('cashflow')" id="tab-cashflow" data-i18n="tabCashflow">💸 Cashflow</div>
     <div class="tab" onclick="showPage('debt')" id="tab-debt" data-i18n="tabDebt">🧹 Debt & Loans</div>
@@ -160,8 +261,169 @@
     <div class="tab" onclick="showPage('projections')" id="tab-projections" data-i18n="tabProjections">📈 Projections</div>
   </nav>
   <main>
+<!-- NEW FRAMEWORK PAGE -->
+  <div class="page active" id="page-framework">
+    <div class="framework-hero">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+        <div style="max-width: 620px">
+          <div style="font-size:11px;font-weight:700;opacity:.7;letter-spacing:2px;text-transform:uppercase">RESILIENT WEALTH</div>
+          <div style="font-family: var(--font-display); font-size: 38px; line-height: 1.05; letter-spacing: -1px; margin: 12px 0 16px">
+            Wealth Building Framework
+          </div>
+          <p style="font-size: 14px; opacity: 0.85; line-height:1.6">
+            Structure-first. Cycle-aware. Life-stage adaptive.<br>
+            Build lasting wealth with clarity and confidence.
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;flex-shrink:0">
+          <button class="btn" onclick="fwShowProfileModal()">👤 My Profile</button>
+          <button class="btn btn-accent" onclick="fwResetAll()">↻ Reset</button>
+        </div>
+      </div>
+    </div>
 
-  <div class="page active" id="page-dashboard">
+    <!-- Quick Stats -->
+    <div class="grid-4 section">
+      <div class="kpi gold"><div class="kpi-label">Core Principle</div><div class="kpi-value" style="font-size:16px">Foundation First</div></div>
+      <div class="kpi green"><div class="kpi-label">Dynamic Engine</div><div class="kpi-value" style="font-size:16px">Wealth Flywheel</div></div>
+      <div class="kpi blue"><div class="kpi-label">Macro Edge</div><div class="kpi-value" style="font-size:16px">Cycle Playbook</div></div>
+      <div class="kpi" style="border-top:2px solid var(--accent5)"><div class="kpi-label">Personalisation</div><div class="kpi-value" style="font-size:16px">Life-Stage Adaptive</div></div>
+    </div>
+
+    <!-- Interactive Pyramid -->
+    <div class="card section">
+      <div class="page-title" style="font-size:22px">The Resilient Wealth Pyramid</div>
+      <div class="page-sub">Click any layer to explore • Center of gravity shifts by life stage</div>
+
+      <div class="pyramid-container" id="framework-pyramid"></div>
+
+      <!-- Life Stage Selector -->
+      <div style="margin-top: 24px">
+        <div style="font-size:12px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-bottom:8px">
+          SELECT YOUR LIFE STAGE <span class="badge badge-gold" style="text-transform:none;letter-spacing:0;margin-left:4px">changes recommended focus</span>
+        </div>
+        <div class="grid-3" id="framework-life-stages"></div>
+      </div>
+    </div>
+
+    <!-- Wealth Flywheel -->
+    <div class="card section">
+      <div class="grid-2" style="align-items:center;gap:32px">
+        <div>
+          <div class="page-title" style="font-size:22px">The Wealth Flywheel</div>
+          <div class="page-sub">A self-reinforcing system that accelerates once asset cash flow exceeds earned income</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
+            <div style="display:flex;gap:12px">
+              <div style="width:28px;height:28px;flex-shrink:0;border-radius:50%;background:rgba(224,107,107,.15);color:var(--accent4);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">1</div>
+              <div><div style="font-weight:700;font-size:13px">Capital Accumulation</div><div style="font-size:12px;color:var(--muted)">Build surplus through disciplined saving and income growth</div></div>
+            </div>
+            <div style="display:flex;gap:12px">
+              <div style="width:28px;height:28px;flex-shrink:0;border-radius:50%;background:rgba(78,203,138,.15);color:var(--accent3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">2</div>
+              <div><div style="font-weight:700;font-size:13px">Cash Flow Generation</div><div style="font-size:12px;color:var(--muted)">Deploy capital into income-producing assets</div></div>
+            </div>
+            <div style="display:flex;gap:12px">
+              <div style="width:28px;height:28px;flex-shrink:0;border-radius:50%;background:rgba(92,158,255,.15);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">3</div>
+              <div><div style="font-weight:700;font-size:13px">Reinvest &amp; Scale</div><div style="font-size:12px;color:var(--muted)">Compound by acquiring more high-quality assets</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="wealth-flywheel" id="framework-flywheel">
+          <div class="fw-circle fw-circle-1" style="background:var(--accent4)" onclick="fwHighlightFlywheelStep(1)">
+            <div class="fw-circle-tag">STEP 01</div><div class="fw-circle-label">CAPITAL<br>ACCUMULATION</div>
+          </div>
+          <div class="fw-circle fw-circle-2" style="background:var(--accent3)" onclick="fwHighlightFlywheelStep(2)">
+            <div class="fw-circle-tag">STEP 02</div><div class="fw-circle-label">CASH FLOW<br>GENERATION</div>
+          </div>
+          <div class="fw-circle fw-circle-3" style="background:var(--accent2)" onclick="fwHighlightFlywheelStep(3)">
+            <div class="fw-circle-tag">STEP 03</div><div class="fw-circle-label">REINVEST &amp;<br>SCALE</div>
+          </div>
+          <div class="fw-circle-center">
+            <div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted)">COMPOUNDING</div>
+              <div style="font-family:var(--font-display);font-size:17px;color:var(--accent)">WEALTH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cycle Playbook -->
+    <div class="card section">
+      <div class="page-title" style="font-size:22px">Economic Cycle Playbook</div>
+      <div class="page-sub">Practical executing strategies by phase + life stage</div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px" id="framework-phase-tabs"></div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px">CURRENT SELECTION</span>
+        <div style="display:flex;gap:8px" id="framework-selection-badges"></div>
+      </div>
+
+      <div class="grid-2" style="align-items:start">
+        <div id="framework-strategies"></div>
+        <div class="card" style="background:var(--surface)">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-bottom:12px">KEY INSIGHTS FOR THIS PHASE</div>
+          <div id="framework-phase-insights" style="font-size:13px;line-height:1.6"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Allocation Tool -->
+    <div class="card section">
+      <div class="page-title" style="font-size:22px">Dynamic Allocation Tool</div>
+      <div class="page-sub">Select your life stage and current economic phase to see recommended allocation ranges</div>
+
+      <div class="grid-2">
+        <div>
+          <div style="margin-bottom:16px">
+            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Your Life Stage</label>
+            <div class="grid-3" id="framework-alloc-stages"></div>
+          </div>
+          <div style="margin-bottom:16px">
+            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Current Economic Phase</label>
+            <div class="grid-2" id="framework-alloc-phases"></div>
+          </div>
+          <button class="btn btn-accent" style="width:100%" onclick="fwUpdateAllocationChart()">↻ Update Recommendations</button>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <h3 style="margin-bottom:2px">Recommended Allocation</h3>
+              <div id="framework-allocation-subtitle" style="font-size:11px;color:var(--muted)"></div>
+            </div>
+            <span class="badge badge-green">Dynamic</span>
+          </div>
+          <div class="chart-wrap" style="height:230px"><canvas id="framework-allocation-chart"></canvas></div>
+          <div class="alert alert-info" id="framework-allocation-notes" style="margin-top:16px;margin-bottom:0"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section">
+      <div class="page-title" style="font-size:22px">Core Principles</div>
+      <div class="grid-3">
+        <div class="card" style="background:var(--surface)">
+          <div style="color:var(--accent);font-size:32px;margin-bottom:8px">1</div>
+          <div class="font-bold">Foundation &gt; Timing</div>
+          <div class="text-sm mt-3 opacity-75">Strong base (knowledge, protection, income) matters more than perfect timing.</div>
+        </div>
+        <div class="card" style="background:var(--surface)">
+          <div style="color:var(--accent);font-size:32px;margin-bottom:8px">2</div>
+          <div class="font-bold">Structure Enables Speed</div>
+          <div class="text-sm mt-3 opacity-75">The right pyramid lets the wealth flywheel spin faster and safer.</div>
+        </div>
+        <div class="card" style="background:var(--surface)">
+          <div style="color:var(--accent);font-size:32px;margin-bottom:8px">3</div>
+          <div class="font-bold">Adapt to Reality</div>
+          <div class="text-sm mt-3 opacity-75">Adjust allocations &amp; focus based on life stage and economic cycle.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Original Pages (Dashboard and others remain unchanged) -->
+  <div class="page" id="page-dashboard">
     <div class="page-title" data-i18n="dashTitle">Overview</div>
     <div class="page-sub" data-i18n="dashSub">Your financial life on one screen · cashflow, debt, portfolio & planning</div>
     <div class="grid-4 section" id="kpi-row"></div>
@@ -465,6 +727,1261 @@
       </div>
     </div>
   </footer>
-  <script src="assets/js/wealth-builder-personal.js"></script>
+  <script>
+const STORAGE_KEY = 'wealthbuilder_personal_v2';
+const LANG_KEY = 'wealthbuilder_personal_lang';
+let LANG = localStorage.getItem(LANG_KEY) || 'en';
+
+const TRANSLATIONS = {
+  en: {
+    appTitle:'Individual', appSub:'Finance & Planning',
+    btnSave:'Save', btnExport:'↓ Export', btnReport:'Net worth report', btnLangToggle:'🌐 Tiếng Việt',
+    btnAdd:'+ Add', btnAddDebt:'+ Add Debt', btnRunProj:'Run Projections',
+    btnSaveSettings:'Save Settings', btnSaveTargets:'Save Targets',
+    btnExportJson:'↓ Export JSON', btnImportJson:'↑ Import JSON', btnClearAll:'⚠ Clear All',
+    tabDashboard:'📊 Dashboard', tabPortfolio:'💼 Portfolio', tabCashflow:'💸 Cashflow',
+    tabDebt:'🧹 Debt & Loans', tabTax:'🧾 Tax & Documents', tabProjections:'📈 Projections', tabSettings:'⚙️ Settings',
+    dashTitle:'Overview', dashSub:'Your financial life on one screen',
+    dashAlloc:'Portfolio Allocation vs Target', dashFI:'Financial Freedom Progress',
+    dashFIYearSub:'years to freedom target', dashCashflow:'Monthly Cashflow Summary',
+    dashDebt:'Debt Paydown Status', dashRoadmap:'Personal Action Roadmap',
+    portTitle:'Personal Portfolio', portSub:'Taxable & personal accounts',
+    projTableYear:'Year', projTableAge:'Age', projTableCons:'Conservative (5%)',
+    projTableBase:'Base (8%)', projTableOpt:'Optimistic (11%)', projTableFI:'Freedom Target?',
+    settingsTitle:'Settings & Profile', settingsSub:'Strategy parameters & data management',
+    settingsProfile:'Investor Profile', settingsName:'Name', settingsAge:'Current Age',
+    settingsFIAge:'Freedom Target Age', settingsFITarget:'Freedom Portfolio Target ($)',
+    settingsRisk:'Risk Profile', settingsInflation:'Inflation (% p.a.)',
+    settingsEmergency:'Emergency Fund Target ($)', settingsTargetAlloc:'Target Allocations (%)',
+    settingsDataMgmt:'Data Management', toastSaved:'✓ Saved', savedPrefix:'Saved ',
+    reportGenerating:'Generating LifePlan report…', reportReady:'Client report downloaded',
+
+    // Cashflow
+    cfTitle:'Cashflow', cfSub:'Income, costs & investable surplus',
+    cfIncome:'Income', cfSalaryLabel:'Net Salary (monthly)', cfOtherLabel:'Other Income',
+    cfFixedExp:'Fixed Expenses', cfRent:'Rent (weekly, $)', cfGroceries:'Groceries (weekly)',
+    cfFuel:'Car Fuel (weekly)', cfElec:'Electricity (weekly)', cfTransport:'Transport (weekly)',
+    cfGym:'Gym (fortnightly)', cfChildSupport:'Child Support & Extras',
+    cfBball:'Basketball (quarterly)', cfSchool:'School Fees (quarterly)', cfPlay:'Play Activities (weekly)',
+    cfInvestContrib:'Investment Contributions', cfMonthlyContrib:'Monthly Investing ($)',
+    cfDebtRepay:'Debt Repayment ($)', cfMonthlySummary:'Monthly Summary', cfInflation:'Expense Inflation Forecast',
+
+    // Portfolio
+    portAlert:'💡 Target: STRC 25% · SATA 15% · US ETFs 20% · Commercial RE 15% · Bitcoin 10% · Gold 10% · Cash 5%',
+    portAssetName:'Asset Name', portCategory:'Category', portUnits:'Units / Qty', portPrice:'Price ($)',
+    portCostBase:'Cost Base ($)', portDrip:'Reinvest Dividends?',
+    portTableAsset:'Asset', portTableCat:'Category', portTableUnits:'Units', portTablePrice:'Price',
+    portTableValue:'Value', portTableCost:'Cost Base', portTableGain:'Gain / Loss', portTablePct:'% of Portfolio',
+    portTableDrip:'Reinvest', portTargetVsActual:'Target vs Actual',
+
+    // Debt & Loans
+    debtTitle:'Debt & Loans', debtSub:'Payoff tracker, loan analyser & interest optimiser',
+    debtAlert:'⚠️ Pay high-interest debt first. Once cleared, roll repayments into investing — never inflate lifestyle.',
+    debtAddUpdate:'Add / Update Debt', debtName:'Debt Name', debtType:'Type',
+    debtOriginal:'Original Balance ($)', debtCurrent:'Current Balance ($)',
+    debtRate:'Interest Rate (% p.a.)', debtPayment:'Monthly Payment ($)',
+    debtTotalOutstanding:'Total Outstanding', debtMonthlyInterest:'Monthly Interest Cost',
+    debtTableDebt:'Debt', debtTableType:'Type', debtTableOriginal:'Original', debtTableCurrent:'Balance',
+    debtTableRate:'Rate', debtTablePayment:'Payment', debtTablePayoffIn:'Payoff', debtTableProgress:'Progress',
+    debtAmort:'Amortisation Schedule',
+    loanAnalyserTitle:'Loan Analyser', loanAnalyserSub:'Compare rates and see how much you could save.',
+    loanBalance:'Loan Balance ($)', loanCurrentRate:'Current Rate (% p.a.)', loanNewRate:'Better Rate (% p.a.)',
+    loanTerm:'Term (months)',
+
+    // Tax & Documents
+    taxTitle:'Tax & Documents', taxSub:'Tax return prep · Secure document vault',
+    taxReturnTitle:'Tax Return Prep',
+    taxReturnAlert:'💡 Collate income, deductions and receipts here — ready for your accountant.',
+    taxIncomeHeading:'Income', taxSalaryIncome:'Salary / Wages ($)', taxInterestIncome:'Interest Income ($)',
+    taxDividendIncome:'Dividends ($)', taxRentalIncome:'Rental Income ($)', taxOtherIncome:'Other Income ($)',
+    taxDeductionsHeading:'Deductions', taxWorkExpenses:'Work Expenses ($)', taxHomeOffice:'Home Office ($)',
+    taxVehicle:'Vehicle / Travel ($)', taxInvestmentFees:'Investment & Accounting Fees ($)',
+    taxDonations:'Donations ($)', taxOtherDeductions:'Other Deductions ($)',
+    taxReceiptsTitle:'Tax Receipt Log', receiptDate:'Date', receiptDesc:'Description',
+    receiptAmount:'Amount ($)', receiptCategory:'Category',
+    receiptTableDate:'Date', receiptTableDesc:'Description', receiptTableCat:'Category', receiptTableAmount:'Amount',
+    vaultTitle:'Document Vault',
+    vaultAlert:'🔒 Save your key documents here — accessible anytime by you and your advisor.',
+    vaultDocType:'Document Type', vaultDocName:'Document Name', vaultDocDate:'Date', vaultDocNotes:'Notes / Location',
+    vaultTableType:'Type', vaultTableName:'Name / Reference', vaultTableDate:'Date', vaultTableNotes:'Notes',
+    btnAddReceipt:'+ Add', btnAddVault:'+ Add', btnCalcLoan:'Compare Rates', btnCalcTax:'Calculate Summary',
+
+    // Projections
+    projTitle:'Projections', projSub:'What you\'ll need · what you\'ll have · how to get there',
+    projInputs:'Projection Inputs', projCurrentPortfolio:'Current Portfolio ($)',
+    projMonthly:'Monthly Investment ($)', projWage:'Wage Growth (% p.a.)'
+  },
+  vi: {
+    appTitle:'Cá Nhân', appSub:'Tài chính & Kế hoạch',
+    btnSave:'Lưu', btnExport:'↓ Xuất', btnReport:'Net worth report', btnLangToggle:'🌐 English',
+    btnExportJson:'↓ Xuất JSON', btnImportJson:'↑ Nhập JSON', btnClearAll:'⚠ Xóa Tất Cả',
+    toastSaved:'✓ Đã Lưu', savedPrefix:'Đã lưu ',
+    reportGenerating:'Đang tạo báo cáo LifePlan…', reportReady:'Đã tải báo cáo khách hàng'
+  }
+};
+
+function t(k){ return (TRANSLATIONS[LANG]&&TRANSLATIONS[LANG][k])||TRANSLATIONS.en[k]||k; }
+function toggleLanguage(){ LANG=LANG==='en'?'vi':'en'; localStorage.setItem(LANG_KEY,LANG); applyLanguage(); refreshAll(); }
+function applyLanguage(){
+  const sub=t('appSub');
+  document.title=sub? (t('appTitle')+' · '+sub) : t('appTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=t(el.getAttribute('data-i18n')); if(v) el.textContent=v; });
+}
+
+const DEFAULT_STATE = {
+  settings:{ name:'Client', planner:'', age:42, fiAge:48, fiTarget:1200000, risk:'Balanced-Growth', inflation:5, emergency:28000 },
+  targets:{ STRC:25, SATA:15, 'US ETF':20, 'Commercial RE':15, Bitcoin:10, Gold:10, Cash:5 },
+  holdings:[
+    { id:1, name:'STRC', cat:'STRC', qty:55, price:0, cost:0, drip:'Yes' },
+    { id:2, name:'Bitcoin', cat:'Bitcoin', qty:0.05, price:0, cost:0, drip:'No' },
+    { id:3, name:'Gold Shares', cat:'Gold', qty:0, price:0, cost:0, drip:'No' }
+  ],
+  debts:[
+    { id:1, name:'Credit Card', type:'Credit Card', original:4195, balance:4195, rate:20, payment:500 },
+    { id:2, name:'Prepayment Liability', type:'Prepayment Liability', original:4855, balance:4855, rate:0, payment:300 }
+  ],
+  cashflow:{ salary:5500, other:0, rent:410, groceries:150, fuel:60, electricity:40, transport:17, gym:90,
+    bball:200, school:550, play:50, invest:2000, debtRepay:500 },
+  projections:{ start:0, monthly:2000, wage:3.5 },
+  tax:{ salary:0, interest:0, dividends:0, rental:0, otherIncome:0, workExp:0, homeOffice:0, vehicle:0, invFees:0, donations:0, otherDed:0 },
+  receipts:[],
+  vault:[],
+  lastUpdated:null
+};
+
+let S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+let donutChart,cashflowBarChart,debtChartInst,projChartInst;
+const COLORS=['#c8a96e','#5c9eff','#4ecb8a','#e06b6b','#f59e0b','#a78bfa','#64748b'];
+const CAT_COLORS={ STRC:'#c8a96e',SATA:'#5c9eff','US ETF':'#4ecb8a','Commercial RE':'#e06b6b',Bitcoin:'#f59e0b',Gold:'#a78bfa',Cash:'#64748b',Other:'#94a3b8' };
+
+const fmt=(n,d=0)=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtNum=(n,d=2)=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+function loadState(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)),JSON.parse(raw)); }catch(e){} }
+function saveAll(){
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
+  S.lastUpdated=new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(S));
+  const toast=document.getElementById('save-toast');
+  toast.textContent=t('toastSaved'); toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1800);
+  updateLastUpdated(); refreshAll();
+}
+function updateLastUpdated(){
+  const el=document.getElementById('last-updated-label');
+  if(S.lastUpdated){ const d=new Date(S.lastUpdated); el.textContent=t('savedPrefix')+d.toLocaleString(LANG==='vi'?'vi-VN':'en-US',{dateStyle:'short',timeStyle:'short'}); }
+}
+function exportData(){
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));
+  a.download='financial-planner-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+}
+function importData(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{ try{ S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)),JSON.parse(ev.target.result));
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(S)); populateForms(); refreshAll(); alert('Imported!'); }catch(err){ alert('Invalid file.'); } };
+  r.readAsText(file);
+}
+function clearAll(){ if(!confirm('Clear ALL data?')) return; S=JSON.parse(JSON.stringify(DEFAULT_STATE)); localStorage.removeItem(STORAGE_KEY); populateForms(); refreshAll(); }
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(tb=>tb.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  refreshPage(id);
+}
+function currentPage(){ const p=document.querySelector('.page.active'); return p?p.id.replace('page-',''):'dashboard'; }
+function refreshAll(){ refreshPage(currentPage()); }
+function refreshPage(id){
+  if(id==='dashboard') renderDashboard();
+  if(id==='portfolio') renderPortfolio();
+  if(id==='cashflow') renderCashflow();
+  if(id==='debt') renderDebt();
+  if(id==='tax') renderTax();
+  if(id==='projections') renderProjections();
+  if(id==='settings') renderSettings();
+}
+
+function totalValue(h){ return (h.qty||0)*(h.price||0); }
+function totalPortfolioValue(){ return S.holdings.reduce((s,h)=>s+totalValue(h),0); }
+function allocationByCategory(){
+  const map={}, total=totalPortfolioValue();
+  S.holdings.forEach(h=>{ const v=totalValue(h); map[h.cat]=(map[h.cat]||0)+v; });
+  const result={}; Object.keys(map).forEach(k=>{ result[k]=total>0?map[k]/total*100:0; }); return result;
+}
+function calcMonthlyExpenses(cf){
+  const w=n=>(cf[n]||0)*52/12, f=n=>(cf[n]||0)*26/12, q=n=>(cf[n]||0)/3;
+  return w('rent')+w('groceries')+w('fuel')+w('electricity')+w('transport')+w('play')+f('gym')+q('bball')+q('school');
+}
+function monthsToPayoff(balance,rate,payment){
+  if(payment<=0) return 999; const r=rate/100/12;
+  if(r===0) return Math.ceil(balance/payment);
+  if(payment<=balance*r) return 999;
+  return Math.ceil(-Math.log(1-(balance*r)/payment)/Math.log(1+r));
+}
+
+function addHolding(){
+  const name=document.getElementById('h-name').value.trim();
+  if(!name) return;
+  S.holdings.push({ id:Date.now(), name, cat:document.getElementById('h-cat').value,
+    qty:parseFloat(document.getElementById('h-qty').value)||0,
+    price:parseFloat(document.getElementById('h-price').value)||0,
+    cost:parseFloat(document.getElementById('h-cost').value)||0,
+    drip:document.getElementById('h-drip').value });
+  ['h-name','h-qty','h-price','h-cost'].forEach(id=>document.getElementById(id).value='');
+  renderPortfolio();
+}
+function removeHolding(id){ S.holdings=S.holdings.filter(h=>h.id!==id); renderPortfolio(); }
+function updateHoldingPrice(id,val){ const h=S.holdings.find(x=>x.id===id); if(h) h.price=parseFloat(val)||0; renderPortfolio(); }
+
+function addDebt(){
+  const name=document.getElementById('d-name').value.trim(); if(!name) return;
+  S.debts.push({ id:Date.now(), name, type:document.getElementById('d-type').value,
+    original:parseFloat(document.getElementById('d-original').value)||0,
+    balance:parseFloat(document.getElementById('d-balance').value)||0,
+    rate:parseFloat(document.getElementById('d-rate').value)||0,
+    payment:parseFloat(document.getElementById('d-payment').value)||0 });
+  ['d-name','d-original','d-balance','d-rate','d-payment'].forEach(id=>document.getElementById(id).value='');
+  renderDebt();
+}
+function removeDebt(id){ S.debts=S.debts.filter(d=>d.id!==id); renderDebt(); }
+function updateDebtBalance(id,val){ const d=S.debts.find(x=>x.id===id); if(d) d.balance=parseFloat(val)||0; renderDebt(); }
+
+function collectCashflow(){
+  const g=id=>parseFloat(document.getElementById(id)?.value)||0;
+  S.cashflow={ salary:g('cf-salary'), other:g('cf-other'), rent:g('exp-rent'), groceries:g('exp-groceries'),
+    fuel:g('exp-fuel'), electricity:g('exp-electricity'), transport:g('exp-transport'), gym:g('exp-gym'),
+    bball:g('exp-bball'), school:g('exp-school'), play:g('exp-play'), invest:g('cf-invest'), debtRepay:g('cf-debt-repay') };
+}
+function collectProjections(){
+  const g=id=>parseFloat(document.getElementById(id)?.value)||0;
+  S.projections={ start:g('proj-start'), monthly:g('proj-monthly'), wage:g('proj-wage') };
+}
+function collectSettings(){
+  S.settings={ name:document.getElementById('s-name')?.value||S.settings.name,
+    planner:document.getElementById('s-planner')?.value||S.settings.planner||'',
+    age:parseInt(document.getElementById('s-age')?.value)||S.settings.age,
+    fiAge:parseInt(document.getElementById('s-fi-age')?.value)||S.settings.fiAge,
+    fiTarget:parseFloat(document.getElementById('s-fi-target')?.value)||S.settings.fiTarget,
+    risk:document.getElementById('s-risk')?.value||S.settings.risk,
+    inflation:parseFloat(document.getElementById('s-inflation')?.value)||S.settings.inflation,
+    emergency:parseFloat(document.getElementById('s-emergency')?.value)||S.settings.emergency };
+}
+function collectTax(){
+  const g=id=>parseFloat(document.getElementById(id)?.value)||0;
+  S.tax={ salary:g('tax-salary'), interest:g('tax-interest'), dividends:g('tax-dividends'), rental:g('tax-rental'),
+    otherIncome:g('tax-other-income'), workExp:g('tax-work-exp'), homeOffice:g('tax-home-office'),
+    vehicle:g('tax-vehicle'), invFees:g('tax-inv-fees'), donations:g('tax-donations'), otherDed:g('tax-other-ded') };
+}
+
+function populateForms(){
+  const s=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v??''; };
+  const cf=S.cashflow;
+  s('cf-salary',cf.salary); s('cf-other',cf.other);
+  ['rent','groceries','fuel','electricity','transport','gym','bball','school','play'].forEach(k=>{
+    s(k==='rent'?'exp-rent':k==='groceries'?'exp-groceries':k==='fuel'?'exp-fuel':k==='electricity'?'exp-electricity':k==='transport'?'exp-transport':k==='gym'?'exp-gym':k==='bball'?'exp-bball':k==='school'?'exp-school':'exp-play', cf[k]);
+  });
+  s('cf-invest',cf.invest); s('cf-debt-repay',cf.debtRepay);
+  s('proj-start',S.projections.start); s('proj-monthly',S.projections.monthly); s('proj-wage',S.projections.wage);
+  s('s-name',S.settings.name); s('s-planner',S.settings.planner); s('s-age',S.settings.age); s('s-fi-age',S.settings.fiAge);
+  s('s-fi-target',S.settings.fiTarget); s('s-risk',S.settings.risk); s('s-inflation',S.settings.inflation); s('s-emergency',S.settings.emergency);
+  const tx=S.tax||{};
+  s('tax-salary',tx.salary); s('tax-interest',tx.interest); s('tax-dividends',tx.dividends); s('tax-rental',tx.rental);
+  s('tax-other-income',tx.otherIncome); s('tax-work-exp',tx.workExp); s('tax-home-office',tx.homeOffice);
+  s('tax-vehicle',tx.vehicle); s('tax-inv-fees',tx.invFees); s('tax-donations',tx.donations); s('tax-other-ded',tx.otherDed);
+}
+
+function getRoadmap(){
+  return [
+    { phase:'Phase 1', timeframe:'Months 1–6', priority:'Debt Clearance', action:'Pay off high-interest debt first.', status:'Priority' },
+    { phase:'Phase 2', timeframe:'Months 7–12', priority:'Debt-Free', action:'Clear remaining liabilities. Top up emergency fund.', status:'Next' },
+    { phase:'Phase 3', timeframe:'Year 2', priority:'Core Holdings', action:'Build STRC, SATA, US ETF and Gold positions per target allocation.', status:'Planned' },
+    { phase:'Phase 4', timeframe:'Years 3–5', priority:'Diversification', action:'Expand Commercial RE and alternative exposure.', status:'Planned' },
+    { phase:'Phase 5', timeframe:'Age '+S.settings.fiAge, priority:'Financial Freedom', action:'Portfolio income covers living expenses.', status:'Goal' }
+  ];
+}
+
+function renderDashboard(){
+  collectCashflow();
+  const totalPV=totalPortfolioValue(), cf=S.cashflow, monthlyExp=calcMonthlyExpenses(cf);
+  const totalDebt=S.debts.reduce((s,d)=>s+(d.balance||0),0);
+  const netWorth=totalPV-totalDebt;
+  const surplus=cf.salary+cf.other-monthlyExp-cf.invest-cf.debtRepay;
+  const fiYears=Math.max(0,S.settings.fiAge-S.settings.age);
+  const cashVal=S.holdings.filter(h=>h.cat==='Cash').reduce((s,h)=>s+totalValue(h),0);
+  const emergencyPct=Math.min(100,cashVal/(S.settings.emergency||1)*100);
+  const debtOrig=S.debts.reduce((s,d)=>s+(d.original||0),0)||1;
+  const debtClearPct=Math.min(100,100-totalDebt/debtOrig*100);
+  const fiPct=Math.min(100,totalPV/(S.settings.fiTarget||1)*100);
+
+  document.getElementById('kpi-row').innerHTML=`
+    <div class="kpi gold"><div class="kpi-label">Portfolio Value</div><div class="kpi-value">${fmt(totalPV)}</div><div class="kpi-sub">Personal investments</div></div>
+    <div class="kpi ${netWorth>=0?'green':'red'}"><div class="kpi-label">Net Worth</div><div class="kpi-value">${fmt(netWorth)}</div><div class="kpi-sub">Portfolio − debts</div></div>
+    <div class="kpi blue"><div class="kpi-label">Monthly Surplus</div><div class="kpi-value">${fmt(surplus)}</div><div class="kpi-delta ${surplus>=0?'pos':'neg'}">${surplus>=0?'▲ Positive':'▼ Deficit'}</div></div>
+    <div class="kpi ${totalDebt>0?'red':'green'}"><div class="kpi-label">Total Debt</div><div class="kpi-value">${fmt(totalDebt)}</div></div>`;
+
+  document.getElementById('fi-years-left').textContent=fiYears;
+  document.getElementById('fi-progress-bars').innerHTML=[
+    { label:'Freedom Portfolio Target', pct:fiPct, color:'var(--accent)' },
+    { label:'Emergency Fund', pct:emergencyPct, color:'var(--accent2)' },
+    { label:'Debt Clearance', pct:debtClearPct, color:'var(--accent3)' }
+  ].map(b=>`<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${b.label}</span><span class="progress-val">${b.pct.toFixed(0)}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${b.pct}%;background:${b.color}"></div></div></div>`).join('');
+
+  const alloc=allocationByCategory(), cats=Object.keys(S.targets);
+  if(donutChart) donutChart.destroy();
+  donutChart=new Chart(document.getElementById('donut-chart').getContext('2d'),{
+    type:'doughnut', data:{ labels:cats, datasets:[{ data:cats.map(c=>alloc[c]||0), backgroundColor:COLORS, borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, cutout:'70%' }
+  });
+  document.getElementById('donut-legend').innerHTML=cats.map((c,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[i]}"></div><span class="legend-name">${c}</span><span class="legend-pct">${(alloc[c]||0).toFixed(1)}% (tgt ${S.targets[c]}%)</span></div>`).join('');
+
+  const income=cf.salary+cf.other;
+  if(cashflowBarChart) cashflowBarChart.destroy();
+  cashflowBarChart=new Chart(document.getElementById('cashflow-bar').getContext('2d'),{
+    type:'bar', data:{ labels:['Income','Living','Invest','Debt','Surplus'],
+      datasets:[{ data:[income,monthlyExp,cf.invest,cf.debtRepay,Math.max(0,surplus)],
+        backgroundColor:['#4ecb8a','#e06b6b','#c8a96e','#f59e0b','#64748b'], borderRadius:4, borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales:{ x:{ ticks:{ color:'#7a7f8e',font:{size:10}} }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'$'+(v/1000).toFixed(0)+'k' } } } }
+  });
+
+  const totalOrig=S.debts.reduce((s,d)=>s+(d.original||0),0), paidOff=totalOrig-S.debts.reduce((s,d)=>s+(d.balance||0),0);
+  document.getElementById('debt-summary-panel').innerHTML=S.debts.length?S.debts.map(d=>{
+    const paid=Math.min(100,((d.original-d.balance)/(d.original||1))*100);
+    const mo=monthsToPayoff(d.balance,d.rate,d.payment);
+    return `<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${d.name}</span><span class="progress-val">${fmt(d.balance)} · ${mo<999?mo+' mo':'∞'}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${paid}%;background:var(--accent4)"></div></div></div>`;
+  }).join('')+`<div style="margin-top:12px;font-size:12px;color:var(--muted)">Repaid: <span class="td-green">${fmt(paidOff)}</span> of ${fmt(totalOrig)}</div>`:'<div class="empty-state"><div class="icon">✓</div>Debt free</div>';
+
+  const roadmap=getRoadmap();
+  document.getElementById('roadmap-table').innerHTML=`<table><thead><tr><th>Phase</th><th>Timeframe</th><th>Priority</th><th>Action</th><th>Status</th></tr></thead><tbody>${roadmap.map(r=>`<tr><td class="td-gold">${r.phase}</td><td class="td-mono td-muted">${r.timeframe}</td><td style="font-weight:600">${r.priority}</td><td>${r.action}</td><td>${r.status}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderPortfolio(){
+  const total=totalPortfolioValue(), tbody=document.getElementById('holdings-tbody'), tfoot=document.getElementById('holdings-tfoot');
+  if(!S.holdings.length){ tbody.innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="icon">📂</div>No holdings yet</div></td></tr>'; tfoot.innerHTML=''; document.getElementById('allocation-bars').innerHTML=''; return; }
+  tbody.innerHTML=S.holdings.map(h=>{
+    const val=totalValue(h), gain=val-(h.cost||0), gainPct=h.cost>0?gain/h.cost*100:0, portPct=total>0?val/total*100:0;
+    return `<tr><td style="font-weight:600">${h.name}</td><td><span class="badge badge-gold">${h.cat}</span></td>
+      <td class="td-mono">${fmtNum(h.qty,4)}</td>
+      <td class="td-mono"><input type="number" value="${h.price}" step="any" style="width:100px;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text)" onchange="updateHoldingPrice(${h.id},this.value)"></td>
+      <td class="td-mono td-gold">${fmt(val)}</td><td class="td-mono td-muted">${fmt(h.cost)}</td>
+      <td class="td-mono ${gain>=0?'td-green':'td-red'}">${gain>=0?'+':''}${fmt(gain)} (${gainPct.toFixed(1)}%)</td>
+      <td class="td-mono">${portPct.toFixed(1)}%</td>
+      <td>${h.drip==='Yes'?'<span class="badge badge-green">DRIP</span>':'—'}</td>
+      <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeHolding(${h.id})">✕</button></td></tr>`;
+  }).join('');
+  const totalCost=S.holdings.reduce((s,h)=>s+(h.cost||0),0), totalGain=total-totalCost;
+  tfoot.innerHTML=`<tr style="background:rgba(200,169,110,.05)"><td colspan="4" style="font-weight:700;color:var(--accent)">TOTAL</td><td class="td-mono td-gold" style="font-weight:700">${fmt(total)}</td><td class="td-mono">${fmt(totalCost)}</td><td class="td-mono ${totalGain>=0?'td-green':'td-red'}">${fmt(totalGain)}</td><td>100%</td><td colspan="2"></td></tr>`;
+  const alloc=allocationByCategory();
+  document.getElementById('allocation-bars').innerHTML=Object.entries(S.targets).map(([cat,tgt])=>{
+    const actual=alloc[cat]||0, color=CAT_COLORS[cat]||'#64748b';
+    return `<div class="progress-wrap"><div class="progress-header"><span class="progress-label">${cat}</span><span class="progress-val">${actual.toFixed(1)}% vs ${tgt}%</span></div><div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:${Math.min(100,actual/tgt*100||0)}%;background:${color}"></div></div></div>`;
+  }).join('');
+}
+
+function renderCashflow(){
+  populateForms(); collectCashflow(); const cf=S.cashflow;
+  const w=n=>n*52/12, f=n=>n*26/12, q=n=>n/3;
+  const items=[{l:'Rent',m:w(cf.rent)},{l:'Groceries',m:w(cf.groceries)},{l:'Fuel',m:w(cf.fuel)},{l:'Electricity',m:w(cf.electricity)},{l:'Transport',m:w(cf.transport)},{l:'Play',m:w(cf.play)},{l:'Gym',m:f(cf.gym)},{l:'Basketball',m:q(cf.bball)},{l:'School',m:q(cf.school)}];
+  const monthlyExp=items.reduce((s,i)=>s+i.m,0), income=cf.salary+cf.other, totalOut=monthlyExp+cf.invest+cf.debtRepay, surplus=income-totalOut;
+  document.getElementById('cf-summary').innerHTML=`
+    <div class="grid-2" style="margin-bottom:16px"><div><div class="label">Income</div><div style="font-family:var(--font-mono);font-size:22px;color:var(--accent3)">${fmt(income)}</div></div>
+    <div><div class="label">Outgoings</div><div style="font-family:var(--font-mono);font-size:22px;color:var(--accent4)">${fmt(totalOut)}</div></div></div>
+    <div class="divider"></div><div class="label">Net Surplus</div><div style="font-family:var(--font-mono);font-size:28px;color:${surplus>=0?'var(--accent3)':'var(--accent4)'}">${fmt(surplus)}</div>
+    <div class="divider"></div><table><thead><tr><th>Expense</th><th>Monthly</th></tr></thead><tbody>
+    ${items.map(i=>`<tr><td>${i.l}</td><td class="td-mono">${fmt(i.m)}</td></tr>`).join('')}
+    <tr><td>Investments</td><td class="td-mono td-gold">${fmt(cf.invest)}</td></tr>
+    <tr><td>Debt repay</td><td class="td-mono td-red">${fmt(cf.debtRepay)}</td></tr></tbody></table>`;
+  const rows=[]; for(let yr=0;yr<=6;yr++){ const factor=Math.pow(1+(S.settings.inflation||5)/100,yr);
+    rows.push({yr,exp:monthlyExp*factor,invest:cf.invest*Math.pow(1.035,yr)}); }
+  document.getElementById('cf-inflation-table').innerHTML=`<table><thead><tr><th>Year</th><th>Age</th><th>Expenses</th><th>Investment</th><th>Surplus</th></tr></thead><tbody>${rows.map(r=>{
+    const inc=cf.salary*Math.pow(1.035,r.yr), sur=inc-r.exp-r.invest;
+    return `<tr><td>${r.yr===0?'Now':'Y'+r.yr}</td><td>${S.settings.age+r.yr}</td><td class="td-mono">${fmt(r.exp)}</td><td class="td-mono">${fmt(r.invest)}</td><td class="td-mono ${sur>=0?'td-green':'td-red'}">${fmt(sur)}</td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+function renderDebt(){
+  const totalDebt=S.debts.reduce((s,d)=>s+(d.balance||0),0);
+  const totalInterest=S.debts.reduce((s,d)=>s+(d.balance||0)*(d.rate||0)/100/12,0);
+  document.getElementById('total-debt-kpi').textContent=fmt(totalDebt);
+  document.getElementById('monthly-interest-kpi').textContent=fmt(totalInterest);
+  const maxMo=S.debts.reduce((m,d)=>Math.max(m,monthsToPayoff(d.balance,d.rate,d.payment)),0);
+  if(maxMo<999){ const d=new Date(); d.setMonth(d.getMonth()+maxMo);
+    document.getElementById('debt-payoff-date').textContent='Est. cleared: '+d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
+  const tbody=document.getElementById('debt-tbody');
+  tbody.innerHTML=S.debts.length?S.debts.map(d=>{
+    const mo=monthsToPayoff(d.balance,d.rate,d.payment), paid=d.original>0?Math.min(100,(d.original-d.balance)/d.original*100):0;
+    return `<tr><td style="font-weight:600">${d.name}</td><td><span class="badge badge-red">${d.type}</span></td>
+      <td class="td-mono">${fmt(d.original)}</td><td class="td-mono"><input type="number" value="${d.balance}" style="width:110px;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text)" onchange="updateDebtBalance(${d.id},this.value)"></td>
+      <td class="td-mono">${d.rate}%</td><td class="td-mono">${fmt(d.payment)}</td><td class="td-mono">${mo<999?mo+' mo':'∞'}</td>
+      <td><div class="progress-bar"><div class="progress-fill" style="width:${paid}%;background:var(--accent3)"></div></div></td>
+      <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeDebt(${d.id})">✕</button></td></tr>`;
+  }).join(''):'<tr><td colspan="9"><div class="empty-state">✅ No debts</div></td></tr>';
+  const months=Math.min(48,S.debts.length?Math.max(...S.debts.map(d=>monthsToPayoff(d.balance,d.rate,d.payment)).filter(m=>m<999))+3:24);
+  const labels=Array.from({length:months},(_,i)=>'M'+(i+1));
+  const datasets=S.debts.map((d,i)=>{ let bal=d.balance; const data=[bal];
+    for(let m=0;m<months-1;m++){ const interest=bal*(d.rate/100/12); bal=Math.max(0,bal+interest-d.payment); data.push(bal); }
+    return { label:d.name, data, borderColor:['#e06b6b','#f59e0b','#5c9eff'][i%3], tension:.3, borderWidth:2 }; });
+  if(debtChartInst) debtChartInst.destroy();
+  debtChartInst=new Chart(document.getElementById('debt-chart').getContext('2d'),{ type:'line', data:{labels,datasets},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#7a7f8e' } } },
+      scales:{ x:{ ticks:{ color:'#7a7f8e', maxTicksLimit:12 } }, y:{ ticks:{ color:'#7a7f8e', callback:v=>'$'+v.toLocaleString() } } } } });
+}
+
+function calcLoan(){
+  const bal=parseFloat(document.getElementById('la-balance').value)||0;
+  const r1=(parseFloat(document.getElementById('la-current-rate').value)||0)/100/12;
+  const r2=(parseFloat(document.getElementById('la-new-rate').value)||0)/100/12;
+  const n=parseInt(document.getElementById('la-term').value)||36;
+  const pmt=(r,b,n)=>r===0?b/n:b*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  const p1=pmt(r1,bal,n), p2=pmt(r2,bal,n);
+  const total1=p1*n, total2=p2*n, save=total1-total2;
+  document.getElementById('loan-analyser-result').innerHTML=`
+    <div class="grid-3"><div class="kpi red"><div class="kpi-label">Current payment</div><div class="kpi-value">${fmt(p1)}</div></div>
+    <div class="kpi green"><div class="kpi-label">Better rate payment</div><div class="kpi-value">${fmt(p2)}</div></div>
+    <div class="kpi gold"><div class="kpi-label">Total interest saved</div><div class="kpi-value">${fmt(save)}</div></div></div>`;
+}
+
+function calcTax(){
+  collectTax(); const tx=S.tax;
+  const gross=tx.salary+tx.interest+tx.dividends+tx.rental+tx.otherIncome;
+  const ded=tx.workExp+tx.homeOffice+tx.vehicle+tx.invFees+tx.donations+tx.otherDed;
+  const receiptDed=(S.receipts||[]).reduce((s,r)=>s+(r.amount||0),0);
+  const taxable=Math.max(0,gross-ded-receiptDed);
+  document.getElementById('tax-summary').innerHTML=`
+    <div class="grid-3">
+      <div class="kpi blue"><div class="kpi-label">Total Income</div><div class="kpi-value">${fmt(gross)}</div></div>
+      <div class="kpi gold"><div class="kpi-label">Total Deductions</div><div class="kpi-value">${fmt(ded+receiptDed)}</div></div>
+      <div class="kpi green"><div class="kpi-label">Est. Taxable Income</div><div class="kpi-value">${fmt(taxable)}</div></div>
+    </div><p style="margin-top:12px;font-size:12px;color:var(--muted)">Summary for accountant review — not a tax calculation.</p>`;
+}
+
+function addReceipt(){
+  const desc=document.getElementById('rcpt-desc').value.trim(); if(!desc) return;
+  S.receipts.push({ id:Date.now(), date:document.getElementById('rcpt-date').value||'',
+    desc, cat:document.getElementById('rcpt-cat').value, amount:parseFloat(document.getElementById('rcpt-amount').value)||0 });
+  document.getElementById('rcpt-desc').value=''; document.getElementById('rcpt-amount').value='';
+  renderTax();
+}
+function removeReceipt(id){ S.receipts=(S.receipts||[]).filter(r=>r.id!==id); renderTax(); }
+
+function addVaultDoc(){
+  const name=document.getElementById('vault-name').value.trim(); if(!name) return;
+  S.vault.push({ id:Date.now(), type:document.getElementById('vault-type').value, name,
+    date:document.getElementById('vault-date').value||'', notes:document.getElementById('vault-notes').value||'' });
+  document.getElementById('vault-name').value=''; document.getElementById('vault-notes').value='';
+  renderTax();
+}
+function removeVaultDoc(id){ S.vault=(S.vault||[]).filter(v=>v.id!==id); renderTax(); }
+
+function renderTax(){
+  populateForms();
+  const tbody=document.getElementById('receipts-tbody');
+  const receipts=S.receipts||[];
+  tbody.innerHTML=receipts.length?receipts.map(r=>`<tr>
+    <td class="td-muted">${r.date||'—'}</td><td>${r.desc}</td><td><span class="badge badge-gold">${r.cat}</span></td>
+    <td class="td-mono">${fmt(r.amount)}</td><td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeReceipt(${r.id})">✕</button></td></tr>`).join('')
+    :'<tr><td colspan="5"><div class="empty-state">No receipts logged</div></td></tr>';
+  const totalRcpt=receipts.reduce((s,r)=>s+(r.amount||0),0);
+  document.getElementById('receipts-tfoot').innerHTML=receipts.length?`<tr><td colspan="3" style="font-weight:700">Total</td><td class="td-mono td-gold">${fmt(totalRcpt)}</td><td></td></tr>`:'';
+  const vbody=document.getElementById('vault-tbody');
+  const vault=S.vault||[];
+  vbody.innerHTML=vault.length?vault.map(v=>`<tr>
+    <td><span class="badge badge-green">${v.type}</span></td><td style="font-weight:600">${v.name}</td>
+    <td class="td-muted">${v.date||'—'}</td><td class="td-muted">${v.notes||'—'}</td>
+    <td><button class="btn" style="padding:4px 10px;font-size:11px;color:var(--accent4);border-color:var(--accent4)" onclick="removeVaultDoc(${v.id})">✕</button></td></tr>`).join('')
+    :'<tr><td colspan="5"><div class="empty-state">No documents in vault</div></td></tr>';
+}
+
+function calcProjections(){ collectProjections(); renderProjections(); }
+function renderProjections(){
+  populateForms(); const pr=S.projections, age=S.settings.age, years=Math.max(1,S.settings.fiAge-age);
+  const scenarios=[{label:'Conservative',return:5,color:'#5c9eff'},{label:'Base',return:8,color:'#c8a96e'},{label:'Optimistic',return:11,color:'#4ecb8a'}];
+  const datasets=scenarios.map(sc=>{ let bal=pr.start||0, monthly=pr.monthly||0; const data=[bal];
+    for(let yr=1;yr<=years;yr++){ bal=bal*(1+sc.return/100)+monthly*12; monthly*=(1+(pr.wage||3.5)/100); data.push(bal); }
+    return { label:sc.label+' ('+sc.return+'%)', data, borderColor:sc.color, tension:.3, borderWidth:2 }; });
+  const labels=Array.from({length:years+1},(_,i)=>'Age '+(age+i));
+  if(projChartInst) projChartInst.destroy();
+  projChartInst=new Chart(document.getElementById('proj-chart').getContext('2d'),{ type:'line', data:{labels,datasets},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#7a7f8e' } } },
+      scales:{ y:{ ticks:{ callback:v=>'$'+(v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3).toFixed(0)+'k') } } } } });
+  const tableRows=[]; for(let yr=0;yr<=years;yr++){
+    const row={yr,age:age+yr}; scenarios.forEach(sc=>{ let bal=pr.start||0,m=pr.monthly||0;
+      for(let y=1;y<=yr;y++){ bal=bal*(1+sc.return/100)+m*12; m*=1.035; } row[sc.label]=bal; }); tableRows.push(row); }
+  document.getElementById('proj-table').innerHTML=`<table><thead><tr><th>${t('projTableYear')}</th><th>${t('projTableAge')}</th><th>${t('projTableCons')}</th><th>${t('projTableBase')}</th><th>${t('projTableOpt')}</th><th>${t('projTableFI')}</th></tr></thead><tbody>${tableRows.map(r=>{
+    const isFI=r.age>=S.settings.fiAge;
+    return `<tr ${isFI?"style='background:rgba(78,203,138,.05)'":''}><td>Y${r.yr}</td><td class="td-mono ${isFI?'td-gold':''}">${r.age}${isFI?' 🏆':''}</td>
+      <td class="td-mono">${fmt(r.Conservative)}</td><td class="td-mono td-gold">${fmt(r.Base)}</td><td class="td-mono td-green">${fmt(r.Optimistic)}</td>
+      <td>${isFI?'<span class="badge badge-green">Target</span>':''}</td></tr>`; }).join('')}</tbody></table>`;
+}
+
+function renderSettings(){
+  populateForms();
+  if(!document.getElementById('s-planner')){
+    const nameGroup=document.getElementById('s-name')?.closest('.form-group');
+    if(nameGroup){ const g=document.createElement('div'); g.className='form-group'; g.style.marginBottom='10px';
+      g.innerHTML='<label>Financial Planner</label><input id="s-planner" placeholder="Advisor name">';
+      nameGroup.parentNode.insertBefore(g,nameGroup.nextSibling); s('s-planner',S.settings.planner); }
+  }
+  document.getElementById('target-alloc-form').innerHTML=Object.keys(S.targets).map(cat=>`
+    <div class="form-group" style="margin-bottom:10px"><label>${cat} (%)</label>
+    <input type="number" id="tgt-${cat.replace(/\s+/g,'-')}" value="${S.targets[cat]}" step="0.5"></div>`).join('')+
+    `<div style="margin-top:12px;font-size:12px;color:var(--muted)" id="tgt-sum">Total: ${Object.values(S.targets).reduce((s,v)=>s+v,0)}%</div>`;
+}
+function saveTargets(){
+  Object.keys(S.targets).forEach(cat=>{ const el=document.getElementById('tgt-'+cat.replace(/\s+/g,'-')); if(el) S.targets[cat]=parseFloat(el.value)||0; });
+  saveAll();
+}
+function saveSettings(){ collectSettings(); saveAll(); }
+
+/* ── LifePlan Client Report PDF (template: LifePlan - Client Report) ── */
+function exportClientReport(){
+  if(typeof window.jspdf==='undefined'){ alert('PDF library not loaded. Check your internet connection and reload.'); return; }
+  collectCashflow(); collectProjections(); collectSettings(); collectTax();
+
+  const toast=document.getElementById('save-toast');
+  toast.textContent=t('reportGenerating'); toast.classList.add('show');
+
+  const { jsPDF } = window.jspdf;
+  const doc=new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+  const pageW=doc.internal.pageSize.getWidth();
+  const margin=14;
+  const owner=S.settings.name||'Client';
+  const reportDate=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',day:'numeric'});
+  const cf=S.cashflow, tx=S.tax||{};
+  const totalPV=totalPortfolioValue();
+  const totalDebt=S.debts.reduce((s,d)=>s+(d.balance||0),0);
+  const netWorth=totalPV-totalDebt;
+  const monthlyExp=calcMonthlyExpenses(cf);
+  const annualEmployment=(cf.salary+cf.other)*12;
+  const annualTaxIncome=tx.salary+tx.interest+tx.dividends+tx.rental+tx.otherIncome;
+  const annualIncome=annualTaxIncome>0?annualTaxIncome:annualEmployment;
+
+  const NAVY=[30,58,95], GOLD=[200,169,110], GRAY=[100,100,100];
+
+  function drawHeader(isCover){
+    doc.setFillColor(...NAVY);
+    doc.rect(0,0,pageW,isCover?32:22,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(isCover?26:18);
+    doc.text('LifePlan',margin,isCover?18:14);
+    doc.setFontSize(isCover?14:11);
+    doc.setFont('helvetica','normal');
+    doc.text('Client Report',margin,isCover?26:20);
+    if(!isCover){ doc.setFontSize(8); doc.text(reportDate,pageW-margin,14,{align:'right'}); }
+    doc.setTextColor(0,0,0);
+  }
+
+  function sectionTitle(title,y){
+    if(y>260){ doc.addPage(); drawHeader(false); y=28; }
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(...NAVY);
+    doc.text(title,margin,y);
+    doc.setDrawColor(...GOLD);
+    doc.setLineWidth(0.6);
+    doc.line(margin,y+2,pageW-margin,y+2);
+    doc.setTextColor(0,0,0);
+    return y+8;
+  }
+
+  function addTable(head,body,startY,opts={}){
+    doc.autoTable({
+      startY:startY, head:[head], body,
+      margin:{left:margin,right:margin},
+      theme:'grid',
+      headStyles:{ fillColor:NAVY, textColor:[255,255,255], fontStyle:'bold', fontSize:9 },
+      bodyStyles:{ fontSize:9, cellPadding:2.5 },
+      alternateRowStyles:{ fillColor:[248,248,252] },
+      ...opts
+    });
+    return doc.lastAutoTable.finalY+6;
+  }
+
+  drawHeader(true);
+  let y=40;
+  doc.setFont('helvetica','bold'); doc.setFontSize(12);
+  doc.text('Client Information',margin,y); y+=7;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text('Client Name: '+owner,margin,y); y+=6;
+  if(S.settings.planner){ doc.text('Financial Planner: '+S.settings.planner,margin,y); y+=6; }
+  doc.text('Report Date: '+reportDate,margin,y); y+=6;
+  doc.text('Risk Profile: '+(S.settings.risk||'—')+'  ·  Current Age: '+S.settings.age+'  ·  Freedom Target Age: '+S.settings.fiAge,margin,y);
+  y+=12;
+
+  y=sectionTitle('Your Current Financial Situation',y);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10);
+  doc.text('Assets',margin,y); y+=4;
+
+  const assetRows=S.holdings.length
+    ? S.holdings.map(h=>[h.name, fmt(totalValue(h)), h.cat, owner])
+    : [['Personal portfolio (no holdings entered)','$0','—',owner]];
+  y=addTable(['Asset','Amount','Category','Owner'],assetRows,y);
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(10);
+  doc.text('Liabilities',margin,y); y+=4;
+  const liabRows=S.debts.length
+    ? S.debts.map(d=>[d.name, fmt(d.balance), d.type, owner])
+    : [['No liabilities recorded','$0','—',owner]];
+  y=addTable(['Liability','Amount','Type','Owner'],liabRows,y);
+
+  y=addTable(['Summary','Amount'],[
+    ['Total Assets',fmt(totalPV)],
+    ['Total Liabilities',fmt(totalDebt)],
+    ['Net Worth',fmt(netWorth)],
+    ['Portfolio Gain/Loss',fmt(totalPV-S.holdings.reduce((s,h)=>s+(h.cost||0),0))]
+  ],y,{ headStyles:{ fillColor:GOLD, textColor:[0,0,0] } });
+
+  y=sectionTitle('Annual Income',y);
+  const incomeRows=[
+    ['Employment / Salary (annual est.)', fmt(annualEmployment), owner],
+    ['Interest Income', fmt(tx.interest), owner],
+    ['Dividends', fmt(tx.dividends), owner],
+    ['Rental Income', fmt(tx.rental), owner],
+    ['Other Income', fmt(tx.otherIncome), owner],
+    ['TOTAL ANNUAL INCOME', fmt(annualIncome), owner]
+  ];
+  y=addTable(['Income Source','Amount','Owner'],incomeRows,y);
+
+  y=sectionTitle('Monthly Cashflow',y);
+  const surplus=cf.salary+cf.other-monthlyExp-cf.invest-cf.debtRepay;
+  y=addTable(['Item','Monthly Amount'],[
+    ['Net salary & other income',fmt(cf.salary+cf.other)],
+    ['Living expenses',fmt(monthlyExp)],
+    ['Investment contributions',fmt(cf.invest)],
+    ['Debt repayments',fmt(cf.debtRepay)],
+    ['Net surplus',fmt(surplus)]
+  ],y);
+
+  y=sectionTitle('Portfolio Allocation',y);
+  const alloc=allocationByCategory();
+  y=addTable(['Category','Actual %','Target %','Variance'],
+    Object.keys(S.targets).map(c=>{ const a=alloc[c]||0; return [c,a.toFixed(1)+'%',S.targets[c]+'%',(a-S.targets[c]).toFixed(1)+'%']; }),y);
+
+  y=sectionTitle('Freedom Plan Snapshot',y);
+  const pr=S.projections, age=S.settings.age, years=Math.max(1,S.settings.fiAge-age);
+  let bal=pr.start||totalPV, monthly=pr.monthly||cf.invest||0;
+  for(let yr=1;yr<=years;yr++){ bal=bal*1.08+monthly*12; monthly*=(1+(pr.wage||3.5)/100); }
+  y=addTable(['Measure','Value'],[
+    ['Freedom portfolio target',fmt(S.settings.fiTarget)],
+    ['Current portfolio',fmt(totalPV)],
+    ['Progress to target',((totalPV/(S.settings.fiTarget||1))*100).toFixed(1)+'%'],
+    ['Years to freedom target',Math.max(0,S.settings.fiAge-S.settings.age)],
+    ['Projected portfolio at age '+S.settings.fiAge+' (8% base)',fmt(bal)],
+    ['Monthly investment (current)',fmt(pr.monthly||cf.invest)]
+  ],y);
+
+  y=sectionTitle('Key Assumptions',y);
+  y=addTable(['Assumption','Value'],[
+    ['Annual employment / income increase',(pr.wage||3.5)+'%'],
+    ['Expense inflation',(S.settings.inflation||5)+'%'],
+    ['Shares / portfolio growth (base case)','8%'],
+    ['Conservative projection','5%'],
+    ['Optimistic projection','11%'],
+    ['Income return from investments (est.)','4%']
+  ],y);
+
+  y=sectionTitle('Recommended Action Steps',y);
+  const totalDebtFmt=fmt(totalDebt);
+  const actions=[
+    ['Debt Reduction', totalDebt>0
+      ? 'Prioritise paying down '+totalDebtFmt+' of debt. Current monthly repayments: '+fmt(cf.debtRepay)+'.'
+      : 'Maintain debt-free status and redirect former repayments to investing.'],
+    ['Invest for Growth', (cf.invest||pr.monthly)>0
+      ? 'Continue monthly investments of '+fmt(cf.invest||pr.monthly)+' aligned to target allocation.'
+      : 'Establish regular monthly investments toward your freedom portfolio target.'],
+    ['Supercharge Superannuation', 'Seek advice about concessional contributions and whether an SMSF suits your goals.'],
+    ['Income Protection', 'Review income protection insurance to cover '+fmt(cf.salary*12)+' annual earnings.'],
+    ['Family Protection', 'Request advice about Life / TPD / Trauma insurance for your household.'],
+    ['Estate Planning', (S.vault||[]).some(v=>v.type==='Will')
+      ? 'Will on file — review with estate planning lawyer every 3 years.'
+      : 'Meet with an estate planning lawyer to prepare or update your Will.'],
+    ['Manage Personal Finances', 'Use this Financial Planner to track cashflow, debt, tax receipts and portfolio monthly.']
+  ];
+  getRoadmap().forEach(r=>actions.push([r.priority+' ('+r.phase+')', r.action]));
+  y=addTable(['Key Area','Recommended Action'],actions,y);
+
+  if((S.receipts||[]).length){
+    if(y>240){ doc.addPage(); drawHeader(false); y=28; }
+    y=sectionTitle('Tax Receipt Log',y);
+    y=addTable(['Date','Description','Category','Amount'],
+      S.receipts.map(r=>[r.date||'—',r.desc,r.cat,fmt(r.amount)]),y);
+  }
+  if((S.vault||[]).length){
+    if(y>240){ doc.addPage(); drawHeader(false); y=28; }
+    y=sectionTitle('Document Vault',y);
+    y=addTable(['Type','Document','Date','Notes'],
+      S.vault.map(v=>[v.type,v.name,v.date||'—',v.notes||'—']),y);
+  }
+
+  const pageCount=doc.getNumberOfPages();
+  for(let i=1;i<=pageCount;i++){
+    doc.setPage(i);
+    doc.setFontSize(8); doc.setTextColor(...GRAY);
+    doc.text('LifePlan Client Report · Prepared '+reportDate+' · Page '+i+' of '+pageCount,margin,290);
+    doc.text('This report is for information purposes only and does not constitute financial advice.',margin,294);
+  }
+
+  const safeName=(owner||'client').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-')||'client';
+  doc.save('LifePlan-Client-Report-'+safeName+'-'+new Date().toISOString().slice(0,10)+'.pdf');
+  toast.textContent=t('reportReady');
+  setTimeout(()=>toast.classList.remove('show'),2200);
+}
+
+loadState(); updateLastUpdated(); populateForms(); applyLanguage();
+const _hash = location.hash.replace('#', '');
+if (_hash && document.getElementById('page-' + _hash)) showPage(_hash);
+else renderDashboard();
+document.querySelectorAll('#page-cashflow input').forEach(el=>el.addEventListener('change',()=>{ collectCashflow(); renderCashflow(); }));
+
+// Close header dropdown when clicking outside (and on Escape)
+(() => {
+  const dd = document.getElementById('header-actions');
+  if (!dd) return;
+  document.addEventListener('click', (e) => {
+    if (!dd.classList.contains('open')) return;
+    if (dd.contains(e.target)) {
+      // If the user clicked a menu item, close after selection.
+      const menu = dd.querySelector('.dropdown-menu');
+      if (menu && menu.contains(e.target)) dd.classList.remove('open');
+      return;
+    }
+    dd.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dd.classList.remove('open');
+  });
+})();
+  </script>
+  <script>
+    // === FRAMEWORK DATA & LOGIC ===
+const fwLifeStages = [
+  {id:'young', label:'Young Professional', sub:'25-35 • High Growth', color:'var(--accent)'},
+  {id:'family', label:'Family Builder', sub:'35-50 • Balanced', color:'var(--accent3)'},
+  {id:'preretire', label:'Pre-Retiree', sub:'50+ • Protection Focus', color:'var(--accent2)'}
+];
+
+const fwPhases = [
+  {id:'recovery', label:'Recovery / Loose Policy', short:'Recovery', color:'var(--accent3)'},
+  {id:'expansion', label:'Expansion / Late Cycle', short:'Expansion', color:'var(--accent)'},
+  {id:'tightening', label:'Tightening / Inflation', short:'Tightening', color:'var(--accent4)'},
+  {id:'recession', label:'Recession / Flight to Quality', short:'Recession', color:'var(--accent5)'}
+];
+
+const fwPyramidLayers = [
+  {id:5, name:'High-Risk / Satellite', vn:'LỚP RỦI RO CAO', color:'var(--accent4)',
+    desc:'Crypto (Bitcoin core), Early PE/VC, Speculative property, Concentrated bets', note:'Max 5–15% • High conviction only'},
+  {id:4, name:'Growth &amp; Compounding', vn:'LỚP TĂNG TRƯỞNG', color:'var(--accent2)',
+    desc:'Broad equity ETFs, Quality growth companies, Growth real estate, Private credit', note:'Long-term wealth acceleration • 10-25+ yr horizon'},
+  {id:3, name:'Income Generation', vn:'LỚP TẠO THU NHẬP', color:'var(--accent)',
+    desc:'High-yield cash &amp; deposits, Government bonds, Dividend equities, Cash-flow property/REITs', note:'Engine of financial independence'},
+  {id:2, name:'Protection &amp; Stability', vn:'LỚP BẢO VỆ', color:'var(--accent3)',
+    desc:'Emergency fund (6-12mo), Life/Income protection insurance, Gold, Defensive assets', note:'Sleep-well assets • Capital preservation'},
+  {id:1, name:'Intangible Foundation', vn:'LỚP TÀI SẢN VÔ HÌNH', color:'var(--accent5)',
+    desc:'Knowledge, Skills, Professional network, Health, Credentials, Family governance, Mindset', note:'Never sold • Compounds for life'}
+];
+
+let fwLifeStage = 'family';
+let fwPhase = 'expansion';
+let fwAllocChart = null;
+
+function fwColor(v){
+  // Resolve a CSS variable reference (e.g. 'var(--accent4)') to its hex value
+  if (!v.startsWith('var(')) return v;
+  const name = v.slice(4, -1).trim();
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#c8a96e';
+}
+
+// ---------- Pyramid ----------
+function fwInitPyramid() {
+  const container = document.getElementById('framework-pyramid');
+  if (!container) return;
+  container.innerHTML = '';
+  fwPyramidLayers.forEach(layer => {
+    const el = document.createElement('div');
+    el.className = 'pyramid-layer';
+    el.style.borderLeft = `4px solid ${fwColor(layer.color)}`;
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+            <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${fwColor(layer.color)}">LAYER ${layer.id}</span>
+            <span style="font-size:10px;padding:2px 8px;background:rgba(255,255,255,.06);border-radius:4px;font-family:var(--font-mono);color:var(--muted);letter-spacing:.5px">${layer.vn}</span>
+          </div>
+          <div style="font-weight:700;font-size:16px;margin-top:2px">${layer.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">${layer.desc}</div>
+          <div style="font-size:11px;color:${fwColor(layer.color)};margin-top:6px;font-weight:600">${layer.note}</div>
+        </div>
+        <div style="color:var(--muted);font-size:18px">›</div>
+      </div>
+    `;
+    el.onclick = () => fwShowLayerModal(layer);
+    container.appendChild(el);
+  });
+}
+
+function fwShowLayerModal(layer) {
+  const overlay = document.createElement('div');
+  overlay.className = 'fw-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div class="fw-modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div>
+          <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 12px;border-radius:99px;
+            background:${fwColor(layer.color)}25;color:${fwColor(layer.color)};margin-bottom:10px">LAYER ${layer.id}</span>
+          <h3 style="font-size:22px;margin-bottom:2px">${layer.name}</h3>
+          <div style="font-size:12px;color:var(--muted)">${layer.vn}</div>
+        </div>
+        <button class="fw-modal-close" onclick="this.closest('.fw-modal-overlay').remove()">&times;</button>
+      </div>
+      <div style="margin:18px 0;font-size:14px;line-height:1.6">${layer.desc}</div>
+      <div class="card" style="background:var(--surface);padding:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);margin-bottom:4px">PRACTICAL GUIDANCE</div>
+        <div style="font-size:13px">${layer.note}</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="btn" style="flex:1" onclick="this.closest('.fw-modal-overlay').remove()">Close</button>
+        <button class="btn btn-accent" style="flex:1" onclick="fwHighlightLayer(${layer.id});this.closest('.fw-modal-overlay').remove()">Highlight in Pyramid</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function fwHighlightLayer(layerId) {
+  const layers = document.querySelectorAll('#framework-pyramid > div');
+  layers.forEach((el, idx) => {
+    if (fwPyramidLayers[idx].id === layerId) {
+      el.style.boxShadow = '0 0 0 3px var(--accent), 0 20px 40px rgba(0,0,0,.4)';
+      el.style.transform = 'scale(1.02)';
+      setTimeout(() => { el.style.boxShadow = ''; el.style.transform = ''; }, 1800);
+    }
+  });
+}
+
+// ---------- Life Stage Selector ----------
+function fwRenderLifeStages() {
+  const container = document.getElementById('framework-life-stages');
+  if (!container) return;
+  container.innerHTML = '';
+  fwLifeStages.forEach(stage => {
+    const btn = document.createElement('div');
+    btn.className = `life-stage-btn ${fwLifeStage === stage.id ? 'active' : ''}`;
+    btn.innerHTML = `<div class="lsb-name">${stage.label}</div><div class="lsb-sub">${stage.sub}</div>`;
+    btn.onclick = () => {
+      fwLifeStage = stage.id;
+      fwRenderLifeStages();
+      fwUpdateCycleStrategies();
+      fwRenderAllocatorControls();
+      fwUpdateAllocationChart();
+    };
+    container.appendChild(btn);
+  });
+}
+
+// ---------- Flywheel ----------
+function fwHighlightFlywheelStep(step) {
+  const el = document.querySelector(`.fw-circle-${step}`);
+  if (!el) return;
+  el.style.transform = 'scale(1.15)';
+  el.style.boxShadow = '0 0 0 8px rgba(200,169,110,.35)';
+  setTimeout(() => { el.style.transform = ''; el.style.boxShadow = ''; }, 1500);
+}
+
+// ---------- Phase Tabs ----------
+function fwRenderPhaseTabs() {
+  const container = document.getElementById('framework-phase-tabs');
+  if (!container) return;
+  container.innerHTML = '';
+  fwPhases.forEach(phase => {
+    const tab = document.createElement('div');
+    tab.className = `phase-tab ${fwPhase === phase.id ? 'active' : ''}`;
+    if (fwPhase !== phase.id) { tab.style.border = `1px solid ${fwColor(phase.color)}40`; tab.style.color = fwColor(phase.color); }
+    tab.textContent = phase.label;
+    tab.onclick = () => {
+      fwPhase = phase.id;
+      fwRenderPhaseTabs();
+      fwUpdateCycleStrategies();
+      fwRenderAllocatorControls();
+      fwUpdateAllocationChart();
+    };
+    container.appendChild(tab);
+  });
+}
+
+// ---------- Cycle Strategies ----------
+function fwUpdateCycleStrategies() {
+  const stage = fwLifeStages.find(s => s.id === fwLifeStage);
+  const phase = fwPhases.find(p => p.id === fwPhase);
+
+  const badges = document.getElementById('framework-selection-badges');
+  if (badges) {
+    badges.innerHTML = `
+      <span class="fw-badge" style="background:${fwColor(stage.color)}20;color:${fwColor(stage.color)}">👤 ${stage.label}</span>
+      <span class="fw-badge" style="background:${fwColor(phase.color)}20;color:${fwColor(phase.color)}">🌐 ${phase.short}</span>
+    `;
+  }
+
+  const container = document.getElementById('framework-strategies');
+  if (container) {
+    const strategies = fwGetStrategies(fwLifeStage, fwPhase);
+    container.innerHTML = strategies.map(s => `
+      <div class="strategy-card" style="border-left-color:${fwColor(phase.color)}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div style="font-weight:700;font-size:15px">${s.title}</div>
+          <div class="fw-tag" style="background:${fwColor(phase.color)}20;color:${fwColor(phase.color)}">${s.tag}</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5">${s.description}</div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:2px">EXECUTING ACTIONS</div>
+          <ul>${s.actions.map(a => `<li>${a}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `).join('') || '<div class="empty-state">No strategies for this combination yet.</div>';
+  }
+
+  fwUpdatePhaseInsights(phase, stage);
+}
+
+function fwGetStrategies(lifeStage, phase) {
+  const data = {
+    young: {
+      recovery: [
+        {title:'Build Core Growth Positions', tag:'AGGRESSIVE', description:'Use dollar-cost averaging into broad equity ETFs and quality growth names.',
+          actions:['Increase equity allocation toward 50-60%', 'Add international diversification', 'Begin small satellite allocation to Bitcoin']},
+        {title:'Lock in Long-Term Compounding', tag:'FOUNDATION', description:'Focus on building habits and positions that will compound for decades.',
+          actions:['Maximise Super pre-tax contributions', 'Set up automatic investment plans', 'Build emergency fund to 6+ months']}
+      ],
+      expansion: [
+        {title:'Rebalance &amp; Trim', tag:'DISCIPLINE', description:'Take some profits from high-valuation positions while maintaining core exposure.',
+          actions:['Trim individual stocks that have run hard', 'Rebalance back to target ranges', 'Increase cash reserves for future opportunities']}
+      ],
+      tightening: [
+        {title:'Stay the Course with Discipline', tag:'RESILIENT', description:'Continue core contributions. High cash yields are attractive for building reserves.',
+          actions:['Maintain regular investment cadence', 'Build cash buffer in high-interest accounts', 'Avoid panic selling']}
+      ],
+      recession: [
+        {title:'View Weakness as Opportunity', tag:'CONTRARIAN', description:'Increase equity exposure on significant market declines.',
+          actions:['Deploy cash reserves into quality ETFs', 'Increase equity allocation on 15-20%+ drawdowns', 'Focus on long-term wealth transfer dynamics']}
+      ]
+    },
+    family: {
+      recovery: [
+        {title:'Strengthen Protection Layer', tag:'FAMILY FIRST', description:'Review and upgrade insurance coverage while adding selectively to growth assets.',
+          actions:['Review life/TPD/income protection insurance', 'Add to cash-flow positive assets', 'Ensure 9-12 month emergency fund']}
+      ],
+      expansion: [
+        {title:'Focus on Stable Cash Flow', tag:'BALANCED', description:'Prioritise income-generating assets that cover family expenses.',
+          actions:['Build dividend + REIT income sleeve', 'Reduce speculative satellite exposure', 'Pay down high-interest debt']}
+      ],
+      tightening: [
+        {title:'Protect Cash Flow &amp; Buffer', tag:'DEFENSIVE', description:'Use attractive deposit rates to strengthen your position.',
+          actions:['Move surplus into high-yield cash', 'Shorten fixed income duration', 'Avoid new leveraged positions']}
+      ],
+      recession: [
+        {title:'Capital &amp; Cash Flow Protection', tag:'PRESERVE', description:'Avoid forced sales. Protect family cash flow above all.',
+          actions:['Ensure 12+ months expenses in defensive assets', 'Do not sell growth assets unless necessary', 'Review insurance coverage']}
+      ]
+    },
+    preretire: {
+      recovery: [
+        {title:'Maintain Defensive Posture', tag:'CONSERVATIVE', description:'Keep high allocation to protection and income. Modest growth tilt only if cash flow is secure.',
+          actions:['Keep 25-35% in cash/short fixed income', 'Focus on inflation-protected income', 'Small selective additions to quality dividend payers']}
+      ],
+      expansion: [
+        {title:'Reduce Risk Gradually', tag:'DE-RISK', description:'Systematically lower exposure to growth and speculative assets.',
+          actions:['Trim satellite holdings', 'Increase allocation to short-duration bonds', 'Lock in gains where appropriate']}
+      ],
+      tightening: [
+        {title:'Prioritise Capital Protection', tag:'SAFETY', description:'High rates are beneficial for cash and short fixed income.',
+          actions:['Build larger cash reserves', 'Shorten bond duration further', 'Avoid long-duration fixed income']}
+      ],
+      recession: [
+        {title:'Rebalance into Quality Income', tag:'FLIGHT TO QUALITY', description:'Use bond rally and defensive opportunities to strengthen income stream.',
+          actions:['Rebalance into high-quality government bonds', 'Ensure 3+ years of spending in defensive assets', 'Avoid sequence of returns risk']}
+      ]
+    }
+  };
+  return data[lifeStage]?.[phase] || [];
+}
+
+function fwUpdatePhaseInsights(phase, stage) {
+  const container = document.getElementById('framework-phase-insights');
+  if (!container) return;
+  let html = '';
+  if (phase.id === 'recovery') {
+    html = `<div style="font-weight:700;color:var(--accent3)">Risk assets typically perform strongly.</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Young professionals should lean aggressive. Families should balance growth with protection. Pre-retirees should stay defensive but selectively participate.</div>`;
+  } else if (phase.id === 'expansion') {
+    html = `<div style="font-weight:700;color:var(--accent)">Late cycle often brings peak valuations and rising inflation.</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Focus shifts from pure growth to quality and income. Rebalancing becomes critical.</div>`;
+  } else if (phase.id === 'tightening') {
+    html = `<div style="font-weight:700;color:var(--accent4)">High interest rates favour cash and short-duration assets.</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Build liquidity. Reduce duration risk. Young investors continue dollar-cost averaging.</div>`;
+  } else {
+    html = `<div style="font-weight:700;color:var(--accent5)">Flight to quality dominates. Bonds and defensives rally.</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">This is when long-term capital is transferred. Patient investors with strong foundations benefit most.</div>`;
+  }
+  container.innerHTML = html;
+  container.dataset.stage = stage.id;
+}
+
+// ---------- Allocation Tool ----------
+function fwRenderAllocatorControls() {
+  const stageContainer = document.getElementById('framework-alloc-stages');
+  if (stageContainer) {
+    stageContainer.innerHTML = '';
+    fwLifeStages.forEach(stage => {
+      const btn = document.createElement('div');
+      btn.className = `alloc-btn ${fwLifeStage === stage.id ? 'active' : ''}`;
+      btn.textContent = stage.label.split(' ')[0];
+      btn.onclick = () => { fwLifeStage = stage.id; fwRenderLifeStages(); fwRenderAllocatorControls(); fwUpdateAllocationChart(); fwUpdateCycleStrategies(); };
+      stageContainer.appendChild(btn);
+    });
+  }
+  const phaseContainer = document.getElementById('framework-alloc-phases');
+  if (phaseContainer) {
+    phaseContainer.innerHTML = '';
+    fwPhases.forEach(phase => {
+      const btn = document.createElement('div');
+      btn.className = `alloc-btn ${fwPhase === phase.id ? 'active' : ''}`;
+      btn.textContent = phase.short;
+      btn.onclick = () => { fwPhase = phase.id; fwRenderPhaseTabs(); fwRenderAllocatorControls(); fwUpdateAllocationChart(); fwUpdateCycleStrategies(); };
+      phaseContainer.appendChild(btn);
+    });
+  }
+}
+
+function fwGetAllocationData(lifeStage, phase) {
+  let base = {};
+  if (lifeStage === 'young') base = {cash:8, gold:4, bonds:6, growth:52, income:14, satellite:16};
+  else if (lifeStage === 'family') base = {cash:18, gold:7, bonds:14, growth:35, income:20, satellite:6};
+  else base = {cash:28, gold:10, bonds:24, growth:18, income:18, satellite:2};
+
+  if (phase === 'recovery') {
+    base.growth = Math.min(base.growth + 8, 60);
+    base.satellite = Math.min(base.satellite + 4, 18);
+    base.cash = Math.max(base.cash - 5, 5);
+  } else if (phase === 'expansion') {
+    base.growth = Math.max(base.growth - 5, 25);
+    base.satellite = Math.max(base.satellite - 3, 2);
+    base.cash = Math.min(base.cash + 6, 35);
+  } else if (phase === 'tightening') {
+    base.cash = Math.min(base.cash + 12, 45);
+    base.growth = Math.max(base.growth - 8, 15);
+    base.satellite = Math.max(base.satellite - 4, 1);
+  } else if (phase === 'recession') {
+    base.bonds = Math.min(base.bonds + 10, 35);
+    base.growth = Math.max(base.growth - 6, 12);
+    base.cash = Math.min(base.cash + 5, 38);
+  }
+
+  return [
+    {label:'Cash &amp; Short Fixed Income', value:Math.round(base.cash), color:fwColor('var(--accent2)')},
+    {label:'Gold &amp; Real Assets', value:Math.round(base.gold), color:fwColor('var(--accent)')},
+    {label:'Bonds / Fixed Income', value:Math.round(base.bonds), color:fwColor('var(--accent3)')},
+    {label:'Growth Equities &amp; ETFs', value:Math.round(base.growth), color:fwColor('var(--accent4)')},
+    {label:'Income / Cash-flow Assets', value:Math.round(base.income), color:fwColor('var(--accent5)')},
+    {label:'Satellite (Crypto/PE)', value:Math.round(base.satellite), color:fwColor('var(--muted)')}
+  ];
+}
+
+function fwUpdateAllocationChart() {
+  const ctx = document.getElementById('framework-allocation-chart');
+  if (!ctx) return;
+  const data = fwGetAllocationData(fwLifeStage, fwPhase);
+  const stage = fwLifeStages.find(s => s.id === fwLifeStage);
+  const phase = fwPhases.find(p => p.id === fwPhase);
+
+  const subtitle = document.getElementById('framework-allocation-subtitle');
+  if (subtitle) subtitle.textContent = `${stage.label} • ${phase.short} Phase`;
+
+  if (fwAllocChart) fwAllocChart.destroy();
+  fwAllocChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.label),
+      datasets: [{
+        label: 'Target %',
+        data: data.map(d => d.value),
+        backgroundColor: data.map(d => d.color),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => c.raw + '% of portfolio' } }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#7a7f8e', font: { size: 10 } }, max: 65 },
+        y: { grid: { display: false }, ticks: { color: '#e8e3d8', font: { size: 11 } } }
+      }
+    }
+  });
+
+  const notes = document.getElementById('framework-allocation-notes');
+  if (notes) notes.innerHTML = `💡 <strong>Recommendation:</strong> ${fwGetAllocationRecommendation(fwLifeStage, fwPhase)}`;
+}
+
+function fwGetAllocationRecommendation(lifeStage, phase) {
+  if (lifeStage === 'young' && phase === 'recovery') {
+    return 'Aggressively build growth positions. Use any market weakness to increase equity exposure toward the upper end of your range.';
+  }
+  if (lifeStage === 'family' && (phase === 'tightening' || phase === 'recession')) {
+    return 'Prioritise cash flow and protection. Use high deposit rates to strengthen your emergency fund and pay down debt.';
+  }
+  if (lifeStage === 'preretire') {
+    return 'Stay defensive. Focus on income and capital preservation. Rebalance into quality bonds during recessionary phases.';
+  }
+  return 'Maintain core allocations. Rebalance when any category drifts more than 5-7%. Review annually or after major market moves.';
+}
+
+// ---------- Profile Modal ----------
+function fwShowProfileModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'fw-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div class="fw-modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h3 style="font-size:20px">Quick Profile Assessment</h3>
+        <button class="fw-modal-close" onclick="this.closest('.fw-modal-overlay').remove()">&times;</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="form-group">
+          <label>Age Bracket</label>
+          <select id="fw-profile-age">
+            <option value="young">25-35 (Young Professional)</option>
+            <option value="family" selected>35-50 (Family Builder)</option>
+            <option value="preretire">50+ (Pre-Retiree / Conservative)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Family Status</label>
+          <select id="fw-profile-family">
+            <option value="single">Single / No dependents</option>
+            <option value="couple">Couple, no children</option>
+            <option value="family" selected>Family with children</option>
+            <option value="empty">Empty nester</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Risk Tolerance</label>
+          <div style="display:flex;gap:8px" id="fw-risk-group">
+            <button type="button" class="btn" style="flex:1" onclick="fwSetRisk(this,'low')">Low</button>
+            <button type="button" class="btn btn-accent" style="flex:1" onclick="fwSetRisk(this,'medium')" data-risk="medium">Medium</button>
+            <button type="button" class="btn" style="flex:1" onclick="fwSetRisk(this,'high')">High</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-accent" style="width:100%;margin-top:22px" onclick="fwGenerateProfileSummary(this)">GENERATE MY RECOMMENDATIONS</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function fwSetRisk(element, level) {
+  document.querySelectorAll('#fw-risk-group button').forEach(b => { b.classList.remove('btn-accent'); delete b.dataset.risk; });
+  element.classList.add('btn-accent');
+  element.dataset.risk = level;
+}
+
+function fwGenerateProfileSummary(button) {
+  const overlay = button.closest('.fw-modal-overlay');
+  const age = document.getElementById('fw-profile-age').value;
+  const riskBtn = overlay.querySelector('#fw-risk-group button[data-risk]');
+  const risk = riskBtn ? riskBtn.dataset.risk : 'medium';
+
+  overlay.remove();
+
+  fwLifeStage = age === 'young' ? 'young' : (age === 'preretire' ? 'preretire' : 'family');
+
+  fwRenderLifeStages();
+  fwRenderAllocatorControls();
+  fwUpdateAllocationChart();
+  fwUpdateCycleStrategies();
+
+  fwShowToast(`Profile updated: ${fwLifeStages.find(s => s.id === fwLifeStage).label} • Risk: ${risk.toUpperCase()}`);
+}
+
+function fwShowToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'fw-toast';
+  toast.innerHTML = `<span style="color:var(--accent3)">✓</span><span>${message}</span>`;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 2800);
+}
+
+// ---------- Reset ----------
+function fwResetAll() {
+  fwLifeStage = 'family';
+  fwPhase = 'expansion';
+  fwRenderLifeStages();
+  fwRenderPhaseTabs();
+  fwRenderAllocatorControls();
+  fwUpdateCycleStrategies();
+  fwUpdateAllocationChart();
+  document.querySelectorAll('#framework-pyramid > div').forEach(el => { el.style.boxShadow = ''; el.style.transform = ''; });
+  fwShowToast('Framework reset to default balanced profile');
+}
+
+// ---------- Initialize ----------
+function initFramework() {
+  fwInitPyramid();
+  fwRenderLifeStages();
+  fwRenderPhaseTabs();
+  fwRenderAllocatorControls();
+  fwUpdateCycleStrategies();
+  fwUpdateAllocationChart();
+}
+
+// Original showPage function (extended)
+const originalShowPage = window.showPage || function(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const activeTab = document.getElementById('tab-' + page);
+  if (activeTab) activeTab.classList.add('active');
+};
+
+// Override showPage to support framework
+window.showPage = function(page) {
+  if (page === 'framework') {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-framework').classList.add('active');
+    
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-framework').classList.add('active');
+    
+    // Ensure framework is initialized
+    setTimeout(initFramework, 100);
+    return;
+  }
+  originalShowPage(page);
+};
+
+// Boot
+window.onload = function() {
+  // Original onload logic...
+  initFramework(); // Framework init
+  
+  // Show framework by default for this integration demo
+  showPage('framework');
+};
+  </script>
   </body>
   </html>
