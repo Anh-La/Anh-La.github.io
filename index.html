@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Portfolio</title>
+  <title>Finance &amp; Family</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
       --blue:     #5c9eff;   /* asset calculators */
       --green:    #4ecb8a;   /* family registry */
       --red:      #e06b6b;   /* tax & legal */
-      --purple:   #b67fff;   /* nation state */
+      --purple:   #b67fff;   /* nation state / macro */
       --orange:   #ff9f43;   /* global economy / business */
       --text:     #e8e3d8;
       --muted:    #6a7080;
@@ -363,7 +363,7 @@
   <header class="site-header">
     <div>
       <h1 class="brand-title" data-i18n="title">Finance &amp; Family</h1>
-      <p class="brand-sub" data-i18n="sub">A personal suite of financial tools for families. Select a project to open it.</p>
+      <p class="brand-sub" data-i18n="sub">A personal suite of financial tools and family records. Select a project to open it.</p>
     </div>
     <button class="lang-btn" onclick="toggleLang()" data-i18n="langBtn">🌐 Tiếng Việt</button>
   </header>
@@ -538,6 +538,36 @@
         vi: ['Kiểm tra cư trú thuế & rủi ro PE', 'Phân tích định giá chuyển nhượng', 'Hoạch định thuế khấu trừ'],
       },
       tagColor: '#e06b6b',
+    },
+
+    /* === NEW PROJECTS ADDED === */
+    {
+      icon: '📉',
+      color: '#ff9f43',
+      href: 'credit_cycle_explorer.html',
+      tag: { en: 'Macro', vi: 'Vĩ Mô' },
+      name: { en: 'Credit Cycle Explorer', vi: 'Khám Phá Chu Kỳ Tín Dụng' },
+      desc: { en: 'Interactive analysis of credit cycle phases with 100+ years of empirical data, charts & simulator',
+              vi: 'Phân tích tương tác các giai đoạn chu kỳ tín dụng với dữ liệu thực nghiệm 100+ năm, biểu đồ & mô phỏng' },
+      features: {
+        en: ['4-phase interactive explorer', 'Historical default clustering & sector rotation', 'Policy & leverage simulator'],
+        vi: ['Khám phá 4 giai đoạn tương tác', 'Lịch sử cụm vỡ nợ & xoay vòng ngành', 'Mô phỏng chính sách & đòn bẩy'],
+      },
+      tagColor: '#ff9f43',
+    },
+    {
+      icon: '💧',
+      color: '#5c9eff',
+      href: 'liquidity-framework.html',
+      tag: { en: 'Macro', vi: 'Vĩ Mô' },
+      name: { en: 'Global Liquidity Framework', vi: 'Khung Thanh Khoản Toàn Cầu' },
+      desc: { en: 'Michael Howell liquidity cycle analysis — metrics, cycle simulator & policy transmission',
+              vi: 'Phân tích chu kỳ thanh khoản Michael Howell — chỉ số, mô phỏng chu kỳ & truyền dẫn chính sách' },
+      features: {
+        en: ['Global liquidity metrics dashboard', '65-month cycle & asset rotation simulator', 'Policy transmission analysis'],
+        vi: ['Bảng chỉ số thanh khoản toàn cầu', 'Mô phỏng chu kỳ 65 tháng & xoay vòng tài sản', 'Phân tích truyền dẫn chính sách'],
+      },
+      tagColor: '#5c9eff',
     },
   ];
 
