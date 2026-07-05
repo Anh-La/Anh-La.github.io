@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquidity Framework • Global Liquidity Observatory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+  :root{--bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;--accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--text:#e8e3d8;--muted:#7a7f8e;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;--radius:12px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
+  #app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+
+  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:10px}
+  .logo{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .logo-title{font-family:var(--font-display);font-size:22px;color:var(--accent)}
+  .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:600}
+  .header-right{display:flex;align-items:center;gap:12px}
+  .last-updated{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+  .btn{padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;cursor:pointer;transition:all .15s;font-weight:500}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+  .btn-accent:hover{color:#000;opacity:.9}
+
+  nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
+  .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+  .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+  main{flex:1;padding:32px;max-width:1400px;margin:0 auto;width:100%}
+  .page{display:none}.page.active{display:block;animation:fadeIn .2s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+  .page-title{font-family:var(--font-display);font-size:28px;color:var(--accent);margin-bottom:4px;font-style:italic}
+  .page-sub{color:var(--muted);font-size:13px;margin-bottom:28px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:24px}
+  .card-hero{background:linear-gradient(135deg,rgba(200,169,110,.08) 0%,rgba(22,25,32,0) 60%);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;position:relative;margin-bottom:24px}
+  .equation{font-family:var(--font-mono);background:var(--surface);padding:16px 20px;border-radius:8px;border-left:4px solid var(--accent);margin:16px 0;font-size:15.5px}
+  h3{font-size:15px;margin-bottom:14px;color:var(--text);font-weight:600}
+  .section-note{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.55}
+  .src{font-size:10.5px;color:var(--muted);font-family:var(--font-mono)}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .grid-5{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  .kpi-label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:6px}
+  .kpi-value{font-family:var(--font-mono);font-size:23px;font-weight:500;color:var(--text)}
+  .kpi-delta{font-size:11.5px;font-weight:600;margin-top:5px}
+  .pos{color:var(--accent3)}.neg{color:var(--accent4)}.neu{color:var(--accent2)}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{padding:11px 12px;border-bottom:1px solid var(--border);text-align:left}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .td-mono{font-family:var(--font-mono)}
+  .td-green{color:var(--accent3)}.td-red{color:var(--accent4)}.td-neu{color:var(--accent2)}
+  .cat-row td{background:rgba(200,169,110,.06);font-weight:700;color:var(--accent);text-transform:uppercase;font-size:10.5px;letter-spacing:1px}
+
+  .slider-container{margin:16px 0}
+  .slider-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;align-items:center}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .stage-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .stage-trough{background:rgba(92,158,255,.15);color:var(--accent2)}
+  .stage-early{background:rgba(78,203,138,.15);color:var(--accent3)}
+  .stage-late{background:rgba(200,169,110,.18);color:var(--accent)}
+  .stage-peak{background:rgba(224,107,107,.15);color:var(--accent4)}
+  .stage-contraction{background:rgba(224,107,107,.22);color:var(--accent4)}
+
+  .chart-wrap{position:relative;width:100%}
+  .controls-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .asset-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px}
+  .legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+
+  @media (max-width:800px){.grid-2{grid-template-columns:1fr}main{padding:18px}header{padding:14px 18px}nav{padding:0 18px}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="logo">
+    <span class="logo-title">💧 Liquidity Framework</span>
+    <span class="logo-sub">Howell • GL Indexes</span>
+  </div>
+  <div class="header-right">
+    <span class="last-updated" id="updated-stamp">Data as of early Jul 2026</span>
+    <button class="btn btn-accent" onclick="exportReport()">Export PDF</button>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="showPage('overview')" id="tab-overview">🌐 Overview</div>
+  <div class="tab" onclick="showPage('metrics')" id="tab-metrics">📊 Liquidity Metrics</div>
+  <div class="tab" onclick="showPage('cycle')" id="tab-cycle">🔄 Cycle & Asset Simulator</div>
+  <div class="tab" onclick="showPage('policy')" id="tab-policy">⚖️ Policy Transmission</div>
+</nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<div class="page active" id="page-overview">
+  <div class="page-title">Global Liquidity Framework</div>
+  <div class="page-sub">Michael Howell's liquidity-first view: markets as debt-refinancing machines, where crises come from collateral shortages, not mispricing.</div>
+
+  <div class="card-hero">
+    <div class="equation">P = L × (P/L)</div>
+    <p style="color:var(--muted)">Asset prices (P) are driven by the stock of Global Liquidity (L) — central bank + shadow-bank + cross-border credit flows — multiplied by risk positioning (P/L). Because ~80% of lending is collateral-backed, a shortage of good collateral, not a lack of earnings, is what triggers financial crises.</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="kpi">
+      <div class="kpi-label">Global Liquidity Pool</div>
+      <div class="kpi-value">$193.5T</div>
+      <div class="kpi-delta pos">Weekly reading, 9 Jun 2026</div>
+      <div class="src">Source: CrossBorder Capital / GL Indexes</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Cycle Position</div>
+      <div class="kpi-value" style="font-size:19px">Peak → Rolling Over</div>
+      <div class="kpi-delta neg">65-month cycle, peaked ~Q4 2025–Q1 2026</div>
+      <div class="src">Next trough projected 2027–2028</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Fed Net Liquidity</div>
+      <div class="kpi-value">$5.82T</div>
+      <div class="kpi-delta neu">Assets minus TGA & RRP, 24 Jun 2026</div>
+      <div class="src">Source: Federal Reserve H.4.1</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Where the Cycle Stands</h3>
+    <div class="chart-wrap" style="height:240px"><canvas id="overviewCycleChart"></canvas></div>
+    <p class="section-note">CrossBorder Capital's Global Liquidity Index (GLI, 0–100 scale) tracks a repeating ~65-month sine wave. The last full trough was December 2022; liquidity was projected to peak near an index level of ~70 around mid-2026, and by early 2026 several trackers (TFTC, Capital Wars) reported the dollar-denominated pool topping out near $188.8–193.5T with growth now rolling over — implying a multi-quarter liquidity headwind into 2027 as a 2026–2028 debt-refinancing wall absorbs cash. This chart is an illustrative rendering of that framework, not a live feed.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>What's Adding Liquidity</h3>
+      <ul style="padding-left:18px;color:var(--muted);font-size:13px;line-height:1.9">
+        <li>Fed formally ended quantitative tightening (QT) in 2026</li>
+        <li>PBoC sustained easing — RMB 2.7tn (~$380bn) injected in a single month earlier in the cycle</li>
+        <li>Treasury bill-heavy issuance ("Treasury QE") frees up bank balance-sheet capacity</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What's Draining Liquidity</h3>
+      <ul style="padding-left:18px;color:var(--muted);font-size:13px;line-height:1.9">
+        <li>Treasury General Account (TGA) rebuild after the debt-ceiling resolution: ~$919B and rising</li>
+        <li>US dollar strength and firmer bond volatility (MOVE index) impair collateral value</li>
+        <li>2026–2028 debt-maturity wall forces refinancing that competes for scarce liquidity</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS -->
+<div class="page" id="page-metrics">
+  <div class="page-title">Liquidity Metrics</div>
+  <div class="page-sub">Quantified readings across the plumbing of global liquidity — central bank balance sheets, money supply, and the asset markets liquidity flows into.</div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th><th>As Of</th><th>Source</th></tr></thead>
+      <tbody id="metrics-tbody"></tbody>
+    </table>
+    <p class="section-note">Figures are the most recent publicly reported readings at time of writing and are approximate — central bank and market data revise frequently. Global Liquidity is Howell/CrossBorder Capital's proprietary $-denominated measure of financial-sector balance-sheet capacity, distinct from traditional M2/M3 money-supply aggregates.</p>
+  </div>
+</div>
+
+<!-- CYCLE + ASSET SIMULATOR -->
+<div class="page" id="page-cycle">
+  <div class="page-title">Liquidity Cycle & Asset-Rotation Simulator</div>
+  <div class="page-sub">Drag through a full ~65-month liquidity cycle to see how liquidity typically moves through each economic stage — and how that flow rotates through asset classes.</div>
+
+  <div class="card">
+    <div class="controls-row">
+      <button class="btn btn-accent" id="playBtn" onclick="togglePlay()">▶ Play Cycle</button>
+      <button class="btn" onclick="resetSim()">Reset to Today</button>
+      <span class="stage-pill" id="stage-pill">—</span>
+    </div>
+    <div class="slider-container">
+      <div class="slider-label"><span>Position in 65-month Liquidity Cycle</span><span id="slider-val" class="td-mono">0%</span></div>
+      <input type="range" min="0" max="100" value="70" step="1" id="phase-slider" oninput="simulate(this.value)">
+    </div>
+    <div class="chart-wrap" style="height:220px"><canvas id="cycleChart"></canvas></div>
+    <p id="stage-desc" class="section-note"></p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Relative Asset Market-Cap Index at This Stage</h3>
+      <div class="chart-wrap" style="height:280px"><canvas id="assetChart"></canvas></div>
+      <div class="asset-legend">
+        <span><span class="legend-dot" style="background:#7a7f8e"></span>Cash</span>
+        <span><span class="legend-dot" style="background:#5c9eff"></span>Bonds</span>
+        <span><span class="legend-dot" style="background:#4ecb8a"></span>Equities</span>
+        <span><span class="legend-dot" style="background:#c8a96e"></span>Commodities/Gold</span>
+        <span><span class="legend-dot" style="background:#e06b6b"></span>Crypto (BTC-proxy)</span>
+      </div>
+      <p class="section-note">Index = 100 at cycle-average allocation. This is an illustrative rotation model built on Howell's documented sequence — bonds rally first as liquidity floods in, then credit, then equities, then commodities late-cycle, while cash and long bonds are rebuilt in the risk-off phase — not a price forecast.</p>
+    </div>
+    <div class="card">
+      <h3>Asset Behavior by Regime (Reference)</h3>
+      <table id="asset-table">
+        <thead><tr><th>Asset</th><th>High-Liquidity Regime</th><th>Low-Liquidity Regime</th><th>Sensitivity</th></tr></thead>
+        <tbody id="asset-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- POLICY -->
+<div class="page" id="page-policy">
+  <div class="page-title">Policy Transmission</div>
+  <div class="page-sub">How monetary and fiscal levers move Global Liquidity, and why 2026 is a live test case.</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Monetary Levers</h3>
+      <table>
+        <tbody>
+          <tr><td><strong>QE / Repo facilities</strong></td><td class="td-green">↑ Liquidity</td><td>Supports bonds, then rotates into risk assets</td></tr>
+          <tr><td><strong>QT (balance-sheet runoff)</strong></td><td class="td-red">↓ Liquidity</td><td>Fed formally ended QT in 2026 after shrinking assets from $8.95T (2022) to ~$6.7T</td></tr>
+          <tr><td><strong>Rate hikes / cuts</strong></td><td class="td-neu">Mixed</td><td>Affects cost of collateral more than headline growth</td></tr>
+          <tr><td><strong>Reverse repo (RRP) facility</strong></td><td class="td-red">↓ Liquidity</td><td>Nearly drained (~$2B), so it's no longer a liquidity buffer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Fiscal & Cross-Border Levers</h3>
+      <table>
+        <tbody>
+          <tr><td><strong>TGA rebuild</strong></td><td class="td-red">↓ Liquidity</td><td>Treasury General Account near $919B and rising post-debt-ceiling</td></tr>
+          <tr><td><strong>Treasury bill-heavy issuance</strong></td><td class="td-green">↑ Liquidity</td><td>Shorter-duration debt frees more balance-sheet capacity than long bonds</td></tr>
+          <tr><td><strong>PBoC easing</strong></td><td class="td-green">↑ Liquidity</td><td>Large, repeated injections have offset Fed/ECB tightening at times</td></tr>
+          <tr><td><strong>Debt-maturity wall (2026–2028)</strong></td><td class="td-red">↓ Liquidity</td><td>Trillions in pandemic-era debt must be refinanced, competing for funding</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>The Core Tension for 2026</h3>
+    <p style="color:var(--muted);font-size:13px;line-height:1.8">Central banks face a genuine trade-off: inflation control argues for continued restraint, while financial-stability risk — a maturing debt wall, thinning repo-market cushions, and collateral scarcity signaled by rising bond volatility — argues for renewed accommodation. Howell's framework treats this as a recurring, roughly 65-month rhythm rather than a one-off event: liquidity floods in to refinance debt, inflates asset prices, then drains as central banks respond to the resulting inflation, and the cycle repeats.</p>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+
+const METRICS = [
+  {cat:'Global Liquidity'},
+  {label:'CrossBorder Capital Global Liquidity Pool', val:'$193.5T', asof:'9 Jun 2026', src:'CrossBorder Capital / GL Indexes'},
+  {label:'Global Liquidity Cycle Peak (this cycle)', val:'~$188.8T', asof:'Feb 2026', src:'TFTC / Howell interview'},
+  {label:'Global Liquidity Index (GLI, 0–100 scale)', val:'Rolling over from ~peak', asof:'2026', src:'CrossBorder Capital (mean = 50)'},
+  {label:'Global M2 Broad Money Supply', val:'≈$98.6T', asof:'Early 2026', src:'Aggregated Fed/ECB/PBoC/BoJ/BoE data'},
+  {label:'Global Debt Outstanding', val:'≈$250T', asof:'2026', src:'IMF Global Debt Database'},
+  {label:'Global Wealth (all assets)', val:'≈$471T', asof:'2025', src:'UBS Global Wealth Report'},
+
+  {cat:'Federal Reserve Balance Sheet'},
+  {label:'Fed Total Assets', val:'$6.736T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'— Treasuries held', val:'$4.488T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'— Mortgage-backed securities', val:'$1.962T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Treasury General Account (TGA)', val:'$919B', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Overnight Reverse Repo (ON RRP)', val:'$2B', asof:'24 Jun 2026', src:'Federal Reserve H.4.1 (effectively drained)'},
+  {label:'Bank Reserves', val:'$2.951T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Fed Net Liquidity (Assets − TGA − RRP)', val:'$5.815T', asof:'24 Jun 2026', src:'Derived from Federal Reserve H.4.1'},
+  {label:'QT Status', val:'Formally ended', asof:'2026', src:'FOMC policy statements'},
+
+  {cat:'Asset Markets'},
+  {label:'Global Equity Market Capitalization', val:'≈$154T', asof:'2026 est.', src:'Statista Market Forecast'},
+  {label:'— US share of global equities', val:'≈$75T (~49%)', asof:'Apr 2026', src:'Visual Capitalist / Wikipedia'},
+  {label:'Gold Spot Price', val:'≈$4,187/oz', asof:'2026', src:'Market data aggregators'},
+  {label:'Bitcoin Price', val:'≈$58,000–63,000', asof:'Late Jun–Early Jul 2026', src:'Fortune / Yahoo Finance'},
+  {label:'Bitcoin Market Capitalization', val:'≈$1.33T', asof:'Jul 2026', src:'Fortune'},
+  {label:'Ethereum Market Capitalization', val:'≈$233B', asof:'Jul 2026', src:'Fortune'},
+];
+
+const ASSETS = [
+  {icon:'💵',name:'Cash',high:'Opportunity cost rises, drawn down',low:'Flight-to-safety, hoarded',sens:'Low'},
+  {icon:'📜',name:'Bonds',high:'Rally first as liquidity arrives',low:'Haven bid returns late-cycle',sens:'High (duration)'},
+  {icon:'📈',name:'Equities',high:'Strong gains, mid-to-late cycle',low:'Broad declines',sens:'High'},
+  {icon:'🛢️',name:'Commodities / Gold',high:'Late-cycle outperformance',low:'Monetary-inflation hedge bid',sens:'Medium-High'},
+  {icon:'🪙',name:'Crypto (BTC proxy)',high:'Explosive, leads cycle by ~13 weeks',low:'Severe drawdown, most sensitive',sens:'Very High'}
+];
+
+// Control points at phase 0,20,40,60,80,100 (piecewise-interpolated)
+const PHASE_POINTS = [0,20,40,60,80,100];
+const CURVES = {
+  liquidity:  [20,50,88,75,35,20],
+  cash:       [125,95,55,65,110,125],
+  bonds:      [110,130,95,70,95,110],
+  equities:   [55,80,120,140,90,55],
+  commod:     [80,70,90,130,140,90],
+  crypto:     [40,90,160,120,50,30]
+};
+
+const STAGES = [
+  {max:12, name:'Trough', cls:'stage-trough', desc:'Liquidity is scarce and collateral is stressed. Central banks are at or near maximum accommodation; risk assets are de-rated and cash/short bonds dominate positioning. This is historically the best entry point for risk assets, but it rarely feels that way at the time.'},
+  {max:38, name:'Early Expansion', cls:'stage-early', desc:'Fresh liquidity (QE, repo, easing) starts refinancing the system. Bonds rally first as the safest, most liquid instrument, then credit spreads compress as the flood reaches corporate and shadow-bank balance sheets.'},
+  {max:58, name:'Late Expansion / Speculation', cls:'stage-late', desc:'Liquidity is abundant and risk appetite peaks. Equities and high-beta assets like crypto lead, since they carry the most balance-sheet leverage to rising liquidity. This is Howell\'s "Everything Bubble" phase.'},
+  {max:75, name:'Peak / Distribution', cls:'stage-peak', desc:'Liquidity growth decelerates even as levels stay high. Rotation begins out of the most speculative assets and into late-cycle winners — commodities and gold — as investors sense the turn.'},
+  {max:100,name:'Contraction / Risk-Off', cls:'stage-contraction', desc:'Central banks tighten or a debt-refinancing wall absorbs cash. Liquidity drains, collateral scarcity resurfaces, and capital rotates back into cash and long-dated government bonds. Crypto and equities see the sharpest drawdowns.'}
+];
+
+/* ---------------- INTERPOLATION ---------------- */
+
+function interp(curve, phase){
+  for(let i=0;i<PHASE_POINTS.length-1;i++){
+    const x0=PHASE_POINTS[i], x1=PHASE_POINTS[i+1];
+    if(phase>=x0 && phase<=x1){
+      const t=(phase-x0)/(x1-x0);
+      const smooth = t*t*(3-2*t); // smoothstep
+      return curve[i] + (curve[i+1]-curve[i])*smooth;
+    }
+  }
+  return curve[curve.length-1];
+}
+
+function getStage(phase){
+  return STAGES.find(s=>phase<=s.max) || STAGES[STAGES.length-1];
+}
+
+function sampleCurve(curve, steps=100){
+  const arr=[];
+  for(let p=0;p<=steps;p++) arr.push(interp(curve,p));
+  return arr;
+}
+
+/* ---------------- RENDER: METRICS TABLE ---------------- */
+
+function renderMetrics(){
+  document.getElementById('metrics-tbody').innerHTML = METRICS.map(m=>{
+    if(m.cat) return `<tr class="cat-row"><td colspan="4">${m.cat}</td></tr>`;
+    return `<tr><td>${m.label}</td><td class="td-mono">${m.val}</td><td>${m.asof}</td><td class="src">${m.src}</td></tr>`;
+  }).join('');
+}
+
+function renderAssetTable(){
+  document.getElementById('asset-tbody').innerHTML = ASSETS.map(a=>`
+    <tr>
+      <td>${a.icon} ${a.name}</td>
+      <td class="td-green">${a.high}</td>
+      <td class="td-red">${a.low}</td>
+      <td class="td-mono">${a.sens}</td>
+    </tr>
+  `).join('');
+}
+
+/* ---------------- CHARTS ---------------- */
+
+let overviewChart=null, cycleChart=null, assetChart=null;
+
+function renderOverviewChart(){
+  const ctx = document.getElementById('overviewCycleChart');
+  if(!ctx) return;
+  const labels = Array.from({length:101},(_,i)=>i);
+  const data = sampleCurve(CURVES.liquidity);
+  if(overviewChart) overviewChart.destroy();
+  overviewChart = new Chart(ctx.getContext('2d'),{
+    type:'line',
+    data:{labels, datasets:[
+      {label:'Global Liquidity Index (illustrative)', data, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.12)', fill:true, borderWidth:2, pointRadius:0, tension:.35},
+      {label:'Today (~Jul 2026)', data: labels.map(p=> p===70? interp(CURVES.liquidity,70): null), pointRadius:6, pointBackgroundColor:'#e06b6b', borderColor:'transparent', showLine:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7a7f8e',boxWidth:10,font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#7a7f8e',maxTicksLimit:8,callback:(v,i)=>i%20===0?i+'%':''},grid:{color:'#232730'}},
+        y:{ticks:{color:'#7a7f8e'},grid:{color:'#232730'},title:{display:true,text:'GLI (0–100)',color:'#7a7f8e',font:{size:11}}}
+      }
+    }
+  });
+}
+
+function renderCycleChart(phase){
+  const ctx = document.getElementById('cycleChart');
+  if(!ctx) return;
+  const labels = Array.from({length:101},(_,i)=>i);
+  const data = sampleCurve(CURVES.liquidity);
+  const markerVal = interp(CURVES.liquidity, phase);
+  if(cycleChart) cycleChart.destroy();
+  cycleChart = new Chart(ctx.getContext('2d'),{
+    type:'line',
+    data:{labels, datasets:[
+      {label:'Liquidity Level', data, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.10)', fill:true, borderWidth:2, pointRadius:0, tension:.35},
+      {label:'Current Position', data: labels.map(p=> p===Math.round(phase)? markerVal: null), pointRadius:7, pointBackgroundColor:'#5c9eff', borderColor:'#fff', borderWidth:1, showLine:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7a7f8e',boxWidth:10,font:{size:11}}}},
+      scales:{
+        x:{title:{display:true,text:'Cycle Phase (%)',color:'#7a7f8e',font:{size:11}},ticks:{color:'#7a7f8e',maxTicksLimit:6},grid:{color:'#232730'}},
+        y:{ticks:{color:'#7a7f8e'},grid:{color:'#232730'},title:{display:true,text:'Liquidity Index',color:'#7a7f8e',font:{size:11}}}
+      }
+    }
+  });
+}
+
+function renderAssetChart(phase){
+  const ctx = document.getElementById('assetChart');
+  if(!ctx) return;
+  const vals = {
+    cash: interp(CURVES.cash, phase),
+    bonds: interp(CURVES.bonds, phase),
+    equities: interp(CURVES.equities, phase),
+    commod: interp(CURVES.commod, phase),
+    crypto: interp(CURVES.crypto, phase)
+  };
+  const labels=['Cash','Bonds','Equities','Commodities/Gold','Crypto'];
+  const data=[vals.cash,vals.bonds,vals.equities,vals.commod,vals.crypto];
+  const colors=['#7a7f8e','#5c9eff','#4ecb8a','#c8a96e','#e06b6b'];
+  if(assetChart) assetChart.destroy();
+  assetChart = new Chart(ctx.getContext('2d'),{
+    type:'bar',
+    data:{labels, datasets:[{label:'Relative Market-Cap Index', data, backgroundColor:colors}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, max:170, ticks:{color:'#7a7f8e'},grid:{color:'#232730'}},
+        x:{ticks:{color:'#7a7f8e'},grid:{display:false}}
+      }
+    }
+  });
+}
+
+/* ---------------- SIMULATOR CONTROL ---------------- */
+
+let playing=false, playTimer=null;
+
+function simulate(phase){
+  phase = parseFloat(phase);
+  document.getElementById('phase-slider').value = phase;
+  document.getElementById('slider-val').textContent = Math.round(phase)+'%';
+  const stage = getStage(phase);
+  const pill = document.getElementById('stage-pill');
+  pill.textContent = stage.name;
+  pill.className = 'stage-pill ' + stage.cls;
+  document.getElementById('stage-desc').textContent = stage.desc;
+  renderCycleChart(phase);
+  renderAssetChart(phase);
+}
+
+function togglePlay(){
+  playing = !playing;
+  const btn = document.getElementById('playBtn');
+  if(playing){
+    btn.textContent = '⏸ Pause';
+    playTimer = setInterval(()=>{
+      let p = parseFloat(document.getElementById('phase-slider').value);
+      p = (p + 1) % 101;
+      simulate(p);
+    }, 120);
+  } else {
+    btn.textContent = '▶ Play Cycle';
+    clearInterval(playTimer);
+  }
+}
+
+function resetSim(){
+  playing = false;
+  clearInterval(playTimer);
+  document.getElementById('playBtn').textContent = '▶ Play Cycle';
+  simulate(70);
+}
+
+/* ---------------- NAV ---------------- */
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='overview') renderOverviewChart();
+  if(id==='cycle') simulate(document.getElementById('phase-slider').value);
+}
+
+/* ---------------- EXPORT ---------------- */
+
+function exportReport(){
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.text("Global Liquidity Framework Report", 14, 18);
+  doc.setFontSize(10);
+  doc.text("Data as of early July 2026 — Source: CrossBorder Capital / Federal Reserve H.4.1 / public market data", 14, 25);
+  const rows = METRICS.filter(m=>!m.cat).map(m=>[m.label, m.val, m.asof, m.src]);
+  doc.autoTable({
+    head:[['Metric','Value','As Of','Source']],
+    body: rows,
+    startY: 32,
+    styles:{fontSize:8},
+    headStyles:{fillColor:[200,169,110], textColor:20}
+  });
+  doc.save('liquidity-framework-2026.pdf');
+}
+
+/* ---------------- INIT ---------------- */
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderMetrics();
+  renderAssetTable();
+  renderOverviewChart();
+  simulate(70);
+  showPage('overview');
+});
+</script>
+</body>
+</html>
