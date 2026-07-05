@@ -122,6 +122,27 @@
   /* Chart */
   .chart-wrap{position:relative}
 
+  /* Liquidity framework additions: equations, sliders, stage pills, policy tables */
+  .equation{font-family:var(--font-mono);background:var(--surface);padding:16px 20px;border-radius:8px;border-left:4px solid var(--accent);margin:14px 0;font-size:15.5px;color:var(--text)}
+  .slider-container{margin:16px 0}
+  .slider-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;align-items:center}
+  input[type=range]{width:100%;accent-color:var(--accent);background:transparent}
+  .controls-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .stage-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .stage-trough{background:rgba(92,158,255,.15);color:var(--accent2)}
+  .stage-early{background:rgba(78,203,138,.15);color:var(--accent3)}
+  .stage-late{background:rgba(200,169,110,.18);color:var(--accent)}
+  .stage-peak{background:rgba(224,107,107,.15);color:var(--accent4)}
+  .stage-contraction{background:rgba(224,107,107,.22);color:var(--accent4)}
+  .asset-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px}
+  .legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+  .cat-row td{background:rgba(200,169,110,.06);font-weight:700;color:var(--accent);text-transform:uppercase;font-size:10.5px;letter-spacing:1px}
+  .src-note{font-size:10.5px;color:var(--muted);font-family:var(--font-mono)}
+  .stance-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .stance-easing{background:rgba(78,203,138,.15);color:var(--accent3)}
+  .stance-neutral{background:rgba(92,158,255,.15);color:var(--accent2)}
+  .stance-tightening{background:rgba(224,107,107,.15);color:var(--accent4)}
+
   /* Sector legend */
   .sector-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);text-align:center}
   .sector-legend-val{font-family:var(--font-mono);font-weight:700;font-size:15px}
@@ -176,6 +197,7 @@
   <div class="tab active" onclick="showPage('overview')"    id="tab-overview">🌐 Overview</div>
   <div class="tab"        onclick="showPage('economies')"   id="tab-economies">🏛️ Economies</div>
   <div class="tab"        onclick="showPage('trends')"      id="tab-trends">📈 Trends</div>
+  <div class="tab"        onclick="showPage('liquidity')"   id="tab-liquidity">💧 Liquidity</div>
   <div class="tab"        onclick="showPage('sectors')"     id="tab-sectors">⚙️ Sectors</div>
 </nav>
 
@@ -219,6 +241,38 @@
     </div>
   </div>
 
+  <!-- Liquidity × Policy equation -->
+  <div class="card section" style="border-color:rgba(200,169,110,.35)">
+    <h3 id="lbl-eq-title">The Liquidity Lens on Global Output</h3>
+    <div class="equation">P = L × (P/L)</div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.7" id="lbl-eq-body">Real GDP ($112.4T) measures what the world produces. Asset prices (P) trade on something else entirely: the stock of Global Liquidity (L) — central bank, shadow-bank and cross-border credit — multiplied by risk positioning (P/L). Since roughly 80% of global lending is collateral-backed, financial stress tends to originate from a collateral/liquidity shortage rather than from a growth shortfall.</p>
+    <p style="margin-top:6px"><span id="lbl-eq-link" style="color:var(--accent);cursor:pointer;text-decoration:underline;font-weight:600;font-size:12.5px" onclick="showPage('liquidity')">→ Open the full Liquidity Framework tab</span></p>
+  </div>
+
+  <!-- Liquidity & Policy snapshot -->
+  <div class="grid-4 section">
+    <div class="kpi blue">
+      <div class="kpi-label" id="lbl-liq-pool">Global Liquidity Pool</div>
+      <div class="kpi-value" id="kpi-liq-pool">$193.5T</div>
+      <div class="kpi-sub" id="lbl-liq-pool-note">CrossBorder Capital GL Index, 9 Jun 2026</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label" id="lbl-liq-ratio">Liquidity ÷ Global GDP</div>
+      <div class="kpi-value" id="kpi-liq-ratio">1.72×</div>
+      <div class="kpi-sub" id="lbl-liq-ratio-note">Liquidity pool relative to real output</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label" id="lbl-cycle-stage">Liquidity Cycle Stage</div>
+      <div class="kpi-value" style="font-size:18px" id="kpi-cycle-stage">Peak → Rolling Over</div>
+      <div class="kpi-sub" id="lbl-cycle-stage-note">~65-month cycle · next trough ~2027–2028</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label" id="lbl-fed-net">Fed Net Liquidity</div>
+      <div class="kpi-value">$5.82T</div>
+      <div class="kpi-sub" id="lbl-fed-net-note">Assets − TGA − Reverse Repo</div>
+    </div>
+  </div>
+
   <!-- Charts row -->
   <div class="grid-2 section">
     <!-- GDP bar chart -->
@@ -243,8 +297,9 @@
   <!-- Decade trend -->
   <div class="card section">
     <h3 id="lbl-chart-trend">Decade Growth Trajectory (2016–2026)</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-chart-trend-sub">Global real annual GDP % change including forward baseline trends</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-chart-trend-sub">Global real GDP % change (bars) vs. the Global Liquidity Index (line, 0–100 scale)</p>
     <div class="chart-wrap" style="height:240px"><canvas id="trendChart"></canvas></div>
+    <p class="src-note section-note" style="margin-top:12px;color:var(--muted);font-size:11.5px;line-height:1.6" id="lbl-chart-trend-note">Liquidity tends to lead the real economy: note 2020, when GDP growth collapsed to −2.8% but the Global Liquidity Index spiked as central banks flooded the system — liquidity inflated asset prices well before output recovered. The reverse is now underway: liquidity is rolling over from its 2025–2026 peak, a headwind for risk-asset valuations even while GDP growth holds near 3%.</p>
   </div>
 
   <!-- Health progress bars -->
@@ -306,6 +361,7 @@
             <th id="lbl-th-pop">Population</th>
             <th id="lbl-th-percap" style="text-align:right">GDP Per Capita</th>
             <th id="lbl-th-region">Region</th>
+            <th id="lbl-th-stance">Monetary Stance</th>
           </tr>
         </thead>
         <tbody id="eco-tbody"></tbody>
@@ -314,6 +370,13 @@
   </div>
 
   <div class="grid-3 section" id="eco-region-summary"></div>
+
+  <!-- Central bank balance sheets — liquidity contributors -->
+  <div class="card section">
+    <h3 id="lbl-cb-title">Central Bank Balance Sheets — Global Liquidity Contributors</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-cb-sub">The monetary policy stance of each economy's central bank is a direct lever on Global Liquidity (L) — easing expands the pool available to refinance debt and inflate asset prices; tightening drains it.</p>
+    <div class="grid-4" id="cb-balance-grid"></div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -325,7 +388,7 @@
 
   <div class="card section">
     <h3 id="lbl-trends-hist">Historical GDP Growth Rate — 2016 to 2026</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-trends-hist-sub">Annual real GDP percent change — global aggregate</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-trends-hist-sub">Annual real GDP % change (bars) vs. the Global Liquidity Index (line, 0–100 scale)</p>
     <div class="chart-wrap" style="height:280px"><canvas id="trendChartFull"></canvas></div>
   </div>
 
@@ -341,8 +404,166 @@
   </div>
 
   <div class="card section">
-    <h3 id="lbl-trends-compare">Multi-Economy GDP Growth Comparison</h3>
+    <h3 id="lbl-trends-compare">GDP Growth vs. Liquidity Contribution — Selected Economies</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px" id="lbl-trends-compare-sub">Growth (bars, %) contrasted with each economy's relative share of Global Liquidity supply (line, illustrative 0–100 index) — real output and liquidity firepower do not move together</p>
     <div class="chart-wrap" style="height:280px"><canvas id="compareChart"></canvas></div>
+  </div>
+
+  <div class="card section">
+    <h3 id="lbl-policy-watch-title">Policy Watch — What's Moving Global Liquidity</h3>
+    <div class="grid-2">
+      <div>
+        <div class="alert alert-ok">✓ <strong id="lbl-policy-add-head">Adding liquidity:</strong> <span id="lbl-policy-add-body">Fed ended QT in 2026 · PBoC sustained easing · Treasury bill-heavy issuance frees bank balance-sheet capacity</span></div>
+      </div>
+      <div>
+        <div class="alert alert-warn">⚠ <strong id="lbl-policy-drain-head">Draining liquidity:</strong> <span id="lbl-policy-drain-body">TGA rebuild (~$919B and rising) · firmer bond volatility impairs collateral · 2026–2028 debt-maturity wall competes for funding</span></div>
+      </div>
+    </div>
+    <p style="font-size:12px;margin-top:12px"><span id="lbl-policy-watch-link" style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('liquidity')">Full monetary and fiscal transmission mechanics are on the Liquidity tab →</span></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     LIQUIDITY
+═══════════════════════════════════════════ -->
+<div class="page" id="page-liquidity">
+  <div class="page-title" id="lbl-liq-title">Global Liquidity Framework</div>
+  <div class="page-sub" id="lbl-liq-sub">Markets as debt-refinancing machines — where crises come from collateral shortages, not mispricing</div>
+
+  <div class="card-hero section">
+    <div class="equation">P = L × (P/L)</div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.7" id="lbl-liq-hero-body">Asset prices (P) are driven by the stock of Global Liquidity (L) — central bank, shadow-bank and cross-border credit flows — multiplied by risk positioning (P/L). Because roughly 80% of lending is collateral-backed, a shortage of good collateral, not a lack of earnings, is what triggers financial crises.</p>
+  </div>
+
+  <div class="grid-3 section">
+    <div class="kpi gold">
+      <div class="kpi-label" id="lbl-liq-kpi1">Global Liquidity Pool</div>
+      <div class="kpi-value">$193.5T</div>
+      <div class="kpi-delta pos" id="lbl-liq-kpi1-note">Weekly reading, 9 Jun 2026</div>
+      <div class="src-note">Source: CrossBorder Capital / GL Indexes</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label" id="lbl-liq-kpi2">Cycle Position</div>
+      <div class="kpi-value" style="font-size:19px">Peak → Rolling Over</div>
+      <div class="kpi-delta neg" id="lbl-liq-kpi2-note">65-month cycle, peaked ~Q4 2025–Q1 2026</div>
+      <div class="src-note" id="lbl-liq-kpi2-note2">Next trough projected 2027–2028</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label" id="lbl-liq-kpi3">Fed Net Liquidity</div>
+      <div class="kpi-value">$5.82T</div>
+      <div class="kpi-delta neu" id="lbl-liq-kpi3-note">Assets minus TGA & RRP, 24 Jun 2026</div>
+      <div class="src-note">Source: Federal Reserve H.4.1</div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3 id="lbl-liq-cyclechart-title">Where the Cycle Stands</h3>
+    <div class="chart-wrap" style="height:220px"><canvas id="liqCycleOverviewChart"></canvas></div>
+    <p class="section-note" style="color:var(--muted);font-size:12px;margin-top:10px" id="lbl-liq-cyclechart-note">CrossBorder Capital's Global Liquidity Index (GLI, 0–100 scale) tracks a repeating ~65-month sine wave. The last full trough was December 2022; by early 2026 several trackers reported the dollar-denominated pool topping out near $188.8–193.5T with growth now rolling over — implying a multi-quarter liquidity headwind into 2027 as a 2026–2028 debt-refinancing wall absorbs cash. This chart is an illustrative rendering of the framework, not a live feed.</p>
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3 id="lbl-liq-adding-title">What's Adding Liquidity</h3>
+      <ul style="padding-left:18px;color:var(--muted);font-size:13px;line-height:1.9">
+        <li id="lbl-liq-add-1">Fed formally ended quantitative tightening (QT) in 2026</li>
+        <li id="lbl-liq-add-2">PBoC sustained easing — large monthly injections earlier in the cycle</li>
+        <li id="lbl-liq-add-3">Treasury bill-heavy issuance ("Treasury QE") frees bank balance-sheet capacity</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 id="lbl-liq-draining-title">What's Draining Liquidity</h3>
+      <ul style="padding-left:18px;color:var(--muted);font-size:13px;line-height:1.9">
+        <li id="lbl-liq-drain-1">Treasury General Account (TGA) rebuild after the debt-ceiling resolution: ~$919B and rising</li>
+        <li id="lbl-liq-drain-2">US dollar strength and firmer bond volatility impair collateral value</li>
+        <li id="lbl-liq-drain-3">2026–2028 debt-maturity wall forces refinancing that competes for scarce liquidity</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3 id="lbl-liq-metrics-title">Liquidity Metrics</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px" id="lbl-liq-metrics-sub">Quantified readings across the plumbing of global liquidity — central bank balance sheets, money supply, and the asset markets liquidity flows into.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th id="lbl-liq-th-metric">Metric</th><th id="lbl-liq-th-value">Value</th><th id="lbl-liq-th-asof">As Of</th><th id="lbl-liq-th-src">Source</th></tr></thead>
+        <tbody id="liq-metrics-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="controls-row">
+      <button class="btn btn-accent" id="liqPlayBtn" onclick="toggleLiquidityPlay()">▶ Play Cycle</button>
+      <button class="btn" onclick="resetLiquiditySim()" id="lbl-liq-reset-btn">Reset to Today</button>
+      <span class="stage-pill" id="liq-stage-pill">—</span>
+    </div>
+    <h3 style="margin-top:14px" id="lbl-liq-sim-title">Liquidity Cycle & Asset-Rotation Simulator</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:6px" id="lbl-liq-sim-sub">Drag through a full ~65-month liquidity cycle to see how liquidity moves through each stage — and how that flow rotates through asset classes.</p>
+    <div class="slider-container">
+      <div class="slider-label"><span id="lbl-liq-slider-label">Position in 65-month Liquidity Cycle</span><span id="liq-slider-val" class="td-mono">70%</span></div>
+      <input type="range" min="0" max="100" value="70" step="1" id="liq-phase-slider" oninput="simulateLiquidity(this.value)">
+    </div>
+    <div class="chart-wrap" style="height:220px"><canvas id="liqCycleChart"></canvas></div>
+    <p id="liq-stage-desc" class="section-note" style="color:var(--muted);font-size:12px;margin-top:8px"></p>
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3 id="lbl-liq-assetchart-title">Relative Asset Market-Cap Index at This Stage</h3>
+      <div class="chart-wrap" style="height:260px"><canvas id="liqAssetChart"></canvas></div>
+      <div class="asset-legend">
+        <span><span class="legend-dot" style="background:#7a7f8e"></span><span id="lbl-liq-leg-cash">Cash</span></span>
+        <span><span class="legend-dot" style="background:#5c9eff"></span><span id="lbl-liq-leg-bonds">Bonds</span></span>
+        <span><span class="legend-dot" style="background:#4ecb8a"></span><span id="lbl-liq-leg-equities">Equities</span></span>
+        <span><span class="legend-dot" style="background:#c8a96e"></span><span id="lbl-liq-leg-commod">Commodities/Gold</span></span>
+        <span><span class="legend-dot" style="background:#e06b6b"></span><span id="lbl-liq-leg-crypto">Crypto (BTC-proxy)</span></span>
+      </div>
+      <p class="section-note" style="color:var(--muted);font-size:11.5px;margin-top:10px" id="lbl-liq-assetchart-note">Index = 100 at cycle-average allocation. Illustrative rotation model: bonds rally first as liquidity floods in, then credit, then equities, then commodities late-cycle, while cash and long bonds rebuild in the risk-off phase — not a price forecast.</p>
+    </div>
+    <div class="card">
+      <h3 id="lbl-liq-assettbl-title">Asset Behavior by Regime (Reference)</h3>
+      <div class="tbl-wrap">
+        <table id="liq-asset-table">
+          <thead><tr><th id="lbl-liq-ath-asset">Asset</th><th id="lbl-liq-ath-high">High-Liquidity Regime</th><th id="lbl-liq-ath-low">Low-Liquidity Regime</th><th id="lbl-liq-ath-sens">Sensitivity</th></tr></thead>
+          <tbody id="liq-asset-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3 id="lbl-liq-monetary-title">Monetary Levers</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong id="lbl-liq-mon1">QE / Repo facilities</strong></td><td class="td-green">↑ <span id="lbl-liq-mon1-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-mon1-note">Supports bonds, then rotates into risk assets</td></tr>
+            <tr><td><strong id="lbl-liq-mon2">QT (balance-sheet runoff)</strong></td><td class="td-red">↓ <span id="lbl-liq-mon2-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-mon2-note">Fed formally ended QT in 2026 after shrinking assets from $8.95T (2022) to ~$6.7T</td></tr>
+            <tr><td><strong id="lbl-liq-mon3">Rate hikes / cuts</strong></td><td class="td-gold"><span id="lbl-liq-mon3-dir">Mixed</span></td><td class="td-muted" id="lbl-liq-mon3-note">Affects cost of collateral more than headline growth</td></tr>
+            <tr><td><strong id="lbl-liq-mon4">Reverse repo (RRP) facility</strong></td><td class="td-red">↓ <span id="lbl-liq-mon4-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-mon4-note">Nearly drained (~$2B) — no longer a liquidity buffer</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3 id="lbl-liq-fiscal-title">Fiscal & Cross-Border Levers</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong id="lbl-liq-fis1">TGA rebuild</strong></td><td class="td-red">↓ <span id="lbl-liq-fis1-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-fis1-note">Treasury General Account near $919B and rising post-debt-ceiling</td></tr>
+            <tr><td><strong id="lbl-liq-fis2">Treasury bill-heavy issuance</strong></td><td class="td-green">↑ <span id="lbl-liq-fis2-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-fis2-note">Shorter-duration debt frees more balance-sheet capacity than long bonds</td></tr>
+            <tr><td><strong id="lbl-liq-fis3">PBoC easing</strong></td><td class="td-green">↑ <span id="lbl-liq-fis3-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-fis3-note">Large, repeated injections have offset Fed/ECB tightening at times</td></tr>
+            <tr><td><strong id="lbl-liq-fis4">Debt-maturity wall (2026–2028)</strong></td><td class="td-red">↓ <span id="lbl-liq-fis4-dir">Liquidity</span></td><td class="td-muted" id="lbl-liq-fis4-note">Trillions in pandemic-era debt must be refinanced, competing for funding</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3 id="lbl-liq-tension-title">The Core Tension for 2026</h3>
+    <p style="color:var(--muted);font-size:13px;line-height:1.8" id="lbl-liq-tension-body">Central banks face a genuine trade-off: inflation control argues for continued restraint, while financial-stability risk — a maturing debt wall, thinning repo-market cushions, and collateral scarcity signaled by rising bond volatility — argues for renewed accommodation. Howell's framework treats this as a recurring, roughly 65-month rhythm rather than a one-off event: liquidity floods in to refinance debt, inflates asset prices, then drains as central banks respond to the resulting inflation, and the cycle repeats.</p>
   </div>
 </div>
 
@@ -374,6 +595,7 @@
     <div class="alert alert-info">🏭 <strong id="lbl-obs1-head">Services dominance:</strong> <span id="lbl-obs1-body">Services account for 65.2% of global output, driven by financial services, technology and professional sectors in advanced economies.</span></div>
     <div class="alert alert-warn">⚙️ <strong id="lbl-obs2-head">Industrial rebalancing:</strong> <span id="lbl-obs2-body">Industrial share has declined from 35% (2010) to 30.5% as manufacturing shifts to emerging economies and automation displaces labour.</span></div>
     <div class="alert alert-ok">🌱 <strong id="lbl-obs3-head">Agricultural efficiency:</strong> <span id="lbl-obs3-body">Agriculture represents only 4.3% of global output despite feeding 8.25 billion people — a measure of sustained productivity growth since the Green Revolution.</span></div>
+    <div class="alert alert-info">💧 <strong id="lbl-obs4-head">Liquidity sensitivity:</strong> <span id="lbl-obs4-body">Services (financial services, technology) carry the highest beta to swings in Global Liquidity, since valuations lean on discount rates and credit availability rather than physical output. Industry sits in the middle via capex and trade-credit cycles. Agriculture is the least liquidity-sensitive sector — output is driven more by weather and physical supply than by the credit cycle.</span></div>
   </div>
 
   <div class="grid-3 section">
@@ -394,6 +616,7 @@
       <div class="footer-title">Related tools</div>
       <a href="index.html">← Finance Tools Hub</a><br/>
       <a href="nation-state.html">Nation State Simulator</a><br/>
+      <a href="liquidity-framework.html">Liquidity Framework</a><br/>
       <a href="smes.html">Small Business</a><br/>
       <a href="listed-corporation.html">Listed Company</a>
     </div>
@@ -502,6 +725,7 @@ function applyLanguage(){
   document.getElementById('tab-overview').textContent   = t('tabOverview');
   document.getElementById('tab-economies').textContent  = t('tabEconomies');
   document.getElementById('tab-trends').textContent     = t('tabTrends');
+  document.getElementById('tab-liquidity').textContent  = t('tabLiquidity');
   document.getElementById('tab-sectors').textContent    = t('tabSectors');
   // Apply all labelled elements
   Object.keys(T.en).forEach(k => {
@@ -515,25 +739,124 @@ function applyLanguage(){
 //  DATA
 // ══════════════════════════════════════════════════════
 const ECONOMIES = [
-  { rank:1,  flag:'🇺🇸', name:'United States',  gdp:28780, growth:2.4,  inf:2.6,  pop:342.2,  percap:84103, region:'Americas',    regionCls:'badge-blue' },
-  { rank:2,  flag:'🇨🇳', name:'China',           gdp:19250, growth:4.6,  inf:1.1,  pop:1408.1, percap:13671, region:'Asia-Pacific',regionCls:'badge-green'},
-  { rank:3,  flag:'🇩🇪', name:'Germany',         gdp:4720,  growth:0.8,  inf:2.2,  pop:84.5,   percap:55858, region:'Europe',      regionCls:'badge-gold' },
-  { rank:4,  flag:'🇯🇵', name:'Japan',           gdp:4310,  growth:1.1,  inf:2.0,  pop:123.8,  percap:34814, region:'Asia-Pacific',regionCls:'badge-green'},
-  { rank:5,  flag:'🇮🇳', name:'India',           gdp:4180,  growth:6.8,  inf:4.5,  pop:1440.5, percap:2901,  region:'Asia-Pacific',regionCls:'badge-green'},
-  { rank:6,  flag:'🇬🇧', name:'United Kingdom',  gdp:3590,  growth:1.3,  inf:2.5,  pop:68.2,   percap:52639, region:'Europe',      regionCls:'badge-gold' },
-  { rank:7,  flag:'🇫🇷', name:'France',          gdp:3120,  growth:1.2,  inf:2.1,  pop:66.5,   percap:46917, region:'Europe',      regionCls:'badge-gold' },
-  { rank:8,  flag:'🇧🇷', name:'Brazil',          gdp:2450,  growth:2.2,  inf:3.8,  pop:217.6,  percap:11259, region:'Americas',    regionCls:'badge-blue' },
-  { rank:9,  flag:'🇮🇹', name:'Italy',           gdp:2330,  growth:0.7,  inf:1.9,  pop:58.7,   percap:39693, region:'Europe',      regionCls:'badge-gold' },
-  { rank:10, flag:'🇨🇦', name:'Canada',          gdp:2280,  growth:1.5,  inf:2.4,  pop:39.8,   percap:57286, region:'Americas',    regionCls:'badge-blue' },
-  { rank:11, flag:'🇷🇺', name:'Russia',          gdp:2100,  growth:1.3,  inf:6.4,  pop:144.0,  percap:14583, region:'Europe',      regionCls:'badge-gold' },
-  { rank:12, flag:'🇲🇽', name:'Mexico',          gdp:1910,  growth:2.1,  inf:3.9,  pop:130.2,  percap:14669, region:'Americas',    regionCls:'badge-blue' },
-  { rank:13, flag:'🇦🇺', name:'Australia',       gdp:1840,  growth:1.6,  inf:2.8,  pop:26.8,   percap:68656, region:'Asia-Pacific',regionCls:'badge-green'},
-  { rank:14, flag:'🇰🇷', name:'South Korea',     gdp:1810,  growth:2.0,  inf:2.1,  pop:51.7,   percap:35009, region:'Asia-Pacific',regionCls:'badge-green'},
-  { rank:15, flag:'🇮🇩', name:'Indonesia',       gdp:1540,  growth:5.1,  inf:2.9,  pop:280.4,  percap:5492,  region:'Asia-Pacific',regionCls:'badge-green'},
+  { rank:1,  flag:'🇺🇸', name:'United States',  gdp:28780, growth:2.4,  inf:2.6,  pop:342.2,  percap:84103, region:'Americas',    regionCls:'badge-blue',  cb:'Federal Reserve', stance:'Neutral',    rate:4.25,  liqShare:100 },
+  { rank:2,  flag:'🇨🇳', name:'China',           gdp:19250, growth:4.6,  inf:1.1,  pop:1408.1, percap:13671, region:'Asia-Pacific',regionCls:'badge-green', cb:'PBoC',            stance:'Easing',     rate:3.10,  liqShare:78  },
+  { rank:3,  flag:'🇩🇪', name:'Germany',         gdp:4720,  growth:0.8,  inf:2.2,  pop:84.5,   percap:55858, region:'Europe',      regionCls:'badge-gold',  cb:'ECB',             stance:'Neutral',    rate:2.50,  liqShare:34  },
+  { rank:4,  flag:'🇯🇵', name:'Japan',           gdp:4310,  growth:1.1,  inf:2.0,  pop:123.8,  percap:34814, region:'Asia-Pacific',regionCls:'badge-green', cb:'Bank of Japan',   stance:'Tightening', rate:0.75,  liqShare:22  },
+  { rank:5,  flag:'🇮🇳', name:'India',           gdp:4180,  growth:6.8,  inf:4.5,  pop:1440.5, percap:2901,  region:'Asia-Pacific',regionCls:'badge-green', cb:'RBI',             stance:'Neutral',    rate:6.00,  liqShare:18  },
+  { rank:6,  flag:'🇬🇧', name:'United Kingdom',  gdp:3590,  growth:1.3,  inf:2.5,  pop:68.2,   percap:52639, region:'Europe',      regionCls:'badge-gold',  cb:'Bank of England', stance:'Neutral',    rate:4.00,  liqShare:14  },
+  { rank:7,  flag:'🇫🇷', name:'France',          gdp:3120,  growth:1.2,  inf:2.1,  pop:66.5,   percap:46917, region:'Europe',      regionCls:'badge-gold',  cb:'ECB',             stance:'Neutral',    rate:2.50,  liqShare:9   },
+  { rank:8,  flag:'🇧🇷', name:'Brazil',          gdp:2450,  growth:2.2,  inf:3.8,  pop:217.6,  percap:11259, region:'Americas',    regionCls:'badge-blue',  cb:'Banco Central',   stance:'Tightening', rate:14.75, liqShare:9   },
+  { rank:9,  flag:'🇮🇹', name:'Italy',           gdp:2330,  growth:0.7,  inf:1.9,  pop:58.7,   percap:39693, region:'Europe',      regionCls:'badge-gold',  cb:'ECB',             stance:'Neutral',    rate:2.50,  liqShare:6   },
+  { rank:10, flag:'🇨🇦', name:'Canada',          gdp:2280,  growth:1.5,  inf:2.4,  pop:39.8,   percap:57286, region:'Americas',    regionCls:'badge-blue',  cb:'Bank of Canada',  stance:'Easing',     rate:2.75,  liqShare:7   },
+  { rank:11, flag:'🇷🇺', name:'Russia',          gdp:2100,  growth:1.3,  inf:6.4,  pop:144.0,  percap:14583, region:'Europe',      regionCls:'badge-gold',  cb:'Bank of Russia',  stance:'Tightening', rate:18.00, liqShare:4   },
+  { rank:12, flag:'🇲🇽', name:'Mexico',          gdp:1910,  growth:2.1,  inf:3.9,  pop:130.2,  percap:14669, region:'Americas',    regionCls:'badge-blue',  cb:'Banxico',         stance:'Easing',     rate:8.00,  liqShare:3   },
+  { rank:13, flag:'🇦🇺', name:'Australia',       gdp:1840,  growth:1.6,  inf:2.8,  pop:26.8,   percap:68656, region:'Asia-Pacific',regionCls:'badge-green', cb:'RBA',             stance:'Neutral',    rate:3.85,  liqShare:4   },
+  { rank:14, flag:'🇰🇷', name:'South Korea',     gdp:1810,  growth:2.0,  inf:2.1,  pop:51.7,   percap:35009, region:'Asia-Pacific',regionCls:'badge-green', cb:'Bank of Korea',   stance:'Easing',     rate:2.50,  liqShare:5   },
+  { rank:15, flag:'🇮🇩', name:'Indonesia',       gdp:1540,  growth:5.1,  inf:2.9,  pop:280.4,  percap:5492,  region:'Asia-Pacific',regionCls:'badge-green', cb:'Bank Indonesia',  stance:'Neutral',    rate:5.75,  liqShare:2   },
 ];
 
 const HIST_GROWTH = [3.4,3.8,3.6,2.8,-2.8,6.3,3.5,3.2,3.1,3.0,3.2];
 const HIST_YEARS  = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+// Illustrative Global Liquidity Index (0–100, CrossBorder Capital-style GLI) aligned to the same years.
+// Note how liquidity decouples from real GDP growth — e.g. 2020 GDP contracted (-2.8%) while liquidity
+// spiked on emergency QE, and 2022's GDP growth held up even as liquidity hit the cycle trough.
+const HIST_LIQUIDITY = [45,58,38,50,92,85,22,48,62,75,68];
+
+// ══════════════════════════════════════════════════════
+//  GLOBAL LIQUIDITY FRAMEWORK DATA (see liquidity-framework.html)
+// ══════════════════════════════════════════════════════
+const LIQUIDITY = {
+  pool: 193.5,            // $T — CrossBorder Capital GL Index, 9 Jun 2026
+  fedNetLiquidity: 5.815,  // $T — Fed assets − TGA − RRP, 24 Jun 2026
+  fedAssets: 6.736,        // $T
+  tga: 0.919,              // $T
+  rrp: 0.002,              // $T
+  globalDebt: 250,         // $T
+  globalWealth: 471,       // $T
+  globalM2: 98.6,          // $T
+};
+
+const LIQUIDITY_METRICS = [
+  {cat:'Global Liquidity'},
+  {label:'CrossBorder Capital Global Liquidity Pool', val:'$193.5T', asof:'9 Jun 2026', src:'CrossBorder Capital / GL Indexes'},
+  {label:'Global Liquidity Cycle Peak (this cycle)', val:'~$188.8T', asof:'Feb 2026', src:'TFTC / Howell interview'},
+  {label:'Global Liquidity Index (GLI, 0–100 scale)', val:'Rolling over from ~peak', asof:'2026', src:'CrossBorder Capital (mean = 50)'},
+  {label:'Global M2 Broad Money Supply', val:'≈$98.6T', asof:'Early 2026', src:'Aggregated Fed/ECB/PBoC/BoJ/BoE data'},
+  {label:'Global Debt Outstanding', val:'≈$250T', asof:'2026', src:'IMF Global Debt Database'},
+  {label:'Global Wealth (all assets)', val:'≈$471T', asof:'2025', src:'UBS Global Wealth Report'},
+
+  {cat:'Federal Reserve Balance Sheet'},
+  {label:'Fed Total Assets', val:'$6.736T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'— Treasuries held', val:'$4.488T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'— Mortgage-backed securities', val:'$1.962T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Treasury General Account (TGA)', val:'$919B', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Overnight Reverse Repo (ON RRP)', val:'$2B', asof:'24 Jun 2026', src:'Federal Reserve H.4.1 (effectively drained)'},
+  {label:'Bank Reserves', val:'$2.951T', asof:'24 Jun 2026', src:'Federal Reserve H.4.1'},
+  {label:'Fed Net Liquidity (Assets − TGA − RRP)', val:'$5.815T', asof:'24 Jun 2026', src:'Derived from Federal Reserve H.4.1'},
+  {label:'QT Status', val:'Formally ended', asof:'2026', src:'FOMC policy statements'},
+
+  {cat:'Asset Markets'},
+  {label:'Global Equity Market Capitalization', val:'≈$154T', asof:'2026 est.', src:'Statista Market Forecast'},
+  {label:'— US share of global equities', val:'≈$75T (~49%)', asof:'Apr 2026', src:'Visual Capitalist / Wikipedia'},
+  {label:'Gold Spot Price', val:'≈$4,187/oz', asof:'2026', src:'Market data aggregators'},
+  {label:'Bitcoin Price', val:'≈$58,000–63,000', asof:'Late Jun–Early Jul 2026', src:'Fortune / Yahoo Finance'},
+  {label:'Bitcoin Market Capitalization', val:'≈$1.33T', asof:'Jul 2026', src:'Fortune'},
+];
+
+const LIQUIDITY_ASSETS = [
+  {icon:'💵',name:'Cash',high:'Opportunity cost rises, drawn down',low:'Flight-to-safety, hoarded',sens:'Low'},
+  {icon:'📜',name:'Bonds',high:'Rally first as liquidity arrives',low:'Haven bid returns late-cycle',sens:'High (duration)'},
+  {icon:'📈',name:'Equities',high:'Strong gains, mid-to-late cycle',low:'Broad declines',sens:'High'},
+  {icon:'🛢️',name:'Commodities / Gold',high:'Late-cycle outperformance',low:'Monetary-inflation hedge bid',sens:'Medium-High'},
+  {icon:'🪙',name:'Crypto (BTC proxy)',high:'Explosive, leads cycle by ~13 weeks',low:'Severe drawdown, most sensitive',sens:'Very High'}
+];
+
+const CENTRAL_BANKS = [
+  {name:'Federal Reserve', country:'🇺🇸 US', assets:'$6.736T', stance:'Neutral', stanceCls:'stance-neutral', note:'QT formally ended 2026'},
+  {name:'ECB', country:'🇪🇺 Eurozone', assets:'≈$7.1T', stance:'Neutral', stanceCls:'stance-neutral', note:'Balance sheet broadly stable'},
+  {name:'PBoC', country:'🇨🇳 China', assets:'≈$6.3T', stance:'Easing', stanceCls:'stance-easing', note:'Sustained liquidity injections'},
+  {name:'Bank of Japan', country:'🇯🇵 Japan', assets:'≈$5.0T', stance:'Tightening', stanceCls:'stance-tightening', note:'Gradual policy normalisation'},
+];
+
+// Control points at phase 0,20,40,60,80,100 (piecewise-interpolated) — mirrors liquidity-framework.html
+const PHASE_POINTS = [0,20,40,60,80,100];
+const LIQ_CURVES = {
+  liquidity:  [20,50,88,75,35,20],
+  cash:       [125,95,55,65,110,125],
+  bonds:      [110,130,95,70,95,110],
+  equities:   [55,80,120,140,90,55],
+  commod:     [80,70,90,130,140,90],
+  crypto:     [40,90,160,120,50,30]
+};
+
+const LIQ_STAGES = [
+  {max:12, name:'Trough', cls:'stage-trough', desc:'Liquidity is scarce and collateral is stressed. Central banks are at or near maximum accommodation; risk assets are de-rated and cash/short bonds dominate positioning. This is historically the best entry point for risk assets, but it rarely feels that way at the time.'},
+  {max:38, name:'Early Expansion', cls:'stage-early', desc:'Fresh liquidity (QE, repo, easing) starts refinancing the system. Bonds rally first as the safest, most liquid instrument, then credit spreads compress as the flood reaches corporate and shadow-bank balance sheets.'},
+  {max:58, name:'Late Expansion / Speculation', cls:'stage-late', desc:'Liquidity is abundant and risk appetite peaks. Equities and high-beta assets like crypto lead, since they carry the most balance-sheet leverage to rising liquidity. This is Howell\'s "Everything Bubble" phase.'},
+  {max:75, name:'Peak / Distribution', cls:'stage-peak', desc:'Liquidity growth decelerates even as levels stay high. Rotation begins out of the most speculative assets and into late-cycle winners — commodities and gold — as investors sense the turn.'},
+  {max:100,name:'Contraction / Risk-Off', cls:'stage-contraction', desc:'Central banks tighten or a debt-refinancing wall absorbs cash. Liquidity drains, collateral scarcity resurfaces, and capital rotates back into cash and long-dated government bonds. Crypto and equities see the sharpest drawdowns.'}
+];
+
+function liqInterp(curve, phase){
+  for(let i=0;i<PHASE_POINTS.length-1;i++){
+    const x0=PHASE_POINTS[i], x1=PHASE_POINTS[i+1];
+    if(phase>=x0 && phase<=x1){
+      const t=(phase-x0)/(x1-x0);
+      const smooth = t*t*(3-2*t); // smoothstep
+      return curve[i] + (curve[i+1]-curve[i])*smooth;
+    }
+  }
+  return curve[curve.length-1];
+}
+function liqGetStage(phase){
+  return LIQ_STAGES.find(s=>phase<=s.max) || LIQ_STAGES[LIQ_STAGES.length-1];
+}
+function liqSampleCurve(curve, steps=100){
+  const arr=[];
+  for(let p=0;p<=steps;p++) arr.push(liqInterp(curve,p));
+  return arr;
+}
 
 // ══════════════════════════════════════════════════════
 //  NAVIGATION
@@ -547,6 +870,7 @@ function showPage(id){
   if(id==='overview')   renderOverviewCharts();
   if(id==='economies')  renderEconomiesTable();
   if(id==='trends')     renderTrends();
+  if(id==='liquidity')  renderLiquidityPage();
   if(id==='sectors')    renderSectors();
 }
 
@@ -610,18 +934,48 @@ function renderOverviewCharts(){
     });
   }
 
-  // Trend line
+  // Trend line — GDP growth vs Global Liquidity Index (dual axis)
   const trendCtx = document.getElementById('trendChart');
   if(trendCtx && !_trendChart){
     _trendChart = new Chart(trendCtx.getContext('2d'),{
-      type:'line',
       data:{
         labels:HIST_YEARS,
-        datasets:[{label:'Global GDP Growth (%)',data:HIST_GROWTH,borderColor:'#5c9eff',backgroundColor:'rgba(92,158,255,.06)',fill:true,tension:.35,borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#5c9eff'}]
+        datasets:[
+          {type:'bar', label:'Global GDP Growth (%)', data:HIST_GROWTH, backgroundColor:'rgba(92,158,255,.55)', borderColor:'#5c9eff', borderWidth:1, borderRadius:4, yAxisID:'y'},
+          {type:'line', label:'Global Liquidity Index (0–100)', data:HIST_LIQUIDITY, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#c8a96e', yAxisID:'y1'}
+        ]
       },
-      options:{...getChartOptions(v=>v+'%'),plugins:{...getChartOptions().plugins,legend:{display:false}}}
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        scales:{
+          y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'GDP Growth %',color:'#7a7f8e',font:{size:10.5}} },
+          y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Liquidity Index',color:'#7a7f8e',font:{size:10.5}} },
+          x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
     });
   }
+
+  renderLiquidityKPIs();
+}
+
+// ══════════════════════════════════════════════════════
+//  LIQUIDITY & POLICY SNAPSHOT (Overview KPIs)
+// ══════════════════════════════════════════════════════
+const GLOBAL_GDP = 112.4; // $T, matches hero KPI
+
+function renderLiquidityKPIs(){
+  const poolEl = document.getElementById('kpi-liq-pool');
+  const ratioEl = document.getElementById('kpi-liq-ratio');
+  const stageEl = document.getElementById('kpi-cycle-stage');
+  if(poolEl) poolEl.textContent = '$'+LIQUIDITY.pool.toFixed(1)+'T';
+  if(ratioEl) ratioEl.textContent = (LIQUIDITY.pool/GLOBAL_GDP).toFixed(2)+'×';
+  if(stageEl) stageEl.textContent = 'Peak → Rolling Over';
 }
 
 // ══════════════════════════════════════════════════════
@@ -630,9 +984,11 @@ function renderOverviewCharts(){
 function renderEconomiesTable(filter=''){
   const tbody = document.getElementById('eco-tbody');
   const filtered = ECONOMIES.filter(e=>e.name.toLowerCase().includes(filter.toLowerCase()));
+  const STANCE_CLS = {'Easing':'stance-easing','Neutral':'stance-neutral','Tightening':'stance-tightening'};
   tbody.innerHTML = filtered.map(e=>{
     const growthCls = e.growth>=2?'td-green':e.growth>=0?'td-gold':'td-red';
     const badge = `<span class="badge ${e.regionCls}" style="font-size:10px">${e.region}</span>`;
+    const stanceBadge = `<span class="stance-badge ${STANCE_CLS[e.stance]}">${e.stance}</span>`;
     return `<tr>
       <td class="td-mono td-muted">${e.rank}</td>
       <td><strong style="color:var(--text)">${e.flag} ${e.name}</strong></td>
@@ -642,6 +998,7 @@ function renderEconomiesTable(filter=''){
       <td class="td-mono td-muted">${e.pop.toLocaleString()}M</td>
       <td class="td-mono" style="text-align:right">$${e.percap.toLocaleString()}</td>
       <td>${badge}</td>
+      <td>${stanceBadge}<div class="td-muted" style="font-size:10.5px;margin-top:3px">${e.cb} · ${e.rate.toFixed(2)}%</div></td>
     </tr>`;
   }).join('');
 
@@ -660,6 +1017,20 @@ function renderEconomiesTable(filter=''){
       <div class="kpi-value" style="font-size:18px">$${(r.gdp/1000).toFixed(1)}T</div>
       <div class="kpi-sub">${r.count} economies · avg growth ${(r.avgGrowth/r.count).toFixed(1)}%</div>
     </div>`).join('');
+
+  renderCentralBankGrid();
+}
+
+function renderCentralBankGrid(){
+  const el = document.getElementById('cb-balance-grid');
+  if(!el) return;
+  el.innerHTML = CENTRAL_BANKS.map(cb=>`
+    <div class="kpi">
+      <div class="kpi-label">${cb.country} · ${cb.name}</div>
+      <div class="kpi-value" style="font-size:19px">${cb.assets}</div>
+      <div style="margin-top:6px"><span class="stance-badge ${cb.stanceCls}">${cb.stance}</span></div>
+      <div class="kpi-sub" style="margin-top:6px">${cb.note}</div>
+    </div>`).join('');
 }
 
 function filterTable(){
@@ -673,21 +1044,30 @@ function filterTable(){
 let _trendFull=null, _compareChart=null;
 
 function renderTrends(){
-  // Full trend chart
+  // Full trend chart — GDP growth vs Global Liquidity Index (dual axis)
   const ctx = document.getElementById('trendChartFull');
   if(ctx && !_trendFull){
     _trendFull = new Chart(ctx.getContext('2d'),{
-      type:'line',
       data:{
         labels:HIST_YEARS,
-        datasets:[{
-          label:'Global GDP Growth (%)', data:HIST_GROWTH,
-          borderColor:'#5c9eff', backgroundColor:'rgba(92,158,255,.07)', fill:true,
-          tension:.35, borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#5c9eff',
-          pointHoverRadius:7
-        }]
+        datasets:[
+          {type:'line', label:'Global GDP Growth (%)', data:HIST_GROWTH, borderColor:'#5c9eff', backgroundColor:'rgba(92,158,255,.07)', fill:true, tension:.35, borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#5c9eff', pointHoverRadius:7, yAxisID:'y'},
+          {type:'line', label:'Global Liquidity Index (0–100)', data:HIST_LIQUIDITY, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.05)', fill:false, tension:.35, borderWidth:2.5, borderDash:[5,3], pointRadius:4, pointBackgroundColor:'#c8a96e', yAxisID:'y1'}
+        ]
       },
-      options:{...getChartOptions(v=>v+'%')}
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        scales:{
+          y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'GDP Growth %',color:'#7a7f8e',font:{size:10.5}} },
+          y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Liquidity Index',color:'#7a7f8e',font:{size:10.5}} },
+          x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:12},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
     });
   }
 
@@ -705,29 +1085,189 @@ function renderTrends(){
   // Advisory
   const avgGrowth = ECONOMIES.reduce((a,e)=>a+e.growth,0)/ECONOMIES.length;
   const avgInf    = ECONOMIES.reduce((a,e)=>a+e.inf,0)/ECONOMIES.length;
+  const liqStage  = liqGetStage(70); // current position, matches Liquidity tab default (70%)
   let advisory = '';
   if(avgGrowth>=3)   advisory+=`<div class="alert alert-ok">✓ <strong>Solid expansion:</strong> Average GDP growth of ${avgGrowth.toFixed(1)}% across tracked economies indicates broad-based recovery.</div>`;
   else               advisory+=`<div class="alert alert-warn">⚠ <strong>Moderate growth:</strong> Average GDP growth of ${avgGrowth.toFixed(1)}% — monitor for deceleration in key markets.</div>`;
   if(avgInf>3)       advisory+=`<div class="alert alert-warn">⚠ <strong>Inflation elevated:</strong> Average inflation of ${avgInf.toFixed(1)}% above major central bank targets. Expect continued tightening bias.</div>`;
   else               advisory+=`<div class="alert alert-ok">✓ <strong>Inflation stabilising:</strong> Average inflation of ${avgInf.toFixed(1)}% approaching central bank targets globally.</div>`;
+  advisory+=`<div class="alert alert-info">💧 <strong>Liquidity cross-check:</strong> Global Liquidity is in its "${liqStage.name}" phase (~$${LIQUIDITY.pool.toFixed(1)}T pool, ${(LIQUIDITY.pool/GLOBAL_GDP).toFixed(2)}× real GDP). Since P = L × (P/L), a liquidity cycle rolling over from peak is a headwind for risk-asset valuations even while real output growth holds — GDP and asset prices can diverge for several quarters.</div>`;
   document.getElementById('macro-advisory').innerHTML = advisory;
 
-  // Compare chart — selected economies
+  // Compare chart — selected economies: GDP growth vs relative liquidity contribution
   const selected = [ECONOMIES[0],ECONOMIES[1],ECONOMIES[4],ECONOMIES[7],ECONOMIES[12]]; // US, China, India, Brazil, Australia
-  const COLORS=['#c8a96e','#e06b6b','#4ecb8a','#b67fff','#5c9eff'];
   const compareCtx = document.getElementById('compareChart');
   if(compareCtx && !_compareChart){
     _compareChart = new Chart(compareCtx.getContext('2d'),{
-      type:'bar',
       data:{
         labels:selected.map(e=>e.flag+' '+e.name.split(' ')[0]),
         datasets:[
-          {label:'GDP Growth (%)',  data:selected.map(e=>e.growth), backgroundColor:COLORS, borderRadius:6, borderWidth:0},
+          {type:'bar', label:'GDP Growth (%)',  data:selected.map(e=>e.growth), backgroundColor:'rgba(92,158,255,.6)', borderColor:'#5c9eff', borderWidth:1, borderRadius:6, yAxisID:'y'},
+          {type:'line', label:'Liquidity Contribution (relative index)', data:selected.map(e=>e.liqShare), borderColor:'#c8a96e', backgroundColor:'#c8a96e', borderWidth:2.5, tension:.3, pointRadius:5, pointBackgroundColor:'#c8a96e', yAxisID:'y1'}
         ]
       },
-      options:{...getChartOptions(v=>v+'%'), plugins:{...getChartOptions().plugins, legend:{display:false}}}
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        scales:{
+          y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'GDP Growth %',color:'#7a7f8e',font:{size:10.5}} },
+          y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Liquidity Index',color:'#7a7f8e',font:{size:10.5}}, max:110 },
+          x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
     });
   }
+}
+
+// ══════════════════════════════════════════════════════
+//  LIQUIDITY PAGE
+// ══════════════════════════════════════════════════════
+let _liqOverviewChart=null, _liqCycleChart=null, _liqAssetChart=null;
+let liqPlaying=false, liqPlayTimer=null;
+
+function renderLiquidityPage(){
+  renderLiquidityMetrics();
+  renderLiquidityAssetTable();
+  renderLiquidityOverviewChart();
+  simulateLiquidity(document.getElementById('liq-phase-slider').value);
+}
+
+function renderLiquidityMetrics(){
+  const el = document.getElementById('liq-metrics-tbody');
+  if(!el) return;
+  el.innerHTML = LIQUIDITY_METRICS.map(m=>{
+    if(m.cat) return `<tr class="cat-row"><td colspan="4">${m.cat}</td></tr>`;
+    return `<tr><td>${m.label}</td><td class="td-mono">${m.val}</td><td class="td-muted">${m.asof}</td><td class="src-note">${m.src}</td></tr>`;
+  }).join('');
+}
+
+function renderLiquidityAssetTable(){
+  const el = document.getElementById('liq-asset-tbody');
+  if(!el) return;
+  el.innerHTML = LIQUIDITY_ASSETS.map(a=>`
+    <tr>
+      <td>${a.icon} ${a.name}</td>
+      <td class="td-green">${a.high}</td>
+      <td class="td-red">${a.low}</td>
+      <td class="td-mono">${a.sens}</td>
+    </tr>`).join('');
+}
+
+function renderLiquidityOverviewChart(){
+  const ctx = document.getElementById('liqCycleOverviewChart');
+  if(!ctx || _liqOverviewChart) return;
+  const labels = Array.from({length:101},(_,i)=>i);
+  const data = liqSampleCurve(LIQ_CURVES.liquidity);
+  _liqOverviewChart = new Chart(ctx.getContext('2d'),{
+    type:'line',
+    data:{labels, datasets:[
+      {label:'Global Liquidity Index (illustrative)', data, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.12)', fill:true, borderWidth:2, pointRadius:0, tension:.35},
+      {label:'Today (~Jul 2026)', data: labels.map(p=> p===70? liqInterp(LIQ_CURVES.liquidity,70): null), pointRadius:6, pointBackgroundColor:'#e06b6b', borderColor:'transparent', showLine:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7a7f8e',boxWidth:10,font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#7a7f8e',maxTicksLimit:8,callback:(v,i)=>i%20===0?i+'%':''},grid:{color:'#232730'}},
+        y:{ticks:{color:'#7a7f8e'},grid:{color:'#232730'},title:{display:true,text:'GLI (0–100)',color:'#7a7f8e',font:{size:11}}}
+      }
+    }
+  });
+}
+
+function renderLiquidityCycleChart(phase){
+  const ctx = document.getElementById('liqCycleChart');
+  if(!ctx) return;
+  const labels = Array.from({length:101},(_,i)=>i);
+  const data = liqSampleCurve(LIQ_CURVES.liquidity);
+  const markerVal = liqInterp(LIQ_CURVES.liquidity, phase);
+  if(_liqCycleChart) _liqCycleChart.destroy();
+  _liqCycleChart = new Chart(ctx.getContext('2d'),{
+    type:'line',
+    data:{labels, datasets:[
+      {label:'Liquidity Level', data, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.10)', fill:true, borderWidth:2, pointRadius:0, tension:.35},
+      {label:'Current Position', data: labels.map(p=> p===Math.round(phase)? markerVal: null), pointRadius:7, pointBackgroundColor:'#5c9eff', borderColor:'#fff', borderWidth:1, showLine:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7a7f8e',boxWidth:10,font:{size:11}}}},
+      scales:{
+        x:{title:{display:true,text:'Cycle Phase (%)',color:'#7a7f8e',font:{size:11}},ticks:{color:'#7a7f8e',maxTicksLimit:6},grid:{color:'#232730'}},
+        y:{ticks:{color:'#7a7f8e'},grid:{color:'#232730'},title:{display:true,text:'Liquidity Index',color:'#7a7f8e',font:{size:11}}}
+      }
+    }
+  });
+}
+
+function renderLiquidityAssetChart(phase){
+  const ctx = document.getElementById('liqAssetChart');
+  if(!ctx) return;
+  const vals = {
+    cash: liqInterp(LIQ_CURVES.cash, phase),
+    bonds: liqInterp(LIQ_CURVES.bonds, phase),
+    equities: liqInterp(LIQ_CURVES.equities, phase),
+    commod: liqInterp(LIQ_CURVES.commod, phase),
+    crypto: liqInterp(LIQ_CURVES.crypto, phase)
+  };
+  const labels=['Cash','Bonds','Equities','Commodities/Gold','Crypto'];
+  const data=[vals.cash,vals.bonds,vals.equities,vals.commod,vals.crypto];
+  const colors=['#7a7f8e','#5c9eff','#4ecb8a','#c8a96e','#e06b6b'];
+  if(_liqAssetChart) _liqAssetChart.destroy();
+  _liqAssetChart = new Chart(ctx.getContext('2d'),{
+    type:'bar',
+    data:{labels, datasets:[{label:'Relative Market-Cap Index', data, backgroundColor:colors}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, max:170, ticks:{color:'#7a7f8e'},grid:{color:'#232730'}},
+        x:{ticks:{color:'#7a7f8e'},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function simulateLiquidity(phase){
+  phase = parseFloat(phase);
+  const slider = document.getElementById('liq-phase-slider');
+  const valEl = document.getElementById('liq-slider-val');
+  if(slider) slider.value = phase;
+  if(valEl) valEl.textContent = Math.round(phase)+'%';
+  const stage = liqGetStage(phase);
+  const pill = document.getElementById('liq-stage-pill');
+  if(pill){
+    pill.textContent = stage.name;
+    pill.className = 'stage-pill ' + stage.cls;
+  }
+  const descEl = document.getElementById('liq-stage-desc');
+  if(descEl) descEl.textContent = stage.desc;
+  renderLiquidityCycleChart(phase);
+  renderLiquidityAssetChart(phase);
+}
+
+function toggleLiquidityPlay(){
+  liqPlaying = !liqPlaying;
+  const btn = document.getElementById('liqPlayBtn');
+  if(liqPlaying){
+    btn.textContent = '⏸ Pause';
+    liqPlayTimer = setInterval(()=>{
+      let p = parseFloat(document.getElementById('liq-phase-slider').value);
+      p = (p + 1) % 101;
+      simulateLiquidity(p);
+    }, 120);
+  } else {
+    btn.textContent = '▶ Play Cycle';
+    clearInterval(liqPlayTimer);
+  }
+}
+
+function resetLiquiditySim(){
+  liqPlaying = false;
+  clearInterval(liqPlayTimer);
+  const btn = document.getElementById('liqPlayBtn');
+  if(btn) btn.textContent = '▶ Play Cycle';
+  simulateLiquidity(70);
 }
 
 // ══════════════════════════════════════════════════════
