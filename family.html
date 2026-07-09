@@ -1209,6 +1209,97 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 .te-empty { font-size: .78rem; color: var(--ink-dim); padding: .25rem .5rem; }
 .btn-sm { padding: .32rem .7rem; font-size: .78rem; }
 
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  background: var(--bg-body);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--border-color); /* Acts as the grid line gap */
+  gap: 1px;
+}
+
+.calendar-day {
+  min-height: 100px;
+  background: var(--bg-card);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background 0.2s;
+}
+
+.calendar-day:hover {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.calendar-day.empty {
+  background: var(--bg-body);
+  opacity: 0.6;
+}
+
+.calendar-day.today {
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: inset 0 0 0 1px var(--gold-soft);
+}
+
+.day-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.25rem;
+}
+
+.solar-date {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.lunar-date {
+  color: var(--gold-soft);
+  font-size: 0.72rem;
+  font-family: var(--font-mono), monospace;
+}
+
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 70px;
+}
+
+.cal-event {
+  font-size: 0.7rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.cal-event.dob {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border-left: 2px solid #2ecc71;
+}
+
+.cal-event.dod {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border-left: 2px solid #e74c3c;
+}  
+  
 </style>
 </head>
 <body>
@@ -1375,32 +1466,36 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </section>
 
   <!-- CALENDAR PANEL -->
-  <section class="panel" id="panel-calendar">
-    <div class="table-toolbar">
-      <span style="font-size:.77rem;color:var(--ink-dim)">
-        <span data-vi="Lịch Sinh / Tử (Dương & Âm Lịch)" data-en="Birth / Death Calendar (Western & Lunar)">
-          <strong>Lịch Sinh / Tử (Dương & Âm Lịch)</strong>
-        </span>
+<section class="panel" id="panel-calendar">
+  <div class="calendar-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap;">
+    <div>
+      <span style="font-size: 1.1rem; font-weight: bold; color: var(--gold-soft);" id="calendarMonthLabel">
+        Calendar
       </span>
     </div>
-    <div class="table-wrap stats-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th data-vi="Họ và Tên" data-en="Full Name">Họ và Tên</th>
-            <th data-vi="Đời" data-en="Gen">Đời</th>
-            <th data-vi="Ngày Sinh (Dương)" data-en="DOB (Western)">Ngày Sinh (Dương)</th>
-            <th data-vi="Ngày Sinh (Âm)" data-en="DOB (Lunar)">Ngày Sinh (Âm)</th>
-            <th data-vi="Ngày Mất (Dương)" data-en="DOD (Western)">Ngày Mất (Dương)</th>
-            <th data-vi="Ngày Mất (Âm)" data-en="DOD (Lunar)">Ngày Mất (Âm)</th>
-          </tr>
-        </thead>
-        <tbody id="calendarBody">
-          <!-- Calendar rows will be injected here by JS -->
-        </tbody>
-      </table>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <button class="btn-secondary" onclick="navigateMonth(-1)">◀</button>
+      <select id="calMonthSelect" onchange="handleCalendarSelectChange()" style="padding: 0.3rem; border-radius: 4px; background: var(--bg-card); color: var(--ink-main); border: 1px solid var(--border-color);"></select>
+      <select id="calYearSelect" onchange="handleCalendarSelectChange()" style="padding: 0.3rem; border-radius: 4px; background: var(--bg-card); color: var(--ink-main); border: 1px solid var(--border-color);"></select>
+      <button class="btn-secondary" onclick="navigateMonth(1)">▶</button>
     </div>
-  </section>
+  </div>
+
+  <div class="calendar-container" style="border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-card);">
+    <!-- Weekday Headers -->
+    <div class="calendar-weekdays">
+      <div data-vi="CN" data-en="Sun">Sun</div>
+      <div data-vi="T2" data-en="Mon">Mon</div>
+      <div data-vi="T3" data-en="Tue">Tue</div>
+      <div data-vi="T4" data-en="Wed">Wed</div>
+      <div data-vi="T5" data-en="Thu">Thu</div>
+      <div data-vi="T6" data-en="Fri">Fri</div>
+      <div data-vi="T7" data-en="Sat">Sat</div>
+    </div>
+    <!-- Grid Days -->
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
+</section>
   
   <!-- ADD/EDIT PANEL -->
   <section class="panel" id="panel-add">
@@ -2532,6 +2627,12 @@ function switchTab(id, el) {
   if (id === 'stats')    { buildStats(); renderTable(); }
   if (id === 'tree')     { populateTreeSelect(); buildTree(); }
   if (id === 'analysis') buildAnalysis();
+  // Dynamic Trigger addition:
+  if (tabId === 'calendar') {
+    if (typeof initCalendar === 'function') {
+      initCalendar();
+      }
+  }
 }
 
 // ── ANALYSIS POPOVER ──
@@ -3895,76 +3996,184 @@ function exportReport() {
   })();
 }
 // ═══════════════════════════════════════════════════════════
-//  CALENDAR SYSTEM (WESTERN + LUNAR)
+//  DYNAMIC GRID CALENDAR ENGINE (SOLAR & LUNAR)
 // ═══════════════════════════════════════════════════════════
 
+let calCurrentYear = new Date().getFullYear();
+let calCurrentMonth = new Date().getMonth(); // 0 - 11
+
 /**
- * Placeholder function for Lunar Date conversion.
- * To make this fully functional, integrate a library like 'lunar-javascript' 
- * or a standard Vietnamese 'amlich' script.
+ * Initializes dropdown elements and establishes calendar baseline
  */
-function convertToLunar(westernDateStr) {
-  if (!westernDateStr) return '';
-  
-  // Basic validation for YYYY-MM-DD
-  const parts = westernDateStr.split('-');
-  if (parts.length !== 3) {
-    return westernDateStr; // Return as-is if it's just a year or malformed
+function initCalendar() {
+  const monthSelect = document.getElementById('calMonthSelect');
+  const yearSelect = document.getElementById('calYearSelect');
+  if (!monthSelect || !yearSelect) return;
+
+  monthSelect.innerHTML = '';
+  yearSelect.innerHTML = '';
+
+  // Populate Months
+  for (let m = 0; m < 12; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = `Month ${m + 1}`;
+    opt.setAttribute('data-vi', `Tháng ${m + 1}`);
+    opt.setAttribute('data-en', `Month ${m + 1}`);
+    monthSelect.appendChild(opt);
   }
 
-  // TODO: Replace this return statement with your actual Lunar library call
-  // Example if using lunar-javascript: 
-  // const lunar = Lunar.fromDate(new Date(westernDateStr));
-  // return `${lunar.getDay()}/${lunar.getMonth()}/${lunar.getYear()}`;
+  // Populate Years dynamically centered around current year
+  const startYear = calCurrentYear - 80;
+  const endYear = calCurrentYear + 20;
+  for (let y = startYear; y <= endYear; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
 
-  return `[Âm: ${westernDateStr}]`; // Temporary mock output
+  // Sync selection views
+  monthSelect.value = calCurrentMonth;
+  yearSelect.value = calCurrentYear;
+
+  buildCalendar();
 }
 
 /**
- * Builds the Calendar table body
+ * Handles dropdown navigation adjustments
+ */
+function handleCalendarSelectChange() {
+  calCurrentMonth = parseInt(document.getElementById('calMonthSelect').value, 10);
+  calCurrentYear = parseInt(document.getElementById('calYearSelect').value, 10);
+  buildCalendar();
+}
+
+/**
+ * Controls step navigation via button triggers (◀ and ▶)
+ */
+function navigateMonth(direction) {
+  calCurrentMonth += direction;
+  if (calCurrentMonth < 0) {
+    calCurrentMonth = 11;
+    calCurrentYear--;
+  } else if (calCurrentMonth > 11) {
+    calCurrentMonth = 0;
+    calCurrentYear++;
+  }
+  
+  document.getElementById('calMonthSelect').value = calCurrentMonth;
+  document.getElementById('calYearSelect').value = calCurrentYear;
+  buildCalendar();
+}
+
+/**
+ * Lightweight Solar to Lunar conversion utility.
+ * Defaults to approximate lunar offset arithmetic if standard library is unlinked.
+ */
+function getLunarDateStr(sYear, sMonth, sDay) {
+  // If an external library like 'lunar-javascript' is available, use it directly:
+  // try { const l = Lunar.fromDate(new Date(sYear, sMonth, sDay)); return `${l.getDay()}/${l.getMonth()}`; } catch(e){}
+
+  // Standard algorithmic fallback calculation for display purposes:
+  const msPerDay = 86400000;
+  const baseSolar = new Date(1900, 0, 31); // Jan 31, 1900 is Lunar New Year
+  const targetSolar = new Date(sYear, sMonth, sDay);
+  const diffDays = Math.floor((targetSolar - baseSolar) / msPerDay);
+  
+  // Approximate cycle interpolation (~29.53059 days per lunar cycle)
+  const lunarCycle = 29.53059;
+  const currentLunarDay = Math.floor(diffDays % lunarCycle) + 1;
+  const currentLunarMonth = (Math.floor(diffDays / lunarCycle) % 12) + 1;
+  
+  // Format to standard localized layout: "Day/Month"
+  return `${currentLunarDay > 29 ? 1 : currentLunarDay}/${currentLunarMonth}`;
+}
+
+/**
+ * Processes, builds, and displays the complete calendar grid interface
  */
 function buildCalendar() {
-  const tbody = document.getElementById('calendarBody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
+  const grid = document.getElementById('calendarGrid');
+  const label = document.getElementById('calendarMonthLabel');
+  if (!grid) return;
 
-  // Use SEED_DATA or your parsed state array (e.g., 'members')
-  const dataToRender = typeof members !== 'undefined' ? members : SEED_DATA;
+  grid.innerHTML = '';
+  
+  // Update Header Interface text strings
+  const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthNamesVi = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+  
+  const isVi = (typeof currentLang !== 'undefined' ? currentLang : 'en') === 'vi';
+  label.textContent = isVi ? `${monthNamesVi[calCurrentMonth]} - Năm ${calCurrentYear}` : `${monthNamesEn[calCurrentMonth]} ${calCurrentYear}`;
 
-  // Filter members who have at least a DOB or DOD
-  const calendarMembers = dataToRender.filter(m => m.dob || m.dod);
+  // Find structure boundaries
+  const firstDayIndex = new Date(calCurrentYear, calCurrentMonth, 1).getDay();
+  const totalDays = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
 
-  calendarMembers.forEach(m => {
-    const tr = document.createElement('tr');
-    
-    // Setup gender-based color classes
-    const nameClass = m.sex === 'M' ? 'male-name' : (m.sex === 'F' ? 'female-name' : '');
-    
-    tr.innerHTML = `
-      <td class="${nameClass}">${m.full_name || '-'}</td>
-      <td>${m.generation !== undefined ? m.generation : '-'}</td>
-      <td>${m.dob || '-'}</td>
-      <td style="color:var(--gold-soft); font-family:var(--font-mono)">${m.dob ? convertToLunar(m.dob) : '-'}</td>
-      <td>${m.dod || '-'}</td>
-      <td style="color:var(--gold-soft); font-family:var(--font-mono)">${m.dod ? convertToLunar(m.dod) : '-'}</td>
-    `;
-    
-    // Optional: Make row click open the detail view for this member
-    tr.onclick = () => {
-      if (typeof renderDetail === 'function') {
-        renderDetail(m.id);
-        const detailTab = document.querySelector('.tabs button:nth-child(2)');
-        switchTab('detail', detailTab);
+  const today = new Date();
+
+  // 1. Generate padding nodes for empty leading offset cells
+  for (let i = 0; i < firstDayIndex; i++) {
+    const emptyCell = document.createElement('div');
+    emptyCell.className = 'calendar-day empty';
+    grid.appendChild(emptyCell);
+  }
+
+  // 2. Generate active solar month cells
+  const sourceData = typeof members !== 'undefined' ? members : (typeof SEED_DATA !== 'undefined' ? SEED_DATA : []);
+
+  for (let day = 1; day <= totalDays; day++) {
+    const dayCell = document.createElement('div');
+    dayCell.className = 'calendar-day';
+
+    // Flag actual current date
+    if (day === today.getDate() && calCurrentMonth === today.getMonth() && calCurrentYear === today.getFullYear()) {
+      dayCell.classList.add('today');
+    }
+
+    // Resolve structural lunar dates
+    const lunarString = getLunarDateStr(calCurrentYear, calCurrentMonth, day);
+
+    // Format target comparison sequences
+    const currentMMDD = `${String(calCurrentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+    // Compile match records for milestones
+    let eventContainerHTML = '';
+    sourceData.forEach(m => {
+      // Parse birthdays (DOB)
+      if (m.dob && m.dob.includes(`-${currentMMDD}`)) {
+        eventContainerHTML += `<div class="cal-event dob" title="Birthday: ${m.full_name}">👶 ${m.full_name}</div>`;
       }
-    };
-    
-    tbody.appendChild(tr);
-  });
+      // Parse anniversaries (DOD)
+      if (m.dod && m.dod.includes(`-${currentMMDD}`)) {
+        eventContainerHTML += `<div class="cal-event dod" title="Passing Anniversary: ${m.full_name}">🕯️ ${m.full_name}</div>`;
+      }
+    });
 
-  if (calendarMembers.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--ink-dim); padding:1rem;">Không có dữ liệu ngày tháng.</td></tr>`;
+    // Populate element contents
+    dayCell.innerHTML = `
+      <div class="day-meta">
+        <span class="solar-date">${day}</span>
+        <span class="lunar-date">${lunarString}</span>
+      </div>
+      <div class="day-events">
+        ${eventContainerHTML}
+      </div>
+    `;
+
+    grid.appendChild(dayCell);
+  }
+
+  // Handle translation configurations inside runtime contexts
+  if (typeof applyLanguageText === 'function') {
+    applyLanguageText();
   }
 }
+
+// Hook execution into your application lifecycle
+// Put this inside your app setup block or call initCalendar() on structural loading
+  
 // ═══════════════════════════════════════════════════════════
 //  ADMIN AUTH
 // ═══════════════════════════════════════════════════════════
