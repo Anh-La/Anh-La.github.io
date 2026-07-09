@@ -1367,7 +1367,76 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     display: none;
   }
 }
-  
+  /* ── FOOD TAB SPECIFIC STYLES ── */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+.food-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.food-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+}
+.food-img-wrapper {
+  width: 100%;
+  height: 110px;
+  background: var(--paper-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  border-radius: var(--radius);
+  margin-bottom: .75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+}
+.food-img-wrapper:hover {
+  background: var(--paper-rim);
+}
+.food-name {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.food-count {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--red);
+  font-weight: 500;
+  margin-top: .2rem;
+}
+.food-fans-panel {
+  margin-top: .65rem;
+  padding-top: .6rem;
+  border-top: 1px dashed var(--paper-rim);
+  text-align: left;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .25s ease, opacity .2s ease;
+}
+.food-fans-panel.open {
+  max-height: 180px;
+  opacity: 1;
+  overflow-y: auto;
+}
+.food-fan-name {
+  font-size: .82rem;
+  padding: .15rem 0;
+  color: var(--ink-dim);
+}
 </style>
 </head>
 <body>
@@ -1418,6 +1487,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
+  <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   
 </nav>
@@ -1565,6 +1635,18 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <!-- Mobile Detail Drawer (Shows full text when a cell is tapped) -->
   <div id="calendarDrawer" class="calendar-drawer" style="display: none;"></div>
 </section>
+  
+  <!-- FOOD STATS PANEL -->
+  <section class="panel" id="panel-food">
+    <div class="analysis-wrap">
+      <div class="an-page-title" data-vi="Thống Kê Món Ăn Yêu Thích" data-en="Favorite Food Preferences">Thống Kê Món Ăn Yêu Thích</div>
+      <div class="an-page-sub" data-vi="Xếp hạng theo số lượng thành viên (Click vào hình ảnh để xem danh sách)" data-en="Ranked by popularity (Click image to expand fan list)">Xếp hạng theo số lượng thành viên (Click vào hình ảnh để xem danh sách)</div>
+      
+      <div class="food-grid" id="foodGridContainer">
+        <!-- Dynically rendered cards load here -->
+      </div>
+    </div>
+  </section>
   
   <!-- ADD/EDIT PANEL -->
   <section class="panel" id="panel-add">
@@ -4305,7 +4387,124 @@ function navigateToMemberCard(memberId) {
 function monthName(mIdx) {
   return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][mIdx];
 }
+// ═══════════════════════════════════════════════════════════
+//  FOOD TAB
+// ═══════════════════════════════════════════════════════════
+// Seed Member Data equipped with localized food vectors
+const SEED_DATA = [
+  {"id":1,"full_name":"Lã Đoan Trang","sex":"F","branch":"Giáp Phòng","food":"Phở Bò, Bánh Mì, Gỏi cuốn"},
+  {"id":2,"full_name":"Lã Phước Cao","sex":"M","branch":"Giáp Phòng","food":"Phở Bò, Cơm Tấm"},
+  {"id":3,"full_name":"Lã Phước Thung","sex":"M","branch":"Giáp Phòng","food":"Bánh Mì, Chè ba màu"},
+  {"id":4,"full_name":"Lã Phước Toàn","sex":"M","branch":"Giáp Phòng","food":"Phở Bò, Lẩu hải sản"},
+  {"id":5,"full_name":"Lã Thị Bé","sex":"F","branch":"Bính Phòng","food":"Cơm Tấm, Gỏi cuốn, Bánh Mì"},
+  {"id":6,"full_name":"Lã Đình Cẩn","sex":"M","branch":"Bính Phòng","food":"Phở Bò, Lẩu hải sản"},
+  {"id":7,"full_name":"Lã Văn Lợi","sex":"M","branch":"Đinh Phòng","food":"Mì Quảng, Bánh Mì"}
+];
+
+function toggleLang() {
+  LANG = LANG === 'vi' ? 'en' : 'vi';
+  document.getElementById('langBtn').textContent = LANG === 'vi' ? 'English' : 'Tiếng Việt';
+
+  document.querySelectorAll('[data-vi][data-en]').forEach(el => {
+    el.textContent = LANG === 'vi' ? el.dataset.vi : el.dataset.en;
+  });
   
+  if(document.getElementById('panel-food').classList.contains('active')) {
+    renderFoodStatistics();
+  }
+}
+
+function switchTab(tabId, btnEl) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  
+  btnEl.classList.add('active');
+  const targetPanel = document.getElementById('panel-' + tabId);
+  if (targetPanel) targetPanel.classList.add('active');
+
+  if (tabId === 'food') {
+    renderFoodStatistics();
+  }
+}
+
+// Map key titles to highly relevant graphical visual indicators
+function assignFoodVisualEmoji(foodName) {
+  const name = foodName.toLowerCase();
+  if (name.includes('phở')) return '🍜';
+  if (name.includes('bánh mì') || name.includes('bánh mỳ')) return '🥖';
+  if (name.includes('cơm')) return '🍛';
+  if (name.includes('gỏi') || name.includes('cuốn')) return '🥗';
+  if (name.includes('lẩu')) return '🍲';
+  if (name.includes('mì')) return '🥣';
+  if (name.includes('chè') || name.includes('kem')) return '🍧';
+  if (name.includes('hải sản')) return '🦀';
+  return '🍽️';
+}
+
+function renderFoodStatistics() {
+  const container = document.getElementById('foodGridContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const foodRegistry = {};
+
+  // Parse and map member preferences
+  SEED_DATA.forEach(member => {
+    if (!member.food) return;
+    const personalChoices = member.food.split(',').map(item => item.trim());
+    
+    personalChoices.forEach(foodItem => {
+      if (!foodItem) return;
+      const normalizedKey = foodItem.toLowerCase();
+      
+      if (!foodRegistry[normalizedKey]) {
+        foodRegistry[normalizedKey] = {
+          displayName: foodItem,
+          count: 0,
+          fans: []
+        };
+      }
+      foodRegistry[normalizedKey].count++;
+      foodRegistry[normalizedKey].fans.push(member.full_name);
+    });
+  });
+
+  // Convert registry map to an array and rank by total volume descending
+  const sortedCollection = Object.values(foodRegistry).sort((a, b) => b.count - a.count);
+
+  if (sortedCollection.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">No data entries available.</div>`;
+    return;
+  }
+
+  // Draw functional interactive UI items
+  sortedCollection.forEach(item => {
+    const graphicIcon = assignFoodVisualEmoji(item.displayName);
+    const card = document.createElement('div');
+    card.className = 'food-card';
+    
+    const countLabel = LANG === 'vi' ? `${item.count} thành viên` : `${item.count} members`;
+    const fanHeader = LANG === 'vi' ? 'Thành viên yêu thích:' : 'Preferred by:';
+
+    card.innerHTML = `
+      <div class="food-img-wrapper" title="${LANG === 'vi' ? 'Xem danh sách' : 'View choices'}">${graphicIcon}</div>
+      <div class="food-name">${item.displayName}</div>
+      <div class="food-count">${countLabel}</div>
+      <div class="food-fans-panel">
+        <div style="font-size:0.72rem; font-weight:700; color:var(--gold); text-transform:uppercase; margin-bottom:0.25rem;">${fanHeader}</div>
+        ${item.fans.map(fan => `<div class="food-fan-name">• ${fan}</div>`).join('')}
+      </div>
+    `;
+
+    // Bind action listener directly onto image element component wrapper
+    card.querySelector('.food-img-wrapper').addEventListener('click', function() {
+      const targetTray = card.querySelector('.food-fans-panel');
+      targetTray.classList.toggle('open');
+    });
+
+    container.appendChild(card);
+  });
+}  
 // ═══════════════════════════════════════════════════════════
 //  ADMIN AUTH
 // ═══════════════════════════════════════════════════════════
