@@ -750,6 +750,55 @@
   </div>
 </div>
   
+<!-- ═══════════════════════════════════════════ DOLLAR MILKSHAKE THEORY ═══════════════════════════════════════════ -->
+<div class="page" id="page-milkshake">
+  <div class="page-title" id="lbl-milkshake-title">The Dollar Milkshake Theory</div>
+  <div class="page-sub" id="lbl-milkshake-sub">Global liquidity sucked into USD assets during macro stress • Brent Johnson Framework</div>
+
+  <div class="grid-4 section">
+    <div class="kpi gold">
+      <div class="kpi-label">DXY Index</div>
+      <div id="dxy-val" class="kpi-value">104.8</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Global Liquidity Pool</div>
+      <div class="kpi-value">$193T</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Gold (USD/oz)</div>
+      <div id="gold-val" class="kpi-value" style="color:var(--accent)">$2,845</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Crisis Intensity Simulator</div>
+      <input type="range" id="intensity" min="0" max="100" value="55" style="width:100%" oninput="updateMilkshake(this.value)">
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>The Feedback Transmission Model</h3>
+    <div class="equation">USD Strength = Global Liquidity Capture × Debt Feedback Loop</div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.7">
+      As global liquidity contracts or systemic stress rises, non-US entities scrambling to service massive offshore dollar-denominated debts create structural demand for greenbacks. The USD acts as a giant straw, sucking capital away from international markets directly into US equity and sovereign asset ecosystems, inflating prices even amid global macro degradation.
+    </p>
+  </div>
+
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>DXY Trajectory vs Major Currencies</h3>
+      <div class="chart-wrap"><canvas id="dxyChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Asset Performance (Milkshake Absorption Phase)</h3>
+      <div class="chart-wrap"><canvas id="assetsChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <h3>Liquidity Cycle Stage Context</h3>
+    <div id="stage-pill" class="stage-pill" style="background:rgba(200,169,110,.2);color:var(--accent);display:inline-block;">Late Expansion → Peak</div>
+  </div>
+</div>
+  
 <!-- EURODOLLAR PAGE -->
 <div class="page" id="page-eurodollar">
   <div class="page-title">Eurodollar Framework</div>
@@ -2057,7 +2106,76 @@ function exportReport(){
 
   doc.save('earth-economy-report.pdf');
 }
+// ══════════════════════════════════════════════════════
+//  Dollar Milkshake theory
+// ══════════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  const targetPage = document.getElementById('page-' + id);
+  const targetTab = document.getElementById('tab-' + id);
+  
+  if(targetPage) targetPage.classList.add('active');
+  if(targetTab) targetTab.classList.add('active');
+  
+  if (id === 'milkshake') {
+    initMilkshakeCharts();
+  }
+}
 
+function initMilkshakeCharts() {
+  if (dxyChart) dxyChart.destroy();
+  if (assetsChart) assetsChart.destroy();
+
+  const dxyCtx = document.getElementById('dxyChart');
+  if (dxyCtx) {
+    dxyChart = new Chart(dxyCtx.getContext('2d'), {
+      type: 'line',
+      data: { 
+        labels: ['2018','2020','2022','2024','2026'], 
+        datasets: [{label:'DXY Index', data:[89,102,114,103,105], borderColor:'#c8a96e', tension:0.4, fill:false}] 
+      },
+      options: { 
+        responsive:true, 
+        maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:'#e8e3d8'}}},
+        scales:{x:{ticks:{color:'#7a7f8e'}},y:{ticks:{color:'#7a7f8e'}}}
+      }
+    });
+  }
+
+  const assetsCtx = document.getElementById('assetsChart');
+  if (assetsCtx) {
+    assetsChart = new Chart(assetsCtx.getContext('2d'), {
+      type: 'bar',
+      data: { 
+        labels: ['Gold','US Equities','EM Assets','Global Commodities'], 
+        datasets: [{label:'Performance Return %', data:[18,14,-22,-8], backgroundColor:['#c8a96e','#5c9eff','#e06b6b','#4ecb8a']}] 
+      },
+      options: { 
+        responsive:true, 
+        maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:'#e8e3d8'}}},
+        scales:{x:{ticks:{color:'#7a7f8e'}},y:{ticks:{color:'#7a7f8e'}}}
+      }
+    });
+  }
+}
+
+function updateMilkshake(val) {
+  document.getElementById('dxy-val').textContent = (96 + val * 0.18).toFixed(1);
+  document.getElementById('gold-val').textContent = '$' + Math.round(2400 + val * 8);
+}
+
+function exportReport() {
+  alert("Generating layout print file...");
+}
+
+window.onload = () => {
+  updateMilkshake(55);
+};
+  
 // ══════════════════════════════════════════════════════
 //  LAST UPDATED STAMP
 // ══════════════════════════════════════════════════════
