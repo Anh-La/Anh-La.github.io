@@ -4215,46 +4215,91 @@ function buildCalendar() {
 }
 
 /**
- * Renders the detail drawer content block when a cell is selected
+ * Populates the calendar drawer with day events and enables direct 
+ * navigation to the member's profile card in the Detail tab.
  */
 function showDrawerDetails(day, lunarStr, events, isVi) {
   const drawer = document.getElementById('calendarDrawer');
   if (!drawer) return;
-
-  if (events.length === 0) {
-    drawer.style.display = 'block';
-    drawer.innerHTML = `
-      <div class="drawer-title">
-        ${isVi ? `Ngày ${day} Tháng ${calCurrentMonth+1} (Âm lịch: ${lunarStr})` : `Date: ${monthName(calCurrentMonth)} ${day} (Lunar: ${lunarStr})`}
-      </div>
-      <div style="font-size:0.8rem; color:var(--ink-dim); text-align:center; padding:0.5rem 0;">
-        ${isVi ? 'Không có sự kiện kỷ niệm nào trong ngày này.' : 'No family milestones recorded for this date.'}
-      </div>
-    `;
+  
+  // If no events exist for this day, hide the drawer panel
+  if (!events || events.length === 0) {
+    drawer.style.display = 'none';
     return;
   }
-
+  
+  drawer.style.display = 'block';
+  
   let html = `
-    <div class="drawer-title">
-      <strong>${isVi ? `Sự kiện Ngày ${day}/${calCurrentMonth+1}` : `Milestones for ${monthName(calCurrentMonth)} ${day}`}</strong> 
-      <span style="float:right; font-family:monospace; color:var(--gold-soft)">${isVi ? 'Âm lịch' : 'Lunar'}: ${lunarStr}</span>
+    <div class="drawer-title" style="font-weight: 600; margin-bottom: 0.6rem; color: var(--gold);">
+      ${isVi ? 'Sự kiện ngày' : 'Events for'} ${day} (${lunarStr})
     </div>
   `;
-
-  events.forEach(e => {
-    const color = e.type === 'dob' ? '#2ecc71' : '#e74c3c';
+  
+  events.forEach(ev => {
+    const badgeClass = ev.type === 'dob' ? 'dob' : 'dod';
+    const typeLabel = ev.type === 'dob' 
+      ? (isVi ? '🎂 Sinh nhật' : '🎂 Birth') 
+      : (isVi ? '🕯️ Ngày mất' : '🕯️ Death');
+    
+    // Fallback search to ensure we grab the right ID if ev.memberId or ev.id is used
+    const targetId = ev.memberId || ev.id;
+    
     html += `
-      <div class="drawer-item">
-        <span style="color:${color}">${e.type === 'dob' ? '👶' : '🕯️'}</span>
-        <span>${e.text}</span>
+      <div class="drawer-item cal-event ${badgeClass}" 
+           style="cursor: pointer; padding: 0.5rem; margin-bottom: 0.4rem; border-radius: var(--radius); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid;"
+           onclick="navigateToMemberCard(${targetId})">
+        <div>
+          <strong>${typeLabel}:</strong> 
+          <span class="cal-text" style="font-weight: 500; margin-left: 0.25rem;">${ev.text || ev.name}</span>
+        </div>
+        <span style="font-size: 0.7rem; opacity: 0.7; font-family: var(--font-mono);">
+          ${isVi ? 'Xem chi tiết ➔' : 'View ➔'}
+        </span>
       </div>
     `;
   });
-
+  
   drawer.innerHTML = html;
-  drawer.style.display = 'block';
-  // Smooth scroll target directly into view on tight mobile viewports
-  drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/**
+ * Helper function to handle programmatic tab switching and member rendering
+ */
+function navigateToMemberCard(memberId) {
+  if (!memberId) return;
+  
+  // 1. Sync global state tracking variable
+  if (typeof selectedId !== 'undefined') {
+    selectedId = memberId;
+  }
+  
+  // 2. Programmatically switch tabs to the Details panel
+  const detailTabBtn = document.querySelector('.tabs .tab[onclick*="detail"]');
+  if (detailTabBtn && typeof switchTab === 'function') {
+    switchTab('detail', detailTabBtn);
+  } else {
+    // Fail-safe manual DOM backup if tab buttons change classes
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    
+    const targetPanel = document.getElementById('panel-detail');
+    if (targetPanel) targetPanel.classList.add('active');
+    if (detailTabBtn) detailTabBtn.classList.add('active');
+  }
+  
+  // 3. Render the personal details section for the requested member
+  if (typeof renderDetail === 'function') {
+    renderDetail(memberId);
+  }
+  
+  // 4. Update and synchronize UI states in sidebar lists if visible
+  document.querySelectorAll('.member-item').forEach(item => item.classList.remove('selected'));
+  const targetSidebarItem = document.querySelector(`.member-item[onclick*="${memberId}"]`);
+  if (targetSidebarItem) {
+    targetSidebarItem.classList.add('selected');
+    targetSidebarItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
 }
 
 function monthName(mIdx) {
