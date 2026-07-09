@@ -143,6 +143,20 @@
   .stance-neutral{background:rgba(92,158,255,.15);color:var(--accent2)}
   .stance-tightening{background:rgba(224,107,107,.15);color:var(--accent4)}
 
+  /* Eurodollar timeline */
+  .timeline{position:relative;padding-left:30px}
+  .timeline::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--border)}
+  .timeline-item{position:relative;padding-bottom:24px}
+  .timeline-item:last-child{padding-bottom:0}
+  .timeline-dot{position:absolute;left:-30px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--accent2)}
+  .timeline-item.era-gold .timeline-dot{border-color:var(--accent)}
+  .timeline-item.era-crisis .timeline-dot{border-color:var(--accent4)}
+  .timeline-item.era-growth .timeline-dot{border-color:var(--accent3)}
+  .timeline-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .timeline-year{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px}
+  .timeline-title{font-size:13.5px;font-weight:700;color:var(--text);margin:4px 0 4px}
+  .timeline-desc{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:680px}
+
   /* Sector legend */
   .sector-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);text-align:center}
   .sector-legend-val{font-family:var(--font-mono);font-weight:700;font-size:15px}
@@ -273,6 +287,41 @@
       <div class="kpi-value">$5.82T</div>
       <div class="kpi-sub" id="lbl-fed-net-note">Assets − TGA − Reverse Repo</div>
     </div>
+  </div>
+
+  <!-- Eurodollar × Credit Cycle -->
+  <div class="card section" style="border-color:rgba(92,158,255,.35)">
+    <h3>Eurodollar Impact on Global Money Supply Across the Credit Cycle</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:6px;line-height:1.7">Official broad money (M2) captures only the onshore, regulated layer of the global dollar system. Offshore eurodollar bank liabilities sit on top of it — and they're far more elastic: they expand fastest as banks loosen standards in a credit boom, and contract hardest once lenders reprice risk in a crunch. That elasticity means the eurodollar market amplifies the credit cycle itself rather than just riding along with it.</p>
+    <div class="grid-4" style="margin:16px 0 20px">
+      <div class="kpi blue">
+        <div class="kpi-label">Eurodollar Share of Effective Money Supply</div>
+        <div class="kpi-value" id="kpi-euro-share">—</div>
+        <div class="kpi-sub" id="kpi-euro-share-note">At current credit-cycle stage</div>
+      </div>
+      <div class="kpi gold">
+        <div class="kpi-label">Estimated Offshore Liabilities</div>
+        <div class="kpi-value" id="kpi-euro-offshore">—</div>
+        <div class="kpi-sub" id="kpi-euro-offshore-note">vs. onshore M2</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">Effective Global Dollar Pool</div>
+        <div class="kpi-value" id="kpi-euro-total">—</div>
+        <div class="kpi-sub">Onshore M2 + offshore eurodollar</div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">Peak-to-Trough Swing</div>
+        <div class="kpi-value" id="kpi-euro-swing">—</div>
+        <div class="kpi-sub">Offshore share range across the cycle</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:280px"><canvas id="euroMoneyCycleChart"></canvas></div>
+    <div id="euro-cycle-stage-bars" style="margin-top:20px"></div>
+    <p style="font-size:12px;margin-top:14px">
+      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('credit')">→ Explore the full Credit Cycle tab</span>
+      &nbsp;·&nbsp;
+      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('eurodollar')">→ Explore the full Eurodollar Framework tab</span>
+    </p>
   </div>
 
   <!-- Charts row -->
@@ -411,17 +460,110 @@
     <div class="chart-wrap" style="height:280px"><canvas id="compareChart"></canvas></div>
   </div>
 
-  <div class="card section">
-    <h3 id="lbl-policy-watch-title">Policy Watch — What's Moving Global Liquidity</h3>
-    <div class="grid-2">
-      <div>
-        <div class="alert alert-ok">✓ <strong id="lbl-policy-add-head">Adding liquidity:</strong> <span id="lbl-policy-add-body">Fed ended QT in 2026 · PBoC sustained easing · Treasury bill-heavy issuance frees bank balance-sheet capacity</span></div>
-      </div>
-      <div>
-        <div class="alert alert-warn">⚠ <strong id="lbl-policy-drain-head">Draining liquidity:</strong> <span id="lbl-policy-drain-body">TGA rebuild (~$919B and rising) · firmer bond volatility impairs collateral · 2026–2028 debt-maturity wall competes for funding</span></div>
-      </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CREDIT CYCLE
+═══════════════════════════════════════════ -->
+<div class="page" id="page-credit">
+  <div class="page-title">Global Credit Cycle</div>
+  <div class="page-sub">Bank lending standards, credit spreads and defaults — the private-sector engine behind the liquidity cycle</div>
+
+  <div class="card-hero section">
+    <div class="equation">Credit Growth = ΔBank Lending Standards − ΔDefault Risk Premium</div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.7">Where the Global Liquidity Framework tracks central-bank and cross-border plumbing, the credit cycle tracks the private layer sitting on top of it: how willing banks and non-bank lenders are to extend credit, how wide default risk is priced, and how many borrowers actually default. Credit is elastic — it expands well beyond what income alone would support in the boom, then contracts sharply once lenders reprice risk.</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="grid-4 section">
+    <div class="kpi gold">
+      <div class="kpi-label">Global Private Credit / GDP</div>
+      <div class="kpi-value">152%</div>
+      <div class="kpi-sub">Household + non-financial corporate debt</div>
     </div>
-    <p style="font-size:12px;margin-top:12px"><span id="lbl-policy-watch-link" style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('liquidity')">Full monetary and fiscal transmission mechanics are on the Liquidity tab →</span></p>
+    <div class="kpi blue">
+      <div class="kpi-label">US High-Yield OAS</div>
+      <div class="kpi-value">320bps</div>
+      <div class="kpi-sub">Corporate credit risk premium</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Global Corporate Default Rate</div>
+      <div class="kpi-value">3.4%</div>
+      <div class="kpi-sub">Trailing 12-month, speculative-grade</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Bank Lending Standards (US)</div>
+      <div class="kpi-value">+8%</div>
+      <div class="kpi-sub">Net % of banks tightening (SLOOS-style)</div>
+    </div>
+  </div>
+
+  <!-- Simulator -->
+  <div class="card section">
+    <div class="controls-row">
+      <button class="btn btn-accent" id="creditPlayBtn" onclick="toggleCreditPlay()">▶ Play Cycle</button>
+      <button class="btn" onclick="resetCreditSim()">Reset to Today</button>
+      <span class="stage-pill" id="credit-stage-pill">—</span>
+    </div>
+    <h3 style="margin-top:14px">Credit Cycle Simulator</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:6px">Drag through a full credit cycle — from post-crisis deleveraging to boom-time excess and back — to see how lending conditions evolve at each stage.</p>
+    <div class="slider-container">
+      <div class="slider-label"><span>Position in Credit Cycle</span><span id="credit-slider-val" class="td-mono">55%</span></div>
+      <input type="range" min="0" max="100" value="55" step="1" id="credit-phase-slider" oninput="simulateCredit(this.value)">
+    </div>
+    <div class="chart-wrap" style="height:220px"><canvas id="creditCycleChart"></canvas></div>
+    <p id="credit-stage-desc" class="section-note" style="color:var(--muted);font-size:12px;margin-top:8px"></p>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Credit Spreads vs Default Rate</h3>
+      <div class="chart-wrap" style="height:260px"><canvas id="creditSpreadChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Private Credit Growth vs GDP Growth</h3>
+      <div class="chart-wrap" style="height:260px"><canvas id="creditVsGdpChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Regional lending standards -->
+  <div class="card section">
+    <h3>Regional Bank Lending Standards</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Net % of surveyed banks reporting tighter lending standards (positive = tightening, negative = net easing). Illustrative estimates modeled on Fed SLOOS / ECB BLS-style surveys.</p>
+    <div id="credit-regional-bars"></div>
+  </div>
+
+  <!-- Metrics table -->
+  <div class="card section">
+    <h3>Global Debt Composition</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Sector</th><th>Debt Stock</th><th>Share of $250T Total</th><th>Note</th></tr></thead>
+        <tbody id="credit-metrics-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Findings -->
+  <div class="grid-2 section">
+    <div class="card">
+      <h3>Key Findings</h3>
+      <ul class="key-list" style="padding-left:20px;line-height:1.8">
+        <li>Credit is more volatile than GDP — it overshoots in booms and undershoots in busts</li>
+        <li>Bank lending standards tend to lead default rates by 2–4 quarters</li>
+        <li>Roughly 80% of global lending is collateral-backed, so falling collateral values tighten credit directly</li>
+        <li>Non-bank ("shadow") credit has grown fastest since 2008, adding a channel outside direct bank regulation</li>
+        <li>The credit cycle and the Global Liquidity cycle are related but distinct — liquidity leads credit availability by design</li>
+      </ul>
+      <p style="font-size:12px;margin-top:12px"><span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('liquidity')">See how this connects to the Global Liquidity Framework →</span></p>
+    </div>
+    <div class="card">
+      <h3>Where We Are Today</h3>
+      <div class="alert alert-warn">⚠ Lending standards have tightened modestly across the US and Eurozone while remaining loose in China, reflecting divergent monetary stances rather than a synchronized global credit crunch.</div>
+      <div class="alert alert-info">ℹ Corporate default rates have eased back from their 2023–2024 peak but remain above the 2021 trough, consistent with a late-cycle, not early-cycle, credit environment.</div>
+      <div class="alert alert-ok">✓ Credit spreads remain historically tight, suggesting markets are not yet pricing a near-term downturn — though spreads are traditionally a lagging, not leading, signal.</div>
+    </div>
   </div>
 </div>
 
@@ -726,6 +868,7 @@ let LANG = localStorage.getItem('earth_economy_lang') || 'en';
 const T = {
   en: {
     tabOverview:'🌐 Overview', tabEconomies:'🏛️ Economies', tabTrends:'📈 Trends', tabSectors:'⚙️ Sectors',
+    tabCredit:'💧 Credit Cycle', tabLiquidity:'💧 Liquidity', tabEurodollar:'💱 Eurodollar',
     langBtn:'🌐 Tiếng Việt',
     // Overview labels
     'lbl-global-gdp':'Global Gross Product', 'lbl-global-inf':'Global Inflation Avg',
@@ -766,6 +909,7 @@ const T = {
   },
   vi: {
     tabOverview:'🌐 Tổng Quan', tabEconomies:'🏛️ Kinh Tế', tabTrends:'📈 Xu Hướng', tabSectors:'⚙️ Ngành',
+    tabCredit:'💧 Chu Kỳ Tín Dụng', tabLiquidity:'💧 Thanh Khoản', tabEurodollar:'💱 Eurodollar',
     langBtn:'🌐 English',
     'lbl-global-gdp':'Tổng Sản Phẩm Toàn Cầu','lbl-global-inf':'Lạm Phát Trung Bình',
     'lbl-global-pop':'Dân Số Thế Giới','lbl-trade':'Chỉ Số Mở Cửa Thương Mại',
@@ -815,7 +959,9 @@ function applyLanguage(){
   document.getElementById('tab-overview').textContent   = t('tabOverview');
   document.getElementById('tab-economies').textContent  = t('tabEconomies');
   document.getElementById('tab-trends').textContent     = t('tabTrends');
+  document.getElementById('tab-credit').textContent     = t('tabCredit');
   document.getElementById('tab-liquidity').textContent  = t('tabLiquidity');
+  document.getElementById('tab-eurodollar').textContent = t('tabEurodollar');
   document.getElementById('tab-sectors').textContent    = t('tabSectors');
   // Apply all labelled elements
   Object.keys(T.en).forEach(k => {
@@ -949,6 +1095,199 @@ function liqSampleCurve(curve, steps=100){
 }
 
 // ══════════════════════════════════════════════════════
+//  CREDIT CYCLE (see page-credit) — distinct from, but related to,
+//  the Global Liquidity Framework above. Reuses the generic
+//  liqInterp/liqSampleCurve/PHASE_POINTS helpers since they are curve-agnostic.
+// ══════════════════════════════════════════════════════
+const CREDIT_CURVES = {
+  growth: [12,42,88,68,22,12]   // Credit growth / availability index across the 0–100 cycle phase
+};
+
+const CREDIT_STAGES = [
+  {max:12, name:'Trough / Deleveraging', cls:'stage-trough', desc:'Banks and borrowers are still repairing balance sheets after the prior bust. Lending standards are near their tightest, credit growth is flat or negative, and defaults are working through the system. Historically the least comfortable — but often the cheapest — point to extend credit.'},
+  {max:38, name:'Early Expansion / Repair', cls:'stage-early', desc:'Balance sheets have healed enough that banks cautiously loosen standards. Credit growth turns positive, spreads begin compressing from wide levels, and default rates start falling as the healthiest borrowers refinance first.'},
+  {max:58, name:'Credit Boom', cls:'stage-late', desc:'Lending standards loosen further, credit growth outruns GDP growth, and underwriting quality erodes as competition for borrowers increases. Spreads compress to multi-year tights even as leverage quietly builds in the system.'},
+  {max:75, name:'Peak / Late-Cycle', cls:'stage-peak', desc:'Credit growth decelerates from its highs even though outstanding debt levels are at a cycle peak. The first cracks appear in the weakest borrowers; spreads stop compressing and begin to widen selectively.'},
+  {max:100,name:'Contraction / Credit Crunch', cls:'stage-contraction', desc:'Banks tighten standards sharply, credit growth turns negative, spreads gap wider and defaults rise as refinancing becomes harder to find. This is the phase that typically forces the liquidity response covered in the Global Liquidity Framework.'}
+];
+
+function creditGetStage(phase){
+  return CREDIT_STAGES.find(s=>phase<=s.max) || CREDIT_STAGES[CREDIT_STAGES.length-1];
+}
+
+// Illustrative 2016–2026 series, aligned to HIST_YEARS (reuses HIST_GROWTH for real GDP growth comparison)
+const CREDIT_GROWTH_HIST  = [4.2,5.1,4.5,3.8,-1.5,9.8,6.2,2.1,3.4,4.8,5.5];   // private credit growth, % y/y
+const CREDIT_HY_SPREAD    = [430,360,530,400,880,320,480,410,340,310,320];   // US HY OAS, bps
+const CREDIT_DEFAULT_RATE = [4.8,3.2,2.8,3.1,6.5,2.0,1.6,3.8,4.9,3.9,3.4];   // global speculative-grade default rate, %
+
+const CREDIT_METRICS = [
+  {sector:'Household Debt',           val:'$59T',  share:'23.6%', note:'Mortgages, consumer credit, auto & student loans'},
+  {sector:'Non-Financial Corporate',  val:'$91T',  share:'36.4%', note:'Bonds + bank loans to non-financial firms'},
+  {sector:'Government Debt',          val:'$88T',  share:'35.2%', note:'Sovereign & sub-sovereign borrowing'},
+  {sector:'Financial Sector Debt',    val:'$12T',  share:'4.8%',  note:'Intra-financial borrowing, excl. derivatives'},
+];
+
+const CREDIT_REGIONS = [
+  {name:'United States',    tightening:8},
+  {name:'Eurozone',         tightening:15},
+  {name:'China',            tightening:-10},
+  {name:'Japan',            tightening:5},
+  {name:'Emerging Markets', tightening:22},
+];
+
+let _creditCycleChart=null, _creditSpreadChart=null, _creditVsGdpChart=null, _creditPlaying=false, _creditPlayTimer=null;
+
+function renderCreditPage(){
+  renderCreditCycleChart(55);
+  renderCreditSpreadChart();
+  renderCreditVsGdpChart();
+  renderCreditRegionalBars();
+  renderCreditMetricsTable();
+  simulateCredit(55);
+}
+
+function renderCreditCycleChart(phase){
+  const ctx = document.getElementById('creditCycleChart');
+  if(!ctx) return;
+  const labels = Array.from({length:101},(_,i)=>i);
+  const data = liqSampleCurve(CREDIT_CURVES.growth);
+  const markerVal = liqInterp(CREDIT_CURVES.growth, phase);
+  if(_creditCycleChart) _creditCycleChart.destroy();
+  _creditCycleChart = new Chart(ctx.getContext('2d'),{
+    type:'line',
+    data:{labels, datasets:[
+      {label:'Credit Growth / Availability Index', data, borderColor:'#4ecb8a', backgroundColor:'rgba(78,203,138,.10)', fill:true, borderWidth:2, pointRadius:0, tension:.35},
+      {label:'Current Position', data: labels.map(p=> p===Math.round(phase)? markerVal: null), pointRadius:7, pointBackgroundColor:'#5c9eff', borderColor:'#fff', borderWidth:1, showLine:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7a7f8e',boxWidth:10,font:{size:11}}}},
+      scales:{
+        x:{title:{display:true,text:'Cycle Phase (%)',color:'#7a7f8e',font:{size:11}},ticks:{color:'#7a7f8e',maxTicksLimit:6},grid:{color:'#232730'}},
+        y:{ticks:{color:'#7a7f8e'},grid:{color:'#232730'},title:{display:true,text:'Credit Index',color:'#7a7f8e',font:{size:11}}}
+      }
+    }
+  });
+}
+
+function renderCreditSpreadChart(){
+  const ctx = document.getElementById('creditSpreadChart');
+  if(!ctx || _creditSpreadChart) return;
+  _creditSpreadChart = new Chart(ctx.getContext('2d'),{
+    data:{
+      labels:HIST_YEARS,
+      datasets:[
+        {type:'line', label:'US HY OAS (bps)', data:CREDIT_HY_SPREAD, borderColor:'#5c9eff', backgroundColor:'rgba(92,158,255,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#5c9eff', yAxisID:'y'},
+        {type:'line', label:'Global Default Rate (%)', data:CREDIT_DEFAULT_RATE, borderColor:'#e06b6b', backgroundColor:'rgba(224,107,107,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#e06b6b', yAxisID:'y1'}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      scales:{
+        y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Spread (bps)',color:'#7a7f8e',font:{size:10.5}} },
+        y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'Default Rate %',color:'#7a7f8e',font:{size:10.5}} },
+        x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+      },
+      plugins:{
+        legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+        tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+      }
+    }
+  });
+}
+
+function renderCreditVsGdpChart(){
+  const ctx = document.getElementById('creditVsGdpChart');
+  if(!ctx || _creditVsGdpChart) return;
+  _creditVsGdpChart = new Chart(ctx.getContext('2d'),{
+    data:{
+      labels:HIST_YEARS,
+      datasets:[
+        {type:'bar',  label:'Private Credit Growth (%)', data:CREDIT_GROWTH_HIST, backgroundColor:'rgba(200,169,110,.7)', borderColor:'#c8a96e', borderWidth:1, borderRadius:4},
+        {type:'line', label:'Real GDP Growth (%)', data:HIST_GROWTH, borderColor:'#4ecb8a', backgroundColor:'rgba(78,203,138,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#4ecb8a'}
+      ]
+    },
+    options:{
+      ...getChartOptions(v=>v+'%'),
+      plugins:{...getChartOptions().plugins, legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}}}
+    }
+  });
+}
+
+function renderCreditRegionalBars(){
+  const el = document.getElementById('credit-regional-bars');
+  if(!el) return;
+  const maxAbs = Math.max(...CREDIT_REGIONS.map(r=>Math.abs(r.tightening)));
+  el.innerHTML = CREDIT_REGIONS.map(r=>{
+    const pct = Math.round((Math.abs(r.tightening)/maxAbs)*100);
+    const isTightening = r.tightening >= 0;
+    const color = isTightening ? 'rgba(224,107,107,.75)' : 'rgba(78,203,138,.75)';
+    const label = isTightening ? `+${r.tightening}% tightening` : `${Math.abs(r.tightening)}% net easing`;
+    return `
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <span class="progress-label">${r.name}</span>
+        <span class="progress-val">${label}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderCreditMetricsTable(){
+  const el = document.getElementById('credit-metrics-tbody');
+  if(!el) return;
+  el.innerHTML = CREDIT_METRICS.map(m=>`
+    <tr>
+      <td>${m.sector}</td>
+      <td class="td-mono">${m.val}</td>
+      <td class="td-gold">${m.share}</td>
+      <td class="td-muted">${m.note}</td>
+    </tr>`).join('');
+}
+
+function simulateCredit(phase){
+  phase = parseFloat(phase);
+  const slider = document.getElementById('credit-phase-slider');
+  const valEl = document.getElementById('credit-slider-val');
+  if(slider) slider.value = phase;
+  if(valEl) valEl.textContent = Math.round(phase)+'%';
+  const stage = creditGetStage(phase);
+  const pill = document.getElementById('credit-stage-pill');
+  if(pill){
+    pill.textContent = stage.name;
+    pill.className = 'stage-pill ' + stage.cls;
+  }
+  const descEl = document.getElementById('credit-stage-desc');
+  if(descEl) descEl.textContent = stage.desc;
+  renderCreditCycleChart(phase);
+}
+
+function toggleCreditPlay(){
+  const btn = document.getElementById('creditPlayBtn');
+  if(_creditPlaying){
+    clearInterval(_creditPlayTimer);
+    _creditPlaying = false;
+    if(btn) btn.textContent = '▶ Play Cycle';
+    return;
+  }
+  _creditPlaying = true;
+  if(btn) btn.textContent = '⏸ Pause';
+  let phase = parseFloat(document.getElementById('credit-phase-slider').value) || 0;
+  _creditPlayTimer = setInterval(()=>{
+    phase = (phase + 1) % 101;
+    simulateCredit(phase);
+  }, 120);
+}
+
+function resetCreditSim(){
+  if(_creditPlaying) toggleCreditPlay();
+  const btn = document.getElementById('creditPlayBtn');
+  if(btn) btn.textContent = '▶ Play Cycle';
+  simulateCredit(55);
+}
+
+// ══════════════════════════════════════════════════════
 //  NAVIGATION
 // ══════════════════════════════════════════════════════
 function showPage(id){
@@ -960,8 +1299,10 @@ function showPage(id){
   if(id==='overview')   renderOverviewCharts();
   if(id==='economies')  renderEconomiesTable();
   if(id==='trends')     renderTrends();
+  if(id==='credit')     renderCreditPage();
   if(id==='liquidity')  renderLiquidityPage();
   if(id==='sectors')    renderSectors();
+  if(id==='eurodollar') initEurodollarPage();
 }
 
 document.addEventListener('click', e=>{
@@ -1052,6 +1393,98 @@ function renderOverviewCharts(){
   }
 
   renderLiquidityKPIs();
+  renderEuroCycleSection();
+}
+
+// ══════════════════════════════════════════════════════
+//  EURODOLLAR × CREDIT CYCLE (Overview section)
+//  Models how offshore eurodollar liabilities add to — and swing
+//  more violently than — official onshore M2 at each of the five
+//  credit-cycle stages defined on the Credit Cycle tab. "Current"
+//  stage is set to Credit Boom, matching the Eurodollar tab's
+//  $25T KPI and the Credit Cycle tab's default 55% slider position.
+// ══════════════════════════════════════════════════════
+const EURO_CYCLE_MONEY = [
+  {stage:'Trough / Deleveraging',       cls:'stage-trough',      short:'Trough',      m2:90,   euro:15},
+  {stage:'Early Expansion / Repair',    cls:'stage-early',       short:'Early Exp.',  m2:93,   euro:19},
+  {stage:'Credit Boom',                 cls:'stage-late',        short:'Credit Boom', m2:98.6, euro:25},
+  {stage:'Peak / Late-Cycle',           cls:'stage-peak',        short:'Peak',        m2:100,  euro:27},
+  {stage:'Contraction / Credit Crunch', cls:'stage-contraction', short:'Contraction', m2:97,   euro:18},
+];
+const EURO_CYCLE_CURRENT_IDX = 2; // Credit Boom — "today"
+
+function euroCycleShare(row){ return row.euro/(row.euro+row.m2)*100; }
+
+let _euroMoneyCycleChart=null;
+
+function renderEuroCycleSection(){
+  renderEuroCycleKPIs();
+  renderEuroCycleChart();
+  renderEuroCycleStagePills();
+}
+
+function renderEuroCycleKPIs(){
+  const cur = EURO_CYCLE_MONEY[EURO_CYCLE_CURRENT_IDX];
+  const shares = EURO_CYCLE_MONEY.map(euroCycleShare);
+  const shareEl = document.getElementById('kpi-euro-share');
+  const shareNoteEl = document.getElementById('kpi-euro-share-note');
+  const offshoreEl = document.getElementById('kpi-euro-offshore');
+  const offshoreNoteEl = document.getElementById('kpi-euro-offshore-note');
+  const totalEl = document.getElementById('kpi-euro-total');
+  const swingEl = document.getElementById('kpi-euro-swing');
+  if(shareEl) shareEl.textContent = euroCycleShare(cur).toFixed(1)+'%';
+  if(shareNoteEl) shareNoteEl.textContent = 'At current stage: '+cur.stage;
+  if(offshoreEl) offshoreEl.textContent = '$'+cur.euro.toFixed(1)+'T';
+  if(offshoreNoteEl) offshoreNoteEl.textContent = 'vs. onshore M2 of $'+cur.m2.toFixed(1)+'T';
+  if(totalEl) totalEl.textContent = '$'+(cur.m2+cur.euro).toFixed(1)+'T';
+  if(swingEl) swingEl.textContent = '~'+(Math.max(...shares)-Math.min(...shares)).toFixed(0)+'pp';
+}
+
+function renderEuroCycleChart(){
+  const ctx = document.getElementById('euroMoneyCycleChart');
+  if(!ctx || _euroMoneyCycleChart) return;
+  const shares = EURO_CYCLE_MONEY.map(euroCycleShare);
+  _euroMoneyCycleChart = new Chart(ctx.getContext('2d'),{
+    data:{
+      labels:EURO_CYCLE_MONEY.map(r=>r.short),
+      datasets:[
+        {type:'bar', label:'Onshore M2 ($T)', data:EURO_CYCLE_MONEY.map(r=>r.m2), backgroundColor:'rgba(92,158,255,.75)', borderColor:'#5c9eff', borderWidth:1, stack:'m', yAxisID:'y'},
+        {type:'bar', label:'Offshore Eurodollar Liabilities ($T)', data:EURO_CYCLE_MONEY.map(r=>r.euro), backgroundColor:'rgba(200,169,110,.75)', borderColor:'#c8a96e', borderWidth:1, stack:'m', yAxisID:'y'},
+        {type:'line', label:'Offshore Share of Effective Money Supply (%)', data:shares, borderColor:'#e06b6b', backgroundColor:'rgba(224,107,107,.08)', fill:false, tension:.3, borderWidth:2.5, pointRadius:4, pointBackgroundColor:'#e06b6b', yAxisID:'y1'}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        y:{ stacked:true, grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>'$'+v+'T'}, border:{color:'#232730'}, title:{display:true,text:'$ Trillions',color:'#7a7f8e',font:{size:10.5}} },
+        y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'Offshore Share %',color:'#7a7f8e',font:{size:10.5}} },
+        x:{ stacked:true, grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+      },
+      plugins:{
+        legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+        tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+      }
+    }
+  });
+}
+
+function renderEuroCycleStagePills(){
+  const el = document.getElementById('euro-cycle-stage-bars');
+  if(!el) return;
+  el.innerHTML = EURO_CYCLE_MONEY.map((r,i)=>{
+    const share = euroCycleShare(r);
+    const isCurrent = i===EURO_CYCLE_CURRENT_IDX;
+    return `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;margin-bottom:8px;border-radius:8px;border:1px solid ${isCurrent?'var(--accent)':'var(--border)'};background:${isCurrent?'rgba(200,169,110,.08)':'transparent'}">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="stage-pill ${r.cls}">${r.stage}</span>
+        ${isCurrent?'<span style="font-size:10.5px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.5px">● Current</span>':''}
+      </div>
+      <div style="font-family:var(--font-mono);font-size:12.5px;color:var(--text);white-space:nowrap">
+        M2 $${r.m2.toFixed(1)}T&nbsp;+&nbsp;Euro $${r.euro.toFixed(1)}T&nbsp;=&nbsp;<span style="color:var(--accent2);font-weight:700">${share.toFixed(1)}% offshore</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════
@@ -1397,37 +1830,187 @@ function renderSectors(){
       <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--font-mono)">Svcs ${r.services}% · Ind ${r.industry}% · Agri ${r.agri}%</div>
     </div>`).join('');
 }
-// Eurodollar Data & Functions
-const EVENTS = [ /* full array from euro file */ ];
-// ... (charts init, renderTimeline, etc. merged)
+// ══════════════════════════════════════════════════════
+//  EURODOLLAR PAGE — DATA
+// ══════════════════════════════════════════════════════
+const EVENTS = [
+  { year:'1926', title:'Gold-and-Sterling World', era:'gold',
+    desc:'Global trade is settled mostly in gold and pound sterling. The US dollar plays only a secondary reserve role.' },
+  { year:'1944', title:'Bretton Woods Agreement', era:'gold',
+    desc:'The dollar is pegged to gold at $35/oz and other currencies peg to the dollar — the first formal dollar-centred monetary system.' },
+  { year:'1957', title:'Birth of the Eurodollar Market', era:'growth',
+    desc:'Dollar deposits held outside the US (originally in Europe, partly to avoid exposure to US jurisdiction) begin circulating between banks free of US reserve requirements — the eurodollar market is born.' },
+  { year:'1960s', title:'Offshore Dollar Expansion', era:'growth',
+    desc:'US multinationals and international banks increasingly hold and lend dollars offshore, outside Regulation Q interest-rate caps — the market becomes a parallel, elastic source of dollar credit.' },
+  { year:'1971', title:'Nixon Shock', era:'crisis',
+    desc:'The US suspends dollar–gold convertibility, ending Bretton Woods. The eurodollar market already predates this by 14 years — it was never built on the gold link.' },
+  { year:'1973–74', title:'Oil Shock & the "Petrodollar" Myth', era:'crisis',
+    desc:'OPEC quadruples oil prices. The popular story of a formal US–Saudi recycling deal is largely mythologised — oil surpluses were absorbed into the pre-existing eurodollar banking network, not a separate petrodollar system.' },
+  { year:'1982', title:'Latin American Debt Crisis', era:'crisis',
+    desc:'Eurodollar lending to emerging markets unwinds violently as the Fed hikes rates, exposing how fragile offshore dollar credit chains can be.' },
+  { year:'1998', title:'LTCM & Russian Default', era:'crisis',
+    desc:'A global collateral scramble shows how interconnected — and opaque — offshore dollar funding has become.' },
+  { year:'2008', title:'Global Financial Crisis', era:'crisis',
+    desc:'Eurodollar funding markets seize up almost overnight. The world discovers the offshore dollar system is far larger, and far more fragile, than official statistics ever showed.' },
+  { year:'2011–12', title:'European Sovereign Debt Crisis', era:'crisis',
+    desc:'Dollar funding stress returns as European banks — major eurodollar players — face acute funding strain; central bank swap lines expand in response.' },
+  { year:'2020', title:'COVID Dollar Squeeze', era:'crisis',
+    desc:'A global dash-for-cash triggers a fresh eurodollar funding crunch; the Fed deploys emergency swap lines to flood offshore dollar liquidity back into the system.' },
+  { year:'2026', title:'Post-QT Landscape', era:'gold',
+    desc:'Quantitative tightening formally ends. Eurodollar liabilities remain estimated in the tens of trillions — still largely invisible in official monetary statistics.' },
+];
 
-// Extend showPage
-const originalShowPage = showPage;
-showPage = function(id) {
-  originalShowPage(id);
-  if (id === 'eurodollar') initEurodollarPage();
-};
+// Illustrative series, 2016–2026 (aligned to HIST_YEARS), for the Eurodollar charts below.
+const EURO_MYTH_LABELS   = ['Formal Treaty','Central Bank Deal','Oil Directly Backs USD','Predates 1971','Bank Balance Sheets Drive It'];
+const EURO_MYTH_SCORES   = [85,80,90,10,15];   // common narrative / perception
+const EURO_REALITY_SCORES= [5,10,5,95,90];     // documented mechanism
 
-// Init function for Eurodollar tab
-function initEurodollarPage() {
-  // Initialize charts, timeline, etc.
+const EURO_CAPACITY   = [40,52,45,55,70,88,60,58,72,80,86];       // illustrative eurodollar credit-capacity index (0–100)
+const EURO_ASSET_INDEX= [100,118,105,122,110,155,148,152,178,205,238]; // illustrative global asset-price index (2016=100)
+
+const EURO_FED_RATE   = [0.75,1.50,2.50,1.75,0.25,0.25,4.50,5.50,4.75,4.50,4.25]; // approx. year-end Fed funds rate, %
+
+const EURO_M2_HIST     = [72,75,78,82,95,105,102,98,96,97,98.6];   // illustrative onshore/official broad money, $T
+const EURO_OFFSHORE_HIST=[13,14,15,16,18,20,19,20,22,24,25];       // illustrative offshore eurodollar liabilities, $T
+
+// ══════════════════════════════════════════════════════
+//  EURODOLLAR PAGE — CHARTS
+// ══════════════════════════════════════════════════════
+let _euroMythChart=null, _euroFeedbackChart=null, _euroRelChart=null, _euroMoneyChart=null;
+
+function initEurodollarCharts(){
+  // Myth vs Reality
+  const mythCtx = document.getElementById('mythRealityChart');
+  if(mythCtx && !_euroMythChart){
+    _euroMythChart = new Chart(mythCtx.getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:EURO_MYTH_LABELS,
+        datasets:[
+          {label:'Popular Narrative', data:EURO_MYTH_SCORES, backgroundColor:'rgba(224,107,107,.7)', borderColor:'#e06b6b', borderWidth:1.5, borderRadius:5},
+          {label:'Documented Mechanism', data:EURO_REALITY_SCORES, backgroundColor:'rgba(78,203,138,.7)', borderColor:'#4ecb8a', borderWidth:1.5, borderRadius:5}
+        ]
+      },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        scales:{
+          x:{ min:0, max:100, grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'} },
+          y:{ grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'Manrope',sans-serif",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{position:'bottom',labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
+    });
+  }
+
+  // Asset Price Feedback Loop
+  const fbCtx = document.getElementById('feedbackChart');
+  if(fbCtx && !_euroFeedbackChart){
+    _euroFeedbackChart = new Chart(fbCtx.getContext('2d'),{
+      data:{
+        labels:HIST_YEARS,
+        datasets:[
+          {type:'line', label:'Eurodollar Credit Capacity (0–100)', data:EURO_CAPACITY, borderColor:'#5c9eff', backgroundColor:'rgba(92,158,255,.10)', fill:true, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#5c9eff', yAxisID:'y'},
+          {type:'line', label:'Global Asset Price Index (2016=100)', data:EURO_ASSET_INDEX, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#c8a96e', yAxisID:'y1'}
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        scales:{
+          y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Credit Capacity',color:'#7a7f8e',font:{size:10.5}} },
+          y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Asset Price Index',color:'#7a7f8e',font:{size:10.5}} },
+          x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
+    });
+  }
+
+  // Policy → Liquidity → Asset Prices
+  const relCtx = document.getElementById('relationshipChart');
+  if(relCtx && !_euroRelChart){
+    _euroRelChart = new Chart(relCtx.getContext('2d'),{
+      data:{
+        labels:HIST_YEARS,
+        datasets:[
+          {type:'bar',  label:'Fed Funds Rate (%)', data:EURO_FED_RATE, backgroundColor:'rgba(224,107,107,.55)', borderColor:'#e06b6b', borderWidth:1, borderRadius:4, yAxisID:'y'},
+          {type:'line', label:'Global Liquidity Index (0–100)', data:HIST_LIQUIDITY, borderColor:'#5c9eff', backgroundColor:'rgba(92,158,255,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#5c9eff', yAxisID:'y1'},
+          {type:'line', label:'Global Asset Price Index (2016=100)', data:EURO_ASSET_INDEX, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,.08)', fill:false, tension:.35, borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#c8a96e', yAxisID:'y1'}
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        scales:{
+          y:{ position:'left', grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'}, border:{color:'#232730'}, title:{display:true,text:'Policy Rate %',color:'#7a7f8e',font:{size:10.5}} },
+          y1:{ position:'right', grid:{display:false}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'}, title:{display:true,text:'Index (0–100 / base 100)',color:'#7a7f8e',font:{size:10.5}} },
+          x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
+    });
+  }
+
+  // Eurodollar Impact on Global Broad Money Supply
+  const moneyCtx = document.getElementById('moneySupplyChart');
+  if(moneyCtx && !_euroMoneyChart){
+    _euroMoneyChart = new Chart(moneyCtx.getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:HIST_YEARS,
+        datasets:[
+          {label:'Onshore / Official Broad Money ($T)', data:EURO_M2_HIST, backgroundColor:'rgba(92,158,255,.75)', borderColor:'#5c9eff', borderWidth:1, stack:'m'},
+          {label:'Estimated Offshore Eurodollar Liabilities ($T)', data:EURO_OFFSHORE_HIST, backgroundColor:'rgba(200,169,110,.75)', borderColor:'#c8a96e', borderWidth:1, stack:'m'}
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        scales:{
+          y:{ stacked:true, grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11},callback:v=>'$'+v+'T'}, border:{color:'#232730'} },
+          x:{ stacked:true, grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
+        },
+        plugins:{
+          legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:11},boxWidth:12,boxHeight:12}},
+          tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
+        }
+      }
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  EURODOLLAR PAGE — TIMELINE
+// ══════════════════════════════════════════════════════
+function renderTimeline(){
+  const el = document.getElementById('timeline-container');
+  if(!el) return;
+  el.innerHTML = EVENTS.map(ev => `
+    <div class="timeline-item era-${ev.era}">
+      <div class="timeline-dot"></div>
+      <div class="timeline-head">
+        <span class="timeline-year">${ev.year}</span>
+      </div>
+      <div class="timeline-title">${ev.title}</div>
+      <div class="timeline-desc">${ev.desc}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  EURODOLLAR PAGE — INIT
+// ══════════════════════════════════════════════════════
+function initEurodollarPage(){
   initEurodollarCharts();
   renderTimeline();
 }
-
-// Full chart init and other functions merged from euro_dollar_framework.html
-
-// ... (complete script integration ensures all charts render correctly)
-
-window.onload = function() {
-  // original init calls
-  applyLanguage();
-  updateLastUpdated();
-  renderOverviewCharts();
-  renderEconomiesTable();
-  // new
-  if (document.getElementById('page-eurodollar').classList.contains('active')) initEurodollarPage();
-};
 // ══════════════════════════════════════════════════════
 //  EXPORT PDF  (mirrors nation-state exportPolicyReport)
 // ══════════════════════════════════════════════════════
