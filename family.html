@@ -1258,6 +1258,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
+  <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   
 </nav>
@@ -1373,6 +1374,34 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     </div>
   </section>
 
+  <!-- CALENDAR PANEL -->
+  <section class="panel" id="panel-calendar">
+    <div class="table-toolbar">
+      <span style="font-size:.77rem;color:var(--ink-dim)">
+        <span data-vi="Lịch Sinh / Tử (Dương & Âm Lịch)" data-en="Birth / Death Calendar (Western & Lunar)">
+          <strong>Lịch Sinh / Tử (Dương & Âm Lịch)</strong>
+        </span>
+      </span>
+    </div>
+    <div class="table-wrap stats-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-vi="Họ và Tên" data-en="Full Name">Họ và Tên</th>
+            <th data-vi="Đời" data-en="Gen">Đời</th>
+            <th data-vi="Ngày Sinh (Dương)" data-en="DOB (Western)">Ngày Sinh (Dương)</th>
+            <th data-vi="Ngày Sinh (Âm)" data-en="DOB (Lunar)">Ngày Sinh (Âm)</th>
+            <th data-vi="Ngày Mất (Dương)" data-en="DOD (Western)">Ngày Mất (Dương)</th>
+            <th data-vi="Ngày Mất (Âm)" data-en="DOD (Lunar)">Ngày Mất (Âm)</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody">
+          <!-- Calendar rows will be injected here by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
   <!-- ADD/EDIT PANEL -->
   <section class="panel" id="panel-add">
     <div class="form-wrap">
@@ -3865,7 +3894,77 @@ function exportReport() {
     }
   })();
 }
+// ═══════════════════════════════════════════════════════════
+//  CALENDAR SYSTEM (WESTERN + LUNAR)
+// ═══════════════════════════════════════════════════════════
 
+/**
+ * Placeholder function for Lunar Date conversion.
+ * To make this fully functional, integrate a library like 'lunar-javascript' 
+ * or a standard Vietnamese 'amlich' script.
+ */
+function convertToLunar(westernDateStr) {
+  if (!westernDateStr) return '';
+  
+  // Basic validation for YYYY-MM-DD
+  const parts = westernDateStr.split('-');
+  if (parts.length !== 3) {
+    return westernDateStr; // Return as-is if it's just a year or malformed
+  }
+
+  // TODO: Replace this return statement with your actual Lunar library call
+  // Example if using lunar-javascript: 
+  // const lunar = Lunar.fromDate(new Date(westernDateStr));
+  // return `${lunar.getDay()}/${lunar.getMonth()}/${lunar.getYear()}`;
+
+  return `[Âm: ${westernDateStr}]`; // Temporary mock output
+}
+
+/**
+ * Builds the Calendar table body
+ */
+function buildCalendar() {
+  const tbody = document.getElementById('calendarBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  // Use SEED_DATA or your parsed state array (e.g., 'members')
+  const dataToRender = typeof members !== 'undefined' ? members : SEED_DATA;
+
+  // Filter members who have at least a DOB or DOD
+  const calendarMembers = dataToRender.filter(m => m.dob || m.dod);
+
+  calendarMembers.forEach(m => {
+    const tr = document.createElement('tr');
+    
+    // Setup gender-based color classes
+    const nameClass = m.sex === 'M' ? 'male-name' : (m.sex === 'F' ? 'female-name' : '');
+    
+    tr.innerHTML = `
+      <td class="${nameClass}">${m.full_name || '-'}</td>
+      <td>${m.generation !== undefined ? m.generation : '-'}</td>
+      <td>${m.dob || '-'}</td>
+      <td style="color:var(--gold-soft); font-family:var(--font-mono)">${m.dob ? convertToLunar(m.dob) : '-'}</td>
+      <td>${m.dod || '-'}</td>
+      <td style="color:var(--gold-soft); font-family:var(--font-mono)">${m.dod ? convertToLunar(m.dod) : '-'}</td>
+    `;
+    
+    // Optional: Make row click open the detail view for this member
+    tr.onclick = () => {
+      if (typeof renderDetail === 'function') {
+        renderDetail(m.id);
+        const detailTab = document.querySelector('.tabs button:nth-child(2)');
+        switchTab('detail', detailTab);
+      }
+    };
+    
+    tbody.appendChild(tr);
+  });
+
+  if (calendarMembers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--ink-dim); padding:1rem;">Không có dữ liệu ngày tháng.</td></tr>`;
+  }
+}
 // ═══════════════════════════════════════════════════════════
 //  ADMIN AUTH
 // ═══════════════════════════════════════════════════════════
