@@ -1596,6 +1596,239 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 }
 .costume-member-chip.male { border-left: 3px solid #4a7fb5; }
 .costume-member-chip.female { border-left: 3px solid #c76b93; }
+
+  /* ── HISTORY TAB SPECIFIC STYLES ── */
+.history-note {
+  font-size: .74rem;
+  color: var(--ink-dim);
+  font-style: italic;
+  background: var(--paper-mid);
+  border: 1px dashed var(--paper-rim);
+  border-radius: var(--radius);
+  padding: .55rem .8rem;
+  margin-top: .8rem;
+}
+.history-stage {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.history-photo {
+  height: 260px;
+  border-radius: var(--radius);
+  border: 1px solid var(--paper-rim);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .5s ease;
+}
+.history-photo svg { height: 62%; max-width: 62%; filter: drop-shadow(0 3px 6px rgba(0,0,0,.25)); }
+.history-photo-label {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: .65rem 1.1rem;
+  background: linear-gradient(0deg, rgba(26,20,16,.72), rgba(26,20,16,0));
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  letter-spacing: .01em;
+}
+.history-photo-era {
+  position: absolute;
+  top: .7rem; right: .8rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+  color: var(--paper);
+  background: rgba(26,20,16,.5);
+  padding: .22rem .55rem;
+  border-radius: 20px;
+  border: 1px solid rgba(250,247,242,.35);
+}
+.history-timeline-wrap {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.history-scroll-btn {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: #fff;
+  color: var(--gold);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, color .15s;
+}
+.history-scroll-btn:hover { background: var(--gold); color: #fff; }
+.history-timeline {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  position: relative;
+  padding: 1.5rem .6rem .7rem;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+}
+.history-timeline-line {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(1.5rem + 7px);
+  height: 2px;
+  background: var(--paper-rim);
+  z-index: 0;
+}
+.history-marker {
+  flex: 0 0 auto;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 0 .5rem;
+  user-select: none;
+}
+.history-era-tag {
+  font-size: .58rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--gold);
+  margin-bottom: .35rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.history-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--gold);
+  transition: all .18s ease;
+}
+.history-marker:hover .history-dot { border-color: var(--red-soft); transform: scale(1.15); }
+.history-marker.active .history-dot {
+  background: var(--red);
+  border-color: var(--red);
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px rgba(155,42,42,.15);
+}
+.history-year {
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  color: var(--ink-dim);
+  margin-top: .4rem;
+  white-space: nowrap;
+  text-align: center;
+}
+.history-marker.active .history-year { color: var(--red); font-weight: 700; }
+.history-content {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.2rem 1.4rem;
+}
+.history-event-year {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--red);
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+.history-event-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: .15rem;
+  margin-bottom: .6rem;
+}
+.history-event-desc {
+  line-height: 1.65;
+  color: var(--ink);
+  font-size: .92rem;
+  margin-bottom: 1rem;
+}
+.history-story-box {
+  background: var(--paper-mid);
+  border-left: 4px solid var(--gold);
+  padding: .9rem 1.15rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.history-story-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--gold);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .4rem;
+  font-weight: 600;
+}
+.history-story-text {
+  font-family: var(--font-body);
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  font-size: .88rem;
+}
+.history-members-section {
+  margin-top: 1.1rem;
+  padding-top: .9rem;
+  border-top: 1px dashed var(--paper-rim);
+}
+.history-members-title {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .55rem;
+}
+.history-members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.history-member-chip {
+  font-size: .8rem;
+  padding: .3rem .65rem;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.history-member-chip:hover { border-color: var(--red); color: var(--red); background: var(--paper-mid); }
+.history-member-chip em { font-style: normal; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-dim); }
+.history-member-chip.male-chip { border-left: 3px solid #4a7fb5; }
+.history-member-chip.female-chip { border-left: 3px solid #c76b93; }
+.history-member-empty {
+  font-size: .8rem;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+@media (max-width: 768px) {
+  .history-photo { height: 190px; }
+  .history-marker { min-width: 78px; }
+  .history-content { padding: 1rem; }
+  .history-event-title { font-size: 1.15rem; }
+}
 </style>
 </head>
 <body>
@@ -1648,6 +1881,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
   <button class="tab" onclick="switchTab('costume',this)" data-vi="👘 Trang Phục" data-en="👘 Costumes">👘 Trang Phục</button>
+  <button class="tab" onclick="switchTab('history',this)" data-vi="📜 Lịch Sử" data-en="📜 History">📜 Lịch Sử</button>
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   
 </nav>
@@ -1866,6 +2100,31 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
         <div class="costume-members-note" id="costumeMembersNote"></div>
         <div class="costume-members-list" id="costumeMembersList"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- HISTORY PANEL -->
+  <section class="panel" id="panel-history">
+    <div class="analysis-wrap">
+      <div class="an-page-title" data-vi="Dòng Chảy Lịch Sử" data-en="Threads of History">Dòng Chảy Lịch Sử</div>
+      <div class="an-page-sub" data-vi="Từ buổi dựng nước đến hôm nay — chọn một mốc trên dòng thời gian để xem sự kiện và chuyện kể trong dòng họ" data-en="From the founding era to today — pick a point on the timeline to view the event and the family's story">Từ buổi dựng nước đến hôm nay — chọn một mốc trên dòng thời gian để xem sự kiện và chuyện kể trong dòng họ</div>
+
+      <div class="history-stage">
+        <!-- Representing photo/illustration of the selected era -->
+        <div class="history-photo" id="historyPhoto"></div>
+
+        <!-- Horizontal interactive timeline -->
+        <div class="history-timeline-wrap">
+          <button class="history-scroll-btn" onclick="scrollHistoryTimeline(-1)" aria-label="prev">‹</button>
+          <div class="history-timeline" id="historyTimeline"></div>
+          <button class="history-scroll-btn" onclick="scrollHistoryTimeline(1)" aria-label="next">›</button>
+        </div>
+
+        <!-- Event + family story, right beneath the timeline -->
+        <div class="history-content" id="historyContent"></div>
+      </div>
+
+      <div class="history-note" data-vi="📖 Mục “Chuyện Dòng Họ” hiện đang là nội dung mẫu để minh họa — hãy thay bằng những câu chuyện, ký ức và ảnh thật của gia đình bạn cho từng thời kỳ." data-en="📖 The “Family Story” text below is placeholder/example content — replace it with your own family's real memories, stories and photos for each period.">📖 Mục "Chuyện Dòng Họ" hiện đang là nội dung mẫu để minh họa — hãy thay bằng những câu chuyện, ký ức và ảnh thật của gia đình bạn cho từng thời kỳ.</div>
     </div>
   </section>
   
@@ -2293,6 +2552,12 @@ function toggleLang() {
   // Refresh food tab if active
   if (document.getElementById('panel-food')?.classList.contains('active') && typeof renderFoodStatistics === 'function') {
     renderFoodStatistics();
+  }
+
+  // Refresh history tab if active
+  if (document.getElementById('panel-history')?.classList.contains('active') && typeof renderHistoryTimeline === 'function') {
+    renderHistoryTimeline();
+    selectHistoryEvent(selectedHistoryId, true);
   }
 }
 
@@ -4644,6 +4909,9 @@ function switchTab(tabId, btnEl) {
   if (tabId === 'food') {
     renderFoodStatistics();
   }
+  if (tabId === 'history') {
+    renderHistoryTab();
+  }
 }
 
 // Map key titles to highly relevant graphical visual indicators
@@ -5046,6 +5314,454 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ═══════════════════════════════════════════════════════════
+//  HISTORY TAB — Vietnamese history timeline + family stories
+//  NOTE: the "story_vi/story_en" fields are placeholder/example
+//  text (clearly marked in the UI) meant to be replaced with the
+//  family's own real memories, anecdotes and photos.
+// ═══════════════════════════════════════════════════════════
+const HISTORY_EVENTS = [
+  {
+    id: 'hong-bang', yearStart: -2879, yearEnd: -258,
+    year: 'k. 2879 – 258 TCN', yearEn: 'c. 2879–258 BCE',
+    era_vi: 'Huyền sử', era_en: 'Legendary Era',
+    title_vi: 'Thời Hồng Bàng – Các Vua Hùng dựng nước Văn Lang',
+    title_en: 'The Hồng Bàng Era – The Hùng Kings found Văn Lang',
+    desc_vi: 'Theo truyền thuyết, Lạc Long Quân và Âu Cơ được coi là thủy tổ của người Việt, sinh ra "bọc trăm trứng" là tổ tiên của trăm họ. Mười tám đời Vua Hùng nối nhau dựng nên nhà nước Văn Lang — nhà nước sơ khai đầu tiên được ghi trong sử sách, gắn liền với nền văn minh trống đồng Đông Sơn và nghề trồng lúa nước.',
+    desc_en: 'Legend holds that Lạc Long Quân and Âu Cơ, ancestors of the Vietnamese people, bore a sack of a hundred eggs from which the hundred family lines descended. Eighteen generations of Hùng Kings are said to have ruled Văn Lang, the earliest recorded Vietnamese state, associated with the Đông Sơn bronze-drum civilization and early wet-rice farming.',
+    story_vi: '[Mẫu — hãy thay bằng câu chuyện thật] "Các cụ trong họ Lã thường nhắc đến cội nguồn xa xưa của dân tộc mỗi dịp giỗ Tổ Hùng Vương (mùng 10 tháng 3 âm lịch). Đây là chỗ để bạn kể lại những câu chuyện, tục lệ cúng giỗ Tổ mà gia đình mình vẫn gìn giữ."',
+    story_en: '[Placeholder — replace with your real story] "Elders in the Lã family often spoke of this distant origin during the Hùng Kings\' Commemoration Day. This is the place to add your family\'s own memories or customs tied to honoring ancestral roots."',
+    icon: 'drum', palette: ['#8a6a34', '#3f2f14', '#f0d9a0']
+  },
+  {
+    id: 'au-lac', yearStart: -257, yearEnd: -207,
+    year: '257 – 207 TCN', yearEn: '257–207 BCE',
+    era_vi: 'Huyền sử', era_en: 'Legendary Era',
+    title_vi: 'Nước Âu Lạc – An Dương Vương & thành Cổ Loa',
+    title_en: 'Âu Lạc Kingdom – King An Dương Vương & Cổ Loa Citadel',
+    desc_vi: 'Thục Phán hợp nhất các bộ lạc, lập nên nước Âu Lạc và xưng là An Dương Vương. Ông cho xây thành Cổ Loa hình xoáy ốc — một công trình quân sự độc đáo — gắn với truyền thuyết nỏ thần và mối tình Mỵ Châu – Trọng Thủy.',
+    desc_en: 'Thục Phán unified several tribal groups to found the kingdom of Âu Lạc, taking the title An Dương Vương. He built the spiral-shaped Cổ Loa Citadel, a remarkable military structure tied to the legend of the magic crossbow and the story of Mỵ Châu and Trọng Thủy.',
+    story_vi: '[Mẫu] "Nếu gia đình bạn từng đi thăm di tích Cổ Loa (Đông Anh, Hà Nội), đây là nơi để ghi lại chuyến đi, cảm nhận, hoặc bức ảnh chụp cùng con cháu trước thành cổ."',
+    story_en: '[Placeholder] "If your family has visited the Cổ Loa ruins, this is the place to record that trip, a memory, or a photo taken with the children in front of the old citadel."',
+    icon: 'citadel', palette: ['#6b7a4a', '#26301a', '#dce8b8']
+  },
+  {
+    id: 'bac-thuoc-som', yearStart: -207, yearEnd: 40,
+    year: '207 TCN – 40 SCN', yearEn: '207 BCE – 40 CE',
+    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
+    title_vi: 'Bắc thuộc lần thứ nhất – Triệu Đà & nhà Hán',
+    title_en: 'First Chinese Domination – Triệu Đà & the Han',
+    desc_vi: 'Triệu Đà thôn tính Âu Lạc, lập nước Nam Việt, mở đầu hơn một thiên niên kỷ chịu ảnh hưởng và cai trị từ phương Bắc. Nhà Hán sau đó sáp nhập vùng đất này, đặt quận huyện và thu thuế nặng nề, nhưng cũng là giai đoạn chữ Hán và nhiều kỹ thuật mới du nhập vào.',
+    desc_en: 'Triệu Đà conquered Âu Lạc and founded Nam Việt, opening more than a millennium of northern influence and rule. The Han dynasty later absorbed the region into its administrative system with heavy taxation, while also introducing Chinese script and new techniques.',
+    story_vi: '[Mẫu] "Giai đoạn lịch sử xa xưa này thường chỉ còn trong sách vở — nhưng nếu họ Lã có gia phả, câu chuyện truyền miệng nào về nguồn gốc dòng họ từ thời kỳ này, hãy ghi lại tại đây."',
+    story_en: '[Placeholder] "This distant period usually survives only in books — but if the Lã family has any genealogical record or oral story about its origins from this era, note it here."',
+    icon: 'chain', palette: ['#5a4a3a', '#241c14', '#c9b18a']
+  },
+  {
+    id: 'hai-ba-trung', yearStart: 40, yearEnd: 43,
+    year: '40 – 43 SCN', yearEn: '40–43 CE',
+    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
+    title_vi: 'Khởi nghĩa Hai Bà Trưng',
+    title_en: 'The Trưng Sisters\' Uprising',
+    desc_vi: 'Hai Bà Trưng (Trưng Trắc và Trưng Nhị) dấy binh khởi nghĩa chống nhà Hán, giành lại độc lập trong ba năm và tự xưng vương. Đây là cuộc khởi nghĩa lớn đầu tiên do phụ nữ lãnh đạo trong lịch sử Việt Nam, trở thành biểu tượng bất khuất được thờ phụng đến ngày nay.',
+    desc_en: 'The Trưng sisters (Trưng Trắc and Trưng Nhị) led an uprising against Han rule, winning three years of independence and declaring themselves queens. It was the first major uprising in Vietnamese history led by women, and they remain revered symbols of resistance today.',
+    story_vi: '[Mẫu] "Nhiều gia đình Việt đặt tên con gái để tưởng nhớ tinh thần Hai Bà Trưng. Đây là chỗ để kể về người phụ nữ mạnh mẽ nào trong dòng họ Lã mà con cháu muốn ghi nhớ."',
+    story_en: '[Placeholder] "Many Vietnamese families name daughters in honor of the Trưng Sisters\' spirit. This is the place to write about a strong woman in the Lã family that descendants want to remember."',
+    icon: 'sword', palette: ['#7a2e3a', '#3a1018', '#f0b8bf']
+  },
+  {
+    id: 'ba-trieu-ly-bi', yearStart: 248, yearEnd: 602,
+    year: '248 – 602 SCN', yearEn: '248–602 CE',
+    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
+    title_vi: 'Bà Triệu khởi nghĩa & nước Vạn Xuân của Lý Bí',
+    title_en: 'Lady Triệu\'s Revolt & Lý Bí\'s Vạn Xuân Kingdom',
+    desc_vi: 'Năm 248, Bà Triệu cưỡi voi ra trận chống quân Ngô với câu nói nổi tiếng về ý chí không chịu khom lưng làm tì thiếp. Ba thế kỷ sau, Lý Bí khởi nghĩa thắng lợi, lập nước Vạn Xuân (544) — một trong những lần người Việt giành lại quyền tự chủ trong thời Bắc thuộc.',
+    desc_en: 'In 248, Lady Triệu rode into battle against Wu forces, famously vowing never to bow as a subordinate. Three centuries later, Lý Bí led a successful uprising and founded the short-lived Vạn Xuân Kingdom (544), one of several moments the Vietnamese briefly regained self-rule during Chinese domination.',
+    story_vi: '[Mẫu] "Tinh thần quật cường của Bà Triệu và Lý Nam Đế là nguồn cảm hứng cho nhiều thế hệ. Ghi lại đây câu chuyện gia đình về lòng kiên cường mà con cháu họ Lã học được từ ông bà."',
+    story_en: '[Placeholder] "The defiant spirit of Lady Triệu and Lý Nam Đế inspired many generations. Record here a family story about resilience that the Lã descendants learned from their grandparents."',
+    icon: 'sword', palette: ['#7a2e3a', '#3a1018', '#f0b8bf']
+  },
+  {
+    id: 'bach-dang-938', yearStart: 938, yearEnd: 938,
+    year: '938 SCN', yearEn: '938 CE',
+    era_vi: 'Độc lập', era_en: 'Independence',
+    title_vi: 'Ngô Quyền đại thắng Bạch Đằng, chấm dứt Bắc thuộc',
+    title_en: 'Ngô Quyền\'s Victory at Bạch Đằng Ends Chinese Rule',
+    desc_vi: 'Ngô Quyền cho cắm cọc gỗ nhọn dưới lòng sông Bạch Đằng, lợi dụng thủy triều đánh tan quân Nam Hán, chấm dứt hơn một nghìn năm Bắc thuộc. Chiến thắng này mở ra kỷ nguyên độc lập tự chủ lâu dài cho dân tộc Việt.',
+    desc_en: 'Ngô Quyền planted sharpened stakes beneath the Bạch Đằng River and used the tides to destroy the Southern Han fleet, ending over a thousand years of Chinese domination. The victory opened a long era of independent Vietnamese statehood.',
+    story_vi: '[Mẫu] "Bạch Đằng là một trong những chiến thắng được nhắc đến nhiều nhất trong sử Việt. Đây là nơi kể lại nếu gia đình có dịp đi thăm sông Bạch Đằng hay các lễ hội tưởng niệm liên quan."',
+    story_en: '[Placeholder] "Bạch Đằng is one of the most celebrated victories in Vietnamese history. This is the place to note a family visit to the Bạch Đằng River or related commemorations."',
+    icon: 'river', palette: ['#2a5266', '#0f2430', '#a9d6e5']
+  },
+  {
+    id: 'ly-dynasty', yearStart: 1009, yearEnd: 1225,
+    year: '1009 – 1225', yearEn: '1009–1225',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nhà Lý – Dời đô về Thăng Long',
+    title_en: 'The Lý Dynasty – Moving the Capital to Thăng Long',
+    desc_vi: 'Năm 1010, Lý Thái Tổ ban "Chiếu dời đô", chuyển kinh thành từ Hoa Lư về Đại La và đổi tên thành Thăng Long (nay là Hà Nội). Nhà Lý cũng nhiều lần đánh bại các cuộc xâm lược của nhà Tống, đồng thời phát triển Phật giáo, khoa cử và văn hóa Đại Việt.',
+    desc_en: 'In 1010, Emperor Lý Thái Tổ issued the "Edict on Moving the Capital," relocating the seat of power to Thăng Long, present-day Hanoi. The Lý dynasty repelled Song Chinese invasions while fostering Buddhism, the imperial examination system, and Đại Việt culture.',
+    story_vi: '[Mẫu] "Nếu gia đình có gốc gác từ vùng đất Thăng Long – Hà Nội xưa, đây là chỗ để ghi lại nguồn gốc hoặc kỷ niệm của họ Lã gắn với mảnh đất kinh kỳ nghìn năm."',
+    story_en: '[Placeholder] "If the family has roots in the old Thăng Long–Hanoi area, this is the place to record the Lã family\'s origins or memories tied to this thousand-year capital."',
+    icon: 'citadel', palette: ['#6b4a2e', '#2b1c10', '#e8c98a']
+  },
+  {
+    id: 'tran-dynasty', yearStart: 1225, yearEnd: 1400,
+    year: '1225 – 1400', yearEn: '1225–1400',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nhà Trần – Ba lần đánh bại quân Nguyên Mông',
+    title_en: 'The Trần Dynasty – Three Victories Over the Mongols',
+    desc_vi: 'Dưới sự lãnh đạo của các vua Trần và danh tướng Trần Hưng Đạo, Đại Việt ba lần (1258, 1285, 1288) đánh bại đội quân Nguyên Mông hùng mạnh nhất thời bấy giờ, đỉnh cao là trận Bạch Đằng lần hai. Hội nghị Diên Hồng thể hiện tinh thần đồng lòng "quyết đánh" của toàn dân.',
+    desc_en: 'Under the Trần emperors and general Trần Hưng Đạo, Đại Việt defeated the mighty Mongol armies three times (1258, 1285, 1288), culminating in a second victory at Bạch Đằng. The Diên Hồng assembly became a symbol of the whole nation resolving together to resist invasion.',
+    story_vi: '[Mẫu] "Câu nói \'quyết đánh\' của hội nghị Diên Hồng là bài học về sự đồng lòng. Ghi lại đây một câu chuyện về tinh thần đoàn kết trong họ Lã mà con cháu nên nhớ."',
+    story_en: '[Placeholder] "The Diên Hồng assembly is a lesson in unity. Record here a story about solidarity within the Lã family that descendants should remember."',
+    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
+  },
+  {
+    id: 'lam-son', yearStart: 1407, yearEnd: 1428,
+    year: '1407 – 1428', yearEn: '1407–1428',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Thuộc Minh & Khởi nghĩa Lam Sơn của Lê Lợi',
+    title_en: 'Ming Occupation & Lê Lợi\'s Lam Sơn Uprising',
+    desc_vi: 'Sau khi nhà Hồ sụp đổ, nhà Minh đô hộ Đại Việt trong khoảng 20 năm. Lê Lợi cùng quân sư Nguyễn Trãi phát động khởi nghĩa Lam Sơn (1418–1427), sau mười năm gian khổ đã đánh đuổi quân Minh, lập nên nhà Lê sơ và mở ra thời kỳ độc lập mới.',
+    desc_en: 'After the Hồ dynasty fell, the Ming occupied Đại Việt for roughly two decades. Lê Lợi, with strategist Nguyễn Trãi, launched the Lam Sơn uprising (1418–1427); after ten hard years they expelled Ming forces and founded the Lê dynasty, opening a new era of independence.',
+    story_vi: '[Mẫu] "Bình Ngô Đại Cáo của Nguyễn Trãi là áng văn nổi tiếng về lòng yêu nước. Đây là nơi ghi lại câu chuyện gia đình về sự kiên trì vượt khó mà họ Lã từng trải qua."',
+    story_en: '[Placeholder] "Nguyễn Trãi\'s proclamation of victory is a celebrated piece of patriotic writing. This is the place to record a family story about perseverance the Lã family has lived through."',
+    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
+  },
+  {
+    id: 'le-so', yearStart: 1428, yearEnd: 1527,
+    year: '1428 – 1527', yearEn: '1428–1527',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nhà Lê sơ – Thời thịnh trị Lê Thánh Tông',
+    title_en: 'Early Lê Dynasty – The Prosperous Reign of Lê Thánh Tông',
+    desc_vi: 'Nhà Lê sơ củng cố bộ máy nhà nước, ban hành bộ luật Hồng Đức tiến bộ, mở mang khoa cử và lãnh thổ. Triều Lê Thánh Tông (1460–1497) được xem là một trong những giai đoạn thịnh trị nhất của chế độ quân chủ Việt Nam.',
+    desc_en: 'The early Lê dynasty strengthened state institutions, issued the progressive Hồng Đức legal code, and expanded both the examination system and the nation\'s territory. The reign of Lê Thánh Tông (1460–1497) is regarded as one of the most prosperous periods of Vietnamese monarchy.',
+    story_vi: '[Mẫu] "Nếu gia phả họ Lã có ghi chép về tổ tiên từng đỗ đạt khoa cử hay giữ chức quan trong triều đại này, đây là nơi để lưu lại."',
+    story_en: '[Placeholder] "If the Lã family genealogy records an ancestor who passed imperial exams or held office during this dynasty, this is the place to preserve that record."',
+    icon: 'citadel', palette: ['#6b4a2e', '#2b1c10', '#e8c98a']
+  },
+  {
+    id: 'trinh-nguyen', yearStart: 1533, yearEnd: 1789,
+    year: 'Thế kỷ 16 – 18', yearEn: '16th–18th century',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nam Bắc triều & Trịnh – Nguyễn phân tranh',
+    title_en: 'North–South Division: The Trịnh–Nguyễn Conflict',
+    desc_vi: 'Đất nước trải qua thời kỳ chia cắt kéo dài: trước là Nam triều – Bắc triều, sau là hai họ Trịnh (phía Bắc) và Nguyễn (phía Nam) cát cứ, dùng sông Gianh làm ranh giới suốt hơn 150 năm. Đây cũng là thời kỳ người Việt tiến dần về phương Nam, khai khẩn vùng đất mới.',
+    desc_en: 'The country endured prolonged division: first between the Northern and Southern courts, then between the Trịnh lords (north) and Nguyễn lords (south), using the Gianh River as a border for over 150 years. This era also saw Vietnamese settlers steadily move southward to open new land.',
+    story_vi: '[Mẫu] "Nhiều dòng họ, trong đó có thể có họ Lã, đã di cư về phương Nam trong giai đoạn này. Đây là chỗ ghi lại hành trình di cư hoặc lập nghiệp của tổ tiên nếu gia đình biết rõ."',
+    story_en: '[Placeholder] "Many family lines, possibly including the Lã family, migrated south during this period. This is the place to record an ancestor\'s migration or settlement story if the family knows it."',
+    icon: 'chain', palette: ['#4a4a5a', '#1c1c26', '#c0c0d8']
+  },
+  {
+    id: 'tay-son', yearStart: 1771, yearEnd: 1802,
+    year: '1771 – 1802', yearEn: '1771–1802',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nhà Tây Sơn – Quang Trung đại phá quân Thanh',
+    title_en: 'The Tây Sơn Dynasty – Quang Trung Defeats the Qing',
+    desc_vi: 'Ba anh em nhà Tây Sơn lật đổ cả chúa Trịnh lẫn chúa Nguyễn, tạm thời thống nhất đất nước. Năm 1789, vua Quang Trung (Nguyễn Huệ) thần tốc hành quân ra Bắc, đánh tan 29 vạn quân Thanh chỉ trong vài ngày Tết Kỷ Dậu, một trong những chiến công quân sự lừng lẫy nhất lịch sử Việt Nam.',
+    desc_en: 'The three Tây Sơn brothers overthrew both the Trịnh and Nguyễn lords, briefly reunifying the country. In 1789, Emperor Quang Trung (Nguyễn Huệ) marched north with lightning speed and crushed a 290,000-strong Qing army within days during the Tết holiday — one of Vietnamese history\'s most celebrated military feats.',
+    story_vi: '[Mẫu] "Cuộc hành quân thần tốc của vua Quang Trung là biểu tượng cho ý chí quyết thắng. Đây là nơi kể một câu chuyện về sự quyết đoán, nhanh nhạy trong dòng họ Lã."',
+    story_en: '[Placeholder] "Emperor Quang Trung\'s lightning campaign symbolizes determination to win. This is the place to tell a story about decisiveness within the Lã family."',
+    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
+  },
+  {
+    id: 'nguyen-dynasty', yearStart: 1802, yearEnd: 1945,
+    year: '1802 – 1945', yearEn: '1802–1945',
+    era_vi: 'Quân chủ', era_en: 'Imperial Era',
+    title_vi: 'Nhà Nguyễn – Triều đại quân chủ cuối cùng',
+    title_en: 'The Nguyễn Dynasty – Vietnam\'s Last Imperial Dynasty',
+    desc_vi: 'Nguyễn Ánh lên ngôi lấy hiệu Gia Long năm 1802, thống nhất lãnh thổ từ Bắc chí Nam và đóng đô tại Huế. Đây là triều đại quân chủ cuối cùng của Việt Nam, để lại di sản Cố đô Huế cùng nhiều lễ phục, kiến trúc và nghi lễ cung đình vẫn còn được nhắc đến hôm nay.',
+    desc_en: 'Nguyễn Ánh ascended the throne as Emperor Gia Long in 1802, unifying the country from north to south with its capital at Huế. It was Vietnam\'s final imperial dynasty, leaving behind the heritage of the Huế Imperial City and court traditions still referenced today.',
+    story_vi: '[Mẫu] "Trang phục và phong tục triều Nguyễn được giới thiệu thêm ở mục Trang Phục Truyền Thống. Đây là nơi kể lại nếu tổ tiên họ Lã từng sinh sống hoặc làm việc dưới triều đại này."',
+    story_en: '[Placeholder] "Nguyễn-era costumes are explored further in the Traditional Costumes tab. This is the place to record if Lã ancestors lived or worked during this dynasty."',
+    icon: 'throne', palette: ['#8a6a1e', '#3a2c08', '#f2df9a']
+  },
+  {
+    id: 'phap-thuoc', yearStart: 1858, yearEnd: 1945,
+    year: '1858 – 1945', yearEn: '1858–1945',
+    era_vi: 'Cận đại', era_en: 'Modern Era',
+    title_vi: 'Thời kỳ Pháp thuộc',
+    title_en: 'The French Colonial Period',
+    desc_vi: 'Từ cuộc tấn công Đà Nẵng năm 1858, thực dân Pháp từng bước áp đặt ách đô hộ lên toàn cõi Việt Nam, chia đất nước thành ba kỳ với chế độ cai trị khác nhau. Giai đoạn này chứng kiến nhiều phong trào yêu nước — Cần Vương, Đông Du, Đông Kinh Nghĩa Thục — cùng những biến chuyển sâu sắc về xã hội, giáo dục và văn hóa.',
+    desc_en: 'Beginning with the attack on Đà Nẵng in 1858, French colonial rule gradually spread across Vietnam, dividing the country into three regions under different administrations. The period saw patriotic movements such as Cần Vương, Đông Du, and the Đông Kinh Nghĩa Thục school, alongside sweeping social, educational, and cultural change.',
+    story_vi: '[Mẫu] "Nhiều gia đình Việt có ông bà từng đi học chữ Quốc ngữ hoặc làm việc trong thời Pháp thuộc. Đây là chỗ ghi lại câu chuyện về ông bà tổ tiên họ Lã trong giai đoạn này."',
+    story_en: '[Placeholder] "Many Vietnamese families had grandparents who studied the Quốc Ngữ script or worked during French rule. This is the place to record a Lã ancestor\'s story from this period."',
+    icon: 'colonial', palette: ['#3a5a4a', '#141c18', '#a9d0be']
+  },
+  {
+    id: 'cach-mang-thang-8', yearStart: 1945, yearEnd: 1945,
+    year: '1945', yearEn: '1945',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Cách mạng Tháng Tám & Tuyên ngôn Độc lập',
+    title_en: 'The August Revolution & Declaration of Independence',
+    desc_vi: 'Tháng 8 năm 1945, phong trào Việt Minh lãnh đạo nhân dân tổng khởi nghĩa giành chính quyền trên cả nước. Ngày 2 tháng 9 năm 1945, tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa.',
+    desc_en: 'In August 1945, the Việt Minh movement led a nationwide uprising that seized power across the country. On September 2, 1945, at Ba Đình Square, President Hồ Chí Minh read the Declaration of Independence, founding the Democratic Republic of Vietnam.',
+    story_vi: '[Mẫu] "Nhiều gia đình còn giữ ký ức hoặc kỷ vật từ mùa thu năm 1945. Đây là nơi ghi lại nếu ông bà họ Lã từng chứng kiến hoặc tham gia những sự kiện của giai đoạn lịch sử này."',
+    story_en: '[Placeholder] "Many families still hold memories or keepsakes from that autumn of 1945. This is the place to record if a Lã grandparent witnessed or took part in these events."',
+    icon: 'flag-star', palette: ['#9b2a2a', '#3a0f0f', '#f2c94c']
+  },
+  {
+    id: 'khang-chien-chong-phap', yearStart: 1946, yearEnd: 1954,
+    year: '1946 – 1954', yearEn: '1946–1954',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Kháng chiến chống Pháp & Chiến thắng Điện Biên Phủ',
+    title_en: 'The Resistance War Against France & Victory at Điện Biên Phủ',
+    desc_vi: 'Chiến tranh Đông Dương lần thứ nhất nổ ra khi Pháp quay trở lại tái chiếm Việt Nam. Sau nhiều năm kháng chiến gian khổ, quân và dân Việt Nam giành chiến thắng quyết định tại Điện Biên Phủ năm 1954, dẫn đến việc ký kết Hiệp định Genève và Pháp rút quân.',
+    desc_en: 'The First Indochina War broke out as France sought to reassert colonial control. After years of hard-fought resistance, Vietnamese forces achieved a decisive victory at Điện Biên Phủ in 1954, leading to the Geneva Accords and French withdrawal.',
+    story_vi: '[Mẫu] "Nếu trong họ Lã có người từng tham gia kháng chiến, dân công hỏa tuyến, hay tản cư trong giai đoạn này, đây là nơi trân trọng ghi lại câu chuyện của họ."',
+    story_en: '[Placeholder] "If anyone in the Lã family took part in the resistance, served as a frontline porter, or was displaced during this period, this is the place to honor their story."',
+    icon: 'flag-star', palette: ['#9b2a2a', '#3a0f0f', '#f2c94c']
+  },
+  {
+    id: 'chia-cat-khang-my', yearStart: 1954, yearEnd: 1975,
+    year: '1954 – 1975', yearEn: '1954–1975',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Đất nước chia cắt & Kháng chiến chống Mỹ',
+    title_en: 'National Division & the Resistance War Against the U.S.',
+    desc_vi: 'Hiệp định Genève tạm chia đất nước tại vĩ tuyến 17, dẫn tới hai thập kỷ chiến tranh khốc liệt và đầy mất mát giữa hai miền, với sự tham chiến của nhiều bên. Đây là giai đoạn để lại dấu ấn sâu đậm trong ký ức của hầu hết các gia đình Việt Nam.',
+    desc_en: 'The Geneva Accords temporarily divided the country at the 17th parallel, leading to two decades of intense and costly war between North and South with the involvement of multiple parties. This period left a deep mark on the memory of nearly every Vietnamese family.',
+    story_vi: '[Mẫu] "Đây là giai đoạn nhạy cảm và ý nghĩa với nhiều gia đình. Nếu phù hợp, hãy ghi lại câu chuyện đoàn tụ, chia ly hoặc vượt khó của họ Lã trong những năm tháng này, theo cách gia đình muốn kể."',
+    story_en: '[Placeholder] "This period is sensitive and meaningful for many families. If appropriate, record a story of separation, reunion, or perseverance from the Lã family during these years, told the way your family wants it told."',
+    icon: 'flag-star', palette: ['#9b2a2a', '#3a0f0f', '#f2c94c']
+  },
+  {
+    id: 'thong-nhat-1975', yearStart: 1975, yearEnd: 1975,
+    year: '30/4/1975', yearEn: 'April 30, 1975',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Ngày Thống Nhất đất nước',
+    title_en: 'National Reunification Day',
+    desc_vi: 'Ngày 30 tháng 4 năm 1975 đánh dấu kết thúc chiến tranh và đất nước Việt Nam được thống nhất về một mối sau hơn hai mươi năm chia cắt. Đây là một trong những cột mốc trọng đại nhất trong lịch sử hiện đại Việt Nam, mở ra thời kỳ xây dựng đất nước trong hòa bình.',
+    desc_en: 'April 30, 1975 marked the end of the war and the reunification of Vietnam after more than two decades of division. It stands as one of the most significant milestones in modern Vietnamese history, opening an era of nation-building in peacetime.',
+    story_vi: '[Mẫu] "Nhiều gia đình có ký ức riêng về ngày này — đoàn tụ, trở về quê, hay bắt đầu cuộc sống mới. Đây là nơi họ Lã có thể ghi lại câu chuyện của mình."',
+    story_en: '[Placeholder] "Many families carry their own memory of this day — a reunion, a return home, or the start of a new life. This is the place for the Lã family to record its own story."',
+    icon: 'unity', palette: ['#2d6b3f', '#0f2416', '#bfe6c9']
+  },
+  {
+    id: 'bao-cap', yearStart: 1975, yearEnd: 1986,
+    year: '1975 – 1986', yearEn: '1975–1986',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Thời kỳ bao cấp – Những năm tháng khó khăn',
+    title_en: 'The Subsidy Period – Years of Hardship',
+    desc_vi: 'Sau chiến tranh, đất nước bước vào giai đoạn tái thiết đầy khó khăn với nền kinh tế kế hoạch hóa tập trung, chế độ tem phiếu và nhiều thiếu thốn vật chất. Đây cũng là thời kỳ tinh thần "lá lành đùm lá rách", đùm bọc lẫn nhau được nhiều gia đình Việt Nam nhắc lại với đầy cảm xúc.',
+    desc_en: 'After the war, the country entered a difficult reconstruction period marked by a centrally planned economy, rationing, and material shortages. It was also a time many Vietnamese families recall with deep feeling for the mutual support and solidarity that carried them through hardship.',
+    story_vi: '[Mẫu] "Thời bao cấp là ký ức sống động với thế hệ ông bà, cha mẹ — sổ gạo, tem phiếu, xếp hàng mua nhu yếu phẩm. Đây là nơi ghi lại câu chuyện đời thường nhưng quý giá của họ Lã trong giai đoạn này."',
+    story_en: '[Placeholder] "The subsidy era is a vivid memory for grandparents and parents — ration books, coupons, queuing for basic goods. This is the place to record the Lã family\'s everyday but precious stories from this time."',
+    icon: 'growth', palette: ['#5a5248', '#242018', '#d6cdb8']
+  },
+  {
+    id: 'doi-moi', yearStart: 1986, yearEnd: 2000,
+    year: '1986 – 2000', yearEn: '1986–2000',
+    era_vi: 'Hiện đại', era_en: 'Contemporary Era',
+    title_vi: 'Công cuộc Đổi Mới',
+    title_en: 'The Đổi Mới Reforms',
+    desc_vi: 'Đại hội Đảng lần thứ VI năm 1986 khởi xướng công cuộc Đổi Mới, chuyển đổi từ kinh tế kế hoạch hóa sang kinh tế thị trường định hướng xã hội chủ nghĩa. Đời sống người dân dần được cải thiện, doanh nghiệp tư nhân phát triển, và Việt Nam bắt đầu mở cửa với thế giới.',
+    desc_en: 'The 1986 Party Congress launched the Đổi Mới reforms, shifting from a centrally planned economy toward a socialist-oriented market economy. Living standards gradually improved, private enterprise grew, and Vietnam began opening up to the world.',
+    story_vi: '[Mẫu] "Có thể đây là giai đoạn ông bà, cha mẹ trong họ Lã bắt đầu kinh doanh, đổi nghề, hoặc có những thay đổi lớn trong cuộc sống. Hãy ghi lại câu chuyện khởi đầu ấy."',
+    story_en: '[Placeholder] "This may be the period when Lã parents or grandparents started a business, changed careers, or experienced a major life change. Record the story of that new beginning here."',
+    icon: 'growth', palette: ['#2a6b5a', '#0f2620', '#b8e6d6']
+  },
+  {
+    id: 'hoi-nhap', yearStart: 2000, yearEnd: 2026,
+    year: '2000 – nay', yearEn: '2000–present',
+    era_vi: 'Đương đại', era_en: 'Present Day',
+    title_vi: 'Việt Nam hội nhập & phát triển',
+    title_en: 'Vietnam\'s International Integration & Growth',
+    desc_vi: 'Bước sang thế kỷ 21, Việt Nam gia nhập WTO (2007), mở rộng quan hệ ngoại giao và kinh tế với thế giới, đô thị hóa nhanh chóng và công nghệ số phát triển mạnh mẽ. Đây cũng là giai đoạn nhiều gia đình, trong đó có họ Lã, cùng viết tiếp câu chuyện của mình trong một đất nước đang không ngừng đổi thay.',
+    desc_en: 'Entering the 21st century, Vietnam joined the WTO (2007), expanded diplomatic and economic ties worldwide, and saw rapid urbanization and digital growth. This is also the era in which many families, including the Lã family, continue writing their own story within a rapidly changing nation.',
+    story_vi: '[Mẫu] "Đây là chương vẫn đang được viết tiếp — thế hệ hôm nay của họ Lã đang sống, học tập và làm việc ở đâu? Hãy cập nhật câu chuyện đương đại của gia đình vào đây."',
+    story_en: '[Placeholder] "This chapter is still being written — where is today\'s generation of the Lã family living, studying, and working? Add the family\'s contemporary story here."',
+    icon: 'growth', palette: ['#2a5a8b', '#0f2032', '#b8d6f0']
+  }
+];
+
+let selectedHistoryId = HISTORY_EVENTS[0].id;
+
+function renderHistoryTab() {
+  renderHistoryTimeline();
+  selectHistoryEvent(selectedHistoryId, true);
+}
+
+function renderHistoryTimeline() {
+  const wrap = document.getElementById('historyTimeline');
+  if (!wrap) return;
+  wrap.innerHTML = '<div class="history-timeline-line"></div>' + HISTORY_EVENTS.map(ev => `
+    <div class="history-marker${ev.id === selectedHistoryId ? ' active' : ''}" data-id="${ev.id}" onclick="selectHistoryEvent('${ev.id}')" title="${LANG === 'vi' ? ev.title_vi : ev.title_en}">
+      <div class="history-era-tag">${LANG === 'vi' ? ev.era_vi : ev.era_en}</div>
+      <div class="history-dot"></div>
+      <div class="history-year">${LANG === 'vi' ? ev.year : ev.yearEn}</div>
+    </div>
+  `).join('');
+}
+
+function selectHistoryEvent(id, skipScroll) {
+  const ev = HISTORY_EVENTS.find(e => e.id === id);
+  if (!ev) return;
+  selectedHistoryId = id;
+
+  document.querySelectorAll('.history-marker').forEach(m => m.classList.toggle('active', m.dataset.id === id));
+
+  const photo = document.getElementById('historyPhoto');
+  if (photo) {
+    photo.style.background = `linear-gradient(155deg, ${ev.palette[0]}, ${ev.palette[1]})`;
+    photo.innerHTML = `
+      <div class="history-photo-era">${LANG === 'vi' ? ev.era_vi : ev.era_en}</div>
+      ${historyIcon(ev.icon, ev.palette[2])}
+      <div class="history-photo-label">${LANG === 'vi' ? ev.title_vi : ev.title_en}</div>
+    `;
+  }
+
+  const content = document.getElementById('historyContent');
+  if (content) {
+    const members = getHistoryMembersForEvent(ev);
+    const membersHtml = members.length
+      ? members.map(m => `<span class="history-member-chip${m.sex === 'M' ? ' male-chip' : m.sex === 'F' ? ' female-chip' : ''}" onclick="goToHistoryMember(${m.id})">${m.full_name}${m.lifeLabel ? ` <em>(${m.lifeLabel})</em>` : ''}</span>`).join('')
+      : `<span class="history-member-empty">${LANG === 'vi' ? 'Chưa có thành viên nào trong gia phả có ngày sinh/mất được ghi nhận trùng với giai đoạn này.' : 'No family members with a recorded birth/death date fall within this period yet.'}</span>`;
+
+    content.innerHTML = `
+      <div class="history-event-year">${LANG === 'vi' ? ev.year : ev.yearEn}</div>
+      <div class="history-event-title">${LANG === 'vi' ? ev.title_vi : ev.title_en}</div>
+      <div class="history-event-desc">${LANG === 'vi' ? ev.desc_vi : ev.desc_en}</div>
+      <div class="history-story-box">
+        <div class="history-story-title">${LANG === 'vi' ? '📖 Chuyện Dòng Họ' : '📖 Family Story'}</div>
+        <div class="history-story-text">${LANG === 'vi' ? ev.story_vi : ev.story_en}</div>
+      </div>
+      <div class="history-members-section">
+        <div class="history-members-title">${LANG === 'vi' ? `👪 Thành viên sống trong giai đoạn này${members.length ? ' (' + members.length + ')' : ''}` : `👪 Members who lived during this period${members.length ? ' (' + members.length + ')' : ''}`}</div>
+        <div class="history-members-list">${membersHtml}</div>
+      </div>
+    `;
+  }
+
+  if (!skipScroll) {
+    const activeEl = document.querySelector(`.history-marker[data-id="${id}"]`);
+    if (activeEl) activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+}
+
+function scrollHistoryTimeline(dir) {
+  const wrap = document.getElementById('historyTimeline');
+  if (wrap) wrap.scrollBy({ left: dir * 260, behavior: 'smooth' });
+}
+
+const HISTORY_CURRENT_YEAR = 2026;
+
+// Parses a 'YYYY-MM-DD' (or partial) date string into a year int, or null
+function parseYearFromDate(str) {
+  if (!str) return null;
+  const match = String(str).trim().match(/^(\d{3,4})/);
+  return match ? parseInt(match[1], 10) : null;
+}
+
+// Estimates a [birthYear, deathYear] lifespan for a member from whatever
+// dob/dod data is recorded. Returns null if nothing usable is recorded.
+function memberLifespanRange(m) {
+  const birth = parseYearFromDate(m.dob);
+  const death = parseYearFromDate(m.dod);
+  if (birth && death) return [birth, death];
+  if (birth && !death) return [birth, Math.min(birth + 95, HISTORY_CURRENT_YEAR)];
+  if (!birth && death) return [death - 70, death]; // rough backward estimate
+  return null;
+}
+
+// Finds family members whose (recorded or estimated) lifespan overlaps a
+// given history event's year range. Only members with an actual dob or dod
+// on file are considered — no dates are invented.
+function getHistoryMembersForEvent(ev) {
+  if (!Array.isArray(DB) || !DB.length) return [];
+  const results = [];
+  DB.forEach(m => {
+    if (!m.full_name || m.full_name === 'Unknown') return;
+    const range = memberLifespanRange(m);
+    if (!range) return;
+    const [birth, death] = range;
+    if (birth <= ev.yearEnd && death >= ev.yearStart) {
+      const birthLabel = m.dob ? parseYearFromDate(m.dob) : null;
+      const deathLabel = m.dod ? parseYearFromDate(m.dod) : null;
+      const lifeLabel = birthLabel ? `${birthLabel}${deathLabel ? '–' + deathLabel : ''}` : (deathLabel ? `†${deathLabel}` : '');
+      results.push({ id: m.id, full_name: m.full_name, sex: m.sex, lifeLabel, sortYear: birth });
+    }
+  });
+  results.sort((a, b) => a.sortYear - b.sortYear);
+  return results;
+}
+
+// Navigates to a member's detail card from the History tab
+function goToHistoryMember(id) {
+  selectMember(id);
+  switchTab('detail', document.querySelector('.tab'));
+}
+
+// Symbolic era illustrations (no real photos available — stylized SVG icons stand in for them)
+function historyIcon(key, accent) {
+  const icons = {
+    drum: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="46" fill="none" stroke="${accent}" stroke-width="3"/>
+      <circle cx="60" cy="60" r="32" fill="none" stroke="${accent}" stroke-width="2"/>
+      <circle cx="60" cy="60" r="18" fill="none" stroke="${accent}" stroke-width="2"/>
+      ${Array.from({length:12}).map((_,i)=>{const a=i*30*Math.PI/180;const x1=60+8*Math.cos(a),y1=60+8*Math.sin(a),x2=60+16*Math.cos(a),y2=60+16*Math.sin(a);return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${accent}" stroke-width="2"/>`;}).join('')}
+      <circle cx="60" cy="60" r="6" fill="${accent}"/>
+    </svg>`,
+    citadel: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="22" y="58" width="76" height="40" fill="${accent}" opacity="0.9"/>
+      ${Array.from({length:6}).map((_,i)=>`<rect x="${26+i*12}" y="48" width="8" height="10" fill="${accent}"/>`).join('')}
+      <path d="M52 98 L52 74 Q60 66 68 74 L68 98 Z" fill="none" stroke="#241c10" stroke-width="2"/>
+      <rect x="20" y="98" width="80" height="6" fill="${accent}" opacity="0.7"/>
+    </svg>`,
+    chain: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="45" cy="45" rx="18" ry="12" fill="none" stroke="${accent}" stroke-width="5" transform="rotate(-30 45 45)"/>
+      <ellipse cx="72" cy="68" rx="18" ry="12" fill="none" stroke="${accent}" stroke-width="5" transform="rotate(-30 72 68)"/>
+      <ellipse cx="60" cy="90" rx="16" ry="10" fill="none" stroke="${accent}" stroke-width="5" opacity="0.55" transform="rotate(20 60 90)"/>
+      <line x1="30" y1="20" x2="90" y2="100" stroke="${accent}" stroke-width="2" opacity="0.4" stroke-dasharray="3 5"/>
+    </svg>`,
+    sword: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="95" x2="90" y2="25" stroke="${accent}" stroke-width="5" stroke-linecap="round"/>
+      <line x1="90" y1="95" x2="30" y2="25" stroke="${accent}" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="60" cy="60" r="7" fill="${accent}"/>
+      <path d="M25 90 Q60 78 95 90" fill="none" stroke="${accent}" stroke-width="4" stroke-linecap="round"/>
+    </svg>`,
+    river: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 60 Q30 48 50 60 T90 60 T130 60" fill="none" stroke="${accent}" stroke-width="4" opacity="0.85"/>
+      <path d="M10 78 Q30 66 50 78 T90 78 T130 78" fill="none" stroke="${accent}" stroke-width="3" opacity="0.55"/>
+      ${Array.from({length:5}).map((_,i)=>`<line x1="${30+i*15}" y1="55" x2="${30+i*15}" y2="40" stroke="${accent}" stroke-width="3" stroke-linecap="round"/>`).join('')}
+      <path d="M75 30 L95 30 L88 42 L100 42 L70 46 Z" fill="${accent}" opacity="0.9"/>
+    </svg>`,
+    throne: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M35 100 L35 55 Q35 45 45 45 L75 45 Q85 45 85 55 L85 100" fill="none" stroke="${accent}" stroke-width="4"/>
+      <rect x="30" y="98" width="60" height="8" fill="${accent}"/>
+      <path d="M45 45 L45 20 M60 45 L60 15 M75 45 L75 20" stroke="${accent}" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="60" cy="12" r="6" fill="${accent}"/>
+      <circle cx="45" cy="17" r="4" fill="${accent}"/>
+      <circle cx="75" cy="17" r="4" fill="${accent}"/>
+    </svg>`,
+    colonial: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="35" y1="15" x2="35" y2="105" stroke="${accent}" stroke-width="4"/>
+      <rect x="35" y="20" width="55" height="34" fill="${accent}" opacity="0.85"/>
+      <line x1="20" y1="105" x2="70" y2="105" stroke="${accent}" stroke-width="4" stroke-linecap="round"/>
+    </svg>`,
+    'flag-star': `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="35" y1="12" x2="35" y2="106" stroke="${accent}" stroke-width="4"/>
+      <rect x="35" y="18" width="58" height="36" fill="#9b2a2a"/>
+      <path d="M64 24 L67.5 34 L78 34 L69.5 40.5 L72.5 51 L64 44.5 L55.5 51 L58.5 40.5 L50 34 L60.5 34 Z" fill="${accent}"/>
+      <line x1="20" y1="106" x2="70" y2="106" stroke="${accent}" stroke-width="4" stroke-linecap="round"/>
+    </svg>`,
+    unity: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 75 Q60 30 105 75" fill="none" stroke="${accent}" stroke-width="5" stroke-linecap="round"/>
+      <line x1="15" y1="75" x2="15" y2="95" stroke="${accent}" stroke-width="4"/>
+      <line x1="105" y1="75" x2="105" y2="95" stroke="${accent}" stroke-width="4"/>
+      <path d="M52 58 Q60 48 68 58 Q68 68 60 76 Q52 68 52 58 Z" fill="${accent}"/>
+    </svg>`,
+    growth: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="18" y="70" width="16" height="32" fill="${accent}" opacity="0.85"/>
+      <rect x="42" y="55" width="16" height="47" fill="${accent}" opacity="0.9"/>
+      <rect x="66" y="38" width="16" height="64" fill="${accent}"/>
+      <path d="M18 48 L45 30 L62 40 L92 15" fill="none" stroke="${accent}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M80 15 L92 15 L92 27" fill="none" stroke="${accent}" stroke-width="3" stroke-linecap="round"/>
+    </svg>`
+  };
+  return icons[key] || icons.drum;
+}
 
 // ── START ──
 window.onload = init;
