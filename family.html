@@ -2057,6 +2057,7 @@ function toggleLang() {
   buildStats();
   if (selectedId) renderDetail(selectedId);
   if (document.getElementById('panel-tree').classList.contains('active')) buildTree();
+  if (document.getElementById('panel-food').classList.contains('active')) renderFoodStatistics();
 
   // Update confirm modal buttons
   document.getElementById('confirmTitle').textContent = s('confirmTitle');
@@ -2778,8 +2779,8 @@ function switchTab(id, el) {
   if (id === 'stats')    { buildStats(); renderTable(); }
   if (id === 'tree')     { populateTreeSelect(); buildTree(); }
   if (id === 'analysis') buildAnalysis();
-  // Dynamic Trigger addition:
-  if (tabId === 'calendar') {
+  if (id === 'food')     { renderFoodStatistics(); }
+  if (id === 'calendar') {
     if (typeof initCalendar === 'function') {
       initCalendar();
       }
@@ -4390,42 +4391,6 @@ function monthName(mIdx) {
 // ═══════════════════════════════════════════════════════════
 //  FOOD TAB
 // ═══════════════════════════════════════════════════════════
-// Seed Member Data equipped with localized food vectors
-const SEED_DATA = [
-  {"id":1,"full_name":"Lã Đoan Trang","sex":"F","branch":"Giáp Phòng","food":"Phở Bò, Bánh Mì, Gỏi cuốn"},
-  {"id":2,"full_name":"Lã Phước Cao","sex":"M","branch":"Giáp Phòng","food":"Phở Bò, Cơm Tấm"},
-  {"id":3,"full_name":"Lã Phước Thung","sex":"M","branch":"Giáp Phòng","food":"Bánh Mì, Chè ba màu"},
-  {"id":4,"full_name":"Lã Phước Toàn","sex":"M","branch":"Giáp Phòng","food":"Phở Bò, Lẩu hải sản"},
-  {"id":5,"full_name":"Lã Thị Bé","sex":"F","branch":"Bính Phòng","food":"Cơm Tấm, Gỏi cuốn, Bánh Mì"},
-  {"id":6,"full_name":"Lã Đình Cẩn","sex":"M","branch":"Bính Phòng","food":"Phở Bò, Lẩu hải sản"},
-  {"id":7,"full_name":"Lã Văn Lợi","sex":"M","branch":"Đinh Phòng","food":"Mì Quảng, Bánh Mì"}
-];
-
-function toggleLang() {
-  LANG = LANG === 'vi' ? 'en' : 'vi';
-  document.getElementById('langBtn').textContent = LANG === 'vi' ? 'English' : 'Tiếng Việt';
-
-  document.querySelectorAll('[data-vi][data-en]').forEach(el => {
-    el.textContent = LANG === 'vi' ? el.dataset.vi : el.dataset.en;
-  });
-  
-  if(document.getElementById('panel-food').classList.contains('active')) {
-    renderFoodStatistics();
-  }
-}
-
-function switchTab(tabId, btnEl) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  
-  btnEl.classList.add('active');
-  const targetPanel = document.getElementById('panel-' + tabId);
-  if (targetPanel) targetPanel.classList.add('active');
-
-  if (tabId === 'food') {
-    renderFoodStatistics();
-  }
-}
 
 // Map key titles to highly relevant graphical visual indicators
 function assignFoodVisualEmoji(foodName) {
@@ -4448,15 +4413,18 @@ function renderFoodStatistics() {
 
   const foodRegistry = {};
 
-  // Parse and map member preferences
-  SEED_DATA.forEach(member => {
-    if (!member.food) return;
-    const personalChoices = member.food.split(',').map(item => item.trim());
-    
-    personalChoices.forEach(foodItem => {
+  // Parse and map member preferences from the real family DB.
+  // Each member's `food` field is an array of profile entries ({year, desc})
+  // added via the "Favorite Food" section of their profile.
+  DB.forEach(member => {
+    if (!member.full_name || !member.full_name.trim()) return;
+    if (!Array.isArray(member.food) || !member.food.length) return;
+
+    member.food.forEach(entry => {
+      const foodItem = (entry && entry.desc || '').trim();
       if (!foodItem) return;
       const normalizedKey = foodItem.toLowerCase();
-      
+
       if (!foodRegistry[normalizedKey]) {
         foodRegistry[normalizedKey] = {
           displayName: foodItem,
@@ -4473,7 +4441,10 @@ function renderFoodStatistics() {
   const sortedCollection = Object.values(foodRegistry).sort((a, b) => b.count - a.count);
 
   if (sortedCollection.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">No data entries available.</div>`;
+    const emptyMsg = LANG === 'vi'
+      ? 'Chưa có dữ liệu món ăn yêu thích. Hãy thêm ở mục "🍜 Món ăn yêu thích" trong hồ sơ của từng thành viên.'
+      : 'No favorite food data yet. Add entries via the "🍜 Favorite Food" section on each member\'s profile.';
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">${emptyMsg}</div>`;
     return;
   }
 
