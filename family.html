@@ -1266,6 +1266,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 
 .calendar-day {
   min-height: 95px;
+  min-width: 0;
   background: var(--bg-card);
   padding: 0.4rem;
   display: flex;
@@ -1273,6 +1274,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   justify-content: space-between;
   cursor: pointer;
   transition: background 0.15s;
+  box-sizing: border-box;
 }
 .calendar-day:hover {
   background: rgba(212, 175, 55, 0.04);
@@ -1304,6 +1306,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   flex-direction: column;
   gap: 3px;
   margin-top: 0.3rem;
+  min-width: 0;
 }
 .cal-event {
   font-size: 0.7rem;
@@ -1312,6 +1315,9 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .cal-event.dob { background: rgba(46, 204, 113, 0.12); color: #2ecc71; border-left: 2px solid #2ecc71; }
 .cal-event.dod { background: rgba(231, 76, 60, 0.12); color: #e74c3c; border-left: 2px solid #e74c3c; }
@@ -1349,23 +1355,32 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   .solar-date { font-size: 0.85rem; }
   .lunar-date { font-size: 0.62rem; }
 
-  /* Collapse texts inside cells into tiny compact inline block badges */
+  /* Compact stacked badges so each name gets the full cell width */
   .day-events {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 2px;
     margin-top: 0.15rem;
   }
   .cal-event {
-    padding: 1px 2px;
-    font-size: 0.65rem;
-    width: auto;
-    overflow: visible;
+    padding: 1px 3px;
+    font-size: 0.6rem;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  /* Hide text string names inside the small grid boxes */
-  .cal-event .cal-text {
-    display: none;
+
+  /* Costume tab: stack filters full-width on small screens */
+  .costume-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
   }
+  .costume-filter-group select {
+    min-width: 0;
+    width: 100%;
+  }
+  .costume-filter-bar .btn { align-self: stretch; }
 }
   /* ── FOOD TAB SPECIFIC STYLES ── */
 .food-grid {
@@ -1437,6 +1452,150 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   padding: .15rem 0;
   color: var(--ink-dim);
 }
+
+  /* ── COSTUME TAB SPECIFIC STYLES ── */
+.costume-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  padding: .9rem 1rem;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+}
+.costume-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.costume-filter-group label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+.costume-filter-group select {
+  padding: .4rem .5rem;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--paper-rim);
+  font-size: .82rem;
+  min-width: 170px;
+}
+.costume-filter-bar .btn { align-self: flex-end; }
+
+.costume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
+.costume-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  padding: .9rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.costume-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+}
+.costume-card.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-soft) inset, var(--shadow);
+}
+.costume-img-wrapper {
+  width: 100%;
+  height: 150px;
+  background: var(--paper-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  margin-bottom: .7rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+}
+.costume-img-wrapper:hover { background: var(--paper-rim); }
+.costume-img-wrapper svg { width: 78px; height: auto; }
+.costume-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.costume-desc {
+  font-size: .74rem;
+  color: var(--ink-dim);
+  margin-top: .25rem;
+  min-height: 2.1em;
+}
+.costume-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .3rem;
+  margin-top: .55rem;
+}
+.costume-tag {
+  font-size: .62rem;
+  font-family: var(--font-mono);
+  padding: .12rem .4rem;
+  border-radius: 3px;
+  background: var(--paper-mid);
+  color: var(--ink-dim);
+  border: 1px solid var(--paper-rim);
+}
+
+.costume-members-section {
+  margin-top: 1.6rem;
+  padding: 1rem 1.1rem;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+}
+.costume-members-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.costume-members-note {
+  font-size: .74rem;
+  color: var(--ink-dim);
+  font-style: italic;
+  margin-top: .2rem;
+  margin-bottom: .7rem;
+}
+.costume-members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.costume-member-chip {
+  font-size: .8rem;
+  padding: .3rem .6rem;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.costume-member-chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.costume-member-chip.male { border-left: 3px solid #4a7fb5; }
+.costume-member-chip.female { border-left: 3px solid #c76b93; }
 </style>
 </head>
 <body>
@@ -1488,6 +1647,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
+  <button class="tab" onclick="switchTab('costume',this)" data-vi="👘 Trang Phục" data-en="👘 Costumes">👘 Trang Phục</button>
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   
 </nav>
@@ -1647,9 +1807,71 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
       </div>
     </div>
   </section>
+
+  <!-- TRADITIONAL COSTUME PANEL -->
+  <section class="panel" id="panel-costume">
+    <div class="analysis-wrap">
+      <div class="an-page-title" data-vi="Trang Phục Truyền Thống" data-en="Traditional Costumes">Trang Phục Truyền Thống</div>
+      <div class="an-page-sub" data-vi="Lọc theo thời kỳ, vùng miền, sự kiện lịch sử và giới tính — bấm vào hình để xem thành viên liên quan" data-en="Filter by era, region, historical event and gender — click an image to see related members">Lọc theo thời kỳ, vùng miền, sự kiện lịch sử và giới tính — bấm vào hình để xem thành viên liên quan</div>
+
+      <div class="costume-filter-bar">
+        <div class="costume-filter-group">
+          <label data-vi="Thời kỳ" data-en="Era">Thời kỳ</label>
+          <select id="costumeEraFilter" onchange="renderCostumeGallery()">
+            <option value="" data-vi="Tất cả thời kỳ" data-en="All eras">Tất cả thời kỳ</option>
+            <option value="pre-nguyen" data-vi="Trước triều Nguyễn" data-en="Pre-Nguyễn Dynasty">Trước triều Nguyễn</option>
+            <option value="nguyen" data-vi="Triều Nguyễn (1802–1945)" data-en="Nguyễn Dynasty (1802–1945)">Triều Nguyễn (1802–1945)</option>
+            <option value="colonial" data-vi="Pháp thuộc &amp; Kháng chiến (1945–1975)" data-en="Colonial &amp; Resistance Wars (1945–1975)">Pháp thuộc &amp; Kháng chiến (1945–1975)</option>
+            <option value="modern" data-vi="Hiện đại (1975–nay)" data-en="Modern (1975–present)">Hiện đại (1975–nay)</option>
+          </select>
+        </div>
+        <div class="costume-filter-group">
+          <label data-vi="Vùng miền" data-en="Region">Vùng miền</label>
+          <select id="costumeRegionFilter" onchange="renderCostumeGallery()">
+            <option value="" data-vi="Tất cả vùng miền" data-en="All regions">Tất cả vùng miền</option>
+            <option value="bac" data-vi="Miền Bắc" data-en="Northern Vietnam">Miền Bắc</option>
+            <option value="trung" data-vi="Miền Trung" data-en="Central Vietnam">Miền Trung</option>
+            <option value="nam" data-vi="Miền Nam" data-en="Southern Vietnam">Miền Nam</option>
+          </select>
+        </div>
+        <div class="costume-filter-group">
+          <label data-vi="Sự kiện lịch sử" data-en="Historical Event">Sự kiện lịch sử</label>
+          <select id="costumeEventFilter" onchange="renderCostumeGallery()">
+            <option value="" data-vi="Tất cả sự kiện" data-en="All events">Tất cả sự kiện</option>
+            <option value="trieu-dinh" data-vi="Triều đình phong kiến" data-en="Royal Court">Triều đình phong kiến</option>
+            <option value="quan-doi" data-vi="Quân đội &amp; binh lính" data-en="Military &amp; Soldiers">Quân đội &amp; binh lính</option>
+            <option value="doi-song-dan-gian" data-vi="Đời sống dân gian" data-en="Folk Life">Đời sống dân gian</option>
+            <option value="khang-chien" data-vi="Kháng chiến (1945–1975)" data-en="Resistance Wars (1945–1975)">Kháng chiến (1945–1975)</option>
+            <option value="doi-moi" data-vi="Thời kỳ Đổi Mới" data-en="Đổi Mới &amp; Contemporary">Thời kỳ Đổi Mới</option>
+            <option value="phuc-dung" data-vi="Phong trào phục dựng cổ phục" data-en="Historical Costume Revival">Phong trào phục dựng cổ phục</option>
+          </select>
+        </div>
+        <div class="costume-filter-group">
+          <label data-vi="Giới tính" data-en="Gender">Giới tính</label>
+          <select id="costumeGenderFilter" onchange="renderCostumeGallery()">
+            <option value="" data-vi="Tất cả" data-en="All">Tất cả</option>
+            <option value="F" data-vi="Nữ" data-en="Female">Nữ</option>
+            <option value="M" data-vi="Nam" data-en="Male">Nam</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" onclick="resetCostumeFilters()" data-vi="↺ Đặt lại" data-en="↺ Reset">↺ Đặt lại</button>
+      </div>
+
+      <div class="costume-grid" id="costumeGridContainer">
+        <!-- Dynamically rendered costume cards load here -->
+      </div>
+
+      <div class="costume-members-section" id="costumeMembersSection" style="display:none">
+        <div class="costume-members-title" id="costumeMembersTitle"></div>
+        <div class="costume-members-note" id="costumeMembersNote"></div>
+        <div class="costume-members-list" id="costumeMembersList"></div>
+      </div>
+    </div>
+  </section>
   
   <!-- ADD/EDIT PANEL -->
   <section class="panel" id="panel-add">
+
     <div class="form-wrap">
       <div class="form-heading">
         <span id="formTitle" data-vi="➕ Thêm Thành Viên Mới" data-en="➕ Add New Member">➕ Thêm Thành Viên Mới</span>
@@ -4270,12 +4492,12 @@ function buildCalendar() {
 
     sourceData.forEach(m => {
       if (m.dob && m.dob.includes(`-${currentMMDD}`)) {
-        const ev = { type: 'dob', text: isVi ? `Sinh nhật: ${m.full_name}` : `Birth: ${m.full_name}` };
+        const ev = { type: 'dob', text: m.full_name, memberId: m.id };
         dayEventsArray.push(ev);
         eventContainerHTML += `<div class="cal-event dob">👶<span class="cal-text"> ${m.full_name}</span></div>`;
       }
       if (m.dod && m.dod.includes(`-${currentMMDD}`)) {
-        const ev = { type: 'dod', text: isVi ? `Ngày mất: ${m.full_name}` : `Passing: ${m.full_name}` };
+        const ev = { type: 'dod', text: m.full_name, memberId: m.id };
         dayEventsArray.push(ev);
         eventContainerHTML += `<div class="cal-event dod">🕯️<span class="cal-text"> ${m.full_name}</span></div>`;
       }
@@ -4502,6 +4724,261 @@ function renderFoodStatistics() {
     container.appendChild(card);
   });
 }  
+// ═══════════════════════════════════════════════════════════
+//  TRADITIONAL COSTUME TAB
+// ═══════════════════════════════════════════════════════════
+const COSTUME_DATA = [
+  {
+    id: 'giao-linh', name_vi: 'Áo Giao Lĩnh', name_en: 'Giao Lĩnh Robe',
+    desc_vi: 'Áo cổ chéo, phổ biến thời Lý – Trần', desc_en: 'Cross-collar robe, common in the Lý–Trần era',
+    era: 'pre-nguyen', region: 'all', event: 'trieu-dinh', gender: 'U',
+    svg: { robe:'#8a9a5b', accent:'#4a5a2b', collar:'cross', female:false, headwear:null }
+  },
+  {
+    id: 'tu-than', name_vi: 'Áo Tứ Thân', name_en: 'Áo Tứ Thân (Four-Part Dress)',
+    desc_vi: 'Trang phục nữ dân gian miền Bắc', desc_en: 'Folk dress worn by women in Northern Vietnam',
+    era: 'nguyen', region: 'bac', event: 'doi-song-dan-gian', gender: 'F',
+    svg: { robe:'#7b3f3f', accent:'#3a1f1f', collar:'cross', female:true, headwear:'#2b2118' }
+  },
+  {
+    id: 'ngu-than-nam', name_vi: 'Áo Ngũ Thân (Nam)', name_en: 'Áo Ngũ Thân (Men)',
+    desc_vi: 'Lễ phục nam giới triều Nguyễn', desc_en: "Men's formal robe, Nguyễn Dynasty",
+    era: 'nguyen', region: 'trung', event: 'trieu-dinh', gender: 'M',
+    svg: { robe:'#2b4a6b', accent:'#16283a', collar:'stand', female:false, headwear:'#16283a' }
+  },
+  {
+    id: 'ngu-than-nu', name_vi: 'Áo Ngũ Thân (Nữ)', name_en: 'Áo Ngũ Thân (Women)',
+    desc_vi: 'Lễ phục nữ giới triều Nguyễn', desc_en: "Women's formal robe, Nguyễn Dynasty",
+    era: 'nguyen', region: 'trung', event: 'trieu-dinh', gender: 'F',
+    svg: { robe:'#8a4a6b', accent:'#4a1f36', collar:'stand', female:true, headwear:null }
+  },
+  {
+    id: 'nhat-binh', name_vi: 'Nhật Bình', name_en: 'Nhật Bình Robe',
+    desc_vi: 'Lễ phục hoàng hậu, công chúa triều Nguyễn', desc_en: 'Ceremonial robe of Nguyễn queens & princesses',
+    era: 'nguyen', region: 'trung', event: 'trieu-dinh', gender: 'F',
+    svg: { robe:'#c9a13b', accent:'#7a5a10', collar:'round', female:true, headwear:'#7a5a10' }
+  },
+  {
+    id: 'long-bao', name_vi: 'Long Bào', name_en: 'Dragon Robe',
+    desc_vi: 'Lễ phục hoàng đế triều Nguyễn', desc_en: 'Ceremonial robe of Nguyễn emperors',
+    era: 'nguyen', region: 'trung', event: 'trieu-dinh', gender: 'M',
+    svg: { robe:'#b5842c', accent:'#5c3a10', collar:'round', female:false, headwear:'#5c3a10' }
+  },
+  {
+    id: 'nhung-phuc', name_vi: 'Nhung Phục Binh Lính', name_en: 'Soldier Uniform',
+    desc_vi: 'Trang phục quân đội triều Nguyễn', desc_en: 'Nguyễn Dynasty military attire',
+    era: 'nguyen', region: 'all', event: 'quan-doi', gender: 'M',
+    svg: { robe:'#5a5a4a', accent:'#2b2b20', collar:'stand', female:false, headwear:'#2b2b20' }
+  },
+  {
+    id: 'ao-ba-ba', name_vi: 'Áo Bà Ba', name_en: 'Áo Bà Ba',
+    desc_vi: 'Trang phục dân dã miền Nam', desc_en: 'Everyday folk garment of Southern Vietnam',
+    era: 'colonial', region: 'nam', event: 'doi-song-dan-gian', gender: 'U',
+    svg: { robe:'#3f6b5a', accent:'#1f3a30', collar:'round', female:true, headwear:null }
+  },
+  {
+    id: 'khang-chien', name_vi: 'Trang Phục Kháng Chiến', name_en: 'Resistance-Era Uniform',
+    desc_vi: 'Trang phục thời kháng chiến 1945–1975', desc_en: 'Uniform of the 1945–1975 resistance period',
+    era: 'colonial', region: 'all', event: 'khang-chien', gender: 'U',
+    svg: { robe:'#4a5a3a', accent:'#242e1c', collar:'stand', female:false, headwear:'#242e1c' }
+  },
+  {
+    id: 'ao-dai', name_vi: 'Áo Dài Truyền Thống', name_en: 'Traditional Áo Dài',
+    desc_vi: 'Trang phục truyền thống hiện đại', desc_en: 'Modern Vietnamese national dress',
+    era: 'modern', region: 'all', event: 'doi-moi', gender: 'F',
+    svg: { robe:'#a63b5a', accent:'#5a1a2c', collar:'stand', female:true, headwear:null }
+  },
+  {
+    id: 'ao-dai-cuoi', name_vi: 'Áo Dài Cưới', name_en: 'Wedding Áo Dài',
+    desc_vi: 'Trang phục cưới truyền thống', desc_en: 'Traditional wedding attire',
+    era: 'modern', region: 'all', event: 'doi-moi', gender: 'F',
+    svg: { robe:'#c9364a', accent:'#7a1020', collar:'stand', female:true, headwear:'#c9a13b' }
+  },
+  {
+    id: 'co-phuc', name_vi: 'Cổ Phục Phục Dựng', name_en: 'Revived Historical Costume',
+    desc_vi: 'Phong trào phục dựng Việt phục hiện đại', desc_en: 'Modern historical-costume revival movement',
+    era: 'modern', region: 'all', event: 'phuc-dung', gender: 'U',
+    svg: { robe:'#5a3a7a', accent:'#2b1a3a', collar:'cross', female:false, headwear:'#2b1a3a' }
+  }
+];
+
+// Approximate province → region mapping, based on each member's recorded hometown (address2)
+const COSTUME_PROVINCE_REGION = {
+  'Hải Dương':'bac', 'Quảng Ninh':'bac', 'Hải Hưng':'bac',
+  'Thanh Hóa':'trung', 'Nghệ Tĩnh':'trung', 'Đà Nẵng':'trung', 'Qui Nhơn':'trung', 'Phan Rang':'trung', 'Phú Khánh':'trung',
+  'Hồ Chí Minh':'nam', 'Buôn Mê Thuột':'nam'
+};
+function costumeMemberRegion(m) {
+  const p = (m.address2 || '').trim();
+  return COSTUME_PROVINCE_REGION[p] || null;
+}
+// Approximate era bucket based on generation number — a rough estimate, not verified dates
+function costumeMemberEra(m) {
+  const g = m.generation;
+  if (g === undefined || g === null || isNaN(g)) return null;
+  if (g <= 2) return 'pre-nguyen';
+  if (g <= 4) return 'nguyen';
+  if (g <= 6) return 'colonial';
+  return 'modern';
+}
+
+function costumeSVG(cfg) {
+  const female = !!cfg.female;
+  const bodyPath = female
+    ? "M50 40 C38 40 30 55 30 75 L28 140 C28 150 34 156 44 156 L76 156 C86 156 92 150 92 140 L90 75 C90 55 82 40 70 40 Z"
+    : "M50 38 C36 38 26 54 26 76 L22 145 C22 153 30 158 40 158 L80 158 C90 158 98 153 98 145 L94 76 C94 54 84 38 70 38 Z";
+  const collarPath = cfg.collar === 'cross'
+    ? "M50 40 L60 72 L42 72 Z M70 40 L60 72"
+    : cfg.collar === 'stand'
+    ? "M45 38 Q60 28 75 38 L70 52 L50 52 Z"
+    : "M48 40 Q60 54 72 40";
+  const headwear = cfg.headwear
+    ? `<path d="M40 16 Q60 -3 80 16 L78 23 Q60 8 42 23 Z" fill="${cfg.headwear}"/>`
+    : '';
+  const hair = female
+    ? `<path d="M44 20 Q60 3 76 20 Q78 34 72 40 L48 40 Q42 34 44 20 Z" fill="#2b2118"/>`
+    : `<path d="M45 18 Q60 6 75 18 Q76 24 72 26 L48 26 Q44 24 45 18 Z" fill="#2b2118"/>`;
+  return `<svg viewBox="0 0 120 170" xmlns="http://www.w3.org/2000/svg">
+    <path d="${bodyPath}" fill="${cfg.robe}" stroke="${cfg.accent}" stroke-width="2"/>
+    <path d="${collarPath}" fill="none" stroke="${cfg.accent}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="26" r="16" fill="#f2d3b8"/>
+    ${hair}
+    ${headwear}
+  </svg>`;
+}
+
+let selectedCostumeId = null;
+
+function resetCostumeFilters() {
+  document.getElementById('costumeEraFilter').value = '';
+  document.getElementById('costumeRegionFilter').value = '';
+  document.getElementById('costumeEventFilter').value = '';
+  document.getElementById('costumeGenderFilter').value = '';
+  renderCostumeGallery();
+}
+
+function renderCostumeGallery() {
+  const container = document.getElementById('costumeGridContainer');
+  if (!container) return;
+
+  const eraF = document.getElementById('costumeEraFilter').value;
+  const regionF = document.getElementById('costumeRegionFilter').value;
+  const eventF = document.getElementById('costumeEventFilter').value;
+  const genderF = document.getElementById('costumeGenderFilter').value;
+
+  const isVi = LANG === 'vi';
+  const eraLabels = {
+    'pre-nguyen': isVi ? 'Trước triều Nguyễn' : 'Pre-Nguyễn',
+    'nguyen': isVi ? 'Triều Nguyễn' : 'Nguyễn Dynasty',
+    'colonial': isVi ? 'Pháp thuộc & Kháng chiến' : 'Colonial & Resistance',
+    'modern': isVi ? 'Hiện đại' : 'Modern'
+  };
+  const regionLabels = {
+    'bac': isVi ? 'Miền Bắc' : 'North',
+    'trung': isVi ? 'Miền Trung' : 'Central',
+    'nam': isVi ? 'Miền Nam' : 'South',
+    'all': isVi ? 'Cả nước' : 'Nationwide'
+  };
+  const genderLabels = {
+    'M': isVi ? 'Nam' : 'Male',
+    'F': isVi ? 'Nữ' : 'Female',
+    'U': isVi ? 'Cả hai' : 'Unisex'
+  };
+
+  const list = COSTUME_DATA.filter(c => {
+    if (eraF && c.era !== eraF) return false;
+    if (regionF && c.region !== 'all' && c.region !== regionF) return false;
+    if (eventF && c.event !== eventF) return false;
+    if (genderF && c.gender !== 'U' && c.gender !== genderF) return false;
+    return true;
+  });
+
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">${isVi ? 'Không có trang phục phù hợp với bộ lọc.' : 'No costumes match the selected filters.'}</div>`;
+    document.getElementById('costumeMembersSection').style.display = 'none';
+    selectedCostumeId = null;
+    return;
+  }
+
+  list.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'costume-card' + (c.id === selectedCostumeId ? ' selected' : '');
+    card.innerHTML = `
+      <div class="costume-img-wrapper" title="${isVi ? 'Xem thành viên liên quan' : 'View related members'}">${costumeSVG(c.svg)}</div>
+      <div class="costume-name">${isVi ? c.name_vi : c.name_en}</div>
+      <div class="costume-desc">${isVi ? c.desc_vi : c.desc_en}</div>
+      <div class="costume-tags">
+        <span class="costume-tag">${eraLabels[c.era]}</span>
+        <span class="costume-tag">${regionLabels[c.region]}</span>
+        <span class="costume-tag">${genderLabels[c.gender]}</span>
+      </div>
+    `;
+    card.querySelector('.costume-img-wrapper').addEventListener('click', () => selectCostume(c.id));
+    container.appendChild(card);
+  });
+
+  // Keep the related-members panel in sync with the current gallery/language state
+  if (selectedCostumeId && list.some(c => c.id === selectedCostumeId)) {
+    renderCostumeMembers(selectedCostumeId);
+  } else if (selectedCostumeId) {
+    document.getElementById('costumeMembersSection').style.display = 'none';
+    selectedCostumeId = null;
+  }
+}
+
+function selectCostume(id) {
+  selectedCostumeId = id;
+  renderCostumeGallery();
+  renderCostumeMembers(id);
+  const section = document.getElementById('costumeMembersSection');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function relatedMembersForCostume(costume) {
+  const isVi = LANG === 'vi';
+  const pool = (typeof DB !== 'undefined' ? DB : []).filter(m => m.full_name && m.full_name.trim());
+  const scored = [];
+  pool.forEach(m => {
+    if (costume.gender !== 'U' && m.sex !== costume.gender) return;
+    let score = 0;
+    const region = costumeMemberRegion(m);
+    const era = costumeMemberEra(m);
+    if (costume.region === 'all' || (region && region === costume.region)) score += 1;
+    if (era && era === costume.era) score += 1;
+    if (score > 0) scored.push({ m, score });
+  });
+  scored.sort((a, b) => b.score - a.score || a.m.full_name.localeCompare(b.m.full_name, isVi ? 'vi' : 'en'));
+  return scored.slice(0, 40).map(x => x.m);
+}
+
+function renderCostumeMembers(id) {
+  const costume = COSTUME_DATA.find(c => c.id === id);
+  const section = document.getElementById('costumeMembersSection');
+  const title = document.getElementById('costumeMembersTitle');
+  const note = document.getElementById('costumeMembersNote');
+  const list = document.getElementById('costumeMembersList');
+  if (!costume || !section) return;
+
+  const isVi = LANG === 'vi';
+  section.style.display = 'block';
+  title.textContent = isVi
+    ? `Thành viên liên quan: ${costume.name_vi}`
+    : `Related members: ${costume.name_en}`;
+  note.textContent = isVi
+    ? 'Danh sách ước lượng dựa trên giới tính, vùng miền (theo nguyên quán) và thế hệ — không phải dữ liệu lịch sử xác thực.'
+    : 'Estimated list based on gender, region (per recorded hometown) and generation — not verified historical data.';
+
+  const members = relatedMembersForCostume(costume);
+  if (members.length === 0) {
+    list.innerHTML = `<div style="color:var(--ink-dim); font-style:italic; font-size:.82rem;">${isVi ? 'Không tìm thấy thành viên phù hợp.' : 'No closely related members found.'}</div>`;
+    return;
+  }
+  list.innerHTML = members.map(m => `
+    <span class="costume-member-chip ${m.sex === 'M' ? 'male' : m.sex === 'F' ? 'female' : ''}" onclick="navigateToMemberCard(${m.id})">${m.full_name}</span>
+  `).join('');
+}
+
 // ═══════════════════════════════════════════════════════════
 //  ADMIN AUTH
 // ═══════════════════════════════════════════════════════════
