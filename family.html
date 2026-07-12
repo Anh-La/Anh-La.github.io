@@ -1713,6 +1713,107 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 .costume-member-chip.male { border-left: 3px solid #4a7fb5; }
 .costume-member-chip.female { border-left: 3px solid #c76b93; }
 
+  /* ── SKILLS TAB SPECIFIC STYLES ── */
+.skills-era-section {
+  margin-top: 1.8rem;
+}
+.skills-era-section:first-child {
+  margin-top: 1.2rem;
+}
+.skills-era-head {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: .4rem;
+  margin-bottom: .4rem;
+  flex-wrap: wrap;
+}
+.skills-era-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.skills-era-years {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--gold);
+}
+.skills-era-desc {
+  font-size: .78rem;
+  color: var(--ink-dim);
+  margin-bottom: .8rem;
+  max-width: 70ch;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: .8rem;
+}
+.skills-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: .75rem .9rem;
+  box-shadow: var(--shadow);
+  transition: border-color .15s, transform .15s;
+}
+.skills-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.skills-card.cat-career   { border-left-color: var(--blue-m); }
+.skills-card.cat-education{ border-left-color: var(--green); }
+.skills-card.cat-hobby    { border-left-color: var(--blue-f); }
+.skills-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .4rem;
+  margin-bottom: .3rem;
+}
+.skills-card-name {
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+.skills-card-name:hover { color: var(--gold); text-decoration: underline; }
+.skills-card-year {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+}
+.skills-card-branch {
+  font-size: .68rem;
+  color: var(--ink-dim);
+  margin-bottom: .3rem;
+}
+.skills-card-type {
+  display: inline-block;
+  font-size: .64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  padding: .1rem .4rem;
+  border-radius: 3px;
+  background: var(--paper-mid);
+  color: var(--ink-dim);
+  margin-bottom: .35rem;
+}
+.skills-card-desc {
+  font-size: .8rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.skills-empty-msg {
+  color: var(--ink-dim);
+  font-size: .82rem;
+  font-style: italic;
+  padding: 2rem 0;
+  text-align: center;
+}
+
   /* ── HISTORY TAB SPECIFIC STYLES ── */
 .history-note {
   font-size: .74rem;
@@ -1995,10 +2096,12 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
-  <button class="tab" onclick="switchTab('rituals',this); renderRituals();" data-vi="🏮 Lễ Nghi" data-en="🏮 Rituals">🏮 Lễ Nghi</button>
+  <button class="tab" onclick="switchTab('rituals',this)" data-vi="🏮 Lễ Nghi" data-en="🏮 Rituals">🏮 Lễ Nghi</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
   <button class="tab" onclick="switchTab('costume',this)" data-vi="👘 Trang Phục" data-en="👘 Costumes">👘 Trang Phục</button>
+  <button class="tab" onclick="switchTab('skills',this)" data-vi="🎓 Kỹ Năng" data-en="🎓 Skills">🎓 Kỹ Năng</button>
   <button class="tab" onclick="switchTab('history',this)" data-vi="📜 Lịch Sử" data-en="📜 History">📜 Lịch Sử</button>
+
   <button class="tab admin-only-tab" id="addTab" onclick="switchTab('add',this)" data-vi="➕ Thêm" data-en="➕ Add" style="display:none">➕ Thêm</button>
   
 </nav>
@@ -2243,6 +2346,25 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </section>
 
   <!-- HISTORY PANEL -->
+  <!-- SKILLS PANEL -->
+  <section class="panel" id="panel-skills">
+    <div class="analysis-wrap">
+      <div class="an-page-title" data-vi="Kỹ Năng &amp; Sự Nghiệp Dòng Họ" data-en="Family Skills &amp; Careers">Kỹ Năng &amp; Sự Nghiệp Dòng Họ</div>
+      <div class="an-page-sub" data-vi="Sự nghiệp, học vấn và sở thích của con cháu huyết thống họ Lã, đặt trong bối cảnh các giai đoạn lịch sử &amp; thị trường Việt Nam" data-en="Careers, education and hobbies of the Lã bloodline, set against the backdrop of Vietnam's historical &amp; market eras">Sự nghiệp, học vấn và sở thích của con cháu huyết thống họ Lã, đặt trong bối cảnh các giai đoạn lịch sử &amp; thị trường Việt Nam</div>
+
+      <div class="ritual-cat-bar" id="skillsCatBar">
+        <button class="ritual-cat-btn active" data-cat="" onclick="setSkillsCategory('')" data-vi="Tất cả" data-en="All">Tất cả</button>
+        <button class="ritual-cat-btn" data-cat="career" onclick="setSkillsCategory('career')" data-vi="💼 Sự Nghiệp" data-en="💼 Professional Career">💼 Sự Nghiệp</button>
+        <button class="ritual-cat-btn" data-cat="education" onclick="setSkillsCategory('education')" data-vi="🎓 Học Vấn" data-en="🎓 Education">🎓 Học Vấn</button>
+        <button class="ritual-cat-btn" data-cat="hobby" onclick="setSkillsCategory('hobby')" data-vi="🎨 Sở Thích" data-en="🎨 Hobbies">🎨 Sở Thích</button>
+      </div>
+
+      <div id="skillsEraContainer">
+        <!-- Dynamically rendered era sections + entry cards load here -->
+      </div>
+    </div>
+  </section>
+
   <section class="panel" id="panel-history">
     <div class="analysis-wrap">
       <div class="an-page-title" data-vi="Dòng Chảy Lịch Sử" data-en="Threads of History">Dòng Chảy Lịch Sử</div>
@@ -2702,6 +2824,11 @@ function toggleLang() {
   if (document.getElementById('panel-history')?.classList.contains('active') && typeof renderHistoryTimeline === 'function') {
     renderHistoryTimeline();
     selectHistoryEvent(selectedHistoryId, true);
+  }
+
+  // Refresh skills tab if active
+  if (document.getElementById('panel-skills')?.classList.contains('active') && typeof renderSkillsTab === 'function') {
+    renderSkillsTab();
   }
 }
 
@@ -3425,12 +3552,10 @@ function switchTab(id, el) {
   if (id === 'stats')    { buildStats(); renderTable(); }
   if (id === 'tree')     { populateTreeSelect(); buildTree(); }
   if (id === 'analysis') buildAnalysis();
-  // Dynamic Trigger addition:
-  if (tabId === 'calendar') {
-    if (typeof initCalendar === 'function') {
-      initCalendar();
-      }
-  }
+  if (id === 'food' && typeof renderFoodStatistics === 'function') renderFoodStatistics();
+  if (id === 'history' && typeof renderHistoryTab === 'function') renderHistoryTab();
+  if (id === 'rituals' && typeof renderRituals === 'function') renderRituals();
+  if (id === 'skills' && typeof renderSkillsTab === 'function') renderSkillsTab();
 }
 
 // ── ANALYSIS POPOVER ──
@@ -3577,6 +3702,68 @@ function buildAnalysis() {
     vi ? `Thành viên có mặt ở <strong>${topCities.length} địa phương</strong>. Phổ biến nhất: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
        : `Members recorded across <strong>${topCities.length} location${topCities.length!==1?'s':''}</strong>. Most common: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
   );
+
+  // ── Cross-tab data for the Executive Summary (findings from every other tab) ──
+
+  // Skills tab: work / skills / education / qualifications / hobbies entries
+  const SKILL_FIELD_TYPES = ['work','skills','education','qualifications','hobbies'];
+  let skillsEntryCount = 0;
+  const membersWithSkills = valid.filter(m => SKILL_FIELD_TYPES.some(t => Array.isArray(m[t]) && m[t].length));
+  membersWithSkills.forEach(m => SKILL_FIELD_TYPES.forEach(t => { if (Array.isArray(m[t])) skillsEntryCount += m[t].length; }));
+
+  // Food tab: most popular dish among recorded preferences
+  let topFood = null;
+  if (typeof FOOD_SEED_DATA !== 'undefined') {
+    const foodTally = {};
+    FOOD_SEED_DATA.forEach(fm => {
+      if (!fm.food) return;
+      fm.food.split(',').map(x=>x.trim()).filter(Boolean).forEach(item => {
+        const key = item.toLowerCase();
+        foodTally[key] = foodTally[key] || { name: item, count: 0 };
+        foodTally[key].count++;
+      });
+    });
+    const foodRanked = Object.values(foodTally).sort((a,b)=>b.count-a.count);
+    if (foodRanked.length) topFood = foodRanked[0];
+  }
+
+  // Costume tab: dominant region among recorded member locations
+  let dominantCostumeRegion = null, dominantCostumeCount = 0;
+  if (typeof COSTUME_DATA !== 'undefined' && typeof costumeMemberRegion === 'function') {
+    const regionTally = {};
+    valid.forEach(m => { const r = costumeMemberRegion(m); if (r) regionTally[r] = (regionTally[r]||0)+1; });
+    const regionRanked = Object.entries(regionTally).sort((a,b)=>b[1]-a[1]);
+    if (regionRanked.length) {
+      dominantCostumeRegion = regionRanked[0][0];
+      dominantCostumeCount = COSTUME_DATA.filter(c => c.region === dominantCostumeRegion || c.region === 'all').length;
+    }
+  }
+  const REGION_LABEL = { bac: { vi:'Miền Bắc', en:'Northern Vietnam' }, trung: { vi:'Miền Trung', en:'Central Vietnam' }, nam: { vi:'Miền Nam', en:'Southern Vietnam' } };
+
+  // Rituals/Calendar tab: nearest upcoming ritual date
+  let nextRitual = null;
+  if (typeof RITUAL_DATE_MAP_2026 !== 'undefined' && typeof RITUAL_EVENTS !== 'undefined') {
+    const now = new Date();
+    const todayKey = `${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const dateKeys = Object.keys(RITUAL_DATE_MAP_2026).sort();
+    const hitKey = dateKeys.find(k => k >= todayKey) || dateKeys[0];
+    if (hitKey) {
+      const ids = RITUAL_DATE_MAP_2026[hitKey];
+      const preferredId = ids.find(id => id !== 'cung-ram-mung-mot') || ids[0];
+      const ev = RITUAL_EVENTS.find(e => e.id === preferredId);
+      if (ev) nextRitual = { dateKey: hitKey, ev };
+    }
+  }
+
+  // History tab: the modern Vietnamese market/economic era with the most family activity
+  let peakMarketEra = null, peakMarketCount = 0;
+  if (typeof HISTORY_EVENTS !== 'undefined' && typeof getHistoryMembersForEvent === 'function') {
+    const modernEras = HISTORY_EVENTS.filter(ev => ev.yearStart >= 1858);
+    modernEras.forEach(ev => {
+      const n = getHistoryMembersForEvent(ev).length;
+      if (n > peakMarketCount) { peakMarketCount = n; peakMarketEra = ev; }
+    });
+  }
 
   // ── Helper render functions ──
   const pct = (n, total) => total ? Math.round(n/total*100) : 0;
@@ -5426,25 +5613,6 @@ const FOOD_SEED_DATA = [
   {"id":7,"full_name":"Lã Văn Lợi","sex":"M","branch":"Đinh Phòng","food":"Mì Quảng, Bánh Mì"}
 ];
 
-function switchTab(tabId, btnEl) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  
-  btnEl.classList.add('active');
-  const targetPanel = document.getElementById('panel-' + tabId);
-  if (targetPanel) targetPanel.classList.add('active');
-
-  if (tabId === 'food') {
-    renderFoodStatistics();
-  }
-  if (tabId === 'history') {
-    renderHistoryTab();
-  }
-  if (tabId === 'rituals' && typeof renderRituals === 'function') {
-    renderRituals();
-  }
-}
-
 // Map key titles to highly relevant graphical visual indicators
 function assignFoodVisualEmoji(foodName) {
   const name = foodName.toLowerCase();
@@ -6222,6 +6390,135 @@ function getHistoryMembersForEvent(ev) {
 function goToHistoryMember(id) {
   selectMember(id);
   switchTab('detail', document.querySelector('.tab'));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SKILLS & CAREERS TAB
+//  Aggregates each blood-line member's recorded work, skills,
+//  education, qualifications and hobbies (entered via the
+//  Detailed Profile editor) and groups them chronologically by
+//  Vietnamese historical / market era (reusing HISTORY_EVENTS).
+// ═══════════════════════════════════════════════════════════
+let currentSkillsCategory = '';
+
+// Which profile-entry types feed into each of the three filter categories
+const SKILLS_TYPE_META = {
+  work:           { cat: 'career',    labelVi: 'Sự nghiệp', labelEn: 'Career' },
+  skills:         { cat: 'career',    labelVi: 'Kỹ năng',   labelEn: 'Skill' },
+  education:      { cat: 'education', labelVi: 'Học vấn',   labelEn: 'Education' },
+  qualifications: { cat: 'education', labelVi: 'Bằng cấp',  labelEn: 'Qualification' },
+  hobbies:        { cat: 'hobby',     labelVi: 'Sở thích',  labelEn: 'Hobby' }
+};
+
+function setSkillsCategory(cat) {
+  currentSkillsCategory = cat;
+  document.querySelectorAll('#skillsCatBar .ritual-cat-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+  renderSkillsTab();
+}
+
+// Finds the most specific HISTORY_EVENTS era containing a given year
+function eraForYear(year) {
+  if (!year) return null;
+  return HISTORY_EVENTS.find(ev => year >= ev.yearStart && year <= ev.yearEnd) || null;
+}
+
+function renderSkillsTab() {
+  const container = document.getElementById('skillsEraContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  const isVi = LANG === 'vi';
+
+  // Gather profile entries from blood-line members only
+  const entries = [];
+  if (Array.isArray(DB)) {
+    DB.forEach(m => {
+      if (!m.full_name || m.full_name === 'Unknown') return;
+      if (m.relationship && m.relationship !== 'Blood') return;
+      Object.keys(SKILLS_TYPE_META).forEach(type => {
+        const list = Array.isArray(m[type]) ? m[type] : [];
+        list.forEach(item => {
+          if (!item || !item.desc) return;
+          const meta = SKILLS_TYPE_META[type];
+          if (currentSkillsCategory && meta.cat !== currentSkillsCategory) return;
+          const entryYear = parseYearFromDate(item.year);
+          entries.push({
+            memberId: m.id,
+            name: m.full_name,
+            branch: m.branch || '',
+            cat: meta.cat,
+            typeLabel: isVi ? meta.labelVi : meta.labelEn,
+            year: item.year || '',
+            sortYear: entryYear || parseYearFromDate(m.dob),
+            desc: item.desc
+          });
+        });
+      });
+    });
+  }
+
+  if (!entries.length) {
+    container.innerHTML = `<div class="skills-empty-msg">${isVi
+      ? 'Chưa có dữ liệu sự nghiệp, học vấn hay sở thích nào được ghi nhận. Vào tab 👤 Chi Tiết, chọn một thành viên và bấm ✏️ Sửa để thêm thông tin vào Hồ Sơ Chi Tiết.'
+      : 'No career, education, or hobby entries have been recorded yet. Go to the 👤 Detail tab, select a member and click ✏️ Edit to add entries to their Detailed Profile.'}</div>`;
+    return;
+  }
+
+  // Group entries into their historical era
+  const eraBuckets = new Map();
+  entries.forEach(e => {
+    const era = e.sortYear ? eraForYear(e.sortYear) : null;
+    const key = era ? era.id : 'unknown';
+    if (!eraBuckets.has(key)) eraBuckets.set(key, { era, items: [] });
+    eraBuckets.get(key).items.push(e);
+  });
+
+  // Chronological order, undated entries last
+  const orderedKeys = Array.from(eraBuckets.keys()).sort((a, b) => {
+    if (a === 'unknown') return 1;
+    if (b === 'unknown') return -1;
+    return eraBuckets.get(a).era.yearStart - eraBuckets.get(b).era.yearStart;
+  });
+
+  orderedKeys.forEach(key => {
+    const bucket = eraBuckets.get(key);
+    const section = document.createElement('div');
+    section.className = 'skills-era-section';
+
+    const eraTitle = bucket.era ? (isVi ? bucket.era.title_vi : bucket.era.title_en) : (isVi ? 'Không rõ thời kỳ' : 'Unknown Era');
+    const eraYears = bucket.era ? (isVi ? bucket.era.year : bucket.era.yearEn) : '';
+    const eraDesc  = bucket.era ? (isVi ? bucket.era.desc_vi : bucket.era.desc_en) : '';
+
+    section.innerHTML = `
+      <div class="skills-era-head">
+        <div class="skills-era-title">${eraTitle}</div>
+        ${eraYears ? `<div class="skills-era-years">${eraYears}</div>` : ''}
+      </div>
+      ${eraDesc ? `<div class="skills-era-desc">${eraDesc}</div>` : ''}
+      <div class="skills-grid"></div>
+    `;
+
+    const grid = section.querySelector('.skills-grid');
+    bucket.items
+      .sort((a, b) => (a.sortYear || 0) - (b.sortYear || 0))
+      .forEach(e => {
+        const card = document.createElement('div');
+        card.className = `skills-card cat-${e.cat}`;
+        card.innerHTML = `
+          <div class="skills-card-head">
+            <span class="skills-card-name" onclick="goToHistoryMember(${e.memberId})">${e.name}</span>
+            ${e.year ? `<span class="skills-card-year">${e.year}</span>` : ''}
+          </div>
+          ${e.branch ? `<div class="skills-card-branch">${e.branch}</div>` : ''}
+          <div class="skills-card-type">${e.typeLabel}</div>
+          <div class="skills-card-desc">${e.desc}</div>
+        `;
+        grid.appendChild(card);
+      });
+
+    container.appendChild(section);
+  });
 }
 
 // Symbolic era illustrations (no real photos available — stylized SVG icons stand in for them)
