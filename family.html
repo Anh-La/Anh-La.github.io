@@ -1324,6 +1324,8 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 }
 .cal-event.dob { background: rgba(46, 204, 113, 0.12); color: #2ecc71; border-left: 2px solid #2ecc71; }
 .cal-event.dod { background: rgba(231, 76, 60, 0.12); color: #e74c3c; border-left: 2px solid #e74c3c; }
+.cal-event.ritual { background: rgba(181, 132, 44, 0.14); color: var(--gold); border-left: 2px solid var(--gold); }
+.drawer-item.cal-event.ritual { border-left-color: var(--gold) !important; }
 
 /* Mobile Detail Drawer Styling */
 .calendar-drawer {
@@ -2153,6 +2155,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 
       <div class="ritual-cat-bar" id="ritualCatBar">
         <button class="ritual-cat-btn active" data-cat="" onclick="setRitualCategory('')" data-vi="Tất cả" data-en="All">Tất cả</button>
+        <button class="ritual-cat-btn" data-cat="holiday" onclick="setRitualCategory('holiday')" data-vi="🇻🇳 Ngày Lễ Quốc Gia" data-en="🇻🇳 Public Holidays">🇻🇳 Ngày Lễ Quốc Gia</button>
         <button class="ritual-cat-btn" data-cat="tet" onclick="setRitualCategory('tet')" data-vi="🧧 Tết &amp; Lễ Hội" data-en="🧧 Tết &amp; Festivals">🧧 Tết &amp; Lễ Hội</button>
         <button class="ritual-cat-btn" data-cat="wedding" onclick="setRitualCategory('wedding')" data-vi="💍 Cưới Hỏi" data-en="💍 Weddings">💍 Cưới Hỏi</button>
         <button class="ritual-cat-btn" data-cat="memorial" onclick="setRitualCategory('memorial')" data-vi="🕯️ Giỗ Chạp" data-en="🕯️ Death Memorials">🕯️ Giỗ Chạp</button>
@@ -4794,6 +4797,18 @@ function exportReport() {
 //  MOBILE-OPTIMIZED CALENDAR SYSTEM ENGINE
 // ═══════════════════════════════════════════════════════════
 
+// Exact solar → lunar date map for 2026 (Bính Ngọ), sourced from the official
+// Vietnamese perpetual calendar so every day cell shows the correct âm lịch date
+// (replaces the rough astronomical approximation previously used for this year).
+// Key: "MM-DD" solar → Value: "D/M" lunar day/month.
+const SOLAR2LUNAR_2026 = {"01-01":"13/11","01-02":"14/11","01-03":"15/11","01-04":"16/11","01-05":"17/11","01-06":"18/11","01-07":"19/11","01-08":"20/11","01-09":"21/11","01-10":"22/11","01-11":"23/11","01-12":"24/11","01-13":"25/11","01-14":"26/11","01-15":"27/11","01-16":"28/11","01-17":"29/11","01-18":"30/11","01-19":"1/12","01-20":"2/12","01-21":"3/12","01-22":"4/12","01-23":"5/12","01-24":"6/12","01-25":"7/12","01-26":"8/12","01-27":"9/12","01-28":"10/12","01-29":"11/12","01-30":"12/12","01-31":"13/12","02-01":"14/12","02-02":"15/12","02-03":"16/12","02-04":"17/12","02-05":"18/12","02-06":"19/12","02-07":"20/12","02-08":"21/12","02-09":"22/12","02-10":"23/12","02-11":"24/12","02-12":"25/12","02-13":"26/12","02-14":"27/12","02-15":"28/12","02-16":"29/12","02-17":"1/1","02-18":"2/1","02-19":"3/1","02-20":"4/1","02-21":"5/1","02-22":"6/1","02-23":"7/1","02-24":"8/1","02-25":"9/1","02-26":"10/1","02-27":"11/1","02-28":"12/1","03-01":"13/1","03-02":"14/1","03-03":"15/1","03-04":"16/1","03-05":"17/1","03-06":"18/1","03-07":"19/1","03-08":"20/1","03-09":"21/1","03-10":"22/1","03-11":"23/1","03-12":"24/1","03-13":"25/1","03-14":"26/1","03-15":"27/1","03-16":"28/1","03-17":"29/1","03-18":"30/1","03-19":"1/2","03-20":"2/2","03-21":"3/2","03-22":"4/2","03-23":"5/2","03-24":"6/2","03-25":"7/2","03-26":"8/2","03-27":"9/2","03-28":"10/2","03-29":"11/2","03-30":"12/2","03-31":"13/2","04-01":"14/2","04-02":"15/2","04-03":"16/2","04-04":"17/2","04-05":"18/2","04-06":"19/2","04-07":"20/2","04-08":"21/2","04-09":"22/2","04-10":"23/2","04-11":"24/2","04-12":"25/2","04-13":"26/2","04-14":"27/2","04-15":"28/2","04-16":"29/2","04-17":"1/3","04-18":"2/3","04-19":"3/3","04-20":"4/3","04-21":"5/3","04-22":"6/3","04-23":"7/3","04-24":"8/3","04-25":"9/3","04-26":"10/3","04-27":"11/3","04-28":"12/3","04-29":"13/3","04-30":"14/3","05-01":"15/3","05-02":"16/3","05-03":"17/3","05-04":"18/3","05-05":"19/3","05-06":"20/3","05-07":"21/3","05-08":"22/3","05-09":"23/3","05-10":"24/3","05-11":"25/3","05-12":"26/3","05-13":"27/3","05-14":"28/3","05-15":"29/3","05-16":"30/3","05-17":"1/4","05-18":"2/4","05-19":"3/4","05-20":"4/4","05-21":"5/4","05-22":"6/4","05-23":"7/4","05-24":"8/4","05-25":"9/4","05-26":"10/4","05-27":"11/4","05-28":"12/4","05-29":"13/4","05-30":"14/4","05-31":"15/4","06-01":"16/4","06-02":"17/4","06-03":"18/4","06-04":"19/4","06-05":"20/4","06-06":"21/4","06-07":"22/4","06-08":"23/4","06-09":"24/4","06-10":"25/4","06-11":"26/4","06-12":"27/4","06-13":"28/4","06-14":"29/4","06-15":"1/5","06-16":"2/5","06-17":"3/5","06-18":"4/5","06-19":"5/5","06-20":"6/5","06-21":"7/5","06-22":"8/5","06-23":"9/5","06-24":"10/5","06-25":"11/5","06-26":"12/5","06-27":"13/5","06-28":"14/5","06-29":"15/5","06-30":"16/5","07-01":"17/5","07-02":"18/5","07-03":"19/5","07-04":"20/5","07-05":"21/5","07-06":"22/5","07-07":"23/5","07-08":"24/5","07-09":"25/5","07-10":"26/5","07-11":"27/5","07-12":"28/5","07-13":"29/5","07-14":"1/6","07-15":"2/6","07-16":"3/6","07-17":"4/6","07-18":"5/6","07-19":"6/6","07-20":"7/6","07-21":"8/6","07-22":"9/6","07-23":"10/6","07-24":"11/6","07-25":"12/6","07-26":"13/6","07-27":"14/6","07-28":"15/6","07-29":"16/6","07-30":"17/6","07-31":"18/6","08-01":"19/6","08-02":"20/6","08-03":"21/6","08-04":"22/6","08-05":"23/6","08-06":"24/6","08-07":"25/6","08-08":"26/6","08-09":"27/6","08-10":"28/6","08-11":"29/6","08-12":"1/7","08-13":"2/7","08-14":"3/7","08-15":"4/7","08-16":"5/7","08-17":"6/7","08-18":"7/7","08-19":"8/7","08-20":"9/7","08-21":"10/7","08-22":"11/7","08-23":"12/7","08-24":"13/7","08-25":"14/7","08-26":"15/7","08-27":"16/7","08-28":"17/7","08-29":"18/7","08-30":"19/7","08-31":"20/7","09-01":"21/7","09-02":"22/7","09-03":"23/7","09-04":"24/7","09-05":"25/7","09-06":"26/7","09-07":"27/7","09-08":"28/7","09-09":"29/7","09-10":"30/7","09-11":"1/8","09-12":"2/8","09-13":"3/8","09-14":"4/8","09-15":"5/8","09-16":"6/8","09-17":"7/8","09-18":"8/8","09-19":"9/8","09-20":"10/8","09-21":"11/8","09-22":"12/8","09-23":"13/8","09-24":"14/8","09-25":"15/8","09-26":"16/8","09-27":"17/8","09-28":"18/8","09-29":"19/8","09-30":"20/8","10-01":"21/8","10-02":"22/8","10-03":"23/8","10-04":"24/8","10-05":"25/8","10-06":"26/8","10-07":"27/8","10-08":"28/8","10-09":"29/8","10-10":"1/9","10-11":"2/9","10-12":"3/9","10-13":"4/9","10-14":"5/9","10-15":"6/9","10-16":"7/9","10-17":"8/9","10-18":"9/9","10-19":"10/9","10-20":"11/9","10-21":"12/9","10-22":"13/9","10-23":"14/9","10-24":"15/9","10-25":"16/9","10-26":"17/9","10-27":"18/9","10-28":"19/9","10-29":"20/9","10-30":"21/9","10-31":"22/9","11-01":"23/9","11-02":"24/9","11-03":"25/9","11-04":"26/9","11-05":"27/9","11-06":"28/9","11-07":"29/9","11-08":"30/9","11-09":"1/10","11-10":"2/10","11-11":"3/10","11-12":"4/10","11-13":"5/10","11-14":"6/10","11-15":"7/10","11-16":"8/10","11-17":"9/10","11-18":"10/10","11-19":"11/10","11-20":"12/10","11-21":"13/10","11-22":"14/10","11-23":"15/10","11-24":"16/10","11-25":"17/10","11-26":"18/10","11-27":"19/10","11-28":"20/10","11-29":"21/10","11-30":"22/10","12-01":"23/10","12-02":"24/10","12-03":"25/10","12-04":"26/10","12-05":"27/10","12-06":"28/10","12-07":"29/10","12-08":"30/10","12-09":"1/11","12-10":"2/11","12-11":"3/11","12-12":"4/11","12-13":"5/11","12-14":"6/11","12-15":"7/11","12-16":"8/11","12-17":"9/11","12-18":"10/11","12-19":"11/11","12-20":"12/11","12-21":"13/11","12-22":"14/11","12-23":"15/11","12-24":"16/11","12-25":"17/11","12-26":"18/11","12-27":"19/11","12-28":"20/11","12-29":"21/11","12-30":"22/11","12-31":"23/11"};
+
+// Reverse lookup of every dated Rituals-tab event for 2026: "MM-DD" solar → [ritual ids].
+// Built from the fixed lunar dates of each Tết/Festival & Public Holiday card in
+// RITUAL_EVENTS, converted to their exact 2026 solar dates, so the Calendar tab
+// stays perfectly synchronized with the Rituals tab for the current year.
+const RITUAL_DATE_MAP_2026 = {"01-01":["tet-duong-lich"],"01-03":["cung-ram-mung-mot"],"01-19":["cung-ram-mung-mot"],"02-02":["cung-ram-mung-mot"],"02-10":["ong-cong-ong-tao"],"02-16":["tet-nguyen-dan-nghi-le","giao-thua"],"02-17":["tet-nguyen-dan-nghi-le","tet-nguyen-dan","cung-ram-mung-mot"],"02-18":["tet-nguyen-dan-nghi-le","tet-nguyen-dan"],"02-19":["tet-nguyen-dan-nghi-le","tet-nguyen-dan"],"02-20":["tet-nguyen-dan-nghi-le"],"03-03":["tet-nguyen-tieu","cung-ram-mung-mot"],"03-19":["cung-ram-mung-mot"],"04-02":["cung-ram-mung-mot"],"04-17":["cung-ram-mung-mot"],"04-19":["tet-han-thuc"],"04-26":["gio-to-hung-vuong-nghi-le","gio-to-hung-vuong"],"04-27":["gio-to-hung-vuong-nghi-le"],"04-30":["ngay-giai-phong-mien-nam"],"05-01":["ngay-quoc-te-lao-dong","cung-ram-mung-mot"],"05-17":["cung-ram-mung-mot"],"05-31":["cung-ram-mung-mot"],"06-15":["cung-ram-mung-mot"],"06-19":["tet-doan-ngo"],"06-29":["cung-ram-mung-mot"],"07-14":["cung-ram-mung-mot"],"07-28":["cung-ram-mung-mot"],"08-12":["cung-ram-mung-mot"],"08-26":["le-vu-lan","cung-ram-mung-mot"],"09-02":["ngay-quoc-khanh"],"09-11":["cung-ram-mung-mot"],"09-25":["tet-trung-thu","cung-ram-mung-mot"],"10-10":["cung-ram-mung-mot"],"10-24":["cung-ram-mung-mot"],"11-09":["cung-ram-mung-mot"],"11-23":["cung-ram-mung-mot"],"11-24":["ngay-van-hoa-viet-nam"],"12-09":["cung-ram-mung-mot"],"12-23":["cung-ram-mung-mot"]};
+
 let calCurrentYear = new Date().getFullYear();
 let calCurrentMonth = new Date().getMonth();
 
@@ -4846,6 +4861,13 @@ function navigateMonth(direction) {
 }
 
 function getLunarDateStr(sYear, sMonth, sDay) {
+  // Use the exact, verified conversion table for 2026 (the current calendar year)
+  if (sYear === 2026) {
+    const key = `${String(sMonth + 1).padStart(2, '0')}-${String(sDay).padStart(2, '0')}`;
+    if (SOLAR2LUNAR_2026[key]) return SOLAR2LUNAR_2026[key];
+  }
+
+  // Fallback: rough astronomical approximation for other years
   const msPerDay = 86400000;
   const baseSolar = new Date(1900, 0, 31);
   const targetSolar = new Date(sYear, sMonth, sDay);
@@ -4915,6 +4937,19 @@ function buildCalendar() {
       }
     });
 
+    // Ritual/holiday events from the Rituals tab, synchronized for 2026
+    if (calCurrentYear === 2026 && typeof RITUAL_DATE_MAP_2026 !== 'undefined' && typeof RITUAL_EVENTS !== 'undefined') {
+      const ritualIds = RITUAL_DATE_MAP_2026[currentMMDD] || [];
+      ritualIds.forEach(rid => {
+        const rev = RITUAL_EVENTS.find(r => r.id === rid);
+        if (!rev) return;
+        const rName = isVi ? rev.name_vi : rev.name_en;
+        const ev = { type: 'ritual', text: rName, ritualId: rid };
+        dayEventsArray.push(ev);
+        eventContainerHTML += `<div class="cal-event ritual">${rev.icon}<span class="cal-text"> ${rName}</span></div>`;
+      });
+    }
+
     dayCell.innerHTML = `
       <div class="day-meta">
         <span class="solar-date">${day}</span>
@@ -4963,6 +4998,23 @@ function showDrawerDetails(day, lunarStr, events, isVi) {
   `;
   
   events.forEach(ev => {
+    if (ev.type === 'ritual') {
+      html += `
+        <div class="drawer-item cal-event ritual" 
+             style="cursor: pointer; padding: 0.5rem; margin-bottom: 0.4rem; border-radius: var(--radius); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid;"
+             onclick="navigateToRitual('${ev.ritualId}')">
+          <div>
+            <strong>${isVi ? '🏮 Lễ nghi' : '🏮 Ritual'}:</strong>
+            <span class="cal-text" style="font-weight: 500; margin-left: 0.25rem;">${ev.text}</span>
+          </div>
+          <span style="font-size: 0.7rem; opacity: 0.7; font-family: var(--font-mono);">
+            ${isVi ? 'Xem chi tiết ➔' : 'View ➔'}
+          </span>
+        </div>
+      `;
+      return;
+    }
+
     const badgeClass = ev.type === 'dob' ? 'dob' : 'dod';
     const typeLabel = ev.type === 'dob' 
       ? (isVi ? '🎂 Sinh nhật' : '🎂 Birth') 
@@ -5028,6 +5080,45 @@ function navigateToMemberCard(memberId) {
   }
 }
 
+/**
+ * Helper function to jump from a Calendar day (or drawer) to the matching
+ * event card in the Rituals tab, opening its detail panel automatically.
+ */
+function navigateToRitual(ritualId) {
+  if (!ritualId) return;
+
+  // 1. Switch to the Rituals tab
+  const ritualsTabBtn = document.querySelector('.tabs .tab[onclick*="rituals"]');
+  if (ritualsTabBtn && typeof switchTab === 'function') {
+    switchTab('rituals', ritualsTabBtn);
+  } else {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    const targetPanel = document.getElementById('panel-rituals');
+    if (targetPanel) targetPanel.classList.add('active');
+    if (ritualsTabBtn) ritualsTabBtn.classList.add('active');
+  }
+
+  // 2. Clear any active category filter so the target card is guaranteed to render
+  if (typeof setRitualCategory === 'function') {
+    setRitualCategory('');
+  } else if (typeof renderRituals === 'function') {
+    renderRituals();
+  }
+
+  // 3. Locate the matching card, scroll to it, and open its detail panel
+  setTimeout(() => {
+    const card = document.querySelector(`.ritual-card[data-ritual-id="${ritualId}"]`);
+    if (card) {
+      card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      const detailPanel = card.querySelector('.ritual-detail-panel');
+      if (detailPanel) detailPanel.classList.add('open');
+      card.classList.add('selected-day'); // reuse existing highlight style
+      setTimeout(() => card.classList.remove('selected-day'), 1600);
+    }
+  }, 50);
+}
+
 function monthName(mIdx) {
   return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][mIdx];
 }
@@ -5039,6 +5130,50 @@ function monthName(mIdx) {
 //  RITUAL EVENTS TAB — Vietnamese lunar-year rites & ceremonies
 // ═══════════════════════════════════════════════════════════
 const RITUAL_EVENTS = [
+  // ── Ngày Lễ Quốc Gia (Official Public Holidays — solar & lunar dates for 2026) ──
+  { id:'tet-duong-lich', category:'holiday', icon:'🎊',
+    name_vi:'Tết Dương Lịch', name_en:"New Year's Day",
+    timing_vi:'1/1/2026 (Thứ Năm) — nhằm 13/11 âm lịch năm Ất Tỵ', timing_en:'January 1, 2026 (Thursday) — 13th day, 11th lunar month, Year of the Snake (Ất Tỵ)',
+    desc_vi:'Ngày nghỉ lễ chính thức mở đầu năm dương lịch, người lao động được nghỉ 1 ngày hưởng lương.', desc_en:'The official paid holiday marking the start of the solar calendar year.',
+    detail_vi:'Theo Bộ luật Lao động, đây là 1 trong 7 (nay là 8, tính cả Ngày Văn Hóa Việt Nam) ngày lễ chính thức trong năm. Năm 2026, do liền với cuối tuần, kỳ nghỉ kéo dài 4 ngày (1–4/1).',
+    detail_en:"Under the Labor Code, this is one of Vietnam's official public holidays. In 2026 it falls next to the weekend, creating a 4-day break (Jan 1–4)." },
+  { id:'tet-nguyen-dan-nghi-le', category:'holiday', icon:'🧧',
+    name_vi:'Nghỉ Lễ Tết Nguyên Đán (chính thức)', name_en:'Lunar New Year (Tết) — Official Holiday',
+    timing_vi:'16–20/2/2026 (Thứ Hai–Thứ Sáu) — Giao thừa 29/12 ÂL, Mùng 1 Tết nhằm 1/1 âl năm Bính Ngọ (17/2/2026)', timing_en:'Feb 16–20, 2026 (Mon–Fri) — New Year\'s Eve on 29/12 of the lunar year, with the 1st day of Tết (1/1 lunar, Year of the Horse) on Feb 17, 2026',
+    desc_vi:'Kỳ nghỉ Tết Nguyên Đán chính thức theo quy định Nhà nước, người lao động được nghỉ 5 ngày hưởng lương.', desc_en:"Vietnam's officially mandated Tết holiday period, with 5 paid days off for workers.",
+    detail_vi:'Vì tháng Chạp năm Ất Tỵ không có ngày 30 nên đêm Giao thừa rơi vào 29 tháng Chạp (16/2/2026). Cộng thêm hai ngày cuối tuần liền kề, tổng cộng người lao động có 9 ngày nghỉ liên tục (14–22/2/2026). Doanh nghiệp tư nhân có thể chọn lịch nghỉ linh hoạt (1 ngày cuối năm cũ + 4 ngày đầu năm mới, hoặc các phương án khác) miễn thông báo trước 30 ngày.',
+    detail_en:'Since the 12th lunar month of the outgoing year has no 30th day, New Year\'s Eve falls on the 29th (Feb 16, 2026). Combined with the adjoining weekends, workers get 9 consecutive days off (Feb 14–22, 2026). Private employers may choose flexible arrangements (e.g. 1 day before + 4 days after New Year) with 30 days\' advance notice.' },
+  { id:'gio-to-hung-vuong-nghi-le', category:'holiday', icon:'⛰️',
+    name_vi:'Giỗ Tổ Hùng Vương (chính thức)', name_en:"Hùng Kings' Commemoration Day — Official Holiday",
+    timing_vi:'26/4/2026 (Chủ Nhật), nghỉ bù Thứ Hai 27/4/2026 — nhằm mùng 10/3 âm lịch', timing_en:'April 26, 2026 (Sunday), with a make-up day off on Monday, April 27 — 10th day of the 3rd lunar month',
+    desc_vi:'Quốc lễ tưởng nhớ các Vua Hùng, người lao động được nghỉ 1 ngày hưởng lương.', desc_en:'A national holiday honoring the Hùng Kings, with 1 official paid day off.',
+    detail_vi:'Vì mùng 10/3 âm lịch rơi vào Chủ Nhật, người lao động được nghỉ bù vào Thứ Hai 27/4, tạo thành kỳ nghỉ 3 ngày liên tiếp (25–27/4/2026).',
+    detail_en:'Since the 10th day of the 3rd lunar month falls on a Sunday, workers get a compensatory day off on Monday, April 27, creating a 3-day break (April 25–27, 2026).' },
+  { id:'ngay-giai-phong-mien-nam', category:'holiday', icon:'🚩',
+    name_vi:'Ngày Giải Phóng Miền Nam, Thống Nhất Đất Nước', name_en:'Reunification Day',
+    timing_vi:'30/4/2026 (Thứ Năm) — nhằm 14/3 âm lịch năm Bính Ngọ', timing_en:'April 30, 2026 (Thursday) — 14th day of the 3rd lunar month, Year of the Horse (Bính Ngọ)',
+    desc_vi:'Kỷ niệm ngày thống nhất đất nước năm 1975, người lao động được nghỉ 1 ngày hưởng lương.', desc_en:'Commemorates national reunification in 1975, with 1 official paid day off.',
+    detail_vi:'Liền kề với Ngày Quốc tế Lao động 1/5 và hai ngày cuối tuần, tạo thành kỳ nghỉ 4 ngày liên tiếp (30/4–3/5/2026).',
+    detail_en:"Falling right before International Labor Day (May 1) and the weekend, this creates a 4-day break (April 30–May 3, 2026)." },
+  { id:'ngay-quoc-te-lao-dong', category:'holiday', icon:'⚒️',
+    name_vi:'Ngày Quốc Tế Lao Động', name_en:'International Labor Day',
+    timing_vi:'1/5/2026 (Thứ Sáu) — nhằm 15/3 âm lịch năm Bính Ngọ', timing_en:'May 1, 2026 (Friday) — 15th day of the 3rd lunar month, Year of the Horse (Bính Ngọ)',
+    desc_vi:'Ngày Quốc tế Lao động, người lao động được nghỉ 1 ngày hưởng lương, thường gộp với nghỉ lễ 30/4.', desc_en:'International Workers\' Day, with 1 official paid day off, usually combined with the April 30 holiday.',
+    detail_vi:'Là ngày cuối trong kỳ nghỉ lễ 30/4–1/5, kéo dài đến hết Chủ Nhật 3/5/2026 nhờ liền hai ngày cuối tuần.',
+    detail_en:'The final day of the April 30–May 1 holiday block, extending through Sunday, May 3, 2026 thanks to the adjoining weekend.' },
+  { id:'ngay-quoc-khanh', category:'holiday', icon:'🇻🇳',
+    name_vi:'Ngày Quốc Khánh', name_en:'National Day',
+    timing_vi:'2/9/2026 (Thứ Tư) — nhằm 22/7 âm lịch năm Bính Ngọ', timing_en:'September 2, 2026 (Wednesday) — 22nd day of the 7th lunar month, Year of the Horse (Bính Ngọ)',
+    desc_vi:'Kỷ niệm ngày Bác Hồ đọc Tuyên ngôn Độc lập năm 1945, người lao động được nghỉ 2 ngày hưởng lương.', desc_en:"Commemorates President Hồ Chí Minh's 1945 Declaration of Independence, with 2 official paid days off.",
+    detail_vi:'Nhà nước hoán đổi ngày làm việc (Thứ Hai 31/8 đổi với Thứ Bảy 22/8) để tạo kỳ nghỉ 5 ngày liên tục, từ Thứ Bảy 29/8 đến hết Thứ Tư 2/9/2026.',
+    detail_en:'The government swapped a working day (Monday, Aug 31 with Saturday, Aug 22) to create a 5-day break running from Saturday, Aug 29 through Wednesday, Sept 2, 2026.' },
+  { id:'ngay-van-hoa-viet-nam', category:'holiday', icon:'🎭',
+    name_vi:'Ngày Văn Hóa Việt Nam (mới)', name_en:'Vietnam Culture Day (New)',
+    timing_vi:'24/11/2026 (Thứ Ba) — nhằm 16/10 âm lịch năm Bính Ngọ', timing_en:'November 24, 2026 (Tuesday) — 16th day of the 10th lunar month, Year of the Horse (Bính Ngọ)',
+    desc_vi:'Ngày lễ quốc gia mới được bổ sung theo Nghị quyết 80 của Bộ Chính trị, người lao động được nghỉ 1 ngày hưởng lương.', desc_en:"A newly added national holiday under Politburo Resolution No. 80, with 1 official paid day off.",
+    detail_vi:'Đây là ngày lễ chính thức mới nhất của Việt Nam, chính thức áp dụng từ năm 2026, nâng tổng số ngày nghỉ lễ và Tết trong năm (kể cả cuối tuần và nghỉ bù) lên 26 ngày.',
+    detail_en:"This is Vietnam's newest official holiday, first observed in 2026, bringing the total number of holiday and Tết days off (including weekends and make-up days) to 26 for the year." },
+
   // ── Tết & Lễ Hội (Tết & Festivals) ──
   { id:'tet-nguyen-dan', category:'tet', icon:'🧧',
     name_vi:'Tết Nguyên Đán', name_en:'Lunar New Year (Tết)',
@@ -5235,6 +5370,7 @@ function renderRituals() {
 
   const isVi = LANG === 'vi';
   const catLabels = {
+    holiday:  { vi: 'Ngày Lễ Quốc Gia', en: 'Public Holiday' },
     tet:      { vi: 'Tết & Lễ Hội', en: 'Tết & Festivals' },
     wedding:  { vi: 'Cưới Hỏi',     en: 'Wedding' },
     memorial: { vi: 'Giỗ Chạp',     en: 'Death Memorial' },
@@ -5256,6 +5392,7 @@ function renderRituals() {
   list.forEach(ev => {
     const card = document.createElement('div');
     card.className = 'ritual-card';
+    card.dataset.ritualId = ev.id;
     const cat = catLabels[ev.category];
     card.innerHTML = `
       <div class="ritual-card-head">
