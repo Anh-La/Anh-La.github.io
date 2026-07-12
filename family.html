@@ -6,7 +6,7 @@
 <title>Họ Lã</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS (aligned with Financial Hub) ── */
 :root {
@@ -22,9 +22,9 @@
   --blue-m:     #2a5a8b;
   --blue-f:     #7b3b6e;
   --green:      #2d6b3f;
-  --font-display: 'Lora', Georgia, serif;
-  --font-body:    'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
-  --font-mono:    'DM Mono', 'Courier New', monospace;
+  --font-display: 'Noto Serif', 'Be Vietnam Pro', Georgia, serif;
+  --font-body:    'Be Vietnam Pro', 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:    'Noto Sans Mono', 'Be Vietnam Pro', 'Courier New', monospace;
   --radius:     6px;
   --shadow:     0 1px 4px rgba(0,0,0,.08);
 }
@@ -1302,7 +1302,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   align-items: center;
 }
 .solar-date { font-weight: bold; font-size: 0.95rem; }
-.lunar-date { color: var(--gold-soft); font-size: 0.7rem; font-family: monospace; }
+.lunar-date { color: var(--gold-soft); font-size: 0.7rem; font-family: var(--font-mono); }
 
 .day-events {
   display: flex;
@@ -1376,16 +1376,25 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     white-space: nowrap;
   }
 
-  /* Costume tab: stack filters full-width on small screens */
+  /* Costume tab: compact 2-column grid on small screens */
   .costume-filter-bar {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: stretch;
+    gap: .5rem;
+    padding: .6rem .7rem;
   }
   .costume-filter-group select {
     min-width: 0;
     width: 100%;
+    font-size: .76rem;
+    padding: .3rem .35rem;
   }
-  .costume-filter-bar .btn { align-self: stretch; }
+  .costume-filter-bar .btn {
+    grid-column: 1 / -1;
+    align-self: stretch;
+    margin-top: .1rem;
+  }
 }
   /* ── RITUAL EVENTS TAB SPECIFIC STYLES ── */
 .ritual-cat-bar {
@@ -1574,9 +1583,9 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 1rem;
+  gap: .6rem;
   margin-top: 1.1rem;
-  padding: .9rem 1rem;
+  padding: .6rem .7rem;
   background: var(--paper-mid);
   border: 1px solid var(--paper-rim);
   border-radius: var(--radius);
@@ -1584,25 +1593,25 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 .costume-filter-group {
   display: flex;
   flex-direction: column;
-  gap: .3rem;
+  gap: .2rem;
 }
 .costume-filter-group label {
-  font-size: .68rem;
+  font-size: .64rem;
   text-transform: uppercase;
   letter-spacing: .04em;
   color: var(--ink-dim);
   font-weight: 600;
 }
 .costume-filter-group select {
-  padding: .4rem .5rem;
+  padding: .32rem .4rem;
   border-radius: 4px;
   background: #fff;
   color: var(--ink);
   border: 1px solid var(--paper-rim);
-  font-size: .82rem;
-  min-width: 170px;
+  font-size: .78rem;
+  min-width: 130px;
 }
-.costume-filter-bar .btn { align-self: flex-end; }
+.costume-filter-bar .btn { align-self: flex-end; padding: .32rem .7rem; font-size: .78rem; }
 
 .costume-grid {
   display: grid;
@@ -3556,6 +3565,7 @@ function switchTab(id, el) {
   if (id === 'history' && typeof renderHistoryTab === 'function') renderHistoryTab();
   if (id === 'rituals' && typeof renderRituals === 'function') renderRituals();
   if (id === 'skills' && typeof renderSkillsTab === 'function') renderSkillsTab();
+  if (id === 'costume' && typeof renderCostumeGallery === 'function') renderCostumeGallery();
 }
 
 // ── ANALYSIS POPOVER ──
@@ -3709,7 +3719,8 @@ function buildAnalysis() {
   const SKILL_FIELD_TYPES = ['work','skills','education','qualifications','hobbies'];
   let skillsEntryCount = 0;
   const membersWithSkills = valid.filter(m => SKILL_FIELD_TYPES.some(t => Array.isArray(m[t]) && m[t].length));
-  membersWithSkills.forEach(m => SKILL_FIELD_TYPES.forEach(t => { if (Array.isArray(m[t])) skillsEntryCount += m[t].length; }));
+  const skillsTypeCounts = { work:0, skills:0, education:0, qualifications:0, hobbies:0 };
+  membersWithSkills.forEach(m => SKILL_FIELD_TYPES.forEach(t => { if (Array.isArray(m[t])) { skillsEntryCount += m[t].length; skillsTypeCounts[t] += m[t].length; } }));
 
   // Food tab: most popular dish among recorded preferences
   let topFood = null;
@@ -3909,18 +3920,20 @@ function buildAnalysis() {
   );
 
   // ── Section: Vietnamese historical context ──
-  const activeHistItems = dynOverlap.map(era => {
-    const members = withDobYear.filter(m => { const y=getYear(m); return y>=era.start && y<=era.end; });
-    return { ...era, members };
-  });
+  const activeHistItems = dynOverlap
+    .map(era => {
+      const members = withDobYear.filter(m => { const y=getYear(m); return y>=era.start && y<=era.end; });
+      return { ...era, members };
+    })
+    .filter(era => era.members.length > 0);
 
   const histHTML = card('🏛️', vi ? 'Bối Cảnh Lịch Sử Việt Nam · Historical Context' : 'Historical Context · Bối Cảnh Lịch Sử Việt Nam',
     `<div style="font-size:.77rem;color:var(--ink-dim);margin-bottom:.7rem;line-height:1.55">
        ${vi
-         ? 'Huyết mạch họ Lã được chiếu theo lịch sử các triều đại Việt Nam. Nhấn vào mỗi giai đoạn để xem chi tiết và danh sách thành viên.'
-         : 'The Lã bloodline mapped against Vietnamese dynastic history. Click each era to expand details and family members.'}
+         ? 'Huyết mạch họ Lã được chiếu theo lịch sử các triều đại Việt Nam. Chỉ hiển thị các giai đoạn có thành viên sinh ra. Nhấn vào mỗi giai đoạn để xem chi tiết và danh sách thành viên.'
+         : 'The Lã bloodline mapped against Vietnamese dynastic history. Only eras with recorded member births are shown. Click each era to expand details and family members.'}
      </div>
-     <div class="hist-timeline">
+     ${activeHistItems.length ? `<div class="hist-timeline">
        ${activeHistItems.map(era => `
          <div class="hist-item" data-era="${vi?era.label:era.labelEn}">
            <div class="hist-dot" style="background:${era.color};box-shadow:0 0 0 2px ${era.color}33"></div>
@@ -3928,16 +3941,14 @@ function buildAnalysis() {
              <div class="hist-era">${vi ? era.label : era.labelEn} <span class="hist-toggle">▶</span></div>
              <div class="hist-title" style="color:${era.color}">${vi ? era.nameVi : era.name}</div>
              <div class="hist-body">${era.desc}
-               ${era.members.length
-                 ? `<div class="an-member-drawer">
-                      ${era.members.map(m=>`<span class="an-member-chip" data-id="${m.id}"><span class="chip-gen">G${m.generation}</span>${m.full_name}</span>`).join('')}
-                    </div>`
-                 : `<div style="margin-top:.4rem;font-size:.72rem;color:var(--ink-dim);font-style:italic">${vi?'Chưa có thành viên sinh trong giai đoạn này':'No births recorded in this era'}</div>`}
+               <div class="an-member-drawer">
+                 ${era.members.map(m=>`<span class="an-member-chip" data-id="${m.id}"><span class="chip-gen">G${m.generation}</span>${m.full_name}</span>`).join('')}
+               </div>
              </div>
-             ${era.members.length ? `<div class="hist-overlap" style="cursor:pointer">👥 ${era.members.length} ${vi?'thành viên':'member'}${era.members.length!==1&&!vi?'s':''}</div>` : ''}
+             <div class="hist-overlap" style="cursor:pointer">👥 ${era.members.length} ${vi?'thành viên':'member'}${era.members.length!==1&&!vi?'s':''}</div>
            </div>
          </div>`).join('')}
-     </div>`
+     </div>` : emptyMsg(vi ? 'Chưa có thành viên nào có năm sinh trùng với các giai đoạn lịch sử đã ghi nhận.' : 'No members with recorded birth years fall within the tracked historical eras.')}`
   );
 
   // ── Section: Cultural context ──
@@ -3981,6 +3992,60 @@ function buildAnalysis() {
      </div>`
   );
 
+  // ── Section: Findings from Rituals / Costumes / Food / Skills tabs ──
+  const findingsHTML = card('🧭', vi ? 'Phát Hiện Từ Các Mục Khác · Cross-Tab Findings' : 'Cross-Tab Findings · Phát Hiện Từ Các Mục Khác',
+    `<div class="an-mini-grid" style="margin-bottom:.75rem">
+       <div class="an-mini-card">
+         <div class="an-mini-val">${nextRitual ? '🏮' : '—'}</div>
+         <div class="an-mini-lbl">${vi ? 'Lễ Nghi' : 'Rituals'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val">${dominantCostumeRegion ? '👘' : '—'}</div>
+         <div class="an-mini-lbl">${vi ? 'Trang Phục' : 'Costumes'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val">${topFood ? '🍜' : '—'}</div>
+         <div class="an-mini-lbl">${vi ? 'Món Ăn' : 'Food'}</div>
+       </div>
+       <div class="an-mini-card">
+         <div class="an-mini-val">${skillsEntryCount || '—'}</div>
+         <div class="an-mini-lbl">${vi ? 'Kỹ Năng' : 'Skills'}</div>
+       </div>
+     </div>
+     <div class="an-insight" data-insight="findings-rituals">
+       🏮 <strong>${vi ? 'Lễ Nghi:' : 'Rituals:'}</strong>
+       ${nextRitual
+         ? (vi
+             ? `Lễ/ngày gần nhất trong lịch là <strong>${nextRitual.ev.name_vi}</strong> (${nextRitual.dateKey.replace('-','/')}).`
+             : `The nearest upcoming date on the calendar is <strong>${nextRitual.ev.name_en}</strong> (${nextRitual.dateKey.replace('-','/')}).`)
+         : (vi ? 'Chưa có dữ liệu lễ nghi được ghi nhận.' : 'No ritual/calendar data recorded yet.')}
+     </div>
+     <div class="an-insight" data-insight="findings-costume">
+       👘 <strong>${vi ? 'Trang Phục:' : 'Costumes:'}</strong>
+       ${dominantCostumeRegion
+         ? (vi
+             ? `Phần lớn thành viên có quê quán ở <strong>${REGION_LABEL[dominantCostumeRegion]?.vi || dominantCostumeRegion}</strong>, tương ứng với <strong>${dominantCostumeCount}</strong> bộ trang phục truyền thống liên quan trong mục Trang Phục.`
+             : `Most members' recorded hometowns fall in <strong>${REGION_LABEL[dominantCostumeRegion]?.en || dominantCostumeRegion}</strong>, matching <strong>${dominantCostumeCount}</strong> related costumes in the Costumes tab.`)
+         : (vi ? 'Chưa có đủ dữ liệu quê quán để xác định vùng miền trang phục.' : 'Not enough hometown data to determine a dominant costume region.')}
+     </div>
+     <div class="an-insight" data-insight="findings-food">
+       🍜 <strong>${vi ? 'Món Ăn:' : 'Food:'}</strong>
+       ${topFood
+         ? (vi
+             ? `Món được nhắc đến nhiều nhất trong sở thích ăn uống của gia đình là <strong>${topFood.name}</strong> (${topFood.count} lượt).`
+             : `The most frequently recorded favorite dish across the family is <strong>${topFood.name}</strong> (${topFood.count} mention${topFood.count!==1?'s':''}).`)
+         : (vi ? 'Chưa có dữ liệu món ăn yêu thích.' : 'No favorite-food data recorded yet.')}
+     </div>
+     <div class="an-insight" data-insight="findings-skills">
+       🎓 <strong>${vi ? 'Kỹ Năng:' : 'Skills:'}</strong>
+       ${skillsEntryCount
+         ? (vi
+             ? `<strong>${membersWithSkills.length}</strong> thành viên có tổng cộng <strong>${skillsEntryCount}</strong> mục sự nghiệp/học vấn/sở thích (Sự nghiệp: ${skillsTypeCounts.work}, Kỹ năng: ${skillsTypeCounts.skills}, Học vấn: ${skillsTypeCounts.education}, Bằng cấp: ${skillsTypeCounts.qualifications}, Sở thích: ${skillsTypeCounts.hobbies}).`
+             : `<strong>${membersWithSkills.length}</strong> member${membersWithSkills.length!==1?'s':''} have <strong>${skillsEntryCount}</strong> recorded career/education/hobby entries (Work: ${skillsTypeCounts.work}, Skills: ${skillsTypeCounts.skills}, Education: ${skillsTypeCounts.education}, Qualifications: ${skillsTypeCounts.qualifications}, Hobbies: ${skillsTypeCounts.hobbies}).`)
+         : (vi ? 'Chưa có dữ liệu sự nghiệp, học vấn hay sở thích nào được ghi nhận.' : 'No career, education, or hobby entries have been recorded yet.')}
+     </div>`
+  );
+
   // ── Compose full layout ──
   wrap.innerHTML = `
     <div class="an-section-block">
@@ -3990,7 +4055,11 @@ function buildAnalysis() {
 
     ${insightsHTML}
 
-    <div class="analysis-cols">
+    <div style="margin-top:1rem">
+      ${findingsHTML}
+    </div>
+
+    <div class="analysis-cols" style="margin-top:1rem">
       ${originHTML}
       ${demoHTML}
     </div>
@@ -6021,150 +6090,6 @@ document.addEventListener('DOMContentLoaded', () => {
 //  family's own real memories, anecdotes and photos.
 // ═══════════════════════════════════════════════════════════
 const HISTORY_EVENTS = [
-  {
-    id: 'hong-bang', yearStart: -2879, yearEnd: -258,
-    year: 'k. 2879 – 258 TCN', yearEn: 'c. 2879–258 BCE',
-    era_vi: 'Huyền sử', era_en: 'Legendary Era',
-    title_vi: 'Thời Hồng Bàng – Các Vua Hùng dựng nước Văn Lang',
-    title_en: 'The Hồng Bàng Era – The Hùng Kings found Văn Lang',
-    desc_vi: 'Theo truyền thuyết, Lạc Long Quân và Âu Cơ được coi là thủy tổ của người Việt, sinh ra "bọc trăm trứng" là tổ tiên của trăm họ. Mười tám đời Vua Hùng nối nhau dựng nên nhà nước Văn Lang — nhà nước sơ khai đầu tiên được ghi trong sử sách, gắn liền với nền văn minh trống đồng Đông Sơn và nghề trồng lúa nước.',
-    desc_en: 'Legend holds that Lạc Long Quân and Âu Cơ, ancestors of the Vietnamese people, bore a sack of a hundred eggs from which the hundred family lines descended. Eighteen generations of Hùng Kings are said to have ruled Văn Lang, the earliest recorded Vietnamese state, associated with the Đông Sơn bronze-drum civilization and early wet-rice farming.',
-    story_vi: '[Mẫu — hãy thay bằng câu chuyện thật] "Các cụ trong họ Lã thường nhắc đến cội nguồn xa xưa của dân tộc mỗi dịp giỗ Tổ Hùng Vương (mùng 10 tháng 3 âm lịch). Đây là chỗ để bạn kể lại những câu chuyện, tục lệ cúng giỗ Tổ mà gia đình mình vẫn gìn giữ."',
-    story_en: '[Placeholder — replace with your real story] "Elders in the Lã family often spoke of this distant origin during the Hùng Kings\' Commemoration Day. This is the place to add your family\'s own memories or customs tied to honoring ancestral roots."',
-    icon: 'drum', palette: ['#8a6a34', '#3f2f14', '#f0d9a0']
-  },
-  {
-    id: 'au-lac', yearStart: -257, yearEnd: -207,
-    year: '257 – 207 TCN', yearEn: '257–207 BCE',
-    era_vi: 'Huyền sử', era_en: 'Legendary Era',
-    title_vi: 'Nước Âu Lạc – An Dương Vương & thành Cổ Loa',
-    title_en: 'Âu Lạc Kingdom – King An Dương Vương & Cổ Loa Citadel',
-    desc_vi: 'Thục Phán hợp nhất các bộ lạc, lập nên nước Âu Lạc và xưng là An Dương Vương. Ông cho xây thành Cổ Loa hình xoáy ốc — một công trình quân sự độc đáo — gắn với truyền thuyết nỏ thần và mối tình Mỵ Châu – Trọng Thủy.',
-    desc_en: 'Thục Phán unified several tribal groups to found the kingdom of Âu Lạc, taking the title An Dương Vương. He built the spiral-shaped Cổ Loa Citadel, a remarkable military structure tied to the legend of the magic crossbow and the story of Mỵ Châu and Trọng Thủy.',
-    story_vi: '[Mẫu] "Nếu gia đình bạn từng đi thăm di tích Cổ Loa (Đông Anh, Hà Nội), đây là nơi để ghi lại chuyến đi, cảm nhận, hoặc bức ảnh chụp cùng con cháu trước thành cổ."',
-    story_en: '[Placeholder] "If your family has visited the Cổ Loa ruins, this is the place to record that trip, a memory, or a photo taken with the children in front of the old citadel."',
-    icon: 'citadel', palette: ['#6b7a4a', '#26301a', '#dce8b8']
-  },
-  {
-    id: 'bac-thuoc-som', yearStart: -207, yearEnd: 40,
-    year: '207 TCN – 40 SCN', yearEn: '207 BCE – 40 CE',
-    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
-    title_vi: 'Bắc thuộc lần thứ nhất – Triệu Đà & nhà Hán',
-    title_en: 'First Chinese Domination – Triệu Đà & the Han',
-    desc_vi: 'Triệu Đà thôn tính Âu Lạc, lập nước Nam Việt, mở đầu hơn một thiên niên kỷ chịu ảnh hưởng và cai trị từ phương Bắc. Nhà Hán sau đó sáp nhập vùng đất này, đặt quận huyện và thu thuế nặng nề, nhưng cũng là giai đoạn chữ Hán và nhiều kỹ thuật mới du nhập vào.',
-    desc_en: 'Triệu Đà conquered Âu Lạc and founded Nam Việt, opening more than a millennium of northern influence and rule. The Han dynasty later absorbed the region into its administrative system with heavy taxation, while also introducing Chinese script and new techniques.',
-    story_vi: '[Mẫu] "Giai đoạn lịch sử xa xưa này thường chỉ còn trong sách vở — nhưng nếu họ Lã có gia phả, câu chuyện truyền miệng nào về nguồn gốc dòng họ từ thời kỳ này, hãy ghi lại tại đây."',
-    story_en: '[Placeholder] "This distant period usually survives only in books — but if the Lã family has any genealogical record or oral story about its origins from this era, note it here."',
-    icon: 'chain', palette: ['#5a4a3a', '#241c14', '#c9b18a']
-  },
-  {
-    id: 'hai-ba-trung', yearStart: 40, yearEnd: 43,
-    year: '40 – 43 SCN', yearEn: '40–43 CE',
-    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
-    title_vi: 'Khởi nghĩa Hai Bà Trưng',
-    title_en: 'The Trưng Sisters\' Uprising',
-    desc_vi: 'Hai Bà Trưng (Trưng Trắc và Trưng Nhị) dấy binh khởi nghĩa chống nhà Hán, giành lại độc lập trong ba năm và tự xưng vương. Đây là cuộc khởi nghĩa lớn đầu tiên do phụ nữ lãnh đạo trong lịch sử Việt Nam, trở thành biểu tượng bất khuất được thờ phụng đến ngày nay.',
-    desc_en: 'The Trưng sisters (Trưng Trắc and Trưng Nhị) led an uprising against Han rule, winning three years of independence and declaring themselves queens. It was the first major uprising in Vietnamese history led by women, and they remain revered symbols of resistance today.',
-    story_vi: '[Mẫu] "Nhiều gia đình Việt đặt tên con gái để tưởng nhớ tinh thần Hai Bà Trưng. Đây là chỗ để kể về người phụ nữ mạnh mẽ nào trong dòng họ Lã mà con cháu muốn ghi nhớ."',
-    story_en: '[Placeholder] "Many Vietnamese families name daughters in honor of the Trưng Sisters\' spirit. This is the place to write about a strong woman in the Lã family that descendants want to remember."',
-    icon: 'sword', palette: ['#7a2e3a', '#3a1018', '#f0b8bf']
-  },
-  {
-    id: 'ba-trieu-ly-bi', yearStart: 248, yearEnd: 602,
-    year: '248 – 602 SCN', yearEn: '248–602 CE',
-    era_vi: 'Bắc thuộc', era_en: 'Chinese Rule',
-    title_vi: 'Bà Triệu khởi nghĩa & nước Vạn Xuân của Lý Bí',
-    title_en: 'Lady Triệu\'s Revolt & Lý Bí\'s Vạn Xuân Kingdom',
-    desc_vi: 'Năm 248, Bà Triệu cưỡi voi ra trận chống quân Ngô với câu nói nổi tiếng về ý chí không chịu khom lưng làm tì thiếp. Ba thế kỷ sau, Lý Bí khởi nghĩa thắng lợi, lập nước Vạn Xuân (544) — một trong những lần người Việt giành lại quyền tự chủ trong thời Bắc thuộc.',
-    desc_en: 'In 248, Lady Triệu rode into battle against Wu forces, famously vowing never to bow as a subordinate. Three centuries later, Lý Bí led a successful uprising and founded the short-lived Vạn Xuân Kingdom (544), one of several moments the Vietnamese briefly regained self-rule during Chinese domination.',
-    story_vi: '[Mẫu] "Tinh thần quật cường của Bà Triệu và Lý Nam Đế là nguồn cảm hứng cho nhiều thế hệ. Ghi lại đây câu chuyện gia đình về lòng kiên cường mà con cháu họ Lã học được từ ông bà."',
-    story_en: '[Placeholder] "The defiant spirit of Lady Triệu and Lý Nam Đế inspired many generations. Record here a family story about resilience that the Lã descendants learned from their grandparents."',
-    icon: 'sword', palette: ['#7a2e3a', '#3a1018', '#f0b8bf']
-  },
-  {
-    id: 'bach-dang-938', yearStart: 938, yearEnd: 938,
-    year: '938 SCN', yearEn: '938 CE',
-    era_vi: 'Độc lập', era_en: 'Independence',
-    title_vi: 'Ngô Quyền đại thắng Bạch Đằng, chấm dứt Bắc thuộc',
-    title_en: 'Ngô Quyền\'s Victory at Bạch Đằng Ends Chinese Rule',
-    desc_vi: 'Ngô Quyền cho cắm cọc gỗ nhọn dưới lòng sông Bạch Đằng, lợi dụng thủy triều đánh tan quân Nam Hán, chấm dứt hơn một nghìn năm Bắc thuộc. Chiến thắng này mở ra kỷ nguyên độc lập tự chủ lâu dài cho dân tộc Việt.',
-    desc_en: 'Ngô Quyền planted sharpened stakes beneath the Bạch Đằng River and used the tides to destroy the Southern Han fleet, ending over a thousand years of Chinese domination. The victory opened a long era of independent Vietnamese statehood.',
-    story_vi: '[Mẫu] "Bạch Đằng là một trong những chiến thắng được nhắc đến nhiều nhất trong sử Việt. Đây là nơi kể lại nếu gia đình có dịp đi thăm sông Bạch Đằng hay các lễ hội tưởng niệm liên quan."',
-    story_en: '[Placeholder] "Bạch Đằng is one of the most celebrated victories in Vietnamese history. This is the place to note a family visit to the Bạch Đằng River or related commemorations."',
-    icon: 'river', palette: ['#2a5266', '#0f2430', '#a9d6e5']
-  },
-  {
-    id: 'ly-dynasty', yearStart: 1009, yearEnd: 1225,
-    year: '1009 – 1225', yearEn: '1009–1225',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Nhà Lý – Dời đô về Thăng Long',
-    title_en: 'The Lý Dynasty – Moving the Capital to Thăng Long',
-    desc_vi: 'Năm 1010, Lý Thái Tổ ban "Chiếu dời đô", chuyển kinh thành từ Hoa Lư về Đại La và đổi tên thành Thăng Long (nay là Hà Nội). Nhà Lý cũng nhiều lần đánh bại các cuộc xâm lược của nhà Tống, đồng thời phát triển Phật giáo, khoa cử và văn hóa Đại Việt.',
-    desc_en: 'In 1010, Emperor Lý Thái Tổ issued the "Edict on Moving the Capital," relocating the seat of power to Thăng Long, present-day Hanoi. The Lý dynasty repelled Song Chinese invasions while fostering Buddhism, the imperial examination system, and Đại Việt culture.',
-    story_vi: '[Mẫu] "Nếu gia đình có gốc gác từ vùng đất Thăng Long – Hà Nội xưa, đây là chỗ để ghi lại nguồn gốc hoặc kỷ niệm của họ Lã gắn với mảnh đất kinh kỳ nghìn năm."',
-    story_en: '[Placeholder] "If the family has roots in the old Thăng Long–Hanoi area, this is the place to record the Lã family\'s origins or memories tied to this thousand-year capital."',
-    icon: 'citadel', palette: ['#6b4a2e', '#2b1c10', '#e8c98a']
-  },
-  {
-    id: 'tran-dynasty', yearStart: 1225, yearEnd: 1400,
-    year: '1225 – 1400', yearEn: '1225–1400',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Nhà Trần – Ba lần đánh bại quân Nguyên Mông',
-    title_en: 'The Trần Dynasty – Three Victories Over the Mongols',
-    desc_vi: 'Dưới sự lãnh đạo của các vua Trần và danh tướng Trần Hưng Đạo, Đại Việt ba lần (1258, 1285, 1288) đánh bại đội quân Nguyên Mông hùng mạnh nhất thời bấy giờ, đỉnh cao là trận Bạch Đằng lần hai. Hội nghị Diên Hồng thể hiện tinh thần đồng lòng "quyết đánh" của toàn dân.',
-    desc_en: 'Under the Trần emperors and general Trần Hưng Đạo, Đại Việt defeated the mighty Mongol armies three times (1258, 1285, 1288), culminating in a second victory at Bạch Đằng. The Diên Hồng assembly became a symbol of the whole nation resolving together to resist invasion.',
-    story_vi: '[Mẫu] "Câu nói \'quyết đánh\' của hội nghị Diên Hồng là bài học về sự đồng lòng. Ghi lại đây một câu chuyện về tinh thần đoàn kết trong họ Lã mà con cháu nên nhớ."',
-    story_en: '[Placeholder] "The Diên Hồng assembly is a lesson in unity. Record here a story about solidarity within the Lã family that descendants should remember."',
-    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
-  },
-  {
-    id: 'lam-son', yearStart: 1407, yearEnd: 1428,
-    year: '1407 – 1428', yearEn: '1407–1428',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Thuộc Minh & Khởi nghĩa Lam Sơn của Lê Lợi',
-    title_en: 'Ming Occupation & Lê Lợi\'s Lam Sơn Uprising',
-    desc_vi: 'Sau khi nhà Hồ sụp đổ, nhà Minh đô hộ Đại Việt trong khoảng 20 năm. Lê Lợi cùng quân sư Nguyễn Trãi phát động khởi nghĩa Lam Sơn (1418–1427), sau mười năm gian khổ đã đánh đuổi quân Minh, lập nên nhà Lê sơ và mở ra thời kỳ độc lập mới.',
-    desc_en: 'After the Hồ dynasty fell, the Ming occupied Đại Việt for roughly two decades. Lê Lợi, with strategist Nguyễn Trãi, launched the Lam Sơn uprising (1418–1427); after ten hard years they expelled Ming forces and founded the Lê dynasty, opening a new era of independence.',
-    story_vi: '[Mẫu] "Bình Ngô Đại Cáo của Nguyễn Trãi là áng văn nổi tiếng về lòng yêu nước. Đây là nơi ghi lại câu chuyện gia đình về sự kiên trì vượt khó mà họ Lã từng trải qua."',
-    story_en: '[Placeholder] "Nguyễn Trãi\'s proclamation of victory is a celebrated piece of patriotic writing. This is the place to record a family story about perseverance the Lã family has lived through."',
-    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
-  },
-  {
-    id: 'le-so', yearStart: 1428, yearEnd: 1527,
-    year: '1428 – 1527', yearEn: '1428–1527',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Nhà Lê sơ – Thời thịnh trị Lê Thánh Tông',
-    title_en: 'Early Lê Dynasty – The Prosperous Reign of Lê Thánh Tông',
-    desc_vi: 'Nhà Lê sơ củng cố bộ máy nhà nước, ban hành bộ luật Hồng Đức tiến bộ, mở mang khoa cử và lãnh thổ. Triều Lê Thánh Tông (1460–1497) được xem là một trong những giai đoạn thịnh trị nhất của chế độ quân chủ Việt Nam.',
-    desc_en: 'The early Lê dynasty strengthened state institutions, issued the progressive Hồng Đức legal code, and expanded both the examination system and the nation\'s territory. The reign of Lê Thánh Tông (1460–1497) is regarded as one of the most prosperous periods of Vietnamese monarchy.',
-    story_vi: '[Mẫu] "Nếu gia phả họ Lã có ghi chép về tổ tiên từng đỗ đạt khoa cử hay giữ chức quan trong triều đại này, đây là nơi để lưu lại."',
-    story_en: '[Placeholder] "If the Lã family genealogy records an ancestor who passed imperial exams or held office during this dynasty, this is the place to preserve that record."',
-    icon: 'citadel', palette: ['#6b4a2e', '#2b1c10', '#e8c98a']
-  },
-  {
-    id: 'trinh-nguyen', yearStart: 1533, yearEnd: 1789,
-    year: 'Thế kỷ 16 – 18', yearEn: '16th–18th century',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Nam Bắc triều & Trịnh – Nguyễn phân tranh',
-    title_en: 'North–South Division: The Trịnh–Nguyễn Conflict',
-    desc_vi: 'Đất nước trải qua thời kỳ chia cắt kéo dài: trước là Nam triều – Bắc triều, sau là hai họ Trịnh (phía Bắc) và Nguyễn (phía Nam) cát cứ, dùng sông Gianh làm ranh giới suốt hơn 150 năm. Đây cũng là thời kỳ người Việt tiến dần về phương Nam, khai khẩn vùng đất mới.',
-    desc_en: 'The country endured prolonged division: first between the Northern and Southern courts, then between the Trịnh lords (north) and Nguyễn lords (south), using the Gianh River as a border for over 150 years. This era also saw Vietnamese settlers steadily move southward to open new land.',
-    story_vi: '[Mẫu] "Nhiều dòng họ, trong đó có thể có họ Lã, đã di cư về phương Nam trong giai đoạn này. Đây là chỗ ghi lại hành trình di cư hoặc lập nghiệp của tổ tiên nếu gia đình biết rõ."',
-    story_en: '[Placeholder] "Many family lines, possibly including the Lã family, migrated south during this period. This is the place to record an ancestor\'s migration or settlement story if the family knows it."',
-    icon: 'chain', palette: ['#4a4a5a', '#1c1c26', '#c0c0d8']
-  },
-  {
-    id: 'tay-son', yearStart: 1771, yearEnd: 1802,
-    year: '1771 – 1802', yearEn: '1771–1802',
-    era_vi: 'Quân chủ', era_en: 'Imperial Era',
-    title_vi: 'Nhà Tây Sơn – Quang Trung đại phá quân Thanh',
-    title_en: 'The Tây Sơn Dynasty – Quang Trung Defeats the Qing',
-    desc_vi: 'Ba anh em nhà Tây Sơn lật đổ cả chúa Trịnh lẫn chúa Nguyễn, tạm thời thống nhất đất nước. Năm 1789, vua Quang Trung (Nguyễn Huệ) thần tốc hành quân ra Bắc, đánh tan 29 vạn quân Thanh chỉ trong vài ngày Tết Kỷ Dậu, một trong những chiến công quân sự lừng lẫy nhất lịch sử Việt Nam.',
-    desc_en: 'The three Tây Sơn brothers overthrew both the Trịnh and Nguyễn lords, briefly reunifying the country. In 1789, Emperor Quang Trung (Nguyễn Huệ) marched north with lightning speed and crushed a 290,000-strong Qing army within days during the Tết holiday — one of Vietnamese history\'s most celebrated military feats.',
-    story_vi: '[Mẫu] "Cuộc hành quân thần tốc của vua Quang Trung là biểu tượng cho ý chí quyết thắng. Đây là nơi kể một câu chuyện về sự quyết đoán, nhanh nhạy trong dòng họ Lã."',
-    story_en: '[Placeholder] "Emperor Quang Trung\'s lightning campaign symbolizes determination to win. This is the place to tell a story about decisiveness within the Lã family."',
-    icon: 'sword', palette: ['#8a5a1e', '#3a2408', '#f2cf8a']
-  },
   {
     id: 'nguyen-dynasty', yearStart: 1802, yearEnd: 1945,
     year: '1802 – 1945', yearEn: '1802–1945',
