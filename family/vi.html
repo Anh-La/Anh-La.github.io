@@ -2070,7 +2070,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </div>
   <div class="header-actions">
     <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 English</button>
-    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Admin</button>
+    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Login</button>
   </div>
 </header>
 
@@ -2083,8 +2083,15 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     </div>
     <div class="modal-body" style="padding:1.2rem 1.4rem">
       <div style="margin-bottom:.9rem">
+        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Full Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank for Admin)</span></label>
+        <input type="text" id="loginNameInput" placeholder="Enter your full name"
+          style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
+          onkeydown="if(event.key==='Enter') document.getElementById('adminPasswordInput').focus()"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
+      </div>
+      <div style="margin-bottom:.9rem">
         <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Password</label>
-        <input type="password" id="adminPasswordInput" placeholder="Enter admin password"
+        <input type="password" id="adminPasswordInput" placeholder="Enter password"
           style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
           onkeydown="if(event.key==='Enter') submitAdminLogin()"
           onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
@@ -2103,7 +2110,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab active" onclick="switchTab('analysis',this)" data-vi="Tổng quan"  data-en="Overview">Overview</button>
   <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
-  <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
+  <button class="tab admin-only-tab" id="statsTab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics" style="display:none">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
   <button class="tab" onclick="switchTab('rituals',this)" data-vi="🏮 Lễ Nghi" data-en="🏮 Rituals">🏮 Lễ Nghi</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
@@ -6031,29 +6038,63 @@ function renderCostumeMembers(id) {
 // ═══════════════════════════════════════════════════════════
 const ADMIN_PASS = 'Lahouse,123';
 let isAdmin = false;
+let currentMember = null; // holds the logged-in non-admin member record, if any
+
+// Non-admin members default to a password made of their first name + date of
+// birth (e.g. first_name "An" + dob "1990-05-12" -> "An1990-05-12"). If either
+// piece of data is missing, fall back to the admin password instead so the
+// account isn't left with a weak/empty or guessable password.
+function getMemberDefaultPassword(member) {
+  const firstName = (member.first_name || '').trim();
+  const dob = (member.dob || '').trim();
+  if (!firstName || !dob) return ADMIN_PASS;
+  return firstName + dob;
+}
 
 function toggleAdminAuth() {
-  if (isAdmin) {
+  if (isAdmin || currentMember) {
     // Logout
     isAdmin = false;
+    currentMember = null;
     updateAdminUI();
-    toast(LANG === 'vi' ? 'Đã đăng xuất admin.' : 'Admin logged out.');
+    toast(LANG === 'vi' ? 'Đã đăng xuất.' : 'Logged out.');
   } else {
     // Show login modal
     document.getElementById('loginModal').style.display = 'flex';
+    document.getElementById('loginNameInput').value = '';
     document.getElementById('adminPasswordInput').value = '';
     document.getElementById('loginError').style.display = 'none';
-    setTimeout(() => document.getElementById('adminPasswordInput').focus(), 60);
+    setTimeout(() => document.getElementById('loginNameInput').focus(), 60);
   }
 }
 
 function submitAdminLogin() {
+  const name = document.getElementById('loginNameInput').value.trim();
   const val = document.getElementById('adminPasswordInput').value;
-  if (val === ADMIN_PASS) {
-    isAdmin = true;
+
+  if (!name) {
+    // No name entered -> treat as an admin login attempt
+    if (val === ADMIN_PASS) {
+      isAdmin = true;
+      currentMember = null;
+      closeLoginModal();
+      updateAdminUI();
+      toast(LANG === 'vi' ? '✅ Đã đăng nhập admin.' : '✅ Admin logged in.');
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('adminPasswordInput').select();
+    }
+    return;
+  }
+
+  // Name entered -> treat as a non-admin member login attempt
+  const member = DB.find(m => m.full_name && m.full_name.trim().toLowerCase() === name.toLowerCase());
+  if (member && val === getMemberDefaultPassword(member)) {
+    isAdmin = false;
+    currentMember = member;
     closeLoginModal();
     updateAdminUI();
-    toast(LANG === 'vi' ? '✅ Đã đăng nhập admin.' : '✅ Admin logged in.');
+    toast(LANG === 'vi' ? `✅ Xin chào, ${member.full_name}.` : `✅ Welcome, ${member.full_name}.`);
   } else {
     document.getElementById('loginError').style.display = 'block';
     document.getElementById('adminPasswordInput').select();
@@ -6067,17 +6108,41 @@ function closeLoginModal() {
 function updateAdminUI() {
   const btn = document.getElementById('adminBtn');
   const addTab = document.getElementById('addTab');
+  const statsTab = document.getElementById('statsTab');
   if (isAdmin) {
     btn.textContent = '🔓 Logout';
     btn.classList.add('logged-in');
     if (addTab) addTab.style.display = '';
+    if (statsTab) statsTab.style.display = '';
+  } else if (currentMember) {
+    btn.textContent = `🔓 ${currentMember.first_name || currentMember.full_name}`;
+    btn.classList.add('logged-in');
+    if (addTab) addTab.style.display = 'none';
+    if (statsTab) statsTab.style.display = 'none';
+    const addPanel = document.getElementById('panel-add');
+    if (addPanel && addPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+    const statsPanel = document.getElementById('panel-stats');
+    if (statsPanel && statsPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
   } else {
-    btn.textContent = '🔒 Admin';
+    btn.textContent = '🔒 Login';
     btn.classList.remove('logged-in');
     if (addTab) addTab.style.display = 'none';
+    if (statsTab) statsTab.style.display = 'none';
     // If currently on Add tab, redirect to analysis
     const addPanel = document.getElementById('panel-add');
     if (addPanel && addPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+    // If currently on Stats tab, redirect to analysis
+    const statsPanel = document.getElementById('panel-stats');
+    if (statsPanel && statsPanel.classList.contains('active')) {
       const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
       switchTab('analysis', analysisTab);
     }
