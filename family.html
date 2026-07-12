@@ -828,14 +828,17 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   .sidebar .member-list { display: none; }
   .sidebar .filter-footer { display: none; }
 
-  /* Member list moves below the panel on mobile */
+  /* Member list moves below the panel on mobile — hidden until the filter button is clicked */
   .mobile-member-list {
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow-y: auto;
     max-height: 38vh;
     border-top: 1px solid var(--paper-rim);
     flex-shrink: 0;
+  }
+  .mobile-member-list.msb-list-open {
+    display: flex;
   }
 
   .panel { flex: 1; overflow: hidden; }
@@ -1382,6 +1385,117 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   }
   .costume-filter-bar .btn { align-self: stretch; }
 }
+  /* ── RITUAL EVENTS TAB SPECIFIC STYLES ── */
+.ritual-cat-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.ritual-cat-btn {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .38rem .85rem;
+  border-radius: 99px;
+  border: 1.5px solid var(--paper-rim);
+  background: var(--paper);
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.ritual-cat-btn:hover { border-color: var(--gold-soft); color: var(--ink); }
+.ritual-cat-btn.active { background: var(--ink); border-color: var(--ink); color: var(--gold-soft); }
+
+.ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
+.ritual-card {
+  background: #fff;
+  border: 1px solid var(--paper-rim);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, border-color .18s ease;
+  cursor: pointer;
+}
+.ritual-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+.ritual-card-head { display: flex; align-items: flex-start; gap: .6rem; }
+.ritual-icon { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
+.ritual-name {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.ritual-timing {
+  display: inline-block;
+  margin-top: .4rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .03em;
+  padding: .16rem .5rem;
+  border-radius: 99px;
+  background: var(--paper-mid);
+  border: 1px solid var(--paper-rim);
+  color: var(--gold);
+}
+.ritual-desc {
+  font-size: .8rem;
+  color: var(--ink-dim);
+  margin-top: .55rem;
+  line-height: 1.45;
+}
+.ritual-cat-tag {
+  display: inline-block;
+  margin-top: .55rem;
+  font-size: .62rem;
+  font-family: var(--font-mono);
+  padding: .12rem .4rem;
+  border-radius: 3px;
+  background: var(--paper-mid);
+  color: var(--ink-dim);
+  border: 1px solid var(--paper-rim);
+}
+.ritual-detail-panel {
+  margin-top: .65rem;
+  padding-top: .6rem;
+  border-top: 1px dashed var(--paper-rim);
+  text-align: left;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .25s ease, opacity .2s ease;
+  font-size: .78rem;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+.ritual-detail-panel.open {
+  max-height: 260px;
+  opacity: 1;
+  overflow-y: auto;
+}
+.ritual-detail-label {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .3rem;
+}
+.ritual-empty-msg {
+  color: var(--ink-dim);
+  font-size: .82rem;
+  font-style: italic;
+  padding: 1.5rem 0;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
   /* ── FOOD TAB SPECIFIC STYLES ── */
 .food-grid {
   display: grid;
@@ -1879,6 +1993,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
+  <button class="tab" onclick="switchTab('rituals',this); renderRituals();" data-vi="🏮 Lễ Nghi" data-en="🏮 Rituals">🏮 Lễ Nghi</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
   <button class="tab" onclick="switchTab('costume',this)" data-vi="👘 Trang Phục" data-en="👘 Costumes">👘 Trang Phục</button>
   <button class="tab" onclick="switchTab('history',this)" data-vi="📜 Lịch Sử" data-en="📜 History">📜 Lịch Sử</button>
@@ -2029,7 +2144,28 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <!-- Mobile Detail Drawer (Shows full text when a cell is tapped) -->
   <div id="calendarDrawer" class="calendar-drawer" style="display: none;"></div>
 </section>
-  
+
+  <!-- RITUAL EVENTS PANEL -->
+  <section class="panel" id="panel-rituals">
+    <div class="analysis-wrap">
+      <div class="an-page-title" data-vi="Lễ Nghi &amp; Phong Tục Truyền Thống" data-en="Traditional Rituals &amp; Ceremonies">Lễ Nghi &amp; Phong Tục Truyền Thống</div>
+      <div class="an-page-sub" data-vi="Các nghi lễ theo chu kỳ âm lịch — Tết &amp; lễ hội, cưới hỏi, giỗ chạp, sinh nhật và các lễ nghi truyền thống khác (bấm vào thẻ để xem chi tiết)" data-en="Ceremonies across the lunar-year cycle — Tết &amp; festivals, weddings, death memorials, birthdays and other traditional rites (click a card for details)">Các nghi lễ theo chu kỳ âm lịch — Tết &amp; lễ hội, cưới hỏi, giỗ chạp, sinh nhật và các lễ nghi truyền thống khác (bấm vào thẻ để xem chi tiết)</div>
+
+      <div class="ritual-cat-bar" id="ritualCatBar">
+        <button class="ritual-cat-btn active" data-cat="" onclick="setRitualCategory('')" data-vi="Tất cả" data-en="All">Tất cả</button>
+        <button class="ritual-cat-btn" data-cat="tet" onclick="setRitualCategory('tet')" data-vi="🧧 Tết &amp; Lễ Hội" data-en="🧧 Tết &amp; Festivals">🧧 Tết &amp; Lễ Hội</button>
+        <button class="ritual-cat-btn" data-cat="wedding" onclick="setRitualCategory('wedding')" data-vi="💍 Cưới Hỏi" data-en="💍 Weddings">💍 Cưới Hỏi</button>
+        <button class="ritual-cat-btn" data-cat="memorial" onclick="setRitualCategory('memorial')" data-vi="🕯️ Giỗ Chạp" data-en="🕯️ Death Memorials">🕯️ Giỗ Chạp</button>
+        <button class="ritual-cat-btn" data-cat="birthday" onclick="setRitualCategory('birthday')" data-vi="🎂 Sinh Nhật" data-en="🎂 Birthdays">🎂 Sinh Nhật</button>
+        <button class="ritual-cat-btn" data-cat="other" onclick="setRitualCategory('other')" data-vi="🏠 Lễ Nghi Khác" data-en="🏠 Other Rituals">🏠 Lễ Nghi Khác</button>
+      </div>
+
+      <div class="ritual-grid" id="ritualGridContainer">
+        <!-- Dynamically rendered ritual cards load here -->
+      </div>
+    </div>
+  </section>
+
   <!-- FOOD STATS PANEL -->
   <section class="panel" id="panel-food">
     <div class="analysis-wrap">
@@ -2549,6 +2685,11 @@ function toggleLang() {
     buildCalendar();
   }
 
+  // Refresh rituals tab if active
+  if (document.getElementById('panel-rituals')?.classList.contains('active') && typeof renderRituals === 'function') {
+    renderRituals();
+  }
+
   // Refresh food tab if active
   if (document.getElementById('panel-food')?.classList.contains('active') && typeof renderFoodStatistics === 'function') {
     renderFoodStatistics();
@@ -2668,9 +2809,11 @@ function toggleSidebar() {
   if (btn) btn.classList.toggle('active', document.getElementById('sidebar').classList.contains('open'));
 }
 function toggleMobileFilters() {
-  document.getElementById('sidebar').classList.toggle('open');
+  const isOpen = document.getElementById('sidebar').classList.toggle('open');
   const btn = document.getElementById('msbFilterBtn');
-  if (btn) btn.classList.toggle('active', document.getElementById('sidebar').classList.contains('open'));
+  if (btn) btn.classList.toggle('active', isOpen);
+  const mobileList = document.getElementById('mobileMemberList');
+  if (mobileList) mobileList.classList.toggle('msb-list-open', isOpen);
 }
 function onMobileSearch(val) {
   // Sync to sidebar search box and trigger filters
@@ -2850,6 +2993,10 @@ function selectMember(id) {
   if (window.innerWidth <= 680) {
     switchTab('detail', document.querySelector('.tab'));
     document.getElementById('sidebar').classList.remove('open');
+    const msbBtn = document.getElementById('msbFilterBtn');
+    if (msbBtn) msbBtn.classList.remove('active');
+    const mobileList = document.getElementById('mobileMemberList');
+    if (mobileList) mobileList.classList.remove('msb-list-open');
   }
 }
 
@@ -4888,6 +5035,250 @@ function monthName(mIdx) {
 //  FOOD TAB
 // ═══════════════════════════════════════════════════════════
 // Seed Member Data equipped with localized food vectors
+// ═══════════════════════════════════════════════════════════
+//  RITUAL EVENTS TAB — Vietnamese lunar-year rites & ceremonies
+// ═══════════════════════════════════════════════════════════
+const RITUAL_EVENTS = [
+  // ── Tết & Lễ Hội (Tết & Festivals) ──
+  { id:'tet-nguyen-dan', category:'tet', icon:'🧧',
+    name_vi:'Tết Nguyên Đán', name_en:'Lunar New Year (Tết)',
+    timing_vi:'Mùng 1 tháng Giêng (3 ngày Tết)', timing_en:'1st day of the 1st lunar month (3-day observance)',
+    desc_vi:'Lễ hội quan trọng nhất trong năm, đánh dấu năm mới âm lịch và ngày sum họp gia đình.', desc_en:'The most important holiday of the year, marking the lunar new year and family reunion.',
+    detail_vi:'Con cháu về sum họp, cúng gia tiên, lì xì mừng tuổi, xông đất đầu năm, chúc Tết họ hàng và kiêng quét nhà trong ba ngày đầu năm để giữ lộc.',
+    detail_en:'Families reunite, honor ancestors with offerings, give lì xì (lucky money), welcome the first visitor of the year (xông đất), visit relatives, and avoid sweeping the house in the first days to keep good fortune in.' },
+  { id:'giao-thua', category:'tet', icon:'🕛',
+    name_vi:'Giao Thừa', name_en:"New Year's Eve",
+    timing_vi:'Đêm 30 tháng Chạp', timing_en:'Night of the last day of the 12th lunar month',
+    desc_vi:'Thời khắc chuyển giao giữa năm cũ và năm mới, cúng tiễn năm cũ, đón năm mới.', desc_en:'The turning point between the old and new year, with offerings to see out the old year and welcome the new.',
+    detail_vi:'Gia đình chuẩn bị mâm cúng giao thừa ngoài trời (cúng trời đất) và trong nhà (cúng gia tiên), thường kèm pháo hoa và lời chúc đầu năm.',
+    detail_en:'Families prepare offerings both outdoors (to heaven and earth) and indoors (to ancestors), often accompanied by fireworks and New Year wishes.' },
+  { id:'ong-cong-ong-tao', category:'tet', icon:'🐟',
+    name_vi:'Cúng Ông Công Ông Táo', name_en:'Kitchen Gods Day',
+    timing_vi:'23 tháng Chạp', timing_en:'23rd day of the 12th lunar month',
+    desc_vi:'Tiễn Táo Quân về trời báo cáo việc gia đình trong năm với Ngọc Hoàng.', desc_en:'Sending the Kitchen Gods off to heaven to report on the household\'s year to the Jade Emperor.',
+    detail_vi:'Gia đình dọn dẹp bàn thờ bếp, cúng mũ áo và cá chép (phương tiện để Táo Quân về trời) rồi phóng sinh cá ra sông, ao, hồ.',
+    detail_en:'Households clean the kitchen altar, offer ceremonial hats/robes and live carp (the gods\' transport to heaven), then release the fish into a river or pond.' },
+  { id:'tet-nguyen-tieu', category:'tet', icon:'🏮',
+    name_vi:'Tết Nguyên Tiêu', name_en:'Lantern Festival (First Full Moon)',
+    timing_vi:'Rằm tháng Giêng', timing_en:'15th day of the 1st lunar month',
+    desc_vi:'Rằm đầu tiên trong năm, người Việt đi chùa lễ Phật cầu an cho cả năm.', desc_en:'The first full moon of the year, when people visit pagodas to pray for peace throughout the year.',
+    detail_vi:'Dân gian có câu "Cúng cả năm không bằng Rằm tháng Giêng" — nhiều gia đình làm mâm cỗ chay/mặn cúng Phật và gia tiên, thả đèn hoa đăng.',
+    detail_en:'A Vietnamese saying holds this day as more significant than a year of offerings — families prepare vegetarian or savory trays for Buddha and ancestors, and release floating lanterns.' },
+  { id:'tet-han-thuc', category:'tet', icon:'🍡',
+    name_vi:'Tết Hàn Thực', name_en:'Cold Food Festival',
+    timing_vi:'Mùng 3 tháng 3', timing_en:'3rd day of the 3rd lunar month',
+    desc_vi:'Cúng bánh trôi, bánh chay để tưởng nhớ tổ tiên.', desc_en:'An offering of glutinous rice balls (bánh trôi, bánh chay) in remembrance of ancestors.',
+    detail_vi:'Không đốt lửa nấu nướng cầu kỳ trong ngày này (theo tích cổ), các món cúng chủ yếu là đồ nguội như bánh trôi, bánh chay.',
+    detail_en:'Traditionally little cooking with fire is done on this day; offerings are simple cold dishes such as bánh trôi and bánh chay.' },
+  { id:'gio-to-hung-vuong', category:'tet', icon:'⛰️',
+    name_vi:'Giỗ Tổ Hùng Vương', name_en:"Hùng Kings' Commemoration",
+    timing_vi:'Mùng 10 tháng 3', timing_en:'10th day of the 3rd lunar month',
+    desc_vi:'Quốc lễ tưởng nhớ công lao dựng nước của các Vua Hùng.', desc_en:'A national holiday honoring the Hùng Kings, the legendary founders of Vietnam.',
+    detail_vi:'Câu ca "Dù ai đi ngược về xuôi, nhớ ngày Giỗ Tổ mùng mười tháng ba" nhắc mọi người con đất Việt hướng về cội nguồn, nhiều nơi tổ chức lễ dâng hương tại Đền Hùng, Phú Thọ.',
+    detail_en:'A well-known folk verse urges every Vietnamese to remember this day; incense-offering ceremonies are held nationwide, most notably at the Hùng Temple in Phú Thọ.' },
+  { id:'tet-doan-ngo', category:'tet', icon:'🐛',
+    name_vi:'Tết Đoan Ngọ', name_en:'Mid-Year Festival ("Killing Insects" Day)',
+    timing_vi:'Mùng 5 tháng 5', timing_en:'5th day of the 5th lunar month',
+    desc_vi:'Ngày "diệt sâu bọ" trong cơ thể, ăn cơm rượu nếp và trái cây chua vào sáng sớm.', desc_en:'A day to "kill off parasites" in the body by eating fermented sticky rice and sour fruit early in the morning.',
+    detail_vi:'Theo quan niệm dân gian, ăn rượu nếp, mận, vải vào sáng sớm lúc bụng đói giúp diệt sâu bọ, ký sinh trong người; nhiều nơi còn tắm lá mùi, treo ngải cứu trừ tà.',
+    detail_en:'Folk belief holds that eating fermented rice, plums or lychees on an empty stomach at dawn kills internal parasites; some regions also bathe in herbal leaves or hang mugwort to ward off evil.' },
+  { id:'le-vu-lan', category:'tet', icon:'🌸',
+    name_vi:'Lễ Vu Lan', name_en:'Vu Lan (Filial Piety) Festival',
+    timing_vi:'Rằm tháng 7', timing_en:'15th day of the 7th lunar month',
+    desc_vi:'Ngày báo hiếu cha mẹ theo Phật giáo, trùng với lễ Xá Tội Vong Nhân.', desc_en:"A Buddhist-rooted day of gratitude to parents, coinciding with the Ghost Festival (Xá Tội Vong Nhân).",
+    detail_vi:'Con cháu đi chùa cài hoa hồng (đỏ nếu còn cha mẹ, trắng nếu đã mất) lên áo, cúng cô hồn ngoài trời và cầu siêu cho vong linh không nơi nương tựa.',
+    detail_en:'People visit pagodas to pin a rose on their shirt (red if parents are living, white if they have passed), make outdoor offerings for wandering souls, and pray for the deceased.' },
+  { id:'tet-trung-thu', category:'tet', icon:'🥮',
+    name_vi:'Tết Trung Thu', name_en:'Mid-Autumn Festival',
+    timing_vi:'Rằm tháng 8', timing_en:'15th day of the 8th lunar month',
+    desc_vi:'Tết thiếu nhi và đoàn viên, ngắm trăng, rước đèn, phá cỗ.', desc_en:"A children's and family-reunion festival featuring mooncakes, lanterns and moon-viewing.",
+    detail_vi:'Trẻ em rước đèn ông sao, múa lân; gia đình bày mâm cỗ trông trăng với bánh Trung Thu, hoa quả và cùng nhau phá cỗ dưới ánh trăng rằm.',
+    detail_en:'Children parade star-shaped lanterns and watch lion dances; families arrange a moon-viewing tray of mooncakes and fruit to share together under the full moon.' },
+
+  // ── Cưới Hỏi (Wedding) ──
+  { id:'le-dam-ngo', category:'wedding', icon:'🤝',
+    name_vi:'Lễ Dạm Ngõ', name_en:'Meeting-the-Family Visit',
+    timing_vi:'Trước lễ ăn hỏi, chọn ngày lành', timing_en:'Before the betrothal, on a chosen auspicious day',
+    desc_vi:'Nhà trai đến nhà gái đặt vấn đề, xin phép cho đôi trẻ tìm hiểu tiến tới hôn nhân.', desc_en:"The groom's family visits the bride's family to formally propose the courtship toward marriage.",
+    detail_vi:'Đây là bước đầu tiên, mang tính chất thăm hỏi và làm quen giữa hai gia đình, thường chỉ có trầu cau, trà, bánh kẹo đơn giản, không cầu kỳ như lễ ăn hỏi.',
+    detail_en:'This first, informal step is mainly for the two families to get acquainted, typically with simple gifts of betel, tea and sweets rather than the elaborate offerings of the betrothal.' },
+  { id:'le-an-hoi', category:'wedding', icon:'💐',
+    name_vi:'Lễ Ăn Hỏi', name_en:'Betrothal Ceremony',
+    timing_vi:'Ngày lành theo lịch âm, trước lễ cưới', timing_en:'An auspicious lunar date before the wedding',
+    desc_vi:'Nhà trai mang lễ vật (trầu cau, bánh, trà, rượu…) sang nhà gái, chính thức thông báo hôn sự.', desc_en:"The groom's family brings betrothal gifts (betel, cakes, tea, wine) to the bride's family to formalize the engagement.",
+    detail_vi:'Lễ vật thường được xếp trong các quả sơn son (tráp) do đội bê tráp mang đến; sau lễ, nhà gái chia lại một phần lễ vật cho nhà trai mang về ("lại quả").',
+    detail_en:'Gifts are carried in lacquered trays by a procession; afterward, the bride\'s family returns a portion of the offerings for the groom\'s family to take home ("lại quả").' },
+  { id:'le-xin-dau', category:'wedding', icon:'🚪',
+    name_vi:'Lễ Xin Dâu', name_en:'Bride-Fetching Request',
+    timing_vi:'Sáng ngày cưới, trước lễ rước dâu', timing_en:'On the wedding morning, before the bride procession',
+    desc_vi:'Đại diện nhà trai sang xin phép nhà gái được đón dâu về nhà.', desc_en:"A representative of the groom's family formally asks permission to take the bride to her new home.",
+    detail_vi:'Thường là mẹ chú rể mang cơi trầu sang trước, báo trước giờ đoàn rước dâu sẽ đến, thể hiện sự tôn trọng nhà gái.',
+    detail_en:"Typically the groom's mother arrives ahead of the main party with a tray of betel to announce the procession's arrival time, as a mark of respect to the bride's family." },
+  { id:'le-cuoi-ruoc-dau', category:'wedding', icon:'💍',
+    name_vi:'Lễ Cưới & Rước Dâu', name_en:'Wedding & Bride Procession',
+    timing_vi:'Ngày cưới chính thức đã chọn', timing_en:'The chosen wedding day',
+    desc_vi:'Lễ gia tiên, rước dâu về nhà trai và tổ chức tiệc cưới.', desc_en:"The main wedding day: ancestral rites, the bride procession to the groom's home, and the wedding banquet.",
+    detail_vi:'Đôi tân hôn làm lễ trước bàn thờ gia tiên hai bên, sau đó đoàn rước dâu về nhà trai, và tổ chức tiệc chiêu đãi họ hàng, bạn bè.',
+    detail_en:"The couple performs rites before both families' ancestral altars, then the bride is escorted to the groom's home, followed by a banquet for relatives and friends." },
+  { id:'le-lai-mat', category:'wedding', icon:'🍵',
+    name_vi:'Lễ Lại Mặt', name_en:'Post-Wedding Return Visit',
+    timing_vi:'1–4 ngày sau lễ cưới', timing_en:'1–4 days after the wedding',
+    desc_vi:'Cô dâu chú rể về thăm nhà gái, tạ ơn cha mẹ vợ sau khi cưới.', desc_en:"The couple visits the bride's family to give thanks shortly after the wedding.",
+    detail_vi:'Đôi vợ chồng mới mang theo lễ vật nhỏ (thường là xôi, gà) về thăm và tạ ơn công sinh thành của cha mẹ cô dâu, đồng thời báo cáo cuộc sống mới.',
+    detail_en:"The newlyweds bring a small offering (often sticky rice and chicken) to thank the bride's parents and share news of their new life together." },
+
+  // ── Giỗ Chạp (Death Memorial) ──
+  { id:'le-tang', category:'memorial', icon:'🕯️',
+    name_vi:'Lễ Tang', name_en:'Funeral Rites',
+    timing_vi:'Ngay sau khi người thân qua đời', timing_en:'Immediately following a death in the family',
+    desc_vi:'Nghi thức khâm liệm, phát tang, đưa tang và an táng người đã khuất.', desc_en:'The rites of preparing the body, mourning attire, the funeral procession and burial.',
+    detail_vi:'Con cháu để tang theo thứ bậc (khăn tang, áo xô), lập bàn thờ vong, tổ chức lễ viếng, sau đó đưa tang đi an táng hoặc hỏa táng theo phong tục từng vùng.',
+    detail_en:'Mourners wear white mourning attire according to their relation, set up an altar for the deceased, hold a wake, and then proceed to burial or cremation per local custom.' },
+  { id:'cung-49-ngay', category:'memorial', icon:'🙏',
+    name_vi:'Cúng 49 Ngày (Chung Thất)', name_en:'49-Day Memorial (Chung Thất)',
+    timing_vi:'49 ngày sau khi mất', timing_en:'49 days after death',
+    desc_vi:'Theo quan niệm Phật giáo, vong linh trải qua các phán xét trong 49 ngày.', desc_en:'In Buddhist belief, the soul passes through a series of judgments during these 49 days.',
+    detail_vi:'Gia đình cúng chay mỗi 7 ngày (thất) trong 7 tuần, cầu siêu để vong linh được siêu thoát, thường mời sư thầy tụng kinh.',
+    detail_en:"Families make vegetarian offerings every seventh day across seven weeks, often inviting monks to chant sutras to help the soul find peace." },
+  { id:'cung-100-ngay', category:'memorial', icon:'🕊️',
+    name_vi:'Cúng 100 Ngày (Tốt Khốc)', name_en:'100-Day Memorial (Tốt Khốc)',
+    timing_vi:'100 ngày sau khi mất', timing_en:'100 days after death',
+    desc_vi:'Lễ "thôi khóc", đánh dấu kết thúc giai đoạn tang chế nặng nhất.', desc_en:'A "cease-mourning" rite marking the end of the most intense period of grief.',
+    detail_vi:'Gia đình làm mâm cúng tưởng nhớ, từ đây con cháu dần trở lại sinh hoạt bình thường dù vẫn còn để tang theo quy định.',
+    detail_en:'The family holds a memorial offering; from this point, relatives gradually resume normal life though formal mourning may continue.' },
+  { id:'gio-dau', category:'memorial', icon:'📿',
+    name_vi:'Giỗ Đầu (Tiểu Tường)', name_en:'First Death Anniversary (Tiểu Tường)',
+    timing_vi:'Tròn 1 năm âm lịch sau ngày mất', timing_en:'The 1st lunar-year anniversary of death',
+    desc_vi:'Giỗ đầu tiên sau khi người thân qua đời, con cháu vẫn còn để tang.', desc_en:'The first anniversary of a death, while mourning attire is still traditionally worn.',
+    detail_vi:'Đây vẫn được xem là trong thời gian tang, không khí giỗ thường trang nghiêm, ít mời khách ngoài hơn so với giỗ thường niên về sau.',
+    detail_en:'Still considered within the mourning period, this observance tends to be solemn and more private than later annual memorials.' },
+  { id:'gio-het-dai-tuong', category:'memorial', icon:'⚱️',
+    name_vi:'Giỗ Hết (Đại Tường)', name_en:'Second Death Anniversary (Đại Tường)',
+    timing_vi:'Tròn 2 năm âm lịch sau ngày mất', timing_en:'The 2nd lunar-year anniversary of death',
+    desc_vi:'Lễ trừ phục, chính thức kết thúc thời gian để tang.', desc_en:'The rite of removing mourning attire, formally ending the mourning period.',
+    detail_vi:'Sau lễ này, con cháu chính thức mãn tang, có thể cưới hỏi hoặc tổ chức việc vui trở lại; từ năm sau, ngày giỗ trở thành giỗ thường niên.',
+    detail_en:'After this rite, descendants formally complete mourning and may resume happy occasions such as weddings; from the following year the date becomes an ordinary annual memorial.' },
+  { id:'gio-thuong-nien', category:'memorial', icon:'🍚',
+    name_vi:'Giỗ Thường Niên (Ngày Giỗ)', name_en:'Annual Death Anniversary',
+    timing_vi:'Hằng năm, đúng ngày mất theo âm lịch', timing_en:"Every year, on the lunar calendar date of death",
+    desc_vi:'Con cháu tụ họp cúng cơm tưởng nhớ người đã khuất mỗi năm.', desc_en:'Descendants gather each year with a memorial meal in remembrance of the deceased.',
+    detail_vi:'Mâm cúng thường có món ăn người mất từng thích, con cháu các đời sum họp thắp hương — đây chính là các ngày "ngày giỗ" của từng thành viên được theo dõi trong tab 📅 Lịch của gia phả.',
+    detail_en:"The offering table often includes the deceased's favorite dishes, and descendants across generations gather to light incense — these are the individual 'ngày giỗ' dates already tracked per member in the 📅 Calendar tab." },
+
+  // ── Sinh Nhật (Birthday / Life-Stage Celebrations) ──
+  { id:'le-day-cu', category:'birthday', icon:'👶',
+    name_vi:'Lễ Đầy Cữ', name_en:'3-Day Celebration',
+    timing_vi:'3 ngày sau khi sinh', timing_en:'3 days after birth',
+    desc_vi:'Cúng mụ tạ ơn 12 Bà Mụ đã nặn ra hình hài đứa trẻ.', desc_en:'An offering to the Twelve Midwife Goddesses believed to have shaped the newborn.',
+    detail_vi:'Mâm cúng nhỏ gồm xôi, chè, trứng, thể hiện lòng biết ơn và cầu mong đứa trẻ hay ăn chóng lớn, mạnh khỏe.',
+    detail_en:"A small offering of sticky rice, sweet soup and eggs expresses gratitude and wishes for the baby's health and growth." },
+  { id:'le-day-thang', category:'birthday', icon:'🍼',
+    name_vi:'Lễ Đầy Tháng', name_en:'Full-Month Celebration',
+    timing_vi:'Tròn 1 tháng tuổi (tính theo âm lịch)', timing_en:'One lunar month old',
+    desc_vi:'Cúng đầy tháng, chính thức đặt tên và ra mắt bé với họ hàng.', desc_en:"A full-month offering that formally names the baby and introduces them to relatives.",
+    detail_vi:'Mâm cúng 12 Bà Mụ và Đức Ông được bày biện đầy đủ, sau lễ cúng gia đình mời họ hàng, bạn bè dự tiệc mừng bé.',
+    detail_en:"A complete offering is made to the Midwife Goddesses and the Guardian Spirit, followed by a family gathering to celebrate the newborn." },
+  { id:'le-thoi-noi', category:'birthday', icon:'🎂',
+    name_vi:'Lễ Thôi Nôi', name_en:'First Birthday (Object-Grabbing Ceremony)',
+    timing_vi:'Tròn 1 năm tuổi (tính theo âm lịch)', timing_en:'One lunar year old',
+    desc_vi:'Sinh nhật đầu tiên với nghi thức "bốc thôi nôi" dự đoán tương lai của bé.', desc_en:"The baby's first birthday, featuring the object-grabbing ritual said to hint at their future.",
+    detail_vi:'Nhiều đồ vật tượng trưng (sách, bút, tiền, gương…) được bày trước mặt bé; vật đầu tiên bé chọn được xem là điềm báo về nghề nghiệp, tính cách tương lai.',
+    detail_en:"Symbolic objects (a book, pen, money, mirror, etc.) are placed before the child; whichever item they reach for first is playfully taken as a sign of their future path." },
+  { id:'mung-tho', category:'birthday', icon:'🌾',
+    name_vi:'Lễ Mừng Thọ', name_en:'Longevity Celebration',
+    timing_vi:'Tuổi 60, 70, 80, 90, 100 (tính theo âm lịch)', timing_en:'Ages 60, 70, 80, 90, 100 (lunar age)',
+    desc_vi:'Con cháu tổ chức mừng thọ ông bà, cha mẹ cao tuổi vào dịp đầu xuân.', desc_en:"Descendants honor elderly grandparents or parents, often at the start of the lunar new year.",
+    detail_vi:'Thường tổ chức vào dịp đầu năm mới, con cháu chúc thọ, tặng quà, thể hiện đạo hiếu và mong ông bà cha mẹ sống lâu, khỏe mạnh.',
+    detail_en:"Typically held early in the lunar new year, family members offer wishes and gifts as an expression of filial respect and hopes for continued health." },
+
+  // ── Lễ Nghi Khác (Other Traditional Rituals) ──
+  { id:'le-nhap-trach', category:'other', icon:'🏠',
+    name_vi:'Lễ Nhập Trạch', name_en:'Housewarming Ceremony',
+    timing_vi:'Ngày giờ tốt được chọn khi dọn vào nhà mới', timing_en:'An auspicious date/time chosen for moving in',
+    desc_vi:'Cúng thần linh, thổ địa khi chuyển vào ở nhà mới.', desc_en:'An offering to the local land guardian spirits when moving into a new home.',
+    detail_vi:'Gia chủ thường mang bếp lửa/bát hương vào nhà đầu tiên, cúng xin phép thổ công cho gia đình an cư, làm ăn thuận lợi.',
+    detail_en:"The homeowner typically carries a lit stove or incense bowl in first, asking the land spirit's permission for the family to settle in peacefully and prosper." },
+  { id:'le-dong-tho', category:'other', icon:'🧱',
+    name_vi:'Lễ Động Thổ', name_en:'Groundbreaking Ceremony',
+    timing_vi:'Trước khi khởi công xây dựng', timing_en:'Before construction begins',
+    desc_vi:'Xin phép Thổ Công trước khi động đất xây nhà hoặc công trình.', desc_en:'Asking permission from the land guardian spirit before breaking ground on a building project.',
+    detail_vi:'Gia chủ chọn ngày giờ hợp tuổi, cúng lễ vật đơn giản (hoa quả, xôi gà) ngay tại khu đất trước khi cuốc nhát đất đầu tiên.',
+    detail_en:"The owner selects a date and time compatible with their zodiac year and makes a simple offering on-site before the first shovel of earth is turned." },
+  { id:'le-khai-truong', category:'other', icon:'🎊',
+    name_vi:'Lễ Khai Trương', name_en:'Business Opening Ceremony',
+    timing_vi:'Ngày mở cửa hàng, công ty', timing_en:'The opening day of a shop or company',
+    desc_vi:'Cúng cầu may mắn, mong việc kinh doanh thuận lợi, phát đạt.', desc_en:'An offering for good fortune and prosperous business.',
+    detail_vi:'Mâm cúng thường có gà luộc, hoa quả, vàng mã; nhiều nơi còn múa lân, đốt pháo giấy để xua đuổi vận xui và chào đón khách hàng.',
+    detail_en:"Offerings often include boiled chicken, fruit and votive paper; lion dances and firecrackers may also be used to dispel bad luck and welcome customers." },
+  { id:'cung-ram-mung-mot', category:'other', icon:'🕉️',
+    name_vi:'Cúng Rằm &amp; Mùng Một', name_en:'Monthly New & Full Moon Offerings',
+    timing_vi:'Mùng 1 và Rằm (15) âm lịch, hằng tháng', timing_en:'The 1st and 15th of every lunar month',
+    desc_vi:'Cúng gia tiên, thần linh cầu bình an vào đầu và giữa mỗi tháng âm lịch.', desc_en:'Regular offerings to ancestors and household deities at the start and middle of each lunar month.',
+    detail_vi:'Mâm cúng thường đơn giản gồm hoa quả, nước, hương; nhiều gia đình duy trì nếp này quanh năm như một cách giữ kết nối với gia tiên và cầu an cho gia đình.',
+    detail_en:'The offering is usually simple — fruit, water and incense — and many families maintain this practice year-round to stay connected to their ancestors and pray for wellbeing.' }
+];
+
+let currentRitualCategory = '';
+
+function setRitualCategory(cat) {
+  currentRitualCategory = cat;
+  document.querySelectorAll('.ritual-cat-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+  renderRituals();
+}
+
+function renderRituals() {
+  const container = document.getElementById('ritualGridContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const isVi = LANG === 'vi';
+  const catLabels = {
+    tet:      { vi: 'Tết & Lễ Hội', en: 'Tết & Festivals' },
+    wedding:  { vi: 'Cưới Hỏi',     en: 'Wedding' },
+    memorial: { vi: 'Giỗ Chạp',     en: 'Death Memorial' },
+    birthday: { vi: 'Sinh Nhật',    en: 'Birthday' },
+    other:    { vi: 'Lễ Nghi Khác', en: 'Other Ritual' }
+  };
+
+  const list = currentRitualCategory
+    ? RITUAL_EVENTS.filter(ev => ev.category === currentRitualCategory)
+    : RITUAL_EVENTS;
+
+  if (!list.length) {
+    container.innerHTML = `<div class="ritual-empty-msg">${isVi ? 'Không có sự kiện nào trong mục này.' : 'No events found in this category.'}</div>`;
+    return;
+  }
+
+  const detailLabel = isVi ? 'Phong tục & ý nghĩa' : 'Customs & significance';
+
+  list.forEach(ev => {
+    const card = document.createElement('div');
+    card.className = 'ritual-card';
+    const cat = catLabels[ev.category];
+    card.innerHTML = `
+      <div class="ritual-card-head">
+        <div class="ritual-icon">${ev.icon}</div>
+        <div>
+          <div class="ritual-name">${isVi ? ev.name_vi : ev.name_en}</div>
+          <div class="ritual-timing">${isVi ? ev.timing_vi : ev.timing_en}</div>
+        </div>
+      </div>
+      <div class="ritual-desc">${isVi ? ev.desc_vi : ev.desc_en}</div>
+      <div class="ritual-cat-tag">${isVi ? cat.vi : cat.en}</div>
+      <div class="ritual-detail-panel">
+        <div class="ritual-detail-label">${detailLabel}</div>
+        <div>${isVi ? ev.detail_vi : ev.detail_en}</div>
+      </div>
+    `;
+    card.addEventListener('click', function() {
+      card.querySelector('.ritual-detail-panel').classList.toggle('open');
+    });
+    container.appendChild(card);
+  });
+}
+
 const FOOD_SEED_DATA = [
   {"id":1,"full_name":"Lã Đoan Trang","sex":"F","branch":"Giáp Phòng","food":"Phở Bò, Bánh Mì, Gỏi cuốn"},
   {"id":2,"full_name":"Lã Phước Cao","sex":"M","branch":"Giáp Phòng","food":"Phở Bò, Cơm Tấm"},
@@ -4911,6 +5302,9 @@ function switchTab(tabId, btnEl) {
   }
   if (tabId === 'history') {
     renderHistoryTab();
+  }
+  if (tabId === 'rituals' && typeof renderRituals === 'function') {
+    renderRituals();
   }
 }
 
