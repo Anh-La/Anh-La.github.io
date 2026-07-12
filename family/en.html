@@ -2070,7 +2070,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </div>
   <div class="header-actions">
     <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 Tiếng Việt</button>
-    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Admin</button>
+    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Login</button>
   </div>
 </header>
 
@@ -2083,8 +2083,15 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
     </div>
     <div class="modal-body" style="padding:1.2rem 1.4rem">
       <div style="margin-bottom:.9rem">
+        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Full Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank for Admin)</span></label>
+        <input type="text" id="loginNameInput" placeholder="Enter your full name"
+          style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
+          onkeydown="if(event.key==='Enter') document.getElementById('adminPasswordInput').focus()"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
+      </div>
+      <div style="margin-bottom:.9rem">
         <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Password</label>
-        <input type="password" id="adminPasswordInput" placeholder="Enter admin password"
+        <input type="password" id="adminPasswordInput" placeholder="Enter password"
           style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
           onkeydown="if(event.key==='Enter') submitAdminLogin()"
           onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
@@ -2103,7 +2110,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   <button class="tab active" onclick="switchTab('analysis',this)" data-vi="Tổng quan"  data-en="Overview">Overview</button>
   <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
-  <button class="tab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics">Số liệu</button>
+  <button class="tab admin-only-tab" id="statsTab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics" style="display:none">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
   <button class="tab" onclick="switchTab('rituals',this)" data-vi="🏮 Lễ Nghi" data-en="🏮 Rituals">🏮 Lễ Nghi</button>
   <button class="tab" onclick="switchTab('food',this)" data-vi="🍜 Món Ăn" data-en="🍜 Food Stats">🍜 Món Ăn</button>
@@ -2791,11 +2798,11 @@ function toggleLang() {
 
 function syncLanguageUI() {
   document.documentElement.lang = LANG;
-  document.getElementById('langBtn').textContent = LANG === 'vi' ? '🌐 English' : '🌐 Tiếng Việt';
+  document.getElementById('langBtn').textContent =  '🌐 Tiếng Việt';
 
   // Update static data-vi/data-en elements
   document.querySelectorAll('[data-vi][data-en]').forEach(el => {
-    const val = LANG === 'vi' ? el.dataset.vi : el.dataset.en;
+    const val =  el.dataset.en;
     if (val !== undefined && el.tagName !== 'INPUT') el.textContent = val;
   });
 
@@ -2803,9 +2810,9 @@ function syncLanguageUI() {
   // Update search placeholder
   document.getElementById('searchBox').placeholder = s('searchPH');
   const msbInput = document.getElementById('mobileSearchBox');
-  if (msbInput) msbInput.placeholder = LANG === 'vi' ? 'Tìm tên, vợ/chồng…' : 'Search name, spouse…';
+  if (msbInput) msbInput.placeholder =  'Search name, spouse…';
   const msbBtn = document.getElementById('msbFilterBtn');
-  if (msbBtn) msbBtn.innerHTML = `<span class="msb-dot${document.getElementById('msbDot')?.classList.contains('on')?' on':''}" id="msbDot"></span>${LANG === 'vi' ? '⚙ Lọc' : '⚙ Filter'}`;
+  if (msbBtn) msbBtn.innerHTML = `<span class="msb-dot${document.getElementById('msbDot')?.classList.contains('on')?' on':''}" id="msbDot"></span>${'⚙ Filter'}`;
 
   // Refresh all dynamic rendered content
   populateFilters();
@@ -3207,7 +3214,7 @@ function renderDetail(id) {
   const hasSocial = m.social_fb || m.social_ig || m.social_tt || m.social_other;
 
   const physicalHTML = hasPhysical ? `
-    <div class="section-heading">💪 ${LANG==='vi'?'Thể chất':'Physical'}</div>
+    <div class="section-heading">💪 ${'Physical'}</div>
     <div class="info-grid" style="margin-bottom:.7rem">
       ${m.height?`<div class="info-item"><label>${s('height')} (cm)</label><span>${m.height}</span></div>`:''}
       ${m.weight?`<div class="info-item"><label>${s('weight')} (kg)</label><span>${m.weight}</span></div>`:''}
@@ -3215,7 +3222,7 @@ function renderDetail(id) {
     </div>` : '';
 
   const contactHTML = (hasContact||hasSocial) ? `
-    <div class="section-heading">📞 ${LANG==='vi'?'Liên hệ & Mạng xã hội':'Contact & Social'}</div>
+    <div class="section-heading">📞 ${'Contact & Social'}</div>
     <div class="info-grid" style="margin-bottom:.7rem">
       ${m.phone?`<div class="info-item"><label>${s('phone')}</label><span>${m.phone}</span></div>`:''}
       ${m.email?`<div class="info-item"><label>${s('email')}</label><span><a href="mailto:${m.email}" style="color:var(--blue-m)">${m.email}</a></span></div>`:''}
@@ -3604,11 +3611,9 @@ function buildAnalysis() {
   const wrap = document.getElementById('analysisWrap');
   if (!wrap) return;
 
-  const vi = LANG === 'vi';
-
   const valid = DB.filter(m => m.full_name && m.full_name.trim());
   if (!valid.length) {
-    wrap.innerHTML = `<div style="color:var(--ink-dim);padding:2rem;text-align:center">${vi ? 'Chưa có dữ liệu để phân tích.' : 'No data available for analysis.'}</div>`;
+    wrap.innerHTML = `<div style="color:var(--ink-dim);padding:2rem;text-align:center">${'No data available for analysis.'}</div>`;
     return;
   }
 
@@ -3661,25 +3666,25 @@ function buildAnalysis() {
   // Vietnamese historical eras
   const VIET_HISTORY = [
     { label:'Trước 1427',  labelEn:'Pre-1427',   start:0,    end:1426, name:'Early Dynasties',            nameVi:'Thời Lý–Trần–Hồ',               color:'#7b3b6e',
-      desc: vi ? 'Thời kỳ hình thành Đại Việt: văn hóa Phật giáo, kháng cự ảnh hưởng Trung Hoa và nền tảng Nho học Việt Nam.' : 'Formative era of Đại Việt: Buddhist culture, Chinese governance resistance, and the founding of Vietnamese Confucian scholarship.' },
+      desc:  'Formative era of Đại Việt: Buddhist culture, Chinese governance resistance, and the founding of Vietnamese Confucian scholarship.' },
     { label:'1427–1527',   labelEn:'1427–1527',   start:1427, end:1526, name:'Early Lê Dynasty',           nameVi:'Lê Sơ (1428–1527)',              color:'#9b2a2a',
-      desc: vi ? 'Thời hoàng kim: cải cách pháp luật của Lê Thánh Tông, Bộ luật Hồng Đức và mở rộng lãnh thổ về phía Nam. Các kỳ thi Nho giáo định hình gia tộc trí thức.' : 'A golden age: Lê Thánh Tông\'s legal reforms, Hồng Đức Code, and southward expansion. Confucian civil exams shaped elite families.' },
+      desc:  'A golden age: Lê Thánh Tông\'s legal reforms, Hồng Đức Code, and southward expansion. Confucian civil exams shaped elite families.' },
     { label:'1527–1592',   labelEn:'1527–1592',   start:1527, end:1591, name:'Mạc–Lê Conflict',           nameVi:'Mạc–Lê tranh quyền',             color:'#5c4a38',
-      desc: vi ? 'Phân mảnh chính trị. Nhà Mạc cướp ngôi và cuộc phục hồi nhà Lê chia cắt miền Bắc. Các dòng họ trí thức phải điều hướng giữa hai phe.' : 'Political fragmentation. The Mạc usurpation and Lê restoration split the north. Literate families navigated divided loyalties.' },
+      desc:  'Political fragmentation. The Mạc usurpation and Lê restoration split the north. Literate families navigated divided loyalties.' },
     { label:'1592–1789',   labelEn:'1592–1789',   start:1592, end:1788, name:'Lê-Trịnh / Nguyễn Lords', nameVi:'Lê–Trịnh & Chúa Nguyễn',         color:'#2a5a8b',
-      desc: vi ? 'Việt Nam chia đôi: chúa Trịnh trị vì miền Bắc, chúa Nguyễn ở phương Nam. Giao thương, truyền đạo Công giáo và mở rộng dần về phương Nam.' : 'Vietnam split: Trịnh lords ruled the north, Nguyễn lords the south. Trade, Catholic missionaries, and gradual southern expansion defined the era.' },
+      desc:  'Vietnam split: Trịnh lords ruled the north, Nguyễn lords the south. Trade, Catholic missionaries, and gradual southern expansion defined the era.' },
     { label:'1789–1802',   labelEn:'1789–1802',   start:1789, end:1801, name:'Tây Sơn Uprising',          nameVi:'Phong trào Tây Sơn',             color:'#2d6b3f',
-      desc: vi ? 'Nguyễn Huệ đánh tan quân Thanh tại Đống Đa (1789). Một cuộc cách mạng nông dân thống nhất Việt Nam trong chốc lát trước khi Nguyễn Ánh giành quyền.' : 'Nguyễn Huệ repelled the Qing army at Đống Đa (1789). A peasant revolution that briefly unified Vietnam before Nguyễn Ánh prevailed.' },
+      desc:  'Nguyễn Huệ repelled the Qing army at Đống Đa (1789). A peasant revolution that briefly unified Vietnam before Nguyễn Ánh prevailed.' },
     { label:'1802–1884',   labelEn:'1802–1884',   start:1802, end:1883, name:'Nguyễn Dynasty',            nameVi:'Triều Nguyễn (1802–1884)',        color:'#b5842c',
-      desc: vi ? 'Gia Long thống nhất đất nước. Huế trở thành kinh đô. Thể chế Nho giáo và Quốc Sử Quán chuẩn hóa việc ghi chép gia phả.' : 'Gia Long unified Vietnam. Huế became the imperial capital. Confucian institutions standardised genealogy records.' },
+      desc:  'Gia Long unified Vietnam. Huế became the imperial capital. Confucian institutions standardised genealogy records.' },
     { label:'1884–1945',   labelEn:'1884–1945',   start:1884, end:1944, name:'French Colonial Period',    nameVi:'Thời Pháp thuộc (1884–1945)',     color:'#4a7a8a',
-      desc: vi ? 'Hiện đại hóa thuộc địa: đường sắt, chữ Quốc ngữ và di cư đô thị. Nhiều gia đình chuyển từ làng xã lên Hà Nội và Sài Gòn.' : 'Colonial modernity: railways, romanised Quốc ngữ script, and urban migration. Many families moved from villages to Hà Nội & Sài Gòn.' },
+      desc:  'Colonial modernity: railways, romanised Quốc ngữ script, and urban migration. Many families moved from villages to Hà Nội & Sài Gòn.' },
     { label:'1945–1975',   labelEn:'1945–1975',   start:1945, end:1974, name:'War & Independence',        nameVi:'Thời chiến (1945–1975)',          color:'#c84b4b',
-      desc: vi ? 'Độc lập (1945), chia cắt vĩ tuyến 17 (1954) và Chiến tranh Việt Nam. Di cư ồ ạt, gia đình chia lìa Nam–Bắc và biến động xã hội lớn.' : 'Independence (1945), partition at the 17th parallel (1954), and the Vietnam War. Massive displacement and north–south family separations.' },
+      desc:  'Independence (1945), partition at the 17th parallel (1954), and the Vietnam War. Massive displacement and north–south family separations.' },
     { label:'1975–1986',   labelEn:'1975–1986',   start:1975, end:1985, name:'Post-Reunification',        nameVi:'Hậu thống nhất (1975–1986)',      color:'#5c4a38',
-      desc: vi ? 'Thống nhất dưới CHXHCN Việt Nam. Tập thể hóa, làn sóng thuyền nhân và chiến tranh biên giới định hình thập niên này.' : 'Reunification under the Socialist Republic. Collectivisation, the boat-people crisis, and border wars shaped this decade.' },
+      desc:  'Reunification under the Socialist Republic. Collectivisation, the boat-people crisis, and border wars shaped this decade.' },
     { label:'1986–nay',    labelEn:'1986–now',    start:1986, end:2099, name:'Đổi Mới & Modern Era',     nameVi:'Đổi Mới & Hiện đại (1986–nay)',  color:'#2d6b3f',
-      desc: vi ? 'Đổi Mới biến đổi nền kinh tế. Đô thị hóa, cộng đồng hải ngoại và kết nối kỹ thuật số định hình cuộc sống các thế hệ trẻ.' : 'Đổi Mới transformed Vietnam\'s economy. Urbanisation, diaspora communities, and digital connectivity define family life for younger generations.' },
+      desc:  'Đổi Mới transformed Vietnam\'s economy. Urbanisation, diaspora communities, and digital connectivity define family life for younger generations.' },
   ];
 
   const dynOverlap = VIET_HISTORY.map(era => ({
@@ -3690,38 +3695,30 @@ function buildAnalysis() {
   // ── Auto-generated bilingual insights ──
   const insights = [];
   if (spanYears !== null) insights.push(
-    vi ? `Huyết mạch họ Lã trải dài <strong>${spanYears} năm</strong> lịch sử được ghi chép, từ năm ${getYear(oldest)} đến ${getYear(youngest)}.`
-       : `The Lã bloodline spans <strong>${spanYears} years</strong> of recorded history, from ${getYear(oldest)} to ${getYear(youngest)}.`
+     `The Lã bloodline spans <strong>${spanYears} years</strong> of recorded history, from ${getYear(oldest)} to ${getYear(youngest)}.`
   );
   if (sortedGens.length >= 3) insights.push(
-    vi ? `Với <strong>${sortedGens.length} đời</strong> được lưu lại, đây là gia phả ${sortedGens.length >= 6 ? 'nhiều thế kỷ, rất đồ sộ' : sortedGens.length >= 4 ? 'nhiều thế hệ, được ghi chép tốt' : 'đang phát triển'}.`
-       : `With <strong>${sortedGens.length} generations</strong> documented, this is a ${sortedGens.length >= 6 ? 'deep, multi-century' : sortedGens.length >= 4 ? 'well-documented multi-generational' : 'growing'} family record.`
+     `With <strong>${sortedGens.length} generations</strong> documented, this is a ${sortedGens.length >= 6 ? 'deep, multi-century' : sortedGens.length >= 4 ? 'well-documented multi-generational' : 'growing'} family record.`
   );
   const mfRatio = totalF > 0 ? (totalM/totalF).toFixed(2) : '∞';
   if (totalM && totalF) insights.push(
-    vi ? `Tỉ lệ giới tính: <strong>${totalM} nam : ${totalF} nữ</strong> (${mfRatio}:1) — ${totalM > totalF ? 'đa số nam, đặc trưng của gia phả theo phụ hệ Việt Nam' : 'tỉ lệ nữ cao, phản ánh cách ghi chép hiện đại và toàn diện'}.`
-       : `Gender ratio is <strong>${totalM}M : ${totalF}F</strong> (${mfRatio}:1) — ${totalM > totalF ? 'male-majority, typical of patrilineal Vietnamese clan books' : 'high female representation, suggesting modern or inclusive record-keeping'}.`
+     `Gender ratio is <strong>${totalM}M : ${totalF}F</strong> (${mfRatio}:1) — ${totalM > totalF ? 'male-majority, typical of patrilineal Vietnamese clan books' : 'high female representation, suggesting modern or inclusive record-keeping'}.`
   );
   if (avgLifespan) insights.push(
-    vi ? `Tuổi thọ trung bình của những thành viên có đủ ngày sinh và mất là <strong>${avgLifespan} tuổi</strong>${longestLiver ? ` — thọ nhất: ${longestLiver.full_name} (${maxLifespan} tuổi)` : ''}.`
-       : `Average lifespan among members with birth and death years is <strong>${avgLifespan} years</strong>${longestLiver ? ` — longest-lived: ${longestLiver.full_name} at ${maxLifespan} years` : ''}.`
+     `Average lifespan among members with birth and death years is <strong>${avgLifespan} years</strong>${longestLiver ? ` — longest-lived: ${longestLiver.full_name} at ${maxLifespan} years` : ''}.`
   );
   if (largestGenIdx !== undefined) insights.push(
-    vi ? `Đời ${largestGenIdx} là thế hệ đông nhất với <strong>${maxGen} thành viên</strong>, gợi ý một đỉnh nhân khẩu học trong lịch sử phát triển dòng họ.`
-       : `Generation ${largestGenIdx} is the largest cohort with <strong>${maxGen} members</strong>, indicating a demographic peak in the family's growth.`
+     `Generation ${largestGenIdx} is the largest cohort with <strong>${maxGen} members</strong>, indicating a demographic peak in the family's growth.`
   );
   if (branches.length > 1) insights.push(
-    vi ? `Dòng họ đã phân thành <strong>${branches.length} phòng (chi)</strong>: ${branches.slice(0,3).join(', ')}${branches.length>3?` và ${branches.length-3} phòng khác`:''}.`
-       : `The family has branched into <strong>${branches.length} distinct phòng</strong>: ${branches.slice(0,3).join(', ')}${branches.length>3?` and ${branches.length-3} more`:''}.`
+     `The family has branched into <strong>${branches.length} distinct phòng</strong>: ${branches.slice(0,3).join(', ')}${branches.length>3?` and ${branches.length-3} more`:''}.`
   );
   const activeEras = dynOverlap.filter(e=>e.count>0);
   if (activeEras.length) insights.push(
-    vi ? `Thành viên sinh ra trong <strong>${activeEras.length} giai đoạn lịch sử Việt Nam</strong>, từ ${activeEras[0].nameVi} đến ${activeEras[activeEras.length-1].nameVi}.`
-       : `Members were born across <strong>${activeEras.length} Vietnamese historical era${activeEras.length!==1?'s':''}</strong>, from the ${activeEras[0].name} to the ${activeEras[activeEras.length-1].name}.`
+     `Members were born across <strong>${activeEras.length} Vietnamese historical era${activeEras.length!==1?'s':''}</strong>, from the ${activeEras[0].name} to the ${activeEras[activeEras.length-1].name}.`
   );
   if (topCities.length) insights.push(
-    vi ? `Thành viên có mặt ở <strong>${topCities.length} địa phương</strong>. Phổ biến nhất: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
-       : `Members recorded across <strong>${topCities.length} location${topCities.length!==1?'s':''}</strong>. Most common: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
+     `Members recorded across <strong>${topCities.length} location${topCities.length!==1?'s':''}</strong>. Most common: ${topCities.slice(0,3).map(([c])=>c).join(', ')}.`
   );
 
   // ── Cross-tab data for the Executive Summary (findings from every other tab) ──
@@ -3809,62 +3806,60 @@ function buildAnalysis() {
   // ── Section: Insights ──
   const insightsHTML = `
     <div class="an-section-block">
-      <div class="an-section-title">💡 ${vi ? 'Nhận Định Huyết Thống' : 'Bloodline Insights'}</div>
-      ${insights.length ? insights.map(i=>`<div class="an-insight">${i}</div>`).join('') : emptyMsg(vi ? 'Chưa đủ dữ liệu để tạo nhận định.' : 'Not enough data to generate insights.')}
+      <div class="an-section-title">💡 ${'Bloodline Insights'}</div>
+      ${insights.length ? insights.map(i=>`<div class="an-insight">${i}</div>`).join('') : emptyMsg( 'Not enough data to generate insights.')}
     </div>`;
 
   // ── Section: Surname origin ──
-  const originHTML = card('族', vi ? 'Nguồn Gốc Họ Lã · Surname Origin' : 'Surname Origin · Nguồn Gốc Họ Lã',
+  const originHTML = card('族',  'Surname Origin · Nguồn Gốc Họ Lã',
     `<div class="an-origin-box">
        <div class="an-origin-char">呂 / 吕</div>
        <div class="an-origin-pinyin">LǙ (Mandarin) · LÃ (Vietnamese)</div>
-       <div class="an-origin-meaning">${vi
-         ? 'Một trong những họ Trung Hoa cổ nhất, bắt nguồn từ nước Lǚ thời Tây Chu (khoảng thế kỷ 11 TCN). Chữ 呂 mô tả xương sống — biểu tượng cho sự thẳng thắn, vững chắc và sự tiếp nối dòng tộc.'
-         : 'One of the oldest Chinese clan names, traced to the state of Lǚ in ancient Zhou dynasty China (c. 11th century BC). The character depicts a spine — symbolising uprightness and lineage continuity.'}</div>
+       <div class="an-origin-meaning">${'One of the oldest Chinese clan names, traced to the state of Lǚ in ancient Zhou dynasty China (c. 11th century BC). The character depicts a spine — symbolising uprightness and lineage continuity.'}</div>
      </div>
-     ${statRow(vi ? 'Phiên âm tiếng Việt' : 'Vietnamese romanisation', 'Lã · Lữ · Lư', 0, 'transparent')}
-     ${statRow(vi ? 'Nghĩa chữ' : 'Character meaning', vi ? 'Xương sống / Cột sống' : 'Backbone / Spine', 0, 'transparent')}
-     ${statRow(vi ? 'Nước gốc' : 'Origin state', 'Lǚ (呂國), Zhou China', 0, 'transparent')}
-     ${statRow(vi ? 'Thủy tổ huyền thoại' : 'Legendary ancestor', 'Lǚ Shang (Jiang Ziya)', 0, 'transparent')}
-     ${statRow(vi ? 'Nhân vật lịch sử nổi bật' : 'Notable figures', 'Lã Gia (Nam Việt), Lǚ Buwei (Tần)', 0, 'transparent')}
+     ${statRow( 'Vietnamese romanisation', 'Lã · Lữ · Lư', 0, 'transparent')}
+     ${statRow( 'Character meaning',  'Backbone / Spine', 0, 'transparent')}
+     ${statRow( 'Origin state', 'Lǚ (呂國), Zhou China', 0, 'transparent')}
+     ${statRow( 'Legendary ancestor', 'Lǚ Shang (Jiang Ziya)', 0, 'transparent')}
+     ${statRow( 'Notable figures', 'Lã Gia (Nam Việt), Lǚ Buwei (Tần)', 0, 'transparent')}
      <div style="margin-top:.75rem">
-       <div class="an-section-title" style="margin-bottom:.4rem">${vi ? 'Tỉ lệ họ Lã tại Việt Nam' : 'Vietnamese Surname Prevalence'}</div>
-       <span class="an-rank-pill"><span class="an-rank-num">~39</span>${vi ? 'Xếp hạng toàn quốc' : 'Ranked nationally'}</span>
-       <span class="an-rank-pill"><span class="an-rank-num">~1%</span>${vi ? 'Dân số' : 'of population'}</span>
-       <span class="an-rank-pill"><span class="an-rank-num">Bắc Bộ</span>${vi ? 'Phổ biến nhất' : 'Most common'}</span>
+       <div class="an-section-title" style="margin-bottom:.4rem">${'Vietnamese Surname Prevalence'}</div>
+       <span class="an-rank-pill"><span class="an-rank-num">~39</span>${'Ranked nationally'}</span>
+       <span class="an-rank-pill"><span class="an-rank-num">~1%</span>${'of population'}</span>
+       <span class="an-rank-pill"><span class="an-rank-num">Bắc Bộ</span>${'Most common'}</span>
      </div>`
   );
 
   // ── Section: Bloodline demographics ──
-  const demoHTML = card('📊', vi ? 'Nhân Khẩu Học Huyết Thống · Demographics' : 'Bloodline Demographics · Nhân Khẩu Học',
+  const demoHTML = card('📊',  'Bloodline Demographics · Nhân Khẩu Học',
     `<div class="an-mini-grid" style="margin-bottom:.75rem">
        <div class="an-mini-card">
          <div class="an-mini-val">${valid.length}</div>
-         <div class="an-mini-lbl">${vi ? 'Tổng thành viên' : 'Total Recorded'}</div>
+         <div class="an-mini-lbl">${'Total Recorded'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val" style="color:var(--green)">${living}</div>
-         <div class="an-mini-lbl">${vi ? 'Còn sống' : 'Living'}</div>
+         <div class="an-mini-lbl">${'Living'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val" style="color:var(--blue-m)">${totalM}</div>
-         <div class="an-mini-lbl">${vi ? 'Nam ♂' : 'Male ♂'}</div>
+         <div class="an-mini-lbl">${'Male ♂'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val" style="color:var(--blue-f)">${totalF}</div>
-         <div class="an-mini-lbl">${vi ? 'Nữ ♀' : 'Female ♀'}</div>
+         <div class="an-mini-lbl">${'Female ♀'}</div>
        </div>
-       ${avgLifespan ? `<div class="an-mini-card"><div class="an-mini-val">${avgLifespan}<span style="font-size:.85rem"> ${vi?'tuổi':'yr'}</span></div><div class="an-mini-lbl">${vi ? 'Tuổi thọ TB' : 'Avg Lifespan'}</div></div>` : ''}
-       ${sortedGens.length ? `<div class="an-mini-card"><div class="an-mini-val">${sortedGens.length}</div><div class="an-mini-lbl">${vi ? 'Số đời' : 'Generations'}</div></div>` : ''}
+       ${avgLifespan ? `<div class="an-mini-card"><div class="an-mini-val">${avgLifespan}<span style="font-size:.85rem"> ${'yr'}</span></div><div class="an-mini-lbl">${'Avg Lifespan'}</div></div>` : ''}
+       ${sortedGens.length ? `<div class="an-mini-card"><div class="an-mini-val">${sortedGens.length}</div><div class="an-mini-lbl">${'Generations'}</div></div>` : ''}
      </div>
-     ${statRow(vi ? 'Đã mất' : 'Deceased on record', deceased, pct(deceased,valid.length), 'var(--ink-dim)')}
-     ${statRow(vi ? 'Đã kết hôn' : 'Married', married, pct(married,valid.length), 'var(--gold)')}
-     ${statRow(vi ? 'Con nuôi' : 'Adopted members', adopted, pct(adopted,valid.length), 'var(--blue-f)')}
-     ${statRow(vi ? 'Có ngày sinh' : 'Birth date known', withDobYear.length, pct(withDobYear.length,valid.length), 'var(--green)')}
+     ${statRow( 'Deceased on record', deceased, pct(deceased,valid.length), 'var(--ink-dim)')}
+     ${statRow( 'Married', married, pct(married,valid.length), 'var(--gold)')}
+     ${statRow( 'Adopted members', adopted, pct(adopted,valid.length), 'var(--blue-f)')}
+     ${statRow( 'Birth date known', withDobYear.length, pct(withDobYear.length,valid.length), 'var(--green)')}
      ${spanYears !== null ? `<div style="margin-top:.65rem;font-size:.77rem;color:var(--ink-dim);line-height:1.5">
-       ${vi ? 'Cụ tổ xa nhất' : 'Oldest recorded'}: <strong style="color:var(--red)">${oldest.full_name}</strong> (${vi?'sinh':'b.'} ${getYear(oldest)})
+       ${'Oldest recorded'}: <strong style="color:var(--red)">${oldest.full_name}</strong> (${'b.'} ${getYear(oldest)})
        &nbsp;·&nbsp;
-       ${vi ? 'Trẻ nhất' : 'Youngest'}: <strong style="color:var(--green)">${youngest.full_name}</strong> (${vi?'sinh':'b.'} ${getYear(youngest)})
+       ${'Youngest'}: <strong style="color:var(--green)">${youngest.full_name}</strong> (${'b.'} ${getYear(youngest)})
      </div>` : ''}`
   );
 
@@ -3873,11 +3868,11 @@ function buildAnalysis() {
     const h = maxGen ? Math.round((c/maxGen)*100) : 0;
     const mC = byGen[sortedGens[i]].filter(m=>m.sex==='M').length;
     const fC = byGen[sortedGens[i]].filter(m=>m.sex==='F').length;
-    return `<div class="an-spark-bar" data-gen="${sortedGens[i]}" style="height:${h}%;background:linear-gradient(to top,var(--red),var(--gold))" title="${vi?'Đời':'Gen'} ${sortedGens[i]}: ${c} ${vi?'thành viên':'members'}"></div>`;
+    return `<div class="an-spark-bar" data-gen="${sortedGens[i]}" style="height:${h}%;background:linear-gradient(to top,var(--red),var(--gold))" title="${'Gen'} ${sortedGens[i]}: ${c} ${'members'}"></div>`;
   }).join('');
   const sparkLabels = sortedGens.map(g=>`<div class="an-spark-lbl">G${g}</div>`).join('');
 
-  const growthHTML = card('📈', vi ? 'Tăng Trưởng Theo Đời · Generation Growth' : 'Generation Growth · Tăng Trưởng Theo Đời',
+  const growthHTML = card('📈',  'Generation Growth · Tăng Trưởng Theo Đời',
     `<div class="an-spark-row">${sparkBarsM}</div>
      <div class="an-spark-label">${sparkLabels}</div>
      <div style="margin-top:.65rem;display:flex;flex-direction:column;gap:.18rem">
@@ -3893,7 +3888,7 @@ function buildAnalysis() {
          const dCount = byGen[g].filter(m=>m.dod).length;
          return `<div class="gen-detail-row" data-gen="${g}" style="display:flex;align-items:center;gap:.5rem;font-size:.77rem;padding:.2rem 0;border-bottom:1px solid var(--paper-rim)">
            <span style="font-family:var(--font-mono);color:var(--gold);min-width:32px;font-weight:700">G${g}</span>
-           <span style="flex:1;color:var(--ink-dim)">${mCount}♂ · ${fCount}♀${dCount ? ` · ${dCount} ${vi?'mất':'dec.'}` : ''}</span>
+           <span style="flex:1;color:var(--ink-dim)">${mCount}♂ · ${fCount}♀${dCount ? ` · ${dCount} ${'dec.'}` : ''}</span>
            <span style="font-weight:700;font-family:var(--font-mono);color:var(--ink)">${genCounts[i]}</span>
            ${arrow}
          </div>`;
@@ -3902,7 +3897,7 @@ function buildAnalysis() {
   );
 
   // ── Section: Geographic distribution ──
-  const geoHTML = card('📍', vi ? 'Phân Bố Địa Lý · Geographic Spread' : 'Geographic Spread · Phân Bố Địa Lý',
+  const geoHTML = card('📍',  'Geographic Spread · Phân Bố Địa Lý',
     topCities.length
       ? topCities.map(([city, count]) =>
           `<div class="an-stat-row" data-city="${city}">
@@ -3912,13 +3907,13 @@ function buildAnalysis() {
            </div>`
         ).join('') +
         `<div style="margin-top:.55rem;font-size:.72rem;color:var(--ink-dim)">
-           ${Object.keys(cityCount).length} ${vi ? `địa phương được ghi nhận trong gia phả.` : `unique location${Object.keys(cityCount).length!==1?'s':''} recorded across the family.`}
+           ${Object.keys(cityCount).length} ${`unique location${Object.keys(cityCount).length!==1?'s':''} recorded across the family.`}
          </div>`
-      : emptyMsg(vi ? 'Chưa có dữ liệu địa lý. Thêm Tỉnh/TP vào hồ sơ thành viên.' : 'No location data recorded. Add City/Province in member profiles.')
+      : emptyMsg( 'No location data recorded. Add City/Province in member profiles.')
   );
 
   // ── Section: Common given names ──
-  const namesHTML = card('👤', vi ? 'Tên Phổ Biến · Common Given Names' : 'Common Given Names · Tên Phổ Biến',
+  const namesHTML = card('👤',  'Common Given Names · Tên Phổ Biến',
     topNames.length
       ? topNames.map(([name, count]) =>
           `<div class="an-stat-row" data-name="${name}">
@@ -3927,7 +3922,7 @@ function buildAnalysis() {
              <span class="an-stat-val">${count}</span>
            </div>`
         ).join('')
-      : emptyMsg(vi ? 'Chưa có dữ liệu tên.' : 'No name data available.')
+      : emptyMsg( 'No name data available.')
   );
 
   // ── Section: Vietnamese historical context ──
@@ -3938,65 +3933,55 @@ function buildAnalysis() {
     })
     .filter(era => era.members.length > 0);
 
-  const histHTML = card('🏛️', vi ? 'Bối Cảnh Lịch Sử Việt Nam · Historical Context' : 'Historical Context · Bối Cảnh Lịch Sử Việt Nam',
+  const histHTML = card('🏛️',  'Historical Context · Bối Cảnh Lịch Sử Việt Nam',
     `<div style="font-size:.77rem;color:var(--ink-dim);margin-bottom:.7rem;line-height:1.55">
-       ${vi
-         ? 'Huyết mạch họ Lã được chiếu theo lịch sử các triều đại Việt Nam. Chỉ hiển thị các giai đoạn có thành viên sinh ra. Nhấn vào mỗi giai đoạn để xem chi tiết và danh sách thành viên.'
-         : 'The Lã bloodline mapped against Vietnamese dynastic history. Only eras with recorded member births are shown. Click each era to expand details and family members.'}
+       ${'The Lã bloodline mapped against Vietnamese dynastic history. Only eras with recorded member births are shown. Click each era to expand details and family members.'}
      </div>
      ${activeHistItems.length ? `<div class="hist-timeline">
        ${activeHistItems.map(era => `
-         <div class="hist-item" data-era="${vi?era.label:era.labelEn}">
+         <div class="hist-item" data-era="${era.labelEn}">
            <div class="hist-dot" style="background:${era.color};box-shadow:0 0 0 2px ${era.color}33"></div>
            <div class="hist-content">
-             <div class="hist-era">${vi ? era.label : era.labelEn} <span class="hist-toggle">▶</span></div>
-             <div class="hist-title" style="color:${era.color}">${vi ? era.nameVi : era.name}</div>
+             <div class="hist-era">${era.labelEn} <span class="hist-toggle">▶</span></div>
+             <div class="hist-title" style="color:${era.color}">${era.name}</div>
              <div class="hist-body">${era.desc}
                <div class="an-member-drawer">
                  ${era.members.map(m=>`<span class="an-member-chip" data-id="${m.id}"><span class="chip-gen">G${m.generation}</span>${m.full_name}</span>`).join('')}
                </div>
              </div>
-             <div class="hist-overlap" style="cursor:pointer">👥 ${era.members.length} ${vi?'thành viên':'member'}${era.members.length!==1&&!vi?'s':''}</div>
+             <div class="hist-overlap" style="cursor:pointer">👥 ${era.members.length} ${'member'}${era.members.length!==1&&!''}</div>
            </div>
          </div>`).join('')}
-     </div>` : emptyMsg(vi ? 'Chưa có thành viên nào có năm sinh trùng với các giai đoạn lịch sử đã ghi nhận.' : 'No members with recorded birth years fall within the tracked historical eras.')}`
+     </div>` : emptyMsg( 'No members with recorded birth years fall within the tracked historical eras.')}`
   );
 
   // ── Section: Cultural context ──
   const GLOSSARY = [
-    { term:'Gia Phả', def: vi ? 'Sách ghi chép gia tộc' : 'Genealogical record', detail: vi ? 'Hệ thống ghi chép dòng họ, được lưu giữ từ thời nhà Lý (1009). Ghi lại dòng dõi, tước hiệu, nơi an táng và vai trò tế lễ.' : 'Clan record system kept since the Lý dynasty (1009 AD), recording lineage, honorifics, burial sites and ritual roles.' },
-    { term:'Phòng', def: vi ? 'Chi nhánh dòng họ' : 'Lineage branch', detail: vi ? 'Phân nhánh dòng họ từ các người con trai khác nhau của tổ tiên. Mỗi phòng có bàn thờ và nghi lễ riêng.' : 'Branch descending from different sons of an ancestor. Each phòng maintains its own altar and ceremonies.' },
-    { term:'Đời / Hệ', def: vi ? 'Bậc thế hệ' : 'Generation rank', detail: vi ? 'Đời đầu tiên là thủy tổ, mỗi đời con tiếp nối. Số đời xác định vị trí trong gia phả và quyền ưu tiên trong tế lễ.' : 'Generation 1 is the founding ancestor; each successive generation inherits. The rank determines precedence in ceremonies.' },
-    { term:'Tiên Tổ', def: vi ? 'Thủy tổ sáng lập' : 'Founding ancestor', detail: vi ? 'Người đầu tiên của dòng họ được ghi nhận. Toàn bộ gia phả bắt đầu từ tiên tổ.' : 'The first recorded person of the clan. The entire gia phả traces back to this ancestor.' },
-    { term:'Huyết thống', def: vi ? 'Huyết mạch trực hệ' : 'Blood lineage', detail: vi ? 'Quan hệ trực tiếp từ cha mẹ đến con cái qua các thế hệ, phân biệt với con nuôi hoặc thành viên kết hôn vào dòng họ.' : 'Direct biological descent from parent to child across generations, distinct from adopted or married-in members.' },
-    { term:'Tổ tiên', def: vi ? 'Tổ tiên, ông bà' : 'Ancestors', detail: vi ? 'Tất cả những người đã khuất trong dòng họ. Tín ngưỡng thờ cúng tổ tiên là nền tảng của văn hóa gia đình Việt Nam.' : 'All deceased members of the clan. Ancestor veneration is the cornerstone of Vietnamese family culture.' },
-    { term:'Thờ cúng', def: vi ? 'Thờ phụng tổ tiên' : 'Ancestor veneration', detail: vi ? 'Nghi lễ dâng hương, cúng giỗ vào ngày mất và các dịp lễ tết để tưởng nhớ và cầu sự phù hộ của tổ tiên.' : 'Ritual offering of incense and food on death anniversaries and festivals to honour and seek blessings from ancestors.' },
-    { term:'Hội đồng', def: vi ? 'Hội đồng dòng họ' : 'Clan council', detail: vi ? 'Ban lãnh đạo của dòng họ gồm các trưởng phòng và bậc cao niên, điều phối việc tế lễ, giải quyết tranh chấp và duy trì gia phả.' : 'Clan leadership comprising heads of each phòng and elders, coordinating ceremonies, disputes and gia phả maintenance.' },
+    { term:'Gia Phả', def:  'Genealogical record', detail:  'Clan record system kept since the Lý dynasty (1009 AD), recording lineage, honorifics, burial sites and ritual roles.' },
+    { term:'Phòng', def:  'Lineage branch', detail:  'Branch descending from different sons of an ancestor. Each phòng maintains its own altar and ceremonies.' },
+    { term:'Đời / Hệ', def:  'Generation rank', detail:  'Generation 1 is the founding ancestor; each successive generation inherits. The rank determines precedence in ceremonies.' },
+    { term:'Tiên Tổ', def:  'Founding ancestor', detail:  'The first recorded person of the clan. The entire gia phả traces back to this ancestor.' },
+    { term:'Huyết thống', def:  'Blood lineage', detail:  'Direct biological descent from parent to child across generations, distinct from adopted or married-in members.' },
+    { term:'Tổ tiên', def:  'Ancestors', detail:  'All deceased members of the clan. Ancestor veneration is the cornerstone of Vietnamese family culture.' },
+    { term:'Thờ cúng', def:  'Ancestor veneration', detail:  'Ritual offering of incense and food on death anniversaries and festivals to honour and seek blessings from ancestors.' },
+    { term:'Hội đồng', def:  'Clan council', detail:  'Clan leadership comprising heads of each phòng and elders, coordinating ceremonies, disputes and gia phả maintenance.' },
   ];
 
-  const cultureHTML = card('📜', vi ? 'Truyền Thống Gia Phả · Gia Phả Tradition' : 'Gia Phả Tradition · Truyền Thống Gia Phả',
+  const cultureHTML = card('📜',  'Gia Phả Tradition · Truyền Thống Gia Phả',
     `<div class="an-insight" data-insight="giaPha">
-       ${vi
-         ? `<strong>Gia phả</strong> (家譜) là sách ghi chép gia tộc của các gia đình quý tộc và học thức từ thời nhà Lý (1009). Sách ghi lại dòng dõi, tước hiệu, nơi an táng, nguồn gốc chi nhánh và vai trò tế lễ trong dòng họ.`
-         : `<strong>Gia phả</strong> (家譜) — Vietnamese genealogical records — have been kept by scholarly families since the Lý dynasty (1009 AD). They record lineage, honorifics, burial sites, branch origins, and ritual roles within each clan.`}
+       ${`<strong>Gia phả</strong> (家譜) — Vietnamese genealogical records — have been kept by scholarly families since the Lý dynasty (1009 AD). They record lineage, honorifics, burial sites, branch origins, and ritual roles within each clan.`}
      </div>
      <div class="an-insight" data-insight="surname">
-       ${vi
-         ? `Họ <strong>Lã / 呂</strong> bắt nguồn từ nước Lǚ cổ đại của Trung Hoa. Tại Việt Nam, dòng họ này du nhập qua quá trình di cư thời Bắc thuộc (111 TCN – 938 SCN) và được bản địa hóa qua nhiều thế kỷ giao lưu văn hóa Hán–Việt.`
-         : `The <strong>Lã / 呂</strong> clan trace origins to the ancient Chinese state of Lǚ. In Vietnam, the surname entered via migration during the Chinese administrative period (111 BC – 938 AD) and was naturalised through centuries of Sino-Vietnamese cultural exchange.`}
+       ${`The <strong>Lã / 呂</strong> clan trace origins to the ancient Chinese state of Lǚ. In Vietnam, the surname entered via migration during the Chinese administrative period (111 BC – 938 AD) and was naturalised through centuries of Sino-Vietnamese cultural exchange.`}
      </div>
      <div class="an-insight" data-insight="naming">
-       ${vi
-         ? `Truyền thống đặt tên Việt Nam đặt <strong>họ đứng đầu</strong> (Họ), theo sau là tên đệm (Tên đệm) và tên chính (Tên). Tên đệm thường mã hóa bậc thế hệ, chi nhánh hoặc đức hạnh Nho giáo — biến nó thành một mã phả hệ sống.`
-         : `Vietnamese naming convention places the <strong>clan surname first</strong> (Họ), followed by a generational middle name (Tên đệm) and given name (Tên). The middle name encodes generation rank, branch identity, or Confucian virtues — a living genealogical code.`}
+       ${`Vietnamese naming convention places the <strong>clan surname first</strong> (Họ), followed by a generational middle name (Tên đệm) and given name (Tên). The middle name encodes generation rank, branch identity, or Confucian virtues — a living genealogical code.`}
      </div>
      <div class="an-insight" data-insight="phong">
-       ${vi
-         ? `Khái niệm <strong>phòng</strong> (房 — chi nhánh dòng tộc) phân chia dòng họ theo dòng dõi từ các người con trai khác nhau của tổ tiên. Mỗi phòng duy trì sổ sách riêng, bàn thờ và nghĩa vụ tế lễ — bảo tồn bản sắc gia tộc qua không gian và thời gian.`
-         : `The concept of <strong>phòng</strong> (房 — lineage branch) divides a clan by descent from different sons of an ancestor. Each phòng maintains its own sub-records, ancestor altar, and ceremonial obligations — preserving family identity across geography and time.`}
+       ${`The concept of <strong>phòng</strong> (房 — lineage branch) divides a clan by descent from different sons of an ancestor. Each phòng maintains its own sub-records, ancestor altar, and ceremonial obligations — preserving family identity across geography and time.`}
      </div>
      <div style="margin-top:.6rem">
-       <div class="an-section-title" style="margin-bottom:.4rem">${vi ? 'Thuật ngữ gia phả — nhấn để xem giải nghĩa' : 'Genealogy Glossary — click a term to see its meaning'}</div>
+       <div class="an-section-title" style="margin-bottom:.4rem">${'Genealogy Glossary — click a term to see its meaning'}</div>
        <div style="display:flex;flex-wrap:wrap;gap:.3rem">
          ${GLOSSARY.map(({term,def,detail})=>`<span class="an-rank-pill" data-def="${detail.replace(/"/g,'&quot;')}" data-term="${term}"><span class="an-rank-num" style="background:var(--gold);color:var(--ink)">${term}</span>${def}</span>`).join('')}
        </div>
@@ -4004,56 +3989,48 @@ function buildAnalysis() {
   );
 
   // ── Section: Findings from Rituals / Costumes / Food / Skills tabs ──
-  const findingsHTML = card('🧭', vi ? 'Phát Hiện Từ Các Mục Khác · Cross-Tab Findings' : 'Cross-Tab Findings · Phát Hiện Từ Các Mục Khác',
+  const findingsHTML = card('🧭',  'Cross-Tab Findings · Phát Hiện Từ Các Mục Khác',
     `<div class="an-mini-grid" style="margin-bottom:.75rem">
        <div class="an-mini-card">
          <div class="an-mini-val">${nextRitual ? '🏮' : '—'}</div>
-         <div class="an-mini-lbl">${vi ? 'Lễ Nghi' : 'Rituals'}</div>
+         <div class="an-mini-lbl">${'Rituals'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val">${dominantCostumeRegion ? '👘' : '—'}</div>
-         <div class="an-mini-lbl">${vi ? 'Trang Phục' : 'Costumes'}</div>
+         <div class="an-mini-lbl">${'Costumes'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val">${topFood ? '🍜' : '—'}</div>
-         <div class="an-mini-lbl">${vi ? 'Món Ăn' : 'Food'}</div>
+         <div class="an-mini-lbl">${'Food'}</div>
        </div>
        <div class="an-mini-card">
          <div class="an-mini-val">${skillsEntryCount || '—'}</div>
-         <div class="an-mini-lbl">${vi ? 'Kỹ Năng' : 'Skills'}</div>
+         <div class="an-mini-lbl">${'Skills'}</div>
        </div>
      </div>
      <div class="an-insight" data-insight="findings-rituals">
-       🏮 <strong>${vi ? 'Lễ Nghi:' : 'Rituals:'}</strong>
+       🏮 <strong>${'Rituals:'}</strong>
        ${nextRitual
-         ? (vi
-             ? `Lễ/ngày gần nhất trong lịch là <strong>${nextRitual.ev.name_vi}</strong> (${nextRitual.dateKey.replace('-','/')}).`
-             : `The nearest upcoming date on the calendar is <strong>${nextRitual.ev.name_en}</strong> (${nextRitual.dateKey.replace('-','/')}).`)
-         : (vi ? 'Chưa có dữ liệu lễ nghi được ghi nhận.' : 'No ritual/calendar data recorded yet.')}
+         ? (`The nearest upcoming date on the calendar is <strong>${nextRitual.ev.name_en}</strong> (${nextRitual.dateKey.replace('-','/')}).`)
+         : ( 'No ritual/calendar data recorded yet.')}
      </div>
      <div class="an-insight" data-insight="findings-costume">
-       👘 <strong>${vi ? 'Trang Phục:' : 'Costumes:'}</strong>
+       👘 <strong>${'Costumes:'}</strong>
        ${dominantCostumeRegion
-         ? (vi
-             ? `Phần lớn thành viên có quê quán ở <strong>${REGION_LABEL[dominantCostumeRegion]?.vi || dominantCostumeRegion}</strong>, tương ứng với <strong>${dominantCostumeCount}</strong> bộ trang phục truyền thống liên quan trong mục Trang Phục.`
-             : `Most members' recorded hometowns fall in <strong>${REGION_LABEL[dominantCostumeRegion]?.en || dominantCostumeRegion}</strong>, matching <strong>${dominantCostumeCount}</strong> related costumes in the Costumes tab.`)
-         : (vi ? 'Chưa có đủ dữ liệu quê quán để xác định vùng miền trang phục.' : 'Not enough hometown data to determine a dominant costume region.')}
+         ? (`Most members' recorded hometowns fall in <strong>${REGION_LABEL[dominantCostumeRegion]?.en || dominantCostumeRegion}</strong>, matching <strong>${dominantCostumeCount}</strong> related costumes in the Costumes tab.`)
+         : ( 'Not enough hometown data to determine a dominant costume region.')}
      </div>
      <div class="an-insight" data-insight="findings-food">
-       🍜 <strong>${vi ? 'Món Ăn:' : 'Food:'}</strong>
+       🍜 <strong>${'Food:'}</strong>
        ${topFood
-         ? (vi
-             ? `Món được nhắc đến nhiều nhất trong sở thích ăn uống của gia đình là <strong>${topFood.name}</strong> (${topFood.count} lượt).`
-             : `The most frequently recorded favorite dish across the family is <strong>${topFood.name}</strong> (${topFood.count} mention${topFood.count!==1?'s':''}).`)
-         : (vi ? 'Chưa có dữ liệu món ăn yêu thích.' : 'No favorite-food data recorded yet.')}
+         ? (`The most frequently recorded favorite dish across the family is <strong>${topFood.name}</strong> (${topFood.count} mention${topFood.count!==1?'s':''}).`)
+         : ( 'No favorite-food data recorded yet.')}
      </div>
      <div class="an-insight" data-insight="findings-skills">
-       🎓 <strong>${vi ? 'Kỹ Năng:' : 'Skills:'}</strong>
+       🎓 <strong>${'Skills:'}</strong>
        ${skillsEntryCount
-         ? (vi
-             ? `<strong>${membersWithSkills.length}</strong> thành viên có tổng cộng <strong>${skillsEntryCount}</strong> mục sự nghiệp/học vấn/sở thích (Sự nghiệp: ${skillsTypeCounts.work}, Kỹ năng: ${skillsTypeCounts.skills}, Học vấn: ${skillsTypeCounts.education}, Bằng cấp: ${skillsTypeCounts.qualifications}, Sở thích: ${skillsTypeCounts.hobbies}).`
-             : `<strong>${membersWithSkills.length}</strong> member${membersWithSkills.length!==1?'s':''} have <strong>${skillsEntryCount}</strong> recorded career/education/hobby entries (Work: ${skillsTypeCounts.work}, Skills: ${skillsTypeCounts.skills}, Education: ${skillsTypeCounts.education}, Qualifications: ${skillsTypeCounts.qualifications}, Hobbies: ${skillsTypeCounts.hobbies}).`)
-         : (vi ? 'Chưa có dữ liệu sự nghiệp, học vấn hay sở thích nào được ghi nhận.' : 'No career, education, or hobby entries have been recorded yet.')}
+         ? (`<strong>${membersWithSkills.length}</strong> member${membersWithSkills.length!==1?'s':''} have <strong>${skillsEntryCount}</strong> recorded career/education/hobby entries (Work: ${skillsTypeCounts.work}, Skills: ${skillsTypeCounts.skills}, Education: ${skillsTypeCounts.education}, Qualifications: ${skillsTypeCounts.qualifications}, Hobbies: ${skillsTypeCounts.hobbies}).`)
+         : ( 'No career, education, or hobby entries have been recorded yet.')}
      </div>`
   );
 
@@ -4061,7 +4038,7 @@ function buildAnalysis() {
   wrap.innerHTML = `
     <div class="an-section-block">
       <div class="an-page-title">🏠 LãLữ House</div>
-      <div class="an-page-sub">Họ Lã · ${valid.length} ${vi?'thành viên':'members'} · ${sortedGens.length} ${vi?'đời':'generations'} · ${vi?'nhấn vào các mục để khám phá':'click any card or item to explore'}</div>
+      <div class="an-page-sub">Họ Lã · ${valid.length} ${'members'} · ${sortedGens.length} ${'generations'} · ${'click any card or item to explore'}</div>
     </div>
 
     ${insightsHTML}
@@ -4092,14 +4069,14 @@ function buildAnalysis() {
 
   // ── Wire up interactions ──
   _wireAnalysisInteractions(wrap, {
-    vi, valid, byGen, sortedGens, genCounts, cityCount, nameCount,
+    valid, byGen, sortedGens, genCounts, cityCount, nameCount,
     withDobYear, getYear, deceased, living, married, adopted, branches,
     oldest, youngest, avgLifespan, longestLiver, maxLifespan, topCities, topNames
   });
 }
 
 function _wireAnalysisInteractions(wrap, ctx) {
-  const { vi, valid, byGen, sortedGens, genCounts, cityCount, nameCount,
+  const { valid, byGen, sortedGens, genCounts, cityCount, nameCount,
     withDobYear, getYear, deceased, living, married, adopted, branches,
     oldest, youngest, avgLifespan, longestLiver, maxLifespan, topCities, topNames } = ctx;
 
@@ -4145,22 +4122,20 @@ function _wireAnalysisInteractions(wrap, ctx) {
 
     if (labelText.includes('♂') || labelText === 'Male ♂') {
       filterFn = m => m.sex === 'M';
-      tip = vi ? '<strong>Nam</strong> — nhấn để xem trong bảng' : '<strong>Male members</strong> — click to highlight in table';
+      tip =  '<strong>Male members</strong> — click to highlight in table';
     } else if (labelText.includes('♀') || labelText === 'Female ♀') {
       filterFn = m => m.sex === 'F';
-      tip = vi ? '<strong>Nữ</strong> — nhấn để xem trong bảng' : '<strong>Female members</strong> — click to highlight in table';
+      tip =  '<strong>Female members</strong> — click to highlight in table';
     } else if (labelText.match(/Còn sống|Living/)) {
       filterFn = m => !m.dod || !m.dod.trim();
-      tip = vi ? '<strong>Còn sống</strong> — chưa có ngày mất' : '<strong>Living members</strong> — no death date recorded';
+      tip =  '<strong>Living members</strong> — no death date recorded';
     } else if (labelText.match(/Số đời|Generations/)) {
-      tip = vi ? `<strong>${sortedGens.length} đời</strong> — từ đời ${sortedGens[0]} đến đời ${sortedGens[sortedGens.length-1]}` : `<strong>${sortedGens.length} generations</strong> — from G${sortedGens[0]} to G${sortedGens[sortedGens.length-1]}`;
+      tip =  `<strong>${sortedGens.length} generations</strong> — from G${sortedGens[0]} to G${sortedGens[sortedGens.length-1]}`;
     } else if (labelText.match(/Tổng|Total/)) {
       filterFn = () => true;
-      tip = vi ? `<strong>${valid.length} thành viên</strong> trong gia phả — nhấn để xem tất cả` : `<strong>${valid.length} members</strong> in the family — click to view all`;
+      tip =  `<strong>${valid.length} members</strong> in the family — click to view all`;
     } else if (labelText.match(/Tuổi thọ|Lifespan/)) {
-      tip = vi
-        ? `Tuổi thọ trung bình: <strong>${avgLifespan} tuổi</strong>${longestLiver ? `<br>Thọ nhất: <strong>${longestLiver.full_name}</strong> (${maxLifespan} tuổi)` : ''}`
-        : `Average lifespan: <strong>${avgLifespan} years</strong>${longestLiver ? `<br>Longest-lived: <strong>${longestLiver.full_name}</strong> (${maxLifespan} yr)` : ''}`;
+      tip =  `Average lifespan: <strong>${avgLifespan} years</strong>${longestLiver ? `<br>Longest-lived: <strong>${longestLiver.full_name}</strong> (${maxLifespan} yr)` : ''}`;
     }
 
     card.addEventListener('mouseenter', () => { if (tip) pop.show(card, tip); });
@@ -4177,10 +4152,10 @@ function _wireAnalysisInteractions(wrap, ctx) {
 
   // ── Stat rows (deceased, married, adopted, birth date known) ──
   const statRowDefs = [
-    { key: vi?'Đã mất':'Deceased', fn: m => m.dod && m.dod.trim(), tip: vi?'<strong>Đã mất</strong> — có ngày mất':'<strong>Deceased</strong> — have a recorded death date' },
-    { key: vi?'Đã kết hôn':'Married',  fn: m => m.status === 'Married', tip: vi?'<strong>Đã kết hôn</strong>':'<strong>Married members</strong>' },
-    { key: vi?'Con nuôi':'Adopted',   fn: m => m.relationship === 'Adopted', tip: vi?'<strong>Con nuôi</strong>':'<strong>Adopted members</strong>' },
-    { key: vi?'Có ngày sinh':'Birth date', fn: m => /^\d{4}/.test(m.dob||''), tip: vi?'<strong>Có ngày sinh</strong> được ghi nhận':'Members with a <strong>recorded birth date</strong>' },
+    { key: 'Deceased', fn: m => m.dod && m.dod.trim(), tip: '<strong>Deceased</strong> — have a recorded death date' },
+    { key: 'Married',  fn: m => m.status === 'Married', tip: '<strong>Married members</strong>' },
+    { key: 'Adopted',   fn: m => m.relationship === 'Adopted', tip: '<strong>Adopted members</strong>' },
+    { key: 'Birth date', fn: m => /^\d{4}/.test(m.dob||''), tip: 'Members with a <strong>recorded birth date</strong>' },
   ];
   wrap.querySelectorAll('.an-stat-row').forEach(row => {
     const lbl = row.querySelector('.an-stat-label');
@@ -4188,7 +4163,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
     const labelText = lbl.textContent.trim();
     const def = statRowDefs.find(d => labelText.startsWith(d.key));
     if (!def) return;
-    row.addEventListener('mouseenter', () => pop.show(row, def.tip + (vi?' — nhấn để lọc':' — click to filter')));
+    row.addEventListener('mouseenter', () => pop.show(row, def.tip + (' — click to filter')));
     row.addEventListener('mouseleave', () => pop.hide());
     row.addEventListener('click', () => {
       wrap.querySelectorAll('.an-stat-row').forEach(r=>r.classList.remove('active-filter'));
@@ -4202,7 +4177,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
     const city = row.dataset.city;
     const count = cityCount[city] || 0;
     const members = valid.filter(m => (m.address2||'').trim() === city);
-    const tip = `<strong>${city}</strong> — ${count} ${vi?'thành viên':'member'}${count!==1&&!vi?'s':''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
+    const tip = `<strong>${city}</strong> — ${count} ${'member'}${count!==1&&!''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
     row.addEventListener('mouseenter', () => pop.show(row, tip));
     row.addEventListener('mouseleave', () => pop.hide());
     row.addEventListener('click', () => {
@@ -4217,7 +4192,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
     const name = row.dataset.name;
     const count = nameCount[name] || 0;
     const members = valid.filter(m => (m.first_name || m.full_name.split(' ').pop() || '').trim() === name);
-    const tip = `${vi?'Tên':'Given name'} <strong>${name}</strong> — ${count} ${vi?'người':'person'}${count!==1&&!vi?'s':''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
+    const tip = `${'Given name'} <strong>${name}</strong> — ${count} ${'person'}${count!==1&&!''}<br>${members.slice(0,4).map(m=>m.full_name).join(', ')}${members.length>4?'…':''}`;
     row.addEventListener('mouseenter', () => pop.show(row, tip));
     row.addEventListener('mouseleave', () => pop.hide());
     row.addEventListener('click', () => {
@@ -4244,7 +4219,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
     const members = byGen[g] || [];
     const mC = members.filter(m=>m.sex==='M').length;
     const fC = members.filter(m=>m.sex==='F').length;
-    bar.addEventListener('mouseenter', () => pop.show(bar, `<strong>${vi?'Đời':'Generation'} ${g}</strong><br>${members.length} ${vi?'thành viên':'members'} · ${mC}♂ ${fC}♀<br>${vi?'Nhấn để lọc bảng':'Click to filter table'}`));
+    bar.addEventListener('mouseenter', () => pop.show(bar, `<strong>${'Generation'} ${g}</strong><br>${members.length} ${'members'} · ${mC}♂ ${fC}♀<br>${'Click to filter table'}`));
     bar.addEventListener('mouseleave', () => pop.hide());
     bar.addEventListener('click', () => handleGenClick(g));
   });
@@ -4252,7 +4227,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
   wrap.querySelectorAll('.gen-detail-row').forEach(row => {
     const g = +row.dataset.gen;
     const members = byGen[g] || [];
-    row.addEventListener('mouseenter', () => pop.show(row, `<strong>${vi?'Đời':'Gen'} ${g}</strong> — ${members.length} ${vi?'thành viên':'members'}<br>${vi?'Nhấn để xem trong bảng':'Click to filter table'}`));
+    row.addEventListener('mouseenter', () => pop.show(row, `<strong>${'Gen'} ${g}</strong> — ${members.length} ${'members'}<br>${'Click to filter table'}`));
     row.addEventListener('mouseleave', () => pop.hide());
     row.addEventListener('click', () => handleGenClick(g));
   });
@@ -4307,7 +4282,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
     const member = valid.find(m => m.full_name === text || m.full_name.startsWith(text));
     if (member) {
       strong.style.cssText = 'cursor:pointer;text-decoration:underline dotted';
-      strong.title = vi ? `Xem hồ sơ ${member.full_name}` : `View profile: ${member.full_name}`;
+      strong.title =  `View profile: ${member.full_name}`;
       strong.addEventListener('click', e => { e.stopPropagation(); goToMember(member.id); });
     }
   });
@@ -4325,9 +4300,7 @@ function _wireAnalysisInteractions(wrap, ctx) {
       originChar.style.color = '';
     });
     pop.hide();
-    originChar.addEventListener('click', () => pop.show(originChar, vi
-      ? '<strong>呂</strong> — chữ Hán mô tả hai đốt xương sống chồng lên nhau, biểu trưng cho sự thẳng thắn và sức mạnh của dòng tộc.'
-      : '<strong>呂</strong> — depicts two vertebrae stacked, symbolising backbone, uprightness and the strength of the clan lineage.'));
+    originChar.addEventListener('click', () => pop.show(originChar,  '<strong>呂</strong> — depicts two vertebrae stacked, symbolising backbone, uprightness and the strength of the clan lineage.'));
   }
 
   // ── Card headers: hover effect ──
@@ -4424,7 +4397,6 @@ function exportReport() {
       const PH = doc.internal.pageSize.getHeight();
       const M = 15;
       const CW = PW - M * 2;
-      const isVi = LANG === 'vi';
 
       // ── Colour palette ──
       const C = {
@@ -4593,7 +4565,7 @@ function exportReport() {
       sf(18,'bold',C.goldSoft); doc.text('GIA PHẢ HỌ LÃ', M+22, 20);
       sf(9,'normal',C.white);   doc.text('Lã Family Tree  •  Full Analysis Report', M+22, 27);
       sf(8,'italic',C.rim);
-      const dateStr = new Date().toLocaleDateString(isVi?'vi-VN':'en-US',{year:'numeric',month:'long',day:'numeric'});
+      const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
       doc.text(`Generated: ${dateStr}`, PW-M, 40, { align:'right' });
 
       let y = 58;
@@ -4670,7 +4642,7 @@ function exportReport() {
 
         // Gen header bar
         fillRect(M, y, CW, 9, C.gold);
-        sf(9,'bold',C.white); doc.text(isVi?`ĐỜI ${gen}`:`GENERATION ${gen}`, M+4, y+6.2);
+        sf(9,'bold',C.white); doc.text(`GENERATION ${gen}`, M+4, y+6.2);
         sf(8,'normal',C.ink); doc.text(`${members.length} member${members.length!==1?'s':''}`, PW-M-4, y+6.2, {align:'right'});
         y += 12;
 
@@ -5157,10 +5129,8 @@ function buildCalendar() {
   if (drawer) { drawer.style.display = 'none'; drawer.innerHTML = ''; }
   
   const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const monthNamesVi = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
-  
-  const isVi = (typeof LANG !== 'undefined' ? LANG : 'en') === 'vi';
-  label.textContent = isVi ? `${monthNamesVi[calCurrentMonth]} - ${calCurrentYear}` : `${monthNamesEn[calCurrentMonth]} ${calCurrentYear}`;
+
+  label.textContent = `${monthNamesEn[calCurrentMonth]} ${calCurrentYear}`;
 
   const firstDayIndex = new Date(calCurrentYear, calCurrentMonth, 1).getDay();
   const totalDays = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
@@ -5210,7 +5180,7 @@ function buildCalendar() {
       ritualIds.forEach(rid => {
         const rev = RITUAL_EVENTS.find(r => r.id === rid);
         if (!rev) return;
-        const rName = isVi ? rev.name_vi : rev.name_en;
+        const rName =  rev.name_en;
         const ev = { type: 'ritual', text: rName, ritualId: rid };
         dayEventsArray.push(ev);
         eventContainerHTML += `<div class="cal-event ritual">${rev.icon}<span class="cal-text"> ${rName}</span></div>`;
@@ -5233,7 +5203,7 @@ function buildCalendar() {
       document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
       dayCell.classList.add('selected-day');
       
-      showDrawerDetails(day, lunarString, dayEventsArray, isVi);
+      showDrawerDetails(day, lunarString, dayEventsArray);
     };
 
     grid.appendChild(dayCell);
@@ -5246,7 +5216,7 @@ function buildCalendar() {
  * Populates the calendar drawer with day events and enables direct 
  * navigation to the member's profile card in the Detail tab.
  */
-function showDrawerDetails(day, lunarStr, events, isVi) {
+function showDrawerDetails(day, lunarStr, events) {
   const drawer = document.getElementById('calendarDrawer');
   if (!drawer) return;
   
@@ -5260,7 +5230,7 @@ function showDrawerDetails(day, lunarStr, events, isVi) {
   
   let html = `
     <div class="drawer-title" style="font-weight: 600; margin-bottom: 0.6rem; color: var(--gold);">
-      ${isVi ? 'Sự kiện ngày' : 'Events for'} ${day} (${lunarStr})
+      ${'Events for'} ${day} (${lunarStr})
     </div>
   `;
   
@@ -5271,11 +5241,11 @@ function showDrawerDetails(day, lunarStr, events, isVi) {
              style="cursor: pointer; padding: 0.5rem; margin-bottom: 0.4rem; border-radius: var(--radius); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid;"
              onclick="navigateToRitual('${ev.ritualId}')">
           <div>
-            <strong>${isVi ? '🏮 Lễ nghi' : '🏮 Ritual'}:</strong>
+            <strong>${'🏮 Ritual'}:</strong>
             <span class="cal-text" style="font-weight: 500; margin-left: 0.25rem;">${ev.text}</span>
           </div>
           <span style="font-size: 0.7rem; opacity: 0.7; font-family: var(--font-mono);">
-            ${isVi ? 'Xem chi tiết ➔' : 'View ➔'}
+            ${'View ➔'}
           </span>
         </div>
       `;
@@ -5284,8 +5254,8 @@ function showDrawerDetails(day, lunarStr, events, isVi) {
 
     const badgeClass = ev.type === 'dob' ? 'dob' : 'dod';
     const typeLabel = ev.type === 'dob' 
-      ? (isVi ? '🎂 Sinh nhật' : '🎂 Birth') 
-      : (isVi ? '🕯️ Ngày mất' : '🕯️ Death');
+      ? ( '🎂 Birth') 
+      : ( '🕯️ Death');
     
     // Fallback search to ensure we grab the right ID if ev.memberId or ev.id is used
     const targetId = ev.memberId || ev.id;
@@ -5299,7 +5269,7 @@ function showDrawerDetails(day, lunarStr, events, isVi) {
           <span class="cal-text" style="font-weight: 500; margin-left: 0.25rem;">${ev.text || ev.name}</span>
         </div>
         <span style="font-size: 0.7rem; opacity: 0.7; font-family: var(--font-mono);">
-          ${isVi ? 'Xem chi tiết ➔' : 'View ➔'}
+          ${'View ➔'}
         </span>
       </div>
     `;
@@ -5635,7 +5605,6 @@ function renderRituals() {
   if (!container) return;
   container.innerHTML = '';
 
-  const isVi = LANG === 'vi';
   const catLabels = {
     holiday:  { vi: 'Ngày Lễ Quốc Gia', en: 'Public Holiday' },
     tet:      { vi: 'Tết & Lễ Hội', en: 'Tết & Festivals' },
@@ -5650,11 +5619,11 @@ function renderRituals() {
     : RITUAL_EVENTS;
 
   if (!list.length) {
-    container.innerHTML = `<div class="ritual-empty-msg">${isVi ? 'Không có sự kiện nào trong mục này.' : 'No events found in this category.'}</div>`;
+    container.innerHTML = `<div class="ritual-empty-msg">${'No events found in this category.'}</div>`;
     return;
   }
 
-  const detailLabel = isVi ? 'Phong tục & ý nghĩa' : 'Customs & significance';
+  const detailLabel =  'Customs & significance';
 
   list.forEach(ev => {
     const card = document.createElement('div');
@@ -5665,15 +5634,15 @@ function renderRituals() {
       <div class="ritual-card-head">
         <div class="ritual-icon">${ev.icon}</div>
         <div>
-          <div class="ritual-name">${isVi ? ev.name_vi : ev.name_en}</div>
-          <div class="ritual-timing">${isVi ? ev.timing_vi : ev.timing_en}</div>
+          <div class="ritual-name">${ev.name_en}</div>
+          <div class="ritual-timing">${ev.timing_en}</div>
         </div>
       </div>
-      <div class="ritual-desc">${isVi ? ev.desc_vi : ev.desc_en}</div>
-      <div class="ritual-cat-tag">${isVi ? cat.vi : cat.en}</div>
+      <div class="ritual-desc">${ev.desc_en}</div>
+      <div class="ritual-cat-tag">${cat.en}</div>
       <div class="ritual-detail-panel">
         <div class="ritual-detail-label">${detailLabel}</div>
-        <div>${isVi ? ev.detail_vi : ev.detail_en}</div>
+        <div>${ev.detail_en}</div>
       </div>
     `;
     card.addEventListener('click', function() {
@@ -5749,11 +5718,11 @@ function renderFoodStatistics() {
     const card = document.createElement('div');
     card.className = 'food-card';
     
-    const countLabel = LANG === 'vi' ? `${item.count} thành viên` : `${item.count} members`;
-    const fanHeader = LANG === 'vi' ? 'Thành viên yêu thích:' : 'Preferred by:';
+    const countLabel =  `${item.count} members`;
+    const fanHeader =  'Preferred by:';
 
     card.innerHTML = `
-      <div class="food-img-wrapper" title="${LANG === 'vi' ? 'Xem danh sách' : 'View choices'}">${graphicIcon}</div>
+      <div class="food-img-wrapper" title="${'View choices'}">${graphicIcon}</div>
       <div class="food-name">${item.displayName}</div>
       <div class="food-count">${countLabel}</div>
       <div class="food-fans-panel">
@@ -5913,23 +5882,22 @@ function renderCostumeGallery() {
   const eventF = document.getElementById('costumeEventFilter').value;
   const genderF = document.getElementById('costumeGenderFilter').value;
 
-  const isVi = LANG === 'vi';
   const eraLabels = {
-    'pre-nguyen': isVi ? 'Trước triều Nguyễn' : 'Pre-Nguyễn',
-    'nguyen': isVi ? 'Triều Nguyễn' : 'Nguyễn Dynasty',
-    'colonial': isVi ? 'Pháp thuộc & Kháng chiến' : 'Colonial & Resistance',
-    'modern': isVi ? 'Hiện đại' : 'Modern'
+    'pre-nguyen':  'Pre-Nguyễn',
+    'nguyen':  'Nguyễn Dynasty',
+    'colonial':  'Colonial & Resistance',
+    'modern':  'Modern'
   };
   const regionLabels = {
-    'bac': isVi ? 'Miền Bắc' : 'North',
-    'trung': isVi ? 'Miền Trung' : 'Central',
-    'nam': isVi ? 'Miền Nam' : 'South',
-    'all': isVi ? 'Cả nước' : 'Nationwide'
+    'bac':  'North',
+    'trung':  'Central',
+    'nam':  'South',
+    'all':  'Nationwide'
   };
   const genderLabels = {
-    'M': isVi ? 'Nam' : 'Male',
-    'F': isVi ? 'Nữ' : 'Female',
-    'U': isVi ? 'Cả hai' : 'Unisex'
+    'M':  'Male',
+    'F':  'Female',
+    'U':  'Unisex'
   };
 
   const list = COSTUME_DATA.filter(c => {
@@ -5942,7 +5910,7 @@ function renderCostumeGallery() {
 
   container.innerHTML = '';
   if (list.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">${isVi ? 'Không có trang phục phù hợp với bộ lọc.' : 'No costumes match the selected filters.'}</div>`;
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--ink-dim); font-style:italic; padding:2rem;">${'No costumes match the selected filters.'}</div>`;
     document.getElementById('costumeMembersSection').style.display = 'none';
     selectedCostumeId = null;
     return;
@@ -5952,9 +5920,9 @@ function renderCostumeGallery() {
     const card = document.createElement('div');
     card.className = 'costume-card' + (c.id === selectedCostumeId ? ' selected' : '');
     card.innerHTML = `
-      <div class="costume-img-wrapper" title="${isVi ? 'Xem thành viên liên quan' : 'View related members'}">${costumeSVG(c.svg)}</div>
-      <div class="costume-name">${isVi ? c.name_vi : c.name_en}</div>
-      <div class="costume-desc">${isVi ? c.desc_vi : c.desc_en}</div>
+      <div class="costume-img-wrapper" title="${'View related members'}">${costumeSVG(c.svg)}</div>
+      <div class="costume-name">${c.name_en}</div>
+      <div class="costume-desc">${c.desc_en}</div>
       <div class="costume-tags">
         <span class="costume-tag">${eraLabels[c.era]}</span>
         <span class="costume-tag">${regionLabels[c.region]}</span>
@@ -5983,7 +5951,6 @@ function selectCostume(id) {
 }
 
 function relatedMembersForCostume(costume) {
-  const isVi = LANG === 'vi';
   const pool = (typeof DB !== 'undefined' ? DB : []).filter(m => m.full_name && m.full_name.trim());
   const scored = [];
   pool.forEach(m => {
@@ -5995,7 +5962,7 @@ function relatedMembersForCostume(costume) {
     if (era && era === costume.era) score += 1;
     if (score > 0) scored.push({ m, score });
   });
-  scored.sort((a, b) => b.score - a.score || a.m.full_name.localeCompare(b.m.full_name, isVi ? 'vi' : 'en'));
+  scored.sort((a, b) => b.score - a.score || a.m.full_name.localeCompare(b.m.full_name,  'en'));
   return scored.slice(0, 40).map(x => x.m);
 }
 
@@ -6007,18 +5974,13 @@ function renderCostumeMembers(id) {
   const list = document.getElementById('costumeMembersList');
   if (!costume || !section) return;
 
-  const isVi = LANG === 'vi';
   section.style.display = 'block';
-  title.textContent = isVi
-    ? `Thành viên liên quan: ${costume.name_vi}`
-    : `Related members: ${costume.name_en}`;
-  note.textContent = isVi
-    ? 'Danh sách ước lượng dựa trên giới tính, vùng miền (theo nguyên quán) và thế hệ — không phải dữ liệu lịch sử xác thực.'
-    : 'Estimated list based on gender, region (per recorded hometown) and generation — not verified historical data.';
+  title.textContent =  `Related members: ${costume.name_en}`;
+  note.textContent =  'Estimated list based on gender, region (per recorded hometown) and generation — not verified historical data.';
 
   const members = relatedMembersForCostume(costume);
   if (members.length === 0) {
-    list.innerHTML = `<div style="color:var(--ink-dim); font-style:italic; font-size:.82rem;">${isVi ? 'Không tìm thấy thành viên phù hợp.' : 'No closely related members found.'}</div>`;
+    list.innerHTML = `<div style="color:var(--ink-dim); font-style:italic; font-size:.82rem;">${'No closely related members found.'}</div>`;
     return;
   }
   list.innerHTML = members.map(m => `
@@ -6031,29 +5993,63 @@ function renderCostumeMembers(id) {
 // ═══════════════════════════════════════════════════════════
 const ADMIN_PASS = 'Lahouse,123';
 let isAdmin = false;
+let currentMember = null; // holds the logged-in non-admin member record, if any
+
+// Non-admin members default to a password made of their first name + date of
+// birth (e.g. first_name "An" + dob "1990-05-12" -> "An1990-05-12"). If either
+// piece of data is missing, fall back to the admin password instead so the
+// account isn't left with a weak/empty or guessable password.
+function getMemberDefaultPassword(member) {
+  const firstName = (member.first_name || '').trim();
+  const dob = (member.dob || '').trim();
+  if (!firstName || !dob) return ADMIN_PASS;
+  return firstName + dob;
+}
 
 function toggleAdminAuth() {
-  if (isAdmin) {
+  if (isAdmin || currentMember) {
     // Logout
     isAdmin = false;
+    currentMember = null;
     updateAdminUI();
-    toast(LANG === 'vi' ? 'Đã đăng xuất admin.' : 'Admin logged out.');
+    toast( 'Logged out.');
   } else {
     // Show login modal
     document.getElementById('loginModal').style.display = 'flex';
+    document.getElementById('loginNameInput').value = '';
     document.getElementById('adminPasswordInput').value = '';
     document.getElementById('loginError').style.display = 'none';
-    setTimeout(() => document.getElementById('adminPasswordInput').focus(), 60);
+    setTimeout(() => document.getElementById('loginNameInput').focus(), 60);
   }
 }
 
 function submitAdminLogin() {
+  const name = document.getElementById('loginNameInput').value.trim();
   const val = document.getElementById('adminPasswordInput').value;
-  if (val === ADMIN_PASS) {
-    isAdmin = true;
+
+  if (!name) {
+    // No name entered -> treat as an admin login attempt
+    if (val === ADMIN_PASS) {
+      isAdmin = true;
+      currentMember = null;
+      closeLoginModal();
+      updateAdminUI();
+      toast( '✅ Admin logged in.');
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('adminPasswordInput').select();
+    }
+    return;
+  }
+
+  // Name entered -> treat as a non-admin member login attempt
+  const member = DB.find(m => m.full_name && m.full_name.trim().toLowerCase() === name.toLowerCase());
+  if (member && val === getMemberDefaultPassword(member)) {
+    isAdmin = false;
+    currentMember = member;
     closeLoginModal();
     updateAdminUI();
-    toast(LANG === 'vi' ? '✅ Đã đăng nhập admin.' : '✅ Admin logged in.');
+    toast(`✅ Welcome, ${member.full_name}.`);
   } else {
     document.getElementById('loginError').style.display = 'block';
     document.getElementById('adminPasswordInput').select();
@@ -6067,17 +6063,41 @@ function closeLoginModal() {
 function updateAdminUI() {
   const btn = document.getElementById('adminBtn');
   const addTab = document.getElementById('addTab');
+  const statsTab = document.getElementById('statsTab');
   if (isAdmin) {
     btn.textContent = '🔓 Logout';
     btn.classList.add('logged-in');
     if (addTab) addTab.style.display = '';
+    if (statsTab) statsTab.style.display = '';
+  } else if (currentMember) {
+    btn.textContent = `🔓 ${currentMember.first_name || currentMember.full_name}`;
+    btn.classList.add('logged-in');
+    if (addTab) addTab.style.display = 'none';
+    if (statsTab) statsTab.style.display = 'none';
+    const addPanel = document.getElementById('panel-add');
+    if (addPanel && addPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+    const statsPanel = document.getElementById('panel-stats');
+    if (statsPanel && statsPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
   } else {
-    btn.textContent = '🔒 Admin';
+    btn.textContent = '🔒 Login';
     btn.classList.remove('logged-in');
     if (addTab) addTab.style.display = 'none';
+    if (statsTab) statsTab.style.display = 'none';
     // If currently on Add tab, redirect to analysis
     const addPanel = document.getElementById('panel-add');
     if (addPanel && addPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+    // If currently on Stats tab, redirect to analysis
+    const statsPanel = document.getElementById('panel-stats');
+    if (statsPanel && statsPanel.classList.contains('active')) {
       const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
       switchTab('analysis', analysisTab);
     }
@@ -6222,10 +6242,10 @@ function renderHistoryTimeline() {
   const wrap = document.getElementById('historyTimeline');
   if (!wrap) return;
   wrap.innerHTML = '<div class="history-timeline-line"></div>' + HISTORY_EVENTS.map(ev => `
-    <div class="history-marker${ev.id === selectedHistoryId ? ' active' : ''}" data-id="${ev.id}" onclick="selectHistoryEvent('${ev.id}')" title="${LANG === 'vi' ? ev.title_vi : ev.title_en}">
-      <div class="history-era-tag">${LANG === 'vi' ? ev.era_vi : ev.era_en}</div>
+    <div class="history-marker${ev.id === selectedHistoryId ? ' active' : ''}" data-id="${ev.id}" onclick="selectHistoryEvent('${ev.id}')" title="${ev.title_en}">
+      <div class="history-era-tag">${ev.era_en}</div>
       <div class="history-dot"></div>
-      <div class="history-year">${LANG === 'vi' ? ev.year : ev.yearEn}</div>
+      <div class="history-year">${ev.yearEn}</div>
     </div>
   `).join('');
 }
@@ -6241,9 +6261,9 @@ function selectHistoryEvent(id, skipScroll) {
   if (photo) {
     photo.style.background = `linear-gradient(155deg, ${ev.palette[0]}, ${ev.palette[1]})`;
     photo.innerHTML = `
-      <div class="history-photo-era">${LANG === 'vi' ? ev.era_vi : ev.era_en}</div>
+      <div class="history-photo-era">${ev.era_en}</div>
       ${historyIcon(ev.icon, ev.palette[2])}
-      <div class="history-photo-label">${LANG === 'vi' ? ev.title_vi : ev.title_en}</div>
+      <div class="history-photo-label">${ev.title_en}</div>
     `;
   }
 
@@ -6252,18 +6272,18 @@ function selectHistoryEvent(id, skipScroll) {
     const members = getHistoryMembersForEvent(ev);
     const membersHtml = members.length
       ? members.map(m => `<span class="history-member-chip${m.sex === 'M' ? ' male-chip' : m.sex === 'F' ? ' female-chip' : ''}" onclick="goToHistoryMember(${m.id})">${m.full_name}${m.lifeLabel ? ` <em>(${m.lifeLabel})</em>` : ''}</span>`).join('')
-      : `<span class="history-member-empty">${LANG === 'vi' ? 'Chưa có thành viên nào trong gia phả có ngày sinh/mất được ghi nhận trùng với giai đoạn này.' : 'No family members with a recorded birth/death date fall within this period yet.'}</span>`;
+      : `<span class="history-member-empty">${'No family members with a recorded birth/death date fall within this period yet.'}</span>`;
 
     content.innerHTML = `
-      <div class="history-event-year">${LANG === 'vi' ? ev.year : ev.yearEn}</div>
-      <div class="history-event-title">${LANG === 'vi' ? ev.title_vi : ev.title_en}</div>
-      <div class="history-event-desc">${LANG === 'vi' ? ev.desc_vi : ev.desc_en}</div>
+      <div class="history-event-year">${ev.yearEn}</div>
+      <div class="history-event-title">${ev.title_en}</div>
+      <div class="history-event-desc">${ev.desc_en}</div>
       <div class="history-story-box">
-        <div class="history-story-title">${LANG === 'vi' ? '📖 Chuyện Dòng Họ' : '📖 Family Story'}</div>
-        <div class="history-story-text">${LANG === 'vi' ? ev.story_vi : ev.story_en}</div>
+        <div class="history-story-title">${'📖 Family Story'}</div>
+        <div class="history-story-text">${ev.story_en}</div>
       </div>
       <div class="history-members-section">
-        <div class="history-members-title">${LANG === 'vi' ? `👪 Thành viên sống trong giai đoạn này${members.length ? ' (' + members.length + ')' : ''}` : `👪 Members who lived during this period${members.length ? ' (' + members.length + ')' : ''}`}</div>
+        <div class="history-members-title">${`👪 Members who lived during this period${members.length ? ' (' + members.length + ')' : ''}`}</div>
         <div class="history-members-list">${membersHtml}</div>
       </div>
     `;
@@ -6364,7 +6384,6 @@ function renderSkillsTab() {
   const container = document.getElementById('skillsEraContainer');
   if (!container) return;
   container.innerHTML = '';
-  const isVi = LANG === 'vi';
 
   // Gather profile entries from blood-line members only
   const entries = [];
@@ -6384,7 +6403,7 @@ function renderSkillsTab() {
             name: m.full_name,
             branch: m.branch || '',
             cat: meta.cat,
-            typeLabel: isVi ? meta.labelVi : meta.labelEn,
+            typeLabel:  meta.labelEn,
             year: item.year || '',
             sortYear: entryYear || parseYearFromDate(m.dob),
             desc: item.desc
@@ -6395,9 +6414,7 @@ function renderSkillsTab() {
   }
 
   if (!entries.length) {
-    container.innerHTML = `<div class="skills-empty-msg">${isVi
-      ? 'Chưa có dữ liệu sự nghiệp, học vấn hay sở thích nào được ghi nhận. Vào tab 👤 Chi Tiết, chọn một thành viên và bấm ✏️ Sửa để thêm thông tin vào Hồ Sơ Chi Tiết.'
-      : 'No career, education, or hobby entries have been recorded yet. Go to the 👤 Detail tab, select a member and click ✏️ Edit to add entries to their Detailed Profile.'}</div>`;
+    container.innerHTML = `<div class="skills-empty-msg">${'No career, education, or hobby entries have been recorded yet. Go to the 👤 Detail tab, select a member and click ✏️ Edit to add entries to their Detailed Profile.'}</div>`;
     return;
   }
 
@@ -6422,9 +6439,9 @@ function renderSkillsTab() {
     const section = document.createElement('div');
     section.className = 'skills-era-section';
 
-    const eraTitle = bucket.era ? (isVi ? bucket.era.title_vi : bucket.era.title_en) : (isVi ? 'Không rõ thời kỳ' : 'Unknown Era');
-    const eraYears = bucket.era ? (isVi ? bucket.era.year : bucket.era.yearEn) : '';
-    const eraDesc  = bucket.era ? (isVi ? bucket.era.desc_vi : bucket.era.desc_en) : '';
+    const eraTitle = bucket.era ? ( bucket.era.title_en) : ( 'Unknown Era');
+    const eraYears = bucket.era ? ( bucket.era.yearEn) : '';
+    const eraDesc  = bucket.era ? ( bucket.era.desc_en) : '';
 
     section.innerHTML = `
       <div class="skills-era-head">
