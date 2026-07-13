@@ -2108,7 +2108,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 <!-- TABS -->
 <nav class="tabs">
   <button class="tab active" onclick="switchTab('analysis',this)" data-vi="Tổng quan"  data-en="Overview">Overview</button>
-  <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
+  <button class="tab login-required-tab" id="detailTab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail" style="display:none">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab admin-only-tab" id="statsTab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics" style="display:none">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
@@ -2953,6 +2953,7 @@ function init() {
   const analysisTab = document.querySelector('.tab.active');
   switchTab('analysis', analysisTab);
   syncLanguageUI();
+  updateAdminUI();
 }
 
 function save() {
@@ -3571,6 +3572,12 @@ function toast(msg, type) {
 
 // ── TAB SWITCHING ──
 function switchTab(id, el) {
+  if (id === 'detail' && !(isAdmin || currentMember)) {
+    // Detail tab requires login — bounce to the login modal instead
+    if (typeof toast === 'function') toast('🔒 Please log in to view member details.');
+    toggleAdminAuth();
+    return;
+  }
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
@@ -6064,6 +6071,17 @@ function updateAdminUI() {
   const btn = document.getElementById('adminBtn');
   const addTab = document.getElementById('addTab');
   const statsTab = document.getElementById('statsTab');
+  const detailTab = document.getElementById('detailTab');
+  const loggedIn = isAdmin || !!currentMember;
+  if (detailTab) detailTab.style.display = loggedIn ? '' : 'none';
+  if (!loggedIn) {
+    // If currently on the Detail tab, redirect to analysis since it now requires login
+    const detailPanel = document.getElementById('panel-detail');
+    if (detailPanel && detailPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+  }
   if (isAdmin) {
     btn.textContent = '🔓 Logout';
     btn.classList.add('logged-in');
