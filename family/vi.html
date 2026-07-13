@@ -2070,7 +2070,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
   </div>
   <div class="header-actions">
     <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">🌐 English</button>
-    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Login</button>
+    <button class="btn btn-admin" id="adminBtn" onclick="toggleAdminAuth()">Đăng nhập</button>
   </div>
 </header>
 
@@ -2078,29 +2078,29 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 <div class="modal-overlay" id="loginModal" style="display:none">
   <div class="modal-box" style="max-width:340px">
     <div class="modal-header">
-      <span id="loginModalTitle">Admin Login</span>
+      <span id="loginModalTitle">Đăng Nhập Quản Trị</span>
       <button class="modal-close" onclick="closeLoginModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:1.2rem 1.4rem">
       <div style="margin-bottom:.9rem">
-        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Full Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank for Admin)</span></label>
-        <input type="text" id="loginNameInput" placeholder="Enter your full name"
+        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Họ và Tên <span style="font-weight:400;text-transform:none;letter-spacing:0">(để trống nếu là Admin)</span></label>
+        <input type="text" id="loginNameInput" placeholder="Nhập họ và tên của bạn"
           style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
           onkeydown="if(event.key==='Enter') document.getElementById('adminPasswordInput').focus()"
           onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
       </div>
       <div style="margin-bottom:.9rem">
-        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Password</label>
-        <input type="password" id="adminPasswordInput" placeholder="Enter password"
+        <label style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.4rem">Mật khẩu</label>
+        <input type="password" id="adminPasswordInput" placeholder="Nhập mật khẩu"
           style="width:100%;padding:.48rem .72rem;border:1.5px solid var(--paper-rim);border-radius:4px;font-size:.88rem;font-family:var(--font-body);background:var(--paper);color:var(--ink);outline:none"
           onkeydown="if(event.key==='Enter') submitAdminLogin()"
           onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--paper-rim)'">
-        <div id="loginError" style="display:none;margin-top:.5rem;font-size:.76rem;color:var(--red-soft);font-weight:600">⚠ Incorrect password. Please try again.</div>
+        <div id="loginError" style="display:none;margin-top:.5rem;font-size:.76rem;color:var(--red-soft);font-weight:600">⚠ Sai mật khẩu. Vui lòng thử lại.</div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" onclick="submitAdminLogin()">Login</button>
-      <button class="btn btn-gold" onclick="closeLoginModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAdminLogin()">Đăng nhập</button>
+      <button class="btn btn-gold" onclick="closeLoginModal()">Hủy</button>
     </div>
   </div>
 </div>
@@ -2108,7 +2108,7 @@ td.female-name { color: var(--blue-f); font-weight: 600; }
 <!-- TABS -->
 <nav class="tabs">
   <button class="tab active" onclick="switchTab('analysis',this)" data-vi="Tổng quan"  data-en="Overview">Overview</button>
-  <button class="tab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail">👤 Chi Tiết</button>
+  <button class="tab login-required-tab" id="detailTab" onclick="switchTab('detail',this)" data-vi="👤 Chi Tiết" data-en="👤 Detail" style="display:none">👤 Chi Tiết</button>
   <button class="tab" onclick="switchTab('tree',this)"   data-vi="Sơ đồ"      data-en="Family Tree">Sơ đồ</button>
   <button class="tab admin-only-tab" id="statsTab" onclick="switchTab('stats',this)"  data-vi="Thống Kê" data-en="Statistics" style="display:none">Số liệu</button>
   <button class="tab" onclick="switchTab('calendar',this); buildCalendar();" data-vi="📅 Lịch" data-en="📅 Calendar">📅 Lịch</button>
@@ -2791,9 +2791,9 @@ function s(key, ...args) {
 }
 
 function toggleLang() {
-  // This build is split into two single-language pages (family-vi.html /
-  // family-en.html) that link to each other, instead of toggling in place.
-  window.location.href = (LANG === 'vi') ? 'family-en.html' : 'family-vi.html';
+  // This build is split into two single-language pages (en.html / vi.html)
+  // that link to each other, instead of toggling in place.
+  window.location.href = (LANG === 'vi') ? 'en.html' : 'vi.html';
 }
 
 function syncLanguageUI() {
@@ -2953,6 +2953,7 @@ function init() {
   const analysisTab = document.querySelector('.tab.active');
   switchTab('analysis', analysisTab);
   syncLanguageUI();
+  updateAdminUI();
 }
 
 function save() {
@@ -3571,6 +3572,12 @@ function toast(msg, type) {
 
 // ── TAB SWITCHING ──
 function switchTab(id, el) {
+  if (id === 'detail' && !(isAdmin || currentMember)) {
+    // Detail tab requires login — bounce to the login modal instead
+    if (typeof toast === 'function') toast('🔒 Vui lòng đăng nhập để xem chi tiết thành viên.');
+    toggleAdminAuth();
+    return;
+  }
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
@@ -6109,8 +6116,19 @@ function updateAdminUI() {
   const btn = document.getElementById('adminBtn');
   const addTab = document.getElementById('addTab');
   const statsTab = document.getElementById('statsTab');
+  const detailTab = document.getElementById('detailTab');
+  const loggedIn = isAdmin || !!currentMember;
+  if (detailTab) detailTab.style.display = loggedIn ? '' : 'none';
+  if (!loggedIn) {
+    // If currently on the Detail tab, redirect to analysis since it now requires login
+    const detailPanel = document.getElementById('panel-detail');
+    if (detailPanel && detailPanel.classList.contains('active')) {
+      const analysisTab = document.querySelector('.tab[onclick*="analysis"]');
+      switchTab('analysis', analysisTab);
+    }
+  }
   if (isAdmin) {
-    btn.textContent = '🔓 Logout';
+    btn.textContent = '🔓 Đăng xuất';
     btn.classList.add('logged-in');
     if (addTab) addTab.style.display = '';
     if (statsTab) statsTab.style.display = '';
@@ -6130,7 +6148,7 @@ function updateAdminUI() {
       switchTab('analysis', analysisTab);
     }
   } else {
-    btn.textContent = '🔒 Login';
+    btn.textContent = '🔒 Đăng nhập';
     btn.classList.remove('logged-in');
     if (addTab) addTab.style.display = 'none';
     if (statsTab) statsTab.style.display = 'none';
