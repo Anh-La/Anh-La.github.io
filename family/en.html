@@ -2791,9 +2791,9 @@ function s(key, ...args) {
 }
 
 function toggleLang() {
-  // This build is split into two single-language pages (family-vi.html /
-  // family-en.html) that link to each other, instead of toggling in place.
-  window.location.href = (LANG === 'vi') ? 'family-en.html' : 'family-vi.html';
+  // This build is split into two single-language pages (en.html / vi.html)
+  // that link to each other, instead of toggling in place.
+  window.location.href = (LANG === 'vi') ? 'en.html' : 'vi.html';
 }
 
 function syncLanguageUI() {
