@@ -3578,6 +3578,12 @@ function switchTab(id, el) {
     toggleAdminAuth();
     return;
   }
+  if ((id === 'stats' || id === 'add') && !isAdmin) {
+    // Statistics and Add tabs are admin-only — bounce to the login modal instead
+    if (typeof toast === 'function') toast('🔒 Please log in with an admin account to view this page.');
+    toggleAdminAuth();
+    return;
+  }
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
