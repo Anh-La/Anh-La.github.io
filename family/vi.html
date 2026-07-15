@@ -2945,6 +2945,7 @@ function init() {
     const saved = localStorage.getItem('la_family_db_v2');
     DB = saved ? JSON.parse(saved) : [...SEED_DATA];
   } catch(e) { DB = [...SEED_DATA]; }
+  restoreAuthSession();
   populateFilters();
   applyFilters();
   buildStats();
@@ -6053,6 +6054,60 @@ const ADMIN_PASS = 'Lahouse,123';
 let isAdmin = false;
 let currentMember = null; // holds the logged-in non-admin member record, if any
 
+// Session is persisted to localStorage under this key so that the login
+// state carries over between pages/tabs that share the same origin (e.g.
+// navigating between the English and Vietnamese versions of this app), and
+// stays in sync live across tabs via the 'storage' event.
+const AUTH_SESSION_KEY = 'la_family_auth_v1';
+const AUTH_SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+
+function saveAuthSession() {
+  try {
+    if (!isAdmin && !currentMember) {
+      localStorage.removeItem(AUTH_SESSION_KEY);
+      return;
+    }
+    localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({
+      isAdmin: isAdmin,
+      memberId: currentMember ? currentMember.id : null,
+      ts: Date.now()
+    }));
+  } catch(e) {}
+}
+
+// Reads the persisted session (if any, and not expired) and restores
+// isAdmin/currentMember from it. Returns true if a session was restored.
+function restoreAuthSession() {
+  let session = null;
+  try {
+    const raw = localStorage.getItem(AUTH_SESSION_KEY);
+    session = raw ? JSON.parse(raw) : null;
+  } catch(e) { session = null; }
+
+  if (!session || (Date.now() - (session.ts || 0)) > AUTH_SESSION_TTL_MS) {
+    isAdmin = false;
+    currentMember = null;
+    return false;
+  }
+
+  if (session.isAdmin) {
+    isAdmin = true;
+    currentMember = null;
+    return true;
+  }
+  if (session.memberId != null) {
+    const member = DB.find(m => m.id === session.memberId);
+    if (member) {
+      isAdmin = false;
+      currentMember = member;
+      return true;
+    }
+  }
+  isAdmin = false;
+  currentMember = null;
+  return false;
+}
+
 // Non-admin members default to a password made of their first name + date of
 // birth (e.g. first_name "An" + dob "1990-05-12" -> "An1990-05-12"). If either
 // piece of data is missing, fall back to the admin password instead so the
@@ -6069,6 +6124,7 @@ function toggleAdminAuth() {
     // Logout
     isAdmin = false;
     currentMember = null;
+    saveAuthSession();
     updateAdminUI();
     toast(LANG === 'vi' ? 'Đã đăng xuất.' : 'Logged out.');
   } else {
@@ -6090,6 +6146,7 @@ function submitAdminLogin() {
     if (val === ADMIN_PASS) {
       isAdmin = true;
       currentMember = null;
+      saveAuthSession();
       closeLoginModal();
       updateAdminUI();
       toast(LANG === 'vi' ? '✅ Đã đăng nhập admin.' : '✅ Admin logged in.');
@@ -6105,6 +6162,7 @@ function submitAdminLogin() {
   if (member && val === getMemberDefaultPassword(member)) {
     isAdmin = false;
     currentMember = member;
+    saveAuthSession();
     closeLoginModal();
     updateAdminUI();
     toast(LANG === 'vi' ? `✅ Xin chào, ${member.full_name}.` : `✅ Welcome, ${member.full_name}.`);
@@ -6181,6 +6239,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === overlay) closeLoginModal();
     });
   }
+});
+
+// Keep auth state in sync live across other open tabs/pages of this app
+// (e.g. logging in/out on the English page while the Vietnamese page is
+// also open) by reacting to localStorage changes made elsewhere.
+window.addEventListener('storage', (e) => {
+  if (e.key !== AUTH_SESSION_KEY) return;
+  restoreAuthSession();
+  updateAdminUI();
 });
 
 // ═══════════════════════════════════════════════════════════
