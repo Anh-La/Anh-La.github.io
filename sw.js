@@ -6,28 +6,29 @@
    Bump CACHE_VERSION whenever the precached app-shell files change, so old
    caches are cleaned up and users pick up the new version automatically. */
 
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v4';
 const APP_SHELL_CACHE = `ff-app-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `ff-runtime-${CACHE_VERSION}`;
 
-// NOTE: do NOT include './' (the bare directory URL) here. cache.addAll()
-// is atomic — if any single entry 404s, the whole install step throws and
-// the service worker is discarded, meaning it never activates. Many static
-// hosts don't serve a 200 for a bare folder path, so that entry was
-// silently breaking installation. Only list files that are guaranteed to
-// resolve directly.
+// NOTE: paths are absolute (root-relative) because index.html lives at the
+// site root while en.html/vi.html live under /family/ — relative paths
+// resolve differently depending on which page loaded this worker, so we
+// pin everything to the real absolute locations instead.
+// Also do NOT include a bare '/' entry — cache.add() would 404 on hosts
+// that don't serve a directory index for a bare path, and (formerly, with
+// addAll) that used to take down the entire install step.
 const APP_SHELL_FILES = [
-  './index.html',
-  './en.html',
-  './vi.html',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png',
-  './icons/apple-touch-icon.png',
-  './icons/favicon-32.png',
-  './icons/favicon-16.png',
+  '/index.html',
+  '/family/en.html',
+  '/family/vi.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  '/icons/icon-maskable-192.png',
+  '/icons/icon-maskable-512.png',
+  '/icons/apple-touch-icon.png',
+  '/icons/favicon-32.png',
+  '/icons/favicon-16.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -88,7 +89,7 @@ self.addEventListener('fetch', (event) => {
           caches.match(request).then(
             (cached) =>
               cached ||
-              caches.match('./index.html').then(
+              caches.match('/index.html').then(
                 (shell) =>
                   shell ||
                   new Response(
