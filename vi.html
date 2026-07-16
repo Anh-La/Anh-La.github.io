@@ -6,11 +6,11 @@
 <title>Họ Lã</title>
 
 <!-- PWA -->
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#faf7f2">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -3299,7 +3299,7 @@ function renderDetail(id) {
       <button class="btn btn-primary" onclick="editMember(${m.id})">${s('editBtn')}</button>
       <button class="btn btn-red" onclick="askDelete(${m.id})">${s('deleteBtn')}</button>
       <button class="btn btn-gold" onclick="showInTree(${m.id})">${s('treeBtn')}</button>
-      <a href="index.html?member=${encodeURIComponent(m.full_name||'')}" class="btn btn-hub" title="${s('finToolsBtn')}"><span>⬡</span> ${s('finToolsBtn')}</a>
+      <a href="/index.html?member=${encodeURIComponent(m.full_name||'')}" class="btn btn-hub" title="${s('finToolsBtn')}"><span>⬡</span> ${s('finToolsBtn')}</a>
     </div>
   </div>`;
 }
@@ -6701,7 +6701,7 @@ window.onload = init;
 // ── PWA: register service worker ──
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch((err) => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch((err) => {
       console.warn('Service worker registration failed:', err);
     });
   });
