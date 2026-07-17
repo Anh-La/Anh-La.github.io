@@ -6,29 +6,45 @@
    Bump CACHE_VERSION whenever the precached app-shell files change, so old
    caches are cleaned up and users pick up the new version automatically. */
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v4';
 const APP_SHELL_CACHE = `ff-app-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `ff-runtime-${CACHE_VERSION}`;
 
+// NOTE: paths are absolute (root-relative) because index.html lives at the
+// site root while en.html/vi.html live under /family/ — relative paths
+// resolve differently depending on which page loaded this worker, so we
+// pin everything to the real absolute locations instead.
+// Also do NOT include a bare '/' entry — cache.add() would 404 on hosts
+// that don't serve a directory index for a bare path, and (formerly, with
+// addAll) that used to take down the entire install step.
 const APP_SHELL_FILES = [
-  './',
-  './index.html',
-  './en.html',
-  './vi.html',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png',
-  './icons/apple-touch-icon.png',
-  './icons/favicon-32.png',
-  './icons/favicon-16.png',
+  '/index.html',
+  '/en.html',
+  '/vi.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  '/icons/icon-maskable-192.png',
+  '/icons/icon-maskable-512.png',
+  '/icons/apple-touch-icon.png',
+  '/icons/favicon-32.png',
+  '/icons/favicon-16.png',
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(APP_SHELL_CACHE)
-      .then((cache) => cache.addAll(APP_SHELL_FILES))
+      .then((cache) =>
+        // Cache each file individually (instead of addAll) so one bad
+        // entry can't take down the whole install step — log and continue.
+        Promise.all(
+          APP_SHELL_FILES.map((url) =>
+            cache.add(url).catch((err) =>
+              console.warn(`[sw] failed to precache ${url}:`, err)
+            )
+          )
+        )
+      )
       .then(() => self.skipWaiting())
   );
 });
@@ -52,18 +68,35 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   const isSameOrigin = url.origin === self.location.origin;
 
+  // Only cache genuinely good, same-origin, non-redirected responses.
+  // This stops a transient 404/500/redirect from ever getting stored and
+  // replayed as the "cached" version of a page.
+  const isCacheable = (response) =>
+    response && response.ok && response.type === 'basic' && !response.redirected;
+
   // 1) Page navigations — network-first, cache fallback, offline shell fallback.
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
+          if (isCacheable(response)) {
+            const copy = response.clone();
+            caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
+          }
           return response;
         })
         .catch(() =>
           caches.match(request).then(
-            (cached) => cached || caches.match('./index.html')
+            (cached) =>
+              cached ||
+              caches.match('/index.html').then(
+                (shell) =>
+                  shell ||
+                  new Response(
+                    '<h1>Offline</h1><p>This page has not been cached yet — please reconnect once to load it.</p>',
+                    { status: 503, headers: { 'Content-Type': 'text/html' } }
+                  )
+              )
           )
         )
     );
@@ -76,8 +109,10 @@ self.addEventListener('fetch', (event) => {
       caches.match(request).then((cached) => {
         if (cached) return cached;
         return fetch(request).then((response) => {
-          const copy = response.clone();
-          caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
+          if (isCacheable(response)) {
+            const copy = response.clone();
+            caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
+          }
           return response;
         });
       })
