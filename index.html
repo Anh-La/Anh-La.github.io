@@ -660,9 +660,34 @@
   /* ── PWA: register service worker ── */
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch((err) => {
-        console.warn('Service worker registration failed:', err);
-      });
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then((registration) => {
+          // A tab open when the service worker first installs is NOT
+          // controlled by it — this page and its sub-resources (fonts,
+          // icons) would bypass the cache for this whole session. If
+          // someone goes offline right after first install, before ever
+          // reloading, nothing was cached in time. So: on the very first
+          // install, reload once (guarded by sessionStorage) after the new
+          // worker activates, so this visit gets fully captured offline.
+          if (!navigator.serviceWorker.controller) {
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (!newWorker) return;
+              newWorker.addEventListener('statechange', () => {
+                if (
+                  newWorker.state === 'activated' &&
+                  !sessionStorage.getItem('ffSwReloaded')
+                ) {
+                  sessionStorage.setItem('ffSwReloaded', '1');
+                  window.location.reload();
+                }
+              });
+            });
+          }
+        })
+        .catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
     });
   }
 </script>
