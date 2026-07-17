@@ -6,9 +6,12 @@
    Bump CACHE_VERSION whenever the precached app-shell files change, so old
    caches are cleaned up and users pick up the new version automatically. */
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v6';
 const APP_SHELL_CACHE = `ff-app-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `ff-runtime-${CACHE_VERSION}`;
+const NAV_TIMEOUT_MS = 4000; // if the network hasn't answered a page request
+                              // within this window, serve from cache instead
+                              // of leaving the user staring at a blank tab.
 
 // NOTE: paths are absolute (root-relative) because index.html lives at the
 // site root while en.html/vi.html live under /family/ — relative paths
@@ -19,8 +22,8 @@ const RUNTIME_CACHE = `ff-runtime-${CACHE_VERSION}`;
 // addAll) that used to take down the entire install step.
 const APP_SHELL_FILES = [
   '/index.html',
-  '/en.html',
-  '/vi.html',
+  '/family/en.html',
+  '/family/vi.html',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
@@ -74,31 +77,40 @@ self.addEventListener('fetch', (event) => {
   const isCacheable = (response) =>
     response && response.ok && response.type === 'basic' && !response.redirected;
 
-  // 1) Page navigations — network-first, cache fallback, offline shell fallback.
+  // 1) Page navigations — race network against a short timeout so a slow
+  // or flaky connection falls back to cache quickly instead of hanging.
+  // The real network request keeps running in the background regardless,
+  // so the cache still gets refreshed once it completes.
   if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (isCacheable(response)) {
-            const copy = response.clone();
-            caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() =>
-          caches.match(request).then(
-            (cached) =>
-              cached ||
-              caches.match('/index.html').then(
-                (shell) =>
-                  shell ||
-                  new Response(
-                    '<h1>Offline</h1><p>This page has not been cached yet — please reconnect once to load it.</p>',
-                    { status: 503, headers: { 'Content-Type': 'text/html' } }
-                  )
+    const networkUpdate = fetch(request)
+      .then((response) => {
+        if (isCacheable(response)) {
+          caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, response.clone()));
+        }
+        return response;
+      })
+      .catch(() => null);
+
+    const offlineFallback = () =>
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          caches.match('/index.html').then(
+            (shell) =>
+              shell ||
+              new Response(
+                '<h1>Offline</h1><p>This page has not been cached yet — please reconnect once to load it.</p>',
+                { status: 503, headers: { 'Content-Type': 'text/html' } }
               )
           )
-        )
+      );
+
+    event.waitUntil(networkUpdate);
+    event.respondWith(
+      Promise.race([
+        networkUpdate,
+        new Promise((resolve) => setTimeout(() => resolve(null), NAV_TIMEOUT_MS)),
+      ]).then((response) => response || offlineFallback())
     );
     return;
   }
