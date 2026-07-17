@@ -17,7 +17,7 @@
   #app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
 
   /* Header */
-  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.85);backdrop-filter:blur(12px)}
   .logo{display:flex;align-items:baseline;gap:10px}
   .logo-title{font-family:var(--font-display);font-size:22px;color:var(--accent)}
   .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:600}
@@ -38,13 +38,15 @@
   .dropdown-item:hover{border-color:var(--accent);background:rgba(200,169,110,.08);color:var(--accent)}
 
   /* Nav */
+  .topbar{position:sticky;top:0;z-index:100}
   nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
   .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
   .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
   /* Main */
   main{flex:1;padding:32px;max-width:1400px;margin:0 auto;width:100%}
-  .page{display:none}.page.active{display:block;animation:fadeIn .2s ease}
+  .page{display:block;scroll-margin-top:118px;padding-top:36px;border-top:1px solid var(--border)}
+  .page:first-of-type{padding-top:0;border-top:none}
   @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
 
   /* Typography */
@@ -187,6 +189,7 @@
 <body>
 <div id="app">
 
+<div class="topbar">
 <!-- ═══════════ HEADER ═══════════ -->
 <header>
   <div class="logo">
@@ -206,24 +209,25 @@
   </div>
 </header>
 
-<!-- ═══════════ NAV ═══════════ -->
+<!-- ═══════════ NAV (jump links / scrollspy) ═══════════ -->
 <nav>
-  <div class="tab active" onclick="showPage('overview')"    id="tab-overview">🌐 Overview</div>
-  <div class="tab"        onclick="showPage('economies')"   id="tab-economies">🏛️ Economies</div>
-  <div class="tab"        onclick="showPage('trends')"      id="tab-trends">📈 Trends</div>
-  <div class="tab"        onclick="showPage('credit')"   id="tab-credit">💧 credit cycle</div>
-  <div class="tab"        onclick="showPage('liquidity')"   id="tab-liquidity">💧 Liquidity</div>
-  <div class="tab"        onclick="showPage('eurodollar')" id="tab-eurodollar">💱 Eurodollar</div>
-  <div class="tab"        onclick="showPage('milkshake')"   id="tab-milkshake">🥤 Dollar Milkshake</div>
-  <div class="tab"        onclick="showPage('sectors')"     id="tab-sectors">⚙️ Sectors</div>
+  <div class="tab active" onclick="scrollToSection('overview')"   id="tab-overview">🌐 Overview</div>
+  <div class="tab"        onclick="scrollToSection('economies')"  id="tab-economies">🏛️ Economies</div>
+  <div class="tab"        onclick="scrollToSection('trends')"     id="tab-trends">📈 Trends</div>
+  <div class="tab"        onclick="scrollToSection('credit')"     id="tab-credit">💧 credit cycle</div>
+  <div class="tab"        onclick="scrollToSection('liquidity')"  id="tab-liquidity">💧 Liquidity</div>
+  <div class="tab"        onclick="scrollToSection('eurodollar')" id="tab-eurodollar">💱 Eurodollar</div>
+  <div class="tab"        onclick="scrollToSection('milkshake')"  id="tab-milkshake">🥤 Dollar Milkshake</div>
+  <div class="tab"        onclick="scrollToSection('sectors')"    id="tab-sectors">⚙️ Sectors</div>
 </nav>
+</div><!-- /.topbar -->
 
 <main>
 
 <!-- ═══════════════════════════════════════════
      OVERVIEW
 ═══════════════════════════════════════════ -->
-<div class="page active" id="page-overview">
+<div class="page" id="page-overview">
   <div class="page-title">Global Economic Overview</div>
   <div class="page-sub">Live 2026 dataset · Macro-financial indicators across Earth's primary economic zones</div>
 
@@ -263,7 +267,7 @@
     <h3 id="lbl-eq-title">The Liquidity Lens on Global Output</h3>
     <div class="equation">P = L × (P/L)</div>
     <p style="color:var(--muted);font-size:13px;line-height:1.7" id="lbl-eq-body">Real GDP ($112.4T) measures what the world produces. Asset prices (P) trade on something else entirely: the stock of Global Liquidity (L) — central bank, shadow-bank and cross-border credit — multiplied by risk positioning (P/L). Since roughly 80% of global lending is collateral-backed, financial stress tends to originate from a collateral/liquidity shortage rather than from a growth shortfall.</p>
-    <p style="margin-top:6px"><span id="lbl-eq-link" style="color:var(--accent);cursor:pointer;text-decoration:underline;font-weight:600;font-size:12.5px" onclick="showPage('liquidity')">→ Open the full Liquidity Framework tab</span></p>
+    <p style="margin-top:6px"><span id="lbl-eq-link" style="color:var(--accent);cursor:pointer;text-decoration:underline;font-weight:600;font-size:12.5px" onclick="scrollToSection('liquidity')">→ Open the full Liquidity Framework tab</span></p>
   </div>
 
   <!-- Liquidity & Policy snapshot -->
@@ -319,9 +323,9 @@
     <div class="chart-wrap" style="height:280px"><canvas id="euroMoneyCycleChart"></canvas></div>
     <div id="euro-cycle-stage-bars" style="margin-top:20px"></div>
     <p style="font-size:12px;margin-top:14px">
-      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('credit')">→ Explore the full Credit Cycle tab</span>
+      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="scrollToSection('credit')">→ Explore the full Credit Cycle tab</span>
       &nbsp;·&nbsp;
-      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('eurodollar')">→ Explore the full Eurodollar Framework tab</span>
+      <span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="scrollToSection('eurodollar')">→ Explore the full Eurodollar Framework tab</span>
     </p>
   </div>
 
@@ -557,7 +561,7 @@
         <li>Non-bank ("shadow") credit has grown fastest since 2008, adding a channel outside direct bank regulation</li>
         <li>The credit cycle and the Global Liquidity cycle are related but distinct — liquidity leads credit availability by design</li>
       </ul>
-      <p style="font-size:12px;margin-top:12px"><span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="showPage('liquidity')">See how this connects to the Global Liquidity Framework →</span></p>
+      <p style="font-size:12px;margin-top:12px"><span style="color:var(--accent);cursor:pointer;text-decoration:underline" onclick="scrollToSection('liquidity')">See how this connects to the Global Liquidity Framework →</span></p>
     </div>
     <div class="card">
       <h3>Where We Are Today</h3>
@@ -1338,21 +1342,29 @@ function resetCreditSim(){
 }
 
 // ══════════════════════════════════════════════════════
-//  NAVIGATION
+//  NAVIGATION (one-page layout: jump-scroll + scrollspy)
 // ══════════════════════════════════════════════════════
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.getElementById('tab-'+id).classList.add('active');
+function scrollToSection(id){
+  const target = document.getElementById('page-'+id);
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
   document.getElementById('header-actions').classList.remove('open');
-  if(id==='overview')   renderOverviewCharts();
-  if(id==='economies')  renderEconomiesTable();
-  if(id==='trends')     renderTrends();
-  if(id==='credit')     renderCreditPage();
-  if(id==='liquidity')  renderLiquidityPage();
-  if(id==='sectors')    renderSectors();
-  if(id==='eurodollar') initEurodollarPage();
+}
+
+function initScrollspy(){
+  const sections = Array.from(document.querySelectorAll('.page'));
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  if(!sections.length || !tabs.length) return;
+  const setActive = id=>{
+    tabs.forEach(t=>t.classList.toggle('active', t.id === 'tab-'+id));
+  };
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        setActive(entry.target.id.replace('page-',''));
+      }
+    });
+  }, {rootMargin:'-120px 0px -70% 0px', threshold:0});
+  sections.forEach(s=>observer.observe(s));
 }
 
 document.addEventListener('click', e=>{
@@ -2109,21 +2121,7 @@ function exportReport(){
 // ══════════════════════════════════════════════════════
 //  Dollar Milkshake theory
 // ══════════════════════════════════════════════════════
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  
-  const targetPage = document.getElementById('page-' + id);
-  const targetTab = document.getElementById('tab-' + id);
-  
-  if(targetPage) targetPage.classList.add('active');
-  if(targetTab) targetTab.classList.add('active');
-  
-  if (id === 'milkshake') {
-    initMilkshakeCharts();
-  }
-}
-
+let dxyChart = null, assetsChart = null;
 function initMilkshakeCharts() {
   if (dxyChart) dxyChart.destroy();
   if (assetsChart) assetsChart.destroy();
@@ -2168,14 +2166,6 @@ function updateMilkshake(val) {
   document.getElementById('gold-val').textContent = '$' + Math.round(2400 + val * 8);
 }
 
-function exportReport() {
-  alert("Generating layout print file...");
-}
-
-window.onload = () => {
-  updateMilkshake(55);
-};
-  
 // ══════════════════════════════════════════════════════
 //  LAST UPDATED STAMP
 // ══════════════════════════════════════════════════════
@@ -2185,12 +2175,20 @@ function updateLastUpdated(){
 }
 
 // ══════════════════════════════════════════════════════
-//  INIT
+//  INIT — one-page layout: render every section up front
 // ══════════════════════════════════════════════════════
 applyLanguage();
 updateLastUpdated();
 renderOverviewCharts();
 renderEconomiesTable();
+renderTrends();
+renderCreditPage();
+renderLiquidityPage();
+renderSectors();
+initEurodollarPage();
+initMilkshakeCharts();
+updateMilkshake(55);
+initScrollspy();
 </script>
 </body>
 </html>
