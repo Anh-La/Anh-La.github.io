@@ -10,15 +10,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-  :root{--bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;--accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--text:#e8e3d8;--muted:#7a7f8e;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;--radius:12px}
+  :root{--bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;--accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--text:#e8e3d8;--muted:#7a7f8e;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;--radius:12px;--topbar-h:111px}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
   body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
   #app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+  #topbar{position:sticky;top:0;z-index:100}
 
   /* Header */
-  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
-  .logo{display:flex;align-items:baseline;gap:10px}
+  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.92);backdrop-filter:blur(12px)}
+  .logo{display:flex;align-items:baseline;gap:14px}
+  .hub-link{font-size:11px;color:var(--muted);text-decoration:none;font-weight:600;letter-spacing:.3px;border-right:1px solid var(--border);padding-right:14px;transition:color .15s}
+  .hub-link:hover{color:var(--accent)}
   .logo-title{font-family:var(--font-display);font-size:22px;color:var(--accent)}
   .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:600}
   .header-right{display:flex;align-items:center;gap:16px}
@@ -35,16 +40,19 @@
   .dropdown-item{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:700}
   .dropdown-item:hover{border-color:var(--accent);background:rgba(200,169,110,.08);color:var(--accent)}
 
-  /* Nav */
-  nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
-  .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+  /* Nav — quick-jump bar for the one-page layout, rides along inside #topbar */
+  nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:rgba(17,19,24,.96);backdrop-filter:blur(12px);overflow-x:auto}
+  .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center}
   .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
-  /* Main */
+  /* Main — every section lives on the one page, in reading order */
   main{flex:1;padding:32px;max-width:1400px;margin:0 auto;width:100%}
-  .page{display:none}.page.active{display:block;animation:fadeIn .2s ease}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-
+  .page-section{scroll-margin-top:calc(var(--topbar-h) + 16px);padding-top:12px;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  .page-section.in-view{opacity:1;transform:translateY(0)}
+  @media(prefers-reduced-motion:reduce){.page-section{opacity:1;transform:none;transition:none}}
+  .section-divider{display:flex;align-items:center;gap:16px;margin:44px 0 28px;color:var(--muted)}
+  .section-divider .num{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent)}
+  .section-divider .line{flex:1;height:1px;background:var(--border)}
   /* Typography */
   .page-title{font-family:var(--font-display);font-size:28px;color:var(--accent);margin-bottom:4px;font-style:italic}
   .page-sub{color:var(--muted);font-size:13px;margin-bottom:28px}
@@ -130,6 +138,11 @@
   #save-toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--accent3);color:#000;padding:10px 20px;border-radius:8px;font-weight:700;transform:translateY(80px);transition:transform .3s;pointer-events:none}
   #save-toast.show{transform:translateY(0)}
 
+  /* Back to top */
+  #to-top{position:fixed;bottom:24px;left:24px;z-index:998;width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--accent);font-size:16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s,border-color .15s;display:flex;align-items:center;justify-content:center}
+  #to-top.show{opacity:1;pointer-events:auto}
+  #to-top:hover{border-color:var(--accent)}
+
   /* Footer */
   .site-footer{border-top:1px solid var(--border);padding:20px 32px;color:var(--muted);background:rgba(17,19,24,.6);backdrop-filter:blur(10px)}
   .footer-inner{max-width:1400px;margin:0 auto;display:flex;gap:40px;flex-wrap:wrap}
@@ -151,8 +164,10 @@
 <body>
 <div id="app">
 
+<div id="topbar">
 <header>
   <div class="logo">
+    <a href="index" class="hub-link" title="Back to Hub">← Hub</a>
     <span class="logo-title">🏛️ Nation State</span>
     <span class="logo-sub">Macroeconomic Policy Simulator</span>
   </div>
@@ -164,31 +179,29 @@
       <div class="dropdown-menu">
         <button class="dropdown-item" onclick="exportData()">↓ Export JSON</button>
         <button class="dropdown-item" onclick="exportPolicyReport()">📄 Policy Report (PDF)</button>
-        <button class="dropdown-item" onclick="showPage('settings')">⚙️ Settings</button>
       </div>
     </div>
     <button class="btn btn-accent" onclick="saveAll()">Save</button>
   </div>
 </header>
-<div class="return-link-wrap">
-      <a href="index" class="back-link" title="Back to Hub">← Hub</a>
-    </div>
-<nav>
-  <div class="tab active" onclick="showPage('dashboard')" id="tab-dashboard">📊 Dashboard</div>
-  <div class="tab" onclick="showPage('monetary')"  id="tab-monetary">🏦 Monetary</div>
-  <div class="tab" onclick="showPage('fiscal')"    id="tab-fiscal">⚖️ Fiscal</div>
-  <div class="tab" onclick="showPage('simulate')"  id="tab-simulate">▶ Simulate</div>
-  <div class="tab" onclick="showPage('projections')" id="tab-projections">📈 Projections</div>
+<nav id="quick-jump">
+  <a class="tab active" href="#sec-dashboard"   id="tab-dashboard">📊 Dashboard</a>
+  <a class="tab"        href="#sec-monetary"    id="tab-monetary">🏦 Monetary</a>
+  <a class="tab"        href="#sec-fiscal"      id="tab-fiscal">⚖️ Fiscal</a>
+  <a class="tab"        href="#sec-simulate"    id="tab-simulate">▶ Simulate</a>
+  <a class="tab"        href="#sec-projections" id="tab-projections">📈 Projections</a>
+  <a class="tab"        href="#sec-settings"    id="tab-settings">⚙️ Settings</a>
 </nav>
+</div><!-- #topbar -->
 
 <main>
 
 <!-- ═══════════════════════════════════════════
      DASHBOARD
 ═══════════════════════════════════════════ -->
-<div class="page active" id="page-dashboard">
+<div class="page-section" id="sec-dashboard">
   <div class="page-title">Policy Dashboard</div>
-  <div class="page-sub">Live macroeconomic snapshot · Adjust levers in Monetary & Fiscal tabs, then Simulate</div>
+  <div class="page-sub">Live macroeconomic snapshot · Scroll down to adjust Monetary & Fiscal levers, then Simulate</div>
 
   <!-- KPI row -->
   <div class="grid-4 section" id="kpi-row">
@@ -251,7 +264,8 @@
 <!-- ═══════════════════════════════════════════
      MONETARY POLICY
 ═══════════════════════════════════════════ -->
-<div class="page" id="page-monetary">
+<div class="section-divider"><span class="num">02 — MONETARY</span><span class="line"></span></div>
+<div class="page-section" id="sec-monetary">
   <div class="page-title">Monetary Policy</div>
   <div class="page-sub">Central Bank instruments · Interest rates, money supply & reserve requirements</div>
   <div class="alert alert-info">🏦 <strong>Central Bank mandate:</strong> Maintain price stability (inflation 2–3%), support full employment, and preserve financial system stability.</div>
@@ -307,7 +321,8 @@
 <!-- ═══════════════════════════════════════════
      FISCAL POLICY
 ═══════════════════════════════════════════ -->
-<div class="page" id="page-fiscal">
+<div class="section-divider"><span class="num">03 — FISCAL</span><span class="line"></span></div>
+<div class="page-section" id="sec-fiscal">
   <div class="page-title">Fiscal Policy</div>
   <div class="page-sub">Government revenue & expenditure · Taxation, spending and debt management</div>
   <div class="alert alert-info">⚖️ <strong>Government mandate:</strong> Sustainable public finances, full employment via aggregate demand, and equitable income distribution.</div>
@@ -363,18 +378,16 @@
 <!-- ═══════════════════════════════════════════
      SIMULATE
 ═══════════════════════════════════════════ -->
-<div class="page" id="page-simulate">
+<div class="section-divider"><span class="num">04 — SIMULATE</span><span class="line"></span></div>
+<div class="page-section" id="sec-simulate">
   <div class="page-title">Simulation Engine</div>
-  <div class="page-sub">Apply current policy settings and advance the economy by one quarter</div>
+  <div class="page-sub">Uses the Monetary & Fiscal settings above · Advances the economy by one quarter</div>
 
   <div class="grid-2 section">
-    <div class="card">
-      <h3>Pre-Simulation Policy Summary</h3>
-      <div id="pre-sim-summary"></div>
-      <div style="margin-top:20px">
-        <button class="btn btn-accent" style="width:100%;padding:14px;font-size:14px" id="simulate-btn">▶ Simulate Next Quarter</button>
-      </div>
-      <div style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center" id="quarter-display">Quarter 1 — click to advance</div>
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px">
+      <h3>Advance the Economy</h3>
+      <button class="btn btn-accent" style="width:100%;padding:14px;font-size:14px" id="simulate-btn">▶ Simulate Next Quarter</button>
+      <div style="font-size:12px;color:var(--muted)" id="quarter-display">Quarter 1 — click to advance</div>
     </div>
     <div class="card">
       <h3>Simulation Result</h3>
@@ -383,19 +396,13 @@
       </div>
     </div>
   </div>
-
-  <div class="card section">
-    <h3>Central Bank & Treasury Advisory</h3>
-    <div id="sim-logs">
-      <div class="alert alert-ok">✓ Economy is stable. Run the simulation to generate updated advisories.</div>
-    </div>
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════
      PROJECTIONS
 ═══════════════════════════════════════════ -->
-<div class="page" id="page-projections">
+<div class="section-divider"><span class="num">05 — PROJECTIONS</span><span class="line"></span></div>
+<div class="page-section" id="sec-projections">
   <div class="page-title">Economic Projections</div>
   <div class="page-sub">Multi-year outlook · Conservative, Base & Optimistic policy scenarios</div>
 
@@ -430,7 +437,8 @@
 <!-- ═══════════════════════════════════════════
      SETTINGS
 ═══════════════════════════════════════════ -->
-<div class="page" id="page-settings">
+<div class="section-divider"><span class="num">06 — SETTINGS</span><span class="line"></span></div>
+<div class="page-section" id="sec-settings">
   <div class="page-title">Nation Settings</div>
   <div class="page-sub">Configure ApexRepublic profile and simulation parameters</div>
 
@@ -477,6 +485,7 @@
 </div><!-- #app -->
 
 <div id="save-toast">✓ Saved</div>
+<button id="to-top" title="Back to top" aria-label="Back to top" onclick="document.getElementById('sec-dashboard').scrollIntoView({behavior:'smooth'})">↑</button>
 
 <footer class="site-footer">
     <div class="footer-inner">
@@ -646,17 +655,55 @@ function clearAll(){
 // ══════════════════════════════════════════════════════
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════════════
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.getElementById('tab-'+id).classList.add('active');
-  document.getElementById('header-actions').classList.remove('open');
-  if(id==='dashboard')   renderDashboard();
-  if(id==='monetary')    renderMonetary();
-  if(id==='fiscal')      renderFiscal();
-  if(id==='simulate')    renderPreSim();
-  if(id==='projections') calcProjections();
+// ══════════════════════════════════════════════════════
+//  ONE-PAGE NAVIGATION
+//  Everything renders at once; nav links scroll to sections
+//  and highlight to match whichever one is currently in view.
+// ══════════════════════════════════════════════════════
+function updateStickyOffset(){
+  const topbar = document.getElementById('topbar');
+  if(topbar) document.documentElement.style.setProperty('--topbar-h', topbar.offsetHeight+'px');
+}
+
+function initScrollSpy(){
+  const sections = [...document.querySelectorAll('.page-section')];
+  const navLinks = {};
+  document.querySelectorAll('#quick-jump .tab').forEach(a=>{
+    navLinks[a.getAttribute('href').replace('#sec-','')] = a;
+  });
+
+  let ticking = false;
+  function setActiveLink(){
+    ticking = false;
+    const topbar = document.getElementById('topbar');
+    const triggerLine = window.scrollY + topbar.offsetHeight + 24;
+    let current = sections[0];
+    for(const sec of sections){
+      if(sec.offsetTop <= triggerLine) current = sec; else break;
+    }
+    const id = current.id.replace('sec-','');
+    Object.entries(navLinks).forEach(([key,a])=>a.classList.toggle('active', key===id));
+  }
+  function requestTick(){ if(!ticking){ ticking = true; requestAnimationFrame(setActiveLink); } }
+
+  window.addEventListener('scroll', requestTick, {passive:true});
+  window.addEventListener('resize', requestTick);
+  setActiveLink(); // set correct initial state on load
+
+  // Fade sections in as they're scrolled to
+  const revealObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); revealObs.unobserve(e.target); } });
+  }, {threshold:0.08});
+  sections.forEach(s=>revealObs.observe(s));
+}
+
+function initBackToTop(){
+  const btn = document.getElementById('to-top');
+  const dash = document.getElementById('sec-dashboard');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ btn.classList.toggle('show', !e.isIntersecting); });
+  }, {threshold:0});
+  obs.observe(dash);
 }
 
 // Close dropdown on outside click
@@ -901,16 +948,6 @@ function renderFiscal(){
 // ══════════════════════════════════════════════════════
 function renderPreSim(){
   document.getElementById('quarter-display').textContent = `Quarter ${S.currentQuarter} — click to advance`;
-  document.getElementById('pre-sim-summary').innerHTML = `
-    <table><tbody>
-      <tr><td style="color:var(--muted)">Cash Rate</td><td class="td-mono td-gold">${S.interestRate.toFixed(2)}%</td></tr>
-      <tr><td style="color:var(--muted)">Reserve Ratio</td><td class="td-mono">${S.reserveRatio.toFixed(1)}%</td></tr>
-      <tr><td style="color:var(--muted)">QE Programme</td><td class="td-mono">${S.qe>0?'$'+S.qe+'B':'Inactive'}</td></tr>
-      <tr><td style="color:var(--muted)">Tax Rate</td><td class="td-mono td-green">${S.taxRate.toFixed(1)}%</td></tr>
-      <tr><td style="color:var(--muted)">Gov Spending</td><td class="td-mono td-green">$${S.govSpending}B</td></tr>
-      <tr><td style="color:var(--muted)">Infrastructure</td><td class="td-mono td-green">$${S.infra}B</td></tr>
-      <tr><td style="color:var(--muted)">Noise Level</td><td class="td-mono">${S.noise||'medium'}</td></tr>
-    </tbody></table>`;
 }
 
 document.getElementById('simulate-btn').addEventListener('click', ()=>{
@@ -934,7 +971,11 @@ document.getElementById('simulate-btn').addEventListener('click', ()=>{
     </div>
     <div style="margin-top:12px;font-size:12px;color:var(--muted)">National Debt: <span class="td-mono td-red">$${(S.nationalDebt||850).toFixed(0)}B</span></div>`;
 
-  document.getElementById('sim-logs').innerHTML = generateAdvisory();
+  // One-page layout: Dashboard, Monetary & Fiscal sections are all visible
+  // at once, so refresh them too (Dashboard's advisory card covers the log).
+  renderDashboard();
+  renderMonetary();
+  renderFiscal();
 });
 
 // ══════════════════════════════════════════════════════
@@ -1105,14 +1146,24 @@ function populateForms(){
 }
 
 // ══════════════════════════════════════════════════════
-//  INIT
+//  INIT — one-page layout: render every section up front
 // ══════════════════════════════════════════════════════
 loadState();
 populateForms();
 wireSliders();
 applyLanguage();
 updateLastUpdated();
+updateStickyOffset();
 renderDashboard();
+renderMonetary();
+renderFiscal();
+renderPreSim();
+calcProjections();
+initScrollSpy();
+initBackToTop();
+window.addEventListener('resize', updateStickyOffset);
+window.addEventListener('load', updateStickyOffset);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(updateStickyOffset);
 </script>
 </body>
 </html>
