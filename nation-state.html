@@ -186,10 +186,10 @@
 </header>
 <nav id="quick-jump">
   <a class="tab active" href="#sec-dashboard"   id="tab-dashboard">📊 Dashboard</a>
-  <a class="tab"        href="#sec-monetary"    id="tab-monetary">🏦 Monetary</a>
-  <a class="tab"        href="#sec-fiscal"      id="tab-fiscal">⚖️ Fiscal</a>
-  <a class="tab"        href="#sec-simulate"    id="tab-simulate">▶ Simulate</a>
-  <a class="tab"        href="#sec-projections" id="tab-projections">📈 Projections</a>
+  <a class="tab" href="#sec-framework" data-sector="real"       id="tab-real">🌾 Real</a>
+  <a class="tab" href="#sec-framework" data-sector="external"   id="tab-external">🌐 External</a>
+  <a class="tab" href="#sec-framework" data-sector="government" id="tab-government">🏛️ Government</a>
+  <a class="tab" href="#sec-framework" data-sector="monetary"   id="tab-monetary">🏦 Monetary</a>
   <a class="tab"        href="#sec-settings"    id="tab-settings">⚙️ Settings</a>
 </nav>
 </div><!-- #topbar -->
@@ -261,6 +261,23 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════
+     FRAMEWORK — Real / External / Government / Monetary
+═══════════════════════════════════════════ -->
+<div class="section-divider"><span class="num">02 — FRAMEWORK</span><span class="line"></span></div>
+<div class="page-section" id="sec-framework">
+  <div class="page-title">Financial Programming Framework</div>
+  <div class="page-sub">Historical statistical companion · Real, External, Government & Monetary sector ledgers, 2006–2012</div>
+  <div class="alert alert-info">📚 <strong>How this relates to the Dashboard:</strong> the KPIs above are a live macroeconomic snapshot of ApexRepublic. This framework is a separate historical reference case — an IMF-style financial programming exercise showing how GDP, the balance of payments, government operations and the monetary survey tie together algebraically, with Nominal GDP as the shared anchor across all four sector ledgers. Use the Real / External / Government / Monetary tabs above to jump straight to a sector.</div>
+ 
+  <div class="card section" style="padding:0;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px">
+      <div style="font-size:12px;color:var(--muted)">Interactive ledger · sortable, searchable, cross-linked between sectors</div>
+      <a class="btn" href="fp_framework_table.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+    </div>
+    <iframe id="framework-frame" src="fp_framework_table.html" title="Financial Programming Framework" style="width:100%;height:900px;border:0;display:block;background:#0c1016"></iframe>
+  </div>
+</div>  
 <!-- ═══════════════════════════════════════════
      MONETARY POLICY
 ═══════════════════════════════════════════ -->
