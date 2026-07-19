@@ -1,1186 +1,1855 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nation State</title>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Interactive IMF-style Financial Programming Framework simulator — 4 sectors, forward projections, and scenario comparison.">
+<title>Financial Programming Framework · Interactive Simulator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;900&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
-  :root{--bg:#0a0c10;--surface:#111318;--card:#161920;--border:#232730;--accent:#c8a96e;--accent2:#5c9eff;--accent3:#4ecb8a;--accent4:#e06b6b;--text:#e8e3d8;--muted:#7a7f8e;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Manrope',sans-serif;--font-mono:'DM Mono',monospace;--radius:12px;--topbar-h:111px}
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
-  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
-  #app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
-  #topbar{position:sticky;top:0;z-index:100}
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
 
-  /* Header */
-  header{border-bottom:1px solid var(--border);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,16,.92);backdrop-filter:blur(12px)}
-  .logo{display:flex;align-items:baseline;gap:14px}
-  .hub-link{font-size:11px;color:var(--muted);text-decoration:none;font-weight:600;letter-spacing:.3px;border-right:1px solid var(--border);padding-right:14px;transition:color .15s}
-  .hub-link:hover{color:var(--accent)}
-  .logo-title{font-family:var(--font-display);font-size:22px;color:var(--accent)}
-  .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:600}
-  .header-right{display:flex;align-items:center;gap:16px}
-  .last-updated{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
-  .btn{padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;cursor:pointer;transition:all .15s;font-weight:500;font-family:var(--font-body)}
-  .btn:hover{border-color:var(--accent);color:var(--accent)}
-  .btn-accent{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
-  .btn-accent:hover{background:#d4b87a;border-color:#d4b87a}
+  /* Shell */
+  header.app-header{background:var(--surface);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:36px;height:36px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-size:18px;font-weight:900;letter-spacing:-0.01em;line-height:1}
+  .sector-chips{display:flex;gap:14px;font-size:11px;font-weight:500;color:#334155}
+  .chip{display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.08em}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 
-  /* Dropdown */
-  .dropdown{position:relative;display:inline-block}
-  .dropdown-menu{display:none;position:absolute;right:0;top:calc(100% + 10px);min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;z-index:1000;box-shadow:0 18px 40px rgba(0,0,0,.35)}
-  .dropdown.open .dropdown-menu{display:block}
-  .dropdown-item{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:700}
-  .dropdown-item:hover{border-color:var(--accent);background:rgba(200,169,110,.08);color:var(--accent)}
+  main{max-width:1440px;margin:0 auto;padding:16px}
 
-  /* Nav — quick-jump bar for the one-page layout, rides along inside #topbar */
-  nav{display:flex;gap:2px;padding:0 32px;border-bottom:1px solid var(--border);background:rgba(17,19,24,.96);backdrop-filter:blur(12px);overflow-x:auto}
-  .tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center}
-  .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  /* Tabs */
+  .tabs{display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border:1px solid var(--line);padding:4px;gap:2px;overflow-x:auto}
+  .tab{background:transparent;border:none;padding:10px 8px;text-transform:uppercase;letter-spacing:.12em;
+    font-size:11px;font-weight:700;color:#64748b;transition:background .12s ease;white-space:nowrap}
+  .tab.active{background:var(--ink);color:#fff}
+  .tab:hover:not(.active){background:#f1f5f9}
+  @media (max-width:900px){.tabs{grid-template-columns:repeat(5,minmax(140px,1fr))}}
 
-  /* Main — every section lives on the one page, in reading order */
-  main{flex:1;padding:32px;max-width:1400px;margin:0 auto;width:100%}
-  .page-section{scroll-margin-top:calc(var(--topbar-h) + 16px);padding-top:12px;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
-  .page-section.in-view{opacity:1;transform:translateY(0)}
-  @media(prefers-reduced-motion:reduce){.page-section{opacity:1;transform:none;transition:none}}
-  .section-divider{display:flex;align-items:center;gap:16px;margin:44px 0 28px;color:var(--muted)}
-  .section-divider .num{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent)}
-  .section-divider .line{flex:1;height:1px;background:var(--border)}
-  /* Typography */
-  .page-title{font-family:var(--font-display);font-size:28px;color:var(--accent);margin-bottom:4px;font-style:italic}
-  .page-sub{color:var(--muted);font-size:13px;margin-bottom:28px}
-  h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:.3px}
+  /* Layout grid — Simulator */
+  .layout{display:grid;grid-template-columns:300px 1fr;gap:16px;margin-top:16px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
-  /* Grids */
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
-  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;
+    display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
 
-  /* Cards */
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
-  .section{margin-bottom:28px}
+  /* Policy Levers */
+  .levers{padding:12px;max-height:60vh;overflow-y:auto}
+  @media (max-width:900px){.levers{max-height:none}}
+  .lever{margin-bottom:14px}
+  .lever-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .lever-label{display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;font-weight:500}
+  .lever-bar{width:2px;height:14px;background:var(--muted);display:inline-block;border-radius:1px}
+  .lever-value{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600}
+  .slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:#e2e8f0;outline:none;border-radius:2px}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
+  .slider::-moz-range-thumb{width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff}
+  .lever-scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:#94a3b8;margin-top:2px}
+  .btn{background:var(--ink);color:#fff;border:none;padding:10px 16px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;font-size:11px;width:100%;transition:background .12s ease}
+  .btn:hover{background:var(--blue)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-secondary{background:var(--blue)}
+  .btn-secondary:hover{background:var(--ink)}
+  .horizon-select{height:26px;padding:2px 8px;font-family:"IBM Plex Mono",monospace;font-size:12px;border:1px solid var(--line2);background:#fff;border-radius:0}
 
-  /* KPI */
-  .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden}
-  .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-  .kpi.gold::before{background:var(--accent)}.kpi.blue::before{background:var(--accent2)}.kpi.green::before{background:var(--accent3)}.kpi.red::before{background:var(--accent4)}
-  .kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:6px}
-  .kpi-value{font-family:var(--font-mono);font-size:24px;font-weight:500;color:var(--text)}
-  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
-  .kpi-delta{font-size:12px;margin-top:6px;font-weight:600}
-  .kpi-delta.pos{color:var(--accent3)}.kpi-delta.neg{color:var(--accent4)}
+  /* Summary strip */
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:800px){.summary{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+  .kpi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+  .kpi-value{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:700;margin-top:6px}
+  .kpi-sub{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi-base{font-family:"IBM Plex Mono",monospace;font-size:10px;color:#94a3b8;margin-top:8px;border-top:1px solid #f1f5f9;padding-top:6px}
 
-  /* Progress bars */
-  .progress-wrap{margin-bottom:14px}
-  .progress-header{display:flex;justify-content:space-between;margin-bottom:5px}
-  .progress-label{font-size:12px;font-weight:600}
-  .progress-val{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
-  .progress-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
-  .progress-fill{height:100%;border-radius:99px;transition:width .6s ease}
+  /* Chart grid */
+  .charts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:1100px){.charts{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){.charts{grid-template-columns:1fr}}
+  .chart-wrap{padding:8px;height:220px;position:relative}
 
-  /* Table */
-  .tbl-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:600}
-  td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
-  tr:last-child td{border-bottom:none}
-  tr:hover td{background:rgba(255,255,255,.02)}
-  .td-mono{font-family:var(--font-mono)}.td-green{color:var(--accent3);font-weight:600}.td-red{color:var(--accent4);font-weight:600}.td-gold{color:var(--accent);font-weight:600}.td-muted{color:var(--muted);font-size:12px}
+  /* Tables */
+  .table-wrap{overflow-x:auto}
+  table.fp{width:100%;border-collapse:collapse;font-family:"IBM Plex Mono",monospace;font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:"IBM Plex Sans",sans-serif}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
 
-  /* Forms */
-  .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-  label{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600;letter-spacing:1px}
-  input,select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:9px 12px;font-size:13px;font-family:var(--font-body)}
-  input:focus,select:focus{outline:none;border-color:var(--accent)}
-  input[type=number]{font-family:var(--font-mono)}
-  select option{background:var(--surface)}
+  /* Historical sector tabs */
+  .sector-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:12px;gap:4px}
+  .sector-tab{background:transparent;border:none;padding:10px 14px;text-transform:uppercase;font-size:11px;letter-spacing:.14em;font-weight:700;color:#64748b;
+    border-bottom:2px solid transparent;margin-bottom:-1px}
+  .sector-tab.active{color:var(--ink);border-color:var(--ink)}
 
-  /* Range sliders */
-  .slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .slider-label{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase}
-  .slider-val{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--accent)}
-  .slider-val.green{color:var(--accent3)}
-  input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:99px;cursor:pointer;outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg);transition:transform .1s}
-  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
-  input[type=range].green-thumb::-webkit-slider-thumb{background:var(--accent3)}
+  /* Balance sheets */
+  .bs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:1100px){.bs-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){.bs-grid{grid-template-columns:1fr}}
+  .sector-panel-head{padding:10px 14px;border-bottom:2px solid;display:flex;align-items:center;gap:8px}
+  .identity{border:1px solid var(--line);padding:12px;background:#f8fafc}
+  .identity-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+  .identity-formula{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600}
+  .identity-check{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#334155;margin-top:4px}
+  .identities-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+  @media (max-width:700px){.identities-grid{grid-template-columns:1fr}}
 
-  /* Badges */
-  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase}
-  .badge-gold{background:rgba(200,169,110,.15);color:var(--accent);border:1px solid rgba(200,169,110,.3)}
-  .badge-blue{background:rgba(92,158,255,.15);color:var(--accent2);border:1px solid rgba(92,158,255,.3)}
-  .badge-green{background:rgba(78,203,138,.15);color:var(--accent3);border:1px solid rgba(78,203,138,.3)}
-  .badge-red{background:rgba(224,107,107,.15);color:var(--accent4);border:1px solid rgba(224,107,107,.3)}
+  /* AI commentary */
+  .ai-body{padding:14px;background:#f8fafc;min-height:100px}
+  .ai-body h2{font-size:16px;margin:12px 0 6px;color:var(--ink)}
+  .ai-body h3{font-size:13px;margin:12px 0 4px;color:var(--ink);font-weight:700}
+  .ai-body p{font-size:13px;line-height:1.55;margin:6px 0;color:#0f172a}
+  .ai-body strong{color:var(--ink)}
+  .ai-placeholder{color:var(--muted);font-style:italic;font-size:13px}
+  .ai-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .text-input{height:28px;padding:2px 8px;font-family:"IBM Plex Mono",monospace;font-size:12px;border:1px solid var(--line2);background:#fff;min-width:120px}
+  .ai-note{font-size:11px;color:var(--muted);padding:8px 14px;background:#fff8ed;border-top:1px solid #f4e4b8}
+  .ai-key-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 14px;background:#fef3c7;font-size:11px;color:#78350f;border-top:1px solid #fbe08b}
+  .ai-key-row input{flex:1;min-width:200px}
 
-  /* Alerts */
-  .alert{padding:12px 16px;border-radius:8px;font-size:13px;border-left:3px solid;margin-bottom:12px}
-  .alert-warn{background:rgba(200,169,110,.08);border-color:var(--accent);color:var(--text)}
-  .alert-info{background:rgba(92,158,255,.08);border-color:var(--accent2);color:var(--text)}
-  .alert-ok{background:rgba(78,203,138,.08);border-color:var(--accent3);color:var(--text)}
-  .alert-danger{background:rgba(224,107,107,.08);border-color:var(--accent4);color:var(--text)}
-
-  /* Chart */
-  .chart-wrap{position:relative}
-
-  /* Checklist */
-  .checklist{display:flex;flex-direction:column;gap:10px}
-  .check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px}
-  .check-icon{font-size:16px;flex-shrink:0}
-
-  /* Save toast */
-  #save-toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--accent3);color:#000;padding:10px 20px;border-radius:8px;font-weight:700;transform:translateY(80px);transition:transform .3s;pointer-events:none}
-  #save-toast.show{transform:translateY(0)}
-
-  /* Back to top */
-  #to-top{position:fixed;bottom:24px;left:24px;z-index:998;width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--accent);font-size:16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s,border-color .15s;display:flex;align-items:center;justify-content:center}
-  #to-top.show{opacity:1;pointer-events:auto}
-  #to-top:hover{border-color:var(--accent)}
+  /* Compare */
+  .compare-grid{display:grid;grid-template-columns:280px 1fr 280px;gap:12px;margin-top:16px}
+  @media (max-width:1200px){.compare-grid{grid-template-columns:1fr}}
 
   /* Footer */
-  .site-footer{border-top:1px solid var(--border);padding:20px 32px;color:var(--muted);background:rgba(17,19,24,.6);backdrop-filter:blur(10px)}
-  .footer-inner{max-width:1400px;margin:0 auto;display:flex;gap:40px;flex-wrap:wrap}
-  .footer-col{min-width:220px}
-  .footer-title{font-size:12px;color:var(--text);font-weight:900;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
-  .site-footer a{color:var(--accent2);text-decoration:none;font-weight:700}
-  .site-footer a:hover{color:var(--accent)}
-  .footer-text{font-size:12px;line-height:1.5;max-width:560px}
+  footer{max-width:1440px;margin:0 auto;padding:24px 16px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:32px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-  /* Empty state */
-  .empty-state{text-align:center;padding:48px;color:var(--muted);font-size:13px}
-  .empty-state .icon{font-size:32px;margin-bottom:12px}
-
-  /* Responsive */
-  @media(max-width:900px){.grid-4,.grid-3{grid-template-columns:1fr 1fr}main{padding:20px 16px}header{padding:14px 20px}nav{padding:0 16px}}
-  @media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.logo-sub{display:none}.site-footer{padding:18px 16px}}
+  /* Utility hidden */
+  .hidden{display:none !important}
 </style>
 </head>
 <body>
-<div id="app">
 
-<div id="topbar">
-<header>
-  <div class="logo">
-    <a href="index" class="hub-link" title="Back to Hub">← Hub</a>
-    <span class="logo-title">🏛️ Nation State</span>
-    <span class="logo-sub">Macroeconomic Policy Simulator</span>
-  </div>
-  <div class="header-right">
-    <span class="last-updated" id="last-updated-label"></span>
-    <button class="btn" onclick="toggleLanguage()" id="lang-btn">🌐 Tiếng Việt</button>
-    <div class="dropdown" id="header-actions">
-      <button class="btn" type="button" onclick="document.getElementById('header-actions').classList.toggle('open')">⋯</button>
-      <div class="dropdown-menu">
-        <button class="dropdown-item" onclick="exportData()">↓ Export JSON</button>
-        <button class="dropdown-item" onclick="exportPolicyReport()">📄 Policy Report (PDF)</button>
-      </div>
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">FP</div>
+    <div>
+      <div class="brand-eyebrow">Statistical Bulletin</div>
+      <div class="brand-title">Financial Programming Framework</div>
     </div>
-    <button class="btn btn-accent" onclick="saveAll()">Save</button>
+  </div>
+  <div class="sector-chips">
+    <span class="chip"><span class="dot" style="background:#2563EB"></span>Real</span>
+    <span class="chip"><span class="dot" style="background:#059669"></span>External</span>
+    <span class="chip"><span class="dot" style="background:#D92D20"></span>Fiscal</span>
+    <span class="chip"><span class="dot" style="background:#7C3AED"></span>Monetary</span>
   </div>
 </header>
-<nav id="quick-jump">
-  <a class="tab active" href="#sec-dashboard"   id="tab-dashboard">📊 Dashboard</a>
-  <a class="tab" href="#sec-framework" data-sector="real"       id="tab-real">🌾 Real</a>
-  <a class="tab" href="#sec-framework" data-sector="external"   id="tab-external">🌐 External</a>
-  <a class="tab" href="#sec-framework" data-sector="government" id="tab-government">🏛️ Government</a>
-  <a class="tab" href="#sec-framework" data-sector="monetary"   id="tab-monetary">🏦 Monetary</a>
-  <a class="tab"        href="#sec-settings"    id="tab-settings">⚙️ Settings</a>
-</nav>
-</div><!-- #topbar -->
 
 <main>
-
-<!-- ═══════════════════════════════════════════
-     DASHBOARD
-═══════════════════════════════════════════ -->
-<div class="page-section" id="sec-dashboard">
-  <div class="page-title">Policy Dashboard</div>
-  <div class="page-sub">Live macroeconomic snapshot · Scroll down to adjust Monetary & Fiscal levers, then Simulate</div>
-
-  <!-- KPI row -->
-  <div class="grid-4 section" id="kpi-row">
-    <div class="kpi gold">
-      <div class="kpi-label">GDP Growth</div>
-      <div class="kpi-value" id="gdp-display">2.50%</div>
-      <div class="kpi-delta" id="gdp-delta"></div>
-    </div>
-    <div class="kpi red">
-      <div class="kpi-label">Inflation Rate</div>
-      <div class="kpi-value" id="inflation-display">2.10%</div>
-      <div class="kpi-delta" id="inflation-delta"></div>
-    </div>
-    <div class="kpi blue">
-      <div class="kpi-label">Unemployment</div>
-      <div class="kpi-value" id="unemployment-display">4.80%</div>
-      <div class="kpi-delta" id="unemployment-delta"></div>
-    </div>
-    <div class="kpi green">
-      <div class="kpi-label">Budget Balance</div>
-      <div class="kpi-value" id="budget-display">+$5B</div>
-      <div class="kpi-delta" id="budget-delta"></div>
-    </div>
+  <!-- Tab strip -->
+  <div class="tabs" id="tabs" role="tablist">
+    <button class="tab" data-tab="simulator" role="tab">Policy Simulator</button>
+    <button class="tab" data-tab="historical" role="tab">Historical Explorer</button>
+    <button class="tab active" data-tab="balance" role="tab">Sector Balance Sheets</button>
+    <button class="tab" data-tab="flowoffunds" role="tab">Flow of Funds</button>
+    <button class="tab" data-tab="compare" role="tab">Scenario Compare</button>
   </div>
 
-  <div class="grid-2 section">
-    <!-- Economy timeline chart -->
-    <div class="card">
-      <h3>Economic Performance Timeline</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="economy-chart"></canvas></div>
-    </div>
-    <!-- Policy health gauges -->
-    <div class="card">
-      <h3>Policy Health Indicators</h3>
-      <div id="health-bars"></div>
-    </div>
-  </div>
-
-  <div class="grid-2 section">
-    <!-- Current policy snapshot -->
-    <div class="card">
-      <h3>Current Policy Settings</h3>
-      <div id="policy-snapshot"></div>
-    </div>
-    <!-- Advisory log -->
-    <div class="card">
-      <h3>Central Bank & Treasury Advisory</h3>
-      <div id="logs">
-        <div class="alert alert-ok">✓ Economy is stable. Inflation and growth within optimal target ranges.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card section">
-    <h3>Quarterly History</h3>
-    <div class="tbl-wrap" id="history-table"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     FRAMEWORK — Real / External / Government / Monetary
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">02 — FRAMEWORK</span><span class="line"></span></div>
-<div class="page-section" id="sec-framework">
-  <div class="page-title">Financial Programming Framework</div>
-  <div class="page-sub">Historical statistical companion · Real, External, Government & Monetary sector ledgers, 2006–2012</div>
-  <div class="alert alert-info">📚 <strong>How this relates to the Dashboard:</strong> the KPIs above are a live macroeconomic snapshot of ApexRepublic. This framework is a separate historical reference case — an IMF-style financial programming exercise showing how GDP, the balance of payments, government operations and the monetary survey tie together algebraically, with Nominal GDP as the shared anchor across all four sector ledgers. Use the Real / External / Government / Monetary tabs above to jump straight to a sector.</div>
- 
-  <div class="card section" style="padding:0;overflow:hidden">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px">
-      <div style="font-size:12px;color:var(--muted)">Interactive ledger · sortable, searchable, cross-linked between sectors</div>
-      <a class="btn" href="fp_framework_table.html" target="_blank" rel="noopener">Open full-screen ↗</a>
-    </div>
-    <iframe id="framework-frame" src="fp_framework_table.html" title="Financial Programming Framework" style="width:100%;height:900px;border:0;display:block;background:#0c1016"></iframe>
-  </div>
-</div>  
-<!-- ═══════════════════════════════════════════
-     MONETARY POLICY
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">02 — MONETARY</span><span class="line"></span></div>
-<div class="page-section" id="sec-monetary">
-  <div class="page-title">Monetary Policy</div>
-  <div class="page-sub">Central Bank instruments · Interest rates, money supply & reserve requirements</div>
-  <div class="alert alert-info">🏦 <strong>Central Bank mandate:</strong> Maintain price stability (inflation 2–3%), support full employment, and preserve financial system stability.</div>
-
-  <div class="grid-2 section">
-    <div class="card">
-      <h3>Interest Rate Controls</h3>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Cash Rate Target</span>
-          <span class="slider-val" id="interest-rate-val">4.50%</span>
-        </div>
-        <input type="range" id="interest-rate" min="0" max="15" step="0.25" value="4.5">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Higher rate → tighter credit → lower inflation & slower GDP</div>
-      </div>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Required Reserve Ratio</span>
-          <span class="slider-val" id="reserve-ratio-val">10.0%</span>
-        </div>
-        <input type="range" id="reserve-ratio" min="1" max="30" step="0.5" value="10">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Higher ratio → less money multiplied through banking system</div>
-      </div>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Quantitative Easing ($B)</span>
-          <span class="slider-val" id="qe-val">$0B</span>
-        </div>
-        <input type="range" id="qe-slider" min="0" max="200" step="10" value="0">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Asset purchases inject liquidity — stimulates growth, raises inflation risk</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Money Supply Multiplier</h3>
-      <div id="money-multiplier-panel"></div>
-      <div class="divider" style="height:1px;background:var(--border);margin:16px 0"></div>
-      <h3>Transmission Mechanism</h3>
-      <div class="checklist" id="transmission-checklist"></div>
-    </div>
-  </div>
-
-  <div class="card section">
-    <h3>Monetary Policy Compliance Notes</h3>
-    <div class="alert alert-info">📋 <strong>Inflation targeting:</strong> The Central Bank targets 2–3% headline CPI. Sustained deviation triggers mandatory policy review and rate adjustment.</div>
-    <div class="alert alert-warn">📋 <strong>QE unwind risk:</strong> Large balance sheet expansion may complicate future tightening cycles. Monitor term premium and yield curve steepness.</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     FISCAL POLICY
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">03 — FISCAL</span><span class="line"></span></div>
-<div class="page-section" id="sec-fiscal">
-  <div class="page-title">Fiscal Policy</div>
-  <div class="page-sub">Government revenue & expenditure · Taxation, spending and debt management</div>
-  <div class="alert alert-info">⚖️ <strong>Government mandate:</strong> Sustainable public finances, full employment via aggregate demand, and equitable income distribution.</div>
-
-  <div class="grid-2 section">
-    <div class="card">
-      <h3>Revenue & Expenditure</h3>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Effective Income Tax Rate</span>
-          <span class="slider-val green" id="tax-rate-val">22.0%</span>
-        </div>
-        <input type="range" id="tax-rate" min="5" max="50" step="0.5" value="22" class="green-thumb">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Higher tax → more revenue but reduced household spending power</div>
-      </div>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Government Spending ($B)</span>
-          <span class="slider-val green" id="gov-spending-val">$120B</span>
-        </div>
-        <input type="range" id="gov-spending" min="50" max="300" step="5" value="120" class="green-thumb">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Higher spending stimulates demand via Keynesian multiplier effect</div>
-      </div>
-
-      <div class="form-group">
-        <div class="slider-row">
-          <span class="slider-label">Infrastructure Investment ($B)</span>
-          <span class="slider-val green" id="infra-val">$30B</span>
-        </div>
-        <input type="range" id="infra-slider" min="0" max="100" step="5" value="30" class="green-thumb">
-        <div style="font-size:11px;color:var(--muted);margin-top:6px">Raises long-run productive capacity and employment</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Budget Position</h3>
-      <div id="budget-panel"></div>
-      <div class="divider" style="height:1px;background:var(--border);margin:16px 0"></div>
-      <h3>Fiscal Multiplier Effects</h3>
-      <div id="multiplier-panel"></div>
-    </div>
-  </div>
-
-  <div class="card section">
-    <h3>Fiscal Compliance Notes</h3>
-    <div class="alert alert-warn">📋 <strong>Debt sustainability:</strong> Net debt above 40% of GDP triggers a fiscal review. Structural deficits require medium-term consolidation plans.</div>
-    <div class="alert alert-info">📋 <strong>Automatic stabilisers:</strong> Unemployment benefits and progressive taxes naturally smooth the business cycle without active intervention.</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     SIMULATE
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">04 — SIMULATE</span><span class="line"></span></div>
-<div class="page-section" id="sec-simulate">
-  <div class="page-title">Simulation Engine</div>
-  <div class="page-sub">Uses the Monetary & Fiscal settings above · Advances the economy by one quarter</div>
-
-  <div class="grid-2 section">
-    <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px">
-      <h3>Advance the Economy</h3>
-      <button class="btn btn-accent" style="width:100%;padding:14px;font-size:14px" id="simulate-btn">▶ Simulate Next Quarter</button>
-      <div style="font-size:12px;color:var(--muted)" id="quarter-display">Quarter 1 — click to advance</div>
-    </div>
-    <div class="card">
-      <h3>Simulation Result</h3>
-      <div id="sim-result">
-        <div class="empty-state"><div class="icon">⚙️</div><div>Run the simulation to see next-quarter outcomes.</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     PROJECTIONS
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">05 — PROJECTIONS</span><span class="line"></span></div>
-<div class="page-section" id="sec-projections">
-  <div class="page-title">Economic Projections</div>
-  <div class="page-sub">Multi-year outlook · Conservative, Base & Optimistic policy scenarios</div>
-
-  <div class="card section">
-    <h3>Projection Parameters</h3>
-    <div class="grid-3">
-      <div class="form-group">
-        <label>Projection Horizon (Years)</label>
-        <input type="number" id="proj-years" value="10" min="1" max="30">
-      </div>
-      <div class="form-group">
-        <label>Base GDP Trend (%)</label>
-        <input type="number" id="proj-gdp-trend" value="2.5" step="0.1">
-      </div>
-      <div class="form-group">
-        <label>Population Growth (% p.a.)</label>
-        <input type="number" id="proj-pop" value="1.2" step="0.1">
-      </div>
-    </div>
-    <button class="btn btn-accent" onclick="calcProjections()" style="margin-top:8px">Run Projections</button>
-  </div>
-
-  <div class="card section">
-    <div class="chart-wrap" style="height:300px"><canvas id="proj-chart"></canvas></div>
-  </div>
-
-  <div class="card section">
-    <div class="tbl-wrap" id="proj-table"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     SETTINGS
-═══════════════════════════════════════════ -->
-<div class="section-divider"><span class="num">06 — SETTINGS</span><span class="line"></span></div>
-<div class="page-section" id="sec-settings">
-  <div class="page-title">Nation Settings</div>
-  <div class="page-sub">Configure ApexRepublic profile and simulation parameters</div>
-
-  <div class="grid-2 section">
-    <div class="card">
-      <h3>Nation Profile</h3>
-      <div class="form-group"><label>Nation Name</label><input id="s-nation-name" value="ApexRepublic"></div>
-      <div class="form-group"><label>Central Bank Name</label><input id="s-cb-name" value="Reserve Bank of ApexRepublic"></div>
-      <div class="form-group"><label>Currency</label><input id="s-currency" value="ApexDollar (A$)"></div>
-      <div class="form-group"><label>GDP Target Growth Rate (%)</label><input type="number" id="s-gdp-target" value="2.5" step="0.1"></div>
-      <div class="form-group"><label>Inflation Target (%)</label><input type="number" id="s-inflation-target" value="2.5" step="0.1"></div>
-      <div class="form-group"><label>Full Employment Threshold (%)</label><input type="number" id="s-employ-target" value="4.5" step="0.1"></div>
-      <button class="btn btn-accent" onclick="saveSettings()">Save Profile</button>
-    </div>
-    <div class="card">
-      <h3>Simulation Parameters</h3>
-      <div class="form-group"><label>Noise Factor (randomness)</label>
-        <select id="s-noise">
-          <option value="low">Low — Deterministic</option>
-          <option value="medium" selected>Medium — Realistic</option>
-          <option value="high">High — Volatile</option>
+  <!-- Simulator -->
+  <section id="tab-simulator" class="tab-panel hidden">
+    <div class="layout">
+      <aside id="levers-panel"><div class="card">
+    <div class="card-head">
+      <span class="card-title">Policy Levers</span>
+      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Horizon
+        <select class="horizon-select" data-testid="horizon-select">
+          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
         </select>
+      </label>
+    </div>
+    <div class="levers"><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth</span>
+        <span class="lever-value">4.0%</span>
       </div>
-      <div class="form-group"><label>Fiscal Multiplier</label><input type="number" id="s-multiplier" value="1.2" step="0.1"></div>
-      <div class="form-group"><label>Monetary Transmission Lag (quarters)</label><input type="number" id="s-lag" value="2" min="0" max="8"></div>
-      <div class="form-group"><label>Initial National Debt ($B)</label><input type="number" id="s-debt" value="850" step="10"></div>
-      <button class="btn btn-accent" onclick="saveSettings()">Save Parameters</button>
+      <input type="range" class="slider" min="-5" max="12" step="0.1" value="4">
+      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)</span>
+        <span class="lever-value">5.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation</span>
+        <span class="lever-value">0.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="20" step="0.1" value="0">
+      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt</span>
+        <span class="lever-value">5.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth</span>
+        <span class="lever-value">10.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="30" step="0.1" value="10">
+      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier</span>
+        <span class="lever-value">4.7x</span>
+      </div>
+      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.7">
+      <div class="lever-scale"><span>3x</span><span>8x</span></div>
+    </div></div>
+    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
+      <button class="btn" data-testid="run-btn">Run Projection</button>
+    </div>
+  </div></aside>
+      <div>
+        <div id="summary-strip" class="summary">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D92D20"></span>Fiscal Balance</div>
+      <div class="kpi-value">-4.34%</div>
+      <div class="kpi-sub">Debt: 47.05% GDP</div>
+      <div class="kpi-base">2012 baseline: -5.9%</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Current Account</div>
+      <div class="kpi-value">-4.98%</div>
+      <div class="kpi-sub">FX: 510.8 NC/USD</div>
+      <div class="kpi-base">2012 baseline: -5.71%</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Inflation</div>
+      <div class="kpi-value">5%</div>
+      <div class="kpi-sub">GDP growth: 4%</div>
+      <div class="kpi-base">2012 baseline: 5.8%</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#7C3AED"></span>Broad Money</div>
+      <div class="kpi-value">10%</div>
+      <div class="kpi-sub">BM/GDP: 62.36%</div>
+      <div class="kpi-base">2012 baseline: 9.06%</div>
     </div>
   </div>
+        <div class="card" style="margin-top:12px">
+          <div class="card-head"><span class="card-title">Projection Charts</span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2013 – 2017</span></div>
+          <div class="card-body">
+            <div class="charts" id="charts-grid"><div class="card"><div class="card-head"><span class="card-title">Real GDP growth (%)</span></div><div class="chart-wrap"><canvas id="c-growth" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Inflation (%)</span></div><div class="chart-wrap"><canvas id="c-infl" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Current Account (% GDP)</span></div><div class="chart-wrap"><canvas id="c-ca" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Fiscal Overall Balance (% GDP)</span></div><div class="chart-wrap"><canvas id="c-fisc" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Public Debt (% GDP)</span></div><div class="chart-wrap"><canvas id="c-debt" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Broad Money Growth (%)</span></div><div class="chart-wrap"><canvas id="c-bm" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <div class="card-head"><span class="card-title">Projected Path</span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
+          <div class="table-wrap"><table class="fp" id="proj-table"><thead><tr><th>Indicator</th><th>2013</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr></thead><tbody>
+    <tr><td>Nominal GDP (bn NC)</td><td class="">23,114.7</td><td class="">25,241.2</td><td class="">27,563.4</td><td class="">30,099.3</td><td class="">32,868.4</td></tr>
+  
+    <tr><td>Real GDP growth (%)</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td></tr>
+  
+    <tr><td>Inflation (%)</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td></tr>
+  
+    <tr><td>Exchange rate (NC/USD)</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td></tr>
+  
+    <tr><td>Current account (USD mn)</td><td class="neg">(2,493.0)</td><td class="neg">(2,651.4)</td><td class="neg">(2,822.5)</td><td class="neg">(3,007.2)</td><td class="neg">(3,206.7)</td></tr>
+  
+    <tr><td>Current account (% GDP)</td><td class="neg">(5.51)</td><td class="neg">(5.37)</td><td class="neg">(5.23)</td><td class="neg">(5.10)</td><td class="neg">(4.98)</td></tr>
+  
+    <tr><td>Gov. revenue (bn NC)</td><td class="">3,533.2</td><td class="">3,815.9</td><td class="">4,121.1</td><td class="">4,450.8</td><td class="">4,806.9</td></tr>
+  
+    <tr><td>Gov. expense (bn NC)</td><td class="">4,536.5</td><td class="">4,911.8</td><td class="">5,317.8</td><td class="">5,756.9</td><td class="">6,231.9</td></tr>
+  
+    <tr><td>Overall balance (% GDP)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td></tr>
+  
+    <tr><td>Primary balance (% GDP)</td><td class="neg">(2.30)</td><td class="neg">(2.27)</td><td class="neg">(2.25)</td><td class="neg">(2.22)</td><td class="neg">(2.20)</td></tr>
+  
+    <tr><td>Public debt (% GDP)</td><td class="">45.16</td><td class="">45.70</td><td class="">46.19</td><td class="">46.64</td><td class="">47.05</td></tr>
+  
+    <tr><td>Monetary base (bn NC)</td><td class="">2,978.7</td><td class="">3,276.6</td><td class="">3,604.2</td><td class="">3,964.6</td><td class="">4,361.1</td></tr>
+  
+    <tr><td>Broad money (bn NC)</td><td class="">13,999.8</td><td class="">15,399.8</td><td class="">16,939.8</td><td class="">18,633.8</td><td class="">20,497.2</td></tr>
+  
+    <tr><td>Broad money growth (%)</td><td class="">24.83</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td></tr>
+  </tbody></table></div>
+        </div>
+        <div class="card" id="ai-commentary" style="margin-top:12px">
+          <div class="card-head" style="background:#f1f5f9">
+            <span class="card-title"><span class="dot" style="background:var(--blue);margin-right:6px"></span>AI Policy Analysis</span>
+            <div class="ai-controls">
+              <input id="scenario-name" class="text-input" placeholder="Scenario name" value="Scenario A">
+              <button id="analyze-btn" class="btn" style="width:auto" onclick="onAnalyze()">Analyze scenario</button>
+            </div>
+          </div>
+          <div class="ai-key-row">
+            <span>Anthropic API key (browser-only, stored locally):</span>
+            <input id="anth-key" class="text-input" type="password" placeholder="sk-ant-...">
+            <button class="btn" style="width:auto;background:var(--warn)" onclick="saveKey()">Save</button>
+            <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Get a key ↗</a>
+          </div>
+          <div class="ai-body" id="ai-output">
+            <div class="ai-placeholder">Enter your Anthropic API key and click "Analyze scenario" for IMF-style commentary on your policy mix, sustainability risks and cross-sector implications from Claude Sonnet 4.5.</div>
+          </div>
+          <div class="ai-note">Note: this static build calls Anthropic directly from your browser using <code class="mono">anthropic-dangerous-direct-browser-access: true</code>. Your key never leaves your machine. Remove this panel by deleting the <code class="mono">#ai-commentary</code> block if you don't need AI.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="card section">
-    <h3>Data Management</h3>
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <button class="btn" onclick="exportData()">↓ Export JSON</button>
-      <button class="btn" onclick="exportPolicyReport()">📄 Policy Report (PDF)</button>
-      <button class="btn" onclick="document.getElementById('import-file').click()">↑ Import JSON</button>
-      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
-      <button class="btn" style="color:var(--accent4);border-color:var(--accent4)" onclick="clearAll()">⚠ Reset Simulation</button>
+  <!-- Historical Explorer -->
+  <section id="tab-historical" class="tab-panel hidden">
+    <div class="sector-tabs" id="hist-sector-tabs">
+      <button class="sector-tab" data-sector="real" style="border-color: transparent; color: rgb(100, 116, 139);">Real Sector</button>
+      <button class="sector-tab" data-sector="external" style="border-color: transparent; color: rgb(100, 116, 139);">External Sector</button>
+      <button class="sector-tab active" data-sector="government" style="border-color: transparent; color: rgb(100, 116, 139);">Government (Fiscal)</button>
+      <button class="sector-tab" data-sector="monetary" style="border-color: transparent; color: rgb(100, 116, 139);">Monetary Survey</button>
+    </div>
+    <div class="layout" style="grid-template-columns:2fr 1fr">
+      <div class="card">
+        <div class="card-head"><span class="card-title" id="hist-title">Government (Fiscal) · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
+        <div class="table-wrap"><table class="fp" id="hist-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th></tr></thead><tbody>
+    <tr><td>Revenue</td><td class="">1,638.4</td><td class="">2,104.7</td><td class="">2,490.0</td><td class="">2,363.3</td><td class="">2,730.2</td><td class="">3,023.9</td><td class="">3,271.5</td></tr>
+  
+    <tr><td>Taxes</td><td class="">1,577.7</td><td class="">2,028.9</td><td class="">2,408.6</td><td class="">2,262.3</td><td class="">2,480.4</td><td class="">2,768.9</td><td class="">3,007.1</td></tr>
+  
+    <tr><td>Expense</td><td class="">1,744.1</td><td class="">1,999.0</td><td class="">2,343.1</td><td class="">2,865.2</td><td class="">3,670.0</td><td class="">3,810.7</td><td class="">4,235.2</td></tr>
+  
+    <tr><td>Interest</td><td class="">436.7</td><td class="">419.6</td><td class="">340.1</td><td class="">360.1</td><td class="">401.5</td><td class="">449.4</td><td class="">471.6</td></tr>
+  
+    <tr><td>Subsidies</td><td class="">590.1</td><td class="">777.4</td><td class="">1,042.3</td><td class="">1,246.8</td><td class="">1,758.5</td><td class="">1,669.5</td><td class="">1,946.3</td></tr>
+  
+    <tr><td>Compensation of employees</td><td class="">534.6</td><td class="">600.7</td><td class="">720.7</td><td class="">936.9</td><td class="">1,133.8</td><td class="">1,268.2</td><td class="">1,380.0</td></tr>
+  
+    <tr><td>Net operating balance</td><td class="neg">(105.8)</td><td class="">105.7</td><td class="">147.0</td><td class="neg">(501.9)</td><td class="neg">(939.8)</td><td class="neg">(786.9)</td><td class="neg">(963.7)</td></tr>
+  
+    <tr><td>Net lending/borrowing</td><td class="neg">(121.1)</td><td class="">77.6</td><td class="">94.5</td><td class="neg">(573.0)</td><td class="neg">(994.2)</td><td class="neg">(845.9)</td><td class="neg">(1,003.2)</td></tr>
+  
+    <tr><td>Overall balance</td><td class="neg">(499.1)</td><td class="neg">(280.4)</td><td class="">85.5</td><td class="neg">(586.0)</td><td class="neg">(1,074.2)</td><td class="neg">(949.9)</td><td class="neg">(1,249.2)</td></tr>
+  
+    <tr><td>Overall primary balance</td><td class="neg">(62.4)</td><td class="">139.2</td><td class="">425.6</td><td class="neg">(225.9)</td><td class="neg">(672.7)</td><td class="neg">(500.6)</td><td class="neg">(777.6)</td></tr>
+  
+    <tr><td>Liabilities (stock)</td><td class="">6,498.1</td><td class="">6,152.5</td><td class="">6,149.9</td><td class="">6,762.9</td><td class="">7,747.2</td><td class="">8,559.1</td><td class="">9,436.3</td></tr>
+  
+    <tr><td>Assets (stock)</td><td class="">7,857.2</td><td class="">7,566.4</td><td class="">7,772.8</td><td class="">7,888.9</td><td class="">7,958.3</td><td class="">8,044.3</td><td class="">7,213.8</td></tr>
+  
+    <tr><td>Revenue (% of GDP)</td><td class="">14.90</td><td class="">16.20</td><td class="">16.90</td><td class="">15.00</td><td class="">15.50</td><td class="">15.60</td><td class="">15.50</td></tr>
+  
+    <tr><td>Expense (% of GDP)</td><td class="">15.90</td><td class="">15.40</td><td class="">15.90</td><td class="">18.20</td><td class="">20.80</td><td class="">19.60</td><td class="">20.00</td></tr>
+  
+    <tr><td>Overall balance (% GDP)</td><td class="neg">(4.55)</td><td class="neg">(2.16)</td><td class="">0.58</td><td class="neg">(3.72)</td><td class="neg">(6.09)</td><td class="neg">(4.89)</td><td class="neg">(5.90)</td></tr>
+  
+    <tr><td>Primary balance (% GDP)</td><td class="neg">(0.57)</td><td class="">1.07</td><td class="">2.89</td><td class="neg">(1.43)</td><td class="neg">(3.82)</td><td class="neg">(2.58)</td><td class="neg">(3.67)</td></tr>
+  
+    <tr><td>Debt-to-GDP (%)</td><td class="">59.30</td><td class="">47.50</td><td class="">41.70</td><td class="">42.90</td><td class="">43.90</td><td class="">44.10</td><td class="">44.60</td></tr>
+  </tbody></table></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card">
+          <div class="card-head"><span class="card-title" id="hist-chart1-title">Fiscal Position</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title" id="hist-chart2-title">Net Worth &amp; Interest Rate Spread</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart-2" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flow of Funds -->
+  <section id="tab-flowoffunds" class="tab-panel hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0">Flow of Funds — Institutional Sectors</h2>
+      <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Year <select id="fof-year" class="horizon-select"><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>
+      </label>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span>
+        <span class="mono" style="font-size:10px;color:var(--muted)">Non-financial balance + Financing = 0 by construction</span>
+      </div>
+      <div class="table-wrap"><table class="fp" id="fof-table"><thead><tr>
+    <th>Line item</th>
+    <th>Total (domestic)</th>
+    <th style="color:#334155">Private sector</th>
+    <th style="color:#D92D20">General Government</th>
+    <th style="color:#7C3AED">Depository Corp.</th>
+    <th style="color:#059669">Rest of World</th>
+  </tr></thead><tbody><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Non-financial transactions</td></tr><tr>
+      <td style="font-size:11.5px">GNDI</td>
+      <td class="">20,861.82</td><td class="">20,290.54</td><td class="">571.28</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Expenditures</td>
+      <td class="">17,760.34</td><td class="">16,237.38</td><td class="">1,522.96</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Investment</td>
+      <td class="">4,493.86</td><td class="">4,442.36</td><td class="">51.50</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Non-financial balance (deficit = -)</td>
+      <td class="neg">(1,392.38)</td><td class="neg">(389.20)</td><td class="neg">(1,003.18)</td><td class="">0.00</td><td class="">1,391.59</td>
+    </tr><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Financing</td></tr><tr>
+      <td style="font-size:11.5px">Total financing (net borrowing = +)</td>
+      <td class="">1,364.21</td><td class="">361.03</td><td class="">1,003.18</td><td class="">0.00</td><td class="neg">(1,364.21)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">External financing</td>
+      <td class="">1,364.21</td><td class="">1,692.30</td><td class="">278.95</td><td class="neg">(607.04)</td><td class="neg">(1,364.21)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Capital account</td>
+      <td class="">19.16</td><td class="">19.16</td><td class="">0.00</td><td class="">0.00</td><td class="neg">(19.16)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Financial account, incl. reserves</td>
+      <td class="">1,345.05</td><td class="">1,673.14</td><td class="">278.95</td><td class="neg">(607.04)</td><td class="neg">(1,345.05)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Domestic financing</td>
+      <td class="">0.00</td><td class="neg">(1,331.27)</td><td class="">724.23</td><td class="">607.04</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Non-monetary</td>
+      <td class="">0.00</td><td class="neg">(499.56)</td><td class="">499.56</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Monetary</td>
+      <td class="">0.00</td><td class="neg">(831.71)</td><td class="">224.67</td><td class="">607.04</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Broad money</td>
+      <td class="">0.00</td><td class="neg">(935.82)</td><td class="">…</td><td class="">935.82</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Net claims on gen. gov.</td>
+      <td class="">0.00</td><td class="">…</td><td class="">224.67</td><td class="neg">(224.67)</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Other net domestic assets</td>
+      <td class="">0.00</td><td class="">104.11</td><td class="">…</td><td class="neg">(104.11)</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Statistical discrepancy</td>
+      <td class="neg">(28.17)</td><td class="neg">(28.17)</td><td class="">0.00</td><td class="">0.00</td><td class="">27.38</td>
+    </tr>
+  <tr style="background:#fef3c7">
+    <td colspan="6" style="font-size:10px;color:#78350f">
+      Memo: FX 510.79 NC/USD · Current account (2,724.38) USD mn · Capital 37.51 USD mn · Financial (2,633.27) USD mn
+    </td>
+  </tr>
+  </tbody></table></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-head"><span class="card-title">Sector Balances</span></div>
+      <div class="card-body"><div class="chart-wrap" style="height:280px"><canvas id="fof-chart" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- Balance Sheets -->
+  <section id="tab-balance" class="tab-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0">Sector Balance Sheets — Cross-Sector Identities</h2>
+      <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Year <select id="bs-year" class="horizon-select"><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option></select>
+      </label>
+    </div>
+    <div id="bs-grid" class="bs-grid">
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#2563EB">
+        <span class="dot" style="background:#2563EB"></span>
+        <span class="card-title">Real</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Nominal GDP</td><td class="">21,165.2</td></tr><tr><td style="font-size:11.5px">Real GDP</td><td class="">12,074.9</td></tr><tr><td style="font-size:11.5px">GDP deflator</td><td class="">175.30</td></tr><tr><td style="font-size:11.5px">Consumption</td><td class="">17,587.1</td></tr><tr><td style="font-size:11.5px">Investment</td><td class="">4,455.7</td></tr><tr><td style="font-size:11.5px">Exports</td><td class="">8,521.2</td></tr><tr><td style="font-size:11.5px">Imports</td><td class="">9,457.5</td></tr><tr><td style="font-size:11.5px">Foreign balance</td><td class="neg">(936.3)</td></tr><tr><td style="font-size:11.5px">Output gap (%)</td><td class="neg">(0.90)</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#059669">
+        <span class="dot" style="background:#059669"></span>
+        <span class="card-title">External (USD mn)</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Current account</td><td class="neg">(2,367.7)</td></tr><tr><td style="font-size:11.5px">  Goods balance</td><td class="neg">(5,592.4)</td></tr><tr><td style="font-size:11.5px">  Services</td><td class="">3,738.1</td></tr><tr><td style="font-size:11.5px">  Primary income</td><td class="neg">(842.1)</td></tr><tr><td style="font-size:11.5px">  Secondary income</td><td class="">328.7</td></tr><tr><td style="font-size:11.5px">Financial account</td><td class="neg">(4,386.5)</td></tr><tr><td style="font-size:11.5px">Overall balance</td><td class="">2,109.9</td></tr><tr><td style="font-size:11.5px">Reserves</td><td class="">6,868.2</td></tr><tr><td style="font-size:11.5px">FX rate (NC/USD)</td><td class="">510.80</td></tr><tr><td style="font-size:11.5px">External debt</td><td class="">12,907.9</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#D92D20">
+        <span class="dot" style="background:#D92D20"></span>
+        <span class="card-title">Government (Fiscal)</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Revenue</td><td class="">3,271.5</td></tr><tr><td style="font-size:11.5px">Expense</td><td class="">4,235.2</td></tr><tr><td style="font-size:11.5px">  Interest</td><td class="">471.6</td></tr><tr><td style="font-size:11.5px">  Subsidies</td><td class="">1,946.3</td></tr><tr><td style="font-size:11.5px">  Compensation</td><td class="">1,380.0</td></tr><tr><td style="font-size:11.5px">Overall balance</td><td class="neg">(1,249.2)</td></tr><tr><td style="font-size:11.5px">Primary balance</td><td class="neg">(777.6)</td></tr><tr><td style="font-size:11.5px">Liabilities stock</td><td class="">9,436.3</td></tr><tr><td style="font-size:11.5px">Assets stock</td><td class="">7,213.8</td></tr><tr><td style="font-size:11.5px">Debt/GDP (%)</td><td class="">44.60</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#7C3AED">
+        <span class="dot" style="background:#7C3AED"></span>
+        <span class="card-title">Monetary</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Monetary base</td><td class="">2,707.9</td></tr><tr><td style="font-size:11.5px">  NFA (CB)</td><td class="">3,491.3</td></tr><tr><td style="font-size:11.5px">  NDA (CB)</td><td class="neg">(783.4)</td></tr><tr><td style="font-size:11.5px">Check: NFA+NDA</td><td class="">2,707.9</td></tr><tr><td style="font-size:11.5px">Broad money</td><td class="">11,215.2</td></tr><tr><td style="font-size:11.5px">  NFA (Survey)</td><td class="">2,473.2</td></tr><tr><td style="font-size:11.5px">  NDA (Survey)</td><td class="">8,742.1</td></tr><tr><td style="font-size:11.5px">Credit to private</td><td class="">11,483.6</td></tr><tr><td style="font-size:11.5px">Money multiplier</td><td class="">—</td></tr><tr><td style="font-size:11.5px">BM/GDP (%)</td><td class="">53.00</td></tr>
+      </tbody></table>
     </div>
   </div>
-</div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Cross-Sector Accounting Identities</span></div>
+      <div class="identities-grid" id="identities-grid">
+    <div class="identity">
+      <div class="identity-title">FX Bridge</div>
+      <div class="identity-formula">USD GDP = Nominal GDP × 1,000 / FX rate</div>
+      <div class="identity-check">Compute: 21,165.2 × 1000 / 510.80 = 41,435.4 USD mn</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 41,436.3 USD mn</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Central Bank Balance</div>
+      <div class="identity-formula">Monetary Base = NFA(CB) + NDA(CB)</div>
+      <div class="identity-check">Compute: 3,491.3 + (783.4) = 2,707.9</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 2,707.9</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Depository Survey</div>
+      <div class="identity-formula">Broad Money = NFA(Survey) + NDA(Survey) + Other CB liab.</div>
+      <div class="identity-check">Compute: 11,215.3 + other</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 11,215.2</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Fiscal Ratio Anchor</div>
+      <div class="identity-formula">Every % of GDP row = level / Nominal GDP × 100</div>
+      <div class="identity-check">Compute: 3,271.5 / 21,165.2 × 100 = 15.46%</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 15.5%</div>
+    </div>
+  </div>
+    </div>
+  </section>
 
+  <!-- Scenario Compare -->
+  <section id="tab-compare" class="tab-panel hidden">
+    <div class="compare-grid">
+      <div>
+        <div class="card" style="padding:10px;display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="dot" style="background:#2563EB"></span>
+          <span class="card-title" style="color:#2563EB">Scenario A</span>
+        </div>
+        <div id="compare-A-levers"><div class="card">
+    <div class="card-head">
+      <span class="card-title">Policy Levers</span>
+      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Horizon
+        <select class="horizon-select" data-testid="A-horizon-select">
+          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
+        </select>
+      </label>
+    </div>
+    <div class="levers"><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth</span>
+        <span class="lever-value">4.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="12" step="0.1" value="4">
+      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)</span>
+        <span class="lever-value">5.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation</span>
+        <span class="lever-value">0.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="20" step="0.1" value="0">
+      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth</span>
+        <span class="lever-value">8.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt</span>
+        <span class="lever-value">5.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth</span>
+        <span class="lever-value">10.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="30" step="0.1" value="10">
+      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier</span>
+        <span class="lever-value">4.7x</span>
+      </div>
+      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.7">
+      <div class="lever-scale"><span>3x</span><span>8x</span></div>
+    </div></div>
+    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
+      <button class="btn" data-testid="A-run-btn">Run Projection</button>
+    </div>
+  </div></div>
+      </div>
+      <div>
+        <div id="compare-summary">
+    <div class="card">
+      <div class="card-head"><span class="card-title">End-of-horizon comparison (2017)</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr)">
+        <div style="padding:12px;border-right:1px solid var(--line)">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">Debt/GDP</div>
+            <div class="mono" style="font-size:13px;margin-top:4px">
+              <span style="color:#2563EB;font-weight:600">47.05%</span>
+              <span style="color:#94a3b8;margin:0 4px">→</span>
+              <span style="color:#D92D20;font-weight:600">61.77%</span>
+            </div>
+            <div class="mono" style="font-size:10px;margin-top:4px;color:#D92D20">Δ +14.72%</div>
+          </div><div style="padding:12px;border-right:1px solid var(--line)">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">Fiscal balance</div>
+            <div class="mono" style="font-size:13px;margin-top:4px">
+              <span style="color:#2563EB;font-weight:600">(4.34)%</span>
+              <span style="color:#94a3b8;margin:0 4px">→</span>
+              <span style="color:#D92D20;font-weight:600">(10.16)%</span>
+            </div>
+            <div class="mono" style="font-size:10px;margin-top:4px;color:#059669">Δ -5.82%</div>
+          </div><div style="padding:12px;border-right:1px solid var(--line)">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">Current account</div>
+            <div class="mono" style="font-size:13px;margin-top:4px">
+              <span style="color:#2563EB;font-weight:600">(4.98)%</span>
+              <span style="color:#94a3b8;margin:0 4px">→</span>
+              <span style="color:#D92D20;font-weight:600">(12.05)%</span>
+            </div>
+            <div class="mono" style="font-size:10px;margin-top:4px;color:#059669">Δ -7.07%</div>
+          </div><div style="padding:12px;border-right:1px solid var(--line)">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">Inflation</div>
+            <div class="mono" style="font-size:13px;margin-top:4px">
+              <span style="color:#2563EB;font-weight:600">5.00%</span>
+              <span style="color:#94a3b8;margin:0 4px">→</span>
+              <span style="color:#D92D20;font-weight:600">7.00%</span>
+            </div>
+            <div class="mono" style="font-size:10px;margin-top:4px;color:#D92D20">Δ +2.00%</div>
+          </div>
+      </div>
+    </div>
+  </div>
+        <div class="charts" id="compare-charts" style="margin-top:12px"><div class="card"><div class="card-head"><span class="card-title">Real GDP growth (%)</span></div><div class="chart-wrap"><canvas id="cmp-growth" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Inflation (%)</span></div><div class="chart-wrap"><canvas id="cmp-infl" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Fiscal balance (% GDP)</span></div><div class="chart-wrap"><canvas id="cmp-fisc" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Public debt (% GDP)</span></div><div class="chart-wrap"><canvas id="cmp-debt" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Current account (% GDP)</span></div><div class="chart-wrap"><canvas id="cmp-ca" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Broad money growth (%)</span></div><div class="chart-wrap"><canvas id="cmp-bm" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div></div>
+      </div>
+      <div>
+        <div class="card" style="padding:10px;display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="dot" style="background:#D92D20"></span>
+          <span class="card-title" style="color:#D92D20">Scenario B</span>
+        </div>
+        <div id="compare-B-levers"><div class="card">
+    <div class="card-head">
+      <span class="card-title">Policy Levers</span>
+      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Horizon
+        <select class="horizon-select" data-testid="B-horizon-select">
+          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
+        </select>
+      </label>
+    </div>
+    <div class="levers"><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth</span>
+        <span class="lever-value">3.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="12" step="0.1" value="3">
+      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)</span>
+        <span class="lever-value">7.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="7">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation</span>
+        <span class="lever-value">4.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="20" step="0.1" value="4">
+      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)</span>
+        <span class="lever-value">6.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="6">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)</span>
+        <span class="lever-value">10.0%</span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="10">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth</span>
+        <span class="lever-value">6.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="6">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth</span>
+        <span class="lever-value">12.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="12">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt</span>
+        <span class="lever-value">7.0%</span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="7">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth</span>
+        <span class="lever-value">15.0%</span>
+      </div>
+      <input type="range" class="slider" min="-5" max="30" step="0.1" value="15">
+      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
+    </div><div class="lever">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier</span>
+        <span class="lever-value">4.7x</span>
+      </div>
+      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.7">
+      <div class="lever-scale"><span>3x</span><span>8x</span></div>
+    </div></div>
+    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
+      <button class="btn" data-testid="B-run-btn">Run Projection</button>
+    </div>
+  </div></div>
+      </div>
+    </div>
+  </section>
 </main>
-</div><!-- #app -->
 
-<div id="save-toast">✓ Saved</div>
-<button id="to-top" title="Back to top" aria-label="Back to top" onclick="document.getElementById('sec-dashboard').scrollIntoView({behavior:'smooth'})">↑</button>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-col">
-        <div class="footer-title">Related resources</div>
-        <a href="index">Financial Hub</a><br/>
-        <a href="LifePlan Report.doc">LifePlan Report</a><br/>
-        <a href="smes">Company</a><br/>
-        <a href="trust">Trust</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-title">References</div>
-        <div class="footer-text">Prepared for information purposes only. Not financial advice.</div>
-      </div>
-    </div>
-  </footer>
+<footer>
+  <span>ⓘ</span>
+  <span>Model: IMF-style Financial Programming Framework · Baseline: Macronia 2006–2012 · Projections are stylised and driven by user-set policy levers. All logic runs in your browser — safe to host as a static site on GitHub Pages.</span>
+</footer>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  LANGUAGE
-// ══════════════════════════════════════════════════════
-let LANG = localStorage.getItem('apexrepublic_lang') || 'en';
-const T = {
-  en: {
-    dashboard:'📊 Dashboard', monetary:'🏦 Monetary', fiscal:'⚖️ Fiscal',
-    simulate:'▶ Simulate', projections:'📈 Projections', settings:'⚙️ Settings',
-    langBtn:'🌐 Tiếng Việt', save:'Save', saved:'✓ Saved',
-    simulateBtn:'▶ Simulate Next Quarter',
-    runProj:'Run Projections'
+/* ============================================================
+   BASELINE DATA (Macronia 2006–2012, IMF FP framework)
+   ============================================================ */
+const YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012];
+
+const BASELINE = {
+  years: YEARS,
+  real: {
+    gdp_nominal:[10964.6,12956.3,14737.2,15747.0,17629.1,19427.8,21165.2],
+    gdp_real:[9864.1,10508.0,10760.3,10584.9,11099.2,11727.0,12074.9],
+    gdp_deflator:[111.2,123.3,137.0,148.8,158.8,165.7,175.3],
+    cpi:[111.5,121.9,138.3,149.1,157.6,165.2,172.9],
+    inflation:[11.2,10.9,11.1,8.62,6.76,4.30,5.80],
+    gdp_growth:[8.8,6.5,2.4,-1.6,4.9,5.7,3.0],
+    consumption:[8700.4,10352.9,12200.6,13108.6,14576.7,16016.8,17587.1],
+    investment:[2919.2,3202.2,4044.1,2463.2,3463.2,4287.3,4455.7],
+    exports:[5658.6,6623.9,7134.1,7122.0,7248.1,7780.1,8521.2],
+    imports:[6366.7,7277.3,8666.0,7023.7,7680.8,8717.3,9457.5],
+    output_gap:[2.2,5.5,3.8,-1.6,-1.2,-1.4,-0.9],
+    potential_output:[9649.9,9961.1,10371.1,10754.8,11237.0,11888.2,12184.4],
   },
-  vi: {
-    dashboard:'📊 Tổng Quan', monetary:'🏦 Tiền Tệ', fiscal:'⚖️ Tài Khóa',
-    simulate:'▶ Mô Phỏng', projections:'📈 Dự Báo', settings:'⚙️ Cài Đặt',
-    langBtn:'🌐 English', save:'Lưu', saved:'✓ Đã Lưu',
-    simulateBtn:'▶ Mô Phỏng Quý Tiếp Theo',
-    runProj:'Chạy Dự Báo'
+  external: {
+    current_account:[-1101.2,-1373.0,-2878.3,-442.6,-1302.5,-2396.4,-2367.7],
+    goods_balance:[-2727.1,-2985.5,-5013.3,-2039.1,-3439.7,-5151.4,-5592.4],
+    services:[1351.1,1734.1,2200.9,2188.1,2537.2,3236.9,3738.1],
+    primary_income:[-74.2,-591.3,-508.2,-950.5,-766.6,-804.8,-842.1],
+    secondary_income:[349.1,469.7,442.3,358.8,366.5,322.9,328.7],
+    financial_account:[-1793.9,-2411.9,-2480.5,-676.9,-1800.2,-2518.9,-4386.5],
+    overall_balance:[750.8,1017.7,-348.0,259.9,561.1,132.4,2109.9],
+    reserves:[3114.6,4113.6,3798.7,4066.2,4629.7,4758.3,6868.2],
+    usd_gdp:[21444.5,25079.1,28004.9,27467.9,33526.2,38364.6,41436.3],
+    exchange_rate:[511.3,516.6,526.2,573.3,525.8,506.4,510.8],
+    net_iip:[-3563.8,-4971.7,-7771.1,-8173.5,-9407.2,-11797.5,-14074.1],
+    external_debt:[7246.0,8366.2,8964.3,7878.8,8631.8,9764.2,12907.9],
+    ca_pct_gdp:[-5.13,-5.47,-10.3,-1.61,-3.89,-6.25,-5.71],
+    debt_pct_gdp:[33.8,33.4,32.0,28.7,25.7,25.5,31.2],
+  },
+  government: {
+    revenue:[1638.4,2104.7,2490.0,2363.3,2730.2,3023.9,3271.5],
+    taxes:[1577.7,2028.9,2408.6,2262.3,2480.4,2768.9,3007.1],
+    expense:[1744.1,1999.0,2343.1,2865.2,3670.0,3810.7,4235.2],
+    interest:[436.7,419.6,340.1,360.1,401.5,449.4,471.6],
+    subsidies:[590.1,777.4,1042.3,1246.8,1758.5,1669.5,1946.3],
+    compensation:[534.6,600.7,720.7,936.9,1133.8,1268.2,1380.0],
+    net_operating:[-105.8,105.7,147.0,-501.9,-939.8,-786.9,-963.7],
+    net_acq_nfa:[15.3,28.2,52.5,71.1,54.4,59.1,39.5],
+    net_lending:[-121.1,77.6,94.5,-573.0,-994.2,-845.9,-1003.2],
+    overall_balance:[-499.1,-280.4,85.5,-586.0,-1074.2,-949.9,-1249.2],
+    overall_primary:[-62.4,139.2,425.6,-225.9,-672.7,-500.6,-777.6],
+    liabilities_stock:[6498.1,6152.5,6149.9,6762.9,7747.2,8559.1,9436.3],
+    assets_stock:[7857.2,7566.4,7772.8,7888.9,7958.3,8044.3,7213.8],
+    revenue_pct_gdp:[14.9,16.2,16.9,15.0,15.5,15.6,15.5],
+    expense_pct_gdp:[15.9,15.4,15.9,18.2,20.8,19.6,20.0],
+    overall_pct_gdp:[-4.55,-2.16,0.58,-3.72,-6.09,-4.89,-5.90],
+    primary_pct_gdp:[-0.57,1.07,2.89,-1.43,-3.82,-2.58,-3.67],
+    debt_pct_gdp:[59.3,47.5,41.7,42.9,43.9,44.1,44.6],
+  },
+  monetary: {
+    monetary_base:[1184.6,1409.0,1676.4,1945.5,2032.0,2218.3,2707.9],
+    broad_money:[6222.1,7495.5,8799.8,9506.8,9582.3,10283.8,11215.2],
+    currency_circ:[413.2,546.3,575.0,613.0,665.0,743.1,844.8],
+    nfa_cb:[1601.0,2118.5,2178.2,2275.9,2362.5,2446.0,3491.3],
+    nda_cb:[-416.4,-709.5,-501.8,-330.4,-330.5,-227.7,-783.4],
+    nfa_survey:[1670.3,1805.5,1758.5,2256.0,2275.4,1866.1,2473.2],
+    nda_survey:[4551.8,5690.0,7041.4,7250.7,7306.9,8417.7,8742.1],
+    credit_private:[4479.5,6161.5,8109.6,8539.3,8961.4,10072.0,11483.6],
+    claims_public:[583.8,365.1,401.4,659.3,702.9,942.8,625.4],
+    broad_money_growth:[null,20.5,17.4,8.03,0.80,7.32,9.06],
+    money_multiplier:[5.25,5.32,5.25,4.89,4.72,4.64,null],
+    velocity:[null,1.89,1.81,1.72,1.85,1.96,1.97],
+    mb_pct_gdp:[10.8,10.9,11.4,12.4,11.5,11.4,12.8],
+    bm_pct_gdp:[56.7,57.9,59.7,60.4,54.4,52.9,53.0],
+  },
+};
+
+/* ============================================================
+   ADDITIONAL DATA (from Macronia case, extending baseline)
+   ============================================================ */
+// Taylor Rule series (2011-2014)
+const TAYLOR = {
+  years:[2011, 2012, 2013, 2014],
+  mp_rate_actual:[5.00, 7.00, 8.87, 8.87],
+  mp_rate_fitted:[8.18, 6.60, 8.49, 8.87],
+  cpi_actual:[4.88, 5.00, 6.14, 7.48],
+  cpi_target:[5, 5, 5, 5],
+  cpi_expect:[6.50, 5.00, 5.00, 5.00],
+  inflation_gap:[-0.12, 0.00, 1.14, 2.48],
+  coef:{ alpha:1.5, beta:2.3, rho:0.2 },
+};
+
+// External Debt composition (USD mn)
+const EX_DEBT = {
+  years:YEARS,
+  gov:[1530.5, 1631.3, 1349.5, 1428.9, 2024.3, 1835.1, 2392.96],
+  cb:[94.0, 88.9, 80.6, 58.0, 53.5, 303.8, 35.56],
+  odc:[1165.3, 1706.0, 2466.1, 1615.6, 1617.7, 2444.9, 2627.23],
+  other:[3698.8, 4184.9, 4274.3, 4157.0, 4167.3, 3700.7, 3700.7],
+  fdi:[757.4, 755.2, 793.8, 619.3, 769.0, 1479.7, 1479.7],
+  short:[2411.8, 3093.6, 3625.4, 2290.0, 2204.6, 1709.2, 2556.1],
+  long:[4834.2, 5272.6, 5338.9, 5588.8, 6427.2, 8055.0, 7680.05],
+};
+
+// Government stock indicators
+const GOV_IND = {
+  years:YEARS,
+  net_worth_pct:[12.40, 10.91, 11.01, 7.15, 1.20, -2.65, -10.50],
+  net_fin_worth_pct:[-16.88, -14.17, -11.36, -14.28, -18.11, -20.54, -23.38],
+  interest_to_gdp:[3.98, 3.24, 2.31, 2.29, 2.28, 2.31, 2.23],
+  interest_to_revenue:[26.65, 19.94, 13.66, 15.24, 14.71, 14.86, 14.41],
+  implicit_rate:[null, 6.63, 5.53, 5.58, 5.53, 5.51, 5.24],
+  domestic_rate:[null, 6.01, 4.75, 4.94, 5.32, 5.46, 5.38],
+  ibr:[null, 7.00, 11.50, 8.25, 8.00, 8.00, 9.25],
+};
+
+// Monetary indicators — contribution to broad money growth
+const MON_IND = {
+  years:[2007,2008,2009,2010,2011,2012],
+  contrib_nfa:[2.17, -0.63, 5.65, 0.20, -4.27, 5.90],
+  contrib_credit_public:[-3.52, 0.48, 2.93, 0.46, 2.50, 2.76],
+  contrib_credit_private:[27.03, 25.99, 4.88, 4.44, 11.59, 7.88],
+  contrib_other:[-5.22, -8.45, -5.43, -4.31, -2.50, -7.44],
+  credit_to_deposits:[105.12, 111.77, 105.28, 110.69, 118.92, 120.23],
+};
+
+// Flow of Funds: institutional-sector view (2011, 2012, 2013)
+const FLOW_OF_FUNDS = {
+  2011: {
+    memo: { fx:506.40, ca_usd:-2396.44, cap_usd:21.60, fin_usd:-2386.50 },
+    rows: [
+      ["Non-financial transactions", null, null, null, null, null, true],
+      ["GNDI",                                19183.79, 18553.85,   629.94, null,     null],
+      ["Expenditures",                        16016.79, 14612.96,  1403.83, null,     null],
+      ["Investment",                           4287.28,  4215.23,    72.06, null,     null],
+      ["Non-financial balance (deficit = -)", -1120.28,  -274.34,  -845.94,    0.00,  1213.56],
+      ["Financing",                                null,     null,     null,     null,     null, true],
+      ["Total financing (net borrowing = +)",  1219.46,   373.52,   845.94,    0.00, -1219.46],
+      ["External financing",                   1219.46,   934.63,  -124.48,  409.31, -1219.46],
+      ["  Capital account",                      10.94,    10.94,     0.00,    0.00,   -10.94],
+      ["  Financial account, incl. reserves",  1208.52,   923.69,  -124.48,  409.31, -1208.52],
+      ["Domestic financing",                      0.00,  -561.11,   970.42, -409.31,     null],
+      ["  Non-monetary",                          0.00,  -743.68,   743.68,    null,     null],
+      ["  Monetary",                              0.00,   182.58,   226.73, -409.31,     null],
+      ["    Broad money",                         0.00,  -701.43,     null,  701.43,     null],
+      ["    Net claims on gen. gov.",             0.00,     null,   226.73, -226.73,     null],
+      ["    Other net domestic assets",           0.00,   884.01,     null, -884.01,     null],
+      ["Statistical discrepancy",                99.18,    99.18,     0.00,    0.00,    -5.90],
+    ]
+  },
+  2012: {
+    memo: { fx:510.79, ca_usd:-2724.38, cap_usd:37.51, fin_usd:-2633.27 },
+    rows: [
+      ["Non-financial transactions", null, null, null, null, null, true],
+      ["GNDI",                                20861.82, 20290.54,   571.28, null,     null],
+      ["Expenditures",                        17760.34, 16237.38,  1522.96, null,     null],
+      ["Investment",                           4493.86,  4442.36,    51.50, null,     null],
+      ["Non-financial balance (deficit = -)", -1392.38,  -389.20, -1003.18,    0.00,  1391.59],
+      ["Financing",                                null,     null,     null,     null,     null, true],
+      ["Total financing (net borrowing = +)",  1364.21,   361.03,  1003.18,    0.00, -1364.21],
+      ["External financing",                   1364.21,  1692.30,   278.95, -607.04, -1364.21],
+      ["  Capital account",                      19.16,    19.16,     0.00,    0.00,   -19.16],
+      ["  Financial account, incl. reserves",  1345.05,  1673.14,   278.95, -607.04, -1345.05],
+      ["Domestic financing",                      0.00, -1331.27,   724.23,  607.04,     null],
+      ["  Non-monetary",                          0.00,  -499.56,   499.56,    null,     null],
+      ["  Monetary",                              0.00,  -831.71,   224.67,  607.04,     null],
+      ["    Broad money",                         0.00,  -935.82,     null,  935.82,     null],
+      ["    Net claims on gen. gov.",             0.00,     null,   224.67, -224.67,     null],
+      ["    Other net domestic assets",           0.00,   104.11,     null, -104.11,     null],
+      ["Statistical discrepancy",               -28.17,   -28.17,     0.00,    0.00,    27.38],
+    ]
+  },
+  2013: {
+    memo: { fx:530.22, ca_usd:-2959.84, cap_usd:9.00, fin_usd:-2950.84 },
+    rows: [
+      ["Non-financial transactions", null, null, null, null, null, true],
+      ["GNDI",                                23369.29, 23035.78,   333.51, null,     null],
+      ["Expenses",                            19985.49, 17816.31,  2169.18, null,     null],
+      ["Investment",                           4957.11,  4912.94,    44.17, null,     null],
+      ["Non-financial balance (deficit = -)", -1573.31,   306.53, -1879.84,    0.00,  1569.36],
+      ["Financing",                                null,     null,     null,     null,     null, true],
+      ["Total financing (net borrowing = +)",  1480.47,  -399.37,  1879.84,    0.00, -1569.36],
+      ["External financing",                   1569.36,  1363.66,   284.95,  -79.24, -1569.36],
+      ["  Capital account",                       4.77,     4.77,     0.00,    0.00,    -4.77],
+      ["  Financial account, incl. reserves",  1564.59,  1358.88,   284.95,  -79.24, -1564.59],
+      ["Domestic financing",                    -88.89, -1763.03,  1594.89,   79.24,     null],
+      ["  Non-monetary",                          0.00, -1116.42,  1116.42,    null,     null],
+      ["  Monetary",                            -88.89,  -646.60,   478.47,   79.24,     null],
+      ["    Broad money",                         0.00, -1009.84,     null, 1009.84,     null],
+      ["    Net claims on gen. gov.",           -88.89,     null,   478.47, -567.36,     null],
+      ["    Other net domestic assets",           0.00,   363.23,     null, -363.23,     null],
+      ["Statistical discrepancy",               -92.84,   -92.84,     0.00,    0.00,     0.00],
+    ]
+  },
+};
+
+/* ============================================================
+   PROJECTION ENGINE
+   ============================================================ */
+function project(l){
+  const yStart = YEARS[YEARS.length-1] + 1;
+  const H = l.horizon;
+  const R = BASELINE.real, E = BASELINE.external, G = BASELINE.government, M = BASELINE.monetary;
+  const last = R.gdp_real.length - 1;
+
+  let real_gdp = R.gdp_real[last];
+  let deflator = R.gdp_deflator[last];
+  let fx = E.exchange_rate[last];
+  let exports_nc = R.exports[last];
+  let imports_nc = R.imports[last];
+  const primIncUsd = E.primary_income[last];
+  const secIncUsd = E.secondary_income[last];
+
+  let revenue = G.revenue[last];
+  let expNoInt = G.expense[last] - G.interest[last];
+  let debt = G.liabilities_stock[last];
+
+  let mb = M.monetary_base[last];
+  let prevBm = M.broad_money[last];
+
+  const out = {
+    years:[], real:{gdp_nominal:[],gdp_real:[],gdp_deflator:[],gdp_growth:[],inflation:[]},
+    external:{exports_nc:[],imports_nc:[],trade_balance_nc:[],current_account_usd:[],ca_pct_gdp:[],exchange_rate:[],usd_gdp:[]},
+    government:{revenue:[],expense:[],interest:[],overall_balance:[],primary_balance:[],debt_stock:[],debt_pct_gdp:[],overall_pct_gdp:[],primary_pct_gdp:[]},
+    monetary:{monetary_base:[],broad_money:[],mb_pct_gdp:[],bm_pct_gdp:[],broad_money_growth:[]}
+  };
+
+  for (let i=0;i<H;i++){
+    out.years.push(yStart+i);
+    real_gdp *= (1 + l.real_gdp_growth/100);
+    deflator *= (1 + l.inflation/100);
+    const ngdp = real_gdp * deflator / 100;
+    out.real.gdp_real.push(round(real_gdp,1));
+    out.real.gdp_deflator.push(round(deflator,2));
+    out.real.gdp_nominal.push(round(ngdp,1));
+    out.real.gdp_growth.push(round(l.real_gdp_growth,2));
+    out.real.inflation.push(round(l.inflation,2));
+
+    fx *= (1 + l.fx_depreciation/100);
+    const usdGdp = ngdp * 1000 / fx;
+    exports_nc *= (1 + l.export_growth/100);
+    imports_nc *= (1 + l.import_growth/100);
+    const tradeNc = exports_nc - imports_nc;
+    const tradeUsd = tradeNc * 1000 / fx;
+    const caUsd = tradeUsd + primIncUsd + secIncUsd;
+    out.external.exchange_rate.push(round(fx,2));
+    out.external.usd_gdp.push(round(usdGdp,1));
+    out.external.exports_nc.push(round(exports_nc,1));
+    out.external.imports_nc.push(round(imports_nc,1));
+    out.external.trade_balance_nc.push(round(tradeNc,1));
+    out.external.current_account_usd.push(round(caUsd,1));
+    out.external.ca_pct_gdp.push(round(caUsd/usdGdp*100,2));
+
+    revenue *= (1 + l.revenue_growth/100);
+    expNoInt *= (1 + l.expense_growth/100);
+    const interest = debt * l.interest_rate/100;
+    const totalExp = expNoInt + interest;
+    const overall = revenue - totalExp;
+    const primary = revenue - expNoInt;
+    debt = debt - overall;
+    out.government.revenue.push(round(revenue,1));
+    out.government.expense.push(round(totalExp,1));
+    out.government.interest.push(round(interest,1));
+    out.government.overall_balance.push(round(overall,1));
+    out.government.primary_balance.push(round(primary,1));
+    out.government.debt_stock.push(round(debt,1));
+    out.government.debt_pct_gdp.push(round(debt/ngdp*100,2));
+    out.government.overall_pct_gdp.push(round(overall/ngdp*100,2));
+    out.government.primary_pct_gdp.push(round(primary/ngdp*100,2));
+
+    mb *= (1 + l.monetary_base_growth/100);
+    const bm = mb * l.money_multiplier;
+    const bmGrowth = prevBm ? (bm/prevBm - 1) * 100 : 0;
+    prevBm = bm;
+    out.monetary.monetary_base.push(round(mb,1));
+    out.monetary.broad_money.push(round(bm,1));
+    out.monetary.broad_money_growth.push(round(bmGrowth,2));
+    out.monetary.mb_pct_gdp.push(round(mb/ngdp*100,2));
+    out.monetary.bm_pct_gdp.push(round(bm/ngdp*100,2));
   }
-};
-function t(k){ return (T[LANG]&&T[LANG][k]) || T.en[k] || k; }
-function toggleLanguage(){
-  LANG = LANG==='en'?'vi':'en';
-  localStorage.setItem('apexrepublic_lang', LANG);
-  applyLanguage();
-}
-function applyLanguage(){
-  document.getElementById('lang-btn').textContent = t('langBtn');
-  document.getElementById('tab-dashboard').textContent   = t('dashboard');
-  document.getElementById('tab-monetary').textContent    = t('monetary');
-  document.getElementById('tab-fiscal').textContent      = t('fiscal');
-  document.getElementById('tab-simulate').textContent    = t('simulate');
-  document.getElementById('tab-projections').textContent = t('projections');
-  document.getElementById('tab-settings').textContent    = t('settings');
-  document.getElementById('simulate-btn').textContent    = t('simulateBtn');
-  document.getElementById('save-toast').textContent      = t('saved');
+  return out;
 }
 
-// ══════════════════════════════════════════════════════
-//  STATE & PERSISTENCE
-// ══════════════════════════════════════════════════════
-const DEFAULT_STATE = {
-  currentQuarter: 1,
-  gdpGrowth:    2.5,
-  inflation:    2.1,
-  unemployment: 4.8,
-  budgetBalance: 5,
-  nationalDebt: 850,
-  // Policy inputs
-  interestRate:  4.5,
-  reserveRatio:  10,
-  qe:            0,
-  taxRate:       22,
-  govSpending:   120,
-  infra:         30,
-  // Settings
-  nationName:       'ApexRepublic',
-  cbName:           'Reserve Bank of ApexRepublic',
-  currency:         'ApexDollar (A$)',
-  gdpTarget:        2.5,
-  inflationTarget:  2.5,
-  employTarget:     4.5,
-  noise:            'medium',
-  multiplier:       1.2,
-  lag:              2,
-  initDebt:         850,
-  // History
-  history: [{ q:1, gdp:2.5, inf:2.1, unemp:4.8, budget:5, ir:4.5, rr:10, tx:22, gs:120 }],
-  lastSaved: null
+function round(v,d){const m=Math.pow(10,d);return Math.round(v*m)/m;}
+function fmt(v,d=1){
+  if(v===null||v===undefined||Number.isNaN(v))return '—';
+  if(typeof v!=='number')return String(v);
+  const abs=Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  return v<0?`(${abs})`:abs;
+}
+
+/* ============================================================
+   POLICY LEVER CONFIG
+   ============================================================ */
+const LEVER_DEFS = [
+  {key:"real_gdp_growth",      label:"Real GDP growth",       min:-5, max:12, step:.1, suffix:"%", sector:"real"},
+  {key:"inflation",            label:"Inflation (deflator)",  min:0,  max:20, step:.1, suffix:"%", sector:"real"},
+  {key:"fx_depreciation",      label:"FX depreciation",       min:-10,max:20, step:.1, suffix:"%", sector:"external"},
+  {key:"export_growth",        label:"Export growth (NC)",    min:-10,max:25, step:.1, suffix:"%", sector:"external"},
+  {key:"import_growth",        label:"Import growth (NC)",    min:-10,max:25, step:.1, suffix:"%", sector:"external"},
+  {key:"revenue_growth",       label:"Gov. revenue growth",   min:-5, max:25, step:.1, suffix:"%", sector:"fiscal"},
+  {key:"expense_growth",       label:"Gov. expense growth",   min:-5, max:25, step:.1, suffix:"%", sector:"fiscal"},
+  {key:"interest_rate",        label:"Interest rate on debt", min:0,  max:20, step:.1, suffix:"%", sector:"fiscal"},
+  {key:"monetary_base_growth", label:"Monetary base growth",  min:-5, max:30, step:.1, suffix:"%", sector:"monetary"},
+  {key:"money_multiplier",     label:"Money multiplier",      min:3,  max:8,  step:.05,suffix:"x", sector:"monetary"},
+];
+const SECTOR_COLORS = { real:"#2563EB", external:"#059669", fiscal:"#D92D20", monetary:"#7C3AED" };
+
+const DEFAULT_LEVERS = {
+  horizon:5, real_gdp_growth:4, inflation:5, fx_depreciation:0, export_growth:8, import_growth:8,
+  revenue_growth:8, expense_growth:8, interest_rate:5, monetary_base_growth:10, money_multiplier:4.7
+};
+const B_DEFAULT = {
+  horizon:5, real_gdp_growth:3, inflation:7, fx_depreciation:4, export_growth:6, import_growth:10,
+  revenue_growth:6, expense_growth:12, interest_rate:7, monetary_base_growth:15, money_multiplier:4.7
 };
 
-let S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  levers: {...DEFAULT_LEVERS},
+  projection: null,
+  histSector: 'real',
+  bsYear: 2012,
+  fofYear: 2012,
+  compareA: {...DEFAULT_LEVERS},
+  compareB: {...B_DEFAULT},
+  projA: null, projB: null,
+};
 
-function loadState(){
+const charts = {}; // Chart.js instances by id
+
+/* ============================================================
+   POLICY LEVER PANEL RENDER
+   ============================================================ */
+function renderLeversPanel(container, levers, onChange, testidPrefix=""){
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+  wrap.innerHTML = `
+    <div class="card-head">
+      <span class="card-title">Policy Levers</span>
+      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+        Horizon
+        <select class="horizon-select" data-testid="${testidPrefix}horizon-select">
+          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
+        </select>
+      </label>
+    </div>
+    <div class="levers"></div>
+    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
+      <button class="btn" data-testid="${testidPrefix}run-btn">Run Projection</button>
+    </div>
+  `;
+  const leversDiv = wrap.querySelector('.levers');
+  const horizonSel = wrap.querySelector('select');
+  horizonSel.value = String(levers.horizon);
+  horizonSel.addEventListener('change', e => { levers.horizon = parseInt(e.target.value); onChange(levers); });
+
+  LEVER_DEFS.forEach(def => {
+    const div = document.createElement('div');
+    div.className = 'lever';
+    div.innerHTML = `
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:${SECTOR_COLORS[def.sector]}"></span>${def.label}</span>
+        <span class="lever-value">${levers[def.key].toFixed(def.step<1?1:0)}${def.suffix}</span>
+      </div>
+      <input type="range" class="slider" min="${def.min}" max="${def.max}" step="${def.step}" value="${levers[def.key]}" />
+      <div class="lever-scale"><span>${def.min}${def.suffix}</span><span>${def.max}${def.suffix}</span></div>
+    `;
+    const input = div.querySelector('input');
+    const valSpan = div.querySelector('.lever-value');
+    input.addEventListener('input', e => {
+      const v = parseFloat(e.target.value);
+      levers[def.key] = v;
+      valSpan.textContent = `${v.toFixed(def.step<1?1:0)}${def.suffix}`;
+      onChange(levers);
+    });
+    leversDiv.appendChild(div);
+  });
+
+  wrap.querySelector('button.btn').addEventListener('click', () => onChange(levers, true));
+  container.innerHTML = '';
+  container.appendChild(wrap);
+}
+
+/* ============================================================
+   SIMULATOR RENDER
+   ============================================================ */
+function renderSummary(){
+  const p = state.projection;
+  const last = p.years.length - 1;
+  const items = [
+    { label:'Fiscal Balance', color:'#D92D20',
+      value:`${p.government.overall_pct_gdp[last]}%`,
+      sub:`Debt: ${p.government.debt_pct_gdp[last]}% GDP`,
+      base:`${BASELINE.government.overall_pct_gdp.at(-1)}%` },
+    { label:'Current Account', color:'#059669',
+      value:`${p.external.ca_pct_gdp[last]}%`,
+      sub:`FX: ${p.external.exchange_rate[last]} NC/USD`,
+      base:`${BASELINE.external.ca_pct_gdp.at(-1)}%` },
+    { label:'Inflation', color:'#2563EB',
+      value:`${p.real.inflation[last]}%`,
+      sub:`GDP growth: ${p.real.gdp_growth[last]}%`,
+      base:`${BASELINE.real.inflation.at(-1)}%` },
+    { label:'Broad Money', color:'#7C3AED',
+      value:`${p.monetary.broad_money_growth[last]}%`,
+      sub:`BM/GDP: ${p.monetary.bm_pct_gdp[last]}%`,
+      base:`${BASELINE.monetary.broad_money_growth.at(-1)}%` },
+  ];
+  document.getElementById('summary-strip').innerHTML = items.map(s => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
+      <div class="kpi-value">${s.value}</div>
+      <div class="kpi-sub">${s.sub}</div>
+      <div class="kpi-base">2012 baseline: ${s.base}</div>
+    </div>
+  `).join('');
+}
+
+function renderProjTable(){
+  const p = state.projection;
+  const rows = [
+    ["Nominal GDP (bn NC)", p.real.gdp_nominal, 1],
+    ["Real GDP growth (%)", p.real.gdp_growth, 2],
+    ["Inflation (%)", p.real.inflation, 2],
+    ["Exchange rate (NC/USD)", p.external.exchange_rate, 2],
+    ["Current account (USD mn)", p.external.current_account_usd, 1],
+    ["Current account (% GDP)", p.external.ca_pct_gdp, 2],
+    ["Gov. revenue (bn NC)", p.government.revenue, 1],
+    ["Gov. expense (bn NC)", p.government.expense, 1],
+    ["Overall balance (% GDP)", p.government.overall_pct_gdp, 2],
+    ["Primary balance (% GDP)", p.government.primary_pct_gdp, 2],
+    ["Public debt (% GDP)", p.government.debt_pct_gdp, 2],
+    ["Monetary base (bn NC)", p.monetary.monetary_base, 1],
+    ["Broad money (bn NC)", p.monetary.broad_money, 1],
+    ["Broad money growth (%)", p.monetary.broad_money_growth, 2],
+  ];
+  const head = `<thead><tr><th>Indicator</th>${p.years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr,d]) => `
+    <tr><td>${label}</td>${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
+  `).join('')}</tbody>`;
+  document.getElementById('proj-table').innerHTML = head + body;
+  document.getElementById('proj-range').textContent = `${p.years[0]} – ${p.years.at(-1)}`;
+  document.getElementById('proj-range2').textContent = `${p.years[0]} – ${p.years.at(-1)}`;
+}
+
+function makeChart(canvasId, cfg){
+  if (charts[canvasId]) charts[canvasId].destroy();
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  charts[canvasId] = new Chart(ctx, cfg);
+}
+
+function chartCard(id, title){
+  return `<div class="card"><div class="card-head"><span class="card-title">${title}</span></div><div class="chart-wrap"><canvas id="${id}"></canvas></div></div>`;
+}
+
+function renderProjectionCharts(){
+  const p = state.projection;
+  const all = [...YEARS, ...p.years];
+  const grid = document.getElementById('charts-grid');
+  const cardIds = ['c-growth','c-infl','c-ca','c-fisc','c-debt','c-bm'];
+  const titles = ['Real GDP growth (%)','Inflation (%)','Current Account (% GDP)','Fiscal Overall Balance (% GDP)','Public Debt (% GDP)','Broad Money Growth (%)'];
+  grid.innerHTML = cardIds.map((id,i)=>chartCard(id, titles[i])).join('');
+
+  const specs = [
+    { id:'c-growth', hist:BASELINE.real.gdp_growth, proj:p.real.gdp_growth, color:'#2563EB' },
+    { id:'c-infl',   hist:BASELINE.real.inflation, proj:p.real.inflation, color:'#D97706' },
+    { id:'c-ca',     hist:BASELINE.external.ca_pct_gdp, proj:p.external.ca_pct_gdp, color:'#059669' },
+    { id:'c-fisc',   hist:BASELINE.government.overall_pct_gdp, proj:p.government.overall_pct_gdp, color:'#D92D20' },
+    { id:'c-debt',   hist:BASELINE.government.debt_pct_gdp, proj:p.government.debt_pct_gdp, color:'#0F172A' },
+    { id:'c-bm',     hist:BASELINE.monetary.broad_money_growth, proj:p.monetary.broad_money_growth, color:'#7C3AED' },
+  ];
+
+  specs.forEach(s => {
+    const histSeries = all.map((_,i)=> i<YEARS.length ? s.hist[i] : null);
+    const projSeries = all.map((_,i)=> i<YEARS.length ? null : s.proj[i-YEARS.length]);
+    makeChart(s.id, {
+      type:'line',
+      data:{ labels:all, datasets:[
+        { label:'Historical', data:histSeries, borderColor:s.color, backgroundColor:s.color+'22', borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 },
+        { label:'Projected',  data:projSeries, borderColor:s.color, borderDash:[6,3], borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 },
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
+        scales:{ x:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } }, y:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } } }
+      }
+    });
+  });
+}
+
+function runSimulator(newLevers){
+  state.levers = {...newLevers};
+  state.projection = project(state.levers);
+  renderSummary();
+  renderProjTable();
+  renderProjectionCharts();
+}
+
+/* ============================================================
+   HISTORICAL EXPLORER
+   ============================================================ */
+const HIST_ROWS = {
+  real: [
+    ["gdp_nominal","Nominal GDP",1],["gdp_real","Real GDP (2005 prices)",1],
+    ["gdp_growth","Real GDP growth (%)",2],["gdp_deflator","GDP deflator (2005=100)",2],
+    ["inflation","GDP deflator inflation (%)",2],["cpi","CPI (2005=100)",2],
+    ["consumption","Final consumption",1],["investment","Gross fixed capital formation",1],
+    ["exports","Exports of g&s",1],["imports","Imports of g&s",1],
+    ["output_gap","Output gap (%)",2],["potential_output","Potential output",1],
+  ],
+  external: [
+    ["current_account","Current account (USD mn)",1],["goods_balance","Goods balance",1],
+    ["services","Services",1],["primary_income","Primary income",1],["secondary_income","Secondary income",1],
+    ["financial_account","Financial account",1],["overall_balance","Overall balance",1],
+    ["reserves","Reserve assets",1],["usd_gdp","Nominal GDP (USD mn)",1],
+    ["exchange_rate","Exchange rate (NC/USD)",2],["net_iip","Net IIP",1],
+    ["external_debt","Total external debt",1],["ca_pct_gdp","Current account (% GDP)",2],
+    ["debt_pct_gdp","External debt (% GDP)",2],
+  ],
+  government: [
+    ["revenue","Revenue",1],["taxes","Taxes",1],["expense","Expense",1],["interest","Interest",1],
+    ["subsidies","Subsidies",1],["compensation","Compensation of employees",1],
+    ["net_operating","Net operating balance",1],["net_lending","Net lending/borrowing",1],
+    ["overall_balance","Overall balance",1],["overall_primary","Overall primary balance",1],
+    ["liabilities_stock","Liabilities (stock)",1],["assets_stock","Assets (stock)",1],
+    ["revenue_pct_gdp","Revenue (% of GDP)",2],["expense_pct_gdp","Expense (% of GDP)",2],
+    ["overall_pct_gdp","Overall balance (% GDP)",2],["primary_pct_gdp","Primary balance (% GDP)",2],
+    ["debt_pct_gdp","Debt-to-GDP (%)",2],
+  ],
+  monetary: [
+    ["monetary_base","Monetary base",1],["broad_money","Broad money",1],
+    ["currency_circ","Currency in circulation",1],["nfa_cb","Net Foreign Assets (CB)",1],
+    ["nda_cb","Net Domestic Assets (CB)",1],["nfa_survey","NFA (Depository Survey)",1],
+    ["nda_survey","NDA (Depository Survey)",1],["credit_private","Credit to private sector",1],
+    ["claims_public","Net claims on public sector",1],
+    ["broad_money_growth","Broad money growth (%)",2],["money_multiplier","Money multiplier",2],
+    ["velocity","Velocity",2],["mb_pct_gdp","MB/GDP (%)",2],["bm_pct_gdp","Broad Money/GDP (%)",2],
+  ],
+};
+const HIST_TITLES = { real:'Real Sector · 2006–2012', external:'External Sector · 2006–2012',
+  government:'Government (Fiscal) · 2006–2012', monetary:'Monetary Survey · 2006–2012' };
+
+function renderHistoricalTable(){
+  const rows = HIST_ROWS[state.histSector];
+  const data = BASELINE[state.histSector];
+  document.getElementById('hist-title').textContent = HIST_TITLES[state.histSector];
+  const head = `<thead><tr><th>Line item</th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([key,label,d]) => `
+    <tr><td>${label}</td>${(data[key]||[]).map(v=>`<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
+  `).join('')}</tbody>`;
+  document.getElementById('hist-table').innerHTML = head + body;
+
+  // Chart 1: main overview
+  const chartMap = {
+    real: {
+      t:'Growth & Inflation',
+      series:[{label:'GDP growth (%)', data:BASELINE.real.gdp_growth, color:'#2563EB'},
+              {label:'Inflation (%)', data:BASELINE.real.inflation, color:'#D97706'}]},
+    external:{
+      t:'External Balance',
+      series:[{label:'CA (% GDP)', data:BASELINE.external.ca_pct_gdp, color:'#059669'},
+              {label:'Ext. debt (% GDP)', data:BASELINE.external.debt_pct_gdp, color:'#0F172A'}]},
+    government:{
+      t:'Fiscal Position',
+      series:[{label:'Overall balance (% GDP)', data:BASELINE.government.overall_pct_gdp, color:'#D92D20'},
+              {label:'Debt (% GDP)', data:BASELINE.government.debt_pct_gdp, color:'#0F172A'}]},
+    monetary:{
+      t:'Monetary Aggregates',
+      series:[{label:'Broad money growth (%)', data:BASELINE.monetary.broad_money_growth, color:'#7C3AED'},
+              {label:'MB/GDP (%)', data:BASELINE.monetary.mb_pct_gdp, color:'#0F172A'}]},
+  };
+  const c1 = chartMap[state.histSector];
+  document.getElementById('hist-chart1-title').textContent = c1.t;
+  makeChart('hist-chart', {
+    type:'line',
+    data:{ labels:YEARS, datasets: c1.series.map((s,i)=>({
+      label:s.label, data:s.data, borderColor:s.color, backgroundColor:s.color+'22',
+      borderWidth:2, pointRadius:3, tension:.25, borderDash: i===1 ? [4,3] : []
+    }))},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
+      scales:{ x:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } }, y:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } } }
+    }
+  });
+
+  // Chart 2: sector-specific deep dive
+  renderHistChart2();
+}
+
+function renderHistChart2(){
+  const s = state.histSector;
+  const title = document.getElementById('hist-chart2-title');
+
+  if (s === 'real') {
+    title.textContent = 'Output Gap & Potential Output';
+    makeChart('hist-chart-2', {
+      type:'line',
+      data:{ labels:YEARS, datasets:[
+        {label:'Output gap (%)', data:BASELINE.real.output_gap, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.25, yAxisID:'y'},
+        {label:'Real GDP (bn NC)', data:BASELINE.real.gdp_real, borderColor:'#2563EB', backgroundColor:'#2563EB22', borderWidth:2, pointRadius:3, tension:.25, yAxisID:'y1', borderDash:[4,3]},
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
+        scales:{
+          x:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } },
+          y:{ position:'left', ticks:{ font:{size:10, family:"IBM Plex Mono"} } },
+          y1:{ position:'right', grid:{drawOnChartArea:false}, ticks:{ font:{size:10, family:"IBM Plex Mono"} } },
+        }
+      }
+    });
+  } else if (s === 'external') {
+    title.textContent = 'External Debt Composition (USD mn)';
+    makeChart('hist-chart-2', {
+      type:'bar',
+      data:{ labels:YEARS, datasets:[
+        {label:'Gen. Government', data:EX_DEBT.gov, backgroundColor:'#D92D20', stack:'a'},
+        {label:'Central Bank',    data:EX_DEBT.cb,  backgroundColor:'#7C3AED', stack:'a'},
+        {label:'Depository Corp.',data:EX_DEBT.odc, backgroundColor:'#2563EB', stack:'a'},
+        {label:'Other sectors',   data:EX_DEBT.other, backgroundColor:'#059669', stack:'a'},
+        {label:'FDI-related',     data:EX_DEBT.fdi,  backgroundColor:'#94a3b8', stack:'a'},
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:9}, boxWidth:10 } } },
+        scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+      }
+    });
+  } else if (s === 'government') {
+    title.textContent = 'Net Worth & Interest Rate Spread';
+    makeChart('hist-chart-2', {
+      type:'line',
+      data:{ labels:YEARS, datasets:[
+        {label:'Net worth (% GDP)', data:GOV_IND.net_worth_pct, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.25},
+        {label:'Net fin. worth (% GDP)', data:GOV_IND.net_fin_worth_pct, borderColor:'#0F172A', borderDash:[4,3], borderWidth:2, pointRadius:3, tension:.25},
+        {label:'Implicit int. rate (%)', data:GOV_IND.implicit_rate, borderColor:'#D97706', borderWidth:2, pointRadius:3, tension:.25, yAxisID:'y1'},
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:9}, boxWidth:10 } } },
+        scales:{
+          x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+          y:{ position:'left', ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+          y1:{ position:'right', grid:{drawOnChartArea:false}, ticks:{font:{size:10, family:"IBM Plex Mono"}}}
+        }
+      }
+    });
+  } else {
+    // monetary — Taylor rule
+    title.textContent = 'Taylor Rule (MP rate: Actual vs Fitted)';
+    makeChart('hist-chart-2', {
+      type:'line',
+      data:{ labels:TAYLOR.years, datasets:[
+        {label:'MP rate (actual)', data:TAYLOR.mp_rate_actual, borderColor:'#7C3AED', backgroundColor:'#7C3AED22', borderWidth:2, pointRadius:4, tension:.2},
+        {label:'MP rate (fitted, α=1.5 β=2.3)', data:TAYLOR.mp_rate_fitted, borderColor:'#D97706', borderDash:[6,3], borderWidth:2, pointRadius:4, tension:.2},
+        {label:'CPI inflation (actual)', data:TAYLOR.cpi_actual, borderColor:'#059669', borderWidth:1.5, pointRadius:3, tension:.25},
+        {label:'CPI target', data:TAYLOR.cpi_target, borderColor:'#94a3b8', borderDash:[2,2], borderWidth:1.5, pointRadius:2, tension:0},
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:9}, boxWidth:10 } } },
+        scales:{ x:{ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+      }
+    });
+  }
+}
+
+/* ============================================================
+   BALANCE SHEETS
+   ============================================================ */
+function renderBalanceSheets(){
+  const idx = YEARS.indexOf(state.bsYear);
+  const B = BASELINE;
+  const panels = [
+    { color:'#2563EB', label:'Real', rows: [
+      ['Nominal GDP', B.real.gdp_nominal[idx], 1],
+      ['Real GDP', B.real.gdp_real[idx], 1],
+      ['GDP deflator', B.real.gdp_deflator[idx], 2],
+      ['Consumption', B.real.consumption[idx], 1],
+      ['Investment', B.real.investment[idx], 1],
+      ['Exports', B.real.exports[idx], 1],
+      ['Imports', B.real.imports[idx], 1],
+      ['Foreign balance', B.real.exports[idx] - B.real.imports[idx], 1],
+      ['Output gap (%)', B.real.output_gap[idx], 2],
+    ]},
+    { color:'#059669', label:'External (USD mn)', rows: [
+      ['Current account', B.external.current_account[idx], 1],
+      ['  Goods balance', B.external.goods_balance[idx], 1],
+      ['  Services', B.external.services[idx], 1],
+      ['  Primary income', B.external.primary_income[idx], 1],
+      ['  Secondary income', B.external.secondary_income[idx], 1],
+      ['Financial account', B.external.financial_account[idx], 1],
+      ['Overall balance', B.external.overall_balance[idx], 1],
+      ['Reserves', B.external.reserves[idx], 1],
+      ['FX rate (NC/USD)', B.external.exchange_rate[idx], 2],
+      ['External debt', B.external.external_debt[idx], 1],
+    ]},
+    { color:'#D92D20', label:'Government (Fiscal)', rows: [
+      ['Revenue', B.government.revenue[idx], 1],
+      ['Expense', B.government.expense[idx], 1],
+      ['  Interest', B.government.interest[idx], 1],
+      ['  Subsidies', B.government.subsidies[idx], 1],
+      ['  Compensation', B.government.compensation[idx], 1],
+      ['Overall balance', B.government.overall_balance[idx], 1],
+      ['Primary balance', B.government.overall_primary[idx], 1],
+      ['Liabilities stock', B.government.liabilities_stock[idx], 1],
+      ['Assets stock', B.government.assets_stock[idx], 1],
+      ['Debt/GDP (%)', B.government.debt_pct_gdp[idx], 2],
+    ]},
+    { color:'#7C3AED', label:'Monetary', rows: [
+      ['Monetary base', B.monetary.monetary_base[idx], 1],
+      ['  NFA (CB)', B.monetary.nfa_cb[idx], 1],
+      ['  NDA (CB)', B.monetary.nda_cb[idx], 1],
+      ['Check: NFA+NDA', B.monetary.nfa_cb[idx] + B.monetary.nda_cb[idx], 1],
+      ['Broad money', B.monetary.broad_money[idx], 1],
+      ['  NFA (Survey)', B.monetary.nfa_survey[idx], 1],
+      ['  NDA (Survey)', B.monetary.nda_survey[idx], 1],
+      ['Credit to private', B.monetary.credit_private[idx], 1],
+      ['Money multiplier', B.monetary.money_multiplier[idx], 2],
+      ['BM/GDP (%)', B.monetary.bm_pct_gdp[idx], 2],
+    ]},
+  ];
+
+  document.getElementById('bs-grid').innerHTML = panels.map(p => `
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:${p.color}">
+        <span class="dot" style="background:${p.color}"></span>
+        <span class="card-title">${p.label}</span>
+      </div>
+      <table class="fp"><tbody>
+        ${p.rows.map(([lbl,v,d])=>`<tr><td style="font-size:11.5px">${lbl}</td><td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+  `).join('');
+
+  // Identities
+  const idents = [
+    { title:'FX Bridge', formula:'USD GDP = Nominal GDP × 1,000 / FX rate',
+      check:`${fmt(B.real.gdp_nominal[idx],1)} × 1000 / ${fmt(B.external.exchange_rate[idx],2)} = ${fmt(B.real.gdp_nominal[idx]*1000/B.external.exchange_rate[idx],1)} USD mn`,
+      actual:`${fmt(B.external.usd_gdp[idx],1)} USD mn` },
+    { title:'Central Bank Balance', formula:'Monetary Base = NFA(CB) + NDA(CB)',
+      check:`${fmt(B.monetary.nfa_cb[idx],1)} + ${fmt(B.monetary.nda_cb[idx],1)} = ${fmt(B.monetary.nfa_cb[idx]+B.monetary.nda_cb[idx],1)}`,
+      actual:`${fmt(B.monetary.monetary_base[idx],1)}` },
+    { title:'Depository Survey', formula:'Broad Money = NFA(Survey) + NDA(Survey) + Other CB liab.',
+      check:`${fmt(B.monetary.nfa_survey[idx]+B.monetary.nda_survey[idx],1)} + other`,
+      actual:`${fmt(B.monetary.broad_money[idx],1)}` },
+    { title:'Fiscal Ratio Anchor', formula:'Every % of GDP row = level / Nominal GDP × 100',
+      check:`${fmt(B.government.revenue[idx],1)} / ${fmt(B.real.gdp_nominal[idx],1)} × 100 = ${(B.government.revenue[idx]/B.real.gdp_nominal[idx]*100).toFixed(2)}%`,
+      actual:`${B.government.revenue_pct_gdp[idx]}%` },
+  ];
+  document.getElementById('identities-grid').innerHTML = idents.map(i => `
+    <div class="identity">
+      <div class="identity-title">${i.title}</div>
+      <div class="identity-formula">${i.formula}</div>
+      <div class="identity-check">Compute: ${i.check}</div>
+      <div class="identity-check" style="color:#0f172a">Actual: ${i.actual}</div>
+    </div>
+  `).join('');
+}
+/* ============================================================
+   FLOW OF FUNDS
+   ============================================================ */
+function renderFlowOfFunds(){
+  const y = state.fofYear;
+  const data = FLOW_OF_FUNDS[y];
+  const cols = ['Total (domestic)','Private sector','General Government','Depository Corp.','Rest of World'];
+  document.getElementById('fof-title').textContent =
+    `Flow of Funds · ${y} · billions of national currency`;
+
+  const head = `<thead><tr>
+    <th>Line item</th>
+    <th>${cols[0]}</th>
+    <th style="color:#334155">${cols[1]}</th>
+    <th style="color:#D92D20">${cols[2]}</th>
+    <th style="color:#7C3AED">${cols[3]}</th>
+    <th style="color:#059669">${cols[4]}</th>
+  </tr></thead>`;
+  const body = `<tbody>${data.rows.map(r => {
+    const isHeader = r[6] === true;
+    if (isHeader) return `<tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r[0]}</td></tr>`;
+    return `<tr>
+      <td style="font-size:11.5px">${r[0]}</td>
+      ${[1,2,3,4,5].map(i => {
+        const v = r[i];
+        return `<td class="${typeof v==='number'&&v<0?'neg':''}">${v===null?'…':fmt(v,2)}</td>`;
+      }).join('')}
+    </tr>`;
+  }).join('')}
+  <tr style="background:#fef3c7">
+    <td colspan="6" style="font-size:10px;color:#78350f">
+      Memo: FX ${data.memo.fx.toFixed(2)} NC/USD · Current account ${fmt(data.memo.ca_usd,2)} USD mn · Capital ${fmt(data.memo.cap_usd,2)} USD mn · Financial ${fmt(data.memo.fin_usd,2)} USD mn
+    </td>
+  </tr>
+  </tbody>`;
+  document.getElementById('fof-table').innerHTML = head + body;
+
+  // Chart: non-financial balances by sector across the 3 available years
+  const yrs = [2011, 2012, 2013];
+  const findRow = (yr, label) => FLOW_OF_FUNDS[yr].rows.find(r => r[0] === label);
+  const nfb = (idx) => yrs.map(yr => (findRow(yr, "Non-financial balance (deficit = -)") || [])[idx]);
+  makeChart('fof-chart', {
+    type:'bar',
+    data:{ labels:yrs, datasets:[
+      { label:'Private sector',       data:nfb(2), backgroundColor:'#2563EB' },
+      { label:'General Government',   data:nfb(3), backgroundColor:'#D92D20' },
+      { label:'Depository Corp.',     data:nfb(4), backgroundColor:'#7C3AED' },
+      { label:'Rest of World',        data:nfb(5), backgroundColor:'#059669' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}},
+                title:{ display:true, text:'Non-financial balance by sector (bn NC) — deficits negative', font:{size:11} } },
+      scales:{ x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+}
+
+
+
+/* ============================================================
+   SCENARIO COMPARE
+   ============================================================ */
+function renderCompare(){
+  renderLeversPanel(document.getElementById('compare-A-levers'), state.compareA, (l,forceRun)=>{
+    state.compareA = {...l};
+    state.projA = project(l);
+    drawCompare();
+  }, 'A-');
+  renderLeversPanel(document.getElementById('compare-B-levers'), state.compareB, (l,forceRun)=>{
+    state.compareB = {...l};
+    state.projB = project(l);
+    drawCompare();
+  }, 'B-');
+  state.projA = project(state.compareA);
+  state.projB = project(state.compareB);
+  drawCompare();
+}
+
+function drawCompare(){
+  const a = state.projA, b = state.projB;
+  if (!a || !b) return;
+  // Sync horizons — if different, use shorter
+  const H = Math.min(a.years.length, b.years.length);
+  const labels = a.years.slice(0, H);
+  const last = H - 1;
+
+  const items = [
+    ["Debt/GDP", a.government.debt_pct_gdp[last], b.government.debt_pct_gdp[last], "%"],
+    ["Fiscal balance", a.government.overall_pct_gdp[last], b.government.overall_pct_gdp[last], "%"],
+    ["Current account", a.external.ca_pct_gdp[last], b.external.ca_pct_gdp[last], "%"],
+    ["Inflation", a.real.inflation[last], b.real.inflation[last], "%"],
+  ];
+  document.getElementById('compare-summary').innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="card-title">End-of-horizon comparison (${labels.at(-1)})</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr)">
+        ${items.map(([lbl,av,bv,u]) => {
+          const diff = (bv - av);
+          const diffColor = diff > 0 ? '#D92D20' : '#059669';
+          return `<div style="padding:12px;border-right:1px solid var(--line)">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">${lbl}</div>
+            <div class="mono" style="font-size:13px;margin-top:4px">
+              <span style="color:#2563EB;font-weight:600">${fmt(av,2)}${u}</span>
+              <span style="color:#94a3b8;margin:0 4px">→</span>
+              <span style="color:#D92D20;font-weight:600">${fmt(bv,2)}${u}</span>
+            </div>
+            <div class="mono" style="font-size:10px;margin-top:4px;color:${diffColor}">Δ ${diff>0?'+':''}${diff.toFixed(2)}${u}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  const grid = document.getElementById('compare-charts');
+  const ids = ['cmp-growth','cmp-infl','cmp-fisc','cmp-debt','cmp-ca','cmp-bm'];
+  const titles = ['Real GDP growth (%)','Inflation (%)','Fiscal balance (% GDP)','Public debt (% GDP)','Current account (% GDP)','Broad money growth (%)'];
+  grid.innerHTML = ids.map((id,i)=>chartCard(id,titles[i])).join('');
+
+  const specs = [
+    { id:'cmp-growth', a:a.real.gdp_growth, b:b.real.gdp_growth },
+    { id:'cmp-infl',   a:a.real.inflation,  b:b.real.inflation },
+    { id:'cmp-fisc',   a:a.government.overall_pct_gdp, b:b.government.overall_pct_gdp },
+    { id:'cmp-debt',   a:a.government.debt_pct_gdp, b:b.government.debt_pct_gdp },
+    { id:'cmp-ca',     a:a.external.ca_pct_gdp, b:b.external.ca_pct_gdp },
+    { id:'cmp-bm',     a:a.monetary.broad_money_growth, b:b.monetary.broad_money_growth },
+  ];
+  specs.forEach(s => makeChart(s.id, {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'Scenario A', data:s.a.slice(0,H), borderColor:'#2563EB', backgroundColor:'#2563EB22', borderWidth:2, pointRadius:3, tension:.25 },
+      { label:'Scenario B', data:s.b.slice(0,H), borderColor:'#D92D20', backgroundColor:'#D92D2022', borderDash:[6,3], borderWidth:2, pointRadius:3, tension:.25 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
+      scales:{ x:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } }, y:{ ticks:{ font:{size:10, family:"IBM Plex Mono"} } } } }
+  }));
+}
+
+/* ============================================================
+   AI COMMENTARY (calls Anthropic directly from the browser)
+   ============================================================ */
+function saveKey(){
+  const k = document.getElementById('anth-key').value.trim();
+  if (k) { localStorage.setItem('anth_key', k); alert('Key saved locally.'); }
+}
+function loadKey(){
+  const k = localStorage.getItem('anth_key');
+  if (k) document.getElementById('anth-key').value = k;
+}
+
+async function onAnalyze(){
+  const key = document.getElementById('anth-key').value.trim() || localStorage.getItem('anth_key');
+  const out = document.getElementById('ai-output');
+  const btn = document.getElementById('analyze-btn');
+  if (!key) { out.innerHTML = '<div class="ai-placeholder" style="color:#b91c1c">Please enter your Anthropic API key first.</div>'; return; }
+  if (!state.projection) return;
+
+  const scenarioName = document.getElementById('scenario-name').value || 'Scenario';
+  const p = state.projection;
+  const last = p.years.length - 1;
+  const l = state.levers;
+
+  const summary = `SCENARIO: ${scenarioName}
+Projection horizon: ${l.horizon} years (${p.years[0]}–${p.years.at(-1)})
+
+POLICY LEVERS:
+- Real GDP growth: ${l.real_gdp_growth}%/yr
+- Inflation (GDP deflator): ${l.inflation}%/yr
+- Exchange rate depreciation: ${l.fx_depreciation}%/yr
+- Export growth (nominal NC): ${l.export_growth}%/yr
+- Import growth (nominal NC): ${l.import_growth}%/yr
+- Revenue growth: ${l.revenue_growth}%/yr
+- Expense growth: ${l.expense_growth}%/yr
+- Interest rate on debt: ${l.interest_rate}%/yr
+- Monetary base growth: ${l.monetary_base_growth}%/yr
+- Money multiplier: ${l.money_multiplier}x
+
+END-OF-HORIZON OUTCOMES (${p.years[last]}):
+- Nominal GDP: ${p.real.gdp_nominal[last]} bn NC
+- Fiscal overall balance: ${p.government.overall_pct_gdp[last]}% of GDP
+- Primary balance: ${p.government.primary_pct_gdp[last]}% of GDP
+- Public debt: ${p.government.debt_pct_gdp[last]}% of GDP
+- Current account: ${p.external.ca_pct_gdp[last]}% of GDP
+- Exchange rate: ${p.external.exchange_rate[last]} NC/USD
+- Broad money growth (end): ${p.monetary.broad_money_growth[last]}%
+- Broad money / GDP: ${p.monetary.bm_pct_gdp[last]}%
+
+BASELINE ANCHOR (2012):
+- Public debt was 44.6% of GDP, current account -5.7% of GDP, inflation 5.8%,
+  broad money 53% of GDP, external debt 31% of GDP.`;
+
+  const system = "You are a senior IMF-style macroeconomist reviewing a Financial Programming scenario. Given policy levers and projected outcomes across the Real, External, Fiscal, and Monetary sectors, produce a concise, professional analysis in MARKDOWN with these sections: **Overall Assessment**, **Fiscal Sustainability**, **External Vulnerability**, **Monetary Consistency**, **Key Risks**, **Policy Recommendations**. Use plain prose. Be quantitative, cite the numbers provided. Avoid hedging. Keep the whole response under 500 words.";
+
+  btn.disabled = true;
+  btn.textContent = 'Analyzing...';
+  out.innerHTML = '<div class="ai-placeholder">Contacting Claude Sonnet 4.5...</div>';
+
   try {
-    const raw = localStorage.getItem('apexrepublic_v1');
-    if(raw){ const p = JSON.parse(raw); Object.assign(S, p); }
-  } catch(e){}
-}
-
-function saveAll(){
-  // Harvest policy inputs
-  S.interestRate  = parseFloat(document.getElementById('interest-rate').value);
-  S.reserveRatio  = parseFloat(document.getElementById('reserve-ratio').value);
-  S.qe            = parseFloat(document.getElementById('qe-slider').value);
-  S.taxRate       = parseFloat(document.getElementById('tax-rate').value);
-  S.govSpending   = parseFloat(document.getElementById('gov-spending').value);
-  S.infra         = parseFloat(document.getElementById('infra-slider').value);
-  S.lastSaved     = new Date().toISOString();
-  localStorage.setItem('apexrepublic_v1', JSON.stringify(S));
-  // Show toast
-  const toast = document.getElementById('save-toast');
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'), 1800);
-  updateLastUpdated();
-}
-
-function updateLastUpdated(){
-  const el = document.getElementById('last-updated-label');
-  if(S.lastSaved){
-    const d = new Date(S.lastSaved);
-    const locale = LANG==='vi'?'vi-VN':'en-AU';
-    el.textContent = 'Saved ' + d.toLocaleString(locale,{dateStyle:'short',timeStyle:'short'});
-  }
-}
-
-function saveSettings(){
-  S.nationName       = document.getElementById('s-nation-name').value;
-  S.cbName           = document.getElementById('s-cb-name').value;
-  S.currency         = document.getElementById('s-currency').value;
-  S.gdpTarget        = parseFloat(document.getElementById('s-gdp-target').value)||2.5;
-  S.inflationTarget  = parseFloat(document.getElementById('s-inflation-target').value)||2.5;
-  S.employTarget     = parseFloat(document.getElementById('s-employ-target').value)||4.5;
-  S.noise            = document.getElementById('s-noise').value;
-  S.multiplier       = parseFloat(document.getElementById('s-multiplier').value)||1.2;
-  S.lag              = parseInt(document.getElementById('s-lag').value)||2;
-  S.initDebt         = parseFloat(document.getElementById('s-debt').value)||850;
-  saveAll();
-}
-
-function exportData(){
-  const blob = new Blob([JSON.stringify(S,null,2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'apexrepublic-simulation.json';
-  a.click();
-}
-
-function importData(e){
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const p = JSON.parse(ev.target.result);
-      Object.assign(S, p);
-      localStorage.setItem('apexrepublic_v1', JSON.stringify(S));
-      location.reload();
-    } catch(err){ alert('Invalid JSON file.'); }
-  };
-  reader.readAsText(file);
-}
-
-function clearAll(){
-  if(!confirm('Reset the entire simulation? This cannot be undone.')) return;
-  localStorage.removeItem('apexrepublic_v1');
-  location.reload();
-}
-
-// ══════════════════════════════════════════════════════
-//  TAB NAVIGATION
-// ══════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════
-//  ONE-PAGE NAVIGATION
-//  Everything renders at once; nav links scroll to sections
-//  and highlight to match whichever one is currently in view.
-// ══════════════════════════════════════════════════════
-function updateStickyOffset(){
-  const topbar = document.getElementById('topbar');
-  if(topbar) document.documentElement.style.setProperty('--topbar-h', topbar.offsetHeight+'px');
-}
-
-function initScrollSpy(){
-  const sections = [...document.querySelectorAll('.page-section')];
-  const navLinks = {};
-  document.querySelectorAll('#quick-jump .tab').forEach(a=>{
-    navLinks[a.getAttribute('href').replace('#sec-','')] = a;
-  });
-
-  let ticking = false;
-  function setActiveLink(){
-    ticking = false;
-    const topbar = document.getElementById('topbar');
-    const triggerLine = window.scrollY + topbar.offsetHeight + 24;
-    let current = sections[0];
-    for(const sec of sections){
-      if(sec.offsetTop <= triggerLine) current = sec; else break;
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key': key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-5-20250929',
+        max_tokens: 1500,
+        system,
+        messages:[{ role:'user', content: summary }],
+      })
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      out.innerHTML = `<div class="ai-placeholder" style="color:#b91c1c">Anthropic error (${res.status}): ${txt.slice(0,300)}</div>`;
+    } else {
+      const j = await res.json();
+      const text = (j.content && j.content[0] && j.content[0].text) || 'No response';
+      out.innerHTML = renderMarkdown(text);
     }
-    const id = current.id.replace('sec-','');
-    Object.entries(navLinks).forEach(([key,a])=>a.classList.toggle('active', key===id));
+  } catch (e) {
+    out.innerHTML = `<div class="ai-placeholder" style="color:#b91c1c">Request failed: ${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze scenario';
   }
-  function requestTick(){ if(!ticking){ ticking = true; requestAnimationFrame(setActiveLink); } }
-
-  window.addEventListener('scroll', requestTick, {passive:true});
-  window.addEventListener('resize', requestTick);
-  setActiveLink(); // set correct initial state on load
-
-  // Fade sections in as they're scrolled to
-  const revealObs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); revealObs.unobserve(e.target); } });
-  }, {threshold:0.08});
-  sections.forEach(s=>revealObs.observe(s));
 }
 
-function initBackToTop(){
-  const btn = document.getElementById('to-top');
-  const dash = document.getElementById('sec-dashboard');
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ btn.classList.toggle('show', !e.isIntersecting); });
-  }, {threshold:0});
-  obs.observe(dash);
-}
-
-// Close dropdown on outside click
-document.addEventListener('click', e=>{
-  const dd = document.getElementById('header-actions');
-  if(!dd.contains(e.target)) dd.classList.remove('open');
-});
-
-// ══════════════════════════════════════════════════════
-//  FORMATTERS
-// ══════════════════════════════════════════════════════
-const fmt  = v => v.toFixed(2)+'%';
-const fmtB = v => (v>=0?'+':'') + '$'+Math.abs(v).toFixed(0)+'B';
-const fmtC = v => (v>=0?'var(--accent3)':'var(--accent4)');
-
-function noiseAmt(){
-  const n = S.noise||'medium';
-  if(n==='low')  return 0.05;
-  if(n==='high') return 0.6;
-  return 0.3; // medium
-}
-
-// ══════════════════════════════════════════════════════
-//  SIMULATION ENGINE
-// ══════════════════════════════════════════════════════
-function runSimulation(){
-  const ir = S.interestRate, rr = S.reserveRatio, qe = S.qe;
-  const tx = S.taxRate, gs = S.govSpending, infra = S.infra;
-  const noise = noiseAmt();
-  const mult  = S.multiplier || 1.2;
-
-  // Budget
-  S.budgetBalance = Math.round((tx*6) - gs);
-  S.nationalDebt  = (S.nationalDebt||850) + (S.budgetBalance<0 ? Math.abs(S.budgetBalance)*0.8 : -S.budgetBalance*0.2);
-
-  // Monetary tightness
-  const monTight = (ir-4.5)*0.4 + (rr-10)*0.15 - qe*0.008;
-
-  // Fiscal stimulus (with multiplier)
-  const fisStim  = ((gs-120)*0.05 - (tx-22)*0.3 + infra*0.02) * mult;
-
-  // GDP
-  const prevGdp = S.gdpGrowth;
-  S.gdpGrowth = 2.5 + fisStim - monTight + (Math.random()*noise - noise/2);
-  S.gdpGrowth = Math.max(-5, Math.min(10, S.gdpGrowth));
-
-  // Inflation (Phillips curve)
-  S.inflation = S.inflation + (S.gdpGrowth-2.5)*0.3 - (ir-4.5)*0.25 + (Math.random()*(noise/2)-(noise/4));
-  S.inflation = Math.max(-2, Math.min(15, S.inflation));
-
-  // Unemployment (Okun's Law)
-  S.unemployment = S.unemployment - (S.gdpGrowth-2.2)*0.4 + (Math.random()*(noise/3)-(noise/6));
-  S.unemployment = Math.max(1.5, Math.min(15, S.unemployment));
-
-  S.currentQuarter++;
-
-  // Record history
-  S.history.push({
-    q: S.currentQuarter,
-    gdp:   parseFloat(S.gdpGrowth.toFixed(2)),
-    inf:   parseFloat(S.inflation.toFixed(2)),
-    unemp: parseFloat(S.unemployment.toFixed(2)),
-    budget: S.budgetBalance,
-    ir, rr, tx, gs
-  });
-}
-
-// ══════════════════════════════════════════════════════
-//  ADVISORY GENERATOR
-// ══════════════════════════════════════════════════════
-function generateAdvisory(){
-  let html = '';
-  const tgt = S.inflationTarget||2.5, emp = S.employTarget||4.5;
-  if(S.inflation > tgt+1.5)
-    html += `<div class="alert alert-danger">⚠️ HIGH INFLATION (${fmt(S.inflation)}): Raise the cash rate or reduce government spending to cool demand.</div>`;
-  else if(S.inflation < tgt-1.5)
-    html += `<div class="alert alert-warn">⚠️ DEFLATIONARY RISK (${fmt(S.inflation)}): Cut interest rates or increase fiscal stimulus.</div>`;
-  if(S.unemployment > emp+2)
-    html += `<div class="alert alert-warn">⚠️ HIGH UNEMPLOYMENT (${fmt(S.unemployment)}): Expansionary policy recommended — increase spending or reduce tax.</div>`;
-  if(S.gdpGrowth < 0)
-    html += `<div class="alert alert-danger">⚠️ RECESSION: GDP contraction of ${fmt(S.gdpGrowth)}. Emergency fiscal or monetary stimulus required.</div>`;
-  if(S.budgetBalance < -40)
-    html += `<div class="alert alert-danger">⚠️ CRITICAL DEFICIT (${fmtB(S.budgetBalance)}): National debt expanding rapidly — consolidate finances.</div>`;
-  if(!html)
-    html = `<div class="alert alert-ok">✓ Stable Operations: All macroeconomic indicators within acceptable ranges.</div>`;
-  return html;
-}
-
-// ══════════════════════════════════════════════════════
-//  CHART INSTANCE (singleton)
-// ══════════════════════════════════════════════════════
-let econChart = null;
-function getChartOptions(){
-  return {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{mode:'index',intersect:false},
-    scales:{
-      y:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} },
-      x:{ grid:{color:'#232730'}, ticks:{color:'#7a7f8e',font:{family:"'DM Mono',monospace",size:11}}, border:{color:'#232730'} }
-    },
-    plugins:{
-      legend:{labels:{color:'#e8e3d8',font:{family:"'Manrope',sans-serif",size:12},boxWidth:12,boxHeight:12,borderRadius:3}},
-      tooltip:{backgroundColor:'#161920',borderColor:'#232730',borderWidth:1,titleColor:'#e8e3d8',bodyColor:'#7a7f8e',titleFont:{family:"'Manrope',sans-serif"},bodyFont:{family:"'DM Mono',monospace",size:12},padding:12}
-    }
-  };
-}
-
-// ══════════════════════════════════════════════════════
-//  DASHBOARD RENDER
-// ══════════════════════════════════════════════════════
-function renderDashboard(){
-  // KPIs
-  document.getElementById('gdp-display').textContent          = fmt(S.gdpGrowth);
-  document.getElementById('inflation-display').textContent    = fmt(S.inflation);
-  document.getElementById('unemployment-display').textContent = fmt(S.unemployment);
-  const budEl = document.getElementById('budget-display');
-  budEl.textContent  = fmtB(S.budgetBalance);
-  budEl.style.color  = fmtC(S.budgetBalance);
-
-  // Deltas (vs previous quarter)
-  if(S.history.length>=2){
-    const prev = S.history[S.history.length-2];
-    setDelta('gdp-delta',          S.gdpGrowth,    prev.gdp);
-    setDelta('inflation-delta',    S.inflation,    prev.inf);
-    setDelta('unemployment-delta', S.unemployment, prev.unemp);
-    setDelta('budget-delta',       S.budgetBalance,prev.budget);
-  }
-
-  // Economy chart
-  const labels = S.history.map(h=>'Q'+h.q);
-  const datasets = [
-    {label:'GDP Growth (%)',  data:S.history.map(h=>h.gdp),   borderColor:'#c8a96e',backgroundColor:'rgba(200,169,110,.06)',tension:.3,borderWidth:2,pointRadius:3,fill:true},
-    {label:'Inflation (%)',   data:S.history.map(h=>h.inf),   borderColor:'#e06b6b',backgroundColor:'rgba(224,107,107,.06)',tension:.3,borderWidth:2,pointRadius:3,fill:true},
-    {label:'Unemployment (%)',data:S.history.map(h=>h.unemp), borderColor:'#5c9eff',backgroundColor:'rgba(92,158,255,.06)', tension:.3,borderWidth:2,pointRadius:3,fill:true},
-  ];
-  if(econChart){ econChart.data.labels=labels; econChart.data.datasets=datasets; econChart.update(); }
-  else { econChart = new Chart(document.getElementById('economy-chart').getContext('2d'),{type:'line',data:{labels,datasets},options:getChartOptions()}); }
-
-  // Health bars
-  const tgt = S.inflationTarget||2.5, emp = S.employTarget||4.5, gdpT = S.gdpTarget||2.5;
-  const bars = [
-    {label:'GDP Growth', val:S.gdpGrowth, target:gdpT, max:10, color:'var(--accent)'},
-    {label:'Inflation',  val:S.inflation,  target:tgt,  max:10, color:'var(--accent4)'},
-    {label:'Unemployment',val:S.unemployment,target:emp, max:15, color:'var(--accent2)'},
-    {label:'Budget Balance',val:Math.max(0,S.budgetBalance), target:0, max:100, color:'var(--accent3)'},
-  ];
-  document.getElementById('health-bars').innerHTML = bars.map(b=>{
-    const pct = Math.max(0,Math.min(100, (b.val/b.max)*100));
-    const tpct = Math.max(0,Math.min(100, (b.target/b.max)*100));
-    return `<div class="progress-wrap">
-      <div class="progress-header"><span class="progress-label">${b.label}</span><span class="progress-val" style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">${b.val.toFixed(2)}%</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${b.color}"></div></div>
-      <div style="font-size:10px;color:var(--muted);margin-top:3px">Target: ${b.target}%</div>
-    </div>`;
+function renderMarkdown(md){
+  return md.split('\n').map(line => {
+    if (line.startsWith('### ')) return `<h3>${escape(line.slice(4))}</h3>`;
+    if (line.startsWith('## '))  return `<h2>${escape(line.slice(3))}</h2>`;
+    if (line.startsWith('# '))   return `<h2>${escape(line.slice(2))}</h2>`;
+    const withBold = escape(line).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    return `<p>${withBold}</p>`;
   }).join('');
-
-  // Policy snapshot
-  document.getElementById('policy-snapshot').innerHTML = `
-    <table><tbody>
-      <tr><td style="color:var(--muted);font-size:12px">Cash Rate</td><td class="td-mono td-gold">${S.interestRate.toFixed(2)}%</td><td style="color:var(--muted);font-size:12px">Reserve Ratio</td><td class="td-mono">${S.reserveRatio.toFixed(1)}%</td></tr>
-      <tr><td style="color:var(--muted);font-size:12px">Tax Rate</td><td class="td-mono td-green">${S.taxRate.toFixed(1)}%</td><td style="color:var(--muted);font-size:12px">Gov Spending</td><td class="td-mono td-green">$${S.govSpending}B</td></tr>
-      <tr><td style="color:var(--muted);font-size:12px">QE</td><td class="td-mono">${S.qe>0?'$'+S.qe+'B':'None'}</td><td style="color:var(--muted);font-size:12px">Infrastructure</td><td class="td-mono td-green">$${S.infra}B</td></tr>
-      <tr><td style="color:var(--muted);font-size:12px">Quarter</td><td class="td-mono">Q${S.currentQuarter}</td><td style="color:var(--muted);font-size:12px">National Debt</td><td class="td-mono td-red">$${(S.nationalDebt||850).toFixed(0)}B</td></tr>
-    </tbody></table>`;
-
-  // Advisory
-  document.getElementById('logs').innerHTML = generateAdvisory();
-
-  // History table
-  const hist = [...S.history].reverse();
-  document.getElementById('history-table').innerHTML = `<table>
-    <thead><tr><th>Quarter</th><th>GDP Growth</th><th>Inflation</th><th>Unemployment</th><th>Budget</th><th>Cash Rate</th><th>Tax Rate</th><th>Gov Spend</th></tr></thead>
-    <tbody>${hist.map(h=>`<tr>
-      <td class="td-mono">Q${h.q}</td>
-      <td class="td-mono ${h.gdp>=0?'td-green':'td-red'}">${h.gdp.toFixed(2)}%</td>
-      <td class="td-mono ${h.inf<=(S.inflationTarget||2.5)+1?'td-green':'td-red'}">${h.inf.toFixed(2)}%</td>
-      <td class="td-mono">${h.unemp.toFixed(2)}%</td>
-      <td class="td-mono" style="color:${h.budget>=0?'var(--accent3)':'var(--accent4)'}">${fmtB(h.budget)}</td>
-      <td class="td-mono">${h.ir.toFixed(2)}%</td>
-      <td class="td-mono">${h.tx.toFixed(1)}%</td>
-      <td class="td-mono">$${h.gs}B</td>
-    </tr>`).join('')}</tbody>
-  </table>`;
 }
+function escape(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// ══════════════════════════════════════════════════════
-//  MONETARY PAGE RENDER
-// ══════════════════════════════════════════════════════
-function renderMonetary(){
-  const rr = S.reserveRatio;
-  const multiplier = (100/rr).toFixed(2);
-  document.getElementById('money-multiplier-panel').innerHTML = `
-    <div class="grid-2">
-      <div class="kpi blue"><div class="kpi-label">Money Multiplier</div><div class="kpi-value">×${multiplier}</div><div class="kpi-sub">1 ÷ reserve ratio</div></div>
-      <div class="kpi gold"><div class="kpi-label">Cash Rate</div><div class="kpi-value">${S.interestRate.toFixed(2)}%</div><div class="kpi-sub">vs neutral 4.5%</div></div>
-    </div>
-    <div style="margin-top:12px;font-size:12px;color:var(--muted)">At ${rr}% reserve ratio, every $1 deposited can generate up to <strong style="color:var(--text)">$${multiplier}</strong> in broad money supply.</div>`;
-
-  document.getElementById('transmission-checklist').innerHTML = [
-    { ok: S.interestRate < 4.5,  label:'Accommodative stance — rate below neutral (4.5%)',       icon: S.interestRate<4.5?'✅':'⬜' },
-    { ok: S.inflation < (S.inflationTarget||2.5)+1, label:'Inflation within target band',         icon: S.inflation<(S.inflationTarget||2.5)+1?'✅':'⚠️' },
-    { ok: S.qe === 0,             label:'No active QE programme',                                  icon: S.qe===0?'✅':'🔵' },
-    { ok: S.reserveRatio <= 12,  label:'Reserve ratio not restrictive (≤12%)',                    icon: S.reserveRatio<=12?'✅':'⚠️' },
-    { ok: S.unemployment < (S.employTarget||4.5)+1, label:'Labour market near full employment',   icon: S.unemployment<(S.employTarget||4.5)+1?'✅':'⚠️' },
-  ].map(i=>`<div class="check-item"><span class="check-icon">${i.icon}</span><span>${i.label}</span></div>`).join('');
-}
-
-// ══════════════════════════════════════════════════════
-//  FISCAL PAGE RENDER
-// ══════════════════════════════════════════════════════
-function renderFiscal(){
-  const revenue  = (S.taxRate * 6).toFixed(0);
-  const spending = (S.govSpending + S.infra).toFixed(0);
-  const balance  = S.budgetBalance;
-  const debtRatio= ((S.nationalDebt||850) / 1200 * 100).toFixed(1); // approx GDP proxy
-
-  document.getElementById('budget-panel').innerHTML = `
-    <div class="grid-2">
-      <div class="kpi green"><div class="kpi-label">Tax Revenue</div><div class="kpi-value">$${revenue}B</div><div class="kpi-sub">@ ${S.taxRate}% effective rate</div></div>
-      <div class="kpi red"><div class="kpi-label">Total Expenditure</div><div class="kpi-value">$${spending}B</div><div class="kpi-sub">Spending + Infrastructure</div></div>
-    </div>
-    <div style="margin-top:12px" class="grid-2">
-      <div class="kpi ${balance>=0?'green':'red'}"><div class="kpi-label">Budget Balance</div><div class="kpi-value" style="color:${balance>=0?'var(--accent3)':'var(--accent4)'}">${fmtB(balance)}</div></div>
-      <div class="kpi blue"><div class="kpi-label">Net Debt / GDP</div><div class="kpi-value">${debtRatio}%</div><div class="kpi-sub">${debtRatio>40?'⚠️ Elevated':'✅ Sustainable'}</div></div>
-    </div>`;
-
-  const fisStim = ((S.govSpending-120)*0.05 - (S.taxRate-22)*0.3 + S.infra*0.02) * (S.multiplier||1.2);
-  document.getElementById('multiplier-panel').innerHTML = `
-    <div style="font-size:13px;margin-bottom:12px">Fiscal impulse (estimated GDP impact): <strong style="color:${fisStim>=0?'var(--accent3)':'var(--accent4)'};font-family:var(--font-mono)">${fisStim>=0?'+':''}${fisStim.toFixed(2)}pp</strong></div>
-    <div class="progress-wrap">
-      <div class="progress-header"><span class="progress-label">Spending stimulus</span><span class="progress-val">$${(S.govSpending-120>0?S.govSpending-120:0).toFixed(0)}B above baseline</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100,(S.govSpending/300)*100)}%;background:var(--accent3)"></div></div>
-    </div>
-    <div class="progress-wrap">
-      <div class="progress-header"><span class="progress-label">Tax drag</span><span class="progress-val">${S.taxRate.toFixed(1)}% effective rate</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${(S.taxRate/50)*100}%;background:var(--accent4)"></div></div>
-    </div>`;
-}
-
-// ══════════════════════════════════════════════════════
-//  SIMULATE PAGE
-// ══════════════════════════════════════════════════════
-function renderPreSim(){
-  document.getElementById('quarter-display').textContent = `Quarter ${S.currentQuarter} — click to advance`;
-}
-
-document.getElementById('simulate-btn').addEventListener('click', ()=>{
-  const prevGdp   = S.gdpGrowth,   prevInf  = S.inflation;
-  const prevUnemp = S.unemployment, prevBud  = S.budgetBalance;
-
-  runSimulation();
-  saveAll();
-
-  // Update quarter badge
-  document.getElementById('quarter-display').textContent = `Quarter ${S.currentQuarter} — advanced`;
-
-  // Sim result card
-  const dir = v => v>0?'↑':'↓';
-  document.getElementById('sim-result').innerHTML = `
-    <div class="grid-2" style="gap:12px">
-      <div class="kpi gold"><div class="kpi-label">GDP Growth</div><div class="kpi-value">${fmt(S.gdpGrowth)}</div><div class="kpi-delta ${S.gdpGrowth>=prevGdp?'pos':'neg'}">${dir(S.gdpGrowth-prevGdp)} ${Math.abs(S.gdpGrowth-prevGdp).toFixed(2)}pp</div></div>
-      <div class="kpi red"><div class="kpi-label">Inflation</div><div class="kpi-value">${fmt(S.inflation)}</div><div class="kpi-delta ${S.inflation<=prevInf?'pos':'neg'}">${dir(S.inflation-prevInf)} ${Math.abs(S.inflation-prevInf).toFixed(2)}pp</div></div>
-      <div class="kpi blue"><div class="kpi-label">Unemployment</div><div class="kpi-value">${fmt(S.unemployment)}</div><div class="kpi-delta ${S.unemployment<=prevUnemp?'pos':'neg'}">${dir(S.unemployment-prevUnemp)} ${Math.abs(S.unemployment-prevUnemp).toFixed(2)}pp</div></div>
-      <div class="kpi green"><div class="kpi-label">Budget</div><div class="kpi-value" style="color:${fmtC(S.budgetBalance)}">${fmtB(S.budgetBalance)}</div><div class="kpi-delta ${S.budgetBalance>=prevBud?'pos':'neg'}">${dir(S.budgetBalance-prevBud)} $${Math.abs(S.budgetBalance-prevBud).toFixed(0)}B</div></div>
-    </div>
-    <div style="margin-top:12px;font-size:12px;color:var(--muted)">National Debt: <span class="td-mono td-red">$${(S.nationalDebt||850).toFixed(0)}B</span></div>`;
-
-  // One-page layout: Dashboard, Monetary & Fiscal sections are all visible
-  // at once, so refresh them too (Dashboard's advisory card covers the log).
-  renderDashboard();
-  renderMonetary();
-  renderFiscal();
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+document.querySelectorAll('#tabs .tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#tabs .tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+    if (btn.dataset.tab === 'historical') renderHistoricalTable();
+    if (btn.dataset.tab === 'balance') renderBalanceSheets();
+    if (btn.dataset.tab === 'flowoffunds') renderFlowOfFunds();
+    if (btn.dataset.tab === 'compare') renderCompare();
+  });
 });
 
-// ══════════════════════════════════════════════════════
-//  PROJECTIONS
-// ══════════════════════════════════════════════════════
-let projChart = null;
-function calcProjections(){
-  const years   = parseInt(document.getElementById('proj-years').value)||10;
-  const gdpBase = parseFloat(document.getElementById('proj-gdp-trend').value)||2.5;
-  const pop     = parseFloat(document.getElementById('proj-pop').value)||1.2;
-
-  const labels=[], cons=[], base=[], opt=[];
-  let cC=S.gdpGrowth, cB=S.gdpGrowth, cO=S.gdpGrowth;
-  for(let y=1;y<=years;y++){
-    const yr = new Date().getFullYear()+y;
-    labels.push(yr);
-    cC = Math.max(-2, cC + (gdpBase-cC)*0.3 - 0.3 + pop*0.1);
-    cB = Math.max(-2, cB + (gdpBase-cB)*0.4       + pop*0.15);
-    cO = Math.max(-2, cO + (gdpBase-cO)*0.5 + 0.3 + pop*0.2);
-    cons.push(parseFloat(cC.toFixed(2)));
-    base.push(parseFloat(cB.toFixed(2)));
-    opt.push(parseFloat(cO.toFixed(2)));
-  }
-
-  const datasets = [
-    {label:'Conservative',data:cons,borderColor:'#e06b6b',backgroundColor:'rgba(224,107,107,.06)',tension:.3,borderWidth:2,fill:true},
-    {label:'Base',         data:base,borderColor:'#c8a96e',backgroundColor:'rgba(200,169,110,.06)',tension:.3,borderWidth:2,fill:true},
-    {label:'Optimistic',   data:opt, borderColor:'#4ecb8a',backgroundColor:'rgba(78,203,138,.06)', tension:.3,borderWidth:2,fill:true},
-  ];
-
-  if(projChart){ projChart.data.labels=labels; projChart.data.datasets=datasets; projChart.update(); }
-  else { projChart = new Chart(document.getElementById('proj-chart').getContext('2d'),{type:'line',data:{labels,datasets},options:getChartOptions()}); }
-
-  document.getElementById('proj-table').innerHTML = `<table>
-    <thead><tr><th>Year</th><th>Conservative GDP</th><th>Base GDP</th><th>Optimistic GDP</th><th>Assessment</th></tr></thead>
-    <tbody>${labels.map((yr,i)=>{
-      const assessment = opt[i]>gdpBase?'<span class="badge badge-green">On Track</span>':base[i]>0?'<span class="badge badge-gold">Caution</span>':'<span class="badge badge-red">At Risk</span>';
-      return `<tr>
-        <td class="td-mono">${yr}</td>
-        <td class="td-mono ${cons[i]>=0?'td-green':'td-red'}">${cons[i].toFixed(2)}%</td>
-        <td class="td-mono td-gold">${base[i].toFixed(2)}%</td>
-        <td class="td-mono td-green">${opt[i].toFixed(2)}%</td>
-        <td>${assessment}</td>
-      </tr>`;
-    }).join('')}</tbody>
-  </table>`;
-}
-
-// ══════════════════════════════════════════════════════
-//  PDF REPORT
-// ══════════════════════════════════════════════════════
-function exportPolicyReport(){
-  if(typeof window.jspdf === 'undefined'){ alert('PDF library not loaded yet — try again in a moment.'); return; }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const gold=[200,169,110], dark=[22,25,32];
-
-  doc.setFillColor(...dark); doc.rect(0,0,220,40,'F');
-  doc.setTextColor(...gold); doc.setFontSize(20); doc.setFont('helvetica','bold');
-  doc.text('ApexRepublic', 14, 18);
-  doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
-  doc.text('Macroeconomic Policy Report', 14, 27);
-  doc.text(`Quarter ${S.currentQuarter} · Generated ${new Date().toLocaleDateString()}`, 14, 34);
-
-  let y = 50;
-  doc.setTextColor(0,0,0); doc.setFontSize(13); doc.setFont('helvetica','bold');
-  doc.text('Key Economic Indicators', 14, y); y+=8;
-
-  doc.autoTable({
-    startY: y,
-    head:[['Indicator','Value','Target','Status']],
-    body:[
-      ['GDP Growth',         fmt(S.gdpGrowth),    (S.gdpTarget||2.5).toFixed(1)+'%', S.gdpGrowth>=(S.gdpTarget||2.5)-0.5?'✓ On Track':'⚠ Below Target'],
-      ['Inflation',          fmt(S.inflation),    (S.inflationTarget||2.5).toFixed(1)+'%', Math.abs(S.inflation-(S.inflationTarget||2.5))<1?'✓ On Target':'⚠ Off Target'],
-      ['Unemployment',       fmt(S.unemployment), (S.employTarget||4.5).toFixed(1)+'%', S.unemployment<=(S.employTarget||4.5)+1?'✓ Near Full Emp':'⚠ Above Target'],
-      ['Budget Balance',     fmtB(S.budgetBalance), 'Surplus', S.budgetBalance>=0?'✓ Surplus':'⚠ Deficit'],
-      ['National Debt',      '$'+(S.nationalDebt||850).toFixed(0)+'B', '< $1,000B', (S.nationalDebt||850)<1000?'✓ Manageable':'⚠ High'],
-    ],
-    styles:{fontSize:10},
-    headStyles:{fillColor:dark,textColor:gold},
+document.querySelectorAll('#hist-sector-tabs .sector-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#hist-sector-tabs .sector-tab').forEach(b => { b.classList.remove('active'); b.style.borderColor='transparent'; b.style.color='#64748b'; });
+    btn.classList.add('active');
+    btn.style.borderColor = SECTOR_COLORS[btn.dataset.sector];
+    btn.style.color = SECTOR_COLORS[btn.dataset.sector];
+    state.histSector = btn.dataset.sector;
+    renderHistoricalTable();
   });
+});
 
-  y = doc.lastAutoTable.finalY + 12;
-  doc.setFontSize(13); doc.setFont('helvetica','bold');
-  doc.text('Current Policy Settings', 14, y); y+=8;
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  // Simulator
+  renderLeversPanel(document.getElementById('levers-panel'), state.levers, (levers) => runSimulator(levers));
+  runSimulator(state.levers);
 
-  doc.autoTable({
-    startY: y,
-    head:[['Policy','Setting']],
-    body:[
-      ['Cash Rate',         S.interestRate.toFixed(2)+'%'],
-      ['Reserve Ratio',     S.reserveRatio.toFixed(1)+'%'],
-      ['QE Programme',      S.qe>0?'$'+S.qe+'B':'Inactive'],
-      ['Effective Tax Rate',S.taxRate.toFixed(1)+'%'],
-      ['Government Spending','$'+S.govSpending+'B'],
-      ['Infrastructure',    '$'+S.infra+'B'],
-    ],
-    styles:{fontSize:10},
-    headStyles:{fillColor:dark,textColor:gold},
-  });
+  // Balance sheets year selector
+  const bsSel = document.getElementById('bs-year');
+  bsSel.innerHTML = YEARS.map(y => `<option value="${y}">${y}</option>`).join('');
+  bsSel.value = String(state.bsYear);
+  bsSel.addEventListener('change', e => { state.bsYear = parseInt(e.target.value); renderBalanceSheets(); });
 
-  doc.save('apexrepublic-policy-report.pdf');
+  // Flow of Funds year selector
+  const fofSel = document.getElementById('fof-year');
+  fofSel.innerHTML = [2011,2012,2013].map(y => `<option value="${y}">${y}</option>`).join('');
+  fofSel.value = String(state.fofYear);
+  fofSel.addEventListener('change', e => { state.fofYear = parseInt(e.target.value); renderFlowOfFunds(); });
+
+  // Restore key
+  loadKey();
 }
-
-// ══════════════════════════════════════════════════════
-//  DELTA HELPER
-// ══════════════════════════════════════════════════════
-function setDelta(elId, current, previous){
-  const el = document.getElementById(elId); if(!el) return;
-  const diff = current - previous;
-  if(Math.abs(diff)<0.005){ el.textContent=''; return; }
-  el.textContent = (diff>0?'+':'')+diff.toFixed(2)+'pp';
-  el.className = 'kpi-delta '+(diff>0?'pos':'neg');
-}
-
-// ══════════════════════════════════════════════════════
-//  SLIDER LIVE UPDATES
-// ══════════════════════════════════════════════════════
-function wireSliders(){
-  const sliders = [
-    ['interest-rate',  'interest-rate-val',  v=>v.toFixed(2)+'%',  false],
-    ['reserve-ratio',  'reserve-ratio-val',  v=>v.toFixed(1)+'%',  false],
-    ['qe-slider',      'qe-val',             v=>'$'+v.toFixed(0)+'B', false],
-    ['tax-rate',       'tax-rate-val',       v=>v.toFixed(1)+'%',  true],
-    ['gov-spending',   'gov-spending-val',   v=>'$'+v.toFixed(0)+'B', true],
-    ['infra-slider',   'infra-val',          v=>'$'+v.toFixed(0)+'B', true],
-  ];
-  sliders.forEach(([id, valId, fmt, isGreen])=>{
-    const el = document.getElementById(id);
-    const valEl = document.getElementById(valId);
-    el.addEventListener('input', ()=>{ valEl.textContent = fmt(parseFloat(el.value)); });
-    S[{
-      'interest-rate':'interestRate','reserve-ratio':'reserveRatio','qe-slider':'qe',
-      'tax-rate':'taxRate','gov-spending':'govSpending','infra-slider':'infra'
-    }[id]] = parseFloat(el.value);
-  });
-}
-
-// ══════════════════════════════════════════════════════
-//  POPULATE FORMS FROM STATE
-// ══════════════════════════════════════════════════════
-function populateForms(){
-  const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.value=v; };
-  set('interest-rate',  S.interestRate);
-  set('reserve-ratio',  S.reserveRatio);
-  set('qe-slider',      S.qe);
-  set('tax-rate',       S.taxRate);
-  set('gov-spending',   S.govSpending);
-  set('infra-slider',   S.infra);
-  // Slider value displays
-  document.getElementById('interest-rate-val').textContent = S.interestRate.toFixed(2)+'%';
-  document.getElementById('reserve-ratio-val').textContent = S.reserveRatio.toFixed(1)+'%';
-  document.getElementById('qe-val').textContent            = '$'+S.qe.toFixed(0)+'B';
-  document.getElementById('tax-rate-val').textContent      = S.taxRate.toFixed(1)+'%';
-  document.getElementById('gov-spending-val').textContent  = '$'+S.govSpending.toFixed(0)+'B';
-  document.getElementById('infra-val').textContent         = '$'+S.infra.toFixed(0)+'B';
-  // Settings form
-  set('s-nation-name',      S.nationName||'ApexRepublic');
-  set('s-cb-name',          S.cbName||'Reserve Bank of ApexRepublic');
-  set('s-currency',         S.currency||'ApexDollar (A$)');
-  set('s-gdp-target',       S.gdpTarget||2.5);
-  set('s-inflation-target', S.inflationTarget||2.5);
-  set('s-employ-target',    S.employTarget||4.5);
-  set('s-noise',            S.noise||'medium');
-  set('s-multiplier',       S.multiplier||1.2);
-  set('s-lag',              S.lag||2);
-  set('s-debt',             S.initDebt||850);
-}
-
-// ══════════════════════════════════════════════════════
-//  INIT — one-page layout: render every section up front
-// ══════════════════════════════════════════════════════
-loadState();
-populateForms();
-wireSliders();
-applyLanguage();
-updateLastUpdated();
-updateStickyOffset();
-renderDashboard();
-renderMonetary();
-renderFiscal();
-renderPreSim();
-calcProjections();
-initScrollSpy();
-initBackToTop();
-window.addEventListener('resize', updateStickyOffset);
-window.addEventListener('load', updateStickyOffset);
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(updateStickyOffset);
+init();
 </script>
-</body>
-</html>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1da4943b8904df6',t:'MTc4NDQ2OTk4MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;"></iframe><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+
+</body></html>
