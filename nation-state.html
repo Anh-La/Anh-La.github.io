@@ -171,9 +171,9 @@
     <button class="tab" data-tab="simulator" role="tab">Policy Simulator</button>
     <button class="tab tab-accent" data-tab="real" style="--accent-color:#2563EB" role="tab">Real</button>
     <button class="tab tab-accent" data-tab="external" style="--accent-color:#059669" role="tab">External</button>
-    <button class="tab tab-accent active" data-tab="govops" style="--accent-color:#D92D20" role="tab">Government</button>
+    <button class="tab tab-accent" data-tab="govops" style="--accent-color:#D92D20" role="tab">Government</button>
     <button class="tab tab-accent" data-tab="monetary" style="--accent-color:#7C3AED" role="tab">Monetary</button>
-    <button class="tab" data-tab="flowoffunds" role="tab">Sector Interlinks</button>
+    <button class="tab active" data-tab="flowoffunds" role="tab">Sector Interlinks</button>
   </div>
 
   <!-- Simulator -->
@@ -461,23 +461,1136 @@
     <div class="layout" style="grid-template-columns:2fr 1fr">
       <div class="card">
         <div class="card-head"><span class="card-title" id="hist-title">Real Sector · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
-        <div class="table-wrap"><table class="fp" id="hist-table"></table></div>
+        <div class="table-wrap"><table class="fp" id="hist-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th></tr></thead><tbody>
+    <tr><td>Nominal GDP</td><td class="">10,964.6</td><td class="">12,956.3</td><td class="">14,737.2</td><td class="">15,747.0</td><td class="">17,629.1</td><td class="">19,427.8</td><td class="">21,165.2</td></tr>
+  
+    <tr><td>Real GDP (2005 prices)</td><td class="">9,864.1</td><td class="">10,508.0</td><td class="">10,760.3</td><td class="">10,584.9</td><td class="">11,099.2</td><td class="">11,727.0</td><td class="">12,074.9</td></tr>
+  
+    <tr><td>Real GDP growth (%)</td><td class="">8.80</td><td class="">6.50</td><td class="">2.40</td><td class="neg">(1.60)</td><td class="">4.90</td><td class="">5.70</td><td class="">3.00</td></tr>
+  
+    <tr><td>GDP deflator (2005=100)</td><td class="">111.20</td><td class="">123.30</td><td class="">137.00</td><td class="">148.80</td><td class="">158.80</td><td class="">165.70</td><td class="">175.30</td></tr>
+  
+    <tr><td>GDP deflator inflation (%)</td><td class="">11.20</td><td class="">10.90</td><td class="">11.10</td><td class="">8.62</td><td class="">6.76</td><td class="">4.30</td><td class="">5.80</td></tr>
+  
+    <tr><td>CPI (2005=100)</td><td class="">111.50</td><td class="">121.90</td><td class="">138.30</td><td class="">149.10</td><td class="">157.60</td><td class="">165.20</td><td class="">172.90</td></tr>
+  
+    <tr><td>Final consumption</td><td class="">8,700.4</td><td class="">10,352.9</td><td class="">12,200.6</td><td class="">13,108.6</td><td class="">14,576.7</td><td class="">16,016.8</td><td class="">17,587.1</td></tr>
+  
+    <tr><td>Gross fixed capital formation</td><td class="">2,919.2</td><td class="">3,202.2</td><td class="">4,044.1</td><td class="">2,463.2</td><td class="">3,463.2</td><td class="">4,287.3</td><td class="">4,455.7</td></tr>
+  
+    <tr><td>Exports of g&amp;s</td><td class="">5,658.6</td><td class="">6,623.9</td><td class="">7,134.1</td><td class="">7,122.0</td><td class="">7,248.1</td><td class="">7,780.1</td><td class="">8,521.2</td></tr>
+  
+    <tr><td>Imports of g&amp;s</td><td class="">6,366.7</td><td class="">7,277.3</td><td class="">8,666.0</td><td class="">7,023.7</td><td class="">7,680.8</td><td class="">8,717.3</td><td class="">9,457.5</td></tr>
+  
+    <tr><td>Output gap (%)</td><td class="">2.20</td><td class="">5.50</td><td class="">3.80</td><td class="neg">(1.60)</td><td class="neg">(1.20)</td><td class="neg">(1.40)</td><td class="neg">(0.90)</td></tr>
+  
+    <tr><td>Potential output</td><td class="">9,649.9</td><td class="">9,961.1</td><td class="">10,371.1</td><td class="">10,754.8</td><td class="">11,237.0</td><td class="">11,888.2</td><td class="">12,184.4</td></tr>
+  </tbody></table></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
         <div class="card">
-          <div class="card-head"><span class="card-title" id="hist-chart1-title">Sector Overview</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart"></canvas></div></div>
+          <div class="card-head"><span class="card-title" id="hist-chart1-title">Growth &amp; Inflation</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart" style="box-sizing: border-box; display: block; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title" id="hist-chart2-title">Detail</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart-2"></canvas></div></div>
+          <div class="card-head"><span class="card-title" id="hist-chart2-title">Output Gap &amp; Potential Output</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart-2" style="box-sizing: border-box; display: block; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
         </div>
       </div>
     </div>
-  </section>
+
+    <!-- Extra Monetary sector reports -->
+    <div id="monetary-reports" class="hidden">
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+
+      <!-- Source charts (from IMF Fiscal & Monetary workbook) -->
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Interest-rate corridor · Broad-money vs credit growth · Macronia 2008–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">Monetary policy rate vs Interbank rate</span><span class="mono" style="font-size:10px;color:var(--muted)">percent, annual</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-1" style="display: block; box-sizing: border-box; height: 224px; width: 654px;" width="818" height="280"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Broad Money vs Private Credit Growth</span><span class="mono" style="font-size:10px;color:var(--muted)">y-o-y, percent</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-2" style="display: block; box-sizing: border-box; height: 224px; width: 654px;" width="818" height="280"></canvas></div></div></div>
+      </div>
+
+      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Worksheets</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Money multiplier · Velocity &amp; money demand · Taylor rule · Baseline 2013 → Forecast 2014</div>
+      </div>
+      <div class="summary" id="mon-kpi" style="margin-top:12px">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#7C3AED"></span>Broad Money 2014</div>
+      <div class="kpi-value">13,309</div>
+      <div class="kpi-sub">+8.83%</div>
+      <div class="kpi-base">2013: 12,229</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Money Multiplier</div>
+      <div class="kpi-value">4.785</div>
+      <div class="kpi-sub">Reserve money → 2,781</div>
+      <div class="kpi-base">Historical avg: 4.982</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Velocity 2014</div>
+      <div class="kpi-value">2.121</div>
+      <div class="kpi-sub">GDP/M2 (avg)</div>
+      <div class="kpi-base">2013: 2.017</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D97706"></span>MP rate 2014 (Taylor)</div>
+      <div class="kpi-value">8.87%</div>
+      <div class="kpi-sub">Interbank: 13.87%</div>
+      <div class="kpi-base">α=1.5 · β=2.3 · ρ=0.2</div>
+    </div>
+  </div>
+
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Money Multiplier — Reserve &amp; Broad Money</span></div>
+          <div class="table-wrap"><table class="fp" id="mm-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Reserve money (bn NC, EOP)</td>
+      <td class="">1,184.60</td><td class="">1,409.04</td><td class="">1,676.45</td><td class="">1,945.49</td><td class="">2,032.02</td><td class="">2,218.28</td><td class="">2,168.67</td><td class="">2,555.96</td><td class="" style="background:#fef8e6">2,781.46</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Broad money (bn NC, EOP)</td>
+      <td class="">6,222.08</td><td class="">7,495.51</td><td class="">8,799.85</td><td class="">9,506.76</td><td class="">9,582.34</td><td class="">10,283.78</td><td class="">11,219.60</td><td class="">12,229.43</td><td class="" style="background:#fef8e6">13,309.29</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Broad money growth (%)</td>
+      <td class="">—</td><td class="">20.46</td><td class="">17.40</td><td class="">8.03</td><td class="">0.80</td><td class="">7.32</td><td class="">9.10</td><td class="">9.00</td><td class="" style="background:#fef8e6">8.83</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Money multiplier (M2 / RM)</td>
+      <td class="">5.25</td><td class="">5.32</td><td class="">5.25</td><td class="">4.89</td><td class="">4.72</td><td class="">4.64</td><td class="">5.17</td><td class="">4.79</td><td class="" style="background:#fef8e6">4.79</td>
+    </tr>
+  </tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Velocity &amp; Money Demand</span></div>
+          <div class="table-wrap"><table class="fp" id="vel-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Nominal GDP (bn NC)</td>
+      <td class="">10,964.62</td><td class="">12,956.32</td><td class="">14,737.19</td><td class="">15,747.01</td><td class="">17,629.08</td><td class="">19,427.85</td><td class="">21,157.29</td><td class="">23,646.19</td><td class="" style="background:#fef8e6">27,082.07</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Broad money — avg stock</td>
+      <td class="">6,222.08</td><td class="">6,858.80</td><td class="">8,147.68</td><td class="">9,153.31</td><td class="">9,544.55</td><td class="">9,933.06</td><td class="">10,751.69</td><td class="">11,724.52</td><td class="" style="background:#fef8e6">12,769.36</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Broad money — EOP stock</td>
+      <td class="">6,222.08</td><td class="">7,495.51</td><td class="">8,799.85</td><td class="">9,506.76</td><td class="">9,582.34</td><td class="">10,283.78</td><td class="">11,219.60</td><td class="">12,229.43</td><td class="" style="background:#fef8e6">13,309.29</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td>Velocity (GDP / avg M2)</td>
+      <td class="">1.76</td><td class="">1.89</td><td class="">1.81</td><td class="">1.72</td><td class="">1.85</td><td class="">1.96</td><td class="">1.97</td><td class="">2.02</td><td class="" style="background:#fef8e6">2.12</td>
+    </tr>
+  </tbody></table></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Taylor Rule — Coefficients &amp; Fitted Series</span></div>
+        <div class="card-body" style="font-size:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div class="table-wrap"><table class="fp" id="taylor-table"><thead><tr><th>Series</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr><td>MP rate — actual (%)</td><td class="">5.000</td><td class="">7.000</td><td class="">8.866</td><td class="" style="background:#fef8e6">8.866</td></tr>
+  
+    <tr><td>MP rate — fitted (%)</td><td class="">8.185</td><td class="">6.600</td><td class="">8.493</td><td class="" style="background:#fef8e6">8.866</td></tr>
+  
+    <tr><td>CPI — actual y/y (%)</td><td class="">4.878</td><td class="">5.000</td><td class="">6.136</td><td class="" style="background:#fef8e6">7.482</td></tr>
+  
+    <tr><td>CPI — target (%)</td><td class="">5.000</td><td class="">5.000</td><td class="">5.000</td><td class="" style="background:#fef8e6">5.000</td></tr>
+  
+    <tr><td>CPI — expectations (%)</td><td class="">6.500</td><td class="">5.000</td><td class="">5.000</td><td class="" style="background:#fef8e6">5.000</td></tr>
+  
+    <tr><td>Inflation gap (%)</td><td class="neg">(0.122)</td><td class="">0.000</td><td class="">1.136</td><td class="" style="background:#fef8e6">2.482</td></tr>
+  
+    <tr><td>Lagged MP rate (%)</td><td class="">10.400</td><td class="">5.000</td><td class="">7.000</td><td class="" style="background:#fef8e6">8.866</td></tr>
+  
+    <tr><td>Neutral real rate (%)</td><td class="">2.000</td><td class="">2.000</td><td class="">2.000</td><td class="" style="background:#fef8e6">2.000</td></tr>
+  
+    <tr><td>Interbank rate (%)</td><td class="">8.000</td><td class="">9.250</td><td class="">12.200</td><td class="" style="background:#fef8e6">13.866</td></tr>
+  </tbody></table></div>
+            <div style="background:#f8fafc;padding:12px;border:1px solid var(--line);font-size:11.5px">
+              <div style="font-weight:700;margin-bottom:6px">Taylor rule formula</div>
+              <div class="mono">i<sub>t</sub> = ρ·i<sub>t-1</sub> + (1−ρ)·[r* + π<sup>e</sup> + α·(π−π*) + β·ygap]</div>
+              <div style="margin-top:10px;font-weight:700">Coefficients</div>
+              <div class="mono">α (inflation gap) = 1.500 · β (output gap) = 2.300 · ρ (smoothing) = 0.200 · r* (neutral) = 2.0%</div>
+              <div style="margin-top:10px" id="taylor-forecast">
+    <div style="font-weight:700">2014 Taylor rule forecast</div>
+    <div class="mono" style="margin-top:4px">i₂₀₁₄ = 0.2×8.866 + 0.8×[2.0 + 5.0 + 1.5×(7.482−5.0) + 2.3×1.422] = <strong>8.866%</strong></div>
+    <div class="mono" style="margin-top:4px">Interbank rate ≈ i + spread → <strong>13.866%</strong></div>
+  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">NFA &amp; OIN — Central Bank Forecast</span>
+            <span class="mono" style="font-size:10px;color:var(--muted)">ΔNFA(USD) = Overall BOP · Val. adj = ΔNER × NFA(USD)</span>
+          </div>
+          <div class="table-wrap"><table class="fp" id="nfa-cb-table">
+    <thead><tr><th>Central Bank NFA &amp; OIN</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr style="font-weight:600;background:#fafafa"><td>NFA (bn NC)</td><td>3,969.92</td><td style="background:#fef8e6">4,155.85</td></tr>
+      <tr><td>NER end-of-period (NC/USD)</td><td>549.42</td><td style="background:#fef8e6">576.89</td></tr>
+      <tr><td>NFA (USD mn)</td><td>7,225.67</td><td style="background:#fef8e6">7,203.88</td></tr>
+      <tr><td>Overall BOP balance (USD mn)</td><td>—</td><td style="background:#fef8e6">(21.79)</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>OIN (bn NC)</td><td>817.47</td><td style="background:#fef8e6">816.21</td></tr>
+      <tr><td>Valuation adjustment (bn NC)</td><td>—</td><td style="background:#fef8e6">(12.57)</td></tr>
+    </tbody></table></div>
+          <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
+            NFA (bn NC) = NFA (USD mn) × NER<sub>eop</sub> / 1000 · OIN<sub>t</sub> = OIN<sub>t-1</sub> + valuation adj.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Total NFA &amp; OIN — Banking System</span>
+            <span class="mono" style="font-size:10px;color:var(--muted)">CB + Other Depository Corporations</span>
+          </div>
+          <div class="table-wrap"><table class="fp" id="nfa-total-table">
+    <thead><tr><th>Total banking system</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr><td>NFA — Central Bank</td><td>3,969.92</td><td style="background:#fef8e6">4,155.85</td></tr>
+      <tr><td>NFA — Other depository corps</td><td>2,473.20</td><td style="background:#fef8e6">2,596.86</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total NFA (bn NC)</td><td>6,443.12</td><td style="background:#fef8e6">6,752.71</td></tr>
+      <tr><td>OIN — Central Bank</td><td>817.47</td><td style="background:#fef8e6">816.21</td></tr>
+      <tr><td>OIN — Other depository corps</td><td>(1,017.53)</td><td style="background:#fef8e6">(1,037.88)</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total OIN (bn NC)</td><td>(200.06)</td><td style="background:#fef8e6">(221.67)</td></tr>
+    </tbody></table></div>
+          <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
+            Total NFA = NFA(CB) + NFA(ODC) · ODC NFA revalued by end-of-period exchange rate change.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Extra External sector reports (shown only when active sector = external) -->
+    <div id="external-reports" class="hidden">
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+
+      <!-- Source charts (from External workbook) -->
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">External Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">BOP composition · IIP · Real exchange rate · Reserves adequacy — Macronia 2006–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">BOP components (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">CA + K + FA = ΔReserves</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-1" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">IIP, in percent of GDP</span><span class="mono" style="font-size:10px;color:var(--muted)">Net IIP = Assets − Liabilities</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-2" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Real exchange rate index (2012=100)</span><span class="mono" style="font-size:10px;color:var(--muted)">Domestic vs trade-partner inflation</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-3" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Reserve adequacy</span><span class="mono" style="font-size:10px;color:var(--muted)">Months of imports · reserves (USD mn)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-4" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+      </div>
+
+      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
+
+      <!-- Balance of Payments -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Balance of Payments</h3>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">BPM6 presentation · Macronia 2006–2013 · millions of USD</div>
+        </div>
+      </div>
+      <div class="layout" style="grid-template-columns:2fr 1fr">
+        <div class="card">
+          <div class="card-head"><span class="card-title">BOP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">Current + Capital + Financial = Reserves (with net E&amp;O)</span></div>
+          <div class="table-wrap"><table class="fp" id="bop-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th></tr></thead><tbody><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Current account</td></tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Current account</td>
+      <td class="neg">(1,101.2)</td><td class="neg">(1,373.0)</td><td class="neg">(2,878.3)</td><td class="neg">(442.6)</td><td class="neg">(1,302.5)</td><td class="neg">(2,396.4)</td><td class="neg">(2,724.4)</td><td class="neg">(2,959.8)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Goods</td>
+      <td class="neg">(2,727.1)</td><td class="neg">(2,985.5)</td><td class="neg">(5,013.3)</td><td class="neg">(2,039.1)</td><td class="neg">(3,439.7)</td><td class="neg">(5,151.4)</td><td class="neg">(5,728.1)</td><td class="neg">(6,194.2)</td>
+    </tr><tr>
+      <td style="padding-left:36px;">    Credit (exports)</td>
+      <td class="">8,101.7</td><td class="">9,299.5</td><td class="">9,555.4</td><td class="">8,838.2</td><td class="">9,516.3</td><td class="">10,383.1</td><td class="">11,494.7</td><td class="">12,095.6</td>
+    </tr><tr>
+      <td style="padding-left:36px;">    Debit (imports)</td>
+      <td class="">10,828.9</td><td class="">12,284.9</td><td class="">14,568.7</td><td class="">10,877.3</td><td class="">12,955.9</td><td class="">15,534.5</td><td class="">17,222.8</td><td class="">18,289.9</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Services</td>
+      <td class="">1,351.1</td><td class="">1,734.1</td><td class="">2,200.9</td><td class="">2,188.1</td><td class="">2,537.2</td><td class="">3,236.9</td><td class="">3,580.6</td><td class="">3,749.2</td>
+    </tr><tr>
+      <td style="padding-left:36px;">    Credit</td>
+      <td class="">2,971.7</td><td class="">3,552.2</td><td class="">4,083.3</td><td class="">3,592.9</td><td class="">4,320.0</td><td class="">4,972.4</td><td class="">5,504.7</td><td class="">5,792.5</td>
+    </tr><tr>
+      <td style="padding-left:36px;">    Debit</td>
+      <td class="">1,620.6</td><td class="">1,818.1</td><td class="">1,882.4</td><td class="">1,404.8</td><td class="">1,782.8</td><td class="">1,735.5</td><td class="">1,924.1</td><td class="">2,043.3</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Primary income</td>
+      <td class="neg">(74.2)</td><td class="neg">(591.3)</td><td class="neg">(508.2)</td><td class="neg">(950.5)</td><td class="neg">(766.6)</td><td class="neg">(804.8)</td><td class="neg">(910.4)</td><td class="neg">(857.7)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Secondary income</td>
+      <td class="">349.1</td><td class="">469.7</td><td class="">442.3</td><td class="">358.8</td><td class="">366.5</td><td class="">322.9</td><td class="">333.5</td><td class="">342.9</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Capital &amp; Financial</td></tr><tr>
+      <td style="padding-left:8px;">Capital account</td>
+      <td class="">1.1</td><td class="">21.2</td><td class="">7.4</td><td class="">58.3</td><td class="">53.6</td><td class="">21.6</td><td class="">37.5</td><td class="">9.0</td>
+    </tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Financial account</td>
+      <td class="neg">(1,793.9)</td><td class="neg">(2,411.9)</td><td class="neg">(2,480.5)</td><td class="neg">(676.9)</td><td class="neg">(1,800.2)</td><td class="neg">(2,518.9)</td><td class="neg">(2,684.8)</td><td class="neg">(2,929.1)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Direct investment</td>
+      <td class="neg">(1,371.0)</td><td class="neg">(1,633.7)</td><td class="neg">(2,072.3)</td><td class="neg">(1,339.0)</td><td class="neg">(1,440.8)</td><td class="neg">(2,118.3)</td><td class="neg">(1,844.0)</td><td class="neg">(1,985.4)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Portfolio investment</td>
+      <td class="">442.1</td><td class="neg">(11.6)</td><td class="neg">(356.6)</td><td class="">276.1</td><td class="neg">(268.1)</td><td class="neg">(261.4)</td><td class="neg">(784.9)</td><td class="neg">(781.8)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Financial derivatives</td>
+      <td class="neg">(25.0)</td><td class="">50.0</td><td class="neg">(19.0)</td><td class="">18.0</td><td class="">78.0</td><td class="">69.0</td><td class="">74.5</td><td class="">80.2</td>
+    </tr><tr>
+      <td style="padding-left:22px;">  Other investment</td>
+      <td class="neg">(840.0)</td><td class="neg">(816.6)</td><td class="neg">(32.6)</td><td class="">368.0</td><td class="neg">(169.3)</td><td class="neg">(208.2)</td><td class="neg">(130.4)</td><td class="neg">(242.0)</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Net errors &amp; omissions</td>
+      <td class="">57.0</td><td class="neg">(42.4)</td><td class="">42.4</td><td class="neg">(32.7)</td><td class="">9.8</td><td class="neg">(11.7)</td><td class="">53.6</td><td class="">0.0</td>
+    </tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Overall balance</td>
+      <td class="">750.8</td><td class="">1,017.7</td><td class="neg">(348.0)</td><td class="">259.9</td><td class="">561.1</td><td class="">132.4</td><td class="">51.5</td><td class="neg">(21.8)</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Reserves &amp; memo</td></tr><tr>
+      <td style="padding-left:8px;">Reserve assets (stock)</td>
+      <td class="">3,114.6</td><td class="">4,113.6</td><td class="">3,798.7</td><td class="">4,066.2</td><td class="">4,629.7</td><td class="">4,758.3</td><td class="">4,809.8</td><td class="">4,779.0</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Reserves in months of imports</td>
+      <td class="">—</td><td class="">—</td><td class="">2.8</td><td class="">4.0</td><td class="">3.8</td><td class="">3.3</td><td class="">3.0</td><td class="">2.8</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Current account (% GDP)</td>
+      <td class="neg">(5.1)</td><td class="neg">(5.5)</td><td class="neg">(10.3)</td><td class="neg">(1.6)</td><td class="neg">(3.9)</td><td class="neg">(6.3)</td><td class="neg">(6.6)</td><td class="neg">(6.6)</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Exports (% GDP)</td>
+      <td class="">51.6</td><td class="">51.2</td><td class="">48.7</td><td class="">45.3</td><td class="">41.3</td><td class="">40.0</td><td class="">41.0</td><td class="">40.1</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Imports (% GDP)</td>
+      <td class="">58.1</td><td class="">56.2</td><td class="">58.7</td><td class="">44.7</td><td class="">44.0</td><td class="">45.0</td><td class="">46.2</td><td class="">45.6</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Trade openness (X+M / GDP)</td>
+      <td class="">109.7</td><td class="">107.5</td><td class="">107.4</td><td class="">90.0</td><td class="">85.2</td><td class="">85.0</td><td class="">87.3</td><td class="">85.7</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Nominal GDP (USD mn)</td>
+      <td class="">21,444.5</td><td class="">25,079.1</td><td class="">28,004.9</td><td class="">27,467.9</td><td class="">33,526.2</td><td class="">38,364.6</td><td class="">41,420.8</td><td class="">44,597.0</td>
+    </tr><tr>
+      <td style="padding-left:8px;">FX rate — avg (NC/USD)</td>
+      <td class="">511.3</td><td class="">516.6</td><td class="">526.2</td><td class="">573.3</td><td class="">525.8</td><td class="">506.4</td><td class="">510.8</td><td class="">530.2</td>
+    </tr><tr>
+      <td style="padding-left:8px;">FX rate — EOP (NC/USD)</td>
+      <td class="">517.9</td><td class="">498.1</td><td class="">555.5</td><td class="">565.2</td><td class="">513.0</td><td class="">510.6</td><td class="">511.0</td><td class="">549.4</td>
+    </tr></tbody></table></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-head"><span class="card-title">Current Account Composition</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="bop-ca-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Reserves &amp; Import Coverage</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="bop-res-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- International Investment Position -->
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">International Investment Position</h3>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Net IIP = Assets − Liabilities · millions of USD · end-of-period stocks</div>
+        </div>
+      </div>
+      <div class="layout" style="grid-template-columns:2fr 1fr">
+        <div class="card">
+          <div class="card-head"><span class="card-title">IIP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">DI + PI + Deriv. + Other + Reserves</span></div>
+          <div class="table-wrap"><table class="fp" id="iip-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th></tr></thead><tbody><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Net International Investment Position</td>
+      <td class="neg">(3,563.8)</td><td class="neg">(4,969.8)</td><td class="neg">(7,774.2)</td><td class="neg">(8,174.6)</td><td class="neg">(9,410.3)</td><td class="neg">(11,800.6)</td><td class="neg">(14,565.6)</td><td class="neg">(17,501.2)</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Assets</td></tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Total assets</td>
+      <td class="">10,162.9</td><td class="">11,795.4</td><td class="">11,617.7</td><td class="">11,915.2</td><td class="">12,732.4</td><td class="">12,928.9</td><td class="">13,775.6</td><td class="">14,639.7</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Direct investments abroad</td>
+      <td class="">1,268.0</td><td class="">1,530.4</td><td class="">1,536.3</td><td class="">1,543.8</td><td class="">1,568.6</td><td class="">1,626.4</td><td class="">2,131.8</td><td class="">2,676.1</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Portfolio investments</td>
+      <td class="">1,317.9</td><td class="">1,488.2</td><td class="">950.9</td><td class="">1,275.6</td><td class="">1,055.0</td><td class="">796.1</td><td class="">796.1</td><td class="">796.1</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Financial derivatives</td>
+      <td class="">351.0</td><td class="">391.0</td><td class="">379.0</td><td class="">402.0</td><td class="">472.0</td><td class="">527.0</td><td class="">568.0</td><td class="">648.2</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Other investments</td>
+      <td class="">4,111.4</td><td class="">4,272.2</td><td class="">4,952.8</td><td class="">4,627.6</td><td class="">5,007.1</td><td class="">5,221.1</td><td class="">5,469.9</td><td class="">5,740.3</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Reserve assets</td>
+      <td class="">3,114.6</td><td class="">4,113.6</td><td class="">3,798.7</td><td class="">4,066.2</td><td class="">4,629.7</td><td class="">4,758.3</td><td class="">4,809.8</td><td class="">4,779.0</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Liabilities</td></tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Total liabilities</td>
+      <td class="">13,726.7</td><td class="">16,765.2</td><td class="">19,391.9</td><td class="">20,089.8</td><td class="">22,142.7</td><td class="">24,729.5</td><td class="">28,339.6</td><td class="">32,141.9</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Direct investments</td>
+      <td class="">6,906.2</td><td class="">8,800.3</td><td class="">10,878.5</td><td class="">12,226.0</td><td class="">13,691.6</td><td class="">15,867.7</td><td class="">18,217.2</td><td class="">20,746.8</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Portfolio investments</td>
+      <td class="">1,177.4</td><td class="">1,359.4</td><td class="">1,183.7</td><td class="">1,229.3</td><td class="">1,278.8</td><td class="">1,281.3</td><td class="">2,066.2</td><td class="">2,848.0</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Financial derivatives</td>
+      <td class="">102.0</td><td class="">92.0</td><td class="">99.0</td><td class="">104.0</td><td class="">96.0</td><td class="">82.0</td><td class="">102.0</td><td class="">102.0</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Other investments</td>
+      <td class="">5,541.1</td><td class="">6,513.5</td><td class="">7,230.7</td><td class="">6,530.5</td><td class="">7,076.3</td><td class="">7,498.5</td><td class="">7,954.3</td><td class="">8,445.1</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Ratios (% of GDP)</td></tr><tr>
+      <td style="padding-left:8px;">Net IIP (% GDP)</td>
+      <td class="neg">(16.6)</td><td class="neg">(19.8)</td><td class="neg">(27.8)</td><td class="neg">(29.8)</td><td class="neg">(28.1)</td><td class="neg">(30.8)</td><td class="neg">(35.2)</td><td class="neg">(39.3)</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Assets (% GDP)</td>
+      <td class="">47.4</td><td class="">47.0</td><td class="">41.5</td><td class="">43.4</td><td class="">38.0</td><td class="">33.7</td><td class="">33.3</td><td class="">32.8</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Liabilities (% GDP)</td>
+      <td class="">64.0</td><td class="">66.9</td><td class="">69.2</td><td class="">73.1</td><td class="">66.1</td><td class="">64.5</td><td class="">68.4</td><td class="">72.1</td>
+    </tr></tbody></table></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-head"><span class="card-title">Net IIP (% of GDP)</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="iip-net-chart" style="display: block; box-sizing: border-box; height: 204px; width: 419px;" width="524" height="255"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Liabilities Composition</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="iip-liab-chart" style="display: block; box-sizing: border-box; height: 204px; width: 419px;" width="524" height="255"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- External Debt -->
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">External Debt</h3>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">By debtor sector · short vs long term · disbursements &amp; amortization · millions of USD</div>
+        </div>
+      </div>
+      <div class="layout" style="grid-template-columns:2fr 1fr">
+        <div class="card">
+          <div class="card-head"><span class="card-title">External debt — full detail</span></div>
+          <div class="table-wrap"><table class="fp" id="exdebt-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th></tr></thead><tbody><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Total external debt</td>
+      <td class="">7,246.0</td><td class="">8,366.2</td><td class="">8,964.3</td><td class="">7,878.8</td><td class="">8,631.8</td><td class="">9,764.2</td><td class="">10,236.2</td><td class="">11,068.0</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">By debtor sector</td></tr><tr>
+      <td style="padding-left:22px;">General Government</td>
+      <td class="">1,530.5</td><td class="">1,631.3</td><td class="">1,349.5</td><td class="">1,428.9</td><td class="">2,024.3</td><td class="">1,835.1</td><td class="">2,393.0</td><td class="">2,930.4</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Central Bank</td>
+      <td class="">94.0</td><td class="">88.9</td><td class="">80.6</td><td class="">58.0</td><td class="">53.5</td><td class="">303.8</td><td class="">35.6</td><td class="">35.6</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Other depository corporations</td>
+      <td class="">1,165.3</td><td class="">1,706.0</td><td class="">2,466.1</td><td class="">1,615.7</td><td class="">1,617.7</td><td class="">2,444.9</td><td class="">2,627.2</td><td class="">2,921.7</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Other sectors</td>
+      <td class="">3,698.8</td><td class="">4,184.9</td><td class="">4,274.3</td><td class="">4,157.0</td><td class="">4,167.3</td><td class="">3,700.7</td><td class="">3,700.7</td><td class="">3,700.7</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Debt in direct investments</td>
+      <td class="">757.4</td><td class="">755.2</td><td class="">793.8</td><td class="">619.3</td><td class="">769.0</td><td class="">1,479.7</td><td class="">1,479.7</td><td class="">1,479.7</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">By maturity</td></tr><tr>
+      <td style="padding-left:8px;">Short term</td>
+      <td class="">2,411.8</td><td class="">3,093.6</td><td class="">3,625.4</td><td class="">2,290.0</td><td class="">2,204.6</td><td class="">1,709.2</td><td class="">2,556.1</td><td class="">2,763.8</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Long term</td>
+      <td class="">4,834.2</td><td class="">5,272.6</td><td class="">5,338.9</td><td class="">5,588.8</td><td class="">6,427.2</td><td class="">8,055.0</td><td class="">7,680.1</td><td class="">8,304.2</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Ratio short/long (%)</td>
+      <td class="">49.9</td><td class="">58.7</td><td class="">67.9</td><td class="">41.0</td><td class="">34.3</td><td class="">21.2</td><td class="">33.3</td><td class="">33.3</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Flows (long-term)</td></tr><tr>
+      <td style="padding-left:8px;">Total disbursements (long-term)</td>
+      <td class="">705.9</td><td class="">945.2</td><td class="">1,097.4</td><td class="">890.2</td><td class="">1,472.6</td><td class="">2,608.3</td><td class="">673.3</td><td class="">624.2</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Total amortization (long-term)</td>
+      <td class="">612.3</td><td class="">506.7</td><td class="">1,031.1</td><td class="">640.2</td><td class="">634.2</td><td class="">980.4</td><td class="">1,048.2</td><td class="">—</td>
+    </tr></tbody></table></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-head"><span class="card-title">Debt by Sector</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-sector-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Short vs Long Term</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-maturity-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- External Stock & Debt Indicators -->
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Stock &amp; Debt Indicators</h3>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">External vulnerability ratios · implicit interest rate · maturity · roll-over</div>
+        </div>
+      </div>
+      <div class="summary" id="exstock-kpi">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#0F172A"></span>Debt / GDP</div>
+      <div class="kpi-value">24.8%</div>
+      <div class="kpi-sub">vs 2006: 33.8%</div>
+      <div class="kpi-base">Debt / X&amp;Gs: 61.9%</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D92D20"></span>Debt Service / X&amp;Gs</div>
+      <div class="kpi-value">7.87%</div>
+      <div class="kpi-sub">Interest + amortization</div>
+      <div class="kpi-base">Debt Svc / GDP: 3.16%</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Reserves cover</div>
+      <div class="kpi-value">2.6m</div>
+      <div class="kpi-sub">Months of imports (g&amp;s)</div>
+      <div class="kpi-base">Threshold: 3 months</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D97706"></span>Implicit rate on debt</div>
+      <div class="kpi-value">2.58%</div>
+      <div class="kpi-sub">Avg maturity: 6.8y</div>
+      <div class="kpi-base">Roll-over: 173%</div>
+    </div>
+  </div>
+      <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
+        <div class="card">
+          <div class="card-head"><span class="card-title">External stock indicators — 2006–2013</span></div>
+          <div class="table-wrap"><table class="fp" id="exstock-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th></tr></thead><tbody><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Vulnerability ratios (%)</td></tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Net IIP / GDP</td>
+      <td class="neg">(16.6)</td><td class="neg">(19.8)</td><td class="neg">(27.8)</td><td class="neg">(29.8)</td><td class="neg">(28.1)</td><td class="neg">(30.8)</td><td class="neg">(35.2)</td><td class="neg">(39.3)</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Assets / GDP</td>
+      <td class="">47.4</td><td class="">47.0</td><td class="">41.5</td><td class="">43.4</td><td class="">38.0</td><td class="">33.7</td><td class="">33.3</td><td class="">32.8</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Liabilities / GDP</td>
+      <td class="">64.0</td><td class="">66.9</td><td class="">69.3</td><td class="">73.1</td><td class="">66.1</td><td class="">64.5</td><td class="">68.4</td><td class="">72.1</td>
+    </tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">External debt / GDP</td>
+      <td class="">33.8</td><td class="">33.4</td><td class="">32.0</td><td class="">28.7</td><td class="">25.8</td><td class="">25.5</td><td class="">24.7</td><td class="">24.8</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Debt / Exports of g&amp;s</td>
+      <td class="">65.4</td><td class="">65.1</td><td class="">65.7</td><td class="">63.4</td><td class="">62.4</td><td class="">63.6</td><td class="">60.2</td><td class="">61.9</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Debt service / GDP</td>
+      <td class="">4.1</td><td class="">3.8</td><td class="">4.9</td><td class="">3.5</td><td class="">2.8</td><td class="">3.3</td><td class="">3.2</td><td class="">3.2</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Debt service / Exports of g&amp;s</td>
+      <td class="">7.9</td><td class="">7.4</td><td class="">10.2</td><td class="">7.6</td><td class="">6.8</td><td class="">8.2</td><td class="">7.9</td><td class="">7.9</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Reserve adequacy</td></tr><tr style="font-weight:600;background:#fafafa">
+      <td style="padding-left:8px;color:#0f172a">Reserves in months of imports</td>
+      <td class="">2.7</td><td class="">3.0</td><td class="">3.7</td><td class="">3.3</td><td class="">3.2</td><td class="">3.0</td><td class="">2.8</td><td class="">2.6</td>
+    </tr><tr>
+      <td style="padding-left:22px;">Reserves / Short-term debt at rem. maturity (%)</td>
+      <td class="">106.7</td><td class="">99.7</td><td class="">89.1</td><td class="">139.1</td><td class="">145.4</td><td class="">172.6</td><td class="">—</td><td class="">—</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Debt cost &amp; maturity</td></tr><tr>
+      <td style="padding-left:8px;">Implicit avg. interest rate (%)</td>
+      <td class="">—</td><td class="">5.6</td><td class="">4.1</td><td class="">3.7</td><td class="">3.7</td><td class="">3.1</td><td class="">2.9</td><td class="">2.6</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Avg maturity of long-term debt (yrs)</td>
+      <td class="">—</td><td class="">9.5</td><td class="">5.1</td><td class="">8.3</td><td class="">8.8</td><td class="">6.6</td><td class="">7.7</td><td class="">6.8</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Roll-over rate — long term (%)</td>
+      <td class="">115.3</td><td class="">186.5</td><td class="">106.4</td><td class="">139.0</td><td class="">232.2</td><td class="">266.0</td><td class="">64.2</td><td class="">173.4</td>
+    </tr><tr><td colspan="9" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Memoranda (USD mn)</td></tr><tr>
+      <td style="padding-left:8px;">Exports of g&amp;s (BOP)</td>
+      <td class="">11,073.4</td><td class="">12,851.7</td><td class="">13,638.7</td><td class="">12,431.1</td><td class="">13,836.2</td><td class="">15,355.5</td><td class="">16,999.4</td><td class="">17,888.1</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Imports of g&amp;s (BOP)</td>
+      <td class="">12,449.5</td><td class="">14,103.0</td><td class="">16,451.1</td><td class="">12,282.1</td><td class="">14,738.7</td><td class="">17,270.0</td><td class="">19,146.9</td><td class="">20,333.2</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Interest payments</td>
+      <td class="">266.9</td><td class="">438.2</td><td class="">352.6</td><td class="">308.0</td><td class="">306.6</td><td class="">284.1</td><td class="">286.0</td><td class="">275.0</td>
+    </tr><tr>
+      <td style="padding-left:8px;">Total debt service</td>
+      <td class="">879.2</td><td class="">944.9</td><td class="">1,383.7</td><td class="">948.2</td><td class="">940.8</td><td class="">1,264.5</td><td class="">1,334.2</td><td class="">1,408.4</td>
+    </tr></tbody></table></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-head"><span class="card-title">Debt &amp; Debt Service (% GDP)</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="exstock-debt-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Reserve Adequacy</span></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="exstock-res-chart" style="display: block; box-sizing: border-box; height: 204px; width: 422px;" width="528" height="255"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div id="real-reports" class="">
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+
+      <!-- Source charts (from Real workbook) -->
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Growth &amp; output gap · Inflation indicators · Saving/Investment balance · GDP contributions — Macronia 2008–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; output gap</span><span class="mono" style="font-size:10px;color:var(--muted)">percent</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-1" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Inflation indicators</span><span class="mono" style="font-size:10px;color:var(--muted)">GDP deflator · CPI average · CPI eop (percent)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-2" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Saving and Investment (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">Saving − Investment gap</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-3" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; contribution (percent)</span><span class="mono" style="font-size:10px;color:var(--muted)">Investment · Exports · Imports · Consumption</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-4" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+      </div>
+
+      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
+
+      <!-- Real GDP & Output Gap (goes first — anchors every other worksheet) -->
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real GDP &amp; Output Gap — Forecast Methods</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Three IMF FPP methods · Trend regression Ln(RY) = 7.674 + 0.040·(trend) · R² = 0.988 · Baseline 2013 → Forecast 2014</div>
+      </div>
+      <div class="summary" id="rgdp-kpi" style="margin-top:12px">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Expert assessment</div>
+      <div class="kpi-value">4.630%</div>
+      <div class="kpi-sub">→ RY 2014: 13,366</div>
+      <div class="kpi-base">Regression R² = 0.988</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Trend growth (β=0.040)</div>
+      <div class="kpi-value">4.000%</div>
+      <div class="kpi-sub">→ RY 2014: 13,286</div>
+      <div class="kpi-base">Regression R² = 0.988</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D97706"></span>Recent avg (7-yr geom.)</div>
+      <div class="kpi-value">3.763%</div>
+      <div class="kpi-sub">→ RY 2014: 13,255</div>
+      <div class="kpi-base">Regression R² = 0.988</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#0F172A"></span>Chosen path 2014</div>
+      <div class="kpi-value">Δ 4.63%</div>
+      <div class="kpi-sub">RY: 13,366 · Output gap: 1.42%</div>
+      <div class="kpi-base">Regression R² = 0.988</div>
+    </div>
+  </div>
+      <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Historical GDP, Trend &amp; Potential Output</span></div>
+          <div class="table-wrap"><table class="fp" id="rgdp-table"><thead><tr><th>Line item</th><th>2006</th><th>2007</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real GDP (bn NC, 2005p)</td>
+      <td class="">9,864.10</td><td class="">10,508.01</td><td class="">10,760.33</td><td class="">10,584.88</td><td class="">11,099.25</td><td class="">11,726.95</td><td class="">12,184.44</td><td class="">12,774.63</td><td class="" style="background:#fef8e6">13,366.10</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  RY % growth</td>
+      <td class="">8.84</td><td class="">6.53</td><td class="">2.40</td><td class="neg">(1.63)</td><td class="">4.86</td><td class="">5.66</td><td class="">3.90</td><td class="">4.84</td><td class="" style="background:#fef8e6">4.63</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Trend applied to prev year</td>
+      <td class="">—</td><td class="">10,258.67</td><td class="">10,928.33</td><td class="">11,190.74</td><td class="">11,008.27</td><td class="">11,543.22</td><td class="">12,196.03</td><td class="">12,671.82</td><td class="" style="background:#fef8e6">13,285.62</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Potential Output (WEO)</td>
+      <td class="">9,649.91</td><td class="">9,961.09</td><td class="">10,371.12</td><td class="">10,754.77</td><td class="">11,237.05</td><td class="">11,888.18</td><td class="">12,184.44</td><td class="">12,671.82</td><td class="" style="background:#fef8e6">13,178.69</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Output gap (%)</td>
+      <td class="">2.22</td><td class="">5.49</td><td class="">3.75</td><td class="neg">(1.58)</td><td class="neg">(1.23)</td><td class="neg">(1.36)</td><td class="">0.00</td><td class="">0.81</td><td class="" style="background:#fef8e6">1.42</td>
+    </tr>
+  </tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Forecast Method Selector</span></div>
+          <div class="card-body" style="font-size:12px" id="rgdp-method-panel">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      
+        <button class="rgdp-method-btn" data-value="4.63" style="text-align:left;padding:10px;border:1px solid var(--ink);background:#f1f5f9;font-family:inherit;cursor:pointer">
+          <div style="font-weight:700;font-size:12px">Expert assessment — <span class="mono">4.630%</span></div>
+          <div class="mono" style="font-size:10px;color:var(--muted);margin-top:2px">RY₂₀₁₄ = RY₂₀₁₃ × (1+4.63/100)</div>
+        </button>
+      
+        <button class="rgdp-method-btn" data-value="4" style="text-align:left;padding:10px;border:1px solid var(--line);background:white;font-family:inherit;cursor:pointer">
+          <div style="font-weight:700;font-size:12px">Trend growth rate — <span class="mono">4.000%</span></div>
+          <div class="mono" style="font-size:10px;color:var(--muted);margin-top:2px">g = (Trend coefficient) × 100 = 4.0%</div>
+        </button>
+      
+        <button class="rgdp-method-btn" data-value="3.763" style="text-align:left;padding:10px;border:1px solid var(--line);background:white;font-family:inherit;cursor:pointer">
+          <div style="font-weight:700;font-size:12px">Recent 7yr geometric avg — <span class="mono">3.763%</span></div>
+          <div class="mono" style="font-size:10px;color:var(--muted);margin-top:2px">g = ((RY₂₀₁₃/RY₂₀₀₆)^(1/7) − 1) × 100</div>
+        </button>
+      
+      <div style="padding:10px;background:#f8fafc;border:1px solid var(--line);font-size:11px">
+        <div style="font-weight:700;margin-bottom:4px">Output gap identity</div>
+        <div class="mono">100 × ((RY₂₀₁₄ − RYPot₂₀₁₄) / RYPot₂₀₁₄) = <strong>1.422%</strong></div>
+      </div>
+    </div>
+  </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Foreign Balance &amp; Current Account — Projection Worksheets</h3>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">IMF FPP: real exports (elasticity model) · nominal X&amp;M · services ratios · primary/secondary income · Baseline 2013 · Forecast 2014</div>
+        </div>
+      </div>      <div class="layout" style="grid-template-columns:320px 1fr">
+        <aside class="card" id="real-proj-panel">
+    <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span>
+      <div id="dd-panel-added" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#D92D20;margin-bottom:8px">
+          <span style="width:8px;height:8px;background:#D92D20;display:inline-block"></span>Domestic Demand &amp; Prices
+        </div>
+        <div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>Δ% Real GDP (all)</span>
+              <span class="mono" style="font-weight:600">4.63%</span>
+            </div>
+            <input type="range" class="slider" data-key="d_RY" min="-5" max="12" step="0.05" value="4.63">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>ε RM,y (imports)</span>
+              <span class="mono" style="font-weight:600">1.00x</span>
+            </div>
+            <input type="range" class="slider" data-key="eps_RMy" min="0" max="3" step="0.05" value="1">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>ε RM,Prmf (imports)</span>
+              <span class="mono" style="font-weight:600">-0.50x</span>
+            </div>
+            <input type="range" class="slider" data-key="eps_RMP" min="-2" max="2" step="0.05" value="-0.5">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>Δ% Real ER (+depreciate)</span>
+              <span class="mono" style="font-weight:600">0.0%</span>
+            </div>
+            <input type="range" class="slider" data-key="d_RER" min="-15" max="15" step="0.1" value="0">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>Δ% Foreign inflation</span>
+              <span class="mono" style="font-weight:600">1.50%</span>
+            </div>
+            <input type="range" class="slider" data-key="d_Pf" min="0" max="8" step="0.05" value="1.5">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>Output gap 2014</span>
+              <span class="mono" style="font-weight:600">1.42%</span>
+            </div>
+            <input type="range" class="slider" data-key="phillips_ygap" min="-5" max="5" step="0.05" value="1.422">
+          </div><div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>RER gap 2014</span>
+              <span class="mono" style="font-weight:600">-0.73%</span>
+            </div>
+            <input type="range" class="slider" data-key="phillips_rergap" min="-5" max="5" step="0.05" value="-0.73">
+          </div>
+      </div>
+    </div>
+    <div style="padding:12px;max-height:70vh;overflow-y:auto">
+      
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#2563EB;margin-bottom:8px">
+            <span style="width:8px;height:8px;background:#2563EB;display:inline-block"></span>Real Exports Elasticity Model
+          </div>
+          <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% Export price (USD)</span>
+                <span class="mono" style="font-weight:600">1.5%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_Pxf" min="-10" max="15" step="0.1" value="1.5">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% Nominal ER (NC/$)</span>
+                <span class="mono" style="font-weight:600">0.0%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_NER" min="-15" max="20" step="0.1" value="0">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% CPI</span>
+                <span class="mono" style="font-weight:600">7.5%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_CPI" min="0" max="20" step="0.1" value="7.482">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% Productive capacity</span>
+                <span class="mono" style="font-weight:600">4.0%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_RYp" min="-5" max="12" step="0.1" value="4">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>ε RX,y (income elasticity)</span>
+                <span class="mono" style="font-weight:600">1.00x</span>
+              </div>
+              <input type="range" class="slider" data-key="eps_RXy" min="0" max="3" step="0.05" value="1">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>ε RX,Prxf (price elasticity)</span>
+                <span class="mono" style="font-weight:600">0.63x</span>
+              </div>
+              <input type="range" class="slider" data-key="eps_RXP" min="-2" max="2" step="0.05" value="0.625">
+            </div>
+        </div>
+      
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#D97706;margin-bottom:8px">
+            <span style="width:8px;height:8px;background:#D97706;display:inline-block"></span>Real Imports
+          </div>
+          <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% Import price (USD)</span>
+                <span class="mono" style="font-weight:600">1.5%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_Pmf" min="-10" max="15" step="0.1" value="1.5">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Δ% Real imports volume</span>
+                <span class="mono" style="font-weight:600">0.0%</span>
+              </div>
+              <input type="range" class="slider" data-key="d_RMg" min="-15" max="20" step="0.1" value="0">
+            </div>
+        </div>
+      
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#059669;margin-bottom:8px">
+            <span style="width:8px;height:8px;background:#059669;display:inline-block"></span>Services (ratios)
+          </div>
+          <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Services credit / X goods</span>
+                <span class="mono" style="font-weight:600">47.9%</span>
+              </div>
+              <input type="range" class="slider" data-key="svc_credit_ratio" min="20" max="70" step="0.1" value="47.889">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Services debit / M goods</span>
+                <span class="mono" style="font-weight:600">11.2%</span>
+              </div>
+              <input type="range" class="slider" data-key="svc_debit_ratio" min="5" max="25" step="0.1" value="11.172">
+            </div>
+        </div>
+      
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#7C3AED;margin-bottom:8px">
+            <span style="width:8px;height:8px;background:#7C3AED;display:inline-block"></span>Primary Income
+          </div>
+          <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Yield on foreign assets</span>
+                <span class="mono" style="font-weight:600">1.00%</span>
+              </div>
+              <input type="range" class="slider" data-key="yield_investment" min="0" max="8" step="0.05" value="1">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>LIBOR (US$)</span>
+                <span class="mono" style="font-weight:600">0.41%</span>
+              </div>
+              <input type="range" class="slider" data-key="libor" min="0" max="6" step="0.01" value="0.409">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Interest spread on debt</span>
+                <span class="mono" style="font-weight:600">2.17%</span>
+              </div>
+              <input type="range" class="slider" data-key="spread" min="0" max="8" step="0.05" value="2.173">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Growth: other primary debit</span>
+                <span class="mono" style="font-weight:600">0.0%</span>
+              </div>
+              <input type="range" class="slider" data-key="other_primary_growth" min="-20" max="20" step="0.5" value="0">
+            </div>
+        </div>
+      
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#0F172A;margin-bottom:8px">
+            <span style="width:8px;height:8px;background:#0F172A;display:inline-block"></span>Stocks &amp; Secondary
+          </div>
+          <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Foreign assets 2014 (USD mn)</span>
+                <span class="mono" style="font-weight:600">14324</span>
+              </div>
+              <input type="range" class="slider" data-key="foreign_assets_2014" min="8000" max="20000" step="100" value="14324">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>External debt 2014 (USD mn)</span>
+                <span class="mono" style="font-weight:600">11810</span>
+              </div>
+              <input type="range" class="slider" data-key="external_debt_2014" min="8000" max="16000" step="100" value="11809.88">
+            </div><div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>Growth: secondary income</span>
+                <span class="mono" style="font-weight:600">0.0%</span>
+              </div>
+              <input type="range" class="slider" data-key="secondary_income_growth" min="-20" max="20" step="0.5" value="0">
+            </div>
+        </div>
+      
+    </div>
+  </aside>
+        <div>
+          <div class="summary" id="real-proj-kpi">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Δ% Real exports (Xg)</div>
+      <div class="kpi-value">0.52%</div>
+      <div class="kpi-sub">Δ% Prxf: -5.57%</div>
+      <div class="kpi-base">formula ②</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D97706"></span>Goods trade balance</div>
+      <div class="kpi-value">-6223</div>
+      <div class="kpi-sub">Xg: 12341 · Mg: 18564</div>
+      <div class="kpi-base">USD mn</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#7C3AED"></span>Primary income net</div>
+      <div class="kpi-value">-875</div>
+      <div class="kpi-sub">Inv inc: 145 · Int: 295</div>
+      <div class="kpi-base">USD mn</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Current account 2014</div>
+      <div class="kpi-value">-2919</div>
+      <div class="kpi-sub">Services: 3836 · Secondary: 343</div>
+      <div class="kpi-base">USD mn</div>
+    </div>
+  </div>
+          <div class="card" style="margin-top:12px">
+            <div class="card-head"><span class="card-title">Consolidated Current Account — Historical + 2014 Forecast</span><span class="mono" style="font-size:10px;color:var(--muted)">USD millions</span></div>
+            <div class="table-wrap"><table class="fp" id="real-proj-table"><thead><tr><th>Line item</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Goods — Credit (exports)</td>
+      <td class="">9,555.4</td><td class="">8,838.2</td><td class="">9,516.3</td><td class="">10,383.1</td><td class="">11,494.7</td><td class="">12,095.7</td><td class="" style="background:#fef8e6">12,341.1</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Goods — Debit (imports)</td>
+      <td class="">14,568.7</td><td class="">10,877.3</td><td class="">12,956.0</td><td class="">15,534.5</td><td class="">17,222.8</td><td class="">18,289.9</td><td class="" style="background:#fef8e6">18,564.2</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Goods trade balance</td>
+      <td class="neg">(5,013.3)</td><td class="neg">(2,039.1)</td><td class="neg">(3,439.7)</td><td class="neg">(5,151.4)</td><td class="neg">(5,728.1)</td><td class="neg">(6,194.2)</td><td class="neg" style="background:#fef8e6">(6,223.1)</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Services — Credit</td>
+      <td class="">4,083.3</td><td class="">3,592.9</td><td class="">4,320.0</td><td class="">4,972.4</td><td class="">5,504.7</td><td class="">5,792.5</td><td class="" style="background:#fef8e6">5,910.0</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Services — Debit</td>
+      <td class="">1,882.4</td><td class="">1,404.8</td><td class="">1,782.8</td><td class="">1,735.5</td><td class="">1,924.1</td><td class="">2,043.3</td><td class="" style="background:#fef8e6">2,074.0</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Services net</td>
+      <td class="">2,200.9</td><td class="">2,188.1</td><td class="">2,537.2</td><td class="">3,236.9</td><td class="">3,580.6</td><td class="">3,749.2</td><td class="" style="background:#fef8e6">3,836.0</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Primary income — Credit</td>
+      <td class="">617.8</td><td class="">253.5</td><td class="">316.8</td><td class="">272.4</td><td class="">173.9</td><td class="">185.0</td><td class="" style="background:#fef8e6">187.7</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  of which: Investment income</td>
+      <td class="">546.9</td><td class="">229.0</td><td class="">281.6</td><td class="">209.2</td><td class="">133.5</td><td class="">142.1</td><td class="" style="background:#fef8e6">144.8</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Primary income — Debit</td>
+      <td class="">1,126.0</td><td class="">1,203.9</td><td class="">1,083.4</td><td class="">1,077.2</td><td class="">1,084.3</td><td class="">1,042.7</td><td class="" style="background:#fef8e6">1,063.0</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  of which: Interest</td>
+      <td class="">352.6</td><td class="">308.0</td><td class="">306.6</td><td class="">284.1</td><td class="">286.0</td><td class="">275.0</td><td class="" style="background:#fef8e6">295.4</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  of which: Other primary</td>
+      <td class="">773.4</td><td class="">895.9</td><td class="">776.8</td><td class="">793.1</td><td class="">798.3</td><td class="">767.7</td><td class="" style="background:#fef8e6">767.7</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Primary income net</td>
+      <td class="neg">(508.2)</td><td class="neg">(950.5)</td><td class="neg">(766.6)</td><td class="neg">(804.8)</td><td class="neg">(910.4)</td><td class="neg">(857.7)</td><td class="neg" style="background:#fef8e6">(875.3)</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Secondary income</td>
+      <td class="">442.3</td><td class="">358.8</td><td class="">366.5</td><td class="">322.9</td><td class="">333.5</td><td class="">342.9</td><td class="" style="background:#fef8e6">342.9</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Current account</td>
+      <td class="neg">(2,878.3)</td><td class="neg">(442.6)</td><td class="neg">(1,302.5)</td><td class="neg">(2,396.4)</td><td class="neg">(2,724.4)</td><td class="neg">(2,959.8)</td><td class="neg" style="background:#fef8e6">(2,919.5)</td>
+    </tr>
+  </tbody></table></div>
+          </div>
+          <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
+            <div class="card">
+              <div class="card-head"><span class="card-title">Goods &amp; Services — Credits vs Debits</span></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-xm" style="display: block; box-sizing: border-box; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="card-title">Current Account Composition</span></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-ca" style="display: block; box-sizing: border-box; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <div class="card-head"><span class="card-title">Elasticity-based Forecast (2014)</span></div>
+            <div class="card-body" style="font-size:12px">
+              <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
+                <div>① Δ%Prxf = ((1 + Δ%Pxf/100) × (1 + Δ%NER/100) / (1 + Δ%CPI/100) − 1) × 100</div>
+                <div>② Δ%RXg = εRX,y × Δ%RYp + εRX,Prxf × Δ%Prxf</div>
+                <div>③ Xg₂₀₁₄ = Xg₂₀₁₃ × (1 + Δ%RXg/100) × (1 + Δ%Pxf/100)</div>
+                <div>④ Mg₂₀₁₄ = Mg₂₀₁₃ × (1 + Δ%RMg/100) × (1 + Δ%Pmf/100)</div>
+                <div>⑤ Services Credit = Xg × service_credit_ratio  ·  Services Debit = Mg × service_debit_ratio</div>
+                <div>⑥ Investment income = yield × avg foreign assets · Interest payments = (LIBOR + spread) × avg external debt</div>
+              </div>
+              <div id="real-proj-formula-values" class="mono" style="margin-top:8px;font-size:11px">
+    <div>① Δ%Prxf = ((1+1.50/100) × (1+0.00/100) / (1+7.48/100) − 1) × 100 = <strong>-5.566%</strong></div>
+    <div>② Δ%RXg = 1.00 × 4.00 + 0.625 × -5.566 = <strong>0.522%</strong></div>
+    <div>③ Xg₂₀₁₄ = 12095.65 × (1+0.522/100) × (1+1.50/100) = <strong>12341.11</strong></div>
+    <div>④ Mg₂₀₁₄ = 18289.86 × (1+0.00/100) × (1+1.50/100) = <strong>18564.21</strong></div>
+    <div>⑤ Services: Credit = 12341 × 47.89% = <strong>5910.03</strong> · Debit = 18564 × 11.17% = <strong>2073.99</strong></div>
+    <div>⑥ Inv. income = 1.00% × 14480 = <strong>144.80</strong> · Interest = (0.41+2.17)% × 11439 = <strong>295.35</strong></div>
+  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domestic Demand & Prices — inline forecast worksheets -->
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Domestic Demand &amp; Prices — Projection Worksheets</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Real private consumption · Real private investment · Real imports · Nominal ER · CPI inflation (Phillips curve)</div>
+      </div>
+      <div class="summary" id="dd-kpi" style="margin-top:12px">
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Real GDP 2014</div>
+      <div class="kpi-value">13,366</div>
+      <div class="kpi-sub">+4.63%</div>
+      <div class="kpi-base">2013: 12,775</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Priv. Consumption 2014</div>
+      <div class="kpi-value">9,718</div>
+      <div class="kpi-sub">Δ 4.63% · 72.7% of GDP</div>
+      <div class="kpi-base">2013: 9,288</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#D97706"></span>Priv. Investment 2014</div>
+      <div class="kpi-value">2,445</div>
+      <div class="kpi-sub">Δ 4.65% · 18.3% of GDP</div>
+      <div class="kpi-base">2013: 2,336</div>
+    </div>
+  
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:#7C3AED"></span>CPI Inflation 2014 (Phillips)</div>
+      <div class="kpi-value">7.48%</div>
+      <div class="kpi-sub">NER avg → 561.5</div>
+      <div class="kpi-base">2013: 6.14%</div>
+    </div>
+  </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Historical + 2014 Forecast (baseline)</span></div>
+        <div class="table-wrap"><table class="fp" id="dd-table"><thead><tr><th>Line item</th><th>2008</th><th>2009</th><th>2010</th><th>2011</th><th>2012</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead><tbody>
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real GDP (bn NC, 2005p)</td>
+      <td class="">10,760.33</td><td class="">10,584.88</td><td class="">11,099.25</td><td class="">11,726.95</td><td class="">12,184.44</td><td class="">12,774.63</td><td class="" style="background:#fef8e6">13,366.10</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real Priv. Consumption</td>
+      <td class="">7,553.28</td><td class="">7,682.16</td><td class="">8,033.69</td><td class="">8,406.44</td><td class="">8,818.35</td><td class="">9,288.00</td><td class="" style="background:#fef8e6">9,718.49</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  RCp / GDP (%)</td>
+      <td class="">70.20</td><td class="">72.58</td><td class="">72.38</td><td class="">71.69</td><td class="">72.37</td><td class="">72.71</td><td class="" style="background:#fef8e6">72.71</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real Priv. Investment</td>
+      <td class="">2,155.85</td><td class="">1,924.40</td><td class="">1,897.40</td><td class="">2,226.59</td><td class="">2,241.17</td><td class="">2,336.10</td><td class="" style="background:#fef8e6">2,444.66</td>
+    </tr>
+  
+    <tr>
+      <td style="padding-left:24px">  RIp / GDP (%)</td>
+      <td class="">20.04</td><td class="">18.18</td><td class="">17.10</td><td class="">18.99</td><td class="">18.39</td><td class="">18.29</td><td class="" style="background:#fef8e6">18.29</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real Imports of Goods (bn NC)</td>
+      <td class="">8,666.03</td><td class="">7,023.72</td><td class="">7,680.81</td><td class="">8,717.30</td><td class="">9,457.55</td><td class="">9,990.29</td><td class="" style="background:#fef8e6">10,730.85</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Nominal ER (avg, NC/USD)</td>
+      <td class="">526.24</td><td class="">573.29</td><td class="">525.83</td><td class="">506.40</td><td class="">510.79</td><td class="">530.22</td><td class="" style="background:#fef8e6">561.47</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Nominal ER (EOP, NC/USD)</td>
+      <td class="">555.47</td><td class="">565.24</td><td class="">512.97</td><td class="">510.56</td><td class="">511.02</td><td class="">549.42</td><td class="" style="background:#fef8e6">573.52</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Real ER index (2012=100)</td>
+      <td class="">121.18</td><td class="">122.21</td><td class="">107.69</td><td class="">101.72</td><td class="">100.00</td><td class="">99.27</td><td class="" style="background:#fef8e6">99.27</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">CPI inflation (%)</td>
+      <td class="">13.43</td><td class="">7.84</td><td class="">5.66</td><td class="">4.88</td><td class="">4.61</td><td class="">6.14</td><td class="" style="background:#fef8e6">7.48</td>
+    </tr>
+  
+    <tr style="font-weight:600;background:#fafafa">
+      <td style="">Foreign inflation (%)</td>
+      <td class="">3.60</td><td class="neg">(0.17)</td><td class="">1.52</td><td class="">2.87</td><td class="">1.96</td><td class="">1.50</td><td class="" style="background:#fef8e6">1.50</td>
+    </tr>
+  </tbody></table></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Live Forecast Formulas</span></div>
+        <div class="card-body" style="font-size:11.5px">
+          <div id="dd-formulas" class="mono">
+    <div style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
+      <div>① <strong>Real GDP</strong> — RY₂₀₁₄ = RY₂₀₁₃ × (1 + Δ%RY/100) = 12,774.63 × (1+4.63/100) = <strong>13,366.10</strong></div>
+      <div>② <strong>Priv. Consumption (constant RCp/GDP)</strong> — RCp₂₀₁₄ = 72.71% × 13,366.10 = <strong>9,718.49</strong></div>
+      <div>③ <strong>Priv. Investment (constant RIp/GDP)</strong> — RIp₂₀₁₄ = 18.29% × 13,366.10 = <strong>2,444.66</strong></div>
+      <div>④ <strong>Real Imports (elasticity)</strong>: Δ%Prmf = ((1+1.50/100)×(1+0.00/100)/(1+7.48/100)−1)×100 = <strong>-5.566%</strong> ; Δ%RMg = 1.00×4.63 + -0.50×-5.566 = <strong>7.413%</strong> ; RMg₂₀₁₄ = 9,990.29 × (1+7.413/100) = <strong>10,730.85</strong></div>
+      <div>⑤ <strong>Nominal ER (avg)</strong> — NER₂₀₁₄ = NER₂₀₁₃ × (1+Δ%P/100) × (1+Δ%RER/100) / (1+Δ%Pf/100) = 530.22 × (1+7.48/100) × (1+0.00/100) / (1+1.50/100) = <strong>561.47</strong></div>
+      <div>⑥ <strong>CPI Inflation (Phillips curve)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = 1.4 + 0.7×6.14 + 1.4×1.42 + 0.28×-0.73 = <strong>7.48%</strong></div>
+    </div>
+  </div>
+        </div>
+      </div>
+    </div></section>
 
   <!-- Sector Interlinks (Balance Sheets stacked on top of Flow of Funds) -->
-  <section id="tab-flowoffunds" class="tab-panel hidden">
+  <section id="tab-flowoffunds" class="tab-panel">
     <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
       <div>
@@ -494,10 +1607,78 @@
       </label>
     </div>
     <div id="fof-stocks-view">
-      <div id="bs-grid" class="bs-grid"></div>
+      <div id="bs-grid" class="bs-grid">
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#2563EB">
+        <span class="dot" style="background:#2563EB"></span>
+        <span class="card-title">Real</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Nominal GDP</td><td class="">21,165.2</td></tr><tr><td style="font-size:11.5px">Real GDP</td><td class="">12,074.9</td></tr><tr><td style="font-size:11.5px">GDP deflator</td><td class="">175.30</td></tr><tr><td style="font-size:11.5px">Consumption</td><td class="">17,587.1</td></tr><tr><td style="font-size:11.5px">Investment</td><td class="">4,455.7</td></tr><tr><td style="font-size:11.5px">Exports</td><td class="">8,521.2</td></tr><tr><td style="font-size:11.5px">Imports</td><td class="">9,457.5</td></tr><tr><td style="font-size:11.5px">Foreign balance</td><td class="neg">(936.3)</td></tr><tr><td style="font-size:11.5px">Output gap (%)</td><td class="neg">(0.90)</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#059669">
+        <span class="dot" style="background:#059669"></span>
+        <span class="card-title">External (USD mn)</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Current account</td><td class="neg">(2,367.7)</td></tr><tr><td style="font-size:11.5px">  Goods balance</td><td class="neg">(5,592.4)</td></tr><tr><td style="font-size:11.5px">  Services</td><td class="">3,738.1</td></tr><tr><td style="font-size:11.5px">  Primary income</td><td class="neg">(842.1)</td></tr><tr><td style="font-size:11.5px">  Secondary income</td><td class="">328.7</td></tr><tr><td style="font-size:11.5px">Financial account</td><td class="neg">(4,386.5)</td></tr><tr><td style="font-size:11.5px">Overall balance</td><td class="">2,109.9</td></tr><tr><td style="font-size:11.5px">Reserves</td><td class="">6,868.2</td></tr><tr><td style="font-size:11.5px">FX rate (NC/USD)</td><td class="">510.80</td></tr><tr><td style="font-size:11.5px">External debt</td><td class="">12,907.9</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#D92D20">
+        <span class="dot" style="background:#D92D20"></span>
+        <span class="card-title">Government (Fiscal)</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Revenue</td><td class="">3,271.5</td></tr><tr><td style="font-size:11.5px">Expense</td><td class="">4,235.2</td></tr><tr><td style="font-size:11.5px">  Interest</td><td class="">471.6</td></tr><tr><td style="font-size:11.5px">  Subsidies</td><td class="">1,946.3</td></tr><tr><td style="font-size:11.5px">  Compensation</td><td class="">1,380.0</td></tr><tr><td style="font-size:11.5px">Overall balance</td><td class="neg">(1,249.2)</td></tr><tr><td style="font-size:11.5px">Primary balance</td><td class="neg">(777.6)</td></tr><tr><td style="font-size:11.5px">Liabilities stock</td><td class="">9,436.3</td></tr><tr><td style="font-size:11.5px">Assets stock</td><td class="">7,213.8</td></tr><tr><td style="font-size:11.5px">Debt/GDP (%)</td><td class="">44.60</td></tr>
+      </tbody></table>
+    </div>
+  
+    <div class="card">
+      <div class="sector-panel-head" style="border-color:#7C3AED">
+        <span class="dot" style="background:#7C3AED"></span>
+        <span class="card-title">Monetary</span>
+      </div>
+      <table class="fp"><tbody>
+        <tr><td style="font-size:11.5px">Monetary base</td><td class="">2,707.9</td></tr><tr><td style="font-size:11.5px">  NFA (CB)</td><td class="">3,491.3</td></tr><tr><td style="font-size:11.5px">  NDA (CB)</td><td class="neg">(783.4)</td></tr><tr><td style="font-size:11.5px">Check: NFA+NDA</td><td class="">2,707.9</td></tr><tr><td style="font-size:11.5px">Broad money</td><td class="">11,215.2</td></tr><tr><td style="font-size:11.5px">  NFA (Survey)</td><td class="">2,473.2</td></tr><tr><td style="font-size:11.5px">  NDA (Survey)</td><td class="">8,742.1</td></tr><tr><td style="font-size:11.5px">Credit to private</td><td class="">11,483.6</td></tr><tr><td style="font-size:11.5px">Money multiplier</td><td class="">—</td></tr><tr><td style="font-size:11.5px">BM/GDP (%)</td><td class="">53.00</td></tr>
+      </tbody></table>
+    </div>
+  </div>
       <div class="card" style="margin-top:16px">
         <div class="card-head"><span class="card-title">Cross-Sector Accounting Identities</span></div>
-        <div class="identities-grid" id="identities-grid"></div>
+        <div class="identities-grid" id="identities-grid">
+    <div class="identity">
+      <div class="identity-title">FX Bridge</div>
+      <div class="identity-formula">USD GDP = Nominal GDP × 1,000 / FX rate</div>
+      <div class="identity-check">Compute: 21,165.2 × 1000 / 510.80 = 41,435.4 USD mn</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 41,436.3 USD mn</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Central Bank Balance</div>
+      <div class="identity-formula">Monetary Base = NFA(CB) + NDA(CB)</div>
+      <div class="identity-check">Compute: 3,491.3 + (783.4) = 2,707.9</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 2,707.9</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Depository Survey</div>
+      <div class="identity-formula">Broad Money = NFA(Survey) + NDA(Survey) + Other CB liab.</div>
+      <div class="identity-check">Compute: 11,215.3 + other</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 11,215.2</div>
+    </div>
+  
+    <div class="identity">
+      <div class="identity-title">Fiscal Ratio Anchor</div>
+      <div class="identity-formula">Every % of GDP row = level / Nominal GDP × 100</div>
+      <div class="identity-check">Compute: 3,271.5 / 21,165.2 × 100 = 15.46%</div>
+      <div class="identity-check" style="color:#0f172a">Actual: 15.5%</div>
+    </div>
+  </div>
       </div>
     </div>
 
@@ -517,27 +1698,84 @@
           <span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span>
           <span class="mono" style="font-size:10px;color:var(--muted)">Non-financial balance + Financing = 0 by construction</span>
         </div>
-        <div class="table-wrap"><table class="fp" id="fof-table"></table></div>
+        <div class="table-wrap"><table class="fp" id="fof-table"><thead><tr>
+    <th>Line item</th>
+    <th>Total (domestic)</th>
+    <th style="color:#334155">Private sector</th>
+    <th style="color:#D92D20">General Government</th>
+    <th style="color:#7C3AED">Depository Corp.</th>
+    <th style="color:#059669">Rest of World</th>
+  </tr></thead><tbody><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Non-financial transactions</td></tr><tr>
+      <td style="font-size:11.5px">GNDI</td>
+      <td class="">20,861.82</td><td class="">20,290.54</td><td class="">571.28</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Expenditures</td>
+      <td class="">17,760.34</td><td class="">16,237.38</td><td class="">1,522.96</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Investment</td>
+      <td class="">4,493.86</td><td class="">4,442.36</td><td class="">51.50</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Non-financial balance (deficit = -)</td>
+      <td class="neg">(1,392.38)</td><td class="neg">(389.20)</td><td class="neg">(1,003.18)</td><td class="">0.00</td><td class="">1,391.59</td>
+    </tr><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Financing</td></tr><tr>
+      <td style="font-size:11.5px">Total financing (net borrowing = +)</td>
+      <td class="">1,364.21</td><td class="">361.03</td><td class="">1,003.18</td><td class="">0.00</td><td class="neg">(1,364.21)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">External financing</td>
+      <td class="">1,364.21</td><td class="">1,692.30</td><td class="">278.95</td><td class="neg">(607.04)</td><td class="neg">(1,364.21)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Capital account</td>
+      <td class="">19.16</td><td class="">19.16</td><td class="">0.00</td><td class="">0.00</td><td class="neg">(19.16)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Financial account, incl. reserves</td>
+      <td class="">1,345.05</td><td class="">1,673.14</td><td class="">278.95</td><td class="neg">(607.04)</td><td class="neg">(1,345.05)</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Domestic financing</td>
+      <td class="">0.00</td><td class="neg">(1,331.27)</td><td class="">724.23</td><td class="">607.04</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Non-monetary</td>
+      <td class="">0.00</td><td class="neg">(499.56)</td><td class="">499.56</td><td class="">…</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">  Monetary</td>
+      <td class="">0.00</td><td class="neg">(831.71)</td><td class="">224.67</td><td class="">607.04</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Broad money</td>
+      <td class="">0.00</td><td class="neg">(935.82)</td><td class="">…</td><td class="">935.82</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Net claims on gen. gov.</td>
+      <td class="">0.00</td><td class="">…</td><td class="">224.67</td><td class="neg">(224.67)</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">    Other net domestic assets</td>
+      <td class="">0.00</td><td class="">104.11</td><td class="">…</td><td class="neg">(104.11)</td><td class="">…</td>
+    </tr><tr>
+      <td style="font-size:11.5px">Statistical discrepancy</td>
+      <td class="neg">(28.17)</td><td class="neg">(28.17)</td><td class="">0.00</td><td class="">0.00</td><td class="">27.38</td>
+    </tr>
+  <tr style="background:#fef3c7">
+    <td colspan="6" style="font-size:10px;color:#78350f">
+      Memo: FX 510.79 NC/USD · Current account (2,724.38) USD mn · Capital 37.51 USD mn · Financial (2,633.27) USD mn
+    </td>
+  </tr>
+  </tbody></table></div>
       </div>
       <div class="card" style="margin-top:12px">
         <div class="card-head"><span class="card-title">Sector Balances</span></div>
-        <div class="card-body"><div class="chart-wrap" style="height:280px"><canvas id="fof-chart"></canvas></div></div>
+        <div class="card-body"><div class="chart-wrap" style="height:280px"><canvas id="fof-chart" style="display: block; box-sizing: border-box; height: 264px; width: 396px;" width="496" height="330"></canvas></div></div>
       </div>
-    </div>
-  </section>
-
-  <!-- Government Operations (SGO + Balance Sheet) -->
-  <section id="tab-govops" class="tab-panel">
+    <!-- Extra Real sector reports: Foreign Balance & Current Account Projections -->
+    
+  </div></section>
+  <section id="tab-govops" class="tab-panel hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
       <div>
-        <h2 style="font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0" id="govops-title">Revenue &amp; Expense Projection</h2>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="govops-subtitle">ETR-based revenue forecast + category-specific expense growth · Baseline 2013</div>
+        <h2 style="font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0" id="govops-title">Statement of General Government Operations</h2>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="govops-subtitle">IMF GFS-style · Macronia 2006–2013 · billions of national currency</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <div class="card" style="display:inline-flex;padding:3px;gap:2px" data-testid="govops-subtabs">
-          <button class="govops-subtab" data-sub="sgo">Statement of Operations</button>
+          <button class="govops-subtab active" data-sub="sgo">Statement of Operations</button>
           <button class="govops-subtab" data-sub="bs">Balance Sheet</button>
-          <button class="govops-subtab active" data-sub="proj">Rev &amp; Exp Projection</button>
+          <button class="govops-subtab" data-sub="proj">Rev &amp; Exp Projection</button>
         </div>
         <label style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
           Units
@@ -549,8 +1787,21 @@
       </div>
     </div>
 
+    <!-- Source charts (from Fiscal & Monetary workbook — fiscal-side) -->
+    <div id="govops-src-charts" style="margin-bottom:16px">
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Government Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Fiscal impulse vs output gap · General Government liabilities — Macronia 2008–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">Fiscal Impulse &amp; Output Gap</span><span class="mono" style="font-size:10px;color:var(--muted)">expansionary + · percent of potential GDP</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="gov-src-1" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">General Government Liabilities</span><span class="mono" style="font-size:10px;color:var(--muted)">bn NC (level) · percent of GDP</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="gov-src-2" style="display: block; box-sizing: border-box; height: 244px; width: 654px;" width="818" height="305"></canvas></div></div></div>
+      </div>
+      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
+    </div>
+
     <!-- SGO subview -->
-    <div id="govops-sgo" class="hidden">
+    <div id="govops-sgo">
       <div class="summary" id="sgo-kpi">
     <div class="kpi">
       <div class="kpi-label"><span class="dot" style="background:#059669"></span>Revenue</div>
@@ -1246,7 +2497,7 @@
     </div>
 
     <!-- Revenue & Expense Projection subview -->
-    <div id="govops-proj" class="">
+    <div id="govops-proj" class="hidden">
       <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px">
         <div style="font-size:11px;color:var(--muted);flex:1">
           IMF-style forecast: <span class="mono">Tax = Effective Tax Rate × Proxy Base</span> for revenues,
@@ -1286,9 +2537,9 @@
           <div style="margin-bottom:8px">
               <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
                 <span>Nominal GDP growth</span>
-                <span class="mono" style="font-weight:600">10.3%</span>
+                <span class="mono" style="font-weight:600">14.5%</span>
               </div>
-              <input type="range" class="slider" data-key="gdp_growth" min="0" max="25" step="0.1" value="10.3">
+              <input type="range" class="slider" data-key="gdp_growth" min="0" max="25" step="0.1" value="14.5">
             </div><div style="margin-bottom:8px">
               <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
                 <span>Consumption growth</span>
@@ -1385,29 +2636,29 @@
           <div class="summary" id="proj-kpi">
     <div class="kpi">
       <div class="kpi-label"><span class="dot" style="background:#059669"></span>Revenue (last year)</div>
-      <div class="kpi-value">4,670</div>
-      <div class="kpi-sub">14.72% of GDP</div>
+      <div class="kpi-value">4,988</div>
+      <div class="kpi-sub">14.05% of GDP</div>
       <div class="kpi-base">2013: 3,626</div>
     </div>
   
     <div class="kpi">
       <div class="kpi-label"><span class="dot" style="background:#D92D20"></span>Expense (last year)</div>
-      <div class="kpi-value">7,761</div>
-      <div class="kpi-sub">Primary: 6,373</div>
+      <div class="kpi-value">8,164</div>
+      <div class="kpi-sub">Primary: 6,768</div>
       <div class="kpi-base">2013: 5,475</div>
     </div>
   
     <div class="kpi">
       <div class="kpi-label"><span class="dot" style="background:#D97706"></span>Overall balance</div>
-      <div class="kpi-value">-9.87%</div>
-      <div class="kpi-sub">(3,133) bn NC</div>
+      <div class="kpi-value">-9.08%</div>
+      <div class="kpi-sub">(3,222) bn NC</div>
       <div class="kpi-base">2013: -7.95% GDP</div>
     </div>
   
     <div class="kpi">
       <div class="kpi-label"><span class="dot" style="background:#0F172A"></span>Public debt (proj.)</div>
-      <div class="kpi-value">60.6%</div>
-      <div class="kpi-sub">Dom 53.2% · Ext 7.4%</div>
+      <div class="kpi-value">54.6%</div>
+      <div class="kpi-sub">Dom 48.0% · Ext 6.6%</div>
       <div class="kpi-base">2013: 48.1% GDP</div>
     </div>
   </div>
@@ -1415,22 +2666,22 @@
           <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
             <div class="card">
               <div class="card-head"><span class="card-title">Revenue Path (bn NC)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-rev-chart" style="box-sizing: border-box; display: block; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="proj-rev-chart" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" height="0" width="0"></canvas></div></div>
             </div>
             <div class="card">
               <div class="card-head"><span class="card-title">Expense Path (bn NC)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-exp-chart" style="box-sizing: border-box; display: block; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="proj-exp-chart" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" height="0" width="0"></canvas></div></div>
             </div>
           </div>
 
           <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
             <div class="card">
               <div class="card-head"><span class="card-title">Overall Balance (% GDP)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-bal-chart" style="box-sizing: border-box; display: block; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="proj-bal-chart" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" height="0" width="0"></canvas></div></div>
             </div>
             <div class="card">
               <div class="card-head"><span class="card-title">Debt Dynamics (% GDP)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-debt-chart" style="box-sizing: border-box; display: block; height: 204px; width: 488px;" width="610" height="255"></canvas></div></div>
+              <div class="card-body"><div class="chart-wrap"><canvas id="proj-debt-chart" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" height="0" width="0"></canvas></div></div>
             </div>
           </div>
 
@@ -1438,7 +2689,7 @@
             <div class="card-head"><span class="card-title">Projected Statement of Operations</span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2014 – …</span></div>
             <div class="table-wrap"><table class="fp" id="proj-sgo-table"><thead><tr><th>Line item</th><th>2013 base</th><th>2014</th><th>2015</th><th>2016</th></tr></thead><tbody><tr><td>Nominal GDP (bn NC)</td>
       <td style="color:#64748b;font-style:italic">23,646.2</td>
-      <td class="">26,081.7</td><td class="">28,768.2</td><td class="">31,731.3</td>
+      <td class="">27,074.9</td><td class="">31,000.7</td><td class="">35,495.9</td>
     </tr><tr><td>Consumption (proxy)</td>
       <td style="color:#64748b;font-style:italic">19,985.5</td>
       <td class="">22,743.5</td><td class="">25,882.1</td><td class="">29,453.8</td>
@@ -1450,7 +2701,7 @@
       <td class="">549.84</td><td class="">570.18</td><td class="">591.28</td>
     </tr><tr><td colspan="5" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">-- Revenue --</td></tr><tr><td>Taxes on income</td>
       <td style="color:#64748b;font-style:italic">983.4</td>
-      <td class="">1,084.7</td><td class="">1,196.5</td><td class="">1,319.7</td>
+      <td class="">1,126.0</td><td class="">1,289.3</td><td class="">1,476.3</td>
     </tr><tr><td>Taxes on goods &amp; services</td>
       <td style="color:#64748b;font-style:italic">672.9</td>
       <td class="">765.8</td><td class="">871.4</td><td class="">991.7</td>
@@ -1459,22 +2710,22 @@
       <td class="">972.0</td><td class="">986.6</td><td class="">1,001.4</td>
     </tr><tr><td>Other taxes</td>
       <td style="color:#64748b;font-style:italic">716.1</td>
-      <td class="">789.8</td><td class="">871.1</td><td class="">960.8</td>
+      <td class="">819.8</td><td class="">938.7</td><td class="">1,074.8</td>
     </tr><tr><td>Tax revenues (total)</td>
       <td style="color:#64748b;font-style:italic">3,330.1</td>
-      <td class="">3,612.3</td><td class="">3,925.6</td><td class="">4,273.7</td>
+      <td class="">3,683.7</td><td class="">4,086.1</td><td class="">4,544.2</td>
     </tr><tr><td>Social contributions</td>
       <td style="color:#64748b;font-style:italic">82.8</td>
-      <td class="">91.3</td><td class="">100.7</td><td class="">111.1</td>
+      <td class="">94.8</td><td class="">108.6</td><td class="">124.3</td>
     </tr><tr><td>Grants received</td>
       <td style="color:#64748b;font-style:italic">185.2</td>
-      <td class="">204.3</td><td class="">225.4</td><td class="">248.6</td>
+      <td class="">212.1</td><td class="">242.9</td><td class="">278.1</td>
     </tr><tr><td>Other revenue</td>
       <td style="color:#64748b;font-style:italic">27.5</td>
-      <td class="">30.4</td><td class="">33.5</td><td class="">36.9</td>
+      <td class="">31.5</td><td class="">36.1</td><td class="">41.3</td>
     </tr><tr><td>Revenue (total)</td>
       <td style="color:#64748b;font-style:italic">3,625.6</td>
-      <td class="">3,938.3</td><td class="">4,285.2</td><td class="">4,670.3</td>
+      <td class="">4,022.1</td><td class="">4,473.6</td><td class="">4,987.9</td>
     </tr><tr><td colspan="5" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">-- Expense --</td></tr><tr><td>Compensation of employees</td>
       <td style="color:#64748b;font-style:italic">2,010.6</td>
       <td class="">2,251.8</td><td class="">2,522.0</td><td class="">2,824.7</td>
@@ -1483,70 +2734,70 @@
       <td class="">174.5</td><td class="">191.9</td><td class="">211.1</td>
     </tr><tr><td>Cons. of fixed capital</td>
       <td style="color:#64748b;font-style:italic">13.3</td>
-      <td class="">14.7</td><td class="">16.2</td><td class="">17.9</td>
+      <td class="">15.3</td><td class="">17.5</td><td class="">20.0</td>
     </tr><tr><td>Interest — domestic</td>
       <td style="color:#64748b;font-style:italic">762.5</td>
-      <td class="">909.1</td><td class="">1,088.4</td><td class="">1,306.9</td>
+      <td class="">909.1</td><td class="">1,090.4</td><td class="">1,313.7</td>
     </tr><tr><td>Interest — external</td>
       <td style="color:#64748b;font-style:italic">56.5</td>
       <td class="">52.6</td><td class="">67.0</td><td class="">82.0</td>
     </tr><tr><td>Interest (total)</td>
       <td style="color:#64748b;font-style:italic">818.9</td>
-      <td class="">961.7</td><td class="">1,155.4</td><td class="">1,388.8</td>
+      <td class="">961.7</td><td class="">1,157.5</td><td class="">1,395.7</td>
     </tr><tr><td>Subsidies</td>
       <td style="color:#64748b;font-style:italic">2,159.9</td>
-      <td class="">2,382.4</td><td class="">2,627.8</td><td class="">2,898.4</td>
+      <td class="">2,473.1</td><td class="">2,831.7</td><td class="">3,242.3</td>
     </tr><tr><td>Grants paid</td>
       <td style="color:#64748b;font-style:italic">17.0</td>
-      <td class="">18.7</td><td class="">20.7</td><td class="">22.8</td>
+      <td class="">19.5</td><td class="">22.3</td><td class="">25.5</td>
     </tr><tr><td>Social benefits</td>
       <td style="color:#64748b;font-style:italic">296.3</td>
-      <td class="">326.9</td><td class="">360.5</td><td class="">397.7</td>
+      <td class="">339.3</td><td class="">388.5</td><td class="">444.8</td>
     </tr><tr><td>Primary expense</td>
       <td style="color:#64748b;font-style:italic">4,655.7</td>
-      <td class="">5,169.0</td><td class="">5,739.1</td><td class="">6,372.6</td>
+      <td class="">5,273.4</td><td class="">5,973.9</td><td class="">6,768.4</td>
     </tr><tr><td>Expense (total)</td>
       <td style="color:#64748b;font-style:italic">5,474.6</td>
-      <td class="">6,130.7</td><td class="">6,894.6</td><td class="">7,761.4</td>
+      <td class="">6,235.1</td><td class="">7,131.4</td><td class="">8,164.1</td>
     </tr><tr><td colspan="5" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">-- Balances --</td></tr><tr><td>Net operating balance</td>
       <td style="color:#64748b;font-style:italic">(1,849.0)</td>
-      <td class="neg">(2,192.3)</td><td class="neg">(2,609.3)</td><td class="neg">(3,091.1)</td>
+      <td class="neg">(2,213.0)</td><td class="neg">(2,657.8)</td><td class="neg">(3,176.2)</td>
     </tr><tr><td>Net acquisition of NFA</td>
       <td style="color:#64748b;font-style:italic">30.9</td>
-      <td class="">34.0</td><td class="">37.5</td><td class="">41.4</td>
+      <td class="">35.3</td><td class="">40.4</td><td class="">46.3</td>
     </tr><tr><td>Net lending/borrowing (= overall balance)</td>
       <td style="color:#64748b;font-style:italic">(1,879.8)</td>
-      <td class="neg">(2,226.4)</td><td class="neg">(2,646.8)</td><td class="neg">(3,132.5)</td>
+      <td class="neg">(2,248.3)</td><td class="neg">(2,698.2)</td><td class="neg">(3,222.5)</td>
     </tr><tr><td>Primary balance</td>
       <td style="color:#64748b;font-style:italic">(1,030.1)</td>
-      <td class="neg">(1,230.6)</td><td class="neg">(1,453.9)</td><td class="neg">(1,702.3)</td>
+      <td class="neg">(1,251.3)</td><td class="neg">(1,500.3)</td><td class="neg">(1,780.5)</td>
     </tr><tr><td colspan="5" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">-- Financing --</td></tr><tr><td>Net foreign borrowing (bn NC)</td>
       <td style="color:#64748b;font-style:italic"></td>
       <td class="">300.0</td><td class="">300.0</td><td class="">300.0</td>
     </tr><tr><td>Net domestic borrowing (bn NC)</td>
       <td style="color:#64748b;font-style:italic"></td>
-      <td class="">1,926.4</td><td class="">2,346.8</td><td class="">2,832.5</td>
+      <td class="">1,948.3</td><td class="">2,398.2</td><td class="">2,922.5</td>
     </tr><tr><td>Domestic debt stock (bn NC)</td>
       <td style="color:#64748b;font-style:italic">9,764.3</td>
-      <td class="">11,690.7</td><td class="">14,037.5</td><td class="">16,870.0</td>
+      <td class="">11,712.6</td><td class="">14,110.8</td><td class="">17,033.3</td>
     </tr><tr><td>Foreign debt stock (USD mn)</td>
       <td style="color:#64748b;font-style:italic">2,393.3</td>
       <td class="">2,938.9</td><td class="">3,465.0</td><td class="">3,972.4</td>
     </tr><tr><td colspan="5" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">-- Ratios --</td></tr><tr><td>Revenue (% GDP)</td>
       <td style="color:#64748b;font-style:italic">15.33</td>
-      <td class="">15.10</td><td class="">14.90</td><td class="">14.72</td>
+      <td class="">14.86</td><td class="">14.43</td><td class="">14.05</td>
     </tr><tr><td>Expense (% GDP)</td>
       <td style="color:#64748b;font-style:italic">23.15</td>
-      <td class="">23.51</td><td class="">23.97</td><td class="">24.46</td>
+      <td class="">23.03</td><td class="">23.00</td><td class="">23.00</td>
     </tr><tr><td>Overall balance (% GDP)</td>
       <td style="color:#64748b;font-style:italic">(7.95)</td>
-      <td class="neg">(8.54)</td><td class="neg">(9.20)</td><td class="neg">(9.87)</td>
+      <td class="neg">(8.30)</td><td class="neg">(8.70)</td><td class="neg">(9.08)</td>
     </tr><tr><td>Primary balance (% GDP)</td>
       <td style="color:#64748b;font-style:italic">(4.36)</td>
-      <td class="neg">(4.72)</td><td class="neg">(5.05)</td><td class="neg">(5.36)</td>
+      <td class="neg">(4.62)</td><td class="neg">(4.84)</td><td class="neg">(5.02)</td>
     </tr><tr><td>Debt/GDP (%)</td>
       <td style="color:#64748b;font-style:italic">48.10</td>
-      <td class="">51.02</td><td class="">55.66</td><td class="">60.57</td>
+      <td class="">49.23</td><td class="">51.89</td><td class="">54.60</td>
     </tr></tbody></table></div>
           </div>
         </div>
@@ -2007,6 +3258,7 @@ const state = {
   fofYear: 2012,
   projAssumptions: null,  // initialized in init() after PROJ_DEFAULTS is defined
   projResult: null,
+  realProjAssumptions: null,
 };
 
 const charts = {}; // Chart.js instances by id
@@ -2129,6 +3381,158 @@ function makeChart(canvasId, cfg){
   if (charts[canvasId]) charts[canvasId].destroy();
   const ctx = document.getElementById(canvasId).getContext('2d');
   charts[canvasId] = new Chart(ctx, cfg);
+}
+
+/* ============================================================
+   SOURCE CHARTS (from IMF workbooks: Real / External / Fiscal&Monetary)
+   All values are read directly from the embedded Excel chart definitions.
+   ============================================================ */
+const SRC = {
+  real: {
+    yrs: ['2008','2009','2010','2011','2012','2013'],
+    ry_growth: [2.401, -1.631, 4.859, 5.655, 4.185, 4.558],
+    output_gap:[3.753, -1.580, -1.226, -1.356, 0.273, 0.811],
+    infl_years: ['2008','2009','2010','2011','2012','2013'],
+    gdp_deflator:[11.078, 8.623, 6.764, 4.305, 4.527, 6.892],
+    cpi_avg:     [13.425, 7.843, 5.663, 4.878, 4.613, 6.136],
+    cpi_eop:     [13.900, 4.048, 5.828, 4.731, 5.000, 6.604],
+    sav_inv_gap: [-10.464, -1.041, -3.523, -5.766, -6.581, -6.654],
+    saving:      [16.977, 14.601, 16.121, 16.301, 14.659, 14.310],
+    investment:  [27.441, 15.642, 19.645, 22.068, 21.240, 20.964],
+    gfcf:        [4.688, -11.465, 5.690, 4.983, 0.156, 0.978],
+    exports:     [-1.075, -3.074, 2.397, 3.401, 4.240, 1.891],
+    imports:     [-3.610, 10.847, -6.627, -6.264, -4.779, -2.640],
+    consumption: [2.657, 1.746, 3.761, 3.329, 4.595, 4.601],
+  },
+  external: {
+    bop_yrs: ['2006','2007','2008','2009','2010','2011','2012','2013'],
+    cur_acct:  [-5.135, -5.474, -10.278, -1.611, -3.885, -6.246, -6.577, -6.637],
+    cap_acct:  [ 0.005,  0.085,   0.026,  0.212,  0.160,  0.056,  0.091,  0.022],
+    fin_acct:  [-8.365, -9.617,  -8.857, -2.464, -5.370, -6.566, -6.482, -7.071],
+    reserves:  [ 3.501,  4.058,  -1.243,  0.946,  1.674,  0.345,  0.121, -0.071],
+    iip_net:      [-16.619, -19.816, -27.760, -29.761, -28.068, -30.759, -35.165, -39.253],
+    iip_assets:   [ 47.392,  47.033,  41.484,  43.379,  37.977,  33.700,  33.254,  32.819],
+    iip_liab:     [ 64.010,  66.849,  69.245,  73.139,  66.046,  64.459,  68.419,  72.072],
+    reer_yrs: ['2008','2009','2010','2011','2012','2013'],
+    dom_infl:    [13.425, 7.843, 5.663, 4.878, 4.613, 6.136],
+    tp_infl:     [ 3.595,-0.171, 1.516, 2.868, 1.958, 1.500],
+    reer:        [121.180, 122.205, 107.690, 101.723, 100.000, 99.270],
+    res_months:  [3.711, 3.311, 3.217, 2.982, 2.838, 2.626],
+    res_level_usd:[3798.7, 4066.2, 4629.7, 4758.3, 4808.272, 4779.043],
+  },
+  gov: {
+    yrs: ['2008','2009','2010','2011','2012','2013'],
+    fisc_impulse: [null, 3.315, 2.184, -1.327, 0.910, 2.154],
+    output_gap:   [3.753, -1.580, -1.226, -1.356, 0.273, 0.811],
+    gg_liab_yrs:  ['2012','2013'],
+    gg_liab_lvl:  [8169.407, 9764.295],
+    gg_liab_gdp:  [37.290, 42.198],
+  },
+  monetary: {
+    yrs: ['2008','2009','2010','2011','2012','2013'],
+    mp_rate:     [ 7.957, 9.540, 8.255, 5.642, 5.000, 8.866],
+    interbank:   [11.500, 8.250, 8.000, 8.000, 9.250, 12.200],
+    bm_growth:   [17.402, 8.033, 0.795, 7.320, 9.100, 9.001],
+    priv_credit: [31.619, 5.299, 4.943, 12.393, 8.041, 6.839],
+  },
+};
+
+const SRC_COLORS = { blue:'#2563EB', green:'#059669', red:'#D92D20', purple:'#7C3AED', amber:'#D97706', slate:'#0F172A', teal:'#0891B2', gray:'#64748B' };
+
+function tinyOpts(extra){
+  const base = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } }, tooltip:{ mode:'index', intersect:false } },
+    scales:{ x:{ ticks:{ font:{size:10, family:'IBM Plex Mono'} } }, y:{ ticks:{ font:{size:10, family:'IBM Plex Mono'} } } }
+  };
+  return Object.assign(base, extra||{});
+}
+
+function renderSourceCharts(sector){
+  if (sector === 'real') {
+    const R = SRC.real;
+    makeChart('real-src-1', { data:{ labels:R.yrs, datasets:[
+      { type:'bar',  label:'Output gap (%)',     data:R.output_gap, backgroundColor:SRC_COLORS.red+'99', borderColor:SRC_COLORS.red, borderWidth:1 },
+      { type:'line', label:'Real GDP growth (%)',data:R.ry_growth,  borderColor:SRC_COLORS.blue, backgroundColor:SRC_COLORS.blue+'22', borderWidth:2.5, pointRadius:3, tension:.25 },
+    ]}, options: tinyOpts() });
+    makeChart('real-src-2', { type:'line', data:{ labels:R.infl_years, datasets:[
+      { label:'GDP deflator',       data:R.gdp_deflator, borderColor:SRC_COLORS.blue,   backgroundColor:SRC_COLORS.blue+'22',   borderWidth:2, pointRadius:3, tension:.2 },
+      { label:'CPI (average)',      data:R.cpi_avg,      borderColor:SRC_COLORS.amber,  backgroundColor:SRC_COLORS.amber+'22',  borderWidth:2, pointRadius:3, tension:.2 },
+      { label:'CPI (end of period)',data:R.cpi_eop,      borderColor:SRC_COLORS.red,    backgroundColor:SRC_COLORS.red+'22',    borderWidth:2, pointRadius:3, tension:.2, borderDash:[4,3] },
+    ]}, options: tinyOpts() });
+    makeChart('real-src-3', { data:{ labels:R.yrs, datasets:[
+      { type:'bar',  label:'National saving',           data:R.saving,      backgroundColor:SRC_COLORS.green+'cc', borderColor:SRC_COLORS.green, borderWidth:1 },
+      { type:'bar',  label:'Investment',                data:R.investment,  backgroundColor:SRC_COLORS.blue+'cc',  borderColor:SRC_COLORS.blue,  borderWidth:1 },
+      { type:'line', label:'Saving − Investment (gap)', data:R.sav_inv_gap, borderColor:SRC_COLORS.red, backgroundColor:SRC_COLORS.red+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts() });
+    makeChart('real-src-4', { data:{ labels:R.yrs, datasets:[
+      { type:'bar',  label:'Gross fixed capital formation', data:R.gfcf,        backgroundColor:SRC_COLORS.blue+'cc',   stack:'contrib' },
+      { type:'bar',  label:'Exports',                       data:R.exports,     backgroundColor:SRC_COLORS.green+'cc',  stack:'contrib' },
+      { type:'bar',  label:'Imports',                       data:R.imports,     backgroundColor:SRC_COLORS.red+'cc',    stack:'contrib' },
+      { type:'bar',  label:'Final consumption',             data:R.consumption, backgroundColor:SRC_COLORS.amber+'cc',  stack:'contrib' },
+      { type:'line', label:'Real GDP growth',               data:R.ry_growth,   borderColor:SRC_COLORS.slate, backgroundColor:SRC_COLORS.slate+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts({ scales:{ x:{ stacked:true, ticks:{ font:{size:10, family:'IBM Plex Mono'} } }, y:{ stacked:true, ticks:{ font:{size:10, family:'IBM Plex Mono'} } } } }) });
+  }
+
+  else if (sector === 'external') {
+    const E = SRC.external;
+    makeChart('ext-src-1', { data:{ labels:E.bop_yrs, datasets:[
+      { type:'bar',  label:'Capital account',   data:E.cap_acct, backgroundColor:SRC_COLORS.green+'cc',  stack:'bop' },
+      { type:'bar',  label:'Financial account', data:E.fin_acct, backgroundColor:SRC_COLORS.purple+'cc', stack:'bop' },
+      { type:'bar',  label:'Gross reserves',    data:E.reserves, backgroundColor:SRC_COLORS.amber+'cc',  stack:'bop' },
+      { type:'line', label:'Current account',   data:E.cur_acct, borderColor:SRC_COLORS.red, backgroundColor:SRC_COLORS.red+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts({ scales:{ x:{ stacked:true, ticks:{ font:{size:10, family:'IBM Plex Mono'} } }, y:{ stacked:true, ticks:{ font:{size:10, family:'IBM Plex Mono'} } } } }) });
+    makeChart('ext-src-2', { data:{ labels:E.bop_yrs, datasets:[
+      { type:'bar',  label:'Assets',      data:E.iip_assets, backgroundColor:SRC_COLORS.green+'cc' },
+      { type:'bar',  label:'Liabilities', data:E.iip_liab,   backgroundColor:SRC_COLORS.red+'cc' },
+      { type:'line', label:'Net IIP',     data:E.iip_net,    borderColor:SRC_COLORS.blue, backgroundColor:SRC_COLORS.blue+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts() });
+    makeChart('ext-src-3', { data:{ labels:E.reer_yrs, datasets:[
+      { type:'bar',  label:'Domestic inflation (%)',        data:E.dom_infl, backgroundColor:SRC_COLORS.red+'cc',   yAxisID:'y' },
+      { type:'bar',  label:'Trade-partner inflation (%)',   data:E.tp_infl,  backgroundColor:SRC_COLORS.blue+'cc',  yAxisID:'y' },
+      { type:'line', label:'REER (2012=100, right)',        data:E.reer,     borderColor:SRC_COLORS.slate, backgroundColor:SRC_COLORS.slate+'22', borderWidth:2.5, pointRadius:3, tension:.2, yAxisID:'y1' },
+    ]}, options: tinyOpts({ scales:{
+      x:{ ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y:{ position:'left',  ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y1:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+    }}) });
+    makeChart('ext-src-4', { data:{ labels:E.reer_yrs, datasets:[
+      { type:'bar',  label:'Reserves (months of imports)', data:E.res_months,     backgroundColor:SRC_COLORS.teal+'cc',  yAxisID:'y' },
+      { type:'line', label:'Reserve assets (USD mn, right)',data:E.res_level_usd, borderColor:SRC_COLORS.amber, backgroundColor:SRC_COLORS.amber+'22', borderWidth:2.5, pointRadius:3, tension:.2, yAxisID:'y1' },
+    ]}, options: tinyOpts({ scales:{
+      x:{ ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y:{ position:'left',  ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y1:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+    }}) });
+  }
+
+  else if (sector === 'gov') {
+    const G = SRC.gov;
+    makeChart('gov-src-1', { data:{ labels:G.yrs, datasets:[
+      { type:'bar',  label:'Fiscal impulse (expansionary +)', data:G.fisc_impulse, backgroundColor:SRC_COLORS.red+'cc',  borderColor:SRC_COLORS.red, borderWidth:1 },
+      { type:'line', label:'Output gap (% pot. GDP)',         data:G.output_gap,   borderColor:SRC_COLORS.blue, backgroundColor:SRC_COLORS.blue+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts() });
+    makeChart('gov-src-2', { data:{ labels:G.gg_liab_yrs, datasets:[
+      { type:'bar',  label:'GG liabilities (bn NC, left)',    data:G.gg_liab_lvl,  backgroundColor:SRC_COLORS.purple+'cc', borderColor:SRC_COLORS.purple, borderWidth:1, yAxisID:'y' },
+      { type:'line', label:'GG liabilities (% of GDP, right)',data:G.gg_liab_gdp,  borderColor:SRC_COLORS.amber, backgroundColor:SRC_COLORS.amber+'22', borderWidth:2.5, pointRadius:4, tension:.1, yAxisID:'y1' },
+    ]}, options: tinyOpts({ scales:{
+      x:{ ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y:{ position:'left',  ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+      y1:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ font:{size:10, family:'IBM Plex Mono'} } },
+    }}) });
+  }
+
+  else if (sector === 'monetary') {
+    const M = SRC.monetary;
+    makeChart('mon-src-1', { type:'line', data:{ labels:M.yrs, datasets:[
+      { label:'Monetary policy rate',   data:M.mp_rate,   borderColor:SRC_COLORS.purple, backgroundColor:SRC_COLORS.purple+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+      { label:'Interbank rate (avg)',   data:M.interbank, borderColor:SRC_COLORS.amber,  backgroundColor:SRC_COLORS.amber+'22',  borderWidth:2.5, pointRadius:3, tension:.2, borderDash:[4,3] },
+    ]}, options: tinyOpts() });
+    makeChart('mon-src-2', { type:'line', data:{ labels:M.yrs, datasets:[
+      { label:'Broad money growth',            data:M.bm_growth,   borderColor:SRC_COLORS.blue,  backgroundColor:SRC_COLORS.blue+'22',  borderWidth:2.5, pointRadius:3, tension:.2 },
+      { label:'Private sector credit growth',  data:M.priv_credit, borderColor:SRC_COLORS.green, backgroundColor:SRC_COLORS.green+'22', borderWidth:2.5, pointRadius:3, tension:.2 },
+    ]}, options: tinyOpts() });
+  }
 }
 
 function chartCard(id, title){
@@ -2302,6 +3706,8 @@ function renderHistoricalTable(){
   const rows = HIST_ROWS[state.histSector];
   const data = BASELINE[state.histSector];
   document.getElementById('hist-title').textContent = HIST_TITLES[state.histSector];
+  // Toggle the External reports block
+  document.getElementById('external-reports').classList.toggle('hidden', state.histSector !== 'external');
   const head = `<thead><tr><th>Line item</th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
   const body = `<tbody>${rows.map(([key,label,d]) => `
     <tr><td>${label}</td>${(data[key]||[]).map(v=>`<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
@@ -2343,6 +3749,24 @@ function renderHistoricalTable(){
 
   // Chart 2: sector-specific deep dive
   renderHistChart2();
+
+  // For External sector, populate the appended BOP / IIP / External Debt reports
+  if (state.histSector === 'external') {
+    renderSourceCharts('external');
+    renderExternalReports();
+  }
+  // For Real sector, populate the Foreign Balance & CA projection worksheets
+  document.getElementById('real-reports').classList.toggle('hidden', state.histSector !== 'real');
+  if (state.histSector === 'real') {
+    renderSourceCharts('real');
+    renderRealSectorProj();
+  }
+  // For Monetary sector, populate the monetary worksheets
+  document.getElementById('monetary-reports').classList.toggle('hidden', state.histSector !== 'monetary');
+  if (state.histSector === 'monetary') {
+    renderSourceCharts('monetary');
+    renderMonetaryReports();
+  }
 }
 
 function renderHistChart2(){
@@ -2956,6 +4380,990 @@ function renderGovBalanceSheet(){
   document.getElementById('bs-identity').innerHTML = idRows;
 }
 
+
+/* ============================================================
+   MONETARY SECTOR — Money Multiplier / Velocity / Taylor Rule
+   ============================================================ */
+const MON_YEARS_HIST = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const MON_DATA = {
+  years: MON_YEARS_HIST,
+  reserve_money:  [1184.598, 1409.041, 1676.447, 1945.492, 2032.015, 2218.277, 2168.671, 2555.960],
+  broad_money:    [6222.082, 7495.513, 8799.849, 9506.764, 9582.344, 10283.775, 11219.599, 12229.434],
+  broad_money_avg:[6222.082, 6858.797, 8147.681, 9153.307, 9544.554, 9933.059, 10751.687, 11724.517],
+  money_multiplier:[5.252, 5.320, 5.249, 4.887, 4.716, 4.636, 5.173, 4.785],
+  nominal_gdp:    [10964.62, 12956.32, 14737.19, 15747.01, 17629.08, 19427.85, 21157.29, 23646.19],
+  velocity:       [1.762, 1.889, 1.809, 1.720, 1.847, 1.956, 1.968, 2.017],
+  bm_growth:      [null, 20.464, 17.401, 8.032, 0.795, 7.320, 9.099, 9.001],
+  // Taylor rule (2011-2014)
+  taylor_years:   [2011, 2012, 2013, 2014],
+  mp_rate_actual: [5.00, 7.00, 8.866, 8.866],
+  mp_rate_fitted: [8.185, 6.600, 8.493, 8.866],
+  cpi_actual:     [4.878, 5.00, 6.136, 7.482],
+  cpi_target:     [5, 5, 5, 5],
+  cpi_expect:     [6.500, 5.00, 5.00, 5.00],
+  inflation_gap:  [-0.122, 0.00, 1.136, 2.482],
+  lagged_mp:      [10.400, 5.00, 7.00, 8.866],
+  neutral_rate:   [2.0, 2.0, 2.0, 2.0],
+  interbank:      [8.0, 9.250, 12.200, 13.866],
+};
+
+function renderMonetaryReports(){
+  const H = MON_DATA;
+  const i = H.years.length - 1;
+  // 2014 forecast (broad money growth from FPP assumption ~8.83%)
+  const bm_growth_14 = 8.83;
+  const bm14 = H.broad_money[i] * (1 + bm_growth_14/100);
+  const mm14 = H.money_multiplier[i]; // constant methodology
+  const rm14 = bm14 / mm14;
+  const ngdp14 = 27082.07;  // from FPP macro forecast
+  const bm_avg_14 = (H.broad_money[i] + bm14) / 2;
+  const velocity_14 = ngdp14 / bm_avg_14;
+
+  // KPIs
+  const kpi = [
+    { label:'Broad Money 2014', value: fmt(bm14, 0), sub:`+${bm_growth_14}%`, color:'#7C3AED', base:`2013: ${fmt(H.broad_money[i], 0)}` },
+    { label:'Money Multiplier', value: mm14.toFixed(3), sub:`Reserve money → ${fmt(rm14, 0)}`, color:'#2563EB', base:`Historical avg: 4.982` },
+    { label:'Velocity 2014', value: velocity_14.toFixed(3), sub:`GDP/M2 (avg)`, color:'#059669', base:`2013: ${H.velocity[i].toFixed(3)}` },
+    { label:'MP rate 2014 (Taylor)', value:'8.87%', sub:`Interbank: ${H.interbank[3].toFixed(2)}%`, color:'#D97706', base:`α=1.5 · β=2.3 · ρ=0.2` },
+  ];
+  document.getElementById('mon-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  const yrs = [...H.years, 2014];
+
+  // Money multiplier table
+  const mmRows = [
+    ['Reserve money (bn NC, EOP)', [...H.reserve_money, rm14]],
+    ['Broad money (bn NC, EOP)', [...H.broad_money, bm14]],
+    ['Broad money growth (%)', [...H.bm_growth, bm_growth_14]],
+    ['Money multiplier (M2 / RM)', [...H.money_multiplier, mm14]],
+  ];
+  document.getElementById('mm-table').innerHTML = buildMonTable(mmRows, yrs);
+
+  // Velocity table
+  const velRows = [
+    ['Nominal GDP (bn NC)', [...H.nominal_gdp, ngdp14]],
+    ['Broad money — avg stock', [...H.broad_money_avg, bm_avg_14]],
+    ['Broad money — EOP stock', [...H.broad_money, bm14]],
+    ['Velocity (GDP / avg M2)', [...H.velocity, velocity_14]],
+  ];
+  document.getElementById('vel-table').innerHTML = buildMonTable(velRows, yrs);
+
+  // Taylor Rule table
+  const taylorRows = [
+    ['MP rate — actual (%)', H.mp_rate_actual],
+    ['MP rate — fitted (%)', H.mp_rate_fitted],
+    ['CPI — actual y/y (%)', H.cpi_actual],
+    ['CPI — target (%)', H.cpi_target],
+    ['CPI — expectations (%)', H.cpi_expect],
+    ['Inflation gap (%)', H.inflation_gap],
+    ['Lagged MP rate (%)', H.lagged_mp],
+    ['Neutral real rate (%)', H.neutral_rate],
+    ['Interbank rate (%)', H.interbank],
+  ];
+  const tyrs = H.taylor_years;
+  const thead = `<thead><tr><th>Series</th>${tyrs.map((y,k)=>`<th${k===tyrs.length-1?' style="background:#fef3c7"':''}>${y}${k===tyrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const tbody = `<tbody>${taylorRows.map(([label,arr]) => `
+    <tr><td>${label}</td>${arr.map((v,k)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${k===tyrs.length-1?' style="background:#fef8e6"':''}>${fmt(v,3)}</td>`).join('')}</tr>
+  `).join('')}</tbody>`;
+  document.getElementById('taylor-table').innerHTML = thead + tbody;
+
+  // NFA & OIN forecast tables
+  const nfa_cb_nc_13 = 3969.92, ner_eop_13 = 549.42, nfa_cb_usd_13 = 7225.67, oin_13 = 817.47;
+  const bop_2014 = -21.79; // Overall BOP balance USD mn from BOP data
+  const ner_eop_14 = 549.42 * 1.05; // assumed 5% depreciation
+  const nfa_cb_usd_14 = nfa_cb_usd_13 + bop_2014;
+  const nfa_cb_nc_14 = nfa_cb_usd_14 * ner_eop_14 / 1000;
+  const val_adj = nfa_cb_nc_14 - (nfa_cb_usd_13 * ner_eop_14 / 1000); // FX revaluation
+  const oin_14 = oin_13 + val_adj * 0.1; // small valuation impact assumed
+
+  document.getElementById('nfa-cb-table').innerHTML = `
+    <thead><tr><th>Central Bank NFA & OIN</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr style="font-weight:600;background:#fafafa"><td>NFA (bn NC)</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
+      <tr><td>NER end-of-period (NC/USD)</td><td>${fmt(ner_eop_13,2)}</td><td style="background:#fef8e6">${fmt(ner_eop_14,2)}</td></tr>
+      <tr><td>NFA (USD mn)</td><td>${fmt(nfa_cb_usd_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_usd_14,2)}</td></tr>
+      <tr><td>Overall BOP balance (USD mn)</td><td>—</td><td style="background:#fef8e6">${fmt(bop_2014,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>OIN (bn NC)</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
+      <tr><td>Valuation adjustment (bn NC)</td><td>—</td><td style="background:#fef8e6">${fmt(val_adj,2)}</td></tr>
+    </tbody>`;
+
+  // Total NFA/OIN for banking system (CB + ODCs)
+  const nfa_odc_nc_13 = 2473.20;  // from NFA (Survey) 2012 baseline, using proxy value
+  const oin_odc_13 = -1017.53;
+  const nfa_odc_nc_14 = nfa_odc_nc_13 * (ner_eop_14 / ner_eop_13);
+  const total_nfa_13 = nfa_cb_nc_13 + nfa_odc_nc_13;
+  const total_nfa_14 = nfa_cb_nc_14 + nfa_odc_nc_14;
+  const total_oin_13 = oin_13 + oin_odc_13;
+  const total_oin_14 = oin_14 + oin_odc_13 * 1.02;
+
+  document.getElementById('nfa-total-table').innerHTML = `
+    <thead><tr><th>Total banking system</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr><td>NFA — Central Bank</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
+      <tr><td>NFA — Other depository corps</td><td>${fmt(nfa_odc_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_odc_nc_14,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total NFA (bn NC)</td><td>${fmt(total_nfa_13,2)}</td><td style="background:#fef8e6">${fmt(total_nfa_14,2)}</td></tr>
+      <tr><td>OIN — Central Bank</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
+      <tr><td>OIN — Other depository corps</td><td>${fmt(oin_odc_13,2)}</td><td style="background:#fef8e6">${fmt(oin_odc_13*1.02,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total OIN (bn NC)</td><td>${fmt(total_oin_13,2)}</td><td style="background:#fef8e6">${fmt(total_oin_14,2)}</td></tr>
+    </tbody>`;
+
+  // Taylor forecast box
+  document.getElementById('taylor-forecast').innerHTML = `
+    <div style="font-weight:700">2014 Taylor rule forecast</div>
+    <div class="mono" style="margin-top:4px">i₂₀₁₄ = 0.2×8.866 + 0.8×[2.0 + 5.0 + 1.5×(7.482−5.0) + 2.3×1.422] = <strong>8.866%</strong></div>
+    <div class="mono" style="margin-top:4px">Interbank rate ≈ i + spread → <strong>13.866%</strong></div>
+  `;
+}
+
+function buildMonTable(rows, yrs){
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k)=>`<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr]) => `
+    <tr style="font-weight:600;background:#fafafa">
+      <td>${label}</td>
+      ${arr.map((v,k)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${v===null?'—':fmt(v, 2)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  return head + body;
+}
+
+
+/* ============================================================
+   REAL GDP & OUTPUT GAP — 3 forecast methods
+   ============================================================ */
+const RGDP_HIST = {
+  years: [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+  ry:         [9864.10, 10508.01, 10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
+  ry_growth:  [8.843, 6.528, 2.401, -1.631, 4.859, 5.655, 3.901, 4.844],
+  trend_g:    [null,   10258.67, 10928.33, 11190.74, 11008.27, 11543.22, 12196.03, 12671.82],
+  potential:  [9649.91, 9961.09, 10371.12, 10754.77, 11237.05, 11888.18, 12184.44, 12671.82],
+  output_gap: [2.220, 5.491, 3.753, -1.580, -1.226, -1.356, 0.000, 0.811],
+};
+const RGDP_METHODS = {
+  expert: { label:'Expert assessment', value: 4.630, formula:'RY₂₀₁₄ = RY₂₀₁₃ × (1+4.63/100)' },
+  trend:  { label:'Trend growth rate', value: 4.000, formula:'g = (Trend coefficient) × 100 = 4.0%' },
+  recent: { label:'Recent 7yr geometric avg', value: 3.763, formula:'g = ((RY₂₀₁₃/RY₂₀₀₆)^(1/7) − 1) × 100' },
+};
+
+function renderRealGdpMethods(){
+  const a = state.realProjAssumptions;
+  const potential_14 = RGDP_HIST.potential.at(-1) * 1.040;   // pot grows at 4% (trend)
+  const ry14 = RGDP_HIST.ry.at(-1) * (1 + a.d_RY/100);
+  const ogap14 = 100 * ((ry14 - potential_14) / potential_14);
+
+  // KPIs
+  const kpi = [
+    { label:'Expert assessment', value:'4.630%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.0463, 0)}`, color:'#2563EB' },
+    { label:'Trend growth (β=0.040)', value:'4.000%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.04, 0)}`, color:'#059669' },
+    { label:'Recent avg (7-yr geom.)', value:'3.763%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.03763, 0)}`, color:'#D97706' },
+    { label:'Chosen path 2014',        value:`Δ ${a.d_RY.toFixed(2)}%`,  sub:`RY: ${fmt(ry14,0)} · Output gap: ${ogap14.toFixed(2)}%`, color:'#0F172A' },
+  ];
+  document.getElementById('rgdp-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">Regression R² = 0.988</div>
+    </div>
+  `).join('');
+
+  // Historical table
+  const yrs = [...RGDP_HIST.years, 2014];
+  const rows = [
+    ['Real GDP (bn NC, 2005p)', [...RGDP_HIST.ry, ry14]],
+    ['  RY % growth', [...RGDP_HIST.ry_growth, a.d_RY]],
+    ['Trend applied to prev year', [...RGDP_HIST.trend_g, RGDP_HIST.ry.at(-1) * 1.04]],
+    ['Potential Output (WEO)', [...RGDP_HIST.potential, potential_14]],
+    ['Output gap (%)', [...RGDP_HIST.output_gap, ogap14]],
+  ];
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k) => `<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr]) => `
+    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
+      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
+      ${arr.map((v,k) => `<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${v===null?'—':fmt(v,2)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  document.getElementById('rgdp-table').innerHTML = head + body;
+
+  // Method selector — clickable buttons, click applies value to d_RY
+  document.getElementById('rgdp-method-panel').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${Object.entries(RGDP_METHODS).map(([k, m]) => `
+        <button class="rgdp-method-btn" data-value="${m.value}" style="text-align:left;padding:10px;border:1px solid ${Math.abs(a.d_RY - m.value) < 0.01 ? 'var(--ink)' : 'var(--line)'};background:${Math.abs(a.d_RY - m.value) < 0.01 ? '#f1f5f9' : 'white'};font-family:inherit;cursor:pointer">
+          <div style="font-weight:700;font-size:12px">${m.label} — <span class="mono">${m.value.toFixed(3)}%</span></div>
+          <div class="mono" style="font-size:10px;color:var(--muted);margin-top:2px">${m.formula}</div>
+        </button>
+      `).join('')}
+      <div style="padding:10px;background:#f8fafc;border:1px solid var(--line);font-size:11px">
+        <div style="font-weight:700;margin-bottom:4px">Output gap identity</div>
+        <div class="mono">100 × ((RY₂₀₁₄ − RYPot₂₀₁₄) / RYPot₂₀₁₄) = <strong>${ogap14.toFixed(3)}%</strong></div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.rgdp-method-btn').forEach(b => b.addEventListener('click', () => {
+    state.realProjAssumptions.d_RY = parseFloat(b.dataset.value);
+    // Sync phillips_ygap to the newly computed output gap
+    state.realProjAssumptions.phillips_ygap = ogap14;
+    renderRealSectorProj();
+  }));
+}
+
+const REAL_PROJ_YEARS = [2008, 2009, 2010, 2011, 2012, 2013];
+const REAL_PROJ = {
+  years: REAL_PROJ_YEARS,
+  goods_credit:      [9555.37, 8838.23, 9516.25, 10383.11, 11494.73, 12095.65], // USD mn
+  goods_debit:       [14568.70, 10877.29, 12955.95, 15534.48, 17222.81, 18289.86],
+  services_credit:   [4083.32, 3592.91, 4319.98, 4972.35, 5504.70, 5792.47],
+  services_debit:    [1882.40, 1404.81, 1782.75, 1735.48, 1924.10, 2043.30],
+  primary_credit:    [617.82, 253.49, 316.83, 272.38, 173.87, 184.98],
+  investment_income: [546.92, 228.99, 281.63, 209.18, 133.53, 142.06],
+  primary_debit:     [1126.04, 1203.94, 1083.38, 1077.22, 1084.27, 1042.67],
+  interest_payments: [352.60, 308.00, 306.60, 284.10, 285.96, 274.99],
+  other_primary:     [773.44, 895.94, 776.78, 793.12, 798.31, 767.68],
+  secondary_income:  [442.30, 358.80, 366.50, 322.90, 333.50, 342.90],
+  // ratios (%)
+  svc_credit_ratio:  [42.73, 40.65, 45.40, 47.89, 47.89, 47.89],
+  svc_debit_ratio:   [12.92, 12.92, 13.76, 11.17, 11.17, 11.17],
+  // stocks (memo)
+  foreign_assets:    [11617.7, 11915.2, 12732.4, 12928.9, 13775.6, 14636.2],
+  external_debt:     [8964.30, 7878.80, 8631.80, 9764.20, 10236.15, 11068.04],
+  libor:             [3.046, 1.121, 0.518, 0.507, 0.687, 0.409],
+  implicit_rate:     [4.069, 3.657, 3.714, 3.089, 2.860, 2.582],
+  interest_spread:   [1.023, 2.536, 3.196, 2.582, 2.173, 2.173],
+  yield_investment:  [4.672, 1.303, 1.541, 1.090, 1.000, 1.000],
+};
+
+const REAL_PROJ_DEFAULTS = {
+  // Real exports elasticity model
+  d_Pxf: 1.5, d_NER: 0.0, d_CPI: 7.482, d_RYp: 4.0,
+  eps_RXy: 1.0, eps_RXP: 0.625,
+  d_Pmf: 1.5, d_RMg: 0.0,
+  svc_credit_ratio: 47.889, svc_debit_ratio: 11.172,
+  yield_investment: 1.0, libor: 0.409, spread: 2.173,
+  other_primary_growth: 0.0, foreign_assets_2014: 14324.0, external_debt_2014: 11809.88,
+  secondary_income_growth: 0.0,
+  // Domestic demand & prices
+  d_RY: 4.63,               // real GDP growth
+  eps_RMy: 1.0,             // income elasticity of imports
+  eps_RMP: -0.5,            // price elasticity of imports
+  d_RER: 0.0,               // real ER change (+ = depreciation)
+  d_Pf: 1.5,                // foreign inflation
+  phillips_c: 1.4,          // constant
+  phillips_rho: 0.7,        // inflation persistence
+  phillips_ygap: 1.422,     // output gap 2014
+  phillips_alpha_y: 1.4,    // coef on output gap
+  phillips_rergap: -0.73,   // RER gap 2014
+  phillips_alpha_r: 0.28,   // coef on RER gap
+};
+
+function computeRealProj(a){
+  const B = REAL_PROJ;
+  const i = B.years.length - 1;      // 2013
+  const xg13 = B.goods_credit[i], mg13 = B.goods_debit[i];
+
+  // Relative price of exports change (formula ①)
+  const d_Prxf = ((1 + a.d_Pxf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  // Real exports volume change (formula ②)
+  const d_RXg = a.eps_RXy * a.d_RYp + a.eps_RXP * d_Prxf;
+  // Nominal 2014 X & M
+  const xg14 = xg13 * (1 + d_RXg/100) * (1 + a.d_Pxf/100);
+  const mg14 = mg13 * (1 + a.d_RMg/100) * (1 + a.d_Pmf/100);
+  // Services 2014 (ratio approach)
+  const sc14 = xg14 * a.svc_credit_ratio / 100;
+  const sd14 = mg14 * a.svc_debit_ratio / 100;
+  // Primary income
+  const avg_assets = (B.foreign_assets[i] + a.foreign_assets_2014) / 2;
+  const avg_debt = (B.external_debt[i] + a.external_debt_2014) / 2;
+  const inv_income14 = a.yield_investment / 100 * avg_assets;
+  const interest14 = (a.libor + a.spread) / 100 * avg_debt;
+  const other_prim14 = B.other_primary[i] * (1 + a.other_primary_growth/100);
+  const primary_credit14 = inv_income14 + (B.primary_credit[i] - B.investment_income[i]); // + other credits
+  const primary_debit14 = interest14 + other_prim14;
+  const primary_net14 = primary_credit14 - primary_debit14;
+  // Secondary income
+  const sec14 = B.secondary_income[i] * (1 + a.secondary_income_growth/100);
+  // Current account 2014
+  const goods_net14 = xg14 - mg14;
+  const svc_net14 = sc14 - sd14;
+  const ca14 = goods_net14 + svc_net14 + primary_net14 + sec14;
+
+  return { d_Prxf, d_RXg, xg14, mg14, sc14, sd14, inv_income14, interest14, other_prim14,
+           primary_credit14, primary_debit14, primary_net14, sec14, goods_net14, svc_net14, ca14,
+           avg_assets, avg_debt };
+}
+
+function renderRealSectorProj(){
+  // Anchor: Real GDP & Output Gap methods (drives d_RY selection)
+  renderRealGdpMethods();
+
+  const a = state.realProjAssumptions;
+  const p = computeRealProj(a);
+  const yrs = [...REAL_PROJ_YEARS, 2014];
+
+  // Assumption panel
+  const groups = [
+    { title:'Real Exports Elasticity Model', color:'#2563EB', rows: [
+      { key:'d_Pxf', label:'Δ% Export price (USD)', min:-10, max:15, step:.1, suffix:'%' },
+      { key:'d_NER', label:'Δ% Nominal ER (NC/$)', min:-15, max:20, step:.1, suffix:'%' },
+      { key:'d_CPI', label:'Δ% CPI',               min:0,  max:20, step:.1, suffix:'%' },
+      { key:'d_RYp', label:'Δ% Productive capacity',min:-5, max:12, step:.1, suffix:'%' },
+      { key:'eps_RXy',label:'ε RX,y (income elasticity)', min:0, max:3, step:.05, suffix:'x' },
+      { key:'eps_RXP',label:'ε RX,Prxf (price elasticity)', min:-2, max:2, step:.05, suffix:'x' },
+    ]},
+    { title:'Real Imports', color:'#D97706', rows: [
+      { key:'d_Pmf', label:'Δ% Import price (USD)', min:-10, max:15, step:.1, suffix:'%' },
+      { key:'d_RMg', label:'Δ% Real imports volume',min:-15, max:20, step:.1, suffix:'%' },
+    ]},
+    { title:'Services (ratios)', color:'#059669', rows: [
+      { key:'svc_credit_ratio', label:'Services credit / X goods', min:20, max:70, step:.1, suffix:'%' },
+      { key:'svc_debit_ratio',  label:'Services debit / M goods',  min:5,  max:25, step:.1, suffix:'%' },
+    ]},
+    { title:'Primary Income', color:'#7C3AED', rows: [
+      { key:'yield_investment', label:'Yield on foreign assets', min:0, max:8, step:.05, suffix:'%' },
+      { key:'libor',            label:'LIBOR (US$)',             min:0, max:6, step:.01, suffix:'%' },
+      { key:'spread',           label:'Interest spread on debt', min:0, max:8, step:.05, suffix:'%' },
+      { key:'other_primary_growth', label:'Growth: other primary debit', min:-20, max:20, step:.5, suffix:'%' },
+    ]},
+    { title:'Stocks & Secondary', color:'#0F172A', rows: [
+      { key:'foreign_assets_2014', label:'Foreign assets 2014 (USD mn)', min:8000, max:20000, step:100, suffix:'' },
+      { key:'external_debt_2014',  label:'External debt 2014 (USD mn)',  min:8000, max:16000, step:100, suffix:'' },
+      { key:'secondary_income_growth', label:'Growth: secondary income', min:-20, max:20, step:.5, suffix:'%' },
+    ]},
+  ];
+
+  document.getElementById('real-proj-panel').innerHTML = `
+    <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span></div>
+    <div style="padding:12px;max-height:70vh;overflow-y:auto">
+      ${groups.map(g => `
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:${g.color};margin-bottom:8px">
+            <span style="width:8px;height:8px;background:${g.color};display:inline-block"></span>${g.title}
+          </div>
+          ${g.rows.map(row => {
+            const v = a[row.key];
+            const dv = row.step < 0.1 ? v.toFixed(2) : (row.step < 1 ? v.toFixed(1) : v.toFixed(0));
+            return `<div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+                <span>${row.label}</span>
+                <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+              </div>
+              <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
+            </div>`;
+          }).join('')}
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.querySelectorAll('#real-proj-panel input[type=range]').forEach(inp => {
+    inp.addEventListener('input', e => {
+      state.realProjAssumptions[inp.dataset.key] = parseFloat(e.target.value);
+      renderRealSectorProj();
+    });
+  });
+
+  // KPIs
+  const kpi = [
+    { label:'Δ% Real exports (Xg)', value: p.d_RXg.toFixed(2)+'%', sub: `Δ% Prxf: ${p.d_Prxf.toFixed(2)}%`, color:'#2563EB', base:'formula ②' },
+    { label:'Goods trade balance', value: `${(p.goods_net14).toFixed(0)}`, sub:`Xg: ${p.xg14.toFixed(0)} · Mg: ${p.mg14.toFixed(0)}`, color:'#D97706', base:'USD mn' },
+    { label:'Primary income net', value: `${p.primary_net14.toFixed(0)}`, sub:`Inv inc: ${p.inv_income14.toFixed(0)} · Int: ${p.interest14.toFixed(0)}`, color:'#7C3AED', base:'USD mn' },
+    { label:'Current account 2014', value: `${p.ca14.toFixed(0)}`, sub:`Services: ${(p.svc_net14).toFixed(0)} · Secondary: ${p.sec14.toFixed(0)}`, color:'#059669', base:'USD mn' },
+  ];
+  document.getElementById('real-proj-kpi').innerHTML = kpi.map(k=>`
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  // Table — historical + 2014 forecast
+  const rows = [
+    ['Goods — Credit (exports)', [...REAL_PROJ.goods_credit, p.xg14]],
+    ['Goods — Debit (imports)', [...REAL_PROJ.goods_debit, p.mg14]],
+    ['Goods trade balance', REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]).concat([p.goods_net14])],
+    ['Services — Credit', [...REAL_PROJ.services_credit, p.sc14]],
+    ['Services — Debit', [...REAL_PROJ.services_debit, p.sd14]],
+    ['Services net', REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]).concat([p.svc_net14])],
+    ['Primary income — Credit', [...REAL_PROJ.primary_credit, p.primary_credit14]],
+    ['  of which: Investment income', [...REAL_PROJ.investment_income, p.inv_income14]],
+    ['Primary income — Debit', [...REAL_PROJ.primary_debit, p.primary_debit14]],
+    ['  of which: Interest', [...REAL_PROJ.interest_payments, p.interest14]],
+    ['  of which: Other primary', [...REAL_PROJ.other_primary, p.other_prim14]],
+    ['Primary income net', REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]).concat([p.primary_net14])],
+    ['Secondary income', [...REAL_PROJ.secondary_income, p.sec14]],
+    ['Current account', REAL_PROJ.years.map((_,i)=>(REAL_PROJ.goods_credit[i]-REAL_PROJ.goods_debit[i])+(REAL_PROJ.services_credit[i]-REAL_PROJ.services_debit[i])+(REAL_PROJ.primary_credit[i]-REAL_PROJ.primary_debit[i])+REAL_PROJ.secondary_income[i]).concat([p.ca14])],
+  ];
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,i)=>`<th${i===yrs.length-1?' style="background:#fef3c7"':''}>${y}${i===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label, arr]) => `
+    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
+      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
+      ${arr.map((v,i)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${i===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 1)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  document.getElementById('real-proj-table').innerHTML = head + body;
+
+  // Charts
+  makeChart('real-proj-xm', {
+    type:'bar',
+    data:{ labels:yrs, datasets:[
+      {label:'Goods credit',     data:[...REAL_PROJ.goods_credit, p.xg14],     backgroundColor:'#059669'},
+      {label:'Services credit',  data:[...REAL_PROJ.services_credit, p.sc14],  backgroundColor:'#2563EB'},
+      {label:'Goods debit',      data:[...REAL_PROJ.goods_debit.map(v=>-v), -p.mg14], backgroundColor:'#D92D20'},
+      {label:'Services debit',   data:[...REAL_PROJ.services_debit.map(v=>-v), -p.sd14], backgroundColor:'#D97706'},
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  makeChart('real-proj-ca', {
+    type:'bar',
+    data:{ labels:yrs, datasets:[
+      {label:'Goods',            data:[...REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]), p.goods_net14], backgroundColor:'#D92D20', stack:'a'},
+      {label:'Services',         data:[...REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]), p.svc_net14], backgroundColor:'#2563EB', stack:'a'},
+      {label:'Primary income',   data:[...REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]), p.primary_net14], backgroundColor:'#D97706', stack:'a'},
+      {label:'Secondary income', data:[...REAL_PROJ.secondary_income, p.sec14], backgroundColor:'#059669', stack:'a'},
+      {label:'Current account',  data:rows[13][1], type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  // Formula values
+  document.getElementById('real-proj-formula-values').innerHTML = `
+    <div>① Δ%Prxf = ((1+${a.d_Pxf.toFixed(2)}/100) × (1+${a.d_NER.toFixed(2)}/100) / (1+${a.d_CPI.toFixed(2)}/100) − 1) × 100 = <strong>${p.d_Prxf.toFixed(3)}%</strong></div>
+    <div>② Δ%RXg = ${a.eps_RXy.toFixed(2)} × ${a.d_RYp.toFixed(2)} + ${a.eps_RXP.toFixed(3)} × ${p.d_Prxf.toFixed(3)} = <strong>${p.d_RXg.toFixed(3)}%</strong></div>
+    <div>③ Xg₂₀₁₄ = ${REAL_PROJ.goods_credit.at(-1).toFixed(2)} × (1+${p.d_RXg.toFixed(3)}/100) × (1+${a.d_Pxf.toFixed(2)}/100) = <strong>${p.xg14.toFixed(2)}</strong></div>
+    <div>④ Mg₂₀₁₄ = ${REAL_PROJ.goods_debit.at(-1).toFixed(2)} × (1+${a.d_RMg.toFixed(2)}/100) × (1+${a.d_Pmf.toFixed(2)}/100) = <strong>${p.mg14.toFixed(2)}</strong></div>
+    <div>⑤ Services: Credit = ${p.xg14.toFixed(0)} × ${a.svc_credit_ratio.toFixed(2)}% = <strong>${p.sc14.toFixed(2)}</strong> · Debit = ${p.mg14.toFixed(0)} × ${a.svc_debit_ratio.toFixed(2)}% = <strong>${p.sd14.toFixed(2)}</strong></div>
+    <div>⑥ Inv. income = ${a.yield_investment.toFixed(2)}% × ${p.avg_assets.toFixed(0)} = <strong>${p.inv_income14.toFixed(2)}</strong> · Interest = (${a.libor.toFixed(2)}+${a.spread.toFixed(2)})% × ${p.avg_debt.toFixed(0)} = <strong>${p.interest14.toFixed(2)}</strong></div>
+  `;
+
+  // ---- Domestic Demand & Prices (5 additional worksheets) ----
+  renderDomesticDemandProj();
+}
+
+/* ============================================================
+   DOMESTIC DEMAND & PRICES — Baseline 2013 → Forecast 2014
+   ============================================================ */
+const DD_HIST = {
+  years: [2008, 2009, 2010, 2011, 2012, 2013],
+  rgdp:         [10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
+  rcp:          [7553.28, 7682.16, 8033.69, 8406.44, 8818.35, 9288.00],
+  rip:          [2155.85, 1924.40, 1897.40, 2226.59, 2241.17, 2336.10],
+  rmg_nc:       [8666.03, 7023.72, 7680.81, 8717.30, 9457.55, 9990.29],  // real imports of goods (bn NC)
+  ner_avg:      [526.24, 573.29, 525.83, 506.40, 510.79, 530.22],
+  ner_eop:      [555.47, 565.24, 512.97, 510.56, 511.02, 549.42],
+  rer_index:    [121.18, 122.21, 107.69, 101.72, 100.00, 99.27],
+  cpi:          [13.425, 7.843, 5.663, 4.878, 4.613, 6.136],
+  cpi_foreign:  [3.595, -0.171, 1.516, 2.868, 1.958, 1.500],
+  rcp_pct_rgdp: [70.20, 72.58, 72.38, 71.69, 72.37, 72.71],
+  rip_pct_rgdp: [20.04, 18.18, 17.10, 18.99, 18.39, 18.29],
+};
+
+function renderDomesticDemandProj(){
+  const a = state.realProjAssumptions;
+  const H = DD_HIST;
+  const i = H.years.length - 1; // 2013
+
+  // ---- Forecasts (2014) ----
+  const rgdp14 = H.rgdp[i] * (1 + a.d_RY/100);
+  // RCp — constant ratio-to-GDP approach
+  const rcp_ratio14 = H.rcp_pct_rgdp[i];
+  const rcp14 = rgdp14 * rcp_ratio14 / 100;
+  const d_rcp = (rcp14 / H.rcp[i] - 1) * 100;
+  // RIp — constant ratio-to-GDP approach
+  const rip_ratio14 = H.rip_pct_rgdp[i];
+  const rip14 = rgdp14 * rip_ratio14 / 100;
+  const d_rip = (rip14 / H.rip[i] - 1) * 100;
+  // Real imports of goods (elasticity)
+  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  const d_RMg = a.eps_RMy * a.d_RY + a.eps_RMP * d_Prmf;
+  const rmg14 = H.rmg_nc[i] * (1 + d_RMg/100);
+  // Nominal ER (period average)
+  const ner_avg14 = H.ner_avg[i] * (1 + a.d_CPI/100) * (1 + a.d_RER/100) / (1 + a.d_Pf/100);
+  const nere14 = (ner_avg14 * 2) - H.ner_eop[i];
+  const d_ner_avg = (ner_avg14 / H.ner_avg[i] - 1) * 100;
+  // Phillips-curve inflation for 2014
+  const pi_prev = H.cpi[i];
+  const pi14 = a.phillips_c + a.phillips_rho * pi_prev + a.phillips_alpha_y * a.phillips_ygap + a.phillips_alpha_r * a.phillips_rergap;
+
+  // KPIs
+  const kpi = [
+    { label:'Real GDP 2014', value: fmt(rgdp14, 0), sub:`+${a.d_RY.toFixed(2)}%`, color:'#2563EB', base:`2013: ${fmt(H.rgdp[i],0)}` },
+    { label:'Priv. Consumption 2014', value: fmt(rcp14, 0), sub:`Δ ${d_rcp.toFixed(2)}% · ${rcp_ratio14.toFixed(1)}% of GDP`, color:'#059669', base:`2013: ${fmt(H.rcp[i],0)}` },
+    { label:'Priv. Investment 2014', value: fmt(rip14, 0), sub:`Δ ${d_rip.toFixed(2)}% · ${rip_ratio14.toFixed(1)}% of GDP`, color:'#D97706', base:`2013: ${fmt(H.rip[i],0)}` },
+    { label:'CPI Inflation 2014 (Phillips)', value: pi14.toFixed(2)+'%', sub:`NER avg → ${fmt(ner_avg14, 1)}`, color:'#7C3AED', base:`2013: ${H.cpi[i].toFixed(2)}%` },
+  ];
+  document.getElementById('dd-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  // Table
+  const yrs = [...H.years, 2014];
+  const rows = [
+    ['Real GDP (bn NC, 2005p)', [...H.rgdp, rgdp14]],
+    ['Real Priv. Consumption', [...H.rcp, rcp14]],
+    ['  RCp / GDP (%)', [...H.rcp_pct_rgdp, rcp_ratio14]],
+    ['Real Priv. Investment', [...H.rip, rip14]],
+    ['  RIp / GDP (%)', [...H.rip_pct_rgdp, rip_ratio14]],
+    ['Real Imports of Goods (bn NC)', [...H.rmg_nc, rmg14]],
+    ['Nominal ER (avg, NC/USD)', [...H.ner_avg, ner_avg14]],
+    ['Nominal ER (EOP, NC/USD)', [...H.ner_eop, nere14]],
+    ['Real ER index (2012=100)', [...H.rer_index, H.rer_index[i] * (1 + a.d_RER/100)]],
+    ['CPI inflation (%)', [...H.cpi, pi14]],
+    ['Foreign inflation (%)', [...H.cpi_foreign, a.d_Pf]],
+  ];
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k) => `<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr]) => `
+    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
+      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
+      ${arr.map((v,k) => `<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 2)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  document.getElementById('dd-table').innerHTML = head + body;
+
+  // Formulas box
+  document.getElementById('dd-formulas').innerHTML = `
+    <div style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
+      <div>① <strong>Real GDP</strong> — RY₂₀₁₄ = RY₂₀₁₃ × (1 + Δ%RY/100) = ${fmt(H.rgdp[i],2)} × (1+${a.d_RY.toFixed(2)}/100) = <strong>${fmt(rgdp14,2)}</strong></div>
+      <div>② <strong>Priv. Consumption (constant RCp/GDP)</strong> — RCp₂₀₁₄ = ${rcp_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rcp14,2)}</strong></div>
+      <div>③ <strong>Priv. Investment (constant RIp/GDP)</strong> — RIp₂₀₁₄ = ${rip_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rip14,2)}</strong></div>
+      <div>④ <strong>Real Imports (elasticity)</strong>: Δ%Prmf = ((1+${a.d_Pmf.toFixed(2)}/100)×(1+${a.d_NER.toFixed(2)}/100)/(1+${a.d_CPI.toFixed(2)}/100)−1)×100 = <strong>${d_Prmf.toFixed(3)}%</strong> ; Δ%RMg = ${a.eps_RMy.toFixed(2)}×${a.d_RY.toFixed(2)} + ${a.eps_RMP.toFixed(2)}×${d_Prmf.toFixed(3)} = <strong>${d_RMg.toFixed(3)}%</strong> ; RMg₂₀₁₄ = ${fmt(H.rmg_nc[i],2)} × (1+${d_RMg.toFixed(3)}/100) = <strong>${fmt(rmg14,2)}</strong></div>
+      <div>⑤ <strong>Nominal ER (avg)</strong> — NER₂₀₁₄ = NER₂₀₁₃ × (1+Δ%P/100) × (1+Δ%RER/100) / (1+Δ%Pf/100) = ${fmt(H.ner_avg[i],2)} × (1+${a.d_CPI.toFixed(2)}/100) × (1+${a.d_RER.toFixed(2)}/100) / (1+${a.d_Pf.toFixed(2)}/100) = <strong>${fmt(ner_avg14,2)}</strong></div>
+      <div>⑥ <strong>CPI Inflation (Phillips curve)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = ${a.phillips_c.toFixed(1)} + ${a.phillips_rho.toFixed(1)}×${pi_prev.toFixed(2)} + ${a.phillips_alpha_y.toFixed(1)}×${a.phillips_ygap.toFixed(2)} + ${a.phillips_alpha_r.toFixed(2)}×${a.phillips_rergap.toFixed(2)} = <strong>${pi14.toFixed(2)}%</strong></div>
+    </div>
+  `;
+
+  // Extend the assumption panel with DD sliders (append once)
+  if (!document.getElementById('dd-panel-added')) {
+    const panelBody = document.querySelector('#real-proj-panel > div');
+    if (!panelBody) return;
+    const ddRows = [
+      { key:'d_RY',              label:'Δ% Real GDP (all)',       min:-5, max:12, step:.05, suffix:'%' },
+      { key:'eps_RMy',           label:'ε RM,y (imports)',        min:0, max:3, step:.05, suffix:'x' },
+      { key:'eps_RMP',           label:'ε RM,Prmf (imports)',     min:-2, max:2, step:.05, suffix:'x' },
+      { key:'d_RER',             label:'Δ% Real ER (+depreciate)',min:-15, max:15, step:.1, suffix:'%' },
+      { key:'d_Pf',              label:'Δ% Foreign inflation',    min:0, max:8, step:.05, suffix:'%' },
+      { key:'phillips_ygap',     label:'Output gap 2014',         min:-5, max:5, step:.05, suffix:'%' },
+      { key:'phillips_rergap',   label:'RER gap 2014',            min:-5, max:5, step:.05, suffix:'%' },
+    ];
+    const html = `
+      <div id="dd-panel-added" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#D92D20;margin-bottom:8px">
+          <span style="width:8px;height:8px;background:#D92D20;display:inline-block"></span>Domestic Demand & Prices
+        </div>
+        ${ddRows.map(row => {
+          const v = a[row.key];
+          const dv = row.step < 0.1 ? v.toFixed(2) : v.toFixed(1);
+          return `<div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
+              <span>${row.label}</span>
+              <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+            </div>
+            <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    panelBody.insertAdjacentHTML('beforeend', html);
+    // Wire sliders — reuse existing pattern
+    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(inp => {
+      inp.addEventListener('input', e => {
+        state.realProjAssumptions[inp.dataset.key] = parseFloat(e.target.value);
+        renderRealSectorProj();
+      });
+    });
+  } else {
+    // Update slider values shown in DD panel
+    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(inp => {
+      inp.value = a[inp.dataset.key];
+      const label = inp.previousElementSibling.querySelector('span:last-child');
+      if (label) label.textContent = (inp.step < 0.1 ? parseFloat(inp.value).toFixed(2) : parseFloat(inp.value).toFixed(1)) + (label.textContent.match(/[%x]/) ? label.textContent.slice(-1) : '');
+    });
+  }
+}
+
+/* ============================================================
+   BALANCE OF PAYMENTS, IIP, EXTERNAL DEBT — 2006–2013
+   Source: Macronia case study (BOP, IIP, EX_Debt sheets)
+   ============================================================ */
+const EXT_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const BOP_DATA = {
+  years: EXT_YEARS,
+  current_account:   [-1101.15,-1372.96,-2878.33, -442.61,-1302.51,-2396.44,-2724.38,-2959.84],
+  goods:             [-2727.14,-2985.45,-5013.33,-2039.06,-3439.69,-5151.37,-5728.08,-6194.21],
+  goods_credit:      [ 8101.73, 9299.48, 9555.37, 8838.23, 9516.25,10383.11,11494.73,12095.64],
+  goods_debit:       [10828.87,12284.93,14568.70,10877.29,12955.94,15534.48,17222.81,18289.86],
+  services:          [ 1351.06, 1734.07, 2200.92, 2188.10, 2537.24, 3236.87, 3580.60, 3749.16],
+  services_credit:   [ 2971.66, 3552.18, 4083.32, 3592.91, 4319.98, 4972.35, 5504.70, 5792.47],
+  services_debit:    [ 1620.60, 1818.11, 1882.40, 1404.81, 1782.75, 1735.48, 1924.10, 2043.30],
+  primary_income:    [  -74.18, -591.27, -508.22, -950.45, -766.55, -804.84, -910.40, -857.69],
+  secondary_income:  [  349.10,  469.70,  442.30,  358.80,  366.50,  322.90,  333.50,  342.90],
+  capital_account:   [    1.10,   21.20,    7.40,   58.30,   53.60,   21.60,   37.51,    9.00],
+  financial_account: [-1793.90,-2411.90,-2480.50, -676.90,-1800.20,-2518.90,-2684.79,-2929.05],
+  direct_inv:        [-1371.00,-1633.70,-2072.30,-1339.00,-1440.80,-2118.30,-1844.00,-1985.41],
+  portfolio_inv:     [  442.10,  -11.60, -356.60,  276.10, -268.10, -261.40, -784.86, -781.82],
+  fin_derivatives:   [  -25.00,   50.00,  -19.00,   18.00,   78.00,   69.00,   74.50,   80.21],
+  other_inv:         [ -840.00, -816.60,  -32.60,  368.00, -169.30, -208.20, -130.42, -242.02],
+  net_eo:            [   56.95,  -42.44,   42.43,  -32.69,    9.81,  -11.66,   53.60,    0.00],
+  overall_balance:   [  750.80, 1017.70, -348.00,  259.90,  561.10,  132.40,   51.52,  -21.79],
+  reserves_change:   [  750.80, 1017.70, -348.00,  259.90,  561.10,  132.40,   51.52,  -21.79],
+  reserves_stock:    [ 3114.60, 4113.60, 3798.70, 4066.20, 4629.70, 4758.30, 4809.82, 4779.04],
+  months_imports:    [    null,    null,    2.77,    3.97,    3.77,    3.31,    3.01,    2.82],
+  // Ratios
+  ca_pct_gdp:        [  -5.13,   -5.47,  -10.28,   -1.61,   -3.89,   -6.25,   -6.58,   -6.64],
+  trade_balance_usd: [-1376.07,-1251.38,-2812.41,  149.04, -902.46,-1914.50,-2147.48,-2445.05],
+  exports_gdp:       [  51.64,   51.24,   48.70,   45.26,   41.27,   40.03,   41.04,   40.11],
+  imports_gdp:       [  58.05,   56.23,   58.74,   44.71,   43.96,   45.02,   46.23,   45.59],
+  openness:          [ 109.69,  107.48,  107.44,   89.97,   85.23,   85.04,   87.27,   85.70],
+  fx_avg:            [ 511.30,  516.62,  526.24,  573.29,  525.83,  506.40,  510.79,  530.22],
+  fx_eop:            [ 517.89,  498.10,  555.47,  565.24,  512.97,  510.56,  511.02,  549.42],
+  usd_gdp:           [21444.52,25079.14,28004.92,27467.89,33526.24,38364.63,41420.76,44597.01],
+};
+
+const IIP_DATA = {
+  years: EXT_YEARS,
+  net_iip:           [-3563.80,-4969.80,-7774.20,-8174.60,-9410.30,-11800.60,-14565.56,-17501.24],
+  assets:            [10162.90,11795.40,11617.70,11915.20,12732.40,12928.90,13775.63,14639.72],
+  di_abroad:         [ 1268.00, 1530.40, 1536.30, 1543.80, 1568.60, 1626.40, 2131.84, 2676.05],
+  pi_assets:         [ 1317.90, 1488.20,  950.90, 1275.60, 1055.00,  796.10,  796.10,  796.10],
+  fd_assets:         [  351.00,  391.00,  379.00,  402.00,  472.00,  527.00,  568.00,  648.21],
+  oi_assets:         [ 4111.40, 4272.20, 4952.80, 4627.60, 5007.10, 5221.10, 5469.86, 5740.32],
+  reserves:          [ 3114.60, 4113.60, 3798.70, 4066.20, 4629.70, 4758.30, 4809.82, 4779.04],
+  liabilities:       [13726.70,16765.20,19391.90,20089.80,22142.70,24729.50,28339.64,32141.86],
+  di_liab:           [ 6906.20, 8800.30,10878.50,12226.00,13691.60,15867.70,18217.15,20746.76],
+  pi_liab:           [ 1177.40, 1359.40, 1183.70, 1229.30, 1278.80, 1281.30, 2066.16, 2847.99],
+  fd_liab:           [  102.00,   92.00,   99.00,  104.00,   96.00,   82.00,  102.00,  102.00],
+  oi_liab:           [ 5541.10, 6513.50, 7230.70, 6530.50, 7076.30, 7498.50, 7954.33, 8445.12],
+  // % of GDP
+  net_iip_pct:       [ -16.62,  -19.82,  -27.76,  -29.76,  -28.07,  -30.76,  -35.16,  -39.25],
+  assets_pct:        [  47.39,   47.03,   41.48,   43.38,   37.98,   33.70,   33.25,   32.82],
+  liab_pct:          [  64.01,   66.85,   69.24,   73.14,   66.05,   64.46,   68.42,   72.07],
+};
+
+const EX_DEBT_DATA = {
+  years: EXT_YEARS,
+  total:             [7246.00, 8366.20, 8964.30, 7878.80, 8631.80, 9764.20,10236.15,11068.04],
+  gov:               [1530.50, 1631.30, 1349.50, 1428.90, 2024.30, 1835.10, 2392.96, 2930.38],
+  cb:                [  94.00,   88.90,   80.60,   58.00,   53.50,  303.80,   35.56,   35.56],
+  odc:               [1165.30, 1705.95, 2466.10, 1615.65, 1617.70, 2444.90, 2627.23, 2921.71],
+  other_sectors:     [3698.80, 4184.85, 4274.30, 4156.95, 4167.30, 3700.70, 3700.70, 3700.70],
+  fdi_debt:          [ 757.40,  755.20,  793.80,  619.30,  769.00, 1479.70, 1479.70, 1479.70],
+  short_term:        [2411.82, 3093.59, 3625.43, 2290.00, 2204.61, 1709.18, 2556.10, 2763.83],
+  long_term:         [4834.18, 5272.61, 5338.87, 5588.80, 6427.19, 8055.02, 7680.05, 8304.21],
+  disbursements_lt:  [ 705.89,  945.16, 1097.35,  890.15, 1472.59, 2608.25,  673.27,  624.16],
+  amortization_lt:   [ 612.27,  506.73, 1031.09,  640.22,  634.20,  980.42, 1048.23,     null],
+  ratio_short_long:  [  49.89,   58.67,   67.91,   40.97,   34.30,   21.22,   33.28,   33.28],
+};
+
+const EX_STOCK_IND = {
+  years: EXT_YEARS,
+  // Vulnerability ratios (in %)
+  net_iip_gdp:              [-16.62, -19.82, -27.76, -29.76, -28.07, -30.76, -35.17, -39.25],
+  assets_gdp:               [ 47.39,  47.03,  41.48,  43.38,  37.98,  33.70,  33.25,  32.82],
+  liab_gdp:                 [ 64.01,  66.85,  69.25,  73.14,  66.05,  64.46,  68.42,  72.07],
+  debt_gdp:                 [ 33.79,  33.36,  32.01,  28.68,  25.75,  25.45,  24.71,  24.82],
+  debt_to_xgs:              [ 65.44,  65.10,  65.73,  63.38,  62.39,  63.59,  60.22,  61.87],
+  debt_service_gdp:         [  4.10,   3.77,   4.94,   3.45,   2.81,   3.30,   3.22,   3.16],
+  debt_service_xgs:         [  7.94,   7.35,  10.15,   7.63,   6.80,   8.24,   7.85,   7.87],
+  reserves_months_imports:  [  2.65,   3.00,   3.71,   3.31,   3.22,   2.98,   2.84,   2.63],
+  reserves_to_st_debt:      [106.72,  99.73,  89.05, 139.05, 145.36, 172.56,  null,   null],
+  // Other indicators
+  implicit_interest_rate:   [  null,   5.61,   4.07,   3.66,   3.71,   3.09,   2.86,   2.58],
+  avg_maturity_lt:          [  null,   9.54,   5.11,   8.34,   8.81,   6.56,   7.68,   6.78],
+  rollover_rate_lt:         [115.29, 186.52, 106.43, 139.04, 232.20, 266.04,  64.23, 173.40],
+  // Memoranda (USD mn)
+  exports_gs:               [11073.4,12851.7,13638.7,12431.1,13836.2,15355.5,16999.4,17888.1],
+  imports_gs:               [12449.5,14103.0,16451.1,12282.1,14738.7,17270.0,19146.9,20333.2],
+  interest_payments:        [ 266.9,  438.2,  352.6,  308.0,  306.6,  284.1,  286.0,  275.0],
+  total_debt_service:       [ 879.2,  944.9, 1383.7,  948.2,  940.8, 1264.5, 1334.2, 1408.4],
+};
+
+
+function renderExternalReports() {
+  const Y = EXT_YEARS;
+
+  // ---- BOP table ----
+  const H = (label) => ({ label, header:true });
+  const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
+  const R = (label, key, indent=0) => ({ label, key, indent });
+
+  const bopRows = [
+    H('Current account'),
+    S('Current account', 'current_account', 0),
+    R('  Goods', 'goods', 1),
+    R('    Credit (exports)', 'goods_credit', 2),
+    R('    Debit (imports)', 'goods_debit', 2),
+    R('  Services', 'services', 1),
+    R('    Credit', 'services_credit', 2),
+    R('    Debit', 'services_debit', 2),
+    R('  Primary income', 'primary_income', 1),
+    R('  Secondary income', 'secondary_income', 1),
+    H('Capital & Financial'),
+    R('Capital account', 'capital_account', 0),
+    S('Financial account', 'financial_account', 0),
+    R('  Direct investment', 'direct_inv', 1),
+    R('  Portfolio investment', 'portfolio_inv', 1),
+    R('  Financial derivatives', 'fin_derivatives', 1),
+    R('  Other investment', 'other_inv', 1),
+    R('Net errors & omissions', 'net_eo', 0),
+    S('Overall balance', 'overall_balance', 0),
+    H('Reserves & memo'),
+    R('Reserve assets (stock)', 'reserves_stock', 0),
+    R('Reserves in months of imports', 'months_imports', 0),
+    R('Current account (% GDP)', 'ca_pct_gdp', 0),
+    R('Exports (% GDP)', 'exports_gdp', 0),
+    R('Imports (% GDP)', 'imports_gdp', 0),
+    R('Trade openness (X+M / GDP)', 'openness', 0),
+    R('Nominal GDP (USD mn)', 'usd_gdp', 0),
+    R('FX rate — avg (NC/USD)', 'fx_avg', 0),
+    R('FX rate — EOP (NC/USD)', 'fx_eop', 0),
+  ];
+  document.getElementById('bop-table').innerHTML = renderExtTable(bopRows, BOP_DATA, Y);
+
+  // Current account composition chart
+  makeChart('bop-ca-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Goods',            data:BOP_DATA.goods,            backgroundColor:'#D92D20', stack:'a' },
+      { label:'Services',         data:BOP_DATA.services,         backgroundColor:'#2563EB', stack:'a' },
+      { label:'Primary income',   data:BOP_DATA.primary_income,   backgroundColor:'#D97706', stack:'a' },
+      { label:'Secondary income', data:BOP_DATA.secondary_income, backgroundColor:'#059669', stack:'a' },
+      { label:'Current acct',     data:BOP_DATA.current_account,  type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  // Reserves & import coverage chart
+  makeChart('bop-res-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Reserves (USD mn)', data:BOP_DATA.reserves_stock, backgroundColor:'#0F172A', yAxisID:'y' },
+      { label:'Months of imports', data:BOP_DATA.months_imports, type:'line', borderColor:'#D97706', backgroundColor:'#D97706', borderWidth:2, pointRadius:4, yAxisID:'y1' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{
+        x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+        y:{ position:'left', ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+        y1:{ position:'right', grid:{drawOnChartArea:false}, ticks:{font:{size:10, family:"IBM Plex Mono"}}}
+      }
+    }
+  });
+
+  // ---- IIP table ----
+  const iipRows = [
+    S('Net International Investment Position', 'net_iip', 0),
+    H('Assets'),
+    S('Total assets', 'assets', 0),
+    R('Direct investments abroad', 'di_abroad', 1),
+    R('Portfolio investments', 'pi_assets', 1),
+    R('Financial derivatives', 'fd_assets', 1),
+    R('Other investments', 'oi_assets', 1),
+    R('Reserve assets', 'reserves', 1),
+    H('Liabilities'),
+    S('Total liabilities', 'liabilities', 0),
+    R('Direct investments', 'di_liab', 1),
+    R('Portfolio investments', 'pi_liab', 1),
+    R('Financial derivatives', 'fd_liab', 1),
+    R('Other investments', 'oi_liab', 1),
+    H('Ratios (% of GDP)'),
+    R('Net IIP (% GDP)', 'net_iip_pct', 0),
+    R('Assets (% GDP)', 'assets_pct', 0),
+    R('Liabilities (% GDP)', 'liab_pct', 0),
+  ];
+  document.getElementById('iip-table').innerHTML = renderExtTable(iipRows, IIP_DATA, Y);
+
+  // Net IIP % GDP chart
+  makeChart('iip-net-chart', {
+    type:'line',
+    data:{ labels:Y, datasets:[
+      { label:'Net IIP (% GDP)', data:IIP_DATA.net_iip_pct, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.2, fill:true },
+      { label:'Assets (% GDP)',       data:IIP_DATA.assets_pct, borderColor:'#059669', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
+      { label:'Liabilities (% GDP)',  data:IIP_DATA.liab_pct, borderColor:'#0F172A', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  // Liabilities composition
+  makeChart('iip-liab-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Direct investments',  data:IIP_DATA.di_liab, backgroundColor:'#0F172A', stack:'a' },
+      { label:'Portfolio',           data:IIP_DATA.pi_liab, backgroundColor:'#2563EB', stack:'a' },
+      { label:'Financial derivatives', data:IIP_DATA.fd_liab, backgroundColor:'#D97706', stack:'a' },
+      { label:'Other investments',   data:IIP_DATA.oi_liab, backgroundColor:'#059669', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  // ---- External Debt table ----
+  const dbRows = [
+    S('Total external debt', 'total', 0),
+    H('By debtor sector'),
+    R('General Government', 'gov', 1),
+    R('Central Bank', 'cb', 1),
+    R('Other depository corporations', 'odc', 1),
+    R('Other sectors', 'other_sectors', 1),
+    R('Debt in direct investments', 'fdi_debt', 1),
+    H('By maturity'),
+    R('Short term', 'short_term', 0),
+    R('Long term', 'long_term', 0),
+    R('Ratio short/long (%)', 'ratio_short_long', 0),
+    H('Flows (long-term)'),
+    R('Total disbursements (long-term)', 'disbursements_lt', 0),
+    R('Total amortization (long-term)', 'amortization_lt', 0),
+  ];
+  document.getElementById('exdebt-table').innerHTML = renderExtTable(dbRows, EX_DEBT_DATA, Y);
+
+  makeChart('exdebt-sector-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'General Government',   data:EX_DEBT_DATA.gov,           backgroundColor:'#D92D20', stack:'a' },
+      { label:'Central Bank',         data:EX_DEBT_DATA.cb,            backgroundColor:'#7C3AED', stack:'a' },
+      { label:'Other depository',     data:EX_DEBT_DATA.odc,           backgroundColor:'#2563EB', stack:'a' },
+      { label:'Other sectors',        data:EX_DEBT_DATA.other_sectors, backgroundColor:'#059669', stack:'a' },
+      { label:'FDI-related',          data:EX_DEBT_DATA.fdi_debt,      backgroundColor:'#94a3b8', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  makeChart('exdebt-maturity-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Short term', data:EX_DEBT_DATA.short_term, backgroundColor:'#D97706', stack:'a' },
+      { label:'Long term',  data:EX_DEBT_DATA.long_term,  backgroundColor:'#0F172A', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  // ---- External Stock & Debt Indicators ----
+  const i = EX_STOCK_IND.years.length - 1;
+  const kpi = [
+    { label:'Debt / GDP',           color:'#0F172A',
+      value:`${EX_STOCK_IND.debt_gdp[i].toFixed(1)}%`,
+      sub:`vs 2006: ${EX_STOCK_IND.debt_gdp[0].toFixed(1)}%`,
+      base:`Debt / X&Gs: ${EX_STOCK_IND.debt_to_xgs[i].toFixed(1)}%` },
+    { label:'Debt Service / X&Gs',  color:'#D92D20',
+      value:`${EX_STOCK_IND.debt_service_xgs[i].toFixed(2)}%`,
+      sub:`Interest + amortization`,
+      base:`Debt Svc / GDP: ${EX_STOCK_IND.debt_service_gdp[i].toFixed(2)}%` },
+    { label:'Reserves cover',       color:'#059669',
+      value:`${EX_STOCK_IND.reserves_months_imports[i].toFixed(1)}m`,
+      sub:`Months of imports (g&s)`,
+      base:`Threshold: 3 months` },
+    { label:'Implicit rate on debt',color:'#D97706',
+      value:`${EX_STOCK_IND.implicit_interest_rate[i].toFixed(2)}%`,
+      sub:`Avg maturity: ${EX_STOCK_IND.avg_maturity_lt[i].toFixed(1)}y`,
+      base:`Roll-over: ${EX_STOCK_IND.rollover_rate_lt[i].toFixed(0)}%` },
+  ];
+  document.getElementById('exstock-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  const stockRows = [
+    H('Vulnerability ratios (%)'),
+    S('Net IIP / GDP', 'net_iip_gdp', 0),
+    R('Assets / GDP', 'assets_gdp', 1),
+    R('Liabilities / GDP', 'liab_gdp', 1),
+    S('External debt / GDP', 'debt_gdp', 0),
+    R('Debt / Exports of g&s', 'debt_to_xgs', 1),
+    R('Debt service / GDP', 'debt_service_gdp', 1),
+    R('Debt service / Exports of g&s', 'debt_service_xgs', 1),
+    H('Reserve adequacy'),
+    S('Reserves in months of imports', 'reserves_months_imports', 0),
+    R('Reserves / Short-term debt at rem. maturity (%)', 'reserves_to_st_debt', 1),
+    H('Debt cost & maturity'),
+    R('Implicit avg. interest rate (%)', 'implicit_interest_rate', 0),
+    R('Avg maturity of long-term debt (yrs)', 'avg_maturity_lt', 0),
+    R('Roll-over rate — long term (%)', 'rollover_rate_lt', 0),
+    H('Memoranda (USD mn)'),
+    R('Exports of g&s (BOP)', 'exports_gs', 0),
+    R('Imports of g&s (BOP)', 'imports_gs', 0),
+    R('Interest payments', 'interest_payments', 0),
+    R('Total debt service', 'total_debt_service', 0),
+  ];
+  document.getElementById('exstock-table').innerHTML = renderExtTable(stockRows, EX_STOCK_IND, Y);
+
+  makeChart('exstock-debt-chart', {
+    type:'line',
+    data:{ labels:Y, datasets:[
+      { label:'Debt / GDP (%)', data:EX_STOCK_IND.debt_gdp, borderColor:'#0F172A', backgroundColor:'#0F172A22', borderWidth:2, pointRadius:3, tension:.2 },
+      { label:'Debt / Exports (%)', data:EX_STOCK_IND.debt_to_xgs, borderColor:'#2563EB', borderWidth:2, borderDash:[6,3], pointRadius:3, tension:.2 },
+      { label:'Debt service / Exports (%)', data:EX_STOCK_IND.debt_service_xgs, borderColor:'#D92D20', borderWidth:2, pointRadius:3, tension:.2 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}}, y:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}} }
+    }
+  });
+
+  makeChart('exstock-res-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Reserves / ST debt at rem. mat. (%)', data:EX_STOCK_IND.reserves_to_st_debt, backgroundColor:'#059669', yAxisID:'y' },
+      { label:'Reserves — months of imports', data:EX_STOCK_IND.reserves_months_imports, type:'line', borderColor:'#D97706', backgroundColor:'#D97706', borderWidth:2, pointRadius:4, yAxisID:'y1' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{
+        x:{ ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+        y:{ position:'left', ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+        y1:{ position:'right', grid:{drawOnChartArea:false}, min:0, max:6, ticks:{font:{size:10, family:"IBM Plex Mono"}}},
+      }
+    }
+  });
+}
+
+function renderExtTable(rows, data, years) {
+  const head = `<thead><tr><th>Line item</th>${years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(r => {
+    if (r.header) return `<tr><td colspan="${years.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r.label}</td></tr>`;
+    const arr = data[r.key] || [];
+    const padding = 8 + (r.indent||0)*14;
+    return `<tr${r.bold?' style="font-weight:600;background:#fafafa"':''}>
+      <td style="padding-left:${padding}px;${r.bold?'color:#0f172a':''}">${r.label}</td>
+      ${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v, 1)}</td>`).join('')}
+    </tr>`;
+  }).join('')}</tbody>`;
+  return head + body;
+}
 
 /* ============================================================
    REVENUE & EXPENSE PROJECTION — Baseline 2013
@@ -3646,7 +6054,7 @@ document.querySelectorAll('#tabs .tab').forEach(btn => {
     }
     document.getElementById('tab-'+tab).classList.remove('hidden');
     if (tab === 'flowoffunds') { renderFlowOfFunds(); renderBalanceSheets(); }
-    if (tab === 'govops') { renderGovSGO(); renderGovBalanceSheet(); renderRevExpProjection(); }
+    if (tab === 'govops') { renderSourceCharts('gov'); renderGovSGO(); renderGovBalanceSheet(); renderRevExpProjection(); }
   });
 });
 
@@ -3656,6 +6064,14 @@ document.querySelectorAll('#tabs .tab').forEach(btn => {
 function init(){
   // Initialize projection assumptions now that PROJ_DEFAULTS is defined
   state.projAssumptions = {...PROJ_DEFAULTS};
+  state.realProjAssumptions = {...REAL_PROJ_DEFAULTS};
+
+  // Move the real-reports block into tab-sector (it was declared inside Sector Interlinks HTML)
+  const realRep = document.getElementById('real-reports');
+  const sectorPanel = document.getElementById('tab-sector');
+  if (realRep && sectorPanel && realRep.parentElement !== sectorPanel) {
+    sectorPanel.appendChild(realRep);
+  }
 
   // Simulator — Scenario A levers
   renderLeversPanel(document.getElementById('levers-panel-A'), state.levers, (levers) => runSimulator(levers));
@@ -3736,7 +6152,7 @@ function init(){
 }
 init();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1e0cb68ef8ce7e6',t:'MTc4NDUzODIyNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;"></iframe><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1e1c136a85be7ce',t:'MTc4NDU0ODI5NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;"></iframe><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
 
 
 </body></html>
