@@ -94,6 +94,23 @@
   .lever-label{display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;font-weight:500}
   .lever-bar{width:2px;height:14px;background:var(--muted);display:inline-block;border-radius:1px}
   .lever-value{font-family:var(--font-mono);font-size:12px;font-weight:600}
+  .lever-corr-note{font-size:10.5px;line-height:1.5;color:var(--muted);background:#f8fafc;
+    border:1px solid var(--line);padding:9px 10px;margin-bottom:14px}
+  .lever-corr-note strong{color:var(--ink)}
+  .lever-reset-inline{font-family:var(--font-mono);font-size:9.5px;font-weight:700;color:#fff;
+    background:var(--muted);padding:1px 5px;border-radius:2px}
+  .lever-tag{font-family:var(--font-body);font-size:8.5px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;padding:1px 6px;border-radius:2px;white-space:nowrap}
+  .lever-tag-primary{background:#0F172A;color:#fff}
+  .lever-tag-derived{background:#e2e8f0;color:#475569}
+  .lever-overridden .lever-tag-derived{background:#fef3c7;color:#92400e}
+  .lever-value-group{display:flex;align-items:center;gap:6px}
+  .lever-reset-btn{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);background:#fff;border:1px solid var(--line2);
+    padding:2px 6px;line-height:1.4;transition:background .12s ease,color .12s ease}
+  .lever-reset-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .lever-overridden{position:relative}
+  .lever-overridden .lever-label{color:#92400e}
   .slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:#e2e8f0;outline:none;border-radius:2px}
   .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
   .slider::-moz-range-thumb{width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff}
@@ -105,23 +122,39 @@
   .btn-secondary:hover{background:var(--ink)}
   .horizon-select{height:26px;padding:2px 8px;font-family:var(--font-mono);font-size:12px;border:1px solid var(--line2);background:#fff;border-radius:0}
 
-  /* Scenario overview cards (Policy Simulator: Base/Positive/Conservative) */
-  .scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
-  @media (max-width:1100px){.scenario-grid{grid-template-columns:1fr}}
-  .scenario-card{display:flex;flex-direction:column;min-width:0;box-shadow:0 1px 3px rgba(15,23,42,.06);transition:box-shadow .15s ease}
-  .scenario-card:hover{box-shadow:0 4px 12px rgba(15,23,42,.09)}
+  /* Scenario comparison table (Policy Simulator: Base/Positive/Conservative) */
+  .scenario-table-wrap{margin-bottom:16px;border:1px solid var(--line);background:var(--surface);
+    overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.scenario-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;min-width:560px}
+  table.scenario-table th,table.scenario-table td{border-bottom:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+  table.scenario-table thead th{padding:0;border-bottom:1px solid var(--line2)}
+  th.sc-indicator-head{background:#f1f5f9;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+    font-size:10.5px;color:var(--muted);font-family:var(--font-body);padding:10px 12px!important;
+    position:sticky;left:0;z-index:3;box-shadow:1px 0 0 var(--line)}
+  th.sc-head{background:#f8fafc;border-top:3px solid var(--sc-color,var(--ink));min-width:170px}
+  th.sc-head.sc-active{background:color-mix(in srgb, var(--sc-color,var(--ink)) 7%, #f8fafc)}
+  .sc-head-inner{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;flex-wrap:wrap}
+  .sc-head-label{display:flex;align-items:center;gap:7px;font-family:var(--font-body);font-weight:700;
+    font-size:11.5px;color:var(--ink);text-transform:none;letter-spacing:0;white-space:nowrap}
+  td.sc-row-label{font-family:var(--font-body);font-weight:600;font-size:11.5px;color:#334155;
+    background:#fbfcfd;white-space:nowrap;position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+  td.sc-cell{min-width:170px}
+  td.sc-cell.sc-active-col{background:color-mix(in srgb, var(--sc-color,var(--ink)) 5%, transparent)}
+  tr.sc-metric-row:hover td{background:#f8fafc}
+  tr.sc-metric-row:hover td.sc-row-label{background:#f1f5f9}
+  .sc-cell-value{font-weight:700;font-size:14px;color:var(--ink)}
+  .sc-cell-sub{font-size:10.5px;color:var(--muted);margin-top:2px;overflow-wrap:break-word}
+  tr.sc-section-row td{background:#eef2f7;font-family:var(--font-body);font-weight:700;font-size:10px;
+    text-transform:uppercase;letter-spacing:.10em;color:var(--muted);padding:7px 12px;position:static;box-shadow:none}
+  tr.sc-lever-row td{font-size:11.5px;color:#334155}
+  tr.sc-lever-row:hover td{background:#f8fafc}
+  tr.sc-lever-row:hover td.sc-row-label{background:#f1f5f9}
+  tr.sc-baseline-row td{font-size:10px;color:#94a3b8;background:#fafafa;border-bottom:none;line-height:1.5}
+  tr.sc-baseline-row td.sc-row-label{background:#fafafa;font-weight:600}
   .edit-scenario-btn{background:transparent;border:1px solid var(--line2);color:var(--muted);
     padding:5px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;
     white-space:nowrap;flex:0 0 auto;transition:background .12s ease,color .12s ease,border-color .12s ease}
   .edit-scenario-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .mini-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line)}
-  .mini-kpi{background:var(--surface);padding:12px 14px;min-width:0}
-  .mini-kpi .kpi-value,.mini-kpi .kpi-sub{overflow-wrap:break-word}
-  .scenario-foot{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid var(--line);background:#fafafa}
-  .scenario-foot span{font-family:var(--font-mono);font-size:10px;line-height:1.4;color:#475569;
-    background:#fff;border:1px solid var(--line);padding:3px 8px;white-space:nowrap;border-radius:2px}
-  .scenario-base{font-family:var(--font-mono);font-size:10px;color:#94a3b8;line-height:1.5;
-    padding:9px 14px 12px;border-top:1px solid #f1f5f9;overflow-wrap:break-word}
 
   /* Summary strip */
   .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -262,13 +295,16 @@
     .kpi-sub{font-size:10.5px}
     .kpi-levers{font-size:9.5px}
 
-    /* Scenario overview cards */
-    .scenario-grid{gap:10px;margin-bottom:14px}
-    .mini-kpi{padding:10px 12px}
-    .mini-kpi .kpi-value{font-size:17px}
-    .scenario-foot{padding:8px 10px;gap:5px}
-    .scenario-foot span{font-size:9.5px;padding:3px 6px}
-    .scenario-base{font-size:9.5px;padding:8px 10px 10px}
+    /* Scenario comparison table */
+    .scenario-table-wrap{margin-bottom:14px}
+    table.scenario-table{font-size:11px;min-width:520px}
+    table.scenario-table th,table.scenario-table td{padding:7px 10px}
+    th.sc-head{min-width:150px}
+    td.sc-cell{min-width:150px}
+    .sc-cell-value{font-size:13px}
+    .sc-cell-sub{font-size:10px}
+    .sc-head-label{font-size:11px}
+    tr.sc-baseline-row td{font-size:9.5px}
     .edit-scenario-btn{padding:7px 11px;font-size:9.5px;min-height:32px}
 
     /* Tables — smaller but still readable, horizontal scroll on overflow */
@@ -319,11 +355,17 @@
     .chart-wrap{height:200px}
     .brand-eyebrow{display:none}
     .brand-title{font-size:14px}
-    /* Scenario cards: single-column KPI tiles on very small phones */
-    .mini-kpis{grid-template-columns:1fr}
-    .mini-kpi{padding:9px 12px}
-    .mini-kpi .kpi-value{font-size:16px}
-    .scenario-base{font-size:9px}
+    /* Scenario comparison table: compact but still a true 3-column table, scrolls horizontally */
+    table.scenario-table{font-size:10.5px;min-width:480px}
+    table.scenario-table th,table.scenario-table td{padding:6px 8px}
+    th.sc-head{min-width:132px}
+    td.sc-cell{min-width:132px}
+    .sc-cell-value{font-size:12.5px}
+    .sc-cell-sub{font-size:9.5px}
+    .sc-head-label{font-size:10.5px}
+    .sc-head-inner{padding:7px 8px;gap:5px}
+    tr.sc-baseline-row td{font-size:9px}
+    td.sc-row-label{font-size:10.5px}
     /* Card head can stack title + subtitle for narrow width */
     .card-head{align-items:flex-start}
     .card-head .mono{white-space:normal !important;font-size:9.5px !important;line-height:1.35}
@@ -407,50 +449,7 @@
   </div></div>
       </aside>
       <div>
-        <div id="summary-strip" class="scenario-grid">
-    <div class="card scenario-card" style="border-top:3px solid #0F172A;box-shadow:0 0 0 2px #0F172A55">
-      <div class="card-head">
-        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#0F172A"></span>Base Case</span>
-        <span class="scenario-badge" style="background:#0F172A">Editing</span>
-      </div>
-      <div class="mini-kpis">
-        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">-4.34%</div><div class="kpi-sub">Debt: 47.05% GDP</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">-4.98%</div><div class="kpi-sub">FX: 510.8 NC/USD</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">5%</div><div class="kpi-sub">GDP growth: 4%</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">10%</div><div class="kpi-sub">BM/GDP: 62.36%</div></div>
-      </div>
-      <div class="scenario-foot"><span>GDP +4.0%</span><span>Infl 5.0%</span><span>FX +0.0%</span><span>Exp +8.0%</span><span>Imp +8.0%</span><span>Rev +8.0%</span><span>ExpG +8.0%</span><span>Int 5.0%</span><span>MB +10.0%</span><span>Mult 4.70x</span></div>
-      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
-    </div>
-    <div class="card scenario-card" style="border-top:3px solid #059669">
-      <div class="card-head">
-        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#059669"></span>Positive Case</span>
-        <button class="edit-scenario-btn" data-scenario="positive">Edit</button>
-      </div>
-      <div class="mini-kpis">
-        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">—</div><div class="kpi-sub">Debt: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">—</div><div class="kpi-sub">FX: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">—</div><div class="kpi-sub">GDP growth: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">—</div><div class="kpi-sub">BM/GDP: —</div></div>
-      </div>
-      <div class="scenario-foot"><span>GDP +6.5%</span><span>Infl 3.0%</span><span>FX -1.0%</span><span>Exp +13.0%</span><span>Imp +6.0%</span><span>Rev +11.0%</span><span>ExpG +5.0%</span><span>Int 3.5%</span><span>MB +7.0%</span><span>Mult 4.90x</span></div>
-      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
-    </div>
-    <div class="card scenario-card" style="border-top:3px solid #D92D20">
-      <div class="card-head">
-        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#D92D20"></span>Conservative Case</span>
-        <button class="edit-scenario-btn" data-scenario="conservative">Edit</button>
-      </div>
-      <div class="mini-kpis">
-        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">—</div><div class="kpi-sub">Debt: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">—</div><div class="kpi-sub">FX: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">—</div><div class="kpi-sub">GDP growth: —</div></div>
-        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">—</div><div class="kpi-sub">BM/GDP: —</div></div>
-      </div>
-      <div class="scenario-foot"><span>GDP +2.0%</span><span>Infl 8.0%</span><span>FX +6.0%</span><span>Exp +4.0%</span><span>Imp +11.0%</span><span>Rev +4.0%</span><span>ExpG +13.0%</span><span>Int 8.0%</span><span>MB +16.0%</span><span>Mult 4.50x</span></div>
-      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
-    </div>
-  </div>
+        <div class="scenario-table-wrap"><table class="scenario-table" id="summary-strip"></table></div>
         <div class="card" style="margin-top:12px">
           <div class="card-head">
             <span class="card-title">Projection Charts</span>
@@ -1563,6 +1562,110 @@ const LEVER_DEFS = [
 const SECTOR_COLORS = { real:"#2563EB", external:"#059669", fiscal:"#D92D20", monetary:"#7C3AED" };
 
 /* ============================================================
+   LEVER CORRELATION ENGINE
+   ------------------------------------------------------------
+   Real GDP growth and Inflation are the two independent/primary
+   drivers (the analyst's exogenous assumptions about the real
+   economy). Every other lever is DERIVED from them via standard
+   Financial Programming identities, so moving GDP growth or
+   Inflation now correctly cascades through the external, fiscal
+   and monetary sectors instead of leaving them frozen.
+
+   Each derived lever can still be fine-tuned by hand — dragging
+   its slider layers a manual "shock" (an override) on top of the
+   model-implied baseline. That shock persists (and keeps applying
+   on top of the recalculated baseline) until GDP growth/Inflation
+   move again or the lever is reset to "Auto".
+   ============================================================ */
+const PRIMARY_LEVER_KEYS = ["real_gdp_growth","inflation"];
+const DERIVED_LEVER_KEYS = ["fx_depreciation","export_growth","import_growth","revenue_growth","expense_growth","interest_rate","monetary_base_growth","money_multiplier"];
+
+// Fixed "world"/structural assumptions the identities anchor to
+const WORLD = {
+  inflation: 2.0,     // trading-partner (foreign) inflation — relative-PPP anchor
+  gdp_growth: 3.5,    // world/trading-partner demand growth — export demand anchor
+  real_rate: 2.0,     // Fisher-equation real interest rate anchor
+  base_multiplier: 4.7,
+  base_rate_for_multiplier: 5.0,
+};
+// Elasticities linking the identities together
+const ELASTICITY = {
+  fx_passthrough: 0.6,          // inflation differential → FX depreciation (relative PPP)
+  import_income: 1.4,           // real GDP growth → import demand (income elasticity)
+  import_price: 0.5,            // FX depreciation → import demand damping (price elasticity)
+  export_world: 1.2,            // world growth → export demand elasticity
+  export_fx: 0.4,                // FX depreciation → export competitiveness gain
+  tax_buoyancy: 1.1,             // nominal GDP growth → revenue growth (tax buoyancy)
+  wage_indexation: 0.8,          // inflation → expense growth (wage-bill indexation)
+  velocity_drift: 0,              // nominal GDP growth → monetary base growth (quantity theory, constant velocity)
+  multiplier_rate_sensitivity: 0.04, // interest rate deviation → money multiplier
+};
+
+function nominalGrowthPct(realGrowth, inflation){
+  return (1 + realGrowth/100) * (1 + inflation/100) * 100 - 100;
+}
+function leverBounds(key){
+  const def = LEVER_DEFS.find(d => d.key === key);
+  return def ? {min:def.min, max:def.max} : {min:-Infinity, max:Infinity};
+}
+function clampLever(key, v){
+  const {min,max} = leverBounds(key);
+  return Math.min(max, Math.max(min, v));
+}
+// Pure function: given root drivers + manual overrides, compute every derived lever's final value
+function computeDerivedLevers(real_gdp_growth, inflation, overrides){
+  overrides = overrides || {};
+  const ov = k => overrides[k] || 0;
+  const ngdp = nominalGrowthPct(real_gdp_growth, inflation);
+
+  const fx_depreciation = (inflation - WORLD.inflation) * ELASTICITY.fx_passthrough + ov('fx_depreciation');
+  const import_growth = real_gdp_growth*ELASTICITY.import_income - fx_depreciation*ELASTICITY.import_price + ov('import_growth');
+  const export_growth = WORLD.gdp_growth*ELASTICITY.export_world + fx_depreciation*ELASTICITY.export_fx + ov('export_growth');
+  const revenue_growth = ngdp*ELASTICITY.tax_buoyancy + ov('revenue_growth');
+  const expense_growth = inflation*ELASTICITY.wage_indexation + ov('expense_growth');
+  const interest_rate = WORLD.real_rate + inflation + ov('interest_rate');
+  const monetary_base_growth = ngdp + ELASTICITY.velocity_drift + ov('monetary_base_growth');
+  const money_multiplier = WORLD.base_multiplier + ELASTICITY.multiplier_rate_sensitivity*(interest_rate - WORLD.base_rate_for_multiplier) + ov('money_multiplier');
+
+  return { fx_depreciation, import_growth, export_growth, revenue_growth, expense_growth, interest_rate, monetary_base_growth, money_multiplier };
+}
+// Recompute + clamp all derived levers for a scenario and write them onto the scenario object
+function syncScenarioDerived(scKey){
+  const s = state.scenarios[scKey];
+  const derived = computeDerivedLevers(s.real_gdp_growth, s.inflation, s.overrides);
+  DERIVED_LEVER_KEYS.forEach(k => { s[k] = round(clampLever(k, derived[k]), k==='money_multiplier'?2:1); });
+}
+// Handle a slider drag: primary levers just update + cascade; derived levers convert the
+// dragged value into a manual override (preserving the correlation for every other lever)
+function setLeverValue(scKey, leverKey, newValue){
+  const s = state.scenarios[scKey];
+  if (PRIMARY_LEVER_KEYS.includes(leverKey)){
+    s[leverKey] = newValue;
+    syncScenarioDerived(scKey);
+  } else if (DERIVED_LEVER_KEYS.includes(leverKey)){
+    const withoutOwnOverride = {...s.overrides, [leverKey]: 0};
+    const pureBase = computeDerivedLevers(s.real_gdp_growth, s.inflation, withoutOwnOverride)[leverKey];
+    s.overrides[leverKey] = newValue - pureBase;
+    syncScenarioDerived(scKey);
+  }
+}
+function resetLeverOverride(scKey, leverKey){
+  if (!DERIVED_LEVER_KEYS.includes(leverKey)) return;
+  delete state.scenarios[scKey].overrides[leverKey];
+  syncScenarioDerived(scKey);
+}
+function initScenarioState(preset){
+  const s = { horizon: preset.horizon, real_gdp_growth: preset.real_gdp_growth, inflation: preset.inflation, overrides: {...(preset.overrides||{})} };
+  syncScenarioDerived_forObject(s);
+  return s;
+}
+// Same as syncScenarioDerived but operates on a standalone object (used before it's placed in state.scenarios)
+function syncScenarioDerived_forObject(s){
+  const derived = computeDerivedLevers(s.real_gdp_growth, s.inflation, s.overrides);
+  DERIVED_LEVER_KEYS.forEach(k => { s[k] = round(clampLever(k, derived[k]), k==='money_multiplier'?2:1); });
+}
+
+/* ============================================================
    SCENARIOS — Base / Positive / Conservative
    ============================================================ */
 const SCENARIO_DEFS = [
@@ -1571,17 +1674,21 @@ const SCENARIO_DEFS = [
   { key:"conservative", label:"Conservative Case", color:"#D92D20" },
 ];
 const SCENARIO_LEVERS = {
+  // All levers besides real_gdp_growth/inflation are now DERIVED via computeDerivedLevers()
+  // (Fisher equation, relative PPP, trade elasticities, tax buoyancy, quantity theory —
+  // see the Lever Correlation Engine above). `overrides` layers a deliberate policy shock
+  // on top of the model-implied path so each scenario still tells a distinct story.
   base: {
-    horizon:5, real_gdp_growth:4, inflation:5, fx_depreciation:0, export_growth:8, import_growth:8,
-    revenue_growth:8, expense_growth:8, interest_rate:5, monetary_base_growth:10, money_multiplier:4.7
+    horizon:5, real_gdp_growth:4, inflation:5,
+    overrides: {}, // fully model-implied "textbook" path — no manual shocks
   },
   positive: {
-    horizon:5, real_gdp_growth:6.5, inflation:3, fx_depreciation:-1, export_growth:13, import_growth:6,
-    revenue_growth:11, expense_growth:5, interest_rate:3.5, monetary_base_growth:7, money_multiplier:4.9
+    horizon:5, real_gdp_growth:6.5, inflation:3,
+    overrides: { expense_growth:-1.5 }, // credible fiscal consolidation beyond wage indexation
   },
   conservative: {
-    horizon:5, real_gdp_growth:2, inflation:8, fx_depreciation:6, export_growth:4, import_growth:11,
-    revenue_growth:4, expense_growth:13, interest_rate:8, monetary_base_growth:16, money_multiplier:4.5
+    horizon:5, real_gdp_growth:2, inflation:8,
+    overrides: { fx_depreciation:4 }, // confidence shock on top of the inflation-driven depreciation
   },
 };
 function scenarioDef(key){ return SCENARIO_DEFS.find(s => s.key === key); }
@@ -1591,9 +1698,9 @@ function scenarioDef(key){ return SCENARIO_DEFS.find(s => s.key === key); }
    ============================================================ */
 const state = {
   scenarios: {
-    base: {...SCENARIO_LEVERS.base},
-    positive: {...SCENARIO_LEVERS.positive},
-    conservative: {...SCENARIO_LEVERS.conservative},
+    base: initScenarioState(SCENARIO_LEVERS.base),
+    positive: initScenarioState(SCENARIO_LEVERS.positive),
+    conservative: initScenarioState(SCENARIO_LEVERS.conservative),
   },
   projections: { base:null, positive:null, conservative:null },
   activeScenario: 'base',
@@ -1633,29 +1740,93 @@ function renderLevers(){
   if (badge) { badge.textContent = sc.label; badge.style.background = sc.color; }
 
   const leversDiv = document.getElementById('levers-list');
-  leversDiv.innerHTML = '';
+  leversDiv.innerHTML = `
+    <div class="lever-corr-note">
+      <strong>GDP growth</strong> and <strong>Inflation</strong> are the primary drivers — every
+      other lever below is mathematically derived from them (Fisher equation, relative PPP,
+      trade elasticities, tax buoyancy, quantity theory). Move a derived lever to layer a manual
+      shock on its model-implied path, or tap <span class="lever-reset-inline">Auto</span> to clear it.
+    </div>`;
   LEVER_DEFS.forEach(def => {
+    const isPrimary = PRIMARY_LEVER_KEYS.includes(def.key);
+    const hasOverride = !isPrimary && Math.abs(levers.overrides[def.key]||0) > 0.049;
     const div = document.createElement('div');
-    div.className = 'lever';
+    div.className = 'lever' + (hasOverride ? ' lever-overridden' : '');
+    div.dataset.leverKey = def.key;
     div.innerHTML = `
       <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:${SECTOR_COLORS[def.sector]}"></span>${def.label}</span>
-        <span class="lever-value">${levers[def.key].toFixed(def.step<1?1:0)}${def.suffix}</span>
+        <span class="lever-label"><span class="lever-bar" style="background:${SECTOR_COLORS[def.sector]}"></span>${def.label}
+          ${isPrimary
+            ? `<span class="lever-tag lever-tag-primary">Primary</span>`
+            : `<span class="lever-tag lever-tag-derived">Correlated${hasOverride?' + shock':''}</span>`}
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">${levers[def.key].toFixed(def.step<1?1:0)}${def.suffix}</span>
+          ${(!isPrimary && hasOverride) ? `<button class="lever-reset-btn" data-lever-key="${def.key}" title="Reset to model-implied value">Auto</button>` : ''}
+        </span>
       </div>
       <input type="range" class="slider" min="${def.min}" max="${def.max}" step="${def.step}" value="${levers[def.key]}" />
       <div class="lever-scale"><span>${def.min}${def.suffix}</span><span>${def.max}${def.suffix}</span></div>
     `;
     const input = div.querySelector('input');
-    const valSpan = div.querySelector('.lever-value');
     input.addEventListener('input', e => {
       const v = parseFloat(e.target.value);
-      levers[def.key] = v;
-      valSpan.textContent = `${v.toFixed(def.step<1?1:0)}${def.suffix}`;
+      setLeverValue(key, def.key, v);
+      refreshLeverInputs();
       runSimulator();
     });
+    const resetBtn = div.querySelector('.lever-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetLeverOverride(key, def.key);
+        renderLevers();
+        runSimulator();
+      });
+    }
     leversDiv.appendChild(div);
   });
   updateAIScenarioName();
+}
+
+// Lightweight refresh used while dragging a slider: updates every OTHER lever's slider
+// position + label (and override badge) to reflect the correlation cascade, without
+// destroying/rebuilding the slider currently being dragged.
+function refreshLeverInputs(){
+  const key = state.activeScenario;
+  const levers = state.scenarios[key];
+  document.querySelectorAll('#levers-list .lever').forEach(div => {
+    const leverKey = div.dataset.leverKey;
+    const def = LEVER_DEFS.find(d => d.key === leverKey);
+    if (!def) return;
+    const isPrimary = PRIMARY_LEVER_KEYS.includes(leverKey);
+    const hasOverride = !isPrimary && Math.abs(levers.overrides[leverKey]||0) > 0.049;
+    const v = levers[leverKey];
+    const input = div.querySelector('input');
+    if (document.activeElement !== input) input.value = v;
+    div.querySelector('.lever-value').textContent = `${v.toFixed(def.step<1?1:0)}${def.suffix}`;
+    div.classList.toggle('lever-overridden', hasOverride);
+    const tag = div.querySelector('.lever-tag-derived');
+    if (tag) tag.textContent = hasOverride ? 'Correlated + shock' : 'Correlated';
+    const valGroup = div.querySelector('.lever-value-group');
+    let resetBtn = div.querySelector('.lever-reset-btn');
+    if (!isPrimary && hasOverride && !resetBtn) {
+      resetBtn = document.createElement('button');
+      resetBtn.className = 'lever-reset-btn';
+      resetBtn.dataset.leverKey = leverKey;
+      resetBtn.title = 'Reset to model-implied value';
+      resetBtn.textContent = 'Auto';
+      resetBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetLeverOverride(key, leverKey);
+        renderLevers();
+        runSimulator();
+      });
+      valGroup.appendChild(resetBtn);
+    } else if ((isPrimary || !hasOverride) && resetBtn) {
+      resetBtn.remove();
+    }
+  });
 }
 
 function runSimulator(){
@@ -1671,41 +1842,80 @@ function runSimulator(){
 function signed(v, d=1){ return `${v>=0?'+':''}${v.toFixed(d)}`; }
 
 function renderSummary(){
-  document.getElementById('summary-strip').innerHTML = SCENARIO_DEFS.map(sc => {
+  // Gather per-scenario metrics + lever assumptions
+  const scenarioData = SCENARIO_DEFS.map(sc => {
     const p = state.projections[sc.key];
     const l = state.scenarios[sc.key];
     const last = p.years.length - 1;
-    const isActive = sc.key === state.activeScenario;
-    const metrics = [
-      { label:'Fiscal Balance',  value:`${p.government.overall_pct_gdp[last]}%`, sub:`Debt: ${p.government.debt_pct_gdp[last]}% GDP` },
-      { label:'Current Account', value:`${p.external.ca_pct_gdp[last]}%`,        sub:`FX: ${p.external.exchange_rate[last]} NC/USD` },
-      { label:'Inflation',       value:`${p.real.inflation[last]}%`,             sub:`GDP growth: ${p.real.gdp_growth[last]}%` },
-      { label:'Broad Money',     value:`${p.monetary.broad_money_growth[last]}%`,sub:`BM/GDP: ${p.monetary.bm_pct_gdp[last]}%` },
-    ];
-    const leverChips = [
-      `GDP ${signed(l.real_gdp_growth)}%`, `Infl ${l.inflation.toFixed(1)}%`, `FX ${signed(l.fx_depreciation)}%`,
-      `Exp ${signed(l.export_growth)}%`, `Imp ${signed(l.import_growth)}%`, `Rev ${signed(l.revenue_growth)}%`,
-      `ExpG ${signed(l.expense_growth)}%`, `Int ${l.interest_rate.toFixed(1)}%`, `MB ${signed(l.monetary_base_growth)}%`,
-      `Mult ${l.money_multiplier.toFixed(2)}x`,
-    ];
-    return `
-    <div class="card scenario-card" style="border-top:3px solid ${sc.color};${isActive?`box-shadow:0 0 0 2px ${sc.color}55`:''}">
-      <div class="card-head">
-        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:${sc.color}"></span>${sc.label}</span>
-        ${isActive ? `<span class="scenario-badge" style="background:${sc.color}">Editing</span>` : `<button class="edit-scenario-btn" data-scenario="${sc.key}">Edit</button>`}
-      </div>
-      <div class="mini-kpis">
-        ${metrics.map(m => `
-          <div class="mini-kpi">
-            <div class="kpi-label">${m.label}</div>
-            <div class="kpi-value">${m.value}</div>
-            <div class="kpi-sub">${m.sub}</div>
-          </div>`).join('')}
-      </div>
-      <div class="scenario-foot">${leverChips.map(x => `<span>${x}</span>`).join('')}</div>
-      <div class="scenario-base">2012 baseline — Fiscal ${BASELINE.government.overall_pct_gdp.at(-1)}% · CA ${BASELINE.external.ca_pct_gdp.at(-1)}% · Inflation ${BASELINE.real.inflation.at(-1)}% · BM growth ${BASELINE.monetary.broad_money_growth.at(-1)}%</div>
-    </div>`;
-  }).join('');
+    return {
+      sc,
+      metrics: [
+        { label:'Fiscal Balance',  value:`${p.government.overall_pct_gdp[last]}%`, sub:`Debt: ${p.government.debt_pct_gdp[last]}% GDP` },
+        { label:'Current Account', value:`${p.external.ca_pct_gdp[last]}%`,        sub:`FX: ${p.external.exchange_rate[last]} NC/USD` },
+        { label:'Inflation',       value:`${p.real.inflation[last]}%`,             sub:`GDP growth: ${p.real.gdp_growth[last]}%` },
+        { label:'Broad Money',     value:`${p.monetary.broad_money_growth[last]}%`,sub:`BM/GDP: ${p.monetary.bm_pct_gdp[last]}%` },
+      ],
+      levers: [
+        { label:'GDP Growth',           value:`${signed(l.real_gdp_growth)}%` },
+        { label:'Inflation Assumption', value:`${l.inflation.toFixed(1)}%` },
+        { label:'FX Depreciation',      value:`${signed(l.fx_depreciation)}%` },
+        { label:'Export Growth',        value:`${signed(l.export_growth)}%` },
+        { label:'Import Growth',        value:`${signed(l.import_growth)}%` },
+        { label:'Revenue Growth',       value:`${signed(l.revenue_growth)}%` },
+        { label:'Expense Growth',       value:`${signed(l.expense_growth)}%` },
+        { label:'Interest Rate',        value:`${l.interest_rate.toFixed(1)}%` },
+        { label:'Monetary Base Growth', value:`${signed(l.monetary_base_growth)}%` },
+        { label:'Money Multiplier',     value:`${l.money_multiplier.toFixed(2)}x` },
+      ],
+    };
+  });
+  const metricLabels = scenarioData[0].metrics.map(m => m.label);
+  const leverLabels = scenarioData[0].levers.map(m => m.label);
+  const colCount = scenarioData.length;
+
+  const theadRow = `<tr>
+    <th class="sc-indicator-head">Indicator</th>
+    ${scenarioData.map(({sc}) => {
+      const isActive = sc.key === state.activeScenario;
+      return `<th class="sc-head${isActive?' sc-active':''}" style="--sc-color:${sc.color}">
+        <div class="sc-head-inner">
+          <span class="sc-head-label"><span class="dot" style="background:${sc.color}"></span>${sc.label}</span>
+          ${isActive ? `<span class="scenario-badge" style="background:${sc.color}">Editing</span>` : `<button class="edit-scenario-btn" data-scenario="${sc.key}">Edit</button>`}
+        </div>
+      </th>`;
+    }).join('')}
+  </tr>`;
+
+  const metricRows = metricLabels.map((label, i) => `
+    <tr class="sc-metric-row">
+      <td class="sc-row-label">${label}</td>
+      ${scenarioData.map(({sc, metrics}) => {
+        const isActive = sc.key === state.activeScenario;
+        const m = metrics[i];
+        return `<td class="sc-cell${isActive?' sc-active-col':''}" style="--sc-color:${sc.color}">
+          <div class="sc-cell-value">${m.value}</div><div class="sc-cell-sub">${m.sub}</div>
+        </td>`;
+      }).join('')}
+    </tr>`).join('');
+
+  const leverSectionRow = `<tr class="sc-section-row"><td colspan="${colCount+1}">Policy Levers &amp; Assumptions</td></tr>`;
+
+  const leverRows = leverLabels.map((label, i) => `
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">${label}</td>
+      ${scenarioData.map(({sc, levers}) => {
+        const isActive = sc.key === state.activeScenario;
+        return `<td class="sc-cell${isActive?' sc-active-col':''}" style="--sc-color:${sc.color}">${levers[i].value}</td>`;
+      }).join('')}
+    </tr>`).join('');
+
+  const baselineRow = `<tr class="sc-baseline-row">
+    <td class="sc-row-label">2012 Baseline</td>
+    <td colspan="${colCount}">Fiscal ${BASELINE.government.overall_pct_gdp.at(-1)}% · CA ${BASELINE.external.ca_pct_gdp.at(-1)}% · Inflation ${BASELINE.real.inflation.at(-1)}% · BM growth ${BASELINE.monetary.broad_money_growth.at(-1)}%</td>
+  </tr>`;
+
+  document.getElementById('summary-strip').innerHTML =
+    `<thead>${theadRow}</thead><tbody>${metricRows}${leverSectionRow}${leverRows}${baselineRow}</tbody>`;
 
   document.querySelectorAll('.edit-scenario-btn').forEach(btn => {
     btn.addEventListener('click', () => {
