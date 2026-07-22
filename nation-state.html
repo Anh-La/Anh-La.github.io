@@ -73,6 +73,9 @@
   /* Policy Levers */
   .levers{padding:12px;max-height:60vh;overflow-y:auto}
   @media (max-width:900px){.levers{max-height:none}}
+  /* Keep the Policy Levers title + Horizon selector pinned to the top of the tab as the page scrolls */
+  .lever-card-head{position:sticky;top:calc(var(--header-h,70px) + 8px);z-index:15;box-shadow:0 1px 0 var(--line)}
+  @media (max-width:900px){.lever-card-head{top:8px}}
   .lever{margin-bottom:14px}
   .lever-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
   .lever-label{display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;font-weight:500}
@@ -96,6 +99,8 @@
   .kpi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
   .kpi-value{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:6px}
   .kpi-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi-levers{font-family:var(--font-mono);font-size:10px;color:#64748b;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 8px}
+  .kpi-levers span{white-space:nowrap}
   .kpi-base{font-family:var(--font-mono);font-size:10px;color:#94a3b8;margin-top:8px;border-top:1px solid #f1f5f9;padding-top:6px}
 
   /* Chart grid */
@@ -116,6 +121,16 @@
     background-repeat:no-repeat;background-color:var(--surface);
     background-size:24px 100%,24px 100%,10px 100%,10px 100%;
     background-attachment:local,local,scroll,scroll}
+  .table-toggle-bar{display:flex;align-items:center;gap:6px;padding:6px 10px;
+    font-family:var(--font-body);font-size:10.5px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--muted);background:#f1f5f9;border-bottom:1px solid var(--line2);
+    cursor:pointer;user-select:none}
+  .table-toggle-bar:hover{color:var(--ink);background:#e8eef5}
+  .table-toggle-bar .table-toggle-icon{display:inline-block;width:10px;transition:transform .15s ease;
+    font-size:9px;color:var(--muted)}
+  .table-toggle-bar.collapsed .table-toggle-icon{transform:rotate(-90deg)}
+  table.fp.collapsed-table{display:none}
+  .identity-dot{color:var(--accent,#059669);font-size:7px;vertical-align:middle;cursor:help}
   table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
   table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
   table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
@@ -214,6 +229,7 @@
     .kpi-label{font-size:9.5px}
     .kpi-value{font-size:18px}
     .kpi-sub{font-size:10.5px}
+    .kpi-levers{font-size:9.5px}
 
     /* Tables — smaller but still readable, horizontal scroll on overflow */
     table.fp{font-size:11px}
@@ -286,16 +302,11 @@
   <div class="brand">
     <div class="brand-mark">FP</div>
     <div>
-      <div class="brand-eyebrow">Statistical Bulletin</div>
+      <div class="brand-eyebrow">National Accounts/div
       <div class="brand-title">Financial Programming Framework</div>
     </div>
   </div>
-  <div class="sector-chips">
-    <span class="chip"><span class="dot" style="background:#2563EB"></span>Real</span>
-    <span class="chip"><span class="dot" style="background:#059669"></span>External</span>
-    <span class="chip"><span class="dot" style="background:#D92D20"></span>Fiscal</span>
-    <span class="chip"><span class="dot" style="background:#7C3AED"></span>Monetary</span>
-  </div>
+ 
 </header>
 
 <main>
@@ -314,217 +325,82 @@
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
       <div>
         <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Policy Simulator</h2>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Set policy levers and observe forward projections. Toggle comparison to test an alternate scenario.</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Base, Positive and Conservative cases run side by side. Pick a scenario below to tune its policy levers.</div>
       </div>
-      <label class="compare-toggle" data-testid="compare-toggle-label">
-        <input type="checkbox" id="compare-toggle">
-        <span>Compare with alternate scenario</span>
-      </label>
     </div>
     <div class="layout">
       <aside>
-        <div id="levers-panel-A" style="margin-bottom:12px"><div class="card">
-    <div class="card-head">
-      <span class="card-title">Policy Levers</span>
-      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-        Horizon
-        <select class="horizon-select" data-testid="horizon-select">
-          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
-        </select>
-      </label>
+        <div id="levers-panel-wrap" style="margin-bottom:12px"><div class="card">
+    <div class="card-head lever-card-head" id="levers-card-head" style="border-top:3px solid #0F172A;flex-wrap:wrap">
+      <span class="card-title" style="display:flex;align-items:center;gap:8px">Policy Levers <span class="scenario-badge" id="levers-scenario-badge" style="background:#0F172A">Base Case</span></span>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+          Scenario
+          <select class="horizon-select" id="scenario-select" data-testid="scenario-select" style="min-width:150px">
+            <option value="base">Base Case</option>
+            <option value="positive">Positive Case</option>
+            <option value="conservative">Conservative Case</option>
+          </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+          Horizon
+          <select class="horizon-select" id="horizon-select" data-testid="horizon-select">
+            <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
+          </select>
+        </label>
+      </div>
     </div>
-    <div class="levers"><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth</span>
-        <span class="lever-value">4.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="12" step="0.1" value="4">
-      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)</span>
-        <span class="lever-value">5.0%</span>
-      </div>
-      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
-      <div class="lever-scale"><span>0%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation</span>
-        <span class="lever-value">0.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="20" step="0.1" value="0">
-      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)</span>
-        <span class="lever-value">8.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
-      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)</span>
-        <span class="lever-value">8.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="25" step="0.1" value="8">
-      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth</span>
-        <span class="lever-value">8.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
-      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth</span>
-        <span class="lever-value">8.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="25" step="0.1" value="8">
-      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt</span>
-        <span class="lever-value">5.0%</span>
-      </div>
-      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
-      <div class="lever-scale"><span>0%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth</span>
-        <span class="lever-value">10.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="30" step="0.1" value="10">
-      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier</span>
-        <span class="lever-value">4.7x</span>
-      </div>
-      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.7">
-      <div class="lever-scale"><span>3x</span><span>8x</span></div>
-    </div></div>
+    <div class="levers" id="levers-list"></div>
     <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
-      <button class="btn" data-testid="run-btn">Run Projection</button>
-    </div>
-  </div></div>
-        <div id="levers-panel-B" class="hidden"><div class="card">
-    <div class="card-head" style="border-top: 2px solid rgb(217, 45, 32);">
-      <span class="card-title"><span class="scenario-badge scenario-b" style="margin-right:6px">Scenario B</span> Alternate Levers</span>
-      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-        Horizon
-        <select class="horizon-select" data-testid="B-horizon-select">
-          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
-        </select>
-      </label>
-    </div>
-    <div class="levers"><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth</span>
-        <span class="lever-value">3.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="12" step="0.1" value="3">
-      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)</span>
-        <span class="lever-value">7.0%</span>
-      </div>
-      <input type="range" class="slider" min="0" max="20" step="0.1" value="7">
-      <div class="lever-scale"><span>0%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation</span>
-        <span class="lever-value">4.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="20" step="0.1" value="4">
-      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)</span>
-        <span class="lever-value">6.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="25" step="0.1" value="6">
-      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)</span>
-        <span class="lever-value">10.0%</span>
-      </div>
-      <input type="range" class="slider" min="-10" max="25" step="0.1" value="10">
-      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth</span>
-        <span class="lever-value">6.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="25" step="0.1" value="6">
-      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth</span>
-        <span class="lever-value">12.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="25" step="0.1" value="12">
-      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt</span>
-        <span class="lever-value">7.0%</span>
-      </div>
-      <input type="range" class="slider" min="0" max="20" step="0.1" value="7">
-      <div class="lever-scale"><span>0%</span><span>20%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth</span>
-        <span class="lever-value">15.0%</span>
-      </div>
-      <input type="range" class="slider" min="-5" max="30" step="0.1" value="15">
-      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
-    </div><div class="lever">
-      <div class="lever-row">
-        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier</span>
-        <span class="lever-value">4.7x</span>
-      </div>
-      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.7">
-      <div class="lever-scale"><span>3x</span><span>8x</span></div>
-    </div></div>
-    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
-      <button class="btn" data-testid="B-run-btn">Run Projection</button>
+      <button class="btn" id="run-btn" data-testid="run-btn">Run Projection</button>
     </div>
   </div></div>
       </aside>
       <div>
-        <div id="summary-strip" class="summary">
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:#D92D20"></span>Fiscal Balance</div>
-      <div class="kpi-value">-4.34%</div>
-      <div class="kpi-sub">Debt: 47.05% GDP</div>
-      <div class="kpi-base">2012 baseline: -5.9%</div>
+        <div id="summary-strip" class="scenario-grid">
+    <div class="card scenario-card" style="border-top:3px solid #0F172A;box-shadow:0 0 0 2px #0F172A55">
+      <div class="card-head">
+        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#0F172A"></span>Base Case</span>
+        <span class="scenario-badge" style="background:#0F172A">Editing</span>
+      </div>
+      <div class="mini-kpis">
+        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">-4.34%</div><div class="kpi-sub">Debt: 47.05% GDP</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">-4.98%</div><div class="kpi-sub">FX: 510.8 NC/USD</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">5%</div><div class="kpi-sub">GDP growth: 4%</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">10%</div><div class="kpi-sub">BM/GDP: 62.36%</div></div>
+      </div>
+      <div class="scenario-foot"><span>GDP +4.0%</span><span>Infl 5.0%</span><span>FX +0.0%</span><span>Exp +8.0%</span><span>Imp +8.0%</span><span>Rev +8.0%</span><span>ExpG +8.0%</span><span>Int 5.0%</span><span>MB +10.0%</span><span>Mult 4.70x</span></div>
+      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
     </div>
-  
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:#059669"></span>Current Account</div>
-      <div class="kpi-value">-4.98%</div>
-      <div class="kpi-sub">FX: 510.8 NC/USD</div>
-      <div class="kpi-base">2012 baseline: -5.71%</div>
+    <div class="card scenario-card" style="border-top:3px solid #059669">
+      <div class="card-head">
+        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#059669"></span>Positive Case</span>
+        <button class="edit-scenario-btn" data-scenario="positive">Edit</button>
+      </div>
+      <div class="mini-kpis">
+        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">—</div><div class="kpi-sub">Debt: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">—</div><div class="kpi-sub">FX: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">—</div><div class="kpi-sub">GDP growth: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">—</div><div class="kpi-sub">BM/GDP: —</div></div>
+      </div>
+      <div class="scenario-foot"><span>GDP +6.5%</span><span>Infl 3.0%</span><span>FX -1.0%</span><span>Exp +13.0%</span><span>Imp +6.0%</span><span>Rev +11.0%</span><span>ExpG +5.0%</span><span>Int 3.5%</span><span>MB +7.0%</span><span>Mult 4.90x</span></div>
+      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
     </div>
-  
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:#2563EB"></span>Inflation</div>
-      <div class="kpi-value">5%</div>
-      <div class="kpi-sub">GDP growth: 4%</div>
-      <div class="kpi-base">2012 baseline: 5.8%</div>
-    </div>
-  
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:#7C3AED"></span>Broad Money</div>
-      <div class="kpi-value">10%</div>
-      <div class="kpi-sub">BM/GDP: 62.36%</div>
-      <div class="kpi-base">2012 baseline: 9.06%</div>
+    <div class="card scenario-card" style="border-top:3px solid #D92D20">
+      <div class="card-head">
+        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:#D92D20"></span>Conservative Case</span>
+        <button class="edit-scenario-btn" data-scenario="conservative">Edit</button>
+      </div>
+      <div class="mini-kpis">
+        <div class="mini-kpi"><div class="kpi-label">Fiscal Balance</div><div class="kpi-value">—</div><div class="kpi-sub">Debt: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Current Account</div><div class="kpi-value">—</div><div class="kpi-sub">FX: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Inflation</div><div class="kpi-value">—</div><div class="kpi-sub">GDP growth: —</div></div>
+        <div class="mini-kpi"><div class="kpi-label">Broad Money</div><div class="kpi-value">—</div><div class="kpi-sub">BM/GDP: —</div></div>
+      </div>
+      <div class="scenario-foot"><span>GDP +2.0%</span><span>Infl 8.0%</span><span>FX +6.0%</span><span>Exp +4.0%</span><span>Imp +11.0%</span><span>Rev +4.0%</span><span>ExpG +13.0%</span><span>Int 8.0%</span><span>MB +16.0%</span><span>Mult 4.50x</span></div>
+      <div class="scenario-base">2012 baseline — Fiscal -5.9% · CA -5.71% · Inflation 5.8% · BM growth 9.06%</div>
     </div>
   </div>
-        <div id="compare-summary" class="hidden" style="margin-top:12px"></div>
         <div class="card" style="margin-top:12px">
           <div class="card-head">
             <span class="card-title">Projection Charts</span>
@@ -535,7 +411,7 @@
           </div>
         </div>
         <div class="card" style="margin-top:12px">
-          <div class="card-head"><span class="card-title">Projected Path <span class="scenario-badge scenario-a">Scenario A</span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
+          <div class="card-head"><span class="card-title">Projected Path <span class="scenario-badge" id="proj-scenario-badge" style="background:#0F172A">Base Case</span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
           <div class="table-wrap"><table class="fp" id="proj-table"><thead><tr><th>Indicator</th><th>2013</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr></thead><tbody>
     <tr><td title="Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)" class="has-formula" data-formula-applied="1">Nominal GDP (bn NC)</td><td class="">23,114.7</td><td class="">25,241.2</td><td class="">27,563.4</td><td class="">30,099.3</td><td class="">32,868.4</td></tr>
   
@@ -595,6 +471,7 @@
       <div class="card">
         <div class="card-head"><span class="card-title" id="hist-title">Real Sector · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
         <div class="table-wrap"><table class="fp" id="hist-table"></table></div>
+        <div id="hist-identity-footnote" style="padding:6px 10px;font-size:10.5px;color:var(--muted);font-style:italic"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
         <div class="card">
@@ -1233,6 +1110,63 @@ const BASELINE = {
 };
 
 /* ============================================================
+   CROSS-SECTOR IDENTITY ENGINE
+   Recomputes every figure in BASELINE that is mathematically
+   derivable from other figures already in BASELINE, instead of
+   letting it live as an independently-typed duplicate number.
+   Anything with no identity in the underlying accounts (raw
+   reported actuals: GDP components, reserves, credit stocks,
+   the exchange rate, etc.) is left untouched as source data.
+   Runs once, synchronously, before any table/chart reads BASELINE.
+   ============================================================ */
+const IDENTITY_FIELDS = {
+  real:      ['gdp_growth','inflation','output_gap'],
+  external:  ['current_account','ca_pct_gdp','debt_pct_gdp','errors_omissions'],
+  government:['overall_primary','net_lending','revenue_pct_gdp','expense_pct_gdp','overall_pct_gdp','primary_pct_gdp','debt_pct_gdp'],
+  monetary:  ['monetary_base','broad_money','money_multiplier','velocity','mb_pct_gdp','bm_pct_gdp','broad_money_growth'],
+};
+function yoyPct(arr){
+  return arr.map((v,i) => i===0 || arr[i-1]==null || v==null ? null : round2((v-arr[i-1])/arr[i-1]*100));
+}
+function round2(x){ return Math.round(x*100)/100; }
+function deriveIdentities(){
+  const R = BASELINE.real, E = BASELINE.external, G = BASELINE.government, M = BASELINE.monetary;
+  const n = BASELINE.years.length;
+
+  // --- Real sector: growth/inflation/output gap are identities off levels ---
+  R.gdp_growth  = yoyPct(R.gdp_real);
+  R.inflation   = yoyPct(R.gdp_deflator);
+  R.output_gap  = R.gdp_real.map((v,i) => round2((v - R.potential_output[i]) / R.potential_output[i] * 100));
+
+  // --- External sector: CA identity, GDP-linked ratios, BOP residual check ---
+  E.current_account = E.goods_balance.map((v,i) => round2(v + E.services[i] + E.primary_income[i] + E.secondary_income[i]));
+  E.ca_pct_gdp   = E.current_account.map((v,i) => round2(v / E.usd_gdp[i] * 100));
+  E.debt_pct_gdp = E.external_debt.map((v,i) => round2(v / E.usd_gdp[i] * 100));
+  // BOP identity: CA - FA + errors&omissions = overall balance (change in reserves)
+  E.errors_omissions = E.overall_balance.map((v,i) => round2(v - (E.current_account[i] - E.financial_account[i])));
+
+  // --- Government: ratios and balances linked to Real-sector nominal GDP ---
+  G.overall_primary  = G.overall_balance.map((v,i) => round2(v + G.interest[i]));
+  G.net_lending      = G.net_operating.map((v,i) => round2(v - G.net_acq_nfa[i]));
+  G.revenue_pct_gdp  = G.revenue.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  G.expense_pct_gdp  = G.expense.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  G.overall_pct_gdp  = G.overall_balance.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  G.primary_pct_gdp  = G.overall_primary.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  G.debt_pct_gdp     = G.liabilities_stock.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+
+  // --- Monetary: survey aggregates are identities of their NFA/NDA components ---
+  M.monetary_base = M.nfa_cb.map((v,i) => round2(v + M.nda_cb[i]));
+  M.broad_money   = M.nfa_survey.map((v,i) => round2(v + M.nda_survey[i]));
+  M.money_multiplier = M.broad_money.map((v,i) => round2(v / M.monetary_base[i]));
+  // velocity uses the average money stock over the year (matches how it's conventionally reported)
+  M.velocity = R.gdp_nominal.map((v,i) => i===0 ? null : round2(v / ((M.broad_money[i] + M.broad_money[i-1]) / 2)));
+  M.mb_pct_gdp = M.monetary_base.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  M.bm_pct_gdp = M.broad_money.map((v,i) => round2(v / R.gdp_nominal[i] * 100));
+  M.broad_money_growth = yoyPct(M.broad_money);
+}
+deriveIdentities();
+
+/* ============================================================
    ADDITIONAL DATA (from Macronia case, extending baseline)
    ============================================================ */
 // Taylor Rule series (2011-2014)
@@ -1578,24 +1512,42 @@ const LEVER_DEFS = [
 ];
 const SECTOR_COLORS = { real:"#2563EB", external:"#059669", fiscal:"#D92D20", monetary:"#7C3AED" };
 
-const DEFAULT_LEVERS = {
-  horizon:5, real_gdp_growth:4, inflation:5, fx_depreciation:0, export_growth:8, import_growth:8,
-  revenue_growth:8, expense_growth:8, interest_rate:5, monetary_base_growth:10, money_multiplier:4.7
+/* ============================================================
+   SCENARIOS — Base / Positive / Conservative
+   ============================================================ */
+const SCENARIO_DEFS = [
+  { key:"base",         label:"Base Case",         color:"#0F172A" },
+  { key:"positive",     label:"Positive Case",     color:"#059669" },
+  { key:"conservative", label:"Conservative Case", color:"#D92D20" },
+];
+const SCENARIO_LEVERS = {
+  base: {
+    horizon:5, real_gdp_growth:4, inflation:5, fx_depreciation:0, export_growth:8, import_growth:8,
+    revenue_growth:8, expense_growth:8, interest_rate:5, monetary_base_growth:10, money_multiplier:4.7
+  },
+  positive: {
+    horizon:5, real_gdp_growth:6.5, inflation:3, fx_depreciation:-1, export_growth:13, import_growth:6,
+    revenue_growth:11, expense_growth:5, interest_rate:3.5, monetary_base_growth:7, money_multiplier:4.9
+  },
+  conservative: {
+    horizon:5, real_gdp_growth:2, inflation:8, fx_depreciation:6, export_growth:4, import_growth:11,
+    revenue_growth:4, expense_growth:13, interest_rate:8, monetary_base_growth:16, money_multiplier:4.5
+  },
 };
-const B_DEFAULT = {
-  horizon:5, real_gdp_growth:3, inflation:7, fx_depreciation:4, export_growth:6, import_growth:10,
-  revenue_growth:6, expense_growth:12, interest_rate:7, monetary_base_growth:15, money_multiplier:4.7
-};
+function scenarioDef(key){ return SCENARIO_DEFS.find(s => s.key === key); }
 
 /* ============================================================
    STATE
    ============================================================ */
 const state = {
-  levers: {...DEFAULT_LEVERS},
-  projection: null,
-  leversB: {...B_DEFAULT},
-  projectionB: null,
-  compareMode: false,
+  scenarios: {
+    base: {...SCENARIO_LEVERS.base},
+    positive: {...SCENARIO_LEVERS.positive},
+    conservative: {...SCENARIO_LEVERS.conservative},
+  },
+  projections: { base:null, positive:null, conservative:null },
+  activeScenario: 'base',
+  horizon: 5,
   histSector: 'real',
   bsYear: 2012,
   fofYear: 2012,
@@ -1607,31 +1559,31 @@ const state = {
 const charts = {}; // Chart.js instances by id
 
 /* ============================================================
-   POLICY LEVER PANEL RENDER
+   POLICY LEVER PANEL RENDER — single panel, edits state.activeScenario
    ============================================================ */
-function renderLeversPanel(container, levers, onChange, testidPrefix=""){
-  const wrap = document.createElement('div');
-  wrap.className = 'card';
-  wrap.innerHTML = `
-    <div class="card-head">
-      <span class="card-title">Policy Levers</span>
-      <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-        Horizon
-        <select class="horizon-select" data-testid="${testidPrefix}horizon-select">
-          <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
-        </select>
-      </label>
-    </div>
-    <div class="levers"></div>
-    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
-      <button class="btn" data-testid="${testidPrefix}run-btn">Run Projection</button>
-    </div>
-  `;
-  const leversDiv = wrap.querySelector('.levers');
-  const horizonSel = wrap.querySelector('select');
-  horizonSel.value = String(levers.horizon);
-  horizonSel.addEventListener('change', e => { levers.horizon = parseInt(e.target.value); onChange(levers); });
+function computeAllProjections(){
+  SCENARIO_DEFS.forEach(sc => {
+    state.projections[sc.key] = project(state.scenarios[sc.key]);
+  });
+}
 
+function renderLevers(){
+  const key = state.activeScenario;
+  const sc = scenarioDef(key);
+  const levers = state.scenarios[key];
+
+  const scenarioSel = document.getElementById('scenario-select');
+  if (scenarioSel) scenarioSel.value = key;
+  const horizonSel = document.getElementById('horizon-select');
+  if (horizonSel) horizonSel.value = String(state.horizon);
+
+  const head = document.getElementById('levers-card-head');
+  if (head) head.style.borderTop = `3px solid ${sc.color}`;
+  const badge = document.getElementById('levers-scenario-badge');
+  if (badge) { badge.textContent = sc.label; badge.style.background = sc.color; }
+
+  const leversDiv = document.getElementById('levers-list');
+  leversDiv.innerHTML = '';
   LEVER_DEFS.forEach(def => {
     const div = document.createElement('div');
     div.className = 'lever';
@@ -1649,52 +1601,78 @@ function renderLeversPanel(container, levers, onChange, testidPrefix=""){
       const v = parseFloat(e.target.value);
       levers[def.key] = v;
       valSpan.textContent = `${v.toFixed(def.step<1?1:0)}${def.suffix}`;
-      onChange(levers);
+      runSimulator();
     });
     leversDiv.appendChild(div);
   });
+  updateAIScenarioName();
+}
 
-  wrap.querySelector('button.btn').addEventListener('click', () => onChange(levers, true));
-  container.innerHTML = '';
-  container.appendChild(wrap);
+function runSimulator(){
+  computeAllProjections();
+  renderSummary();
+  renderProjTable();
+  renderProjectionCharts();
 }
 
 /* ============================================================
    SIMULATOR RENDER
    ============================================================ */
+function signed(v, d=1){ return `${v>=0?'+':''}${v.toFixed(d)}`; }
+
 function renderSummary(){
-  const p = state.projection;
-  const last = p.years.length - 1;
-  const items = [
-    { label:'Fiscal Balance', color:'#D92D20',
-      value:`${p.government.overall_pct_gdp[last]}%`,
-      sub:`Debt: ${p.government.debt_pct_gdp[last]}% GDP`,
-      base:`${BASELINE.government.overall_pct_gdp.at(-1)}%` },
-    { label:'Current Account', color:'#059669',
-      value:`${p.external.ca_pct_gdp[last]}%`,
-      sub:`FX: ${p.external.exchange_rate[last]} NC/USD`,
-      base:`${BASELINE.external.ca_pct_gdp.at(-1)}%` },
-    { label:'Inflation', color:'#2563EB',
-      value:`${p.real.inflation[last]}%`,
-      sub:`GDP growth: ${p.real.gdp_growth[last]}%`,
-      base:`${BASELINE.real.inflation.at(-1)}%` },
-    { label:'Broad Money', color:'#7C3AED',
-      value:`${p.monetary.broad_money_growth[last]}%`,
-      sub:`BM/GDP: ${p.monetary.bm_pct_gdp[last]}%`,
-      base:`${BASELINE.monetary.broad_money_growth.at(-1)}%` },
-  ];
-  document.getElementById('summary-strip').innerHTML = items.map(s => `
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
-      <div class="kpi-value">${s.value}</div>
-      <div class="kpi-sub">${s.sub}</div>
-      <div class="kpi-base">2012 baseline: ${s.base}</div>
-    </div>
-  `).join('');
+  document.getElementById('summary-strip').innerHTML = SCENARIO_DEFS.map(sc => {
+    const p = state.projections[sc.key];
+    const l = state.scenarios[sc.key];
+    const last = p.years.length - 1;
+    const isActive = sc.key === state.activeScenario;
+    const metrics = [
+      { label:'Fiscal Balance',  value:`${p.government.overall_pct_gdp[last]}%`, sub:`Debt: ${p.government.debt_pct_gdp[last]}% GDP` },
+      { label:'Current Account', value:`${p.external.ca_pct_gdp[last]}%`,        sub:`FX: ${p.external.exchange_rate[last]} NC/USD` },
+      { label:'Inflation',       value:`${p.real.inflation[last]}%`,             sub:`GDP growth: ${p.real.gdp_growth[last]}%` },
+      { label:'Broad Money',     value:`${p.monetary.broad_money_growth[last]}%`,sub:`BM/GDP: ${p.monetary.bm_pct_gdp[last]}%` },
+    ];
+    const leverChips = [
+      `GDP ${signed(l.real_gdp_growth)}%`, `Infl ${l.inflation.toFixed(1)}%`, `FX ${signed(l.fx_depreciation)}%`,
+      `Exp ${signed(l.export_growth)}%`, `Imp ${signed(l.import_growth)}%`, `Rev ${signed(l.revenue_growth)}%`,
+      `ExpG ${signed(l.expense_growth)}%`, `Int ${l.interest_rate.toFixed(1)}%`, `MB ${signed(l.monetary_base_growth)}%`,
+      `Mult ${l.money_multiplier.toFixed(2)}x`,
+    ];
+    return `
+    <div class="card scenario-card" style="border-top:3px solid ${sc.color};${isActive?`box-shadow:0 0 0 2px ${sc.color}55`:''}">
+      <div class="card-head">
+        <span class="card-title" style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:${sc.color}"></span>${sc.label}</span>
+        ${isActive ? `<span class="scenario-badge" style="background:${sc.color}">Editing</span>` : `<button class="edit-scenario-btn" data-scenario="${sc.key}">Edit</button>`}
+      </div>
+      <div class="mini-kpis">
+        ${metrics.map(m => `
+          <div class="mini-kpi">
+            <div class="kpi-label">${m.label}</div>
+            <div class="kpi-value">${m.value}</div>
+            <div class="kpi-sub">${m.sub}</div>
+          </div>`).join('')}
+      </div>
+      <div class="scenario-foot">${leverChips.map(x => `<span>${x}</span>`).join('')}</div>
+      <div class="scenario-base">2012 baseline — Fiscal ${BASELINE.government.overall_pct_gdp.at(-1)}% · CA ${BASELINE.external.ca_pct_gdp.at(-1)}% · Inflation ${BASELINE.real.inflation.at(-1)}% · BM growth ${BASELINE.monetary.broad_money_growth.at(-1)}%</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.edit-scenario-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.activeScenario = btn.dataset.scenario;
+      renderLevers();
+      renderSummary();
+      renderProjTable();
+    });
+  });
 }
 
 function renderProjTable(){
-  const p = state.projection;
+  const key = state.activeScenario;
+  const sc = scenarioDef(key);
+  const p = state.projections[key];
+  const badge = document.getElementById('proj-scenario-badge');
+  if (badge) { badge.textContent = sc.label; badge.style.background = sc.color; }
   const rows = [
     ["Nominal GDP (bn NC)", p.real.gdp_nominal, 1],
     ["Real GDP growth (%)", p.real.gdp_growth, 2],
@@ -1883,16 +1861,10 @@ function chartCard(id, title){
 }
 
 function renderProjectionCharts(){
-  const p = state.projection;
-  const pB = state.compareMode ? state.projectionB : null;
   const histY = YEARS;
-  const projY = p.years;
+  const projY = state.projections.base.years;
   const allYears = [...histY, ...projY];
 
-  const build = (histArr, projArr) => allYears.map((y, i) => {
-    if (i < histY.length) return histArr[i];
-    return projArr[i - histY.length];
-  });
   const buildProjOnly = (projArr) => allYears.map((y, i) => {
     if (i < histY.length) return null;
     return projArr[i - histY.length];
@@ -1908,22 +1880,23 @@ function renderProjectionCharts(){
   grid.innerHTML = cardIds.map((id,i)=>chartCard(id, titles[i])).join('');
 
   const specs = [
-    { id:'c-growth', hist:BASELINE.real.gdp_growth, proj:p.real.gdp_growth, projB: pB && pB.real.gdp_growth, color:'#2563EB' },
-    { id:'c-infl',   hist:BASELINE.real.inflation, proj:p.real.inflation, projB: pB && pB.real.inflation, color:'#D97706' },
-    { id:'c-ca',     hist:BASELINE.external.ca_pct_gdp, proj:p.external.ca_pct_gdp, projB: pB && pB.external.ca_pct_gdp, color:'#059669' },
-    { id:'c-fisc',   hist:BASELINE.government.overall_pct_gdp, proj:p.government.overall_pct_gdp, projB: pB && pB.government.overall_pct_gdp, color:'#D92D20' },
-    { id:'c-debt',   hist:BASELINE.government.debt_pct_gdp, proj:p.government.debt_pct_gdp, projB: pB && pB.government.debt_pct_gdp, color:'#0F172A' },
-    { id:'c-bm',     hist:BASELINE.monetary.broad_money_growth, proj:p.monetary.broad_money_growth, projB: pB && pB.monetary.broad_money_growth, color:'#7C3AED' },
+    { id:'c-growth', hist:BASELINE.real.gdp_growth,             path:['real','gdp_growth'] },
+    { id:'c-infl',   hist:BASELINE.real.inflation,               path:['real','inflation'] },
+    { id:'c-ca',     hist:BASELINE.external.ca_pct_gdp,          path:['external','ca_pct_gdp'] },
+    { id:'c-fisc',   hist:BASELINE.government.overall_pct_gdp,   path:['government','overall_pct_gdp'] },
+    { id:'c-debt',   hist:BASELINE.government.debt_pct_gdp,      path:['government','debt_pct_gdp'] },
+    { id:'c-bm',     hist:BASELINE.monetary.broad_money_growth,  path:['monetary','broad_money_growth'] },
   ];
 
   specs.forEach(s => {
+    const [sec, key] = s.path;
     const datasets = [
-      { label:'Historical', data:buildHistOnly(s.hist), borderColor:s.color, backgroundColor:s.color+'22', borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 },
-      { label: state.compareMode ? 'Scenario A' : 'Projected',  data:buildProjOnly(s.proj), borderColor:s.color, borderDash:[6,3], borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 },
+      { label:'Historical', data:buildHistOnly(s.hist), borderColor:'#94a3b8', backgroundColor:'#94a3b822', borderWidth:2, pointRadius:2, spanGaps:false, tension:.2 },
     ];
-    if (state.compareMode && s.projB) {
-      datasets.push({ label:'Scenario B', data:buildProjOnly(s.projB), borderColor:'#D92D20', borderDash:[3,3], borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 });
-    }
+    SCENARIO_DEFS.forEach(sc => {
+      const arr = state.projections[sc.key][sec][key];
+      datasets.push({ label:sc.label, data:buildProjOnly(arr), borderColor:sc.color, backgroundColor:sc.color+'22', borderDash:[6,3], borderWidth:2, pointRadius:3, spanGaps:false, tension:.2 });
+    });
     makeChart(s.id, {
       type:'line',
       data:{ labels:allYears, datasets },
@@ -1933,72 +1906,6 @@ function renderProjectionCharts(){
       }
     });
   });
-}
-
-function renderCompareSummary(){
-  const el = document.getElementById('compare-summary');
-  if (!state.compareMode || !state.projectionB) { el.classList.add('hidden'); return; }
-  el.classList.remove('hidden');
-  const a = state.projection, b = state.projectionB;
-  const H = Math.min(a.years.length, b.years.length);
-  const last = H - 1;
-  const items = [
-    ["Debt/GDP",         a.government.debt_pct_gdp[last],    b.government.debt_pct_gdp[last],    "%"],
-    ["Fiscal balance",   a.government.overall_pct_gdp[last], b.government.overall_pct_gdp[last], "%"],
-    ["Current account",  a.external.ca_pct_gdp[last],        b.external.ca_pct_gdp[last],        "%"],
-    ["Inflation",        a.real.inflation[last],             b.real.inflation[last],             "%"],
-  ];
-  el.innerHTML = `
-    <div class="card">
-      <div class="card-head" style="background:#f1f5f9">
-        <span class="card-title">End-of-horizon: Scenario A vs Scenario B (${a.years[last]})</span>
-        <span class="mono" style="font-size:10px;color:var(--muted)">Δ = B − A · red = worse for stability</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr)">
-        ${items.map(([lbl,av,bv,u]) => {
-          const diff = bv - av;
-          // For fiscal balance & CA & inflation & debt: higher (less negative) may be desirable except inflation and debt where lower is desirable
-          const badIfUp = lbl === 'Inflation' || lbl === 'Debt/GDP';
-          const badIfDown = lbl === 'Fiscal balance' || lbl === 'Current account';
-          const bad = (badIfUp && diff > 0) || (badIfDown && diff < 0);
-          const diffColor = bad ? '#D92D20' : '#059669';
-          return `<div style="padding:12px;border-right:1px solid var(--line)">
-            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600">${lbl}</div>
-            <div class="mono" style="font-size:13px;margin-top:4px">
-              <span style="color:#0F172A;font-weight:600">A ${fmt(av,2)}${u}</span>
-              <span style="color:#94a3b8;margin:0 6px">→</span>
-              <span style="color:#D92D20;font-weight:600">B ${fmt(bv,2)}${u}</span>
-            </div>
-            <div class="mono" style="font-size:10.5px;margin-top:4px;color:${diffColor};font-weight:600">Δ ${diff>0?'+':''}${diff.toFixed(2)}${u}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-  `;
-}
-
-function runSimulator(newLevers){
-  state.levers = {...newLevers};
-  state.projection = project(state.levers);
-  if (state.compareMode) {
-    // Keep horizons in sync between A and B
-    state.leversB.horizon = state.levers.horizon;
-    state.projectionB = project(state.leversB);
-  }
-  renderSummary();
-  renderCompareSummary();
-  renderProjTable();
-  renderProjectionCharts();
-}
-
-function runSimulatorB(newLevers){
-  state.leversB = {...newLevers};
-  state.leversB.horizon = state.levers.horizon; // sync horizon
-  if (state.compareMode) {
-    state.projectionB = project(state.leversB);
-  }
-  renderCompareSummary();
-  renderProjectionCharts();
 }
 
 /* ============================================================
@@ -2021,6 +1928,7 @@ const HIST_ROWS = {
     ["exchange_rate","Exchange rate (NC/USD)",2],["net_iip","Net IIP",1],
     ["external_debt","Total external debt",1],["ca_pct_gdp","Current account (% GDP)",2],
     ["debt_pct_gdp","External debt (% GDP)",2],
+    ["errors_omissions","Net errors & omissions (BOP identity residual)",1],
   ],
   government: [
     ["revenue","Revenue",1],["taxes","Taxes",1],["expense","Expense",1],["interest","Interest",1],
@@ -2051,11 +1959,16 @@ function renderHistoricalTable(){
   document.getElementById('hist-title').textContent = HIST_TITLES[state.histSector];
   // Toggle the External reports block
   document.getElementById('external-reports').classList.toggle('hidden', state.histSector !== 'external');
+  const linked = IDENTITY_FIELDS[state.histSector] || [];
   const head = `<thead><tr><th>Line item</th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
   const body = `<tbody>${rows.map(([key,label,d]) => `
-    <tr><td>${label}</td>${(data[key]||[]).map(v=>`<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
+    <tr><td>${label}${linked.includes(key)?' <span class="identity-dot" title="Computed live from a cross-sector accounting identity">\u25CF</span>':''}</td>${(data[key]||[]).map(v=>`<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
   `).join('')}</tbody>`;
   document.getElementById('hist-table').innerHTML = head + body;
+  const footEl = document.getElementById('hist-identity-footnote');
+  if (footEl) footEl.textContent = linked.length
+    ? '\u25CF Computed live from identities linking this sector to the others (Real \u2194 External \u2194 Fiscal \u2194 Monetary) \u2014 not stored as an independent figure.'
+    : '';
 
   // Chart 1: main overview
   const chartMap = {
@@ -4287,18 +4200,22 @@ function loadKey(){
   const k = localStorage.getItem('anth_key');
   if (k) document.getElementById('anth-key').value = k;
 }
+function updateAIScenarioName(){
+  const input = document.getElementById('scenario-name');
+  if (input) input.value = scenarioDef(state.activeScenario).label;
+}
 
 async function onAnalyze(){
   const key = document.getElementById('anth-key').value.trim() || localStorage.getItem('anth_key');
   const out = document.getElementById('ai-output');
   const btn = document.getElementById('analyze-btn');
   if (!key) { out.innerHTML = '<div class="ai-placeholder" style="color:#b91c1c">Please enter your Anthropic API key first.</div>'; return; }
-  if (!state.projection) return;
+  if (!state.projections[state.activeScenario]) return;
 
-  const scenarioName = document.getElementById('scenario-name').value || 'Scenario';
-  const p = state.projection;
+  const scenarioName = document.getElementById('scenario-name').value || scenarioDef(state.activeScenario).label;
+  const p = state.projections[state.activeScenario];
   const last = p.years.length - 1;
-  const l = state.levers;
+  const l = state.scenarios[state.activeScenario];
 
   const summary = `SCENARIO: ${scenarioName}
 Projection horizon: ${l.horizon} years (${p.years[0]}–${p.years.at(-1)})
@@ -4805,6 +4722,76 @@ function applyAccountTooltips(root){
   }
 })();
 
+/* Makes every table.fp collapsible/expandable by inserting a clickable
+   toggle bar directly before it. Runs on load and re-scans whenever new
+   tables are added or re-rendered (e.g. balance sheet grid rebuilds). */
+function cardTitleText(el){
+  var text = '';
+  el.childNodes.forEach(function(n){
+    if (n.nodeType === Node.TEXT_NODE) text += n.textContent;
+  });
+  text = text.trim();
+  return text || el.textContent.trim();
+}
+function findTableLabel(table){
+  var card = table.closest('.card') || table.parentElement;
+  if (card) {
+    var titleEl = card.querySelector('.card-title');
+    if (titleEl) {
+      var t = cardTitleText(titleEl);
+      if (t) return t;
+    }
+  }
+  return 'Table';
+}
+function initCollapsibleTable(table){
+  if (table.dataset.collapsibleInit) return;
+  table.dataset.collapsibleInit = '1';
+  var bar = document.createElement('div');
+  bar.className = 'table-toggle-bar';
+  bar.setAttribute('role', 'button');
+  bar.setAttribute('tabindex', '0');
+  var label = findTableLabel(table);
+  bar.innerHTML = '<span class="table-toggle-icon">\u25BE</span><span class="table-toggle-label">' + label + '</span>';
+  table.parentNode.insertBefore(bar, table);
+  var toggle = function(){
+    var collapsed = table.classList.toggle('collapsed-table');
+    bar.classList.toggle('collapsed', collapsed);
+  };
+  bar.addEventListener('click', toggle);
+  bar.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+}
+function scanForCollapsibleTables(){
+  document.querySelectorAll('table.fp').forEach(initCollapsibleTable);
+}
+(function setupCollapsibleTablesObserver(){
+  let scheduled = false;
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      scanForCollapsibleTables();
+    });
+  };
+  const startObserver = () => {
+    const obs = new MutationObserver(muts => {
+      for (const m of muts) {
+        if (m.type === 'childList' && m.addedNodes.length) { schedule(); break; }
+      }
+    });
+    obs.observe(document.body, { childList:true, subtree:true });
+    scanForCollapsibleTables();
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startObserver);
+  } else {
+    startObserver();
+  }
+})();
+
 /* ============================================================
    INIT
    ============================================================ */
@@ -4820,40 +4807,24 @@ function init(){
     sectorPanel.appendChild(realRep);
   }
 
-  // Simulator — Scenario A levers
-  renderLeversPanel(document.getElementById('levers-panel-A'), state.levers, (levers) => runSimulator(levers));
-  runSimulator(state.levers);
+  // Simulator — three scenarios (Base / Positive / Conservative), edited one at a time via the Scenario dropdown
+  runSimulator();       // compute all 3 projections up front
+  renderLevers();        // populate sliders for the active scenario
 
-  // Scenario B levers (rendered but hidden until compare mode is on)
-  renderLeversPanel(document.getElementById('levers-panel-B'), state.leversB, (levers) => runSimulatorB(levers), 'B-');
-  // Tag the B panel visually
-  const bPanel = document.getElementById('levers-panel-B').querySelector('.card-head');
-  if (bPanel) {
-    bPanel.style.borderTop = '2px solid #D92D20';
-    const oldTitle = bPanel.querySelector('.card-title');
-    if (oldTitle) oldTitle.innerHTML = '<span class="scenario-badge scenario-b" style="margin-right:6px">Scenario B</span> Alternate Levers';
-  }
-
-  // Compare toggle
-  document.getElementById('compare-toggle').addEventListener('change', (e) => {
-    state.compareMode = e.target.checked;
-    document.getElementById('levers-panel-B').classList.toggle('hidden', !state.compareMode);
-    // Update Scenario A card header badge
-    const aPanel = document.getElementById('levers-panel-A').querySelector('.card-title');
-    if (aPanel) {
-      aPanel.innerHTML = state.compareMode
-        ? '<span class="scenario-badge scenario-a" style="margin-right:6px">Scenario A</span> Policy Levers'
-        : 'Policy Levers';
-    }
-    if (state.compareMode) {
-      state.leversB.horizon = state.levers.horizon;
-      state.projectionB = project(state.leversB);
-    } else {
-      state.projectionB = null;
-    }
-    renderCompareSummary();
-    renderProjectionCharts();
+  document.getElementById('scenario-select').addEventListener('change', (e) => {
+    state.activeScenario = e.target.value;
+    renderLevers();
+    renderSummary();
+    renderProjTable();
   });
+
+  document.getElementById('horizon-select').addEventListener('change', (e) => {
+    state.horizon = parseInt(e.target.value);
+    Object.keys(state.scenarios).forEach(k => { state.scenarios[k].horizon = state.horizon; });
+    runSimulator();
+  });
+
+  document.getElementById('run-btn').addEventListener('click', () => runSimulator());
 
   // Balance sheets year selector
   const bsSel = document.getElementById('bs-year');
@@ -4896,6 +4867,14 @@ function init(){
 
   // Restore key
   loadKey();
+
+  // Keep the sticky Policy Levers header offset in sync with the real app-header height
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+}
+function syncHeaderHeight(){
+  const h = document.querySelector('header.app-header');
+  if (h) document.documentElement.style.setProperty('--header-h', h.getBoundingClientRect().height + 'px');
 }
 init();
 </script>
