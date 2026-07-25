@@ -62,6 +62,10 @@
 
   /* Layout grid — Simulator */
   .layout{display:grid;grid-template-columns:300px 1fr;gap:16px;margin-top:16px}
+  /* Prevent grid tracks from stretching to fit wide tables — grid items default to
+     min-width:auto, which blows out the page instead of letting .table-wrap scroll
+     internally on mobile. Forcing min-width:0 lets the table's own scroll take over. */
+  .layout > *, .bs-grid > *, [style*="display:grid"] > *{min-width:0}
   @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
   /* Mobile toggle for the Policy Levers panel */
@@ -193,6 +197,14 @@
   .table-toggle-bar .table-toggle-icon{display:inline-block;width:10px;transition:transform .15s ease;
     font-size:9px;color:var(--muted)}
   .table-toggle-bar.collapsed .table-toggle-icon{transform:rotate(-90deg)}
+  /* Card headers that double as a table's collapse/expand control (title text
+     is not repeated — the header itself is the clickable affordance) */
+  .table-toggle-head{cursor:pointer;user-select:none}
+  .card-head.table-toggle-head:hover,.sector-panel-head.table-toggle-head:hover{background:#eef2f7}
+  .table-toggle-title-wrap{display:flex;align-items:center;gap:6px}
+  .table-toggle-head .table-toggle-icon{display:inline-block;width:10px;transition:transform .15s ease;
+    font-size:9px;color:var(--muted);flex-shrink:0}
+  .table-toggle-head.collapsed .table-toggle-icon{transform:rotate(-90deg)}
   table.fp.collapsed-table{display:none}
   .identity-dot{color:var(--accent,#059669);font-size:7px;vertical-align:middle;cursor:help}
   table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
@@ -516,6 +528,46 @@
 
   <!-- Sector Deep-Dive (shared panel — driven by state.histSector) -->
   <section id="tab-sector" class="tab-panel hidden">
+    <!-- Real Sector — Source Charts (moved to top of tab; shown only for Real sector) -->
+    <div id="real-src-charts" class="hidden">
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Growth &amp; output gap · Inflation indicators · Saving/Investment balance · GDP contributions — Macronia 2008–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; output gap</span><span class="mono" style="font-size:10px;color:var(--muted)">percent</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-1"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Inflation indicators</span><span class="mono" style="font-size:10px;color:var(--muted)">GDP deflator · CPI average · CPI eop (percent)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-2"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Saving and Investment (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">Saving − Investment gap</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-3"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; contribution (percent)</span><span class="mono" style="font-size:10px;color:var(--muted)">Investment · Exports · Imports · Consumption</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-4"></canvas></div></div></div>
+      </div>
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+    </div>
+    <!-- External Sector — Source Charts (moved to top of tab; shown only for External sector) -->
+    <div id="external-src-charts" class="hidden">
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">External Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">BOP composition · IIP · Real exchange rate · Reserves adequacy — Macronia 2006–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">BOP components (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">CA + K + FA = ΔReserves</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-1"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">IIP, in percent of GDP</span><span class="mono" style="font-size:10px;color:var(--muted)">Net IIP = Assets − Liabilities</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-2"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Real exchange rate index (2012=100)</span><span class="mono" style="font-size:10px;color:var(--muted)">Domestic vs trade-partner inflation</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-3"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Reserve adequacy</span><span class="mono" style="font-size:10px;color:var(--muted)">Months of imports · reserves (USD mn)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-4"></canvas></div></div></div>
+      </div>
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+    </div>
+    <!-- Monetary Sector — Source Charts (moved to top of tab; shown only for Monetary sector) -->
+    <div id="monetary-src-charts" class="hidden">
+      <div>
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Source Charts</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Interest-rate corridor · Broad-money vs credit growth · Macronia 2008–2013</div>
+      </div>
+      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <div class="card"><div class="card-head"><span class="card-title">Monetary policy rate vs Interbank rate</span><span class="mono" style="font-size:10px;color:var(--muted)">percent, annual</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-1"></canvas></div></div></div>
+        <div class="card"><div class="card-head"><span class="card-title">Broad Money vs Private Credit Growth</span><span class="mono" style="font-size:10px;color:var(--muted)">y-o-y, percent</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-2"></canvas></div></div></div>
+      </div>
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+    </div>
     <div class="layout" style="grid-template-columns:2fr 1fr">
       <div class="card">
         <div class="card-head"><span class="card-title" id="hist-title">Real Sector · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
@@ -523,11 +575,11 @@
         <div id="hist-identity-footnote" style="padding:6px 10px;font-size:10.5px;color:var(--muted);font-style:italic"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="card">
+        <div class="card" id="hist-chart1-card">
           <div class="card-head"><span class="card-title" id="hist-chart1-title">Sector Overview</span></div>
           <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart"></canvas></div></div>
         </div>
-        <div class="card">
+        <div class="card" id="hist-chart2-card">
           <div class="card-head"><span class="card-title" id="hist-chart2-title">Detail</span></div>
           <div class="card-body"><div class="chart-wrap"><canvas id="hist-chart-2"></canvas></div></div>
         </div>
@@ -538,17 +590,6 @@
     <div id="monetary-reports" class="hidden">
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
 
-      <!-- Source charts (from IMF Fiscal & Monetary workbook) -->
-      <div>
-        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Source Charts</h3>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Interest-rate corridor · Broad-money vs credit growth · Macronia 2008–2013</div>
-      </div>
-      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
-        <div class="card"><div class="card-head"><span class="card-title">Monetary policy rate vs Interbank rate</span><span class="mono" style="font-size:10px;color:var(--muted)">percent, annual</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-1"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Broad Money vs Private Credit Growth</span><span class="mono" style="font-size:10px;color:var(--muted)">y-o-y, percent</span></div><div class="card-body"><div class="chart-wrap" style="height:240px"><canvas id="mon-src-2"></canvas></div></div></div>
-      </div>
-
-      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
       <div>
         <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Worksheets</h3>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Money multiplier · Velocity &amp; money demand · Taylor rule · Baseline 2013 → Forecast 2014</div>
@@ -611,20 +652,6 @@
     <!-- Extra External sector reports (shown only when active sector = external) -->
     <div id="external-reports" class="hidden">
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-
-      <!-- Source charts (from External workbook) -->
-      <div>
-        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">External Sector — Source Charts</h3>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">BOP composition · IIP · Real exchange rate · Reserves adequacy — Macronia 2006–2013</div>
-      </div>
-      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
-        <div class="card"><div class="card-head"><span class="card-title">BOP components (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">CA + K + FA = ΔReserves</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-1"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">IIP, in percent of GDP</span><span class="mono" style="font-size:10px;color:var(--muted)">Net IIP = Assets − Liabilities</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-2"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Real exchange rate index (2012=100)</span><span class="mono" style="font-size:10px;color:var(--muted)">Domestic vs trade-partner inflation</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-3"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Reserve adequacy</span><span class="mono" style="font-size:10px;color:var(--muted)">Months of imports · reserves (USD mn)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="ext-src-4"></canvas></div></div></div>
-      </div>
-
-      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
 
       <!-- Balance of Payments -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
@@ -728,20 +755,6 @@
     </div>
   <div id="real-reports" class="hidden">
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-
-      <!-- Source charts (from Real workbook) -->
-      <div>
-        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real Sector — Source Charts</h3>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Growth &amp; output gap · Inflation indicators · Saving/Investment balance · GDP contributions — Macronia 2008–2013</div>
-      </div>
-      <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
-        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; output gap</span><span class="mono" style="font-size:10px;color:var(--muted)">percent</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-1"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Inflation indicators</span><span class="mono" style="font-size:10px;color:var(--muted)">GDP deflator · CPI average · CPI eop (percent)</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-2"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Saving and Investment (percent of GDP)</span><span class="mono" style="font-size:10px;color:var(--muted)">Saving − Investment gap</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-3"></canvas></div></div></div>
-        <div class="card"><div class="card-head"><span class="card-title">Real GDP growth &amp; contribution (percent)</span><span class="mono" style="font-size:10px;color:var(--muted)">Investment · Exports · Imports · Consumption</span></div><div class="card-body"><div class="chart-wrap" style="height:260px"><canvas id="real-src-4"></canvas></div></div></div>
-      </div>
-
-      <div style="border-top:1px dashed var(--line);margin:20px 0 12px"></div>
 
       <!-- Real GDP & Output Gap (goes first — anchors every other worksheet) -->
       <div>
@@ -1934,25 +1947,31 @@ function renderProjTable(){
   const badge = document.getElementById('proj-scenario-badge');
   if (badge) { badge.textContent = sc.label; badge.style.background = sc.color; }
   const rows = [
+    ["__cat__","Real Sector"],
     ["Nominal GDP (bn NC)", p.real.gdp_nominal, 1],
     ["Real GDP growth (%)", p.real.gdp_growth, 2],
     ["Inflation (%)", p.real.inflation, 2],
+    ["__cat__","External Sector"],
     ["Exchange rate (NC/USD)", p.external.exchange_rate, 2],
     ["Current account (USD mn)", p.external.current_account_usd, 1],
     ["Current account (% GDP)", p.external.ca_pct_gdp, 2],
+    ["__cat__","General Government"],
     ["Gov. revenue (bn NC)", p.government.revenue, 1],
     ["Gov. expense (bn NC)", p.government.expense, 1],
     ["Overall balance (% GDP)", p.government.overall_pct_gdp, 2],
     ["Primary balance (% GDP)", p.government.primary_pct_gdp, 2],
     ["Public debt (% GDP)", p.government.debt_pct_gdp, 2],
+    ["__cat__","Monetary Sector"],
     ["Monetary base (bn NC)", p.monetary.monetary_base, 1],
     ["Broad money (bn NC)", p.monetary.broad_money, 1],
     ["Broad money growth (%)", p.monetary.broad_money_growth, 2],
   ];
   const head = `<thead><tr><th>Indicator</th>${p.years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
-  const body = `<tbody>${rows.map(([label,arr,d]) => `
-    <tr><td>${label}</td>${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>
-  `).join('')}</tbody>`;
+  const body = `<tbody>${rows.map(row => {
+    if (row[0] === '__cat__') return `<tr><td colspan="${p.years.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${row[1]}</td></tr>`;
+    const [label,arr,d] = row;
+    return `<tr><td style="font-size:11.5px">${label}</td>${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td>`).join('')}</tr>`;
+  }).join('')}</tbody>`;
   document.getElementById('proj-table').innerHTML = head + body;
   document.getElementById('proj-range').textContent = `${p.years[0]} – ${p.years.at(-1)}`;
   document.getElementById('proj-range2').textContent = `${p.years[0]} – ${p.years.at(-1)}`;
@@ -2219,6 +2238,7 @@ function renderHistoricalTable(){
   document.getElementById('hist-title').textContent = HIST_TITLES[state.histSector];
   // Toggle the External reports block
   document.getElementById('external-reports').classList.toggle('hidden', state.histSector !== 'external');
+  document.getElementById('external-src-charts').classList.toggle('hidden', state.histSector !== 'external');
   const linked = IDENTITY_FIELDS[state.histSector] || [];
   const head = `<thead><tr><th>Line item</th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
   const body = `<tbody>${rows.map(([key,label,d]) => `
@@ -2249,22 +2269,28 @@ function renderHistoricalTable(){
       series:[{label:'Broad money growth (%)', data:BASELINE.monetary.broad_money_growth, color:'#7C3AED'},
               {label:'MB/GDP (%)', data:BASELINE.monetary.mb_pct_gdp, color:'#0F172A'}]},
   };
-  const c1 = chartMap[state.histSector];
-  document.getElementById('hist-chart1-title').textContent = c1.t;
-  makeChart('hist-chart', {
-    type:'line',
-    data:{ labels:YEARS, datasets: c1.series.map((s,i)=>({
-      label:s.label, data:s.data, borderColor:s.color, backgroundColor:s.color+'22',
-      borderWidth:2, pointRadius:3, tension:.25, borderDash: i===1 ? [4,3] : []
-    }))},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
-      scales:{ x:{ ticks:{ font:{size:10, family:"DM Mono"} } }, y:{ ticks:{ font:{size:10, family:"DM Mono"} } } }
-    }
-  });
+  // Growth & Inflation / Output Gap & Potential Output charts are hidden for the Real sector
+  document.getElementById('hist-chart1-card').classList.toggle('hidden', state.histSector === 'real');
+  document.getElementById('hist-chart2-card').classList.toggle('hidden', state.histSector === 'real');
 
-  // Chart 2: sector-specific deep dive
-  renderHistChart2();
+  if (state.histSector !== 'real') {
+    const c1 = chartMap[state.histSector];
+    document.getElementById('hist-chart1-title').textContent = c1.t;
+    makeChart('hist-chart', {
+      type:'line',
+      data:{ labels:YEARS, datasets: c1.series.map((s,i)=>({
+        label:s.label, data:s.data, borderColor:s.color, backgroundColor:s.color+'22',
+        borderWidth:2, pointRadius:3, tension:.25, borderDash: i===1 ? [4,3] : []
+      }))},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'bottom', labels:{ font:{size:10}, boxWidth:12 } } },
+        scales:{ x:{ ticks:{ font:{size:10, family:"DM Mono"} } }, y:{ ticks:{ font:{size:10, family:"DM Mono"} } } }
+      }
+    });
+
+    // Chart 2: sector-specific deep dive
+    renderHistChart2();
+  }
 
   // For External sector, populate the appended BOP / IIP / External Debt reports
   if (state.histSector === 'external') {
@@ -2273,12 +2299,14 @@ function renderHistoricalTable(){
   }
   // For Real sector, populate the Foreign Balance & CA projection worksheets
   document.getElementById('real-reports').classList.toggle('hidden', state.histSector !== 'real');
+  document.getElementById('real-src-charts').classList.toggle('hidden', state.histSector !== 'real');
   if (state.histSector === 'real') {
     renderSourceCharts('real');
     renderRealSectorProj();
   }
   // For Monetary sector, populate the monetary worksheets
   document.getElementById('monetary-reports').classList.toggle('hidden', state.histSector !== 'monetary');
+  document.getElementById('monetary-src-charts').classList.toggle('hidden', state.histSector !== 'monetary');
   if (state.histSector === 'monetary') {
     renderSourceCharts('monetary');
     renderMonetaryReports();
@@ -2421,9 +2449,9 @@ function renderBalanceSheets(){
         <span class="dot" style="background:${p.color}"></span>
         <span class="card-title">${p.label}</span>
       </div>
-      <table class="fp"><tbody>
+      <div class="table-wrap"><table class="fp"><tbody>
         ${p.rows.map(([lbl,v,d])=>`<tr><td style="font-size:11.5px">${lbl}</td><td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v,d)}</td></tr>`).join('')}
-      </tbody></table>
+      </tbody></table></div>
     </div>
   `).join('');
 
@@ -4982,46 +5010,63 @@ function applyAccountTooltips(root){
   }
 })();
 
-/* Makes every table.fp collapsible/expandable by inserting a clickable
-   toggle bar directly before it. Runs on load and re-scans whenever new
-   tables are added or re-rendered (e.g. balance sheet grid rebuilds). */
-function cardTitleText(el){
-  var text = '';
-  el.childNodes.forEach(function(n){
-    if (n.nodeType === Node.TEXT_NODE) text += n.textContent;
-  });
-  text = text.trim();
-  return text || el.textContent.trim();
-}
-function findTableLabel(table){
-  var card = table.closest('.card') || table.parentElement;
-  if (card) {
-    var titleEl = card.querySelector('.card-title');
-    if (titleEl) {
-      var t = cardTitleText(titleEl);
-      if (t) return t;
-    }
-  }
-  return 'Table';
-}
+/* Makes every table.fp collapsible/expandable. Where the table already sits
+   under a card header (.card-head / .sector-panel-head) showing its title,
+   that header itself becomes the clickable toggle — avoids repeating the
+   title a second time in a separate bar. Falls back to a standalone toggle
+   bar (generic "Table" label) only when no header can be found. Runs on
+   load and re-scans whenever new tables are added or re-rendered (e.g.
+   balance sheet grid rebuilds). Title text on headers is often updated
+   later via .textContent (year/sector switches) — the toggle icon is kept
+   as a sibling of the title element, never inside it, so those updates
+   never wipe the icon out. */
 function initCollapsibleTable(table){
   if (table.dataset.collapsibleInit) return;
   table.dataset.collapsibleInit = '1';
-  var bar = document.createElement('div');
-  bar.className = 'table-toggle-bar';
-  bar.setAttribute('role', 'button');
-  bar.setAttribute('tabindex', '0');
-  var label = findTableLabel(table);
-  bar.innerHTML = '<span class="table-toggle-icon">\u25BE</span><span class="table-toggle-label">' + label + '</span>';
-  table.parentNode.insertBefore(bar, table);
-  var toggle = function(){
-    var collapsed = table.classList.toggle('collapsed-table');
-    bar.classList.toggle('collapsed', collapsed);
-  };
-  bar.addEventListener('click', toggle);
-  bar.addEventListener('keydown', function(e){
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-  });
+
+  var card = table.closest('.card') || table.parentElement;
+  var titleEl = card ? card.querySelector('.card-title') : null;
+  var head = titleEl ? titleEl.closest('.card-head, .sector-panel-head') : null;
+
+  if (head && titleEl && !head.dataset.collapsibleToggle) {
+    head.dataset.collapsibleToggle = '1';
+    head.classList.add('table-toggle-head');
+    head.setAttribute('role', 'button');
+    head.setAttribute('tabindex', '0');
+
+    var wrap = document.createElement('span');
+    wrap.className = 'table-toggle-title-wrap';
+    head.insertBefore(wrap, titleEl);
+    var icon = document.createElement('span');
+    icon.className = 'table-toggle-icon';
+    icon.textContent = '\u25BE';
+    wrap.appendChild(icon);
+    wrap.appendChild(titleEl); // moves titleEl in place; id/content untouched
+
+    var toggle = function(){
+      var collapsed = table.classList.toggle('collapsed-table');
+      head.classList.toggle('collapsed', collapsed);
+    };
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  } else if (!head) {
+    var bar = document.createElement('div');
+    bar.className = 'table-toggle-bar';
+    bar.setAttribute('role', 'button');
+    bar.setAttribute('tabindex', '0');
+    bar.innerHTML = '<span class="table-toggle-icon">\u25BE</span><span class="table-toggle-label">Table</span>';
+    table.parentNode.insertBefore(bar, table);
+    var toggleBar = function(){
+      var collapsed = table.classList.toggle('collapsed-table');
+      bar.classList.toggle('collapsed', collapsed);
+    };
+    bar.addEventListener('click', toggleBar);
+    bar.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBar(); }
+    });
+  }
 }
 function scanForCollapsibleTables(){
   document.querySelectorAll('table.fp').forEach(initCollapsibleTable);
