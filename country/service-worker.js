@@ -4,6 +4,7 @@
 const CACHE_VERSION = 'fpf-sim-v2';
 const APP_SHELL = [
   './index.html',
+  './country/nation-state.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
