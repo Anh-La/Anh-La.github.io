@@ -256,6 +256,12 @@
 
   /* Utility hidden */
   .hidden{display:none !important}
+  .solo-hidden{display:none !important}
+  #real-fb-solo-btn{background:#fff;border:1px solid var(--line);padding:7px 14px;
+    font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;
+    color:var(--muted);white-space:nowrap;flex-shrink:0}
+  #real-fb-solo-btn:hover{color:var(--ink);border-color:var(--ink)}
+  #real-fb-solo-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 
   /* Accounting-identity tooltip cue */
   .has-formula{
@@ -568,7 +574,7 @@
       </div>
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
     </div>
-    <div class="layout" style="grid-template-columns:2fr 1fr">
+    <div class="layout" id="sector-main-layout" style="grid-template-columns:2fr 1fr">
       <div class="card">
         <div class="card-head"><span class="card-title" id="hist-title">Real Sector · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
         <div class="table-wrap"><table class="fp" id="hist-table"></table></div>
@@ -757,6 +763,7 @@
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
 
       <!-- Real GDP & Output Gap (goes first — anchors every other worksheet) -->
+      <div id="real-rgdp-worksheet">
       <div>
         <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real GDP &amp; Output Gap — Forecast Methods</h3>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Three IMF FPP methods · Trend regression Ln(RY) = 7.674 + 0.040·(trend) · R² = 0.988 · Baseline 2013 → Forecast 2014</div>
@@ -772,13 +779,16 @@
           <div class="card-body" style="font-size:12px" id="rgdp-method-panel"></div>
         </div>
       </div>
+      </div>
 
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div id="real-fb-worksheet">
       <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
         <div>
           <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Foreign Balance &amp; Current Account — Projection Worksheets</h3>
           <div style="font-size:11px;color:var(--muted);margin-top:2px">IMF FPP: real exports (elasticity model) · nominal X&amp;M · services ratios · primary/secondary income · Baseline 2013 · Forecast 2014</div>
         </div>
+        <button class="govops-subtab" id="real-fb-solo-btn" data-testid="real-fb-solo-btn">View Worksheets Only</button>
       </div>      <div class="layout" style="grid-template-columns:320px 1fr">
         <aside class="card" id="real-proj-panel"></aside>
         <div>
@@ -813,9 +823,11 @@
           </div>
         </div>
       </div>
+      </div>
 
       <!-- Domestic Demand & Prices — inline forecast worksheets -->
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+      <div id="real-dd-worksheet">
       <div>
         <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Domestic Demand &amp; Prices — Projection Worksheets</h3>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Real private consumption · Real private investment · Real imports · Nominal ER · CPI inflation (Phillips curve)</div>
@@ -830,6 +842,7 @@
         <div class="card-body" style="font-size:11.5px">
           <div id="dd-formulas" class="mono"></div>
         </div>
+      </div>
       </div>
     </div></section>
 
@@ -2232,6 +2245,20 @@ const HIST_ROWS = {
 const HIST_TITLES = { real:'Real Sector · 2006–2012', external:'External Sector · 2006–2012',
   government:'Government (Fiscal) · 2006–2012', monetary:'Monetary Survey · 2006–2012' };
 
+function setRealFbSolo(solo){
+  const btn = document.getElementById('real-fb-solo-btn');
+  if (!btn) return;
+  btn.classList.toggle('active', solo);
+  btn.textContent = solo ? 'Show All Sections' : 'View Worksheets Only';
+  ['sector-main-layout','real-src-charts','real-rgdp-worksheet','real-dd-worksheet'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('solo-hidden', solo);
+  });
+}
+function resetRealFbSolo(){
+  const btn = document.getElementById('real-fb-solo-btn');
+  if (btn && btn.classList.contains('active')) setRealFbSolo(false);
+}
 function renderHistoricalTable(){
   const rows = HIST_ROWS[state.histSector];
   const data = BASELINE[state.histSector];
@@ -2303,6 +2330,8 @@ function renderHistoricalTable(){
   if (state.histSector === 'real') {
     renderSourceCharts('real');
     renderRealSectorProj();
+  } else {
+    resetRealFbSolo();
   }
   // For Monetary sector, populate the monetary worksheets
   document.getElementById('monetary-reports').classList.toggle('hidden', state.histSector !== 'monetary');
@@ -3152,8 +3181,8 @@ function renderRealGdpMethods(){
   `;
   document.querySelectorAll('.rgdp-method-btn').forEach(b => b.addEventListener('click', () => {
     state.realProjAssumptions.d_RY = parseFloat(b.dataset.value);
-    // Sync phillips_ygap to the newly computed output gap
-    state.realProjAssumptions.phillips_ygap = ogap14;
+    // Cascades: output gap → CPI inflation (Phillips curve) → real imports volume
+    syncRealProjDerived();
     renderRealSectorProj();
   }));
 }
@@ -3205,6 +3234,100 @@ const REAL_PROJ_DEFAULTS = {
   phillips_rergap: -0.73,   // RER gap 2014
   phillips_alpha_r: 0.28,   // coef on RER gap
 };
+
+/* ============================================================
+   REAL SECTOR PROJECTION — LEVER CORRELATION ENGINE
+   ------------------------------------------------------------
+   Four of the sliders above are not truly independent assumptions
+   — they are accounting identities or model outputs of OTHER
+   sliders in this same pair of worksheets:
+     • Output gap 2014   = 100 × (RY2014 − RYPotential2014) / RYPotential2014,
+                            driven by the chosen Real GDP growth path (d_RY)
+     • RER gap 2014       = projected RER index (2012=100 base year) − 100,
+                            driven by the Real ER change assumption (d_RER)
+     • Δ% CPI              = Phillips curve on the output gap & RER gap
+                            (this is the same "CPI Inflation 2014" the
+                            Domestic Demand worksheet already forecasts —
+                            it should not be set separately)
+     • Δ% Real imports vol. = elasticity model on GDP growth & the relative
+                            import price (which itself depends on Δ% CPI)
+   These four are now computed automatically, in that dependency
+   order, so moving GDP growth, the RER assumption, or the Phillips
+   curve inputs correctly cascades through CPI inflation and the
+   real-imports forecast instead of leaving them frozen. Each can
+   still be fine-tuned by hand — dragging its slider layers a manual
+   shock on top of the model-implied value (mirrors the "Correlated
+   + shock" pattern used in the Policy Simulator).
+   ============================================================ */
+const REAL_PROJ_DERIVED_KEYS = ['phillips_ygap','phillips_rergap','d_CPI','d_RMg'];
+const REAL_PROJ_DERIVED_BOUNDS = {
+  phillips_ygap:   {min:-5,  max:5},
+  phillips_rergap: {min:-5,  max:5},
+  d_CPI:           {min:0,   max:20},
+  d_RMg:           {min:-15, max:20},
+};
+function clampRealProj(key, v){
+  const b = REAL_PROJ_DERIVED_BOUNDS[key];
+  return b ? Math.min(b.max, Math.max(b.min, v)) : v;
+}
+// Output-gap identity: driven by the chosen Real GDP growth path (d_RY)
+function realProjOutputGapBase(a){
+  const potential_14 = RGDP_HIST.potential.at(-1) * 1.040;
+  const ry14 = RGDP_HIST.ry.at(-1) * (1 + a.d_RY/100);
+  return 100 * ((ry14 - potential_14) / potential_14);
+}
+// RER-gap identity: driven by the Real ER change assumption (d_RER); 2012=100 is the base year
+function realProjRerGapBase(a){
+  const i = DD_HIST.years.length - 1;
+  const rer14 = DD_HIST.rer_index[i] * (1 + a.d_RER/100);
+  return rer14 - 100;
+}
+// Phillips curve: CPI inflation forecast from the output gap & RER gap
+function realProjCpiBase(a){
+  const i = DD_HIST.years.length - 1;
+  const pi_prev = DD_HIST.cpi[i];
+  return a.phillips_c + a.phillips_rho*pi_prev + a.phillips_alpha_y*a.phillips_ygap + a.phillips_alpha_r*a.phillips_rergap;
+}
+// Elasticity model: real imports volume growth from GDP growth & the relative import price (uses Δ% CPI)
+function realProjImportVolumeBase(a){
+  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  return a.eps_RMy * a.d_RY + a.eps_RMP * d_Prmf;
+}
+// Recompute every derived assumption, in dependency order, applying any manual overrides
+function syncRealProjDerived(){
+  const a = state.realProjAssumptions;
+  if (!a.overrides) a.overrides = {};
+  const ov = k => a.overrides[k] || 0;
+
+  a.phillips_ygap   = clampRealProj('phillips_ygap',   realProjOutputGapBase(a) + ov('phillips_ygap'));
+  a.phillips_rergap = clampRealProj('phillips_rergap', realProjRerGapBase(a)   + ov('phillips_rergap'));
+  a.d_CPI           = clampRealProj('d_CPI',           realProjCpiBase(a)      + ov('d_CPI'));
+  a.d_RMg           = clampRealProj('d_RMg',           realProjImportVolumeBase(a) + ov('d_RMg'));
+}
+// Slider drag on a derived assumption: convert the dragged value into a manual shock,
+// preserving the correlation for everything else (and cascading to anything downstream of it)
+function setRealProjOverride(key, newValue){
+  const a = state.realProjAssumptions;
+  if (!a.overrides) a.overrides = {};
+  a.overrides[key] = 0;
+  syncRealProjDerived();               // a[key] now holds the pure model-implied baseline
+  const pureBase = a[key];
+  a.overrides[key] = newValue - pureBase;
+  syncRealProjDerived();               // final pass — cascades to anything downstream too
+}
+function resetRealProjOverride(key){
+  const a = state.realProjAssumptions;
+  if (a.overrides) delete a.overrides[key];
+  syncRealProjDerived();
+}
+function wireRealProjSlider(inp){
+  inp.addEventListener('input', e => {
+    const key = inp.dataset.key, v = parseFloat(e.target.value);
+    if (REAL_PROJ_DERIVED_KEYS.includes(key)) { setRealProjOverride(key, v); }
+    else { state.realProjAssumptions[key] = v; syncRealProjDerived(); }
+    renderRealSectorProj();
+  });
+}
 
 function computeRealProj(a){
   const B = REAL_PROJ;
@@ -3283,7 +3406,13 @@ function renderRealSectorProj(){
 
   document.getElementById('real-proj-panel').innerHTML = `
     <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span></div>
-    <div style="padding:12px;max-height:70vh;overflow-y:auto">
+    <div id="real-proj-assumptions-body" style="padding:12px;max-height:70vh;overflow-y:auto">
+      <div class="lever-corr-note" style="margin-bottom:14px">
+        <strong>Δ% CPI</strong> and <strong>Δ% Real imports volume</strong> below (and <strong>Output/RER gap</strong> in
+        Domestic Demand) are mathematically derived from other assumptions here — the Phillips curve, the chosen
+        GDP path, and the import elasticity model — not set independently. Move a derived lever to layer a manual
+        shock on its model-implied path, or tap <span class="lever-reset-inline">Auto</span> to clear it.
+      </div>
       ${groups.map(g => `
         <div style="margin-bottom:14px">
           <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:${g.color};margin-bottom:8px">
@@ -3292,10 +3421,18 @@ function renderRealSectorProj(){
           ${g.rows.map(row => {
             const v = a[row.key];
             const dv = row.step < 0.1 ? v.toFixed(2) : (row.step < 1 ? v.toFixed(1) : v.toFixed(0));
+            const isDerived = REAL_PROJ_DERIVED_KEYS.includes(row.key);
+            const hasOverride = isDerived && Math.abs((a.overrides && a.overrides[row.key]) || 0) > 0.049;
             return `<div style="margin-bottom:8px">
-              <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
-                <span>${row.label}</span>
-                <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
+                <span style="display:flex;align-items:center;gap:5px;min-width:0">
+                  <span style="overflow-wrap:break-word">${row.label}</span>
+                  ${isDerived ? `<span class="lever-tag lever-tag-derived" style="flex:0 0 auto">${hasOverride?'+ shock':'auto'}</span>` : ''}
+                </span>
+                <span style="display:flex;align-items:center;gap:5px;flex:0 0 auto">
+                  <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+                  ${hasOverride ? `<button class="lever-reset-btn" data-reset-key="${row.key}" title="Reset to model-implied value">Auto</button>` : ''}
+                </span>
               </div>
               <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
             </div>`;
@@ -3304,12 +3441,17 @@ function renderRealSectorProj(){
       `).join('')}
     </div>
   `;
-  document.querySelectorAll('#real-proj-panel input[type=range]').forEach(inp => {
-    inp.addEventListener('input', e => {
-      state.realProjAssumptions[inp.dataset.key] = parseFloat(e.target.value);
+  document.querySelectorAll('#real-proj-panel input[type=range]').forEach(wireRealProjSlider);
+  const panelEl = document.getElementById('real-proj-panel');
+  if (!panelEl.dataset.resetBound) {
+    panelEl.addEventListener('click', e => {
+      const btn = e.target.closest('[data-reset-key]');
+      if (!btn) return;
+      resetRealProjOverride(btn.dataset.resetKey);
       renderRealSectorProj();
     });
-  });
+    panelEl.dataset.resetBound = '1';
+  }
 
   // KPIs
   const kpi = [
@@ -3417,6 +3559,7 @@ const DD_HIST = {
 
 function renderDomesticDemandProj(){
   const a = state.realProjAssumptions;
+  syncRealProjDerived(); // ensure derived assumptions (output gap, RER gap, CPI, real imports) are current
   const H = DD_HIST;
   const i = H.years.length - 1; // 2013
 
@@ -3430,17 +3573,17 @@ function renderDomesticDemandProj(){
   const rip_ratio14 = H.rip_pct_rgdp[i];
   const rip14 = rgdp14 * rip_ratio14 / 100;
   const d_rip = (rip14 / H.rip[i] - 1) * 100;
-  // Real imports of goods (elasticity)
+  // Real imports of goods (elasticity) — Δ%RMg is derived by the correlation engine; kept in state.realProjAssumptions.d_RMg
   const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
-  const d_RMg = a.eps_RMy * a.d_RY + a.eps_RMP * d_Prmf;
+  const d_RMg = a.d_RMg;
   const rmg14 = H.rmg_nc[i] * (1 + d_RMg/100);
   // Nominal ER (period average)
   const ner_avg14 = H.ner_avg[i] * (1 + a.d_CPI/100) * (1 + a.d_RER/100) / (1 + a.d_Pf/100);
   const nere14 = (ner_avg14 * 2) - H.ner_eop[i];
   const d_ner_avg = (ner_avg14 / H.ner_avg[i] - 1) * 100;
-  // Phillips-curve inflation for 2014
+  // Phillips-curve inflation for 2014 — this IS Δ% CPI (a.d_CPI), derived by the correlation engine
   const pi_prev = H.cpi[i];
-  const pi14 = a.phillips_c + a.phillips_rho * pi_prev + a.phillips_alpha_y * a.phillips_ygap + a.phillips_alpha_r * a.phillips_rergap;
+  const pi14 = a.d_CPI;
 
   // KPIs
   const kpi = [
@@ -3482,21 +3625,27 @@ function renderDomesticDemandProj(){
   `).join('')}</tbody>`;
   document.getElementById('dd-table').innerHTML = head + body;
 
-  // Formulas box
+  // Formulas box — show the manual shock explicitly when a derived assumption has been overridden,
+  // so the displayed arithmetic always reconciles with the final value
+  const rmgShock = (a.overrides && a.overrides.d_RMg) || 0;
+  const cpiShock = (a.overrides && a.overrides.d_CPI) || 0;
+  const rmgShockTxt = Math.abs(rmgShock) > 0.049 ? ` + shock ${rmgShock>0?'+':''}${rmgShock.toFixed(2)}` : '';
+  const cpiShockTxt = Math.abs(cpiShock) > 0.049 ? ` + shock ${cpiShock>0?'+':''}${cpiShock.toFixed(2)}` : '';
   document.getElementById('dd-formulas').innerHTML = `
     <div style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
       <div>① <strong>Real GDP</strong> — RY₂₀₁₄ = RY₂₀₁₃ × (1 + Δ%RY/100) = ${fmt(H.rgdp[i],2)} × (1+${a.d_RY.toFixed(2)}/100) = <strong>${fmt(rgdp14,2)}</strong></div>
       <div>② <strong>Priv. Consumption (constant RCp/GDP)</strong> — RCp₂₀₁₄ = ${rcp_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rcp14,2)}</strong></div>
       <div>③ <strong>Priv. Investment (constant RIp/GDP)</strong> — RIp₂₀₁₄ = ${rip_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rip14,2)}</strong></div>
-      <div>④ <strong>Real Imports (elasticity)</strong>: Δ%Prmf = ((1+${a.d_Pmf.toFixed(2)}/100)×(1+${a.d_NER.toFixed(2)}/100)/(1+${a.d_CPI.toFixed(2)}/100)−1)×100 = <strong>${d_Prmf.toFixed(3)}%</strong> ; Δ%RMg = ${a.eps_RMy.toFixed(2)}×${a.d_RY.toFixed(2)} + ${a.eps_RMP.toFixed(2)}×${d_Prmf.toFixed(3)} = <strong>${d_RMg.toFixed(3)}%</strong> ; RMg₂₀₁₄ = ${fmt(H.rmg_nc[i],2)} × (1+${d_RMg.toFixed(3)}/100) = <strong>${fmt(rmg14,2)}</strong></div>
+      <div>④ <strong>Real Imports (elasticity, derived)</strong>: Δ%Prmf = ((1+${a.d_Pmf.toFixed(2)}/100)×(1+${a.d_NER.toFixed(2)}/100)/(1+${a.d_CPI.toFixed(2)}/100)−1)×100 = <strong>${d_Prmf.toFixed(3)}%</strong> ; Δ%RMg = ${a.eps_RMy.toFixed(2)}×${a.d_RY.toFixed(2)} + ${a.eps_RMP.toFixed(2)}×${d_Prmf.toFixed(3)}${rmgShockTxt} = <strong>${d_RMg.toFixed(3)}%</strong> ; RMg₂₀₁₄ = ${fmt(H.rmg_nc[i],2)} × (1+${d_RMg.toFixed(3)}/100) = <strong>${fmt(rmg14,2)}</strong></div>
       <div>⑤ <strong>Nominal ER (avg)</strong> — NER₂₀₁₄ = NER₂₀₁₃ × (1+Δ%P/100) × (1+Δ%RER/100) / (1+Δ%Pf/100) = ${fmt(H.ner_avg[i],2)} × (1+${a.d_CPI.toFixed(2)}/100) × (1+${a.d_RER.toFixed(2)}/100) / (1+${a.d_Pf.toFixed(2)}/100) = <strong>${fmt(ner_avg14,2)}</strong></div>
-      <div>⑥ <strong>CPI Inflation (Phillips curve)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = ${a.phillips_c.toFixed(1)} + ${a.phillips_rho.toFixed(1)}×${pi_prev.toFixed(2)} + ${a.phillips_alpha_y.toFixed(1)}×${a.phillips_ygap.toFixed(2)} + ${a.phillips_alpha_r.toFixed(2)}×${a.phillips_rergap.toFixed(2)} = <strong>${pi14.toFixed(2)}%</strong></div>
+      <div>⑥ <strong>Δ% CPI — Phillips curve (derived)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = ${a.phillips_c.toFixed(1)} + ${a.phillips_rho.toFixed(1)}×${pi_prev.toFixed(2)} + ${a.phillips_alpha_y.toFixed(1)}×${a.phillips_ygap.toFixed(2)} + ${a.phillips_alpha_r.toFixed(2)}×${a.phillips_rergap.toFixed(2)}${cpiShockTxt} = <strong>${pi14.toFixed(2)}%</strong> — this is the same Δ%CPI used in ④ and in the export/import price formulas above</div>
+      <div style="color:var(--muted);font-style:italic">Output gap (ygap) and RER gap above are themselves derived: ygap = 100×(RY₂₀₁₄−RYPotential₂₀₁₄)/RYPotential₂₀₁₄ from the chosen GDP path; RERgap = projected RER index (2012=100) − 100 from Δ%RER.</div>
     </div>
   `;
 
   // Extend the assumption panel with DD sliders (append once)
   if (!document.getElementById('dd-panel-added')) {
-    const panelBody = document.querySelector('#real-proj-panel > div');
+    const panelBody = document.getElementById('real-proj-assumptions-body');
     if (!panelBody) return;
     const ddRows = [
       { key:'d_RY',              label:'Δ% Real GDP (all)',       min:-5, max:12, step:.05, suffix:'%' },
@@ -3515,10 +3664,18 @@ function renderDomesticDemandProj(){
         ${ddRows.map(row => {
           const v = a[row.key];
           const dv = row.step < 0.1 ? v.toFixed(2) : v.toFixed(1);
+          const isDerived = REAL_PROJ_DERIVED_KEYS.includes(row.key);
+          const hasOverride = isDerived && Math.abs((a.overrides && a.overrides[row.key]) || 0) > 0.049;
           return `<div style="margin-bottom:8px">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#334155">
-              <span>${row.label}</span>
-              <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
+              <span style="display:flex;align-items:center;gap:5px;min-width:0">
+                <span style="overflow-wrap:break-word">${row.label}</span>
+                ${isDerived ? `<span class="lever-tag lever-tag-derived" style="flex:0 0 auto">${hasOverride?'+ shock':'auto'}</span>` : ''}
+              </span>
+              <span style="display:flex;align-items:center;gap:5px;flex:0 0 auto">
+                <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+                ${hasOverride ? `<button class="lever-reset-btn" data-reset-key="${row.key}" title="Reset to model-implied value">Auto</button>` : ''}
+              </span>
             </div>
             <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
           </div>`;
@@ -3526,13 +3683,8 @@ function renderDomesticDemandProj(){
       </div>
     `;
     panelBody.insertAdjacentHTML('beforeend', html);
-    // Wire sliders — reuse existing pattern
-    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(inp => {
-      inp.addEventListener('input', e => {
-        state.realProjAssumptions[inp.dataset.key] = parseFloat(e.target.value);
-        renderRealSectorProj();
-      });
-    });
+    // Wire sliders — same derived/override-aware handler used by the main assumptions panel
+    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(wireRealProjSlider);
   } else {
     // Update slider values shown in DD panel
     document.querySelectorAll('#dd-panel-added input[type=range]').forEach(inp => {
@@ -5051,6 +5203,8 @@ function initCollapsibleTable(table){
     head.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
+    table.classList.add('collapsed-table');
+    head.classList.add('collapsed');
   } else if (!head) {
     var bar = document.createElement('div');
     bar.className = 'table-toggle-bar';
@@ -5066,6 +5220,8 @@ function initCollapsibleTable(table){
     bar.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBar(); }
     });
+    table.classList.add('collapsed-table');
+    bar.classList.add('collapsed');
   }
 }
 function scanForCollapsibleTables(){
@@ -5103,7 +5259,8 @@ function scanForCollapsibleTables(){
 function init(){
   // Initialize projection assumptions now that PROJ_DEFAULTS is defined
   state.projAssumptions = {...PROJ_DEFAULTS};
-  state.realProjAssumptions = {...REAL_PROJ_DEFAULTS};
+  state.realProjAssumptions = {...REAL_PROJ_DEFAULTS, overrides: {}};
+  syncRealProjDerived(); // populate the derived assumptions (output gap, RER gap, CPI, real imports) consistently
 
   // Move the real-reports block into tab-sector (it was declared inside Sector Interlinks HTML)
   const realRep = document.getElementById('real-reports');
@@ -5197,6 +5354,17 @@ function init(){
   });
 
   // Sector Interlinks — both views are always visible, no sub-tab handler needed
+
+  // Real Sector — "View Worksheets Only" solo toggle for the Foreign Balance &
+  // Current Account worksheet (mirrors the Gov Ops sub-tab pattern: one click
+  // hides the sibling sections so only this worksheet shows; click again to restore).
+  const realFbSoloBtn = document.getElementById('real-fb-solo-btn');
+  if (realFbSoloBtn) {
+    realFbSoloBtn.addEventListener('click', () => {
+      const solo = !realFbSoloBtn.classList.contains('active');
+      setRealFbSolo(solo);
+    });
+  }
 
   // Restore key
   loadKey();
