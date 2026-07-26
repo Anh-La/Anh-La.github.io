@@ -1,14 +1,14 @@
 // Service worker for Financial Programming Framework · Interactive Simulator
 // Provides an app shell cache so the simulator loads (and keeps working) offline.
 
-const CACHE_VERSION = 'fpf-sim-v1';
+const CACHE_VERSION = 'fpf-sim-v2';
 const APP_SHELL = [
-  './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-512-maskable.png'
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png',
+  './icons/apple-touch-icon.png'
 ];
 
 // Install: pre-cache the app shell.
