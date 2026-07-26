@@ -1,0 +1,20 @@
+{
+  "name": "Financial Programming Framework",
+  "short_name": "FPF",
+  "description": "Interactive IMF-style Financial Programming Framework simulator \u2014 Real, External, Government and Monetary sectors, forward projections, and scenario comparison.",
+  "id": "/nation-state.html",
+  "start_url": "./nation-state.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#fafafa",
+  "theme_color": "#0f172a",
+  "lang": "en",
+  "categories": ["finance", "education", "productivity"],
+  "icons": [
+    { "src": "nation-state-icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "nation-state-icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "nation-state-icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
