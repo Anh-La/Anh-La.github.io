@@ -1,4 +1,4 @@
-<html lang="en"><head>
+<html lang="en" style="--header-h: 69.4000015258789px;"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Interactive IMF-style Financial Programming Framework simulator — 4 sectors, forward projections, and scenario comparison.">
@@ -35,7 +35,7 @@
   main{max-width:1440px;margin:0 auto;padding:16px}
 
   /* Tabs */
-  .tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
+  .tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
     overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
     background-image:linear-gradient(to right,var(--surface) 30%,rgba(255,255,255,0)),
       linear-gradient(to right,rgba(255,255,255,0),var(--surface) 70%) 100% 0,
@@ -307,7 +307,7 @@
     .sector-chips{font-size:10px;gap:6px 10px;width:100%;order:3;padding-top:8px;border-top:1px solid var(--line);margin-top:2px}
 
     /* Tabs — horizontal swipe carousel, generous tap targets */
-    .tabs{grid-template-columns:repeat(6, minmax(118px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(7, minmax(118px, 1fr)) !important}
     .tab{padding:13px 10px;font-size:11px;letter-spacing:.05em;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center}
 
     /* Force every inline grid layout to a single column */
@@ -385,7 +385,7 @@
 
   @media (max-width: 560px){
     main{padding:10px 8px}
-    .tabs{grid-template-columns:repeat(6, minmax(104px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(7, minmax(104px, 1fr)) !important}
     .tab{font-size:10px;padding:12px 8px}
     .summary{grid-template-columns:1fr !important}
     .bs-grid{grid-template-columns:1fr !important}
@@ -419,6 +419,34 @@
 
   /* Prevent horizontal page overflow from wide inline styles */
   html, body{overflow-x:hidden}
+
+  /* FRAMEWORK GUIDANCE TAB */
+  .guide{max-width:1080px}
+  .guide-intro{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.55}
+  .guide-toc{background:#f8fafc;border:1px solid var(--line);padding:14px 18px;margin-bottom:18px}
+  .guide-toc-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+  .guide-toc ol{margin:0;padding-left:18px;columns:2;column-gap:28px}
+  @media (max-width:700px){.guide-toc ol{columns:1}}
+  .guide-toc li{font-size:12px;margin:3px 0;line-height:1.4}
+  .guide-toc a{color:var(--blue)}
+  .guide-toc a:hover{text-decoration:underline}
+  .guide-card{background:var(--surface);border:1px solid var(--line);margin-bottom:14px;scroll-margin-top:80px}
+  .guide-card-head{padding:10px 16px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;gap:10px}
+  .guide-card-num{font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;background:var(--ink);padding:2px 7px;flex:0 0 auto}
+  .guide-card-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+  .guide-body{padding:16px 18px}
+  .guide-body h3{font-family:var(--font-body);font-size:14px;font-weight:800;letter-spacing:-.01em;margin:18px 0 6px;color:var(--ink)}
+  .guide-body h3:first-child{margin-top:0}
+  .guide-body h4{font-family:var(--font-body);font-size:12.5px;font-weight:700;margin:12px 0 4px;color:#1e293b}
+  .guide-body p{font-size:13px;line-height:1.6;margin:7px 0;color:#0f172a}
+  .guide-body ul{font-size:13px;line-height:1.6;margin:6px 0;padding-left:20px}
+  .guide-body li{margin:3px 0}
+  .guide-body strong{color:var(--ink)}
+  .guide-formula{font-family:var(--font-mono);font-size:12px;background:#f1f5f9;border:1px solid var(--line);padding:9px 12px;margin:9px 0;overflow-x:auto;white-space:nowrap}
+  .guide-callout{font-size:12px;background:#fff8ed;border:1px solid #f4e4b8;color:#78350f;padding:10px 12px;margin:10px 0;line-height:1.5}
+  .guide-diagram{font-family:var(--font-mono);font-size:10px;line-height:1.35;background:#0f172a;color:#cbd5e1;padding:14px 16px;overflow-x:auto;white-space:pre;border:1px solid var(--ink)}
+  .guide-key{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+
 </style>
 </head>
 <body>
@@ -437,29 +465,30 @@
 <main>
   <!-- Tab strip -->
   <div class="tabs" id="tabs" role="tablist">
-    <button class="tab active" data-tab="simulator" role="tab">Policy Simulator</button>
+    <button class="tab" data-tab="simulator" role="tab">Policy Simulator</button>
     <button class="tab tab-accent" data-tab="real" style="--accent-color:#2563EB" role="tab">Real</button>
     <button class="tab tab-accent" data-tab="external" style="--accent-color:#059669" role="tab">External</button>
     <button class="tab tab-accent" data-tab="govops" style="--accent-color:#D92D20" role="tab">Government</button>
     <button class="tab tab-accent" data-tab="monetary" style="--accent-color:#7C3AED" role="tab">Monetary</button>
     <button class="tab" data-tab="flowoffunds" role="tab">Sector Interlinks</button>
+    <button class="tab active" data-tab="framework" role="tab">Framework Guidance</button>
   </div>
 
   <!-- Simulator -->
-  <section id="tab-simulator" class="tab-panel">
+  <section id="tab-simulator" class="tab-panel hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
       <div>
         <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Forward Guidance</h2>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Base, Positive and Conservative cases run side by side. Pick a scenario below to tune its policy levers.</div>
       </div>
-      <button class="levers-toggle-btn" id="levers-toggle-btn" type="button" aria-expanded="false" aria-controls="levers-panel-wrap">
-        <span class="levers-toggle-icon">&#9881;</span>
+      <button class="levers-toggle-btn open" id="levers-toggle-btn" type="button" aria-expanded="true" aria-controls="levers-panel-wrap">
+        <span class="levers-toggle-icon">⚙</span>
         <span id="levers-toggle-label">Policy Levers</span>
-        <span class="levers-toggle-chevron" id="levers-toggle-chevron">&#9662;</span>
+        <span class="levers-toggle-chevron" id="levers-toggle-chevron">▾</span>
       </button>
     </div>
     <div class="layout" id="simulator-layout">
-      <aside id="simulator-aside">
+      <aside id="simulator-aside" class="open">
         <div id="levers-panel-wrap" style="margin-bottom:12px"><div class="card">
     <div class="card-head lever-card-head" id="levers-card-head" style="border-top:3px solid #0F172A;flex-wrap:wrap">
       <span class="card-title" style="display:flex;align-items:center;gap:8px">Policy Levers <span class="scenario-badge" id="levers-scenario-badge" style="background:#0F172A">Base Case</span></span>
@@ -480,54 +509,253 @@
         </label>
       </div>
     </div>
-    <div class="levers" id="levers-list"></div>
+    <div class="levers" id="levers-list">
+    <div class="lever-corr-note">
+      <strong>GDP growth</strong> and <strong>Inflation</strong> are the primary drivers — every
+      other lever below is mathematically derived from them (Fisher equation, relative PPP,
+      trade elasticities, tax buoyancy, quantity theory). Move a derived lever to layer a manual
+      shock on its model-implied path, or tap <span class="lever-reset-inline">Auto</span> to clear it.
+    </div><div class="lever" data-lever-key="real_gdp_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Real GDP growth
+          <span class="lever-tag lever-tag-primary">Primary</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">4.0%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-5" max="12" step="0.1" value="4">
+      <div class="lever-scale"><span>-5%</span><span>12%</span></div>
+    </div><div class="lever" data-lever-key="inflation">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#2563EB"></span>Inflation (deflator)
+          <span class="lever-tag lever-tag-primary">Primary</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">5.0%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="5">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever" data-lever-key="fx_depreciation">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>FX depreciation
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">1.8%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-10" max="20" step="0.1" value="1.8">
+      <div class="lever-scale"><span>-10%</span><span>20%</span></div>
+    </div><div class="lever" data-lever-key="export_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Export growth (NC)
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">4.9%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="4.9">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever" data-lever-key="import_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#059669"></span>Import growth (NC)
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">4.7%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-10" max="25" step="0.1" value="4.7">
+      <div class="lever-scale"><span>-10%</span><span>25%</span></div>
+    </div><div class="lever" data-lever-key="revenue_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. revenue growth
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">10.1%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="10.1">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever" data-lever-key="expense_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Gov. expense growth
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">4.0%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-5" max="25" step="0.1" value="4">
+      <div class="lever-scale"><span>-5%</span><span>25%</span></div>
+    </div><div class="lever" data-lever-key="interest_rate">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#D92D20"></span>Interest rate on debt
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">7.0%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="0" max="20" step="0.1" value="7">
+      <div class="lever-scale"><span>0%</span><span>20%</span></div>
+    </div><div class="lever" data-lever-key="monetary_base_growth">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Monetary base growth
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">9.2%</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="-5" max="30" step="0.1" value="9.2">
+      <div class="lever-scale"><span>-5%</span><span>30%</span></div>
+    </div><div class="lever" data-lever-key="money_multiplier">
+      <div class="lever-row">
+        <span class="lever-label"><span class="lever-bar" style="background:#7C3AED"></span>Money multiplier
+          <span class="lever-tag lever-tag-derived">Correlated</span>
+        </span>
+        <span class="lever-value-group">
+          <span class="lever-value">4.8x</span>
+          
+        </span>
+      </div>
+      <input type="range" class="slider" min="3" max="8" step="0.05" value="4.78">
+      <div class="lever-scale"><span>3x</span><span>8x</span></div>
+    </div></div>
     <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
       <button class="btn" id="run-btn" data-testid="run-btn">Run Projection</button>
     </div>
   </div></div>
       </aside>
       <div>
-        <div class="scenario-table-wrap"><table class="scenario-table" id="summary-strip"></table></div>
+        <div class="scenario-table-wrap"><table class="scenario-table" id="summary-strip"><thead><tr>
+    <th class="sc-indicator-head">Indicator</th>
+    <th class="sc-head sc-active" style="--sc-color:#0F172A">
+        <div class="sc-head-inner">
+          <span class="sc-head-label"><span class="dot" style="background:#0F172A"></span>Base Case</span>
+          <span class="scenario-badge" style="background:#0F172A">Editing</span>
+        </div>
+      </th><th class="sc-head" style="--sc-color:#059669">
+        <div class="sc-head-inner">
+          <span class="sc-head-label"><span class="dot" style="background:#059669"></span>Positive Case</span>
+          <button class="edit-scenario-btn" data-scenario="positive">Edit</button>
+        </div>
+      </th><th class="sc-head" style="--sc-color:#D92D20">
+        <div class="sc-head-inner">
+          <span class="sc-head-label"><span class="dot" style="background:#D92D20"></span>Conservative Case</span>
+          <button class="edit-scenario-btn" data-scenario="conservative">Edit</button>
+        </div>
+      </th>
+  </tr></thead><tbody>
+    <tr class="sc-metric-row">
+      <td class="sc-row-label">Fiscal Balance</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">
+          <div class="sc-cell-value">-0.45%</div><div class="sc-cell-sub">Debt: 37.95% GDP</div>
+        </td><td class="sc-cell" style="--sc-color:#059669">
+          <div class="sc-cell-value">3%</div><div class="sc-cell-sub">Debt: 26.34% GDP</div>
+        </td><td class="sc-cell" style="--sc-color:#D92D20">
+          <div class="sc-cell-value">-2.95%</div><div class="sc-cell-sub">Debt: 44.95% GDP</div>
+        </td>
+    </tr>
+    <tr class="sc-metric-row">
+      <td class="sc-row-label">Current Account</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">
+          <div class="sc-cell-value">-4.14%</div><div class="sc-cell-sub">FX: 558.46 NC/USD</div>
+        </td><td class="sc-cell" style="--sc-color:#059669">
+          <div class="sc-cell-value">-12.26%</div><div class="sc-cell-sub">FX: 526.31 NC/USD</div>
+        </td><td class="sc-cell" style="--sc-color:#D92D20">
+          <div class="sc-cell-value">7.84%</div><div class="sc-cell-sub">FX: 736.74 NC/USD</div>
+        </td>
+    </tr>
+    <tr class="sc-metric-row">
+      <td class="sc-row-label">Inflation</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">
+          <div class="sc-cell-value">5%</div><div class="sc-cell-sub">GDP growth: 4%</div>
+        </td><td class="sc-cell" style="--sc-color:#059669">
+          <div class="sc-cell-value">3%</div><div class="sc-cell-sub">GDP growth: 6.5%</div>
+        </td><td class="sc-cell" style="--sc-color:#D92D20">
+          <div class="sc-cell-value">8%</div><div class="sc-cell-sub">GDP growth: 2%</div>
+        </td>
+    </tr>
+    <tr class="sc-metric-row">
+      <td class="sc-row-label">Broad Money</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">
+          <div class="sc-cell-value">9.2%</div><div class="sc-cell-sub">BM/GDP: 61.15%</div>
+        </td><td class="sc-cell" style="--sc-color:#059669">
+          <div class="sc-cell-value">9.7%</div><div class="sc-cell-sub">BM/GDP: 60.14%</div>
+        </td><td class="sc-cell" style="--sc-color:#D92D20">
+          <div class="sc-cell-value">10.2%</div><div class="sc-cell-sub">BM/GDP: 62.8%</div>
+        </td>
+    </tr><tr class="sc-section-row"><td colspan="4">Policy Levers &amp; Assumptions</td></tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">GDP Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+4.0%</td><td class="sc-cell" style="--sc-color:#059669">+6.5%</td><td class="sc-cell" style="--sc-color:#D92D20">+2.0%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Inflation Assumption</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">5.0%</td><td class="sc-cell" style="--sc-color:#059669">3.0%</td><td class="sc-cell" style="--sc-color:#D92D20">8.0%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">FX Depreciation</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+1.8%</td><td class="sc-cell" style="--sc-color:#059669">+0.6%</td><td class="sc-cell" style="--sc-color:#D92D20">+7.6%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Export Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+4.9%</td><td class="sc-cell" style="--sc-color:#059669">+4.4%</td><td class="sc-cell" style="--sc-color:#D92D20">+7.2%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Import Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+4.7%</td><td class="sc-cell" style="--sc-color:#059669">+8.8%</td><td class="sc-cell" style="--sc-color:#D92D20">-1.0%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Revenue Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+10.1%</td><td class="sc-cell" style="--sc-color:#059669">+10.7%</td><td class="sc-cell" style="--sc-color:#D92D20">+11.2%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Expense Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+4.0%</td><td class="sc-cell" style="--sc-color:#059669">+0.9%</td><td class="sc-cell" style="--sc-color:#D92D20">+6.4%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Interest Rate</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">7.0%</td><td class="sc-cell" style="--sc-color:#059669">5.0%</td><td class="sc-cell" style="--sc-color:#D92D20">10.0%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Monetary Base Growth</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">+9.2%</td><td class="sc-cell" style="--sc-color:#059669">+9.7%</td><td class="sc-cell" style="--sc-color:#D92D20">+10.2%</td>
+    </tr>
+    <tr class="sc-lever-row">
+      <td class="sc-row-label">Money Multiplier</td>
+      <td class="sc-cell sc-active-col" style="--sc-color:#0F172A">4.78x</td><td class="sc-cell" style="--sc-color:#059669">4.70x</td><td class="sc-cell" style="--sc-color:#D92D20">4.90x</td>
+    </tr><tr class="sc-baseline-row">
+    <td class="sc-row-label">2012 Baseline</td>
+    <td colspan="3">Fiscal -5.9% · CA -5.71% · Inflation 5.79% · BM growth 9.06%</td>
+  </tr></tbody></table></div>
         <div class="card" style="margin-top:12px">
           <div class="card-head">
             <span class="card-title">Projection Charts</span>
             <span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2013 – 2017</span>
           </div>
           <div class="card-body">
-            <div class="charts" id="charts-grid"><div class="card"><div class="card-head"><span class="card-title">Real GDP growth (%)</span></div><div class="chart-wrap"><canvas id="c-growth"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Inflation (%)</span></div><div class="chart-wrap"><canvas id="c-infl"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Current Account (% GDP)</span></div><div class="chart-wrap"><canvas id="c-ca"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Fiscal Overall Balance (% GDP)</span></div><div class="chart-wrap"><canvas id="c-fisc"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Public Debt (% GDP)</span></div><div class="chart-wrap"><canvas id="c-debt"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Broad Money Growth (%)</span></div><div class="chart-wrap"><canvas id="c-bm"></canvas></div></div></div>
+            <div class="charts" id="charts-grid"><div class="card"><div class="card-head"><span class="card-title">Real GDP growth (%)</span></div><div class="chart-wrap"><canvas id="c-growth" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Inflation (%)</span></div><div class="chart-wrap"><canvas id="c-infl" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Current Account (% GDP)</span></div><div class="chart-wrap"><canvas id="c-ca" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Fiscal Overall Balance (% GDP)</span></div><div class="chart-wrap"><canvas id="c-fisc" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Public Debt (% GDP)</span></div><div class="chart-wrap"><canvas id="c-debt" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Broad Money Growth (%)</span></div><div class="chart-wrap"><canvas id="c-bm" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;"></canvas></div></div></div>
           </div>
         </div>
         <div class="card" style="margin-top:12px">
-          <div class="card-head"><span class="card-title">Projected Path <span class="scenario-badge" id="proj-scenario-badge" style="background:#0F172A">Base Case</span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
-          <div class="table-wrap"><table class="fp" id="proj-table"><thead><tr><th>Indicator</th><th>2013</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr></thead><tbody>
-    <tr><td title="Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)" class="has-formula" data-formula-applied="1">Nominal GDP (bn NC)</td><td class="">23,114.7</td><td class="">25,241.2</td><td class="">27,563.4</td><td class="">30,099.3</td><td class="">32,868.4</td></tr>
-  
-    <tr><td title="gᵧ,t = (RY_t / RY_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Real GDP growth (%)</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td></tr>
-  
-    <tr><td title="π = GDP deflator inflation = (P_t / P_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Inflation (%)</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td></tr>
-  
-    <tr><td title="NER — nominal exchange rate (NC per USD)" class="has-formula" data-formula-applied="1">Exchange rate (NC/USD)</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td></tr>
-  
-    <tr><td title="CA in USD mn = Goods + Services + Primary income + Secondary income" class="has-formula" data-formula-applied="1">Current account (USD mn)</td><td class="neg">(2,493.0)</td><td class="neg">(2,651.4)</td><td class="neg">(2,822.5)</td><td class="neg">(3,007.2)</td><td class="neg">(3,206.7)</td></tr>
-  
-    <tr><td title="CA/GDP = Current account balance ÷ Nominal GDP (USD) × 100" class="has-formula" data-formula-applied="1">Current account (% GDP)</td><td class="neg">(5.51)</td><td class="neg">(5.37)</td><td class="neg">(5.23)</td><td class="neg">(5.10)</td><td class="neg">(4.98)</td></tr>
-  
-    <tr><td title="Revenue = Taxes + Social contributions + Grants + Other revenue" class="has-formula" data-formula-applied="1">Gov. revenue (bn NC)</td><td class="">3,533.2</td><td class="">3,815.9</td><td class="">4,121.1</td><td class="">4,450.8</td><td class="">4,806.9</td></tr>
-  
-    <tr><td title="Expense = Compensation + Goods&amp;Services + Interest + Subsidies + Social benefits + Grants paid + Other" class="has-formula" data-formula-applied="1">Gov. expense (bn NC)</td><td class="">4,536.5</td><td class="">4,911.8</td><td class="">5,317.8</td><td class="">5,756.9</td><td class="">6,231.9</td></tr>
-  
-    <tr><td title="Overall fiscal or BOP balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Overall balance (% GDP)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td></tr>
-  
-    <tr><td title="Primary balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Primary balance (% GDP)</td><td class="neg">(2.30)</td><td class="neg">(2.27)</td><td class="neg">(2.25)</td><td class="neg">(2.22)</td><td class="neg">(2.20)</td></tr>
-  
-    <tr><td title="Debt/GDP = Public debt ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Public debt (% GDP)</td><td class="">45.16</td><td class="">45.70</td><td class="">46.19</td><td class="">46.64</td><td class="">47.05</td></tr>
-  
-    <tr><td title="M0 = Currency issued + Required + Excess reserves held at central bank" class="has-formula" data-formula-applied="1">Monetary base (bn NC)</td><td class="">2,978.7</td><td class="">3,276.6</td><td class="">3,604.2</td><td class="">3,964.6</td><td class="">4,361.1</td></tr>
-  
-    <tr><td title="M2 = Currency outside banks + Transferable + Other deposits" class="has-formula" data-formula-applied="1">Broad money (bn NC)</td><td class="">13,999.8</td><td class="">15,399.8</td><td class="">16,939.8</td><td class="">18,633.8</td><td class="">20,497.2</td></tr>
-  
-    <tr><td title="ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Broad money growth (%)</td><td class="">24.83</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td></tr>
-  </tbody></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Projected Path <span class="scenario-badge" id="proj-scenario-badge" style="background:#0F172A">Base Case</span></span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="proj-table" data-collapsible-init="1"><thead><tr><th>Indicator</th><th>2013</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr></thead><tbody><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Real Sector</td></tr><tr><td style="font-size:11.5px" title="Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)" class="has-formula" data-formula-applied="1">Nominal GDP (bn NC)</td><td class="">23,114.7</td><td class="">25,241.2</td><td class="">27,563.4</td><td class="">30,099.3</td><td class="">32,868.4</td></tr><tr><td style="font-size:11.5px" title="gᵧ,t = (RY_t / RY_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Real GDP growth (%)</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td></tr><tr><td style="font-size:11.5px" title="π = GDP deflator inflation = (P_t / P_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Inflation (%)</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td></tr><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">External Sector</td></tr><tr><td style="font-size:11.5px" title="NER — nominal exchange rate (NC per USD)" class="has-formula" data-formula-applied="1">Exchange rate (NC/USD)</td><td class="">519.99</td><td class="">529.35</td><td class="">538.88</td><td class="">548.58</td><td class="">558.46</td></tr><tr><td style="font-size:11.5px" title="CA in USD mn = Goods + Services + Primary income + Secondary income" class="has-formula" data-formula-applied="1">Current account (USD mn)</td><td class="neg">(2,365.9)</td><td class="neg">(2,384.8)</td><td class="neg">(2,403.4)</td><td class="neg">(2,421.3)</td><td class="neg">(2,438.7)</td></tr><tr><td style="font-size:11.5px" title="CA/GDP = Current account balance ÷ Nominal GDP (USD) × 100" class="has-formula" data-formula-applied="1">Current account (% GDP)</td><td class="neg">(5.32)</td><td class="neg">(5.00)</td><td class="neg">(4.70)</td><td class="neg">(4.41)</td><td class="neg">(4.14)</td></tr><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155" title="General Government sector (central + state/local + social security)" class="has-formula" data-formula-applied="1">General Government</td></tr><tr><td style="font-size:11.5px" title="Revenue = Taxes + Social contributions + Grants + Other revenue" class="has-formula" data-formula-applied="1">Gov. revenue (bn NC)</td><td class="">3,601.9</td><td class="">3,965.7</td><td class="">4,366.3</td><td class="">4,807.2</td><td class="">5,292.8</td></tr><tr><td style="font-size:11.5px" title="Expense = Compensation + Goods&amp;Services + Interest + Subsidies + Social benefits + Grants paid + Other" class="has-formula" data-formula-applied="1">Gov. expense (bn NC)</td><td class="">4,574.7</td><td class="">4,799.3</td><td class="">5,020.5</td><td class="">5,235.7</td><td class="">5,441.8</td></tr><tr><td style="font-size:11.5px" title="Overall fiscal or BOP balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Overall balance (% GDP)</td><td class="neg">(4.21)</td><td class="neg">(3.30)</td><td class="neg">(2.37)</td><td class="neg">(1.42)</td><td class="neg">(0.45)</td></tr><tr><td style="font-size:11.5px" title="Primary balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Primary balance (% GDP)</td><td class="neg">(1.35)</td><td class="neg">(0.42)</td><td class="">0.48</td><td class="">1.34</td><td class="">2.17</td></tr><tr><td style="font-size:11.5px" title="Debt/GDP = Public debt ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Public debt (% GDP)</td><td class="">45.03</td><td class="">44.54</td><td class="">43.16</td><td class="">40.95</td><td class="">37.95</td></tr><tr><td colspan="6" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">Monetary Sector</td></tr><tr><td style="font-size:11.5px" title="M0 = Currency issued + Required + Excess reserves held at central bank" class="has-formula" data-formula-applied="1">Monetary base (bn NC)</td><td class="">2,957.0</td><td class="">3,229.1</td><td class="">3,526.1</td><td class="">3,850.6</td><td class="">4,204.8</td></tr><tr><td style="font-size:11.5px" title="M2 = Currency outside banks + Transferable + Other deposits" class="has-formula" data-formula-applied="1">Broad money (bn NC)</td><td class="">14,134.6</td><td class="">15,435.0</td><td class="">16,855.0</td><td class="">18,405.6</td><td class="">20,099.0</td></tr><tr><td style="font-size:11.5px" title="ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Broad money growth (%)</td><td class="">26.03</td><td class="">9.20</td><td class="">9.20</td><td class="">9.20</td><td class="">9.20</td></tr></tbody></table></div>
         </div>
         <div class="card" id="ai-commentary" style="margin-top:12px">
           <div class="card-head" style="background:#f1f5f9">
@@ -561,15 +789,820 @@
     <div class="card" id="caseq-card" style="margin-top:12px">
       <div class="card-head">
         <span class="card-title"><span class="dot" style="background:var(--accent)"></span>Study Questions by Sector</span>
-        <span class="mono" style="font-size:10px;color:var(--muted)" id="caseq-count"></span>
+        <span class="mono" style="font-size:10px;color:var(--muted)" id="caseq-count">71 of 71 questions</span>
       </div>
       <div class="card-body">
         <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Distinct questions from the case-study Q&amp;A workbooks, deduplicated and grouped by sector. Click a question to expand a brief pointer to where on this page you'd find the data to answer it.</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px">
-          <div class="card" id="caseq-filters" style="display:inline-flex;flex-wrap:wrap;padding:3px;gap:2px"></div>
+          <div class="card" id="caseq-filters" style="display:inline-flex;flex-wrap:wrap;padding:3px;gap:2px"><button class="caseq-filter-btn active" data-sector="All">All</button><button class="caseq-filter-btn" data-sector="Real">Real</button><button class="caseq-filter-btn" data-sector="External">External</button><button class="caseq-filter-btn" data-sector="Government">Government</button><button class="caseq-filter-btn" data-sector="Monetary">Monetary</button><button class="caseq-filter-btn" data-sector="Interrelation">Interrelation</button><button class="caseq-filter-btn" data-sector="Financial Programing">Financial Programing</button></div>
           <input id="caseq-search" class="text-input" style="flex:1;min-width:180px" placeholder="Search questions…">
         </div>
-        <div id="caseq-list"></div>
+        <div id="caseq-list">
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--real)">Real <span class="mono" style="color:var(--muted);font-weight:400">(4)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="Real-0">
+            <div class="caseq-item-q" data-toggle="Real-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--real)">Real</span>
+              <span class="caseq-item-text">Which element of real sector contributed the most to real GDP growth in 2012?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts → “Real GDP growth &amp; contribution (percent)” breaks 2012 growth into consumption, investment, exports and imports.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Real-1">
+            <div class="caseq-item-q" data-toggle="Real-1">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--real)">Real</span>
+              <span class="caseq-item-text">which element of real sector contributed the most to the contraction in real GDP in 2009?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Same chart, 2009 bar: Real tab → Source Charts → “Real GDP growth &amp; contribution (percent)” shows which component (usually investment or exports) turned most negative.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Real-2">
+            <div class="caseq-item-q" data-toggle="Real-2">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--real)">Real</span>
+              <span class="caseq-item-text">Comparing the year 2011 to 2006, all indicators of inflation suggest that inflation decreased and the output gap decreased as well</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts → “Real GDP growth &amp; output gap” and “Inflation indicators”, or the Real GDP &amp; Output Gap worksheet table, let you read 2006 vs 2011 side by side.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Real-3">
+            <div class="caseq-item-q" data-toggle="Real-3">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--real)">Real</span>
+              <span class="caseq-item-text">During 2006 – 2012 CPI inflation appears to have been less volatile than GDP deflator inflation</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts → “Inflation indicators” overlays GDP deflator, CPI average and CPI eop across 2006–2012 so you can compare volatility visually.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+      </div>
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--external)">External <span class="mono" style="color:var(--muted);font-weight:400">(19)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="External-0">
+            <div class="caseq-item-q" data-toggle="External-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">The balance of payments (BOP) records what</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Balance of Payments table (BPM6 presentation) — row groups show Current, Capital and Financial account transactions for 2006–2013.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-1">
+            <div class="caseq-item-q" data-toggle="External-1">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Compare the current account across different presentations. Are current accounts structured in the same way? Are they presented in the same currency?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Balance of Payments table (USD) vs. Policy Simulator → Projected Path table (Current account, USD mn) — compare line structure and units.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-2">
+            <div class="caseq-item-q" data-toggle="External-2">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Do current accounts show the same numbers (after converting to the same currency if needed)? Is the current account balance the same? How about the financial account, or reserve assets? Are errors and omissions the same?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → BOP table has explicit Financial account and Net errors &amp; omissions rows to check against the Current account total.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-3">
+            <div class="caseq-item-q" data-toggle="External-3">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Is balance on goods and services in surplus or deficit? How about the primary and secondary balance?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts → “BOP components (percent of GDP)” stacks goods, services, primary and secondary income so surplus/deficit is visible at a glance.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-4">
+            <div class="caseq-item-q" data-toggle="External-4">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">How much does your country export and import relative to GDP?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Balance of Payments table, Goods/Services credit &amp; debit rows; combine with Real tab → Nominal GDP to compute the ratio.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-5">
+            <div class="caseq-item-q" data-toggle="External-5">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">How do the balance on goods and services, and the primary and secondary balances contribute to the overall current account balance?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts → “BOP components (percent of GDP)” shows each component's contribution to the current account bar for every year.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-6">
+            <div class="caseq-item-q" data-toggle="External-6">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">How has this contribution changed over the past 5 years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → BOP table, compare the 2009–2013 columns for Goods, Services, Primary and Secondary income rows.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-7">
+            <div class="caseq-item-q" data-toggle="External-7">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">is the country a net lender to the rest of the world?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → IIP table — a positive Net IIP (assets &gt; liabilities) indicates net lender status; see Source Charts → “IIP, in percent of GDP.”<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-8">
+            <div class="caseq-item-q" data-toggle="External-8">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Total external assets and liabilities in percent of GDP</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → IIP table, Assets and Liabilities rows; Source Charts → “IIP, in percent of GDP” plots the ratio directly.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-9">
+            <div class="caseq-item-q" data-toggle="External-9">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Total external debt in percent of GDP (possibly, divided by private and public or government debt)</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → External Debt table (exdebt-table) breaks debt into public/publicly-guaranteed vs private, in USD and can be related to GDP.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-10">
+            <div class="caseq-item-q" data-toggle="External-10">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Reserves in months of imports of goods and services (for the most recent year you may use the imports of goods and services of the same year)</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts → “Reserve adequacy” plots months-of-imports coverage directly; External Debt/Stock table has the underlying reserves figure.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-11">
+            <div class="caseq-item-q" data-toggle="External-11">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Reserves in percent of short term debt at remaining maturity</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → External Debt table (short-term debt row) alongside the Reserve adequacy chart's reserves stock (USD mn).<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-12">
+            <div class="caseq-item-q" data-toggle="External-12">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">How have these indicators evolved over the past five years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts → “Reserve adequacy” shows the 2009–2013 trend in both months-of-imports and reserves stock.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-13">
+            <div class="caseq-item-q" data-toggle="External-13">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Is any of these developments suggesting a build up or attenuation of external risks and vulnerabilities?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts (Reserve adequacy, IIP, Real exchange rate) together — falling reserve coverage or a widening negative net IIP flag rising vulnerability.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-14">
+            <div class="caseq-item-q" data-toggle="External-14">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">How does your country compare to other countries?</span>
+            </div>
+            <div class="caseq-item-hint">
+              This worksheet models a single fictional economy (Macronia), so cross-country comparison isn't built in — use the External tab's own ratios (Reserve adequacy, IIP/GDP) as your country's benchmark figures.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-15">
+            <div class="caseq-item-q" data-toggle="External-15">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Has your country experienced changes that are different from those experienced by other countries?</span>
+            </div>
+            <div class="caseq-item-hint">
+              No peer-country data is included here — External tab's Source Charts give your country's own time path to describe, since cross-country comparison isn't modeled.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-16">
+            <div class="caseq-item-q" data-toggle="External-16">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Has your national currency appreciated or depreciated over time in nominal terms? How about in real terms?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → Source Charts → “Real exchange rate index (2012=100)”; compare with the Nominal ER row in the Real tab's Domestic Demand &amp; Prices worksheet for the nominal series.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-17">
+            <div class="caseq-item-q" data-toggle="External-17">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">What explains the real appreciation/depreciation? How high is inflation in your country?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Domestic Demand &amp; Prices worksheet: the derived Δ%CPI and Δ%NER rows show how domestic inflation vs. foreign inflation drives the real exchange rate.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="External-18">
+            <div class="caseq-item-q" data-toggle="External-18">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--external)">External</span>
+              <span class="caseq-item-text">Is there any link between exchange rate developments and the external sector developments in your country?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Foreign Balance &amp; CA Projection Worksheets: the derived Δ%NER (relative PPP) feeds directly into the export/import price formulas that drive the External tab's trade balance.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+      </div>
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--fiscal)">Government <span class="mono" style="color:var(--muted);font-weight:400">(10)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="Government-0">
+            <div class="caseq-item-q" data-toggle="Government-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">What is the coverage of these accounts in your country: does the definition of the Public Sector include Public Corporations, or only General Government?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab header/notes describe the coverage used (General Government, GFSM 2014 presentation).<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-1">
+            <div class="caseq-item-q" data-toggle="Government-1">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">On which basis are these recorded? Cash or accrual?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab — revenue/expense line structure (Compensation, Goods &amp; Services, Interest, etc.) follows GFSM accrual-style presentation.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-2">
+            <div class="caseq-item-q" data-toggle="Government-2">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">What are net worth and net financial worth in your country? How have these evolved over time, in percent of GDP?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Balance Sheet subtab has explicit Net worth and Net financial worth rows across the historical years.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-3">
+            <div class="caseq-item-q" data-toggle="Government-3">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">What explains the change in net worth and net financial worth over time, that is what was the contribution of the Net Operating Balance in percent of GDP, what was the contribution of Net Acquisition of Non-financial Assets?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Balance Sheet subtab (stock reconciliation) alongside Statement of Operations subtab's Net Operating Balance row.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-4">
+            <div class="caseq-item-q" data-toggle="Government-4">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">Compute the major balances (Net Operating Balance, Net Lending/Borrowing, Overall Balance, and Primary Balance) in percent of GDP. How have these evolved over time in the past 6 years? What explains these developments?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab lists all four balances by year; Source Charts add the visual trend.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-5">
+            <div class="caseq-item-q" data-toggle="Government-5">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">How do the balances that you found above compare to those of comparable (peer) countries?</span>
+            </div>
+            <div class="caseq-item-hint">
+              No peer-country data is modeled here — use the Statement of Operations subtab's own balances as the basis for the country's story.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-6">
+            <div class="caseq-item-q" data-toggle="Government-6">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">Has fiscal policy changed in 2008-2009 in response to the global financial crisis? In case it did change, has it gone back to pre-crisis levels? For this question you may also want to use the IMF World Economic Outlook Database, which present a series on the structural balance, a concept that is very similar in construction to the cyclically adjusted balance.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab, compare the Overall balance / Primary balance columns for 2008–2009 vs. later years (external WEO data isn't included on this page).<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-7">
+            <div class="caseq-item-q" data-toggle="Government-7">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">Compute the major stock indicators in percent of GDP (debt, assets, liabilities, net worth, net financial worth). How have these evolved over time in the past 6 years? What explains these developments?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Balance Sheet subtab has Debt, Assets, Liabilities, Net worth and Net financial worth rows for the full historical period.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-8">
+            <div class="caseq-item-q" data-toggle="Government-8">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">How do these indicators compare to those of comparable (peer) countries?</span>
+            </div>
+            <div class="caseq-item-hint">
+              No peer-country benchmark is included — the Balance Sheet subtab gives only this country's own stock indicators.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Government-9">
+            <div class="caseq-item-q" data-toggle="Government-9">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--fiscal)">Government</span>
+              <span class="caseq-item-text">In case fiscal policy changed in 2008-2009 in response to the global financial crisis, what was the impact on the stock aggregates? Are these raising concern in your country?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Balance Sheet subtab, Public debt (% GDP) row around 2008–2009 onward shows whether the stock aggregates deteriorated.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+      </div>
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--monetary)">Monetary <span class="mono" style="color:var(--muted);font-weight:400">(22)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="Monetary-0">
+            <div class="caseq-item-q" data-toggle="Monetary-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">What are the main functions of the financial system?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Conceptual question — no specific chart; the Monetary tab's central bank and ODC balance sheets illustrate the intermediation function in practice.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-1">
+            <div class="caseq-item-q" data-toggle="Monetary-1">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">What kinds of products and services does the financial sector create?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Conceptual question — the Monetary tab's Money Multiplier &amp; Velocity table (deposits, credit, broad money) shows the products (deposits, credit) in balance-sheet form.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-2">
+            <div class="caseq-item-q" data-toggle="Monetary-2">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">Which of the following are common functions of the central bank?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → central bank balance-sheet worksheet (NFA/NDA) shows the central bank's actual balance-sheet functions (reserve management, currency issuance).<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-3">
+            <div class="caseq-item-q" data-toggle="Monetary-3">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How can the central bank sterilize a purchase of foreign reserves (US dollars) from commercial banks?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → central bank NFA/NDA table — an NFA increase offset by an NDA decrease (e.g. lower net credit) is the sterilization pattern to look for.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-4">
+            <div class="caseq-item-q" data-toggle="Monetary-4">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much is base money in your country? Express this both in units of national currency and in percent of GDP.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → central bank balance-sheet table, Monetary base (M0) row; divide by Real tab's Nominal GDP for the ratio.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-5">
+            <div class="caseq-item-q" data-toggle="Monetary-5">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much of base money is currency in circulation? How much are bank reserves?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → central bank balance-sheet table breaks Monetary base into Currency issued and Bank reserves components.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-6">
+            <div class="caseq-item-q" data-toggle="Monetary-6">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much did base money grow in the past five years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Money Multiplier &amp; Velocity table, Monetary base row across years; Source Charts show the trend.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-7">
+            <div class="caseq-item-q" data-toggle="Monetary-7">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How did the central bank use the expansion of base money? That is, what were the developments in NFA and NDA?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → central bank balance-sheet table, NFA and NDA rows show how much of base-money growth came from each side.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-8">
+            <div class="caseq-item-q" data-toggle="Monetary-8">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much has inflation been in your country in the past five years? (the reason for this question will become clear later in the module--we promise).</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts → “Inflation indicators,” or Domestic Demand &amp; Prices worksheet's CPI inflation row.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-9">
+            <div class="caseq-item-q" data-toggle="Monetary-9">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">What institutions are part of Other Depository Corporations (or, in common language, what we call the banking sector)?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC (commercial banks) balance-sheet worksheet — its NFA/NDA/deposits structure represents the ODC sector.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-10">
+            <div class="caseq-item-q" data-toggle="Monetary-10">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">What are important functions of the Other Depository Corporations (ODCs)?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC balance-sheet table — credit to private sector and deposit-taking rows illustrate the ODCs' intermediation role.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-11">
+            <div class="caseq-item-q" data-toggle="Monetary-11">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">Why are Other Depository Corporations (ODCs) an important channel of monetary policy?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Source Charts → “Broad Money vs Private Credit Growth” shows how ODC credit creation drives broad money.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-12">
+            <div class="caseq-item-q" data-toggle="Monetary-12">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much are bank deposits? Express this both in units of national currency and in percent of GDP.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC balance-sheet table, deposits row; divide by Real tab's Nominal GDP for the ratio.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-13">
+            <div class="caseq-item-q" data-toggle="Monetary-13">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How large are NFA and NDA? How large is credit to the private sector?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC balance-sheet table lists NFA, NDA and Credit to private sector rows directly.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-14">
+            <div class="caseq-item-q" data-toggle="Monetary-14">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much have deposits grown in the past five years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC balance-sheet table, deposits row across the historical years.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-15">
+            <div class="caseq-item-q" data-toggle="Monetary-15">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How did ODCs use the expansion of deposits? That is, what were the developments in NFA and NDA? How did Other Items, Net change over the past five years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → ODC balance-sheet table — NFA, NDA and Other items net rows track the counterpart to deposit growth.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-16">
+            <div class="caseq-item-q" data-toggle="Monetary-16">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much is broad money? Express this both in units of national currency and in percent of GDP.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Money Multiplier &amp; Velocity table, Broad money (M2) row; Policy Simulator → Projected Path table also shows it for the forecast years.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-17">
+            <div class="caseq-item-q" data-toggle="Monetary-17">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How large are NFA and NDA? How large is credit to the private sector? How much is credit to the government</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → consolidated (central bank + ODC) balance sheet worksheet has NFA, NDA, credit-to-private-sector and credit-to-government rows.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-18">
+            <div class="caseq-item-q" data-toggle="Monetary-18">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How much has broad money grown in the past five years? What changes happened at the same time in NFA and NDA?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Source Charts → “Broad Money vs Private Credit Growth” plus the consolidated balance-sheet table's NFA/NDA rows.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-19">
+            <div class="caseq-item-q" data-toggle="Monetary-19">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">Can you associate the developments described above with any other developments in the economy?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Sector Interlinks tab → Flow of Funds table ties monetary-sector flows to the other sectors (Government, Rest of World, Households/Corporates) in one grid.<br>
+              <button class="caseq-item-goto" data-goto="flowoffunds">Go to Sector Interlinks tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-20">
+            <div class="caseq-item-q" data-toggle="Monetary-20">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How could the government budget play a role in money growth?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Sector Interlinks tab → Flow of Funds table's Government row/column shows government financing needs alongside the Monetary tab's NDA (credit to government).<br>
+              <button class="caseq-item-goto" data-goto="flowoffunds">Go to Sector Interlinks tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Monetary-21">
+            <div class="caseq-item-q" data-toggle="Monetary-21">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--monetary)">Monetary</span>
+              <span class="caseq-item-text">How does the central bank of your country conduct monetary policy? What are the anchors and the targets? Under what type of regime does the exchange rate of your country operate?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Taylor Rule worksheet shows the policy-rate reaction function (inflation &amp; output-gap anchors); Real tab's Δ%NER derivation reflects the exchange-rate regime assumption.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+      </div>
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--ink)">Interrelation <span class="mono" style="color:var(--muted);font-weight:400">(1)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="Interrelation-0">
+            <div class="caseq-item-q" data-toggle="Interrelation-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--ink)">Interrelation</span>
+              <span class="caseq-item-text">How would you summarize, in no more than three paragraphs, the major economic development in your country over the past five years? How would you link the development in one sector of the economy to those in some other sector? Try to write a brief description of the recent economic development in your country, focusing on key indicators and behavioral relationships.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Sector Interlinks tab → Flow of Funds &amp; Balance Sheets ties Real, External, Government and Monetary together in one place; the Policy Simulator's AI Policy Analysis panel can also draft commentary once you add an API key.<br>
+              <button class="caseq-item-goto" data-goto="flowoffunds">Go to Sector Interlinks tab →</button>
+            </div>
+          </div>
+      </div>
+      <div style="margin:16px 0 6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--accent)">Financial Programing <span class="mono" style="color:var(--muted);font-weight:400">(15)</span></div>
+      <div>
+        
+          <div class="caseq-item" data-id="Financial Programing-0">
+            <div class="caseq-item-q" data-toggle="Financial Programing-0">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What are macroeconomic objectives explicitly targeted in IMF's financial programming?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Policy Simulator → Policy Levers panel's targets (growth, inflation, reserves/CA, fiscal balance) mirror the standard FPP objective set.<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-1">
+            <div class="caseq-item-q" data-toggle="Financial Programing-1">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What are examples of macroeconomic policy measures (explicit actions) applied in IMF financial program?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Policy Simulator → Policy Levers panel — each lever (fiscal, monetary, exchange rate) is one such policy instrument you can adjust and re-run.<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-2">
+            <div class="caseq-item-q" data-toggle="Financial Programing-2">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">1. List one or two key economic problems that your country is experiencing and the main causes;</span>
+            </div>
+            <div class="caseq-item-hint">
+              Scan the Real/External/Government/Monetary tabs' Source Charts for the sharpest deteriorations (e.g. current account, debt/GDP, inflation) to identify the key problems.<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-3">
+            <div class="caseq-item-q" data-toggle="Financial Programing-3">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">2. Identify the main economic policy objectives of your country;</span>
+            </div>
+            <div class="caseq-item-hint">
+              Policy Simulator → Policy Levers panel's scenario targets are a good starting template for stating objectives (growth, inflation, external and fiscal sustainability).<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-4">
+            <div class="caseq-item-q" data-toggle="Financial Programing-4">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">3. List some policy measures that your country has used in recent years to address these problems; and</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab and Monetary tab → Taylor Rule worksheet show the actual fiscal and monetary policy stance taken historically.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-5">
+            <div class="caseq-item-q" data-toggle="Financial Programing-5">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">4. Explain whether these policies belong under the heading demand management, expenditure switching, or structural policies.</span>
+            </div>
+            <div class="caseq-item-hint">
+              Compare Policy Simulator levers (fiscal/monetary = demand management, exchange rate = expenditure switching) against what the Government/Monetary tabs show was actually done.<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-6">
+            <div class="caseq-item-q" data-toggle="Financial Programing-6">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What statements best describes the country’s economy?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab's Source Charts (GDP growth, inflation, saving/investment) give the headline structural picture to describe.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-7">
+            <div class="caseq-item-q" data-toggle="Financial Programing-7">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What is the largest sector of the economy?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Domestic Demand &amp; Prices worksheet's RCp/GDP and RIp/GDP ratio rows show consumption's and investment's share of GDP.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-8">
+            <div class="caseq-item-q" data-toggle="Financial Programing-8">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What makes its economy attractive to foreign investors?</span>
+            </div>
+            <div class="caseq-item-hint">
+              External tab → IIP table (Direct investment liabilities) and Reserve adequacy chart speak to investor-relevant stability indicators.<br>
+              <button class="caseq-item-goto" data-goto="external">Go to External tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-9">
+            <div class="caseq-item-q" data-toggle="Financial Programing-9">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What were the effects of the 2008 financial crisis on its economy?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts → “Real GDP growth &amp; output gap” shows the 2009 contraction; External tab → BOP table shows the same year's trade/financial-account swing.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-10">
+            <div class="caseq-item-q" data-toggle="Financial Programing-10">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">How did the monetary authority respond to the 2008-09 financial crisis in your country?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Taylor Rule worksheet and central bank balance-sheet table around 2008–2009 show the policy-rate and NFA/NDA response.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-11">
+            <div class="caseq-item-q" data-toggle="Financial Programing-11">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What statement best describes the country’s economic trends in the recent years?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Real tab → Source Charts (2006–2012 trend lines) give the most recent-years growth/inflation trajectory.<br>
+              <button class="caseq-item-goto" data-goto="real">Go to Real tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-12">
+            <div class="caseq-item-q" data-toggle="Financial Programing-12">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What statement best describes most recent economic developments?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Policy Simulator → Projected Path table (2013 base year row) is the most recent data point carried into the forecast.<br>
+              <button class="caseq-item-goto" data-goto="simulator">Go to Policy Simulator tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-13">
+            <div class="caseq-item-q" data-toggle="Financial Programing-13">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">What were the effects of its fiscal stimulus between (year) and (year)?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Government tab → Statement of Operations subtab — compare Overall balance and Expense rows across the years in question.<br>
+              <button class="caseq-item-goto" data-goto="govops">Go to Government tab →</button>
+            </div>
+          </div>
+          <div class="caseq-item" data-id="Financial Programing-14">
+            <div class="caseq-item-q" data-toggle="Financial Programing-14">
+              <span class="caseq-item-icon">▸</span>
+              <span class="caseq-item-badge" style="background:var(--accent)">Financial Programing</span>
+              <span class="caseq-item-text">its monetary tightening policy is related to which?</span>
+            </div>
+            <div class="caseq-item-hint">
+              Monetary tab → Taylor Rule worksheet: a policy-rate increase should line up with a rising inflation or output-gap term in that period.<br>
+              <button class="caseq-item-goto" data-goto="monetary">Go to Monetary tab →</button>
+            </div>
+          </div>
+      </div></div>
       </div>
     </div>
 
@@ -619,8 +1652,8 @@
     </div>
     <div class="layout" id="sector-main-layout" style="grid-template-columns:2fr 1fr">
       <div class="card">
-        <div class="card-head"><span class="card-title" id="hist-title">Real Sector · 2006–2012</span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
-        <div class="table-wrap"><table class="fp" id="hist-table"></table></div>
+        <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title" id="hist-title">Real Sector · 2006–2012</span></span><span class="mono" style="font-size:10px;color:var(--muted)">Billions of national currency unless noted</span></div>
+        <div class="table-wrap"><table class="fp collapsed-table" id="hist-table" data-collapsible-init="1"></table></div>
         <div id="hist-identity-footnote" style="padding:6px 10px;font-size:10.5px;color:var(--muted);font-style:italic"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -647,20 +1680,20 @@
 
       <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head"><span class="card-title">Money Multiplier — Reserve &amp; Broad Money</span></div>
-          <div class="table-wrap"><table class="fp" id="mm-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Money Multiplier — Reserve &amp; Broad Money</span></span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="mm-table" data-collapsible-init="1"></table></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">Velocity &amp; Money Demand</span></div>
-          <div class="table-wrap"><table class="fp" id="vel-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Velocity &amp; Money Demand</span></span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="vel-table" data-collapsible-init="1"></table></div>
         </div>
       </div>
 
       <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Taylor Rule — Coefficients &amp; Fitted Series</span></div>
+        <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Taylor Rule — Coefficients &amp; Fitted Series</span></span></div>
         <div class="card-body" style="font-size:12px">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-            <div class="table-wrap"><table class="fp" id="taylor-table"></table></div>
+            <div class="table-wrap"><table class="fp collapsed-table" id="taylor-table" data-collapsible-init="1"></table></div>
             <div style="background:#f8fafc;padding:12px;border:1px solid var(--line);font-size:11.5px">
               <div style="font-weight:700;margin-bottom:6px">Taylor rule formula</div>
               <div class="mono">i<sub>t</sub> = ρ·i<sub>t-1</sub> + (1−ρ)·[r* + π<sup>e</sup> + α·(π−π*) + β·ygap]</div>
@@ -674,21 +1707,21 @@
 
       <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head">
-            <span class="card-title">NFA &amp; OIN — Central Bank Forecast</span>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0">
+            <span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">NFA &amp; OIN — Central Bank Forecast</span></span>
             <span class="mono" style="font-size:10px;color:var(--muted)">ΔNFA(USD) = Overall BOP · Val. adj = ΔNER × NFA(USD)</span>
           </div>
-          <div class="table-wrap"><table class="fp" id="nfa-cb-table"></table></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="nfa-cb-table" data-collapsible-init="1"></table></div>
           <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
             NFA (bn NC) = NFA (USD mn) × NER<sub>eop</sub> / 1000 · OIN<sub>t</sub> = OIN<sub>t-1</sub> + valuation adj.
           </div>
         </div>
         <div class="card">
-          <div class="card-head">
-            <span class="card-title">Total NFA &amp; OIN — Banking System</span>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0">
+            <span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Total NFA &amp; OIN — Banking System</span></span>
             <span class="mono" style="font-size:10px;color:var(--muted)">CB + Other Depository Corporations</span>
           </div>
-          <div class="table-wrap"><table class="fp" id="nfa-total-table"></table></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="nfa-total-table" data-collapsible-init="1"></table></div>
           <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
             Total NFA = NFA(CB) + NFA(ODC) · ODC NFA revalued by end-of-period exchange rate change.
           </div>
@@ -711,8 +1744,8 @@
       </div>
       <div class="layout" style="grid-template-columns:2fr 1fr">
         <div class="card">
-          <div class="card-head"><span class="card-title">BOP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">Current + Capital + Financial = Reserves (with net E&amp;O)</span></div>
-          <div class="table-wrap"><table class="fp" id="bop-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">BOP — full detail</span></span><span class="mono" style="font-size:10px;color:var(--muted)">Current + Capital + Financial = Reserves (with net E&amp;O)</span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="bop-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -736,8 +1769,8 @@
       </div>
       <div class="layout" style="grid-template-columns:2fr 1fr">
         <div class="card">
-          <div class="card-head"><span class="card-title">IIP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">DI + PI + Deriv. + Other + Reserves</span></div>
-          <div class="table-wrap"><table class="fp" id="iip-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">IIP — full detail</span></span><span class="mono" style="font-size:10px;color:var(--muted)">DI + PI + Deriv. + Other + Reserves</span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="iip-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -761,8 +1794,8 @@
       </div>
       <div class="layout" style="grid-template-columns:2fr 1fr">
         <div class="card">
-          <div class="card-head"><span class="card-title">External debt — full detail</span></div>
-          <div class="table-wrap"><table class="fp" id="exdebt-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">External debt — full detail</span></span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="exdebt-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -787,8 +1820,8 @@
       <div class="summary" id="exstock-kpi"></div>
       <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head"><span class="card-title">External stock indicators — 2006–2013</span></div>
-          <div class="table-wrap"><table class="fp" id="exstock-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">External stock indicators — 2006–2013</span></span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="exstock-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -814,8 +1847,8 @@
       <div class="summary" id="rgdp-kpi" style="margin-top:12px"></div>
       <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head"><span class="card-title">Historical GDP, Trend &amp; Potential Output</span></div>
-          <div class="table-wrap"><table class="fp" id="rgdp-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Historical GDP, Trend &amp; Potential Output</span></span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="rgdp-table" data-collapsible-init="1"></table></div>
         </div>
         <div class="card">
           <div class="card-head"><span class="card-title">Forecast Method Selector</span></div>
@@ -837,8 +1870,8 @@
         <div>
           <div class="summary" id="real-proj-kpi"></div>
           <div class="card" style="margin-top:12px">
-            <div class="card-head"><span class="card-title">Consolidated Current Account — Historical + 2014 Forecast</span><span class="mono" style="font-size:10px;color:var(--muted)">USD millions</span></div>
-            <div class="table-wrap"><table class="fp" id="real-proj-table"></table></div>
+            <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Consolidated Current Account — Historical + 2014 Forecast</span></span><span class="mono" style="font-size:10px;color:var(--muted)">USD millions</span></div>
+            <div class="table-wrap"><table class="fp collapsed-table" id="real-proj-table" data-collapsible-init="1"></table></div>
           </div>
           <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
             <div class="card">
@@ -877,8 +1910,8 @@
       </div>
       <div class="summary" id="dd-kpi" style="margin-top:12px"></div>
       <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Historical + 2014 Forecast (baseline)</span></div>
-        <div class="table-wrap"><table class="fp" id="dd-table"></table></div>
+        <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Historical + 2014 Forecast (baseline)</span></span></div>
+        <div class="table-wrap"><table class="fp collapsed-table" id="dd-table" data-collapsible-init="1"></table></div>
       </div>
       <div class="card" style="margin-top:12px">
         <div class="card-head"><span class="card-title">Live Forecast Formulas</span></div>
@@ -926,11 +1959,11 @@
     </div>
     <div id="fof-flows-view">
       <div class="card">
-        <div class="card-head">
-          <span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span>
+        <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0">
+          <span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span></span>
           <span class="mono" style="font-size:10px;color:var(--muted)">Non-financial balance + Financing = 0 by construction</span>
         </div>
-        <div class="table-wrap"><table class="fp" id="fof-table"></table></div>
+        <div class="table-wrap"><table class="fp collapsed-table" id="fof-table" data-collapsible-init="1"></table></div>
       </div>
       <div class="card" style="margin-top:12px">
         <div class="card-head"><span class="card-title">Sector Balances</span></div>
@@ -939,6 +1972,593 @@
     <!-- Extra Real sector reports: Foreign Balance & Current Account Projections -->
     
   </div></section>
+  
+<section id="tab-framework" class="tab-panel">
+  <div class="guide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Framework Guidance</h2>
+      <span class="mono" style="font-size:10px;color:var(--muted)">Financial Programming &amp; Policies · IMF FPP reference</span>
+    </div>
+    <div class="guide-intro">A consolidated reference for the four-sector Financial Programming framework that underpins this simulator — economic determinants &amp; policies, the real, external, fiscal and monetary sectors, and the accounting links that tie them together. Use it alongside the sector tabs to interpret the numbers and identities shown there.</div>
+
+    <div class="guide-toc">
+      <div class="guide-toc-title">Contents</div>
+      <ol>
+        <li><a href="#g-1">Determinants of Economic Health &amp; Policies</a></li>
+        <li><a href="#g-2">Core Basis of Financial Programming</a></li>
+        <li><a href="#g-3">Sector Relationships &amp; Linkages</a></li>
+        <li><a href="#g-4">Key Accounting Concepts</a></li>
+        <li><a href="#g-5">FPP Glossary by Sector</a></li>
+        <li><a href="#g-6">The Real Sector &amp; GDP</a></li>
+        <li><a href="#g-7">Macroeconomic Aggregates &amp; BOP Linkages</a></li>
+        <li><a href="#g-8">Real vs Nominal &amp; Price Indices</a></li>
+        <li><a href="#g-9">Potential Output &amp; the Business Cycle</a></li>
+        <li><a href="#g-10">Market Rates vs PPP</a></li>
+        <li><a href="#g-11">Consumption, Investment &amp; Crowding Out</a></li>
+        <li><a href="#g-12">Sectoral Interconnections</a></li>
+        <li><a href="#g-13">Limitations of GDP</a></li>
+        <li><a href="#g-14">GFS: Accounting &amp; Principles</a></li>
+        <li><a href="#g-15">Statement of Government Operations</a></li>
+        <li><a href="#g-16">Financing the Budget</a></li>
+        <li><a href="#g-17">Stocks, Flows &amp; Fiscal Indicators</a></li>
+        <li><a href="#g-18">Why Countries Trade</a></li>
+        <li><a href="#g-19">Dynamic Effects &amp; Variety</a></li>
+        <li><a href="#g-20">Resistance to Trade Reform</a></li>
+        <li><a href="#g-21">Trade Policy &amp; Global Governance</a></li>
+        <li><a href="#g-22">Financial &amp; Monetary Sector</a></li>
+        <li><a href="#g-23">Money Creation, QTM &amp; Monetarism</a></li>
+        <li><a href="#g-24">Monetary Policy &amp; Governance</a></li>
+        <li><a href="#g-25">Key Policy Issues &amp; Risks</a></li>
+        <li><a href="#g-26">Interrelations Among Accounts</a></li>
+        <li><a href="#g-27">Four Approaches to External Balance</a></li>
+        <li><a href="#g-28">Flow of Funds &amp; Data Consistency</a></li>
+      </ol>
+    </div>
+
+    <div class="guide-card" id="g-1">
+      <div class="guide-card-head"><span class="guide-card-num">01</span><span class="guide-card-title">Determinants of Economic Health &amp; Policies</span></div>
+      <div class="guide-body">
+        <p><strong>Economic Determinants.</strong> An economy's health is shaped by <em>exogenous factors</em> (external events and shocks) and <em>intrinsic factors</em> (internal structural elements that cannot be easily or quickly changed).</p>
+        <h3>Key Economic Policies</h3>
+        <ul>
+          <li><strong>Fiscal Policy</strong> — use of government revenues and expenditures to influence the economy.</li>
+          <li><strong>Monetary &amp; Exchange Rate Policies</strong> — central bank actions influencing money, credit, interest rates, and the exchange rate.</li>
+          <li><strong>Structural Policies</strong> — design of regulations and institutions affecting economic mechanisms.</li>
+        </ul>
+        <h3>Economic Stability</h3>
+        <ul>
+          <li><strong>Internal Balance</strong> — full employment with low and stable inflation.</li>
+          <li><strong>External Balance</strong> — sustainable financing of the current account.</li>
+        </ul>
+        <div class="guide-callout"><strong>Crises:</strong> unstable conditions can trigger production falls, rising unemployment, bank failures, and asset devaluation.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-2">
+      <div class="guide-card-head"><span class="guide-card-num">02</span><span class="guide-card-title">Core Basis of Financial Programming</span></div>
+      <div class="guide-body">
+        <p>Financial Programming involves designing a coherent set of macroeconomic policies to achieve specific macroeconomic objectives. It relies on accounting for four main macroeconomic sectors.</p>
+        <div class="guide-callout"><strong>Why these four accounts?</strong> Together, they are comprehensive, timely, accurate, periodic, and widely available for capturing fiscal and monetary dynamics.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-3">
+      <div class="guide-card-head"><span class="guide-card-num">03</span><span class="guide-card-title">Sector Relationships &amp; Linkages</span></div>
+      <div class="guide-body">
+        <p>The four sectors interact through two primary types of relationships:</p>
+        <ul>
+          <li><strong>Accounting Identities</strong> — theoretical equivalences that must hold true by design (e.g., total supply of goods equals effective demand; bank lending to government must match in both government and monetary accounts).</li>
+          <li><strong>Behavioral Relationships</strong> — economic links connecting variables across accounts (e.g., an increase in private-sector credit affecting consumption/investment, or tax increases affecting production and imports).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-4">
+      <div class="guide-card-head"><span class="guide-card-num">04</span><span class="guide-card-title">Key Accounting Concepts</span></div>
+      <div class="guide-body">
+        <h3>Residence</h3>
+        <p>Based on a unit's center of predominant economic interest rather than citizenship (e.g., residing/producing in an economy for a year or longer).</p>
+        <h3>Stocks vs. Flows</h3>
+        <ul>
+          <li><strong>Stock</strong> — the total level of assets/liabilities at a specific point in time.</li>
+          <li><strong>Flow</strong> — changes in stock levels over a given time frame.</li>
+        </ul>
+        <div class="guide-formula">Flow = Transactions + Other flows</div>
+        <h3>Cash vs. Accrual Accounting</h3>
+        <p>Cash accounting records transactions when payments are made; accrual accounting records them when the economic activity takes place.</p>
+        <h3>Consolidation</h3>
+        <p>Eliminates intra-sector transactions to isolate net relationships between the overall sector and external entities.</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-5">
+      <div class="guide-card-head"><span class="guide-card-num">05</span><span class="guide-card-title">FPP Glossary by Sector</span></div>
+      <div class="guide-body">
+        <p>The glossary defines key macroeconomic terms and metrics across the four core sectors:</p>
+        <h3>Real Sector</h3>
+        <p>GDP (nominal, real, and deflator), Absorption (A = C + I), Consumption (C), Savings (S), Disposable Income, Value Added, Output Gap, and Crowding Out.</p>
+        <h3>Monetary Sector</h3>
+        <p>Money supply metrics (M1, M2/Broad Money), Central Bank liabilities (Monetary Base / High-powered Money), Net Foreign Assets (NFA), Net Domestic Assets (NDA), Domestic Credit, Open Market Operations, Reserve Requirements, and the Quantity Theory of Money.</p>
+        <h3>External Sector</h3>
+        <p>Balance of Payments (BOP) accounting across the Current, Capital, and Financial Accounts; reserve assets; direct vs. portfolio investment; terms of trade; nominal vs. real exchange rates; and debt restructuring terms (refinancing, rescheduling, forgiveness).</p>
+        <h3>Government / Fiscal Sector</h3>
+        <p>Government financial accounting distinguishing revenue, expense, and net lending/borrowing; structural fiscal balances, primary deficits, public debt, automatic stabilizers, and tax metrics (elasticity, buoyancy, progressive vs. ad valorem taxes).</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-6">
+      <div class="guide-card-head"><span class="guide-card-num">06</span><span class="guide-card-title">The Real Sector &amp; GDP</span></div>
+      <div class="guide-body">
+        <h3>Introduction &amp; Institutional Frameworks</h3>
+        <p>The Real Sector encompasses all real economic transactions within an economy. Activity is divided across five resident sectors plus an external sector:</p>
+        <ul>
+          <li><strong>Households / Consumers</strong> — supply labor, land and capital; decide how much to consume, save and invest.</li>
+          <li><strong>Non-financial Corporations</strong> — resident units producing market goods and non-financial services.</li>
+          <li><strong>Financial Corporations</strong> — central banks, commercial banks, insurance companies, pension funds — engaged in financial intermediation.</li>
+          <li><strong>General Government</strong> — central, state and local entities providing non-market public goods, services and income redistribution.</li>
+          <li><strong>Rest of the World (External Sector)</strong> — non-resident units transacting with domestic residents.</li>
+        </ul>
+        <p><strong>National Accounts (NIPA):</strong> an integrated, internationally recognized framework used to compile, quantify and report continuous flows of real economic activity.</p>
+        <h3>Defining &amp; Measuring GDP</h3>
+        <p>GDP is the market value of all final goods and services produced within a country over a given period. The <strong>territorial border criterion</strong> counts all output produced within physical borders, regardless of asset ownership.</p>
+        <p><strong>GDP vs. GNP/GNI:</strong> GDP measures output produced within national territory; GNI/GNP measures total primary income earned by domestic residents, incorporating net foreign income generated abroad. <em>Example:</em> a German-owned factory in the U.S. contributes to U.S. GDP, but German GNP/GNI.</p>
+        <ul>
+          <li><strong>Includes:</strong> market output and non-market government goods/services (e.g., public education, defense).</li>
+          <li><strong>Excludes:</strong> unpaid household/volunteer labor, informal/black-market transactions, and capital depreciation.</li>
+        </ul>
+        <p><strong>Net Domestic Product (NDP)</strong> subtracts capital stock depreciation (consumption of fixed capital) from GDP.</p>
+        <h3>The Three Equivalent Approaches</h3>
+        <h4>Production (Value Added) Approach</h4>
+        <p>Sums gross value added across all producers (Total Output minus Intermediate Consumption).</p>
+        <div class="guide-formula">GDP = Σ Gross Value Added</div>
+        <h4>Expenditure Approach</h4>
+        <p>Sums all final purchases by domestic and foreign end-users.</p>
+        <div class="guide-formula">GDP = C + I + X − M</div>
+        <ul>
+          <li><strong>C</strong> — private household and public government consumption.</li>
+          <li><strong>I</strong> — gross capital formation (fixed investment plus inventory changes).</li>
+          <li><strong>X − M</strong> — exports minus imports of goods and services.</li>
+        </ul>
+        <h4>Income Approach</h4>
+        <p>Sums factor incomes generated by domestic production.</p>
+        <div class="guide-formula">GDP = W + OS + TSP</div>
+        <ul>
+          <li><strong>W</strong> — employee compensation (wages, salaries, benefits).</li>
+          <li><strong>OS</strong> — gross operating surplus of enterprises.</li>
+          <li><strong>TSP</strong> — taxes less subsidies on production and imports.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-7">
+      <div class="guide-card-head"><span class="guide-card-num">07</span><span class="guide-card-title">Macroeconomic Aggregates &amp; BOP Linkages</span></div>
+      <div class="guide-body">
+        <h4>Gross National Disposable Income (GNDI)</h4>
+        <p>Total income available for spending or saving:</p>
+        <div class="guide-formula">GNDI = GNI + Net Current Transfers from Abroad</div>
+        <h4>Domestic Absorption (A)</h4>
+        <p>Sum of domestic spending on consumption and investment:</p>
+        <div class="guide-formula">A = C + I</div>
+        <h4>Gross National Savings (S)</h4>
+        <p>Income remaining after final consumption:</p>
+        <div class="guide-formula">S = GNDI − C</div>
+        <h4>Current Account Balance &amp; the Savings–Investment Gap</h4>
+        <p>Connects domestic saving and investment directly to international financial flows:</p>
+        <div class="guide-formula">CAB = GNDI − A = S − I</div>
+        <ul>
+          <li><strong>Surplus (S &gt; I):</strong> the country is a net lender to the rest of the world (CAB &gt; 0).</li>
+          <li><strong>Deficit (I &gt; S):</strong> the country is a net borrower from abroad (CAB &lt; 0).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-8">
+      <div class="guide-card-head"><span class="guide-card-num">08</span><span class="guide-card-title">Real vs. Nominal Variables &amp; Price Indices</span></div>
+      <div class="guide-body">
+        <ul>
+          <li><strong>Nominal GDP</strong> — value of current production measured at current market prices.</li>
+          <li><strong>Real GDP (constant prices)</strong> — value of output measured at base-year prices, isolating physical volume growth from price inflation.</li>
+        </ul>
+        <h4>GDP Deflator</h4>
+        <p>Comprehensive implicit/explicit price index across all domestically produced goods and services:</p>
+        <div class="guide-formula">P_GDP = (Nominal GDP ÷ Real GDP) × 100</div>
+        <h4>Consumer Price Index (CPI)</h4>
+        <p>Price index tracking a representative basket of final consumer goods and services, including imported consumer products.</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-9">
+      <div class="guide-card-head"><span class="guide-card-num">09</span><span class="guide-card-title">Potential Output, Capacity &amp; the Business Cycle</span></div>
+      <div class="guide-body">
+        <p><strong>Potential Output</strong> is the output level achievable if all factors of production are utilized at their non-inflationary "natural rate".</p>
+        <h4>Output Gap</h4>
+        <p>The percentage deviation between actual real output and potential output:</p>
+        <div class="guide-formula">Output Gap (%) = ((Actual − Potential) ÷ Potential) × 100</div>
+        <ul>
+          <li><strong>Positive gap</strong> — economy overheating; signals inflationary demand pressures.</li>
+          <li><strong>Negative gap</strong> — economic slack/recession with underutilized labor and capital.</li>
+        </ul>
+        <p><strong>Business Cycles</strong> are fluctuations in real GDP involving expansion, slowdown and recession (commonly defined as two consecutive quarters of output decline).</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-10">
+      <div class="guide-card-head"><span class="guide-card-num">10</span><span class="guide-card-title">Cross-Country Comparisons: Market Rates vs. PPP</span></div>
+      <div class="guide-body">
+        <p>When converting GDP into a common currency for global comparison, two conversion tools are used:</p>
+        <ul>
+          <li><strong>Market Exchange Rates</strong> — based on prevailing foreign-currency market-clearing prices.</li>
+          <li><strong>Purchasing Power Parity (PPP) Exchange Rates</strong> — the rate that equalizes the purchasing power of different currencies, by evaluating the cost of a standard basket of goods and services.</li>
+        </ul>
+        <div class="guide-callout"><strong>The PPP Discrepancy:</strong> in developing and emerging-market economies, dollar GDP at PPP rates is typically 2–4× higher than at market rates. This occurs because non-traded domestic services (e.g., healthcare, haircuts) are significantly cheaper in lower-income countries relative to advanced economies.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-11">
+      <div class="guide-card-head"><span class="guide-card-num">11</span><span class="guide-card-title">Determinants of Consumption &amp; Investment</span></div>
+      <div class="guide-body">
+        <h4>Private Consumption (Cp)</h4>
+        <p>Determined by current and expected disposable income (YD), accumulated wealth, interest-rate levels, credit access, and precautionary savings driven by economic risk.</p>
+        <h4>Private Investment (Ip)</h4>
+        <p>Driven by profit optimization, balancing marginal returns against capital costs:</p>
+        <ul>
+          <li><strong>Returns</strong> — expected future profitability, productivity gains, real exchange-rate competitiveness.</li>
+          <li><strong>Costs</strong> — real borrowing interest rates, corporate taxation, depreciation, input costs.</li>
+        </ul>
+        <div class="guide-callout"><strong>Crowding Out Effect:</strong> occurs when high government borrowing (often via bond issuance to finance deficits) raises interest rates or consumes available bank credit, pricing private borrowers out of financial markets and depressing private investment.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-12">
+      <div class="guide-card-head"><span class="guide-card-num">12</span><span class="guide-card-title">Sectoral Interconnections Across Macroeconomic Accounts</span></div>
+      <div class="guide-body">
+        <p>The real sector connects with the three other core sectors tracked in macroeconomic policy:</p>
+<div class="guide-diagram">                      ┌───────────────────────────┐
+                      │        REAL SECTOR        │
+                      │  GDP, GNDI, Savings (S),  │
+                      │   Investment (I), Output  │
+                      └─────────────┬─────────────┘
+                                    │
+       ┌────────────────────────────┼────────────────────────────┐
+       ▼                            ▼                            ▼
+┌───────────┐                ┌───────────┐                ┌───────────┐
+│ MONETARY  │                │  EXTERNAL │                │   FISCAL  │
+│  SECTOR   │                │   SECTOR  │                │   SECTOR  │
+│ NFA, NDA, │                │ CAB, KAB, │                │  Revenue, │
+│ M1, M2,   │                │ FAB, NIR, │                │  Expense, │
+│ Reserves  │                │ Exchange  │                │ Deficit/  │
+└───────────┘                └───────────┘                └───────────┘</div>
+        <h4>Monetary Sector</h4>
+        <p>Central bank and depository corporations manage money supply (M1, M2), domestic credit, reserve requirements, and the monetary base. The Quantity Theory of Money links money growth to long-run price inflation.</p>
+        <h4>External Sector</h4>
+        <p>Tracks international trade and financial flows via the Balance of Payments (BOP):</p>
+        <ul>
+          <li><strong>Current Account (CA)</strong> — trade in goods/services, primary income, and secondary transfers.</li>
+          <li><strong>Capital &amp; Financial Accounts</strong> — foreign direct investment, portfolio debt/equity, and central-bank reserve assets.</li>
+        </ul>
+        <h4>Fiscal / Government Sector</h4>
+        <p>Tracks public finances through the Statement of Government Operations. Net Lending/Borrowing reflects the fiscal balance (Revenue minus Expenses and Capital Investments).</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-13">
+      <div class="guide-card-head"><span class="guide-card-num">13</span><span class="guide-card-title">Limitations of GDP &amp; Holistic Well-Being Metrics</span></div>
+      <div class="guide-body">
+        <p>Despite its central role, GDP is an indicator of production volume, not a complete measure of social well-being or standard of living.</p>
+        <h3>Key Shortcomings of GDP</h3>
+        <ul>
+          <li><strong>Ignores Negative Externalities</strong> — fails to deduct costs of pollution, noise, or environmental degradation.</li>
+          <li><strong>Omits Quality-of-Life Drivers</strong> — excludes changes in leisure time, health, and non-renewable resource depletion.</li>
+          <li><strong>Distributional Blind Spots</strong> — reflects average aggregate output without showing wealth or income distribution.</li>
+        </ul>
+        <h3>Alternative Indicators</h3>
+        <ul>
+          <li><strong>Human Development Index (HDI)</strong> — combines GDP per capita with life expectancy, literacy, and school enrollment.</li>
+          <li><strong>Genuine Progress Indicator (GPI)</strong> — adjusts growth metrics for environmental damage and social costs.</li>
+          <li><strong>Gross National Happiness (GNH) Index</strong> — measures holistic socio-economic progress and cultural preservation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-14">
+      <div class="guide-card-head"><span class="guide-card-num">14</span><span class="guide-card-title">Part I · GFS: Accounting &amp; Key Principles</span></div>
+      <div class="guide-body">
+        <p>The government sector collects revenue (primarily taxes), produces non-market goods and services, redistributes income via transfers, and engages in financing to and from other sectors.</p>
+        <h3>Core Financial Statements</h3>
+        <ul>
+          <li><strong>Opening Balance Sheet</strong> — stock at the beginning of the year.</li>
+          <li><strong>Statement of Government Operations (SGO)</strong> — flows during the year.</li>
+          <li><strong>Statement of Other Economic Flows (SOEF)</strong> — flows during the year.</li>
+          <li><strong>Closing Balance Sheet</strong> — stock at the end of the year.</li>
+        </ul>
+        <div class="guide-formula">Opening Balance Sheet + SGO + SOEF = Closing Balance Sheet</div>
+        <div class="guide-callout"><strong>GFSM 2001 advantages:</strong> a comprehensive, comparable, compatible, and robust framework for policy analysis across and within countries.</div>
+        <h3>Key Accounting Principles</h3>
+        <ul>
+          <li><strong>Coverage</strong> — defines who is included (General Government vs. Public Sector, including public nonfinancial and financial corporations like central banks).</li>
+          <li><strong>Accrual Basis</strong> — flows are recorded when economic value or obligations are created, transferred, or transformed — not necessarily when cash payments are made.</li>
+          <li><strong>Consolidation</strong> — eliminates all transactions and debtor-creditor relationships between units being consolidated, to assess total economic impact and fiscal sustainability.</li>
+          <li><strong>Valuation</strong> — measured at current market prices on the balance-sheet date for stocks and on the transaction date for flows.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-15">
+      <div class="guide-card-head"><span class="guide-card-num">15</span><span class="guide-card-title">Statement of Government Operations (SGO)</span></div>
+      <div class="guide-body">
+        <p>The SGO summarizes government transactions during the year using two main types of flows.</p>
+        <h3>Transactions Affecting Net Worth</h3>
+        <ul>
+          <li><strong>Revenue</strong> — taxes, social contributions, grants, and other revenue.</li>
+          <li><strong>Expense</strong> — compensation of employees, use of goods and services, consumption of fixed capital (depreciation), interest, subsidies, grants, and social benefits.</li>
+        </ul>
+        <h4>Net Operating Balance (NOB)</h4>
+        <div class="guide-formula">NOB = Revenue − Expense</div>
+        <h3>Transactions in Nonfinancial &amp; Financial Assets and Liabilities</h3>
+        <h4>Net Lending / Net Borrowing (NLB)</h4>
+        <div class="guide-formula">NLB = NOB − Net Acquisition of Nonfinancial Assets (NANA)</div>
+        <p><em>Alternatively:</em> Net Acquisition of Financial Assets − Net Incurrence of Liabilities.</p>
+        <h4>Overall Balance (OB)</h4>
+        <p>Adjusts NLB for "policy" financial transactions (such as policy loans or privatization proceeds).</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-16">
+      <div class="guide-card-head"><span class="guide-card-num">16</span><span class="guide-card-title">Financing the Budget &amp; Pressures</span></div>
+      <div class="guide-body">
+        <p>When NLB &lt; 0, the government requires net financing from other sectors:</p>
+        <ul>
+          <li><strong>Central Bank</strong> — can expand the central-bank balance sheet or reduce government deposits, leading to money expansion, potential inflation, or crowding out.</li>
+          <li><strong>Commercial / State-Owned Banks</strong> — strains bank balance sheets and can result in credit crowding out.</li>
+          <li><strong>Nonfinancial Private Sector</strong> — can reduce private bank deposits or foreign holdings to buy government debt, straining private liquidity.</li>
+          <li><strong>Foreign Nonresidents</strong> — increases foreign borrowing and debt, acting as a capital inflow in the Balance of Payments.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-17">
+      <div class="guide-card-head"><span class="guide-card-num">17</span><span class="guide-card-title">Stocks, Flows &amp; Fiscal Indicators</span></div>
+      <div class="guide-body">
+        <h3>Balance Sheet Components</h3>
+        <p>Measures Nonfinancial Assets, Financial Assets, and Liabilities.</p>
+        <h4>Net Worth</h4>
+        <div class="guide-formula">Net Worth = Nonfinancial Assets + Financial Assets − Liabilities</div>
+        <h4>Net Financial Worth</h4>
+        <div class="guide-formula">Net Financial Worth = Financial Assets − Liabilities</div>
+        <p><strong>Gross Debt</strong> = total liabilities.</p>
+        <h3>Other Economic Flows (SOEF)</h3>
+        <p>Captures changes in asset/liability values due to price changes (holding gains/losses) or volume changes (discoveries, disasters, reclassifications) rather than policy decisions.</p>
+        <h3>Cyclical Adjustment &amp; Fiscal Position</h3>
+        <ul>
+          <li>Unadjusted balances naturally improve during upswings and deteriorate during downturns due to <strong>automatic stabilizers</strong>.</li>
+          <li>The <strong>Cyclically Adjusted / Structural Fiscal Balance</strong> removes the effect of the output gap (y / y<sup>p</sup>) to isolate true discretionary fiscal policy stances and impulses.</li>
+        </ul>
+        <h3>Sustainability Principles</h3>
+        <ul>
+          <li>Continuous debt growth or ongoing depletion of net worth indicates fiscal risk.</li>
+          <li>Looking at both Net Worth (NW) and Liabilities (L) gives a complete picture, as debt alone can mask underlying asset changes (e.g., incurring debt to finance high-return nonfinancial investments vs. selling assets to mask operating deficits).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-18">
+      <div class="guide-card-head"><span class="guide-card-num">18</span><span class="guide-card-title">Part II · Why Countries Trade &amp; Comparative Advantage</span></div>
+      <div class="guide-body">
+        <p>Trade is fundamentally driven by <strong>comparative advantage</strong> rather than absolute advantage. A country can benefit from trade even if it is less efficient — or more efficient — in producing every good compared with its partners.</p>
+        <h3>Mechanism of Gains</h3>
+        <ul>
+          <li>A nation maximizes welfare by exporting goods where its productivity edge is greatest (or cost advantage highest) and importing goods where its edge is smaller.</li>
+          <li>Applies to both physical goods and services (e.g., software development, financial services).</li>
+          <li>Raises living standards globally, giving developing nations a path to trade profitably with advanced economies regardless of absolute advantages.</li>
+        </ul>
+        <h3>Factor Endowments (Heckscher-Ohlin Model)</h3>
+        <ul>
+          <li>Countries export goods that intensively use their abundant factors of production.</li>
+          <li>Capital-abundant nations export capital-intensive goods; labor-abundant nations export labor-intensive goods.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-19">
+      <div class="guide-card-head"><span class="guide-card-num">19</span><span class="guide-card-title">Dynamic Effects, Innovation &amp; Variety</span></div>
+      <div class="guide-body">
+        <p>Opening markets triggers intra-industry adjustments and broader economic benefits beyond static resource allocation:</p>
+        <h3>Intra-Industry Competition &amp; Selection</h3>
+        <ul>
+          <li>Foreign competition pressures profit margins, causing inefficient domestic firms to contract and making room for highly efficient ones.</li>
+          <li>Enables significant intra-industry trade (e.g., exporting household refrigerators while importing industrial coolers).</li>
+        </ul>
+        <h3>Product Variety &amp; Investment Efficiency</h3>
+        <ul>
+          <li>Increases access to diverse consumer goods (e.g., import varieties in the U.S. quadrupled over past decades).</li>
+          <li><strong>Key growth driver:</strong> broadens access to higher-quality intermediate inputs and capital goods (e.g., specialized industrial equipment), enhancing domestic investment, technology transfer, and long-term growth.</li>
+        </ul>
+        <div class="guide-callout">Conventional economic models often understate trade-reform benefits by omitting these technology-transfer and pro-competitive forces.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-20">
+      <div class="guide-card-head"><span class="guide-card-num">20</span><span class="guide-card-title">Resistance to Trade Reform</span></div>
+      <div class="guide-body">
+        <h3>Dislocation Costs</h3>
+        <p>Trade prompts capital and labor to shift toward efficient sectors, enhancing total societal welfare; however, it causes immediate dislocation for uncompetitive domestic industries and workers.</p>
+        <h3>Political Economy Asymmetry</h3>
+        <ul>
+          <li>Affected firms and workers actively lobby for protectionism (tariffs, import quotas, export restrictions on raw materials).</li>
+          <li>Beneficiaries of trade are diffuse and often unaware of its subtle, widespread benefits (such as lower prices and wider variety), making opponents more politically effective.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-21">
+      <div class="guide-card-head"><span class="guide-card-num">21</span><span class="guide-card-title">Trade Policies &amp; Global Governance</span></div>
+      <div class="guide-body">
+        <h3>Disparities in Protection</h3>
+        <ul>
+          <li>Tariffs remain disproportionately high in sectors like agriculture and low-skill clothing.</li>
+          <li>Developing nations face higher average trade barriers on their primary labor-intensive exports than advanced economies do.</li>
+        </ul>
+        <h3>Role of the World Trade Organization (WTO)</h3>
+        <ul>
+          <li>Administers rules-based international trade across member nations, enforcing nondiscrimination through binding dispute-settlement mechanisms.</li>
+          <li>Prevents widespread protectionism during major economic shocks (e.g., the global financial crisis).</li>
+        </ul>
+        <h3>Policy Outlook</h3>
+        <ul>
+          <li>Multilateral trade opening (such as the Doha Round) faces gridlock due to narrow interest-group pressure.</li>
+          <li>Modern trade policy requires balancing overall global efficiency gains with targeted support for localized workers and industries adversely impacted by structural shifts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-22">
+      <div class="guide-card-head"><span class="guide-card-num">22</span><span class="guide-card-title">Financial &amp; Monetary Sector — Overview</span></div>
+      <div class="guide-body">
+        <p><strong>Role of the Financial Sector:</strong> acts as an intermediary bridging surplus sectors (households saving) to deficit sectors (corporations investing). It creates saving vehicles, credit instruments, and risk-mitigation products.</p>
+        <p><strong>Money</strong> is anything that serves as a medium of exchange, a unit of account, and a store of value. It eliminates barter inefficiencies (removing the double coincidence of wants) and promotes market specialization.</p>
+        <h3>Sector Architecture</h3>
+        <ul>
+          <li><strong>Depository Corporations (DC)</strong> — the Central Bank and Other Depository Corporations (ODCs) (commercial banks, credit unions, money market funds).</li>
+          <li><strong>Other Financial Corporations</strong> — insurance companies, pension funds, mutual funds, leasing companies, and non-bank financial intermediaries ("shadow banks").</li>
+        </ul>
+        <p><strong>Accounting &amp; Valuation:</strong> accounts are valued at fair value in national currency, categorized by residency, counterparty, instrument type, and maturity.</p>
+        <h3>Central Bank</h3>
+        <p>Serves as lender of last resort (LOLR), sole issuer of national currency, conductor of monetary policy, holder of foreign reserves, banker to government, and supervisor.</p>
+        <div class="guide-formula">Monetary Base (MB) = Net Foreign Assets (NFA) + Net Domestic Assets (NDA)</div>
+        <p><strong>Sterilization:</strong> offsetting foreign-exchange or asset purchases with domestic asset sales to stabilize monetary-base liquidity.</p>
+        <h3>Other Depository Corporations &amp; the DCS</h3>
+        <p>ODCs mobilize short-term deposits, perform maturity transformation into long-term loans, facilitate payment systems, and transmit monetary policy. They raise supplementary capital via money markets, bond issuance, commercial paper, repos, and loan securitization.</p>
+        <h4>Broad Money &amp; Liquidity</h4>
+        <ul>
+          <li><strong>Liquidity</strong> — the ease and speed with which an asset can be converted into cash at near full market value.</li>
+          <li><strong>Narrow Money (M1)</strong> — physical currency in circulation plus transferable/demand deposits used directly as a medium of exchange.</li>
+          <li><strong>Broad Money (M2)</strong> — expands M1 to include non-transferable time/savings deposits, repos, foreign-currency deposits, and short-term debt securities.</li>
+        </ul>
+        <div class="guide-formula">Broad Money = NFA + NDA</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-23">
+      <div class="guide-card-head"><span class="guide-card-num">23</span><span class="guide-card-title">Money Creation, QTM &amp; Monetarism</span></div>
+      <div class="guide-body">
+        <h3>The Money Multiplier Mechanism</h3>
+        <p>Commercial banks generate money through fractional-reserve lending by maintaining required reserves at the central bank while lending out remaining deposits, multiplying broad money as funds circulate.</p>
+        <h4>Narrow Money Multiplier</h4>
+        <div class="guide-formula">M1 = mm · MB    where    mm = (c + 1) / (c + r)</div>
+        <p>where c = Currency ÷ Deposits and r = Reserves ÷ Deposits.</p>
+        <h4>Broad Money Multiplier</h4>
+        <div class="guide-formula">mm2 = (1 + c + t + mmf) / (r + c)</div>
+        <h3>Quantity Theory of Money (QTM)</h3>
+        <h4>Equation of Exchange</h4>
+        <div class="guide-formula">M · v = P · Y    (M = money supply, v = velocity, P = price level, Y = real GDP)</div>
+        <p><strong>Capacity constraints:</strong> in the short run, below full capacity, money injections stimulate demand and real output (Y). Once capacity constraints are hit, excess money growth converts entirely into inflation:</p>
+        <div class="guide-formula">ΔM/M = ΔP/P + ΔY/Y    (assuming constant v)</div>
+        <h3>Monetarism &amp; Policy Strategy Shifts</h3>
+        <ul>
+          <li><strong>Core premises:</strong> money supply is the primary determinant of nominal GDP in the short run and price levels in the long run; long-run monetary neutrality; a constant money-growth rule matched to real GDP growth.</li>
+          <li><strong>Breakdown of aggregate targeting:</strong> monetarist targeting relies on stable velocity (v). Financial deregulation, 1980s innovations, and the uncoupling of money-supply growth from price changes caused central banks to shift toward direct inflation targeting and interest-rate management.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-24">
+      <div class="guide-card-head"><span class="guide-card-num">24</span><span class="guide-card-title">Monetary Policy Implementation &amp; Governance</span></div>
+      <div class="guide-body">
+        <h3>Dual Mandate &amp; Short vs. Long Run</h3>
+        <p>Central banks balance price stability with output and employment targets. Because real GDP is fixed by structural capacity in the long run, expanding money supply only impacts price levels over time. However, slow short-run adjustments in wages and prices allow monetary policy to influence real output during downturns.</p>
+        <h3>Policy Tool Preferences</h3>
+        <ul>
+          <li>Monetary policy is preferred over fiscal policy for short-run stabilization, because fiscal policy faces legislative lag, political barriers, and uncertain household spending responses.</li>
+          <li>Under floating exchange rates, central banks execute policy primarily via open-market operations — buying short-term government securities to inject liquidity/expand money supply, or selling securities to absorb liquidity/contract money supply.</li>
+        </ul>
+        <h3>Central Bank Independence &amp; Time Inconsistency</h3>
+        <p>To maintain credibility, central banks require independence from political figures to avoid the <strong>time inconsistency problem</strong> — the temptation for short-sighted leaders to generate short-term growth or reduce real government debt via unexpected inflation surprises.</p>
+        <div class="guide-callout">Independent central banks mitigate "inflation bias," anchoring long-run inflation expectations and promoting steady growth.</div>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-25">
+      <div class="guide-card-head"><span class="guide-card-num">25</span><span class="guide-card-title">Key Policy Issues &amp; Financial Risks</span></div>
+      <div class="guide-body">
+        <h3>Seigniorage &amp; Inflation Tax</h3>
+        <ul>
+          <li><strong>Seigniorage</strong> — revenue accrued to the central bank/government from issuing currency.</li>
+          <li><strong>Inflation Tax</strong> — erosion of the real purchasing power of cash holdings caused by inflation, transferring resources to the money issuer.</li>
+        </ul>
+        <h3>Capital Inflows &amp; Exchange Regimes</h3>
+        <p>Inflows driven by domestic monetary tightening expand the monetary base under fixed exchange rates (requiring sterilization) or cause currency appreciation under floating regimes.</p>
+        <h3>Financial Sector Risks &amp; Safety Nets</h3>
+        <ul>
+          <li><strong>Liquidity Risk &amp; Bank Runs</strong> — high reliance on short-term funding with low capital relative to total assets makes banks fragile to panic-driven withdrawals, which can lead to asset liquidations and insolvency.</li>
+          <li><strong>Systemic Risk &amp; Contagion</strong> — the failure of one institution can spread panic throughout the system, leading central banks to offer safety nets such as lender-of-last-resort facilities and deposit insurance.</li>
+          <li><strong>Regulatory Frameworks</strong> — capital adequacy requirements, reserve ratios, and liquidity minimums across both commercial banks and emerging non-bank "shadow banks" insulate the economy from systemic failure.</li>
+          <li><strong>Market Risks</strong> — exchange-rate risk (unhedged foreign positions), interest-rate risk (maturity/rate mismatches), and credit risk (borrower default cycles).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-26">
+      <div class="guide-card-head"><span class="guide-card-num">26</span><span class="guide-card-title">Interrelations Among Macroeconomic Accounts</span></div>
+      <div class="guide-body">
+        <h3>Overview &amp; Core Objectives</h3>
+        <p>Macroeconomic statistics link four key sectors into a unified accounting system:</p>
+        <ul>
+          <li><strong>Real Sector</strong> — aggregate economy / national accounts.</li>
+          <li><strong>Fiscal Sector</strong> — general government.</li>
+          <li><strong>Monetary Sector</strong> — depository corporations (central bank &amp; ODCs).</li>
+          <li><strong>External Sector</strong> — rest of the world / Balance of Payments (BOP).</li>
+        </ul>
+        <p><strong>Purpose:</strong> integrating these accounts creates a coherent framework used to analyze macroeconomic conditions, formulate policy prescriptions, conduct scenario building, and assess the impact of exogenous shocks.</p>
+        <h3>Key Accounting Links</h3>
+        <p>The sectors are linked because agents in different sectors transact with each other:</p>
+        <ul>
+          <li><strong>Link 1 (Real &amp; Fiscal)</strong> — national-accounts spending with government consumption and investment expenses.</li>
+          <li><strong>Link 2 (Real &amp; External)</strong> — domestic exports and imports of goods and non-factor services in national accounts to the BOP current account (converted into local currency).</li>
+          <li><strong>Link 3 (Fiscal &amp; External)</strong> — primary/secondary income, grants, and net external financing in fiscal accounts to the BOP current, capital, and financial accounts.</li>
+          <li><strong>Link 4 (Monetary &amp; External)</strong> — changes in NFA in the depository-corporations survey to changes in reserve assets and financial-account flows in the BOP.</li>
+          <li><strong>Link 5 (Fiscal &amp; Monetary)</strong> — domestic financing in fiscal accounts to net bank claims on government.</li>
+          <li><strong>Link 6 (Monetary &amp; Broad Dynamics)</strong> — changes in NFA and Net Domestic Assets (ΔNDA) to Broad Money (ΔM2).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-27">
+      <div class="guide-card-head"><span class="guide-card-num">27</span><span class="guide-card-title">Four Analytical Approaches to External Balance</span></div>
+      <div class="guide-body">
+        <p>To evaluate external sustainability and reserve assets, four complementary perspectives are used:</p>
+        <h3>Income–Absorption Approach</h3>
+        <div class="guide-formula">GNDI − A = CAB</div>
+        <p>Where GNDI is Gross National Disposable Income, A is Domestic Absorption/Demand, and CAB is the Current Account Balance. A current-account deficit occurs when domestic demand exceeds disposable income (A &gt; GNDI).</p>
+        <h3>Saving–Investment Approach</h3>
+        <div class="guide-formula">S − I = CAB = (Sp − Ip) + (Sg − Ig)</div>
+        <p>The overall current-account balance is the sum of the private-sector saving-investment gap (Sp − Ip) and the government saving-investment gap (Sg − Ig). It identifies structural causes such as "twin deficits" (fiscal deficit driving the current-account deficit) or private investment/consumption booms.</p>
+        <h3>Foreign Savings Perspective</h3>
+        <p>A current-account deficit implies the domestic economy is relying on foreign savings, which must be financed via net foreign capital inflows or a reduction in official international reserves.</p>
+        <h3>Monetary Approach to the BOP</h3>
+        <div class="guide-formula">ΔM2 − ΔNDA = ΔRES</div>
+        <p>If domestic credit expansion exceeds money-demand growth, official reserve assets (ΔRES) will fall.</p>
+      </div>
+    </div>
+
+    <div class="guide-card" id="g-28">
+      <div class="guide-card-head"><span class="guide-card-num">28</span><span class="guide-card-title">Flow of Funds &amp; Data Consistency</span></div>
+      <div class="guide-body">
+        <h3>Flow of Funds (FOF) Tables</h3>
+        <p>Summarize nonfinancial and financial transactions across all sectors:</p>
+        <ul>
+          <li>The vertical sum of operations for any sector equals zero.</li>
+          <li>The horizontal sum across all sectors for any transaction type equals zero.</li>
+        </ul>
+        <h3>Data Consistency Checks</h3>
+        <p>Unexplained discrepancies between datasets (e.g., timing differences, cash vs. accrual accounting, valuation changes, or coverage variations) should be identified and reconciled to ensure accurate historical analysis and forecasting.</p>
+        <div class="guide-callout"><strong>Behavioral Consistency:</strong> projections and scenarios must respect underlying economic behavior (e.g., money-demand velocity, consumption functions, exchange-rate elasticity, and credit-to-GDP relationships) rather than just balancing accounting identities.</div>
+        <div class="guide-key">See the Sector Interlinks tab for the live Flow of Funds matrix and cross-sector identities, and the sector tabs for the underlying accounts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
   <section id="tab-govops" class="tab-panel hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
       <div>
@@ -980,8 +2600,8 @@
 
       <div class="layout" style="grid-template-columns:1.4fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head"><span class="card-title" id="sgo-table-title">Statement of Operations · in bn NC</span><span class="mono" style="font-size:10px;color:var(--muted)">Above the line + Financing must balance</span></div>
-          <div class="table-wrap"><table class="fp" id="sgo-table"></table></div>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title" id="sgo-table-title">Statement of Operations · in bn NC</span></span><span class="mono" style="font-size:10px;color:var(--muted)">Above the line + Financing must balance</span></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="sgo-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -1012,11 +2632,11 @@
 
       <!-- Selected Fiscal Indicators (% of GDP) -->
       <div class="card" style="margin-top:12px">
-        <div class="card-head">
-          <span class="card-title">Selected Fiscal Indicators — % of GDP</span>
+        <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0">
+          <span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Selected Fiscal Indicators — % of GDP</span></span>
           <span class="mono" style="font-size:10px;color:var(--muted)">Cyclical adjustment · Fiscal impulse · Public sector aggregates</span>
         </div>
-        <div class="table-wrap"><table class="fp" id="sgo-ind-table"></table></div>
+        <div class="table-wrap"><table class="fp collapsed-table" id="sgo-ind-table" data-collapsible-init="1"></table></div>
       </div>
 
       <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
@@ -1051,11 +2671,11 @@
 
       <div class="layout" style="grid-template-columns:1.4fr 1fr;margin-top:12px">
         <div class="card">
-          <div class="card-head">
-            <span class="card-title" id="bs-table-title">General Government Balance Sheet · in bn NC</span>
+          <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0">
+            <span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title" id="bs-table-title">General Government Balance Sheet · in bn NC</span></span>
             <span class="mono" style="font-size:10px;color:var(--muted)">Stock · Transactions · Other economic flows</span>
           </div>
-          <div class="table-wrap"><table class="fp" id="bs-table"></table></div>
+          <div class="table-wrap"><table class="fp collapsed-table" id="bs-table" data-collapsible-init="1"></table></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card">
@@ -1135,8 +2755,8 @@
           </div>
 
           <div class="card" style="margin-top:12px">
-            <div class="card-head"><span class="card-title">Projected Statement of Operations</span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2014 – …</span></div>
-            <div class="table-wrap"><table class="fp" id="proj-sgo-table"></table></div>
+            <div class="card-head table-toggle-head collapsed" data-collapsible-toggle="1" role="button" tabindex="0"><span class="table-toggle-title-wrap"><span class="table-toggle-icon">▾</span><span class="card-title">Projected Statement of Operations</span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2014 – …</span></div>
+            <div class="table-wrap"><table class="fp collapsed-table" id="proj-sgo-table" data-collapsible-init="1"></table></div>
           </div>
         </div>
       </div>
@@ -5919,6 +7539,7 @@ function syncHeaderHeight(){
 init();
 </script>
 <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
 
 
 </body></html>
