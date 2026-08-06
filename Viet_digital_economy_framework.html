@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vietnam Digital Asset &amp; CBDC Infrastructure — Implementation Framework</title>
+<meta content="A sequenced, governable implementation framework for Vietnam's digital asset and CBDC infrastructure, built layer by cured layer." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg: #0A0E17;
+    --bg-panel: #121826;
+    --bg-panel-raised: #1A2233;
+    --rule: #262F44;
+    --rule-soft: #1D2536;
+    --text: #ECE8DD;
+    --text-muted: #8B93A9;
+    --text-faint: #57617A;
+    --gold: #C9A227;
+    --gold-bright: #E4C554;
+    --lacquer: #B32338;
+    --lacquer-bright: #D6415A;
+    --jade: #3F7D6B;
+    --jade-bright: #56A88F;
+    --font-display: "Fraunces", serif;
+    --font-body: "IBM Plex Sans", sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* eggshell inlay texture */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(236,232,221,0.035) 0, transparent 2px),
+      radial-gradient(circle at 68% 15%, rgba(236,232,221,0.03) 0, transparent 1.6px),
+      radial-gradient(circle at 84% 62%, rgba(201,162,39,0.05) 0, transparent 2px),
+      radial-gradient(circle at 12% 78%, rgba(236,232,221,0.03) 0, transparent 1.6px),
+      radial-gradient(circle at 45% 92%, rgba(201,162,39,0.04) 0, transparent 1.8px),
+      radial-gradient(circle at 55% 45%, rgba(236,232,221,0.025) 0, transparent 1.4px);
+    background-size: 380px 380px, 300px 300px, 420px 420px, 340px 340px, 460px 460px, 260px 260px;
+  }
+
+  a{ color: var(--gold-bright); }
+  ::selection{ background: var(--gold); color: #14100a; }
+
+  :focus-visible{
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 22px; height: 1px;
+    background: var(--gold);
+    display:inline-block;
+  }
+
+  h1,h2,h3{
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 0.4em 0;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  h2{ font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; }
+  h3{ font-size: 19px; font-weight: 600; }
+
+  p{ color: var(--text-muted); margin: 0 0 1em 0; }
+  p.lede{ font-size: 17px; color: #B9BFCE; max-width: 68ch; }
+
+  .rule{ height:1px; background: linear-gradient(90deg, var(--gold), transparent 70%); opacity:.5; margin: 28px 0; border:none; }
+
+  /* ============ progress rail ============ */
+  #article-rail{
+    position: fixed;
+    left: 18px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  #article-rail a{
+    display:flex; align-items:center; gap:10px;
+    text-decoration:none;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .06em;
+  }
+  #article-rail .dot{
+    width:8px; height:8px; border-radius:50%;
+    background: var(--rule);
+    border: 1px solid var(--text-faint);
+    transition: all .3s ease;
+    flex: none;
+  }
+  #article-rail .label{
+    opacity:0; transform: translateX(-6px);
+    transition: all .25s ease;
+    white-space: nowrap;
+    background: var(--bg-panel);
+    padding: 3px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  #article-rail a:hover .label, #article-rail a:focus-visible .label{ opacity:1; transform:none; }
+  #article-rail a.active .dot{
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+    box-shadow: 0 0 0 4px rgba(201,162,39,0.15);
+  }
+  #article-rail a.active{ color: var(--gold-bright); }
+  @media (max-width: 980px){ #article-rail{ display:none; } }
+
+  /* ============ hero ============ */
+  header.hero{
+    min-height: 100vh;
+    display:flex; flex-direction: column; justify-content:center;
+    padding: 120px 0 60px;
+    position: relative;
+  }
+  header.hero .wrap{ width:100%; }
+  .hero-kicker{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--jade-bright);
+    margin-bottom: 22px;
+  }
+  h1.hero-title{
+    font-size: clamp(38px, 6.2vw, 78px);
+    line-height: 1.03;
+    margin-bottom: 22px;
+    max-width: 16ch;
+  }
+  h1.hero-title em{
+    font-style: italic;
+    color: var(--gold-bright);
+    font-weight: 500;
+  }
+  .hero-sub{
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 56ch;
+    margin-bottom: 56px;
+  }
+  .hero-sub b{ color: var(--text); font-weight: 600; }
+
+  /* gate rail (signature element) */
+  .gate-rail{
+    display:flex; align-items:flex-start; justify-content: space-between;
+    max-width: 860px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .gate-rail .track{
+    position:absolute; top: 27px; left: 27px; right: 27px; height: 2px;
+    background: var(--rule);
+    z-index:0;
+  }
+  .gate-rail .track-fill{
+    position:absolute; top:0; left:0; height:100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+    transition: width 1.4s cubic-bezier(.65,0,.35,1);
+  }
+  .gate{
+    position: relative; z-index: 1;
+    display:flex; flex-direction:column; align-items:center;
+    gap: 10px;
+    background:none; border:none; cursor:pointer;
+    font-family: var(--font-body);
+    color: var(--text-muted);
+    width: 108px;
+  }
+  .gate .node{
+    width: 54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-mono); font-size: 13px; font-weight:600;
+    background: var(--bg-panel);
+    border: 2px solid var(--rule);
+    color: var(--text-faint);
+    transition: all .35s ease;
+  }
+  .gate .node svg{ width:16px; height:16px; }
+  .gate.done .node{ background: var(--jade); border-color: var(--jade-bright); color: #eafff8; }
+  .gate.active .node{
+    background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 70%);
+    border-color: var(--gold-bright); color:#14100a;
+    box-shadow: 0 0 0 6px rgba(201,162,39,0.14);
+  }
+  .gate.locked .node{ color: var(--text-faint); }
+  .gate .g-label{ font-size: 12.5px; text-align:center; line-height:1.3; color: var(--text-muted); }
+  .gate.active .g-label{ color: var(--gold-bright); font-weight:600; }
+  .gate:hover .node{ transform: translateY(-3px); border-color: var(--gold); }
+  .gate .g-code{ font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); letter-spacing:.08em; }
+
+  .scroll-cue{
+    margin-top: 70px;
+    display:flex; align-items:center; gap: 10px;
+    color: var(--text-faint);
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+    text-transform: uppercase;
+  }
+  .scroll-cue .arrow{ animation: bob 2.2s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(6px);} }
+
+  /* ============ sections ============ */
+  section{ padding: 110px 0; position: relative; scroll-margin-top: 24px; }
+  header.hero{ scroll-margin-top: 0; }
+  section#pillars{ padding-bottom: 90px; }
+  .article-head{ max-width: 760px; margin-bottom: 54px; }
+
+  .reveal{ opacity:0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* panels / cards */
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 28px;
+    position: relative;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; top:0; left: 22px; width: 30px; height:2px;
+    background: var(--gold);
+  }
+  .callout{
+    border-left: 3px solid var(--lacquer-bright);
+    background: linear-gradient(90deg, rgba(179,35,56,0.10), transparent 60%);
+    padding: 18px 24px;
+    border-radius: 4px;
+    margin: 26px 0;
+  }
+  .callout p{ color: var(--text); margin:0; font-size: 15px; }
+  .callout .tag{ font-family: var(--font-mono); font-size: 11px; color: var(--lacquer-bright); text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:8px; }
+
+  .quote-gold{
+    border-left: 3px solid var(--gold);
+    background: linear-gradient(90deg, rgba(201,162,39,0.10), transparent 60%);
+    padding: 18px 24px; border-radius:4px; margin: 26px 0;
+  }
+  .quote-gold p{ color: var(--text); margin:0; font-size:15px; }
+  .quote-gold .tag{ font-family: var(--font-mono); font-size: 11px; color: var(--gold-bright); text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:8px; }
+
+  /* Article I — governance cards */
+  .stakeholder-grid{
+    display:grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+    gap: 16px; margin: 34px 0 10px;
+  }
+  .stakeholder-card{
+    background: var(--bg-panel); border:1px solid var(--rule); border-radius:8px;
+    padding: 18px 20px;
+  }
+  .stakeholder-card .role{ font-family: var(--font-mono); font-size:10.5px; color: var(--gold); text-transform:uppercase; letter-spacing:.09em; margin-bottom:8px; }
+  .stakeholder-card h4{ margin: 0 0 8px; font-family: var(--font-body); font-size:15px; font-weight:600; color: var(--text); }
+  .stakeholder-card p{ font-size: 13.5px; margin:0; color: var(--text-muted); }
+
+  .goe-arms{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+  @media (max-width: 720px){ .goe-arms{ grid-template-columns: 1fr; } }
+  .arm-card{
+    background: var(--bg-panel-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 22px;
+  }
+  .arm-card .arm-tag{ font-family: var(--font-mono); font-size: 11px; color: var(--jade-bright); text-transform:uppercase; letter-spacing:.08em; margin-bottom: 10px; }
+  .arm-card h4{ font-family: var(--font-display); font-size: 20px; font-weight:600; margin: 0 0 10px; }
+  .arm-card p{ font-size: 14px; }
+
+  /* diagram panel */
+  .diagram-panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 26px 20px;
+    margin: 30px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .diagram-panel .d-label{
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing:.08em; margin-bottom: 14px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .diagram-panel .d-label .scroll-hint{
+    color: var(--gold); font-style: normal; text-transform:none; letter-spacing:normal;
+    font-size: 10.5px; opacity: .8; display:none;
+  }
+  .mermaid{ display:flex; justify-content:center; }
+
+  /* full-bleed variant — breaks the diagram out of the article's max-width so wide diagrams
+     (e.g. the gantt roadmap) get the full viewport to breathe instead of being squeezed into
+     the 1180px column, while staying horizontally scrollable on narrow screens. */
+  .diagram-panel.panel-full{
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding-left: max(20px, calc((100vw - var(--maxw)) / 2 + 20px));
+    padding-right: max(20px, calc((100vw - var(--maxw)) / 2 + 20px));
+  }
+  .diagram-panel.panel-full .mermaid{ justify-content: flex-start; }
+  @media (max-width: 720px){
+    .diagram-panel.panel-full{ padding-left: 16px; padding-right: 16px; }
+    .diagram-panel.panel-full .d-label .scroll-hint{ display:inline; }
+  }
+
+  /* Article II — accordion gates */
+  .gate-rail.large .node{ width: 60px; height:60px; }
+  .phase-accordion{ margin-top: 46px; display:flex; flex-direction:column; gap: 14px; }
+  .phase-item{
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--bg-panel);
+    overflow: hidden;
+  }
+  .phase-item.active{ border-color: var(--gold); }
+  .phase-item .phase-head{
+    display:flex; align-items:center; gap:16px;
+    width:100%; text-align:left;
+    background:none; border:none; color: var(--text);
+    padding: 18px 22px; cursor:pointer;
+    font-family: var(--font-body); font-size: 16px; font-weight:600;
+  }
+  .phase-item .p-code{
+    font-family: var(--font-mono); font-size: 12px; color: var(--gold);
+    background: rgba(201,162,39,0.1); border: 1px solid rgba(201,162,39,0.35);
+    padding: 3px 9px; border-radius: 20px; flex: none;
+  }
+  .phase-item .p-time{ margin-left:auto; font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); flex:none; }
+  .phase-item .chev{ transition: transform .3s ease; color: var(--text-faint); flex:none; }
+  .phase-item.open .chev{ transform: rotate(180deg); }
+  .phase-body{
+    max-height: 0; overflow:hidden; transition: max-height .4s ease;
+  }
+  .phase-item.open .phase-body{ max-height: 400px; }
+  .phase-body-inner{ padding: 0 22px 22px 22px; }
+  .phase-body-inner ul{ margin:0; padding-left: 20px; color: var(--text-muted); font-size: 14.5px; }
+  .phase-body-inner li{ margin-bottom: 8px; }
+  .phase-body-inner li::marker{ color: var(--gold); }
+
+  /* Article III — pillars */
+  .pillar-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 20px; margin-top: 40px; }
+  .pillar-card{
+    background: var(--bg-panel); border:1px solid var(--rule); border-radius: 12px;
+    padding: 26px; position:relative;
+  }
+  .pillar-card .p-num{
+    font-family: var(--font-mono); font-size: 34px; font-weight:600;
+    color: transparent; -webkit-text-stroke: 1px var(--rule);
+    position:absolute; top:16px; right:20px; line-height:1;
+  }
+  .pillar-card h4{ font-family: var(--font-display); font-size: 21px; font-weight:600; margin: 0 0 16px; max-width: 80%; }
+  .pillar-card .row{ margin-bottom: 12px; }
+  .pillar-card .row .k{ font-family: var(--font-mono); font-size: 10.5px; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:4px; }
+  .pillar-card .row.risk .k{ color: var(--lacquer-bright); }
+  .pillar-card .row.mit .k{ color: var(--jade-bright); }
+  .pillar-card .row.succ .k{ color: var(--gold); }
+  .pillar-card .row p{ font-size: 13.5px; margin:0; color: var(--text-muted); }
+  .pillar-card .extra{ margin-top: 14px; padding-top:14px; border-top: 1px dashed var(--rule); }
+
+  /* Article IV — dependency chips */
+  .dep-list{ display:flex; flex-direction:column; gap:14px; margin: 30px 0; }
+  .dep-chain{
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+    background: var(--bg-panel); border:1px solid var(--rule); border-radius:10px; padding: 16px 18px;
+  }
+  .dep-chain .chip{
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: var(--bg-panel-raised); border:1px solid var(--rule);
+    padding: 6px 12px; border-radius: 20px; color: var(--text);
+  }
+  .dep-chain .arrow{ color: var(--gold); font-family: var(--font-mono); }
+  .dep-chain .note{ flex-basis: 100%; font-size: 13.5px; color: var(--text-muted); margin-top: 8px; }
+
+  /* Article V — KPI table */
+  table.kpi{ width:100%; border-collapse: collapse; margin-top: 30px; }
+  table.kpi th{
+    text-align:left; font-family: var(--font-mono); font-size: 11px; text-transform:uppercase;
+    letter-spacing: .08em; color: var(--gold); padding: 12px 16px; border-bottom: 1px solid var(--rule);
+  }
+  table.kpi td{
+    padding: 16px; border-bottom: 1px solid var(--rule-soft, var(--rule)); font-size: 14px; color: var(--text-muted); vertical-align: top;
+  }
+  table.kpi td.domain{ color: var(--text); font-weight:600; font-family: var(--font-body); }
+  table.kpi tr:hover td{ background: rgba(201,162,39,0.035); }
+
+  /* Article VI — risks */
+  .risk-list{ display:flex; flex-direction:column; gap: 14px; margin-top: 34px; }
+  .risk-item{
+    display:grid; grid-template-columns: 46px 1fr auto; gap: 18px; align-items:start;
+    background: var(--bg-panel); border: 1px solid var(--rule); border-left: 3px solid var(--lacquer-bright);
+    border-radius: 8px; padding: 18px 20px;
+  }
+  .risk-item .r-num{ font-family: var(--font-mono); font-size: 20px; color: var(--lacquer-bright); font-weight:600; }
+  .risk-item h4{ font-size:15.5px; margin: 0 0 6px; font-family: var(--font-body); font-weight:600; color: var(--text); }
+  .risk-item p{ font-size: 13.5px; margin:0; }
+  .risk-item .esc{
+    font-family: var(--font-mono); font-size: 10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color: var(--text-faint); border: 1px solid var(--rule); padding: 6px 10px; border-radius: 20px; white-space:nowrap; align-self:center;
+  }
+  @media (max-width: 640px){
+    .risk-item{ grid-template-columns: 32px 1fr; }
+    .risk-item .esc{ grid-column: 1 / -1; justify-self:start; }
+  }
+
+  /* Article VII — roadmap */
+  .gap-list{ display:flex; flex-direction:column; gap: 12px; margin: 34px 0 10px; }
+  .gap-item{
+    display:grid; grid-template-columns: 34px 1fr; gap: 14px; align-items:start;
+    background: var(--bg-panel); border: 1px solid var(--rule); border-left: 3px solid var(--jade-bright);
+    border-radius: 8px; padding: 16px 18px;
+  }
+  .gap-item .g-num{ font-family: var(--font-mono); font-size: 16px; color: var(--jade-bright); font-weight:600; }
+  .gap-item h4{ font-size: 14.5px; margin: 0 0 4px; font-family: var(--font-body); font-weight:600; color: var(--text); }
+  .gap-item p{ font-size: 13px; margin:0; }
+
+  .roadmap-cols{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+  @media (max-width: 780px){ .roadmap-cols{ grid-template-columns: 1fr; } }
+  .roadmap-col{
+    background: var(--bg-panel-raised); border: 1px solid var(--rule); border-radius: 12px; padding: 26px;
+  }
+  .roadmap-col.now{ border-top: 3px solid var(--gold); }
+  .roadmap-col.later{ border-top: 3px solid var(--jade); }
+  .roadmap-col .rc-tag{ font-family: var(--font-mono); font-size: 11px; text-transform:uppercase; letter-spacing:.08em; margin-bottom: 6px; display:block; }
+  .roadmap-col.now .rc-tag{ color: var(--gold-bright); }
+  .roadmap-col.later .rc-tag{ color: var(--jade-bright); }
+  .roadmap-col h3{ margin: 0 0 18px; font-family: var(--font-display); }
+  .roadmap-col ol{ margin:0; padding-left: 20px; display:flex; flex-direction:column; gap: 14px; }
+  .roadmap-col li{ font-size: 14px; color: var(--text-muted); }
+  .roadmap-col li::marker{ font-family: var(--font-mono); font-weight:600; }
+  .roadmap-col.now li::marker{ color: var(--gold); }
+  .roadmap-col.later li::marker{ color: var(--jade); }
+  .roadmap-col li b{ color: var(--text); font-weight:600; }
+  .roadmap-col li .owner{
+    display:inline-block; margin-top: 5px; font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--text-faint); border: 1px solid var(--rule); padding: 2px 8px; border-radius: 20px;
+  }
+
+  footer{ padding: 90px 0 60px; border-top: 1px solid var(--rule); margin-top: 40px; }
+  footer .lacquer-note{
+    font-family: var(--font-display); font-style: italic; font-size: 19px;
+    color: var(--gold-bright); max-width: 60ch; margin-bottom: 30px; line-height:1.5;
+  }
+  footer .meta{ font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); display:flex; flex-wrap:wrap; gap: 20px; }
+
+  /* mobile top progress */
+  #mobile-progress{
+    display:none; position: sticky; top:0; z-index: 30;
+    background: rgba(10,14,23,0.9); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+    overflow-x:auto;
+  }
+  @media (max-width: 980px){ #mobile-progress{ display:flex; gap: 4px; padding: 10px 14px; } }
+  #mobile-progress a{
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-decoration:none;
+    white-space:nowrap; padding: 6px 10px; border-radius: 20px; border: 1px solid transparent;
+  }
+  #mobile-progress a.active{ color: var(--gold-bright); border-color: var(--gold); }
+
+  @media (max-width: 640px){
+    section{ padding: 76px 0; }
+    header.hero{ padding-top: 90px; min-height: auto; }
+    .gate-rail{ flex-wrap: wrap; gap: 22px 8px; justify-content: flex-start; }
+    .gate-rail .track{ display:none; }
+    .gate{ width: 84px; }
+  }
+
+  /* ============ language toggle ============ */
+  .lang-toggle{
+    position: fixed;
+    top: 16px; right: 20px;
+    z-index: 60;
+    display:flex;
+    gap:2px;
+    padding:4px;
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+  }
+  .lang-toggle button{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    padding: 6px 15px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .lang-toggle button[aria-pressed="true"]{
+    background: var(--gold);
+    color: #14100a;
+    font-weight: 700;
+  }
+  .lang-toggle button:hover:not([aria-pressed="true"]){
+    color: var(--gold-bright);
+  }
+  .lang-toggle button:focus-visible{
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 2px;
+  }
+  @media (max-width: 980px){
+    .lang-toggle{ top: 58px; right: 10px; transform: scale(0.92); transform-origin: top right; }
+  }
+</style>
+</head>
+<body>
+<noscript><style>.reveal{opacity:1 !important; transform:none !important;} .diagram-panel{display:none;}</style></noscript>
+<div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language / Ngôn ngữ">
+  <button type="button" data-lang="vi" aria-pressed="true">VI</button>
+  <button type="button" data-lang="en" aria-pressed="false">EN</button>
+</div>
+<nav aria-label="Article progress" id="article-rail">
+<a href="#hero"><span class="dot"></span><span class="label">Prelude</span></a>
+<a href="#governance"><span class="dot"></span><span class="label">I · Governance</span></a>
+<a href="#rollout"><span class="dot"></span><span class="label">II · Rollout</span></a>
+<a href="#pillars"><span class="dot"></span><span class="label">III · Pillars</span></a>
+<a href="#dependencies"><span class="dot"></span><span class="label">IV · Dependencies</span></a>
+<a href="#monitoring"><span class="dot"></span><span class="label">V · Monitoring</span></a>
+<a href="#risks"><span class="dot"></span><span class="label">VI · Risks</span></a>
+<a href="#roadmap"><span class="dot"></span><span class="label">VII · Roadmap</span></a>
+</nav>
+<div id="mobile-progress">
+<a href="#governance">I · Gov</a>
+<a href="#rollout">II · Rollout</a>
+<a href="#pillars">III · Pillars</a>
+<a href="#dependencies">IV · Deps</a>
+<a href="#monitoring">V · KPI</a>
+<a href="#risks">VI · Risks</a>
+<a href="#roadmap">VII · Roadmap</a>
+</div>
+<header class="hero" id="hero">
+<div class="wrap">
+<div class="hero-kicker" data-i18n="t1">Implementation Success Framework</div>
+<h1 class="hero-title" data-i18n="t2">A digital money system, built <em>one careful step at a time</em></h1>
+<p class="hero-sub" data-i18n="t3">Vietnam is building a new system for digital assets and digital currency, made of six connected parts, run jointly by government and private partners. <b>Each part must be tested and proven safe before the next one begins</b> — that one rule holds the whole plan together.</p>
+<div class="gate-rail" id="hero-gate-rail">
+<div class="track"><div class="track-fill" id="track-fill"></div></div>
+<button class="gate done" data-target="p0"><span class="node">✓</span><span class="g-code">P0</span><span class="g-label" data-i18n="t4">Foundation</span></button>
+<button class="gate active" data-target="p1"><span class="node">P1</span><span class="g-code" data-i18n="t230">6–12mo</span><span class="g-label" data-i18n="t5">Identity &amp; Trust</span></button>
+<button class="gate locked" data-target="p2"><span class="node">🔒</span><span class="g-code">P2</span><span class="g-label" data-i18n="t6">Market Infra</span></button>
+<button class="gate locked" data-target="p3"><span class="node">🔒</span><span class="g-code">P3</span><span class="g-label" data-i18n="t7">Cross-Border</span></button>
+<button class="gate locked" data-target="p4"><span class="node">🔒</span><span class="g-code">P4</span><span class="g-label" data-i18n="t8">CBDC Settlement</span></button>
+</div>
+<div class="scroll-cue" data-i18n="t9"><span class="arrow">↓</span> Article I — Governance &amp; Coordination</div>
+</div>
+</header>
+<main>
+<!-- ================= ARTICLE I ================= -->
+<section id="governance">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t10">Article I</div>
+<div class="article-head reveal">
+<h2 data-i18n="t17">Governance &amp; Coordination</h2>
+<p class="lede" data-i18n="t24">This plan involves several government bodies and private tech partners working side by side. Without one team clearly in charge, projects like this usually fall apart — unclear ownership is the number one reason large technology programs fail.</p>
+</div>
+<div class="panel reveal">
+<span class="arm-tag" data-i18n="t31" style="color:var(--gold-bright); font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em;">Global On-Chain Economy Alliance</span>
+<h3 data-i18n="t34" style="margin-top:10px; font-family:var(--font-display); font-size:24px;">GOE Alliance — VIFC-HCMC</h3>
+<p data-i18n="t35">Launched at the Vietnam International Financial Centre in Ho Chi Minh City, the GOE Alliance functions as the public-private convening layer sitting <em style="color:var(--text); font-style:italic;">between</em> the Strategic Steering Committee and individual technical or regulatory workstreams. It does not replace ministry authority — it operationalizes the strategy by aggregating private-sector capacity (1Matrix, FPT, Viettel, VBA members, international partners) into a single body accountable for sandbox delivery and cross-border interoperability, with VIFC as its physical and jurisdictional anchor.</p>
+<div class="goe-arms">
+<div class="arm-card">
+<div class="arm-tag" data-i18n="t32">Arm 01</div>
+<h4 data-i18n="t36">Sandbox Delivery</h4>
+<p data-i18n="t38">Operates VASP / exchange cohorts through Decree 94/2025/ND-CP admission, standing up shared test environments and conformance suites so applicants aren't each re-solving interoperability from scratch.</p>
+</div>
+<div class="arm-card">
+<div class="arm-tag" data-i18n="t33">Arm 02</div>
+<h4 data-i18n="t37">International Connectivity</h4>
+<p data-i18n="t39">Represents Vietnam's on-chain infrastructure — VBSN, NDAChain, akaChain — in cross-border standards bodies and investor-facing forums, giving foreign regulators a single counterpart instead of ministry-by-ministry negotiation.</p>
+</div>
+</div>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t40">Fig. 1 — Authority, coordination &amp; escalation</div>
+<div class="mermaid" data-i18n-mermaid="d1">
+flowchart TD
+    PM["Prime Minister's Office<br/>Final Arbitration"]
+    SC["National Blockchain Strategy Committee<br/>Strategic Steering (1236/QD-TTg)"]
+    GOE["GOE Alliance — VIFC-HCMC<br/>Public-Private Coordination"]
+    TWG["Joint Technical Working Group<br/>MPS/A06, SBV, MIC, FPT, 1Matrix, Viettel"]
+    REG["SSC + MoF Joint Panel<br/>Regulatory Sequencing"]
+    AUD["Cipher Committee + A05 + 3rd-Party Auditor<br/>Independent Assurance"]
+
+    SC --&gt;|charters mandate| GOE
+    SC --&gt;|escalates unresolved conflicts| PM
+    GOE --&gt;|convening secretariat| TWG
+    GOE --&gt;|sandbox reporting| REG
+    TWG --&gt;|standards for certification| AUD
+    REG --&gt;|admission criteria| GOE
+    AUD --&gt;|audit findings| SC
+        </div>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t41">Fig. 2 — GOE Alliance's two operating arms</div>
+<div class="mermaid" data-i18n-mermaid="d2">
+flowchart LR
+    GOE["GOE Alliance<br/>VIFC-HCMC"]
+    subgraph SD[Sandbox Delivery Arm]
+        S1["VASP / Exchange Cohorts"]
+        S2["Shared Test Environments"]
+        S3["Decree 94/2025 Admission"]
+    end
+    subgraph IC[International Connectivity Arm]
+        I1["Cross-Border Standards Bodies"]
+        I2["Investor-Facing Forums"]
+        I3["VBSN / NDAChain / akaChain Rep."]
+    end
+    GOE --&gt; S1
+    GOE --&gt; S2
+    GOE --&gt; S3
+    GOE --&gt; I1
+    GOE --&gt; I2
+    GOE --&gt; I3
+    S3 --&gt;|outcomes inform| REGP["SSC + MoF Joint Panel"]
+    I3 --&gt;|logged against| CHK["Interoperability Checklist"]
+        </div>
+</div>
+<h3 class="reveal" data-i18n="t47" style="margin-top:44px;">Stakeholder layers</h3>
+<div class="stakeholder-grid reveal">
+<div class="stakeholder-card"><div class="role" data-i18n="t49">Strategic Steering</div><h4 data-i18n="t55">National Blockchain Strategy Committee</h4><p data-i18n="t61">Cross-ministry arbitration, budget release gates, strategy amendments under 1236/QD-TTg.</p></div>
+<div class="stakeholder-card"><div class="role" data-i18n="t50">Public-Private Coordination</div><h4 data-i18n="t56">GOE Alliance</h4><p data-i18n="t62">Sandbox cohort operations, private-sector capacity aggregation, cross-border representation.</p></div>
+<div class="stakeholder-card"><div class="role" data-i18n="t51">Technical Coordination</div><h4 data-i18n="t57">Joint Technical Working Group</h4><p data-i18n="t63">Interoperability standards, API contracts between NDAChain, VBSN, VMB.</p></div>
+<div class="stakeholder-card"><div class="role" data-i18n="t52">Regulatory Sequencing</div><h4 data-i18n="t58">SSC + MoF Joint Panel</h4><p data-i18n="t64">Sandbox admission criteria (Decree 94/2025/ND-CP), licensing calendar.</p></div>
+<div class="stakeholder-card"><div class="role" data-i18n="t53">Independent Assurance</div><h4 data-i18n="t59">Cipher Committee + A05 + Auditor</h4><p data-i18n="t65">Cryptographic standards enforcement, penetration testing, reserve verification.</p></div>
+<div class="stakeholder-card"><div class="role" data-i18n="t54">Escalation Path</div><h4 data-i18n="t60">Prime Minister's Office</h4><p data-i18n="t66">Final arbitration when ministry mandates conflict.</p></div>
+</div>
+<div class="callout reveal">
+<span class="tag" data-i18n="t67">Critical success factor</span>
+<p data-i18n="t69">A shared table of who does what for every hand-off between systems, agreed before building starts — unclear ownership at the identity-to-payment handoff is the most likely place things go wrong. The GOE Alliance's job is to <em>coordinate</em>, not to <em>supervise</em>.</p>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE II ================= -->
+<section id="rollout" style="background: linear-gradient(180deg, transparent, rgba(201,162,39,0.025), transparent);">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t11">Article II</div>
+<div class="article-head reveal">
+<h2 data-i18n="t18">Phased Rollout Roadmap</h2>
+<p class="lede" data-i18n="t25">Going in the right order matters more than going fast. Identity comes before markets. Markets come before the digital currency itself. Each stage needs a clear pass-or-fail check before the next one starts — click a stage below to see it.</p>
+</div>
+<div class="phase-accordion reveal" id="phase-accordion">
+<div class="phase-item" id="p0">
+<button aria-expanded="false" class="phase-head" data-i18n="t73">
+<span class="p-code">P0</span> Foundation
+            <span class="p-time">0–6 months</span>
+<span class="chev">⌄</span>
+</button>
+<div class="phase-body"><div class="phase-body-inner">
+<ul>
+<li data-i18n="t78">Finalize the interoperability specification between VNeID (Level 2 eID), NDAChain (ZKP layer), and VBSN sub-chains.</li>
+<li data-i18n="t79">Formally charter the GOE Alliance's mandate and reporting line into the Strategic Steering Committee, scoped to coordination — not supervision.</li>
+<li data-i18n="t80">Publish Decree 94/2025/ND-CP sandbox admission criteria and select the first cohort; GOE Alliance operates the shared sandbox infrastructure.</li>
+<li data-i18n="t81">Lock the cryptographic standards baseline (Government Cipher Committee) before any production deployment.</li>
+</ul>
+</div></div>
+</div>
+<div class="phase-item" id="p1">
+<button aria-expanded="false" class="phase-head" data-i18n="t74">
+<span class="p-code">P1</span> Identity &amp; Trust Layer Live
+            <span class="p-time">6–12 months</span>
+<span class="chev">⌄</span>
+</button>
+<div class="phase-body"><div class="phase-body-inner">
+<ul>
+<li data-i18n="t82">NDAChain ZK-proof verification operational for a limited institutional eKYC pilot.</li>
+<li data-i18n="t83">VNeID biometric linkage tested with 2–3 commercial banks under Project 06 before national rollout.</li>
+<li data-i18n="t84">Success gate: false-rejection/false-acceptance rates on biometric matching published and independently audited.</li>
+</ul>
+</div></div>
+</div>
+<div class="phase-item" id="p2">
+<button aria-expanded="false" class="phase-head" data-i18n="t75">
+<span class="p-code">P2</span> Controlled Market Infrastructure
+            <span class="p-time">12–18 months</span>
+<span class="chev">⌄</span>
+</button>
+<div class="phase-body"><div class="phase-body-inner">
+<ul>
+<li data-i18n="t85">First licensed exchanges onboarded under SSC/UBCKNN with mandatory VNeID integration.</li>
+<li data-i18n="t86">VBSN sector sub-chains activated for RWA pilots only — not general-purpose trading — to contain blast radius.</li>
+<li data-i18n="t87">Real-time surveillance feed (SSC + A05) validated against live transaction volume before scaling exchange count.</li>
+</ul>
+</div></div>
+</div>
+<div class="phase-item" id="p3">
+<button aria-expanded="false" class="phase-head" data-i18n="t76">
+<span class="p-code">P3</span> Enterprise &amp; Cross-Border Integration
+            <span class="p-time">18–30 months</span>
+<span class="chev">⌄</span>
+</button>
+<div class="phase-body"><div class="phase-body-inner">
+<ul>
+<li data-i18n="t88">akaChain (FPT) and eTradevn scaled for supply-chain finance and e-Bills of Lading.</li>
+<li data-i18n="t89">VIFC cross-border bridging tested against a small set of ISO 20022 / W3C DID counterpart jurisdictions before general availability.</li>
+<li data-i18n="t90">GOE Alliance formally represents Vietnam's chain infrastructure in bilateral/multilateral standards talks, each agreement logged against a common interoperability checklist.</li>
+</ul>
+</div></div>
+</div>
+<div class="phase-item" id="p4">
+<button aria-expanded="false" class="phase-head" data-i18n="t77">
+<span class="p-code">P4</span> CBDC Settlement
+            <span class="p-time">30+ months</span>
+<span class="chev">⌄</span>
+</button>
+<div class="phase-body"><div class="phase-body-inner">
+<ul>
+<li data-i18n="t91">Viettel VMB node network stress-tested for offline wallet resilience under adverse network conditions.</li>
+<li data-i18n="t92">Atomic DvP settlement (tokenized assets against CBDC) piloted in a single sector — land registry or trade finance — before generalization.</li>
+<li data-i18n="t93"><strong style="color:var(--gold-bright)">Contingent on Phases 0–3 passing independent audit — not a fixed calendar date.</strong></li>
+</ul>
+</div></div>
+</div>
+</div>
+<div class="quote-gold reveal">
+<span class="tag" data-i18n="t71">Design principle</span>
+<p data-i18n="t72">No stage starts until an independent check on the last one is finished and published. This matters most for the digital currency stage — it should never launch on a fixed date. It should launch only once the earlier stages have passed their checks, because a failure in a national currency system hurts everyone far more than a failure in a market system.</p>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t42">Fig. 3 — Rollout sequencing, audit-gated not calendar-gated</div>
+<div class="mermaid" data-i18n-mermaid="d3">
+flowchart LR
+    P0["Phase 0<br/>Foundation<br/>0–6 mo"] --&gt;|audit gate| P1["Phase 1<br/>Identity &amp; Trust<br/>6–12 mo"]
+    P1 --&gt;|audit gate| P2["Phase 2<br/>Market Infra<br/>12–18 mo"]
+    P2 --&gt;|audit gate| P3["Phase 3<br/>Cross-Border<br/>18–30 mo"]
+    P3 -.-&gt;|audit gate — not calendar| P4["Phase 4<br/>CBDC Settlement<br/>30+ mo"]
+        </div>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE III ================= -->
+<section id="pillars">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t12">Article III</div>
+<div class="article-head reveal">
+<h2 data-i18n="t19">What It Takes to Succeed, Part by Part</h2>
+<p class="lede" data-i18n="t26">Each part of the system can fail in its own way. Naming each risk clearly — instead of lumping everything under one vague label — is what makes it possible to actually manage.</p>
+</div>
+<div class="pillar-grid reveal">
+<div class="pillar-card">
+<div class="p-num">01</div>
+<h4 data-i18n="t94">Trust Infrastructure</h4>
+<div class="row risk"><span class="k" data-i18n="t100">Risk</span><p data-i18n="t119">NDAChain and VBSN are built by different consortiums (MPS/MIC vs. 1Matrix/BCG/VBA) on different technical stacks — interoperability isn't guaranteed by strategy documents alone.</p></div>
+<div class="row mit"><span class="k" data-i18n="t101">Mitigation</span><p data-i18n="t120">A shared interoperability test suite with published conformance results before either chain is certified for production. Treat this as technical, not political.</p></div>
+<div class="row succ"><span class="k" data-i18n="t102">Success factor</span><p data-i18n="t121">A single canonical DID resolution path — ambiguity here fragments trust across the ecosystem.</p></div>
+</div>
+<div class="pillar-card">
+<div class="p-num">02</div>
+<h4 data-i18n="t95">Legal &amp; Regulatory Framework</h4>
+<div class="row risk"><span class="k" data-i18n="t103">Risk</span><p data-i18n="t122">Sandbox rules (Decree 94/2025/ND-CP) and 2026 MoF circulars evolving concurrently with technical build-out creates a moving compliance target.</p></div>
+<div class="row mit"><span class="k" data-i18n="t104">Mitigation</span><p data-i18n="t123">Freeze regulatory requirements per sandbox cohort at admission date; apply new rules only to subsequent cohorts.</p></div>
+<div class="row succ"><span class="k" data-i18n="t105">Success factor</span><p data-i18n="t124">Token classification (utility / security / RWA-backed) published before exchange licensing, not concurrent with it.</p></div>
+</div>
+<div class="pillar-card">
+<div class="p-num">03</div>
+<h4 data-i18n="t96">Market Infrastructure</h4>
+<div class="row risk"><span class="k" data-i18n="t106">Risk</span><p data-i18n="t125">Concentration risk — 1Matrix (VBSN) and FPT (akaChain) becoming de facto monopolies increases systemic fragility.</p></div>
+<div class="row mit"><span class="k" data-i18n="t107">Mitigation</span><p data-i18n="t126">Keep licensing competitive against shared technical standards, rather than hard-coding two vendors into the architecture.</p></div>
+<div class="row succ"><span class="k" data-i18n="t108">Success factor</span><p data-i18n="t127">Surveillance feeds (SSC/A05) tested for latency under peak load, not just steady state.</p></div>
+<div class="extra">
+<div class="row risk"><span class="k" data-i18n="t109">Risk — GOE Alliance</span><p data-i18n="t128">As the body closest to the vendors it coordinates, GOE Alliance risks becoming a vector for the same concentration risk it should mitigate without a convening/procurement firewall.</p></div>
+</div>
+</div>
+<div class="pillar-card">
+<div class="p-num">04</div>
+<h4 data-i18n="t97">Investor Protection &amp; Supervision</h4>
+<div class="row risk"><span class="k" data-i18n="t110">Risk</span><p data-i18n="t129">Automated fraud detection (NDAChain + VNeID) creates a single point of surveillance failure and civil-liberties exposure if biometric data is compromised.</p></div>
+<div class="row mit"><span class="k" data-i18n="t111">Mitigation</span><p data-i18n="t130">Independent, recurring penetration testing of the VNeID-NDAChain link; statutory limits on secondary use of biometric data.</p></div>
+<div class="row succ"><span class="k" data-i18n="t112">Success factor</span><p data-i18n="t131">A public incident-disclosure protocol for audit failures — silent patching erodes trust faster than disclosed incidents.</p></div>
+</div>
+<div class="pillar-card">
+<div class="p-num">05</div>
+<h4 data-i18n="t98">Human Capital</h4>
+<div class="row risk"><span class="k" data-i18n="t113">Risk</span><p data-i18n="t132">A four-tier education model spanning ~17M public down to compliance officers is historically under-resourced in execution.</p></div>
+<div class="row mit"><span class="k" data-i18n="t114">Mitigation</span><p data-i18n="t133">Tie Tier 3/4 certification completion to exchange licensing eligibility — a market-driven incentive independent of campaign budgets.</p></div>
+<div class="row succ"><span class="k" data-i18n="t115">Success factor</span><p data-i18n="t134">Track Tier 1 awareness by measured wallet-security incident rates, not campaign reach.</p></div>
+</div>
+<div class="pillar-card">
+<div class="p-num">06</div>
+<h4 data-i18n="t99">CBDC &amp; Sovereign Settlement</h4>
+<div class="row risk"><span class="k" data-i18n="t116">Risk</span><p data-i18n="t135">Telco-dependent node infrastructure (Viettel VMB) is a single point of failure atypical for central bank infrastructure.</p></div>
+<div class="row mit"><span class="k" data-i18n="t117">Mitigation</span><p data-i18n="t136">Require redundant node operators before CBDC settlement moves beyond pilot; define an SBV-controlled fallback path.</p></div>
+<div class="row succ"><span class="k" data-i18n="t118">Success factor</span><p data-i18n="t137">Offline wallet protocol tested under actual network-outage conditions, not simulated.</p></div>
+</div>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t43">Fig. 4 — How the six pillars feed into one another</div>
+<div class="mermaid" data-i18n-mermaid="d4">
+flowchart TD
+    P1["Pillar 1<br/>Trust Infrastructure"]
+    P2["Pillar 2<br/>Legal &amp; Regulatory"]
+    P3["Pillar 3<br/>Market Infrastructure"]
+    P4["Pillar 4<br/>Investor Protection"]
+    P5["Pillar 5<br/>Human Capital"]
+    P6["Pillar 6<br/>CBDC Settlement"]
+    P1 --&gt;|identity trust enables| P3
+    P2 --&gt;|licensing rules gate| P3
+    P3 --&gt;|transaction data feeds| P4
+    P5 --&gt;|certified staff| P3
+    P5 --&gt;|certified officers| P4
+    P4 --&gt;|clean record enables| P6
+    P3 --&gt;|proven infra enables| P6
+    P1 --&gt;|ZK-identity underpins| P6
+        </div>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE IV ================= -->
+<section id="dependencies" style="background: linear-gradient(180deg, transparent, rgba(179,35,56,0.025), transparent);">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t13">Article IV</div>
+<div class="article-head reveal">
+<h2 data-i18n="t20">How the Parts Depend on Each Other</h2>
+<p class="lede" data-i18n="t27">Identity leads to markets, and markets lead to settlement — so a delay anywhere upstream slows everything downstream. Here are five chains worth watching closely.</p>
+</div>
+<div class="dep-list reveal">
+<div class="dep-chain">
+<span class="chip" data-i18n="t138">VNeID Level 2 eID</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t139">NDAChain ZKP verification</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t140">Exchange eKYC</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t141">Licensed trading</span>
+<span class="note" data-i18n="t150">A delay in national eID rollout directly blocks exchange licensing timelines.</span>
+</div>
+<div class="dep-chain">
+<span class="chip" data-i18n="t142">Cipher Committee standards</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t143">All chain deployments</span>
+<span class="note" data-i18n="t151">Standards must be finalized before, not alongside, VBSN/NDAChain production deployment to avoid costly retrofits.</span>
+</div>
+<div class="dep-chain">
+<span class="chip" data-i18n="t144">SSC sandbox cohort outcomes</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t145">Subsequent regulatory circulars</span>
+<span class="note" data-i18n="t152">Regulation should be empirically informed by sandbox results, not finalized in parallel with the first cohort's operation.</span>
+</div>
+<div class="dep-chain">
+<span class="chip" data-i18n="t146">VMB node stress-test results</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t147">CBDC settlement go-live</span>
+<span class="note" data-i18n="t153">The dependency most likely to be politically pressured into premature go-live — this gate should be independently auditable and resistant to calendar override.</span>
+</div>
+<div class="dep-chain">
+<span class="chip" data-i18n="t148">GOE Alliance charter &amp; mandate</span><span class="arrow">→</span>
+<span class="chip" data-i18n="t149">Sandbox velocity + cross-border credibility</span>
+<span class="note" data-i18n="t154">An unchartered GOE Alliance stalls; an over-scoped one overreaches into de facto regulation. Treat its Phase 0 charter as a program dependency, same footing as the cryptographic baseline.</span>
+</div>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t44">Fig. 5 — Dependency chains at a glance</div>
+<div class="mermaid" data-i18n-mermaid="d5">
+flowchart TD
+    ID["VNeID Level 2 eID"] --&gt; ZKP["NDAChain ZKP Verification"]
+    ZKP --&gt; EKYC["Exchange eKYC"]
+    EKYC --&gt; TRADE["Licensed Trading"]
+    CIPHER["Cipher Committee Standards"] --&gt; ALLDEPLOY["All Chain Deployments<br/>NDAChain / VBSN / VMB"]
+    SANDBOX["SSC Sandbox Cohort Outcomes"] --&gt; CIRC["Subsequent Regulatory Circulars"]
+    VMB["VMB Node Stress-Test Results"] --&gt; CBDC["CBDC Settlement Go-Live"]
+    CHARTER["GOE Alliance Charter &amp; Mandate"] --&gt; VELOCITY["Sandbox Cohort Velocity"]
+    CHARTER --&gt; CREDIBILITY["Cross-Border Credibility"]
+        </div>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE V ================= -->
+<section id="monitoring">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t14">Article V</div>
+<div class="article-head reveal">
+<h2 data-i18n="t21">Tracking Whether It's Working</h2>
+<p class="lede" data-i18n="t28">Early-warning signs catch problems while they're still small. Later results confirm whether the fix actually worked.</p>
+</div>
+<div class="reveal" style="overflow-x:auto;">
+<table class="kpi">
+<thead><tr><th data-i18n="t155">Domain</th><th data-i18n="t156">Leading indicator</th><th data-i18n="t157">Lagging indicator</th></tr></thead>
+<tbody>
+<tr><td class="domain" data-i18n="t158">Identity Trust</td><td data-i18n="t159">ZKP verification latency, false-match rate</td><td data-i18n="t160">Nominee-account fraud incidents post-launch</td></tr>
+<tr><td class="domain" data-i18n="t161">Market Infrastructure</td><td data-i18n="t162">Sandbox cohort completion rate, exchange onboarding time</td><td data-i18n="t163">Market abuse cases detected vs. prosecuted</td></tr>
+<tr><td class="domain" data-i18n="t164">Regulatory</td><td data-i18n="t165">Time from sandbox exit to full licensing</td><td data-i18n="t166">Regulatory amendment frequency (policy-instability proxy)</td></tr>
+<tr><td class="domain" data-i18n="t167">Human Capital</td><td data-i18n="t168">Tier 3/4 certification completion rate</td><td data-i18n="t169">Wallet-security incident rate (Tier 1/2 proxy)</td></tr>
+<tr><td class="domain" data-i18n="t170">CBDC Readiness</td><td data-i18n="t171">VMB node uptime under stress test</td><td data-i18n="t172">Settlement failure/reversal rate in pilot sector</td></tr>
+<tr><td class="domain" data-i18n="t173">GOE Alliance Coordination</td><td data-i18n="t174">Sandbox onboarding time, cross-border agreements logged</td><td data-i18n="t175">Disputes escalated to SSC/MoF over mandate boundaries</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE VI ================= -->
+<section id="risks" style="background: linear-gradient(180deg, transparent, rgba(179,35,56,0.03), transparent);">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t15">Article VI</div>
+<div class="article-head reveal">
+<h2 data-i18n="t22">Risks to Flag Right Away</h2>
+<p class="lede" data-i18n="t29">Six risks the leadership committee should know about now, before they grow into bigger problems.</p>
+</div>
+<div class="risk-list reveal">
+<div class="risk-item"><span class="r-num">01</span><div><h4 data-i18n="t176">Interoperability debt</h4><p data-i18n="t182">Between NDAChain and VBSN — technical, not political, and must be resolved before either scales.</p></div><span class="esc" data-i18n="t188">→ Technical WG</span></div>
+<div class="risk-item"><span class="r-num">02</span><div><h4 data-i18n="t177">Single-vendor concentration</h4><p data-i18n="t183">1Matrix, FPT, Viettel creating systemic fragility disguised as efficiency.</p></div><span class="esc" data-i18n="t189">→ Steering Cmte</span></div>
+<div class="risk-item"><span class="r-num">03</span><div><h4 data-i18n="t178">Calendar-driven CBDC pressure</h4><p data-i18n="t184">Overriding audit-gated phase progression.</p></div><span class="esc" data-i18n="t190">→ Steering Cmte</span></div>
+<div class="risk-item"><span class="r-num">04</span><div><h4 data-i18n="t179">Biometric centralization</h4><p data-i18n="t185">VNeID as universal wallet controller is a high-value single target; recurring audits are non-negotiable.</p></div><span class="esc" data-i18n="t191">→ Assurance Body</span></div>
+<div class="risk-item"><span class="r-num">05</span><div><h4 data-i18n="t180">Regulatory-technical mismatch</h4><p data-i18n="t186">MoF circulars and technical build-out on independent timelines risk non-compliant or obsolete infrastructure.</p></div><span class="esc" data-i18n="t192">→ SSC + MoF</span></div>
+<div class="risk-item"><span class="r-num">06</span><div><h4 data-i18n="t181">GOE Alliance mandate creep</h4><p data-i18n="t187">The convening body closest to both government and vendor interests is the most likely source of governance ambiguity; review on the same cadence as phase gates.</p></div><span class="esc" data-i18n="t193">→ Steering Cmte</span></div>
+</div>
+<div class="diagram-panel reveal">
+<div class="d-label" data-i18n="t45">Fig. 6 — Risk-to-escalation routing</div>
+<div class="mermaid" data-i18n-mermaid="d6">
+flowchart TD
+    R1["Interoperability Debt"] --&gt; ESC1["Joint Technical<br/>Working Group"]
+    R2["Vendor Concentration"] --&gt; ESC2["Strategic Steering<br/>Committee"]
+    R3["CBDC Calendar Pressure"] --&gt; ESC2
+    R4["Biometric Centralization"] --&gt; ESC3["Independent Assurance<br/>Cipher Cmte + A05"]
+    R5["Regulatory-Technical Mismatch"] --&gt; ESC4["SSC + MoF<br/>Joint Panel"]
+    R6["GOE Alliance Mandate Creep"] --&gt; ESC2
+    ESC1 --&gt; PM["Prime Minister's Office<br/>Final Arbitration"]
+    ESC2 --&gt; PM
+    ESC3 --&gt; PM
+    ESC4 --&gt; PM
+        </div>
+</div>
+</div>
+</section>
+<!-- ================= ARTICLE VII ================= -->
+<section id="roadmap" style="background: linear-gradient(180deg, transparent, rgba(63,125,107,0.035), transparent);">
+<div class="wrap">
+<div class="eyebrow" data-i18n="t16">Article VII</div>
+<div class="article-head reveal">
+<h2 data-i18n="t23">Roadmap — Closing the Gaps</h2>
+<p class="lede" data-i18n="t30">The plan above lays out what's already been designed. But it doesn't yet answer some big questions people will ask in year one — what happens if a stage fails its check, who pays for shared systems, and how does someone get their money back if something breaks. These gaps are worth closing before they turn into real incidents.</p>
+</div>
+<h3 class="reveal" data-i18n="t48">Shortcomings not yet covered by the framework</h3>
+<div class="gap-list reveal">
+<div class="gap-item"><span class="g-num">01</span><div><h4 data-i18n="t194">No funding or cost-recovery model</h4><p data-i18n="t202">Nothing specifies who pays for GOE Alliance operations, shared sandbox infrastructure, or recurring audits — ministry budget, cohort fees, or licensing levies.</p></div></div>
+<div class="gap-item"><span class="g-num">02</span><div><h4 data-i18n="t195">No phase-failure protocol</h4><p data-i18n="t203">"No phase begins until the prior audit passes" is a gate, not a plan — there's no defined remediation window, partial-rollback procedure, or disclosure requirement for what happens when an audit fails.</p></div></div>
+<div class="gap-item"><span class="g-num">03</span><div><h4 data-i18n="t196">No consumer redress channel</h4><p data-i18n="t204">Pillar 4 covers detection and surveillance of abuse, but not a route for an ordinary user to recover frozen funds or dispute a transaction — enforcement isn't redress.</p></div></div>
+<div class="gap-item"><span class="g-num">04</span><div><h4 data-i18n="t197">No formal biometric data-sharing MOU</h4><p data-i18n="t205">MPS holds VNeID biometric data; SBV and SSC need it for AML/eKYC. The framework assumes this link exists without naming the legal instrument — Decree 13/2023/ND-CP on personal data protection — that should govern its scope and retention.</p></div></div>
+<div class="gap-item"><span class="g-num">05</span><div><h4 data-i18n="t198">No second vendor bench</h4><p data-i18n="t206">The concentration-risk mitigation says "keep licensing competitive," but no concrete step exists to qualify a second Layer-1 or BaaS provider before the ecosystem is architecturally dependent on 1Matrix and FPT.</p></div></div>
+<div class="gap-item"><span class="g-num">06</span><div><h4 data-i18n="t199">No GOE Alliance sunset or renewal clause</h4><p data-i18n="t207">A chartered mandate without a review date tends to persist and expand by default rather than by decision.</p></div></div>
+<div class="gap-item"><span class="g-num">07</span><div><h4 data-i18n="t200">No reserve or insurance fund</h4><p data-i18n="t208">Nothing capitalizes a backstop for smart-contract failure or RWA reserve shortfall — the framework audits for these events but doesn't fund recovery from them.</p></div></div>
+<div class="gap-item"><span class="g-num">08</span><div><h4 data-i18n="t201">No talent-retention strategy</h4><p data-i18n="t209">Tier 3/4 certification builds exactly the skilled workforce international employers will recruit; the human capital pillar has no plan to retain them.</p></div></div>
+</div>
+<div class="roadmap-cols reveal">
+<div class="roadmap-col now">
+<span class="rc-tag" data-i18n="t210">Immediate — 0 to 6 months</span>
+<h3 data-i18n="t212">Do alongside Phase 0</h3>
+<ol>
+<li data-i18n="t214"><b>Publish a cost-recovery model</b> for GOE Alliance operations and shared sandbox infrastructure before the Phase 0 charter is finalized — licensing fees and cohort fees, not open-ended ministry budget.<span class="owner">Owner: GOE Alliance + MoF</span></li>
+<li data-i18n="t215"><b>Define the phase-failure protocol</b> in writing: remediation window, conditions for partial rollback of already-deployed components, and a public disclosure requirement.<span class="owner">Owner: Strategic Steering Cmte</span></li>
+<li data-i18n="t216"><b>Draft the MPS–SBV–SSC biometric data MOU</b>, scoped against Decree 13/2023/ND-CP, before Phase 1's biometric bank pilot goes live.<span class="owner">Owner: MPS + SBV + SSC</span></li>
+<li data-i18n="t217"><b>Open a second Layer-1/BaaS qualification track</b> in parallel with 1Matrix/FPT deployment, so an alternative is architecturally viable before Phase 2 scales exchange count.<span class="owner">Owner: Technical WG</span></li>
+<li data-i18n="t218"><b>Stand up an independent consumer ombudsman channel</b>, separate from SSC enforcement, for frozen-fund and disputed-transaction complaints.<span class="owner">Owner: SSC + MoF</span></li>
+</ol>
+</div>
+<div class="roadmap-col later">
+<span class="rc-tag" data-i18n="t211">Long-term — 12 to 36+ months</span>
+<h3 data-i18n="t213">Build through Phases 2–4</h3>
+<ol>
+<li data-i18n="t219"><b>Legislate a 3-year sunset/renewal clause</b> for the GOE Alliance charter, reviewed against the same audit evidence as the phase gates.<span class="owner">Owner: Steering Cmte</span></li>
+<li data-i18n="t220"><b>Capitalize a cybersecurity and reserve insurance fund</b>, sized against RWA custody exposure and funded from exchange licensing fees.<span class="owner">Owner: SSC + Licensed Exchanges</span></li>
+<li data-i18n="t221"><b>Extend the interoperability conformance suite</b> beyond NDAChain/VBSN to legacy banking core systems, ahead of Phase 3 enterprise scaling.<span class="owner">Owner: Technical WG + Banks</span></li>
+<li data-i18n="t222"><b>Build a talent-retention program</b> — compensation benchmarking and secondment pathways — for Tier 3/4 certified developers and compliance officers.<span class="owner">Owner: ABAII + SSC Training Ctr</span></li>
+<li data-i18n="t223"><b>Convert the redundant-node recommendation into a statutory multi-operator mandate</b> before CBDC settlement moves to general availability.<span class="owner">Owner: SBV</span></li>
+<li data-i18n="t224"><b>Track public trust as a lagging KPI</b> via a recurring independent sentiment survey, alongside the technical audit metrics in Article V.<span class="owner">Owner: GOE Alliance + SSC</span></li>
+</ol>
+</div>
+</div>
+<div class="diagram-panel panel-full reveal">
+<div class="d-label" data-i18n="t46"><span>Fig. 7 — Roadmap actions against the phase timeline</span><span class="scroll-hint">← swipe to see full timeline →</span></div>
+<div class="mermaid" data-i18n-mermaid="d7">
+gantt
+    title Roadmap — Immediate &amp; Long-Term Actions
+    dateFormat  YYYY-MM-DD
+    axisFormat  %b %Y
+
+    section Governance
+    Funding &amp; cost-recovery model      :a1, 2026-08-01, 2027-02-01
+    Phase-failure rollback protocol     :a2, 2026-08-01, 2027-02-01
+    Biometric data MOU (MPS-SBV-SSC)    :a3, 2026-08-01, 2027-04-01
+    GOE Alliance sunset clause          :a4, 2027-08-01, 2028-08-01
+
+    section Market Infrastructure
+    Second Layer-1/BaaS vendor track    :b1, 2026-10-01, 2027-10-01
+    Redundant CBDC node mandate         :b2, 2028-10-01, 2029-08-01
+
+    section Investor Protection
+    Independent consumer ombudsman      :c1, 2026-08-01, 2027-06-01
+    Cyber / reserve insurance fund      :c2, 2027-06-01, 2028-08-01
+
+    section Human Capital
+    Talent retention program            :d1, 2027-02-01, 2028-08-01
+    Public trust sentiment KPI          :d2, 2027-02-01, 2029-08-01
+        </div>
+</div>
+<div class="callout reveal">
+<span class="tag" data-i18n="t68">Reading this roadmap</span>
+<p data-i18n="t70">None of these items need to happen before Stage 0 can start — but a few of them (the funding plan, the rollback plan, the data-sharing agreement) should count as Stage 0 work in their own right, just as important as the security standards. Putting them off doesn't make the risk go away — it just makes the problem more expensive to fix later.</p>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap">
+<p class="lacquer-note" data-i18n="t225">"Good systems are built the same way good things are always built — one careful step at a time, each one checked before the next begins. Nothing grows bigger until what's underneath it is solid."</p>
+<p data-i18n="t226" style="max-width:60ch; font-size:14px;">This plan brings order and sequencing to the six-part system already agreed on. It doesn't change who's responsible for what — only the order they work in and the checks along the way. The GOE Alliance's job is to bring people together, not to regulate; its role should stay clearly defined, not assumed.</p>
+<div class="rule"></div>
+<div class="meta">
+<span data-i18n="t227">Implementation Success Framework</span>
+<span data-i18n="t228">Vietnam Digital Asset &amp; CBDC Infrastructure</span>
+<span data-i18n="t229">v1.1 — GOE Alliance revision</span>
+</div>
+</div>
+</footer>
+<script>
+  // ---- Core page interactions: runs independently of Mermaid. ----
+  // Each piece is wrapped so a failure in one never blocks the others.
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // reveal on scroll
+    try {
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        revealEls.forEach(function (el) { revealObserver.observe(el); });
+      } else {
+        // no IntersectionObserver support: just show everything
+        revealEls.forEach(function (el) { el.classList.add('in'); });
+      }
+    } catch (err) {
+      console.warn('Reveal-on-scroll setup failed, showing content immediately.', err);
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+
+    // article rail + mobile progress: click-to-scroll (robust — doesn't rely on native #hash navigation,
+    // which can be blocked or unreliable inside sandboxed/embedded preview contexts)
+    try {
+      var navLinks = document.querySelectorAll('#article-rail a, #mobile-progress a');
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var href = link.getAttribute('href') || '';
+          if (href.charAt(0) !== '#') return;
+          var targetEl = document.getElementById(href.slice(1));
+          if (!targetEl) return;
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Best-effort URL update only — some embedded/sandboxed preview contexts (e.g. a
+          // srcdoc iframe) disallow history/hash mutation entirely and throw a SecurityError,
+          // so this must never be allowed to break the scroll itself.
+          try {
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', href);
+            } else {
+              window.location.hash = href;
+            }
+          } catch (urlErr) {
+            // Ignore — scrolling already happened, updating the URL is a nice-to-have only.
+          }
+        });
+      });
+    } catch (err) {
+      console.warn('Nav link click-to-scroll setup failed.', err);
+    }
+
+    // article rail scroll-spy
+    try {
+      var railLinks = document.querySelectorAll('#article-rail a, #mobile-progress a');
+      var sectionIds = ['hero', 'governance', 'rollout', 'pillars', 'dependencies', 'monitoring', 'risks', 'roadmap'];
+      var sections = sectionIds.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+      if ('IntersectionObserver' in window) {
+        var spyObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var id = entry.target.id;
+              railLinks.forEach(function (a) {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+              });
+            }
+          });
+        }, { threshold: 0.5, rootMargin: '-10% 0px -60% 0px' });
+        sections.forEach(function (s) { spyObserver.observe(s); });
+      }
+    } catch (err) {
+      console.warn('Scroll-spy setup failed (non-critical).', err);
+    }
+
+    // hero gate rail fill animation
+    try {
+      window.requestAnimationFrame(function () {
+        var fill = document.getElementById('track-fill');
+        if (fill) fill.style.width = '22%';
+      });
+    } catch (err) {
+      console.warn('Gate rail animation failed (non-critical).', err);
+    }
+
+    // gate buttons: scroll to phase + open it
+    try {
+      document.querySelectorAll('#hero-gate-rail .gate').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-target');
+          var phase = document.getElementById(target);
+          if (phase) {
+            phase.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            openPhase(phase);
+          }
+        });
+      });
+    } catch (err) {
+      console.warn('Gate rail click handlers failed to attach.', err);
+    }
+
+    // phase accordion
+    function openPhase(item) {
+      document.querySelectorAll('.phase-item').forEach(function (p) {
+        if (p !== item) { p.classList.remove('open'); var h = p.querySelector('.phase-head'); if (h) h.setAttribute('aria-expanded', 'false'); }
+      });
+      item.classList.add('open');
+      var head = item.querySelector('.phase-head');
+      if (head) head.setAttribute('aria-expanded', 'true');
+    }
+    try {
+      document.querySelectorAll('.phase-head').forEach(function (head) {
+        head.addEventListener('click', function () {
+          var item = head.closest('.phase-item');
+          var isOpen = item.classList.contains('open');
+          document.querySelectorAll('.phase-item').forEach(function (p) {
+            p.classList.remove('open');
+            var h = p.querySelector('.phase-head'); if (h) h.setAttribute('aria-expanded', 'false');
+          });
+          if (!isOpen) { item.classList.add('open'); head.setAttribute('aria-expanded', 'true'); }
+        });
+      });
+      var p0 = document.getElementById('p0');
+      if (p0) p0.classList.add('open');
+    } catch (err) {
+      console.warn('Phase accordion setup failed (non-critical).', err);
+    }
+
+  });
+</script>
+<script onerror="window.__mermaidFailed = true;" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script>
+  // ---- Diagram rendering: isolated so any Mermaid failure only affects diagrams. ----
+  document.addEventListener('DOMContentLoaded', function () {
+    var panels = document.querySelectorAll('.diagram-panel .mermaid');
+
+    function showFallback() {
+      panels.forEach(function (el) {
+        el.innerHTML = '<p style="color:var(--text-faint); font-family:var(--font-mono); font-size:12.5px; text-align:center; padding:20px 0;">Diagram unavailable offline — the Mermaid.js library could not be loaded from the CDN.</p>';
+      });
+    }
+
+    if (window.__mermaidFailed || typeof mermaid === 'undefined') {
+      showFallback();
+      return;
+    }
+
+    try {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          darkMode: true,
+          background: 'transparent',
+          primaryColor: '#1A2233',
+          primaryTextColor: '#ECE8DD',
+          primaryBorderColor: '#C9A227',
+          lineColor: '#C9A227',
+          secondaryColor: '#B32338',
+          secondaryTextColor: '#ECE8DD',
+          secondaryBorderColor: '#B32338',
+          tertiaryColor: '#1A332B',
+          tertiaryTextColor: '#ECE8DD',
+          tertiaryBorderColor: '#3F7D6B',
+          fontFamily: 'IBM Plex Mono, monospace',
+          fontSize: '13px',
+          edgeLabelBackground: '#121826',
+          clusterBkg: '#121826',
+          clusterBorder: '#3F7D6B'
+        },
+        flowchart: { curve: 'basis', htmlLabels: true },
+        gantt: {
+          // Render at a generous native size instead of squeezing to fit the container —
+          // useMaxWidth:false keeps bars/labels at real, readable pixel sizes; the panel's
+          // own overflow-x:auto (see .diagram-panel) handles the horizontal scroll on
+          // screens narrower than the diagram itself.
+          useMaxWidth: false,
+          useWidth: 1500,
+          barHeight: 26,
+          barGap: 10,
+          topPadding: 60,
+          rightPadding: 40,
+          leftPadding: 200,
+          gridLineStartPadding: 35,
+          fontSize: 13,
+          sectionFontSize: 13,
+          numberSectionStyles: 4
+        },
+        securityLevel: 'loose'
+      });
+
+      mermaid.run({ nodes: panels }).catch(function (err) {
+        console.warn('Mermaid render failed.', err);
+        showFallback();
+      });
+    } catch (err) {
+      console.warn('Mermaid initialize failed.', err);
+      showFallback();
+    }
+  });
+</script>
+</body>
+</html>
