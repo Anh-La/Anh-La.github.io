@@ -174,7 +174,7 @@ For quick navigation, the table below maps each topic in this guide to its origi
 
 The diagram below traces the program-design chain from fiscal projections through to iteration for consistency, mapping each stage to its source module.
 
-![Figure 1](assets/figure1.png)
+![Figure 1](figure1.png)
 
 _Figure 1 — The Integrated Macroeconomic Framework: from fiscal projections to program iteration._
 
@@ -325,7 +325,7 @@ Driven by profit optimization — the balance between marginal returns and the c
 
 The real sector links directly to each of the other three core sectors tracked in macroeconomic policy.
 
-![Figure 2](assets/figure2.png)
+![Figure 2](figure2.png)
 
 _Figure 2 — Sectoral interconnections across macroeconomic accounts, radiating from the Real Sector._
 
