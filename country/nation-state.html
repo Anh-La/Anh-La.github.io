@@ -439,7 +439,7 @@
   <div class="tabs" id="tabs" role="tablist">
     <button class="tab active" data-tab="simulator" role="tab">Policy Simulator</button>
     <a href="real-sector.html" class="tab tab-accent" style="--accent-color:#2563EB;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Real Sector deep-dive on its own page">Real</a>
-    <button class="tab tab-accent" data-tab="external" style="--accent-color:#059669" role="tab">External</button>
+    <a href="external-sector.html" class="tab tab-accent" style="--accent-color:#059669;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the External Sector deep-dive on its own page">External</a>
     <button class="tab tab-accent" data-tab="govops" style="--accent-color:#D92D20" role="tab">Government</button>
     <button class="tab tab-accent" data-tab="monetary" style="--accent-color:#7C3AED" role="tab">Monetary</button>
     <button class="tab" data-tab="flowoffunds" role="tab">Sector Interlinks</button>
@@ -5785,6 +5785,7 @@ function renderCaseQuestions(){
 
 function goToCaseTab(tab){
   if (tab === 'real') { window.location.href = 'real-sector.html'; return; }
+  if (tab === 'external') { window.location.href = 'external-sector.html'; return; }
   const btn = document.querySelector('#tabs .tab[data-tab="' + tab + '"]');
   if (btn) btn.click();
   const sectionId = (tab === 'real' || tab === 'external' || tab === 'monetary') ? 'tab-sector' : 'tab-' + tab;
