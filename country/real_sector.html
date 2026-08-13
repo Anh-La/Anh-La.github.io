@@ -257,11 +257,6 @@
   /* Utility hidden */
   .hidden{display:none !important}
   .solo-hidden{display:none !important}
-  #real-fb-solo-btn{background:#fff;border:1px solid var(--line);padding:7px 14px;
-    font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;
-    color:var(--muted);white-space:nowrap;flex-shrink:0}
-  #real-fb-solo-btn:hover{color:var(--ink);border-color:var(--ink)}
-  #real-fb-solo-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 
   /* Study Questions by Sector */
   .caseq-filter-btn{padding:8px 12px;font-size:10px;text-transform:uppercase;letter-spacing:.09em;
@@ -419,6 +414,42 @@
 
   /* Prevent horizontal page overflow from wide inline styles */
   html, body{overflow-x:hidden}
+
+  /* Real Sector Macroeconomic Framework — interactive guide (single merged Introduction section) */
+  .fw-guide-head{cursor:pointer;user-select:none}
+  .fw-guide-head:hover{background:#eef2f7}
+  .fw-guide-title-wrap{display:flex;align-items:center;gap:6px}
+  .fw-guide-icon{display:inline-block;width:10px;transition:transform .15s ease;font-size:9px;color:var(--muted);flex-shrink:0}
+  .fw-guide-head.collapsed .fw-guide-icon{transform:rotate(-90deg)}
+  #fw-guide-body.collapsed{display:none}
+  .fw-panel{display:none}
+  .fw-panel.active{display:block}
+  .fw-formula{font-family:var(--font-mono);font-size:13px;font-weight:600;background:#f8fafc;border:1px solid var(--line);
+    padding:10px 14px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+  .fw-formula-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:3px;white-space:normal}
+  .fw-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:800px){.fw-grid2{grid-template-columns:1fr}}
+  .fw-callout{border-left:3px solid var(--real);background:#eff6ff;padding:10px 14px;font-size:12px;color:#1e293b;margin:10px 0;line-height:1.55}
+  .fw-callout.warn{border-color:var(--warn);background:#fff8ed}
+  .fw-diagram{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 16px;background:#f8fafc;border:1px solid var(--line);margin:12px 0}
+  .fw-diagram-box{border:1.5px solid var(--ink);background:#fff;padding:10px 18px;font-size:11px;font-weight:700;text-align:center;
+    text-transform:uppercase;letter-spacing:.06em;min-width:240px;max-width:100%}
+  .fw-diagram-box.accent{border-color:var(--real);color:var(--real)}
+  .fw-diagram-arrow{font-size:16px;color:var(--muted);line-height:1}
+  .fw-diagram-sub{font-size:10px;color:var(--muted);font-family:var(--font-mono)}
+  .fw-slider-row{display:flex;flex-direction:column;gap:4px;margin:10px 0}
+  .fw-slider-row label{font-size:10.5px;font-weight:600;color:#334155;display:flex;justify-content:space-between;gap:8px}
+  .fw-slider-row input[type="range"]{width:100%}
+  .fw-glossary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+  @media (max-width:900px){.fw-glossary{grid-template-columns:1fr}}
+  .fw-glossary-item{border:1px solid var(--line);padding:12px;background:#fff}
+  .fw-glossary-term{font-size:11px;font-weight:800;color:var(--ink);margin-bottom:4px}
+  .fw-glossary-def{font-size:11.5px;color:#334155;line-height:1.5}
+  .fw-glossary-metric{font-family:var(--font-mono);font-size:10.5px;color:var(--real);margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);line-height:1.5}
+  @media (max-width:560px){
+    .fw-formula{white-space:normal;font-size:11.5px}
+    .fw-diagram-box{min-width:0;font-size:10px;padding:9px 12px}
+  }
 </style>
 </head>
 <body>
@@ -439,6 +470,108 @@
   <div style="margin:4px 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)">
     <h1 style="font-family:var(--font-display);font-style:italic;font-size:26px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Real Sector — Deep Dive</h1>
     <div style="font-size:12px;color:var(--muted);margin-top:4px">Source charts, historical accounts, and forecast worksheets for the Real Sector. Part of the <a href="nation-state.html" style="color:var(--blue)">Financial Programming Framework</a> simulator.</div>
+  </div>
+
+  <!-- ============================================================
+       Real Sector Macroeconomic Framework — interactive guide,
+       wired to BASELINE.real / BASELINE.external / BASELINE.government
+       so every worked example recalculates from this page's own
+       Macronia data instead of sitting as static placeholder text.
+       ============================================================ -->
+  <div class="card" id="fw-guide" style="margin-bottom:16px">
+    <div class="card-head fw-guide-head collapsed" id="fw-guide-head" role="button" tabindex="0" aria-expanded="false" aria-controls="fw-guide-body" style="background:#f8fafc">
+      <span class="fw-guide-title-wrap">
+        <span class="fw-guide-icon">&#9662;</span>
+        <span class="card-title"><span class="dot" style="background:var(--real)"></span>Introduction</span>
+      </span>
+      <span class="mono" style="font-size:10px;color:var(--muted)">Interactive guide · live-linked to the Macronia 2006–2012 baseline below</span>
+    </div>
+    <div class="card-body collapsed" id="fw-guide-body">
+      <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px;max-width:900px;line-height:1.55">The Real Sector covers all real economic transactions — production, income and consumption — inside an economy. This guide walks through how those flows are measured, how they connect to the external accounts through the Current Account, and the structural equations linking output, prices and interest rates. Every number below recalculates from the actual Macronia figures shown elsewhere on this page.</div>
+
+      <!-- 1. Core Principles & Measuring Aggregate Output -->
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">1 · Core Principles &amp; Output</div>
+      <div class="fw-panel active" id="fw-panel-core">
+        <p style="font-size:12px;color:#334155;line-height:1.6;margin:4px 0 8px">Gross Domestic Product (GDP) is the total market value of all final goods and services produced within national physical borders over a specific period.</p>
+        <div class="fw-formula"><div class="fw-formula-label">GDP — production approach</div>GDP = &Sigma; Gross Value Added = Gross Output &minus; Intermediate Consumption</div>
+        <div class="fw-grid2">
+          <div class="fw-formula"><div class="fw-formula-label">Gross National Income — primary income earned by residents globally</div>GNI = GDP + Net Primary Income from Abroad</div>
+          <div class="fw-formula"><div class="fw-formula-label">Gross National Disposable Income — total income available to spend or save</div>GNDI = GNI + Net Current Transfers from Abroad</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px">
+          <span style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">Walk GDP &rarr; GNI &rarr; GNDI using Macronia's own data</span>
+          <select class="text-input" id="fw-year-select" style="min-width:90px"></select>
+        </div>
+        <div class="summary" id="fw-waterfall" style="grid-template-columns:repeat(5,1fr)"></div>
+        <div class="fw-callout" id="fw-waterfall-note"></div>
+      </div>
+
+      <!-- 2. Income-Expenditure Accounts & Savings-Investment Gaps -->
+      <div style="border-top:1px solid var(--line);margin:22px 0 14px"></div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">2 · Income–Expenditure &amp; S–I Gap</div>
+      <div class="fw-panel active" id="fw-panel-income">
+        <div class="fw-diagram">
+          <div class="fw-diagram-box accent">Gross National Disposable Income (GNDI)</div>
+          <div class="fw-diagram-arrow">&#8595;</div>
+          <div class="fw-diagram-box">Domestic Absorption (A = C + I)</div>
+          <div class="fw-diagram-sub">total spending on domestic &amp; foreign final goods and services</div>
+          <div class="fw-diagram-arrow">&#8595;</div>
+          <div class="fw-diagram-box">Current Account Balance (CAB = GNDI &minus; A)</div>
+        </div>
+
+        <div class="fw-grid2">
+          <div class="fw-formula"><div class="fw-formula-label">Domestic absorption</div>A = C + I</div>
+          <div class="fw-formula"><div class="fw-formula-label">Gross national savings — unconsumed disposable income</div>S = GNDI &minus; C</div>
+        </div>
+        <div class="fw-formula"><div class="fw-formula-label">Savings–Investment gap — connects real sector choices to the external balance</div>CAB = GNDI &minus; A = S &minus; I</div>
+
+        <div class="fw-callout warn" style="margin-top:16px"><strong>Practical example — the Twin Deficits &amp; Absorption Shock.</strong> A country lifts government spending (G) without a matching rise in domestic production or revenue. Domestic absorption (A) expands beyond disposable income (GNDI). Because S &minus; I = CAB, the resulting savings deficit forces the economy to borrow from abroad, widening the Current Account deficit.</div>
+
+        <div class="fw-slider-row">
+          <label>Absorption shock — extra spending, % of GDP<span id="fw-shock-val" class="mono">0.0%</span></label>
+          <input type="range" id="fw-shock-slider" min="0" max="8" step="0.5" value="0">
+        </div>
+        <div class="summary" id="fw-shock-kpis" style="grid-template-columns:repeat(4,1fr);margin-top:6px"></div>
+        <div class="fw-callout" id="fw-shock-note"></div>
+      </div>
+
+      <!-- 3. Structural Relationships & Sector Specific Glossary -->
+      <div style="border-top:1px solid var(--line);margin:22px 0 14px"></div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">3 · Structural Relations &amp; Glossary</div>
+      <div class="fw-panel active" id="fw-panel-structural">
+        <div class="fw-grid2">
+          <div>
+            <div class="fw-formula"><div class="fw-formula-label">Phillips Curve — links the output gap to inflation dynamics</div>&pi;_t = &pi;_t^e + &gamma;(Y_t &minus; Y_t^p) + &epsilon;_t</div>
+            <div class="fw-slider-row">
+              <label>Output gap, Y_t &minus; Y_t^p (%)<span id="fw-pc-gap-val" class="mono">0.0%</span></label>
+              <input type="range" id="fw-pc-gap" min="-6" max="6" step="0.1" value="0">
+            </div>
+            <div class="fw-slider-row">
+              <label>Pass-through, &gamma;<span id="fw-pc-gamma-val" class="mono">0.50</span></label>
+              <input type="range" id="fw-pc-gamma" min="0.1" max="1.2" step="0.05" value="0.5">
+            </div>
+            <div class="fw-callout" id="fw-pc-result"></div>
+          </div>
+          <div>
+            <div class="fw-formula"><div class="fw-formula-label">IS Curve — goods-market equilibrium driven by real interest rates</div>(Y_t &minus; Y_t^p) = &alpha;&#8320; &minus; &alpha;&#8321;r_t + &alpha;&#8322;RER_t + e_t</div>
+            <div class="fw-slider-row">
+              <label>Real interest rate, r_t (%)<span id="fw-is-r-val" class="mono">5.0%</span></label>
+              <input type="range" id="fw-is-r" min="-2" max="15" step="0.25" value="5">
+            </div>
+            <div class="fw-slider-row">
+              <label>Real exchange rate gap, RER_t (%, + = more depreciated)<span id="fw-is-rer-val" class="mono">0.0%</span></label>
+              <input type="range" id="fw-is-rer" min="-15" max="15" step="0.5" value="0">
+            </div>
+            <div class="fw-callout" id="fw-is-result"></div>
+          </div>
+        </div>
+
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600;margin-top:18px">Sector glossary &amp; metrics — computed for the year selected in the Core Principles section above</div>
+        <div class="fw-glossary" id="fw-glossary"></div>
+      </div>
+
+    </div>
   </div>
 
   <!-- Simulator -->
@@ -801,87 +934,34 @@
   <div id="real-reports" class="hidden">
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
 
-      <!-- Real GDP & Output Gap (goes first — anchors every other worksheet) -->
-      <div id="real-rgdp-worksheet">
-      <div>
-        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Real GDP &amp; Output Gap — Forecast Methods</h3>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Three IMF FPP methods · Trend regression Ln(RY) = 7.674 + 0.040·(trend) · R² = 0.988 · Baseline 2013 → Forecast 2014</div>
-      </div>
-      <div class="summary" id="rgdp-kpi" style="margin-top:12px"></div>
-      <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
-        <div class="card">
-          <div class="card-head"><span class="card-title">Historical GDP, Trend &amp; Potential Output</span></div>
-          <div class="table-wrap"><table class="fp" id="rgdp-table"></table></div>
+      <div class="card" style="border-color:var(--line2)">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--real)"></span>Real GDP &amp; Output Gap — Forecast Methods</span>
         </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Forecast Method Selector</span></div>
-          <div class="card-body" style="font-size:12px" id="rgdp-method-panel"></div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">Three IMF FPP forecast methods — Expert assessment, Trend growth, and Recent 7-yr geometric average — plus the resulting 2014 output-gap identity, have moved to a standalone worksheet with the full historical table and an adjustable growth-path slider.</div>
+          <a class="govops-subtab" href="real-gdp-output-gap.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
-      </div>
       </div>
 
-      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-      <div id="real-fb-worksheet">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
-        <div>
-          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Foreign Balance &amp; Current Account — Projection Worksheets</h3>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">IMF FPP: real exports (elasticity model) · nominal X&amp;M · services ratios · primary/secondary income · Baseline 2013 · Forecast 2014</div>
+      <div class="card" style="border-color:var(--line2);margin-top:12px">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--real)"></span>Domestic Demand &amp; Prices — Projection Worksheets</span>
         </div>
-        <button class="govops-subtab" id="real-fb-solo-btn" data-testid="real-fb-solo-btn">View Worksheets Only</button>
-      </div>      <div class="layout" style="grid-template-columns:320px 1fr">
-        <aside class="card" id="real-proj-panel"></aside>
-        <div>
-          <div class="summary" id="real-proj-kpi"></div>
-          <div class="card" style="margin-top:12px">
-            <div class="card-head"><span class="card-title">Consolidated Current Account — Historical + 2014 Forecast</span><span class="mono" style="font-size:10px;color:var(--muted)">USD millions</span></div>
-            <div class="table-wrap"><table class="fp" id="real-proj-table"></table></div>
-          </div>
-          <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
-            <div class="card">
-              <div class="card-head"><span class="card-title">Goods &amp; Services — Credits vs Debits</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-xm"></canvas></div></div>
-            </div>
-            <div class="card">
-              <div class="card-head"><span class="card-title">Current Account Composition</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-ca"></canvas></div></div>
-            </div>
-          </div>
-          <div class="card" style="margin-top:12px">
-            <div class="card-head"><span class="card-title">Elasticity-based Forecast (2014)</span></div>
-            <div class="card-body" style="font-size:12px">
-              <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
-                <div>① Δ%Prxf = ((1 + Δ%Pxf/100) × (1 + Δ%NER/100) / (1 + Δ%CPI/100) − 1) × 100</div>
-                <div>② Δ%RXg = εRX,y × Δ%RYp + εRX,Prxf × Δ%Prxf</div>
-                <div>③ Xg₂₀₁₄ = Xg₂₀₁₃ × (1 + Δ%RXg/100) × (1 + Δ%Pxf/100)</div>
-                <div>④ Mg₂₀₁₄ = Mg₂₀₁₃ × (1 + Δ%RMg/100) × (1 + Δ%Pmf/100)</div>
-                <div>⑤ Services Credit = Xg × service_credit_ratio  ·  Services Debit = Mg × service_debit_ratio</div>
-                <div>⑥ Investment income = yield × avg foreign assets · Interest payments = (LIBOR + spread) × avg external debt</div>
-              </div>
-              <div id="real-proj-formula-values" class="mono" style="margin-top:8px;font-size:11px"></div>
-            </div>
-          </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">Real private consumption, real private investment, real imports, the nominal exchange rate, and the Phillips-curve CPI forecast — including the full Lever Correlation Engine linking the output gap, RER gap, inflation, and import volumes — have moved to a standalone worksheet.</div>
+          <a class="govops-subtab" href="domestic-demand-prices.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
-      </div>
       </div>
 
-      <!-- Domestic Demand & Prices — inline forecast worksheets -->
-      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-      <div id="real-dd-worksheet">
-      <div>
-        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Domestic Demand &amp; Prices — Projection Worksheets</h3>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Real private consumption · Real private investment · Real imports · Nominal ER · CPI inflation (Phillips curve)</div>
-      </div>
-      <div class="summary" id="dd-kpi" style="margin-top:12px"></div>
-      <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Historical + 2014 Forecast (baseline)</span></div>
-        <div class="table-wrap"><table class="fp" id="dd-table"></table></div>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Live Forecast Formulas</span></div>
-        <div class="card-body" style="font-size:11.5px">
-          <div id="dd-formulas" class="mono"></div>
+      <div class="card" style="border-color:var(--line2);margin-top:12px">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--real)"></span>Foreign Balance &amp; Current Account — Projection Worksheets</span>
         </div>
-      </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">Real exports (elasticity model), nominal exports &amp; imports, services ratios, and primary/secondary income — the full bottom-up 2014 Current Account build has moved to its own standalone worksheet, with all assumption sliders, the consolidated CA table, and both charts.</div>
+          <a class="govops-subtab" href="foreign-balance-current-account.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
+        </div>
       </div>
     </div></section>
 
@@ -2284,20 +2364,6 @@ const HIST_ROWS = {
 const HIST_TITLES = { real:'Real Sector · 2006–2012', external:'External Sector · 2006–2012',
   government:'Government (Fiscal) · 2006–2012', monetary:'Monetary Survey · 2006–2012' };
 
-function setRealFbSolo(solo){
-  const btn = document.getElementById('real-fb-solo-btn');
-  if (!btn) return;
-  btn.classList.toggle('active', solo);
-  btn.textContent = solo ? 'Show All Sections' : 'View Worksheets Only';
-  ['sector-main-layout','real-src-charts','real-rgdp-worksheet','real-dd-worksheet'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('solo-hidden', solo);
-  });
-}
-function resetRealFbSolo(){
-  const btn = document.getElementById('real-fb-solo-btn');
-  if (btn && btn.classList.contains('active')) setRealFbSolo(false);
-}
 function renderHistoricalTable(){
   const rows = HIST_ROWS[state.histSector];
   const data = BASELINE[state.histSector];
@@ -2363,14 +2429,13 @@ function renderHistoricalTable(){
     renderSourceCharts('external');
     renderExternalReports();
   }
-  // For Real sector, populate the Foreign Balance & CA projection worksheets
+  // For Real sector: show/hide the link-out cards for the three worksheets that
+  // now live in standalone files (real-gdp-output-gap.html, domestic-demand-prices.html,
+  // foreign-balance-current-account.html) — no in-page rendering needed any more.
   document.getElementById('real-reports').classList.toggle('hidden', state.histSector !== 'real');
   document.getElementById('real-src-charts').classList.toggle('hidden', state.histSector !== 'real');
   if (state.histSector === 'real') {
     renderSourceCharts('real');
-    renderRealSectorProj();
-  } else {
-    resetRealFbSolo();
   }
   // For Monetary sector, populate the monetary worksheets
   document.getElementById('monetary-reports').classList.toggle('hidden', state.histSector !== 'monetary');
@@ -3147,596 +3212,10 @@ function buildMonTable(rows, yrs){
 
 
 /* ============================================================
-   REAL GDP & OUTPUT GAP — 3 forecast methods
-   ============================================================ */
-const RGDP_HIST = {
-  years: [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
-  ry:         [9864.10, 10508.01, 10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
-  ry_growth:  [8.843, 6.528, 2.401, -1.631, 4.859, 5.655, 3.901, 4.844],
-  trend_g:    [null,   10258.67, 10928.33, 11190.74, 11008.27, 11543.22, 12196.03, 12671.82],
-  potential:  [9649.91, 9961.09, 10371.12, 10754.77, 11237.05, 11888.18, 12184.44, 12671.82],
-  output_gap: [2.220, 5.491, 3.753, -1.580, -1.226, -1.356, 0.000, 0.811],
-};
-const RGDP_METHODS = {
-  expert: { label:'Expert assessment', value: 4.630, formula:'RY₂₀₁₄ = RY₂₀₁₃ × (1+4.63/100)' },
-  trend:  { label:'Trend growth rate', value: 4.000, formula:'g = (Trend coefficient) × 100 = 4.0%' },
-  recent: { label:'Recent 7yr geometric avg', value: 3.763, formula:'g = ((RY₂₀₁₃/RY₂₀₀₆)^(1/7) − 1) × 100' },
-};
-
-function renderRealGdpMethods(){
-  const a = state.realProjAssumptions;
-  const potential_14 = RGDP_HIST.potential.at(-1) * 1.040;   // pot grows at 4% (trend)
-  const ry14 = RGDP_HIST.ry.at(-1) * (1 + a.d_RY/100);
-  const ogap14 = 100 * ((ry14 - potential_14) / potential_14);
-
-  // KPIs
-  const kpi = [
-    { label:'Expert assessment', value:'4.630%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.0463, 0)}`, color:'#2563EB' },
-    { label:'Trend growth (β=0.040)', value:'4.000%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.04, 0)}`, color:'#059669' },
-    { label:'Recent avg (7-yr geom.)', value:'3.763%', sub:`→ RY 2014: ${fmt(RGDP_HIST.ry.at(-1) * 1.03763, 0)}`, color:'#D97706' },
-    { label:'Chosen path 2014',        value:`Δ ${a.d_RY.toFixed(2)}%`,  sub:`RY: ${fmt(ry14,0)} · Output gap: ${ogap14.toFixed(2)}%`, color:'#0F172A' },
-  ];
-  document.getElementById('rgdp-kpi').innerHTML = kpi.map(k => `
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-sub">${k.sub}</div>
-      <div class="kpi-base">Regression R² = 0.988</div>
-    </div>
-  `).join('');
-
-  // Historical table
-  const yrs = [...RGDP_HIST.years, 2014];
-  const rows = [
-    ['Real GDP (bn NC, 2005p)', [...RGDP_HIST.ry, ry14]],
-    ['  RY % growth', [...RGDP_HIST.ry_growth, a.d_RY]],
-    ['Trend applied to prev year', [...RGDP_HIST.trend_g, RGDP_HIST.ry.at(-1) * 1.04]],
-    ['Potential Output (WEO)', [...RGDP_HIST.potential, potential_14]],
-    ['Output gap (%)', [...RGDP_HIST.output_gap, ogap14]],
-  ];
-  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k) => `<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
-  const body = `<tbody>${rows.map(([label,arr]) => `
-    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
-      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
-      ${arr.map((v,k) => `<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${v===null?'—':fmt(v,2)}</td>`).join('')}
-    </tr>
-  `).join('')}</tbody>`;
-  document.getElementById('rgdp-table').innerHTML = head + body;
-
-  // Method selector — clickable buttons, click applies value to d_RY
-  document.getElementById('rgdp-method-panel').innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:8px">
-      ${Object.entries(RGDP_METHODS).map(([k, m]) => `
-        <button class="rgdp-method-btn" data-value="${m.value}" style="text-align:left;padding:10px;border:1px solid ${Math.abs(a.d_RY - m.value) < 0.01 ? 'var(--ink)' : 'var(--line)'};background:${Math.abs(a.d_RY - m.value) < 0.01 ? '#f1f5f9' : 'white'};font-family:inherit;cursor:pointer">
-          <div style="font-weight:700;font-size:12px">${m.label} — <span class="mono">${m.value.toFixed(3)}%</span></div>
-          <div class="mono" style="font-size:10px;color:var(--muted);margin-top:2px">${m.formula}</div>
-        </button>
-      `).join('')}
-      <div style="padding:10px;background:#f8fafc;border:1px solid var(--line);font-size:11px">
-        <div style="font-weight:700;margin-bottom:4px">Output gap identity</div>
-        <div class="mono">100 × ((RY₂₀₁₄ − RYPot₂₀₁₄) / RYPot₂₀₁₄) = <strong>${ogap14.toFixed(3)}%</strong></div>
-      </div>
-    </div>
-  `;
-  document.querySelectorAll('.rgdp-method-btn').forEach(b => b.addEventListener('click', () => {
-    state.realProjAssumptions.d_RY = parseFloat(b.dataset.value);
-    // Cascades: output gap → CPI inflation (Phillips curve) → real imports volume
-    syncRealProjDerived();
-    renderRealSectorProj();
-  }));
-}
-
-const REAL_PROJ_YEARS = [2008, 2009, 2010, 2011, 2012, 2013];
-const REAL_PROJ = {
-  years: REAL_PROJ_YEARS,
-  goods_credit:      [9555.37, 8838.23, 9516.25, 10383.11, 11494.73, 12095.65], // USD mn
-  goods_debit:       [14568.70, 10877.29, 12955.95, 15534.48, 17222.81, 18289.86],
-  services_credit:   [4083.32, 3592.91, 4319.98, 4972.35, 5504.70, 5792.47],
-  services_debit:    [1882.40, 1404.81, 1782.75, 1735.48, 1924.10, 2043.30],
-  primary_credit:    [617.82, 253.49, 316.83, 272.38, 173.87, 184.98],
-  investment_income: [546.92, 228.99, 281.63, 209.18, 133.53, 142.06],
-  primary_debit:     [1126.04, 1203.94, 1083.38, 1077.22, 1084.27, 1042.67],
-  interest_payments: [352.60, 308.00, 306.60, 284.10, 285.96, 274.99],
-  other_primary:     [773.44, 895.94, 776.78, 793.12, 798.31, 767.68],
-  secondary_income:  [442.30, 358.80, 366.50, 322.90, 333.50, 342.90],
-  // ratios (%)
-  svc_credit_ratio:  [42.73, 40.65, 45.40, 47.89, 47.89, 47.89],
-  svc_debit_ratio:   [12.92, 12.92, 13.76, 11.17, 11.17, 11.17],
-  // stocks (memo)
-  foreign_assets:    [11617.7, 11915.2, 12732.4, 12928.9, 13775.6, 14636.2],
-  external_debt:     [8964.30, 7878.80, 8631.80, 9764.20, 10236.15, 11068.04],
-  libor:             [3.046, 1.121, 0.518, 0.507, 0.687, 0.409],
-  implicit_rate:     [4.069, 3.657, 3.714, 3.089, 2.860, 2.582],
-  interest_spread:   [1.023, 2.536, 3.196, 2.582, 2.173, 2.173],
-  yield_investment:  [4.672, 1.303, 1.541, 1.090, 1.000, 1.000],
-};
-
-const REAL_PROJ_DEFAULTS = {
-  // Real exports elasticity model
-  d_Pxf: 1.5, d_NER: 0.0, d_CPI: 7.482, d_RYp: 4.0,
-  eps_RXy: 1.0, eps_RXP: 0.625,
-  d_Pmf: 1.5, d_RMg: 0.0,
-  svc_credit_ratio: 47.889, svc_debit_ratio: 11.172,
-  yield_investment: 1.0, libor: 0.409, spread: 2.173,
-  other_primary_growth: 0.0, foreign_assets_2014: 14324.0, external_debt_2014: 11809.88,
-  secondary_income_growth: 0.0,
-  // Domestic demand & prices
-  d_RY: 4.63,               // real GDP growth
-  eps_RMy: 1.0,             // income elasticity of imports
-  eps_RMP: -0.5,            // price elasticity of imports
-  d_RER: 0.0,               // real ER change (+ = depreciation)
-  d_Pf: 1.5,                // foreign inflation
-  phillips_c: 1.4,          // constant
-  phillips_rho: 0.7,        // inflation persistence
-  phillips_ygap: 1.422,     // output gap 2014
-  phillips_alpha_y: 1.4,    // coef on output gap
-  phillips_rergap: -0.73,   // RER gap 2014
-  phillips_alpha_r: 0.28,   // coef on RER gap
-};
-
-/* ============================================================
-   REAL SECTOR PROJECTION — LEVER CORRELATION ENGINE
-   ------------------------------------------------------------
-   Four of the sliders above are not truly independent assumptions
-   — they are accounting identities or model outputs of OTHER
-   sliders in this same pair of worksheets:
-     • Output gap 2014   = 100 × (RY2014 − RYPotential2014) / RYPotential2014,
-                            driven by the chosen Real GDP growth path (d_RY)
-     • RER gap 2014       = projected RER index (2012=100 base year) − 100,
-                            driven by the Real ER change assumption (d_RER)
-     • Δ% CPI              = Phillips curve on the output gap & RER gap
-                            (this is the same "CPI Inflation 2014" the
-                            Domestic Demand worksheet already forecasts —
-                            it should not be set separately)
-     • Δ% Real imports vol. = elasticity model on GDP growth & the relative
-                            import price (which itself depends on Δ% CPI)
-   These four are now computed automatically, in that dependency
-   order, so moving GDP growth, the RER assumption, or the Phillips
-   curve inputs correctly cascades through CPI inflation and the
-   real-imports forecast instead of leaving them frozen. Each can
-   still be fine-tuned by hand — dragging its slider layers a manual
-   shock on top of the model-implied value (mirrors the "Correlated
-   + shock" pattern used in the Policy Simulator).
-   ============================================================ */
-const REAL_PROJ_DERIVED_KEYS = ['phillips_ygap','phillips_rergap','d_CPI','d_RMg'];
-const REAL_PROJ_DERIVED_BOUNDS = {
-  phillips_ygap:   {min:-5,  max:5},
-  phillips_rergap: {min:-5,  max:5},
-  d_CPI:           {min:0,   max:20},
-  d_RMg:           {min:-15, max:20},
-};
-function clampRealProj(key, v){
-  const b = REAL_PROJ_DERIVED_BOUNDS[key];
-  return b ? Math.min(b.max, Math.max(b.min, v)) : v;
-}
-// Output-gap identity: driven by the chosen Real GDP growth path (d_RY)
-function realProjOutputGapBase(a){
-  const potential_14 = RGDP_HIST.potential.at(-1) * 1.040;
-  const ry14 = RGDP_HIST.ry.at(-1) * (1 + a.d_RY/100);
-  return 100 * ((ry14 - potential_14) / potential_14);
-}
-// RER-gap identity: driven by the Real ER change assumption (d_RER); 2012=100 is the base year
-function realProjRerGapBase(a){
-  const i = DD_HIST.years.length - 1;
-  const rer14 = DD_HIST.rer_index[i] * (1 + a.d_RER/100);
-  return rer14 - 100;
-}
-// Phillips curve: CPI inflation forecast from the output gap & RER gap
-function realProjCpiBase(a){
-  const i = DD_HIST.years.length - 1;
-  const pi_prev = DD_HIST.cpi[i];
-  return a.phillips_c + a.phillips_rho*pi_prev + a.phillips_alpha_y*a.phillips_ygap + a.phillips_alpha_r*a.phillips_rergap;
-}
-// Elasticity model: real imports volume growth from GDP growth & the relative import price (uses Δ% CPI)
-function realProjImportVolumeBase(a){
-  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
-  return a.eps_RMy * a.d_RY + a.eps_RMP * d_Prmf;
-}
-// Recompute every derived assumption, in dependency order, applying any manual overrides
-function syncRealProjDerived(){
-  const a = state.realProjAssumptions;
-  if (!a.overrides) a.overrides = {};
-  const ov = k => a.overrides[k] || 0;
-
-  a.phillips_ygap   = clampRealProj('phillips_ygap',   realProjOutputGapBase(a) + ov('phillips_ygap'));
-  a.phillips_rergap = clampRealProj('phillips_rergap', realProjRerGapBase(a)   + ov('phillips_rergap'));
-  a.d_CPI           = clampRealProj('d_CPI',           realProjCpiBase(a)      + ov('d_CPI'));
-  a.d_RMg           = clampRealProj('d_RMg',           realProjImportVolumeBase(a) + ov('d_RMg'));
-}
-// Slider drag on a derived assumption: convert the dragged value into a manual shock,
-// preserving the correlation for everything else (and cascading to anything downstream of it)
-function setRealProjOverride(key, newValue){
-  const a = state.realProjAssumptions;
-  if (!a.overrides) a.overrides = {};
-  a.overrides[key] = 0;
-  syncRealProjDerived();               // a[key] now holds the pure model-implied baseline
-  const pureBase = a[key];
-  a.overrides[key] = newValue - pureBase;
-  syncRealProjDerived();               // final pass — cascades to anything downstream too
-}
-function resetRealProjOverride(key){
-  const a = state.realProjAssumptions;
-  if (a.overrides) delete a.overrides[key];
-  syncRealProjDerived();
-}
-function wireRealProjSlider(inp){
-  inp.addEventListener('input', e => {
-    const key = inp.dataset.key, v = parseFloat(e.target.value);
-    if (REAL_PROJ_DERIVED_KEYS.includes(key)) { setRealProjOverride(key, v); }
-    else { state.realProjAssumptions[key] = v; syncRealProjDerived(); }
-    renderRealSectorProj();
-  });
-}
-
-function computeRealProj(a){
-  const B = REAL_PROJ;
-  const i = B.years.length - 1;      // 2013
-  const xg13 = B.goods_credit[i], mg13 = B.goods_debit[i];
-
-  // Relative price of exports change (formula ①)
-  const d_Prxf = ((1 + a.d_Pxf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
-  // Real exports volume change (formula ②)
-  const d_RXg = a.eps_RXy * a.d_RYp + a.eps_RXP * d_Prxf;
-  // Nominal 2014 X & M
-  const xg14 = xg13 * (1 + d_RXg/100) * (1 + a.d_Pxf/100);
-  const mg14 = mg13 * (1 + a.d_RMg/100) * (1 + a.d_Pmf/100);
-  // Services 2014 (ratio approach)
-  const sc14 = xg14 * a.svc_credit_ratio / 100;
-  const sd14 = mg14 * a.svc_debit_ratio / 100;
-  // Primary income
-  const avg_assets = (B.foreign_assets[i] + a.foreign_assets_2014) / 2;
-  const avg_debt = (B.external_debt[i] + a.external_debt_2014) / 2;
-  const inv_income14 = a.yield_investment / 100 * avg_assets;
-  const interest14 = (a.libor + a.spread) / 100 * avg_debt;
-  const other_prim14 = B.other_primary[i] * (1 + a.other_primary_growth/100);
-  const primary_credit14 = inv_income14 + (B.primary_credit[i] - B.investment_income[i]); // + other credits
-  const primary_debit14 = interest14 + other_prim14;
-  const primary_net14 = primary_credit14 - primary_debit14;
-  // Secondary income
-  const sec14 = B.secondary_income[i] * (1 + a.secondary_income_growth/100);
-  // Current account 2014
-  const goods_net14 = xg14 - mg14;
-  const svc_net14 = sc14 - sd14;
-  const ca14 = goods_net14 + svc_net14 + primary_net14 + sec14;
-
-  return { d_Prxf, d_RXg, xg14, mg14, sc14, sd14, inv_income14, interest14, other_prim14,
-           primary_credit14, primary_debit14, primary_net14, sec14, goods_net14, svc_net14, ca14,
-           avg_assets, avg_debt };
-}
-
-function renderRealSectorProj(){
-  // Anchor: Real GDP & Output Gap methods (drives d_RY selection)
-  renderRealGdpMethods();
-
-  const a = state.realProjAssumptions;
-  const p = computeRealProj(a);
-  const yrs = [...REAL_PROJ_YEARS, 2014];
-
-  // Assumption panel
-  const groups = [
-    { title:'Real Exports Elasticity Model', color:'#2563EB', rows: [
-      { key:'d_Pxf', label:'Δ% Export price (USD)', min:-10, max:15, step:.1, suffix:'%' },
-      { key:'d_NER', label:'Δ% Nominal ER (NC/$)', min:-15, max:20, step:.1, suffix:'%' },
-      { key:'d_CPI', label:'Δ% CPI',               min:0,  max:20, step:.1, suffix:'%' },
-      { key:'d_RYp', label:'Δ% Productive capacity',min:-5, max:12, step:.1, suffix:'%' },
-      { key:'eps_RXy',label:'ε RX,y (income elasticity)', min:0, max:3, step:.05, suffix:'x' },
-      { key:'eps_RXP',label:'ε RX,Prxf (price elasticity)', min:-2, max:2, step:.05, suffix:'x' },
-    ]},
-    { title:'Real Imports', color:'#D97706', rows: [
-      { key:'d_Pmf', label:'Δ% Import price (USD)', min:-10, max:15, step:.1, suffix:'%' },
-      { key:'d_RMg', label:'Δ% Real imports volume',min:-15, max:20, step:.1, suffix:'%' },
-    ]},
-    { title:'Services (ratios)', color:'#059669', rows: [
-      { key:'svc_credit_ratio', label:'Services credit / X goods', min:20, max:70, step:.1, suffix:'%' },
-      { key:'svc_debit_ratio',  label:'Services debit / M goods',  min:5,  max:25, step:.1, suffix:'%' },
-    ]},
-    { title:'Primary Income', color:'#7C3AED', rows: [
-      { key:'yield_investment', label:'Yield on foreign assets', min:0, max:8, step:.05, suffix:'%' },
-      { key:'libor',            label:'LIBOR (US$)',             min:0, max:6, step:.01, suffix:'%' },
-      { key:'spread',           label:'Interest spread on debt', min:0, max:8, step:.05, suffix:'%' },
-      { key:'other_primary_growth', label:'Growth: other primary debit', min:-20, max:20, step:.5, suffix:'%' },
-    ]},
-    { title:'Stocks & Secondary', color:'#0F172A', rows: [
-      { key:'foreign_assets_2014', label:'Foreign assets 2014 (USD mn)', min:8000, max:20000, step:100, suffix:'' },
-      { key:'external_debt_2014',  label:'External debt 2014 (USD mn)',  min:8000, max:16000, step:100, suffix:'' },
-      { key:'secondary_income_growth', label:'Growth: secondary income', min:-20, max:20, step:.5, suffix:'%' },
-    ]},
-  ];
-
-  document.getElementById('real-proj-panel').innerHTML = `
-    <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span></div>
-    <div id="real-proj-assumptions-body" style="padding:12px;max-height:70vh;overflow-y:auto">
-      <div class="lever-corr-note" style="margin-bottom:14px">
-        <strong>Δ% CPI</strong> and <strong>Δ% Real imports volume</strong> below (and <strong>Output/RER gap</strong> in
-        Domestic Demand) are mathematically derived from other assumptions here — the Phillips curve, the chosen
-        GDP path, and the import elasticity model — not set independently. Move a derived lever to layer a manual
-        shock on its model-implied path, or tap <span class="lever-reset-inline">Auto</span> to clear it.
-      </div>
-      ${groups.map(g => `
-        <div style="margin-bottom:14px">
-          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:${g.color};margin-bottom:8px">
-            <span style="width:8px;height:8px;background:${g.color};display:inline-block"></span>${g.title}
-          </div>
-          ${g.rows.map(row => {
-            const v = a[row.key];
-            const dv = row.step < 0.1 ? v.toFixed(2) : (row.step < 1 ? v.toFixed(1) : v.toFixed(0));
-            const isDerived = REAL_PROJ_DERIVED_KEYS.includes(row.key);
-            const hasOverride = isDerived && Math.abs((a.overrides && a.overrides[row.key]) || 0) > 0.049;
-            return `<div style="margin-bottom:8px">
-              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
-                <span style="display:flex;align-items:center;gap:5px;min-width:0">
-                  <span style="overflow-wrap:break-word">${row.label}</span>
-                  ${isDerived ? `<span class="lever-tag lever-tag-derived" style="flex:0 0 auto">${hasOverride?'+ shock':'auto'}</span>` : ''}
-                </span>
-                <span style="display:flex;align-items:center;gap:5px;flex:0 0 auto">
-                  <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
-                  ${hasOverride ? `<button class="lever-reset-btn" data-reset-key="${row.key}" title="Reset to model-implied value">Auto</button>` : ''}
-                </span>
-              </div>
-              <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
-            </div>`;
-          }).join('')}
-        </div>
-      `).join('')}
-    </div>
-  `;
-  document.querySelectorAll('#real-proj-panel input[type=range]').forEach(wireRealProjSlider);
-  const panelEl = document.getElementById('real-proj-panel');
-  if (!panelEl.dataset.resetBound) {
-    panelEl.addEventListener('click', e => {
-      const btn = e.target.closest('[data-reset-key]');
-      if (!btn) return;
-      resetRealProjOverride(btn.dataset.resetKey);
-      renderRealSectorProj();
-    });
-    panelEl.dataset.resetBound = '1';
-  }
-
-  // KPIs
-  const kpi = [
-    { label:'Δ% Real exports (Xg)', value: p.d_RXg.toFixed(2)+'%', sub: `Δ% Prxf: ${p.d_Prxf.toFixed(2)}%`, color:'#2563EB', base:'formula ②' },
-    { label:'Goods trade balance', value: `${(p.goods_net14).toFixed(0)}`, sub:`Xg: ${p.xg14.toFixed(0)} · Mg: ${p.mg14.toFixed(0)}`, color:'#D97706', base:'USD mn' },
-    { label:'Primary income net', value: `${p.primary_net14.toFixed(0)}`, sub:`Inv inc: ${p.inv_income14.toFixed(0)} · Int: ${p.interest14.toFixed(0)}`, color:'#7C3AED', base:'USD mn' },
-    { label:'Current account 2014', value: `${p.ca14.toFixed(0)}`, sub:`Services: ${(p.svc_net14).toFixed(0)} · Secondary: ${p.sec14.toFixed(0)}`, color:'#059669', base:'USD mn' },
-  ];
-  document.getElementById('real-proj-kpi').innerHTML = kpi.map(k=>`
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-sub">${k.sub}</div>
-      <div class="kpi-base">${k.base}</div>
-    </div>
-  `).join('');
-
-  // Table — historical + 2014 forecast
-  const rows = [
-    ['Goods — Credit (exports)', [...REAL_PROJ.goods_credit, p.xg14]],
-    ['Goods — Debit (imports)', [...REAL_PROJ.goods_debit, p.mg14]],
-    ['Goods trade balance', REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]).concat([p.goods_net14])],
-    ['Services — Credit', [...REAL_PROJ.services_credit, p.sc14]],
-    ['Services — Debit', [...REAL_PROJ.services_debit, p.sd14]],
-    ['Services net', REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]).concat([p.svc_net14])],
-    ['Primary income — Credit', [...REAL_PROJ.primary_credit, p.primary_credit14]],
-    ['  of which: Investment income', [...REAL_PROJ.investment_income, p.inv_income14]],
-    ['Primary income — Debit', [...REAL_PROJ.primary_debit, p.primary_debit14]],
-    ['  of which: Interest', [...REAL_PROJ.interest_payments, p.interest14]],
-    ['  of which: Other primary', [...REAL_PROJ.other_primary, p.other_prim14]],
-    ['Primary income net', REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]).concat([p.primary_net14])],
-    ['Secondary income', [...REAL_PROJ.secondary_income, p.sec14]],
-    ['Current account', REAL_PROJ.years.map((_,i)=>(REAL_PROJ.goods_credit[i]-REAL_PROJ.goods_debit[i])+(REAL_PROJ.services_credit[i]-REAL_PROJ.services_debit[i])+(REAL_PROJ.primary_credit[i]-REAL_PROJ.primary_debit[i])+REAL_PROJ.secondary_income[i]).concat([p.ca14])],
-  ];
-  const head = `<thead><tr><th>Line item</th>${yrs.map((y,i)=>`<th${i===yrs.length-1?' style="background:#fef3c7"':''}>${y}${i===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
-  const body = `<tbody>${rows.map(([label, arr]) => `
-    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
-      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
-      ${arr.map((v,i)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${i===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 1)}</td>`).join('')}
-    </tr>
-  `).join('')}</tbody>`;
-  document.getElementById('real-proj-table').innerHTML = head + body;
-
-  // Charts
-  makeChart('real-proj-xm', {
-    type:'bar',
-    data:{ labels:yrs, datasets:[
-      {label:'Goods credit',     data:[...REAL_PROJ.goods_credit, p.xg14],     backgroundColor:'#059669'},
-      {label:'Services credit',  data:[...REAL_PROJ.services_credit, p.sc14],  backgroundColor:'#2563EB'},
-      {label:'Goods debit',      data:[...REAL_PROJ.goods_debit.map(v=>-v), -p.mg14], backgroundColor:'#D92D20'},
-      {label:'Services debit',   data:[...REAL_PROJ.services_debit.map(v=>-v), -p.sd14], backgroundColor:'#D97706'},
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  makeChart('real-proj-ca', {
-    type:'bar',
-    data:{ labels:yrs, datasets:[
-      {label:'Goods',            data:[...REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]), p.goods_net14], backgroundColor:'#D92D20', stack:'a'},
-      {label:'Services',         data:[...REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]), p.svc_net14], backgroundColor:'#2563EB', stack:'a'},
-      {label:'Primary income',   data:[...REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]), p.primary_net14], backgroundColor:'#D97706', stack:'a'},
-      {label:'Secondary income', data:[...REAL_PROJ.secondary_income, p.sec14], backgroundColor:'#059669', stack:'a'},
-      {label:'Current account',  data:rows[13][1], type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  // Formula values
-  document.getElementById('real-proj-formula-values').innerHTML = `
-    <div>① Δ%Prxf = ((1+${a.d_Pxf.toFixed(2)}/100) × (1+${a.d_NER.toFixed(2)}/100) / (1+${a.d_CPI.toFixed(2)}/100) − 1) × 100 = <strong>${p.d_Prxf.toFixed(3)}%</strong></div>
-    <div>② Δ%RXg = ${a.eps_RXy.toFixed(2)} × ${a.d_RYp.toFixed(2)} + ${a.eps_RXP.toFixed(3)} × ${p.d_Prxf.toFixed(3)} = <strong>${p.d_RXg.toFixed(3)}%</strong></div>
-    <div>③ Xg₂₀₁₄ = ${REAL_PROJ.goods_credit.at(-1).toFixed(2)} × (1+${p.d_RXg.toFixed(3)}/100) × (1+${a.d_Pxf.toFixed(2)}/100) = <strong>${p.xg14.toFixed(2)}</strong></div>
-    <div>④ Mg₂₀₁₄ = ${REAL_PROJ.goods_debit.at(-1).toFixed(2)} × (1+${a.d_RMg.toFixed(2)}/100) × (1+${a.d_Pmf.toFixed(2)}/100) = <strong>${p.mg14.toFixed(2)}</strong></div>
-    <div>⑤ Services: Credit = ${p.xg14.toFixed(0)} × ${a.svc_credit_ratio.toFixed(2)}% = <strong>${p.sc14.toFixed(2)}</strong> · Debit = ${p.mg14.toFixed(0)} × ${a.svc_debit_ratio.toFixed(2)}% = <strong>${p.sd14.toFixed(2)}</strong></div>
-    <div>⑥ Inv. income = ${a.yield_investment.toFixed(2)}% × ${p.avg_assets.toFixed(0)} = <strong>${p.inv_income14.toFixed(2)}</strong> · Interest = (${a.libor.toFixed(2)}+${a.spread.toFixed(2)})% × ${p.avg_debt.toFixed(0)} = <strong>${p.interest14.toFixed(2)}</strong></div>
-  `;
-
-  // ---- Domestic Demand & Prices (5 additional worksheets) ----
-  renderDomesticDemandProj();
-}
-
-/* ============================================================
-   DOMESTIC DEMAND & PRICES — Baseline 2013 → Forecast 2014
-   ============================================================ */
-const DD_HIST = {
-  years: [2008, 2009, 2010, 2011, 2012, 2013],
-  rgdp:         [10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
-  rcp:          [7553.28, 7682.16, 8033.69, 8406.44, 8818.35, 9288.00],
-  rip:          [2155.85, 1924.40, 1897.40, 2226.59, 2241.17, 2336.10],
-  rmg_nc:       [8666.03, 7023.72, 7680.81, 8717.30, 9457.55, 9990.29],  // real imports of goods (bn NC)
-  ner_avg:      [526.24, 573.29, 525.83, 506.40, 510.79, 530.22],
-  ner_eop:      [555.47, 565.24, 512.97, 510.56, 511.02, 549.42],
-  rer_index:    [121.18, 122.21, 107.69, 101.72, 100.00, 99.27],
-  cpi:          [13.425, 7.843, 5.663, 4.878, 4.613, 6.136],
-  cpi_foreign:  [3.595, -0.171, 1.516, 2.868, 1.958, 1.500],
-  rcp_pct_rgdp: [70.20, 72.58, 72.38, 71.69, 72.37, 72.71],
-  rip_pct_rgdp: [20.04, 18.18, 17.10, 18.99, 18.39, 18.29],
-};
-
-function renderDomesticDemandProj(){
-  const a = state.realProjAssumptions;
-  syncRealProjDerived(); // ensure derived assumptions (output gap, RER gap, CPI, real imports) are current
-  const H = DD_HIST;
-  const i = H.years.length - 1; // 2013
-
-  // ---- Forecasts (2014) ----
-  const rgdp14 = H.rgdp[i] * (1 + a.d_RY/100);
-  // RCp — constant ratio-to-GDP approach
-  const rcp_ratio14 = H.rcp_pct_rgdp[i];
-  const rcp14 = rgdp14 * rcp_ratio14 / 100;
-  const d_rcp = (rcp14 / H.rcp[i] - 1) * 100;
-  // RIp — constant ratio-to-GDP approach
-  const rip_ratio14 = H.rip_pct_rgdp[i];
-  const rip14 = rgdp14 * rip_ratio14 / 100;
-  const d_rip = (rip14 / H.rip[i] - 1) * 100;
-  // Real imports of goods (elasticity) — Δ%RMg is derived by the correlation engine; kept in state.realProjAssumptions.d_RMg
-  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
-  const d_RMg = a.d_RMg;
-  const rmg14 = H.rmg_nc[i] * (1 + d_RMg/100);
-  // Nominal ER (period average)
-  const ner_avg14 = H.ner_avg[i] * (1 + a.d_CPI/100) * (1 + a.d_RER/100) / (1 + a.d_Pf/100);
-  const nere14 = (ner_avg14 * 2) - H.ner_eop[i];
-  const d_ner_avg = (ner_avg14 / H.ner_avg[i] - 1) * 100;
-  // Phillips-curve inflation for 2014 — this IS Δ% CPI (a.d_CPI), derived by the correlation engine
-  const pi_prev = H.cpi[i];
-  const pi14 = a.d_CPI;
-
-  // KPIs
-  const kpi = [
-    { label:'Real GDP 2014', value: fmt(rgdp14, 0), sub:`+${a.d_RY.toFixed(2)}%`, color:'#2563EB', base:`2013: ${fmt(H.rgdp[i],0)}` },
-    { label:'Priv. Consumption 2014', value: fmt(rcp14, 0), sub:`Δ ${d_rcp.toFixed(2)}% · ${rcp_ratio14.toFixed(1)}% of GDP`, color:'#059669', base:`2013: ${fmt(H.rcp[i],0)}` },
-    { label:'Priv. Investment 2014', value: fmt(rip14, 0), sub:`Δ ${d_rip.toFixed(2)}% · ${rip_ratio14.toFixed(1)}% of GDP`, color:'#D97706', base:`2013: ${fmt(H.rip[i],0)}` },
-    { label:'CPI Inflation 2014 (Phillips)', value: pi14.toFixed(2)+'%', sub:`NER avg → ${fmt(ner_avg14, 1)}`, color:'#7C3AED', base:`2013: ${H.cpi[i].toFixed(2)}%` },
-  ];
-  document.getElementById('dd-kpi').innerHTML = kpi.map(k => `
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-sub">${k.sub}</div>
-      <div class="kpi-base">${k.base}</div>
-    </div>
-  `).join('');
-
-  // Table
-  const yrs = [...H.years, 2014];
-  const rows = [
-    ['Real GDP (bn NC, 2005p)', [...H.rgdp, rgdp14]],
-    ['Real Priv. Consumption', [...H.rcp, rcp14]],
-    ['  RCp / GDP (%)', [...H.rcp_pct_rgdp, rcp_ratio14]],
-    ['Real Priv. Investment', [...H.rip, rip14]],
-    ['  RIp / GDP (%)', [...H.rip_pct_rgdp, rip_ratio14]],
-    ['Real Imports of Goods (bn NC)', [...H.rmg_nc, rmg14]],
-    ['Nominal ER (avg, NC/USD)', [...H.ner_avg, ner_avg14]],
-    ['Nominal ER (EOP, NC/USD)', [...H.ner_eop, nere14]],
-    ['Real ER index (2012=100)', [...H.rer_index, H.rer_index[i] * (1 + a.d_RER/100)]],
-    ['CPI inflation (%)', [...H.cpi, pi14]],
-    ['Foreign inflation (%)', [...H.cpi_foreign, a.d_Pf]],
-  ];
-  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k) => `<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
-  const body = `<tbody>${rows.map(([label,arr]) => `
-    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
-      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
-      ${arr.map((v,k) => `<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 2)}</td>`).join('')}
-    </tr>
-  `).join('')}</tbody>`;
-  document.getElementById('dd-table').innerHTML = head + body;
-
-  // Formulas box — show the manual shock explicitly when a derived assumption has been overridden,
-  // so the displayed arithmetic always reconciles with the final value
-  const rmgShock = (a.overrides && a.overrides.d_RMg) || 0;
-  const cpiShock = (a.overrides && a.overrides.d_CPI) || 0;
-  const rmgShockTxt = Math.abs(rmgShock) > 0.049 ? ` + shock ${rmgShock>0?'+':''}${rmgShock.toFixed(2)}` : '';
-  const cpiShockTxt = Math.abs(cpiShock) > 0.049 ? ` + shock ${cpiShock>0?'+':''}${cpiShock.toFixed(2)}` : '';
-  document.getElementById('dd-formulas').innerHTML = `
-    <div style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
-      <div>① <strong>Real GDP</strong> — RY₂₀₁₄ = RY₂₀₁₃ × (1 + Δ%RY/100) = ${fmt(H.rgdp[i],2)} × (1+${a.d_RY.toFixed(2)}/100) = <strong>${fmt(rgdp14,2)}</strong></div>
-      <div>② <strong>Priv. Consumption (constant RCp/GDP)</strong> — RCp₂₀₁₄ = ${rcp_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rcp14,2)}</strong></div>
-      <div>③ <strong>Priv. Investment (constant RIp/GDP)</strong> — RIp₂₀₁₄ = ${rip_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rip14,2)}</strong></div>
-      <div>④ <strong>Real Imports (elasticity, derived)</strong>: Δ%Prmf = ((1+${a.d_Pmf.toFixed(2)}/100)×(1+${a.d_NER.toFixed(2)}/100)/(1+${a.d_CPI.toFixed(2)}/100)−1)×100 = <strong>${d_Prmf.toFixed(3)}%</strong> ; Δ%RMg = ${a.eps_RMy.toFixed(2)}×${a.d_RY.toFixed(2)} + ${a.eps_RMP.toFixed(2)}×${d_Prmf.toFixed(3)}${rmgShockTxt} = <strong>${d_RMg.toFixed(3)}%</strong> ; RMg₂₀₁₄ = ${fmt(H.rmg_nc[i],2)} × (1+${d_RMg.toFixed(3)}/100) = <strong>${fmt(rmg14,2)}</strong></div>
-      <div>⑤ <strong>Nominal ER (avg)</strong> — NER₂₀₁₄ = NER₂₀₁₃ × (1+Δ%P/100) × (1+Δ%RER/100) / (1+Δ%Pf/100) = ${fmt(H.ner_avg[i],2)} × (1+${a.d_CPI.toFixed(2)}/100) × (1+${a.d_RER.toFixed(2)}/100) / (1+${a.d_Pf.toFixed(2)}/100) = <strong>${fmt(ner_avg14,2)}</strong></div>
-      <div>⑥ <strong>Δ% CPI — Phillips curve (derived)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = ${a.phillips_c.toFixed(1)} + ${a.phillips_rho.toFixed(1)}×${pi_prev.toFixed(2)} + ${a.phillips_alpha_y.toFixed(1)}×${a.phillips_ygap.toFixed(2)} + ${a.phillips_alpha_r.toFixed(2)}×${a.phillips_rergap.toFixed(2)}${cpiShockTxt} = <strong>${pi14.toFixed(2)}%</strong> — this is the same Δ%CPI used in ④ and in the export/import price formulas above</div>
-      <div style="color:var(--muted);font-style:italic">Output gap (ygap) and RER gap above are themselves derived: ygap = 100×(RY₂₀₁₄−RYPotential₂₀₁₄)/RYPotential₂₀₁₄ from the chosen GDP path; RERgap = projected RER index (2012=100) − 100 from Δ%RER.</div>
-    </div>
-  `;
-
-  // Extend the assumption panel with DD sliders (append once)
-  if (!document.getElementById('dd-panel-added')) {
-    const panelBody = document.getElementById('real-proj-assumptions-body');
-    if (!panelBody) return;
-    const ddRows = [
-      { key:'d_RY',              label:'Δ% Real GDP (all)',       min:-5, max:12, step:.05, suffix:'%' },
-      { key:'eps_RMy',           label:'ε RM,y (imports)',        min:0, max:3, step:.05, suffix:'x' },
-      { key:'eps_RMP',           label:'ε RM,Prmf (imports)',     min:-2, max:2, step:.05, suffix:'x' },
-      { key:'d_RER',             label:'Δ% Real ER (+depreciate)',min:-15, max:15, step:.1, suffix:'%' },
-      { key:'d_Pf',              label:'Δ% Foreign inflation',    min:0, max:8, step:.05, suffix:'%' },
-      { key:'phillips_ygap',     label:'Output gap 2014',         min:-5, max:5, step:.05, suffix:'%' },
-      { key:'phillips_rergap',   label:'RER gap 2014',            min:-5, max:5, step:.05, suffix:'%' },
-    ];
-    const html = `
-      <div id="dd-panel-added" style="margin-bottom:14px">
-        <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#D92D20;margin-bottom:8px">
-          <span style="width:8px;height:8px;background:#D92D20;display:inline-block"></span>Domestic Demand & Prices
-        </div>
-        ${ddRows.map(row => {
-          const v = a[row.key];
-          const dv = row.step < 0.1 ? v.toFixed(2) : v.toFixed(1);
-          const isDerived = REAL_PROJ_DERIVED_KEYS.includes(row.key);
-          const hasOverride = isDerived && Math.abs((a.overrides && a.overrides[row.key]) || 0) > 0.049;
-          return `<div style="margin-bottom:8px">
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
-              <span style="display:flex;align-items:center;gap:5px;min-width:0">
-                <span style="overflow-wrap:break-word">${row.label}</span>
-                ${isDerived ? `<span class="lever-tag lever-tag-derived" style="flex:0 0 auto">${hasOverride?'+ shock':'auto'}</span>` : ''}
-              </span>
-              <span style="display:flex;align-items:center;gap:5px;flex:0 0 auto">
-                <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
-                ${hasOverride ? `<button class="lever-reset-btn" data-reset-key="${row.key}" title="Reset to model-implied value">Auto</button>` : ''}
-              </span>
-            </div>
-            <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
-          </div>`;
-        }).join('')}
-      </div>
-    `;
-    panelBody.insertAdjacentHTML('beforeend', html);
-    // Wire sliders — same derived/override-aware handler used by the main assumptions panel
-    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(wireRealProjSlider);
-  } else {
-    // Update slider values shown in DD panel
-    document.querySelectorAll('#dd-panel-added input[type=range]').forEach(inp => {
-      inp.value = a[inp.dataset.key];
-      const label = inp.previousElementSibling.querySelector('span:last-child');
-      if (label) label.textContent = (inp.step < 0.1 ? parseFloat(inp.value).toFixed(2) : parseFloat(inp.value).toFixed(1)) + (label.textContent.match(/[%x]/) ? label.textContent.slice(-1) : '');
-    });
-  }
-}
-
-/* ============================================================
-   BALANCE OF PAYMENTS, IIP, EXTERNAL DEBT — 2006–2013
-   Source: Macronia case study (BOP, IIP, EX_Debt sheets)
+   Real GDP & Output Gap, Domestic Demand & Prices, and Foreign
+   Balance & Current Account projection worksheets have moved to
+   standalone files — see real-gdp-output-gap.html,
+   domestic-demand-prices.html and foreign-balance-current-account.html.
    ============================================================ */
 const EXT_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
 const BOP_DATA = {
@@ -4804,20 +4283,20 @@ document.querySelectorAll('#tabs .tab').forEach(btn => {
    ============================================================ */
 const FORMULAS = {
   /* ── REAL SECTOR ─────────────────────────────────────────── */
-  'nominal gdp':                'Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)',
+  'nominal gdp':                'Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)  •  Live forecast: g_NGDP = (1+g_RY/100)×(1+π/100)×100−100 — this compounded growth rate is the "ngdp" input the elasticity engine feeds into Gov. revenue growth and Monetary base growth below.',
   'real gdp':                   'Real GDP (Y) = Nominal GDP ÷ (GDP deflator ÷ 100).  National-accounts identity Y = C + I + G + (X − M).',
   'real gdp (2005 prices)':     'Real GDP at 2005 prices = Nominal GDP ÷ (GDP deflator/100).  Identity: Y = C + I + G + (X − M).',
   'real gdp (bn nc, 2005p)':    'Real GDP at 2005 prices = Nominal GDP ÷ (GDP deflator/100).',
-  'real gdp growth':            'gᵧ,t = (RY_t / RY_{t−1} − 1) × 100',
-  'real gdp growth (%)':        'gᵧ,t = (RY_t / RY_{t−1} − 1) × 100',
-  '  ry % growth':              'Real GDP growth: gᵧ = (RY_t / RY_{t−1} − 1) × 100',
+  'real gdp growth':            'gᵧ,t = (RY_t / RY_{t−1} − 1) × 100  •  Forecast method selector — pick one path: Expert assessment RY_{t+1}=RY_t×(1+g_expert/100); Trend growth g=trend-regression coefficient β×100; Recent 7yr geometric avg g=((RY_t/RY_{t−7})^(1/7)−1)×100.',
+  'real gdp growth (%)':        'gᵧ,t = (RY_t / RY_{t−1} − 1) × 100  •  Forecast method selector — pick one path: Expert assessment RY_{t+1}=RY_t×(1+g_expert/100); Trend growth g=trend-regression coefficient β×100; Recent 7yr geometric avg g=((RY_t/RY_{t−7})^(1/7)−1)×100.',
+  '  ry % growth':              'Real GDP growth: gᵧ = (RY_t / RY_{t−1} − 1) × 100  •  Forecast method selector — Expert assessment, Trend growth (β×100), or Recent 7yr geometric avg ((RY_t/RY_{t−7})^(1/7)−1)×100; the chosen value drives d_RY and cascades into the output gap, Phillips-curve CPI forecast and real-imports elasticity below.',
   'gdp deflator':               'GDP deflator = (Nominal GDP ÷ Real GDP) × 100',
   'gdp deflator (2005=100)':    'GDP deflator = (Nominal GDP ÷ Real GDP) × 100 (2005 base)',
-  'gdp deflator inflation':     'π_defl = (Deflator_t ÷ Deflator_{t−1} − 1) × 100',
-  'gdp deflator inflation (%)': 'π_defl = (Deflator_t ÷ Deflator_{t−1} − 1) × 100',
+  'gdp deflator inflation':     'π_defl = (Deflator_t ÷ Deflator_{t−1} − 1) × 100  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap) — cascades from the Real GDP path and the real-exchange-rate assumption.',
+  'gdp deflator inflation (%)': 'π_defl = (Deflator_t ÷ Deflator_{t−1} − 1) × 100  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap).',
   'cpi':                        'Consumer Price Index — Laspeyres index of a representative basket',
   'cpi (2005=100)':             'CPI (2005 base). Inflation: π_CPI = (CPI_t ÷ CPI_{t−1} − 1) × 100',
-  'cpi — actual y/y (%)':       'π_CPI = (CPI_t ÷ CPI_{t−1} − 1) × 100',
+  'cpi — actual y/y (%)':       'π_CPI = (CPI_t ÷ CPI_{t−1} − 1) × 100  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap).',
   'cpi — target (%)':           'Central bank inflation target π* used in the Taylor-rule policy reaction',
   'cpi — expectations (%)':     'π^e — inflation expectations entered into the forward-looking Taylor rule',
   'consumption':                'Final Consumption = Household + Government consumption expenditures',
@@ -4829,16 +4308,16 @@ const FORMULAS = {
   'saving - investment (gap)':  'S − I ≡ Current account balance (national-accounts identity)',
   'saving − investment (gap)':  'S − I ≡ Current account balance (national-accounts identity)',
   'saving - investment balance (left axis)':'S − I ≡ Current account balance (national-accounts identity)',
-  'exports':                    'Exports of goods and services (national accounts)',
-  'exports of goods and services':'Exports of goods and services',
-  'imports':                    'Imports of goods and services (national accounts)',
-  'imports of goods and services':'Imports of goods and services',
+  'exports':                    'Exports of goods and services (national accounts)  •  Live forecast (elasticity): g_X = g_world × ε(export demand, default 1.2) + Δ%FX × ε(export competitiveness, default 0.4).',
+  'exports of goods and services':'Exports of goods and services  •  Live forecast (elasticity): g_X = g_world × ε(export demand, default 1.2) + Δ%FX × ε(export competitiveness, default 0.4).',
+  'imports':                    'Imports of goods and services (national accounts)  •  Live forecast (elasticity): g_M = g_RY × ε(import income, default 1.4) − Δ%FX × ε(import price, default 0.5).',
+  'imports of goods and services':'Imports of goods and services  •  Live forecast (elasticity): g_M = g_RY × ε(import income, default 1.4) − Δ%FX × ε(import price, default 0.5).',
   'trade balance':              'Trade balance = Exports − Imports (goods & services)',
   'foreign balance':            'Foreign balance = Exports − Imports',
   'domestic demand':            'DD = C + I + G (final absorption)',
-  'output gap':                 'Output gap = (Y − Y*) ÷ Y* × 100, where Y* = potential output',
-  'output gap (%)':             'Output gap = (Y − Y*) ÷ Y* × 100',
-  'output gap (percent of potential gdp)':'Output gap = (Y − Y*) ÷ Y* × 100',
+  'output gap':                 'Output gap = (Y − Y*) ÷ Y* × 100, where Y* = potential output  •  Live forecast: Y_{t+1}=Y_t×(1+g_RY/100); Y*_{t+1}=Y*_t×(1+trend%, default 4.0%); gap_{t+1}=100×(Y_{t+1}−Y*_{t+1})/Y*_{t+1} — cascades automatically from whichever Real GDP growth method is selected.',
+  'output gap (%)':             'Output gap = (Y − Y*) ÷ Y* × 100  •  Live forecast: 100×(Y_{t+1}−Y*_{t+1})/Y*_{t+1}, with Y_{t+1}=Y_t×(1+g_RY/100) and Y*_{t+1}=Y*_t×(1+4.0%) — driven by the Real GDP forecast method selector.',
+  'output gap (percent of potential gdp)':'Output gap = (Y − Y*) ÷ Y* × 100  •  Live forecast: 100×(Y_{t+1}−Y*_{t+1})/Y*_{t+1}, cascading from the chosen Real GDP growth path.',
   'potential output':           'Potential output Y* — HP filter or trend regression on log(RY)',
   'potential output (weo)':     'IMF WEO potential output series (trend GDP consistent with stable inflation)',
   'trend applied to prev year': 'Ŷ_t = Y_{t−1} × (1 + trend growth rate)',
@@ -4850,8 +4329,8 @@ const FORMULAS = {
   'current account (% gdp)':    'CA/GDP = Current account balance ÷ Nominal GDP (USD) × 100',
   'goods':                      'Goods balance = Goods credit (exports) − Goods debit (imports)',
   'goods balance':              'Goods balance = Goods credit − Goods debit',
-  'credit (exports)':           'Goods credit = merchandise exports (FOB)',
-  'debit (imports)':            'Goods debit = merchandise imports (CIF, adjusted to FOB in BOP)',
+  'credit (exports)':           'Goods credit = merchandise exports (FOB)  •  Live forecast (elasticity model): Δ%RelPrice = ((1+ΔP_x/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100; Δ%RealExports = ε_RX,y×Δ%capacity + ε_RX,Prxf×Δ%RelPrice; X_{t+1} = X_t×(1+Δ%RealExports/100)×(1+ΔP_x/100).',
+  'debit (imports)':            'Goods debit = merchandise imports (CIF, adjusted to FOB in BOP)  •  Live forecast (elasticity model): Δ%RelPrice = ((1+ΔP_m/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100; Δ%RealImports = ε_RM,y×Δ%RY + ε_RM,P×Δ%RelPrice; M_{t+1} = M_t×(1+Δ%RealImports/100)×(1+ΔP_m/100).',
   'services':                   'Services balance = Services credit − Services debit',
   'primary income':             'Primary income = Compensation of employees + Investment income (net)',
   'secondary income':           'Secondary income = Current transfers (remittances, aid, taxes)',
@@ -4878,16 +4357,16 @@ const FORMULAS = {
   'reserves, in months of imports of g.&s.':'Import cover = Reserves ÷ (Goods+Services imports next-12-months) × 12',
   'reserves (months of imports)':'Import cover = Reserves ÷ (Imports g&s ÷ 12)',
   'reserve assets (in mn us$, right scale)':'Level of reserve assets in millions of USD',
-  'real exchange rate index (2012=100) 1/':'REER = NEER × (P_domestic ÷ P_foreign) — index (2012=100)',
-  'real exchange rate index':   'REER = NEER × (P_dom ÷ P_for)',
-  'reer':                       'REER = NEER × (P_dom ÷ P_for)',
+  'real exchange rate index (2012=100) 1/':'REER = NEER × (P_domestic ÷ P_foreign) — index (2012=100)  •  Live forecast: RER_{t+1} = RER_t × (1+Δ%RER/100); RER gap_{t+1} = RER_{t+1} − 100, which then feeds the Phillips-curve CPI forecast (α_r term).',
+  'real exchange rate index':   'REER = NEER × (P_dom ÷ P_for)  •  Live forecast: RER_{t+1} = RER_t × (1+Δ%RER/100); RER gap = RER_{t+1} − 100 (feeds the CPI Phillips-curve forecast).',
+  'reer':                       'REER = NEER × (P_dom ÷ P_for)  •  Live forecast: RER_{t+1} = RER_t × (1+Δ%RER/100); RER gap = RER_{t+1} − 100.',
   'neer':                       'NEER = geometric average of bilateral nominal ER against trade-weighted partners',
   'domestic inflation (in percent)':'π_dom — domestic CPI inflation (%)',
   'inflation in trading partners (in percent)':'π* — trade-weighted foreign CPI inflation (%)',
   'nominal gdp (usd mn)':       'Nominal GDP (USD) = Nominal GDP (NC) ÷ average NER',
 
   /* ── GOVERNMENT / FISCAL ─────────────────────────────────── */
-  'revenue':                    'Revenue = Taxes + Social contributions + Grants received + Other revenue (GFSM 2014)',
+  'revenue':                    'Revenue = Taxes + Social contributions + Grants received + Other revenue (GFSM 2014)  •  Live forecast (elasticity): g_Revenue = g_NominalGDP × tax buoyancy (default 1.1). Detailed worksheet method selector: Effective Tax Rate — Tax_i,t+1 = ETR_i × Base_i,t+1; or Buoyancy — Tax_i,t+1 = Tax_i,t × (1 + buoyancy_i × Δbase_i/base_i).',
   'taxes':                      'Taxes = Taxes on income + Taxes on goods & services + Taxes on intl. trade + Other taxes',
   'taxes on income, profits, capital gains':'Income tax revenue (individuals + corporates + capital gains)',
   'taxes on income':            'Taxes on income, profits & capital gains',
@@ -4900,13 +4379,13 @@ const FORMULAS = {
   'grants (received)':          'Grants received from foreign governments and international organizations',
   'grants (recv.)':             'Grants received (foreign + intl. organizations)',
   'other revenue':              'Fees, sales, rents, dividends, and other non-tax revenue',
-  'expense':                    'Expense = Compensation + Goods&Services + Interest + Subsidies + Social benefits + Grants paid + Other',
+  'expense':                    'Expense = Compensation + Goods&Services + Interest + Subsidies + Social benefits + Grants paid + Other  •  Live forecast (elasticity): g_Expense(ex-interest) = Inflation × wage-indexation elasticity (default 0.8); Interest is forecast separately via the Fisher equation (see Interest row).',
   'compensation of employees':  'Wages, salaries, and social contributions paid by government (public payroll)',
   'compensation':               'Compensation of employees (public payroll)',
   'use of goods and services':  'Purchases of goods & services used in production of gov output',
   'goods & services':           'Government purchases of goods & services (intermediate consumption)',
   'consumption of fixed capital':'CFC — depreciation of government fixed assets',
-  'interest':                   'Interest expense = i·B_{−1} (average interest rate × previous debt stock)',
+  'interest':                   'Interest expense = i·B_{−1} (average interest rate × previous debt stock)  •  Live forecast (elasticity, Fisher equation): i_{t+1} = WORLD real-rate anchor (2.0%) + Inflation_{t+1} (+ manual shock). Detailed worksheet: Interest = (LIBOR + spread)×avg. external debt + domestic rate×avg. domestic debt.',
   'on domestic debt':           'Interest on domestic-currency government debt',
   'on external debt':           'Interest on foreign-currency government debt',
   'subsidies':                  'Transfers to producers to reduce prices / support production',
@@ -4935,22 +4414,22 @@ const FORMULAS = {
   'net worth':                  'Net worth = Assets (financial + nonfinancial) − Liabilities',
 
   /* ── MONETARY ────────────────────────────────────────────── */
-  'monetary base':              'Monetary base (M0/RM) = Currency in circulation + Bank reserves at central bank',
-  'monetary base (bn nc)':      'M0 = Currency issued + Required + Excess reserves held at central bank',
-  'reserve money':              'Reserve money (M0) = Currency + Bank reserves at CB',
-  'reserve money (bn nc, eop)': 'M0 (EOP) = Currency in circulation + Bank reserves at central bank',
+  'monetary base':              'Monetary base (M0/RM) = Currency in circulation + Bank reserves at central bank  •  Live forecast (elasticity, quantity theory): g_MB = g_NominalGDP + velocity drift (default 0 ⇒ constant velocity).',
+  'monetary base (bn nc)':      'M0 = Currency issued + Required + Excess reserves held at central bank  •  Live forecast (elasticity, quantity theory): g_MB = g_NominalGDP + velocity drift (default 0).',
+  'reserve money':              'Reserve money (M0) = Currency + Bank reserves at CB  •  Live forecast (elasticity, quantity theory): g_MB = g_NominalGDP + velocity drift (default 0).',
+  'reserve money (bn nc, eop)': 'M0 (EOP) = Currency in circulation + Bank reserves at central bank  •  Live forecast (elasticity, quantity theory): g_MB = g_NominalGDP + velocity drift (default 0).',
   'broad money':                'Broad money (M2) = Currency in circulation + Deposits (demand + savings + time)',
   'broad money (bn nc)':        'M2 = Currency outside banks + Transferable + Other deposits',
   'broad money (bn nc, eop)':   'M2 (EOP) = Currency outside banks + Transferable + Other deposits',
   'broad money — avg stock':    'M2̄ = (M2_t + M2_{t−1}) ÷ 2 — used as denominator for velocity',
   'broad money — eop stock':    'M2 end-of-period stock — used for money-multiplier ratio',
-  'broad money growth':         'ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100',
-  'broad money growth (%)':     'ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100',
-  'broad money (growth, in percent)':'ΔM2 = (M2_t ÷ M2_{t−1} − 1) × 100',
+  'broad money growth':         'ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100  •  Live forecast: M2_{t+1} = Monetary base_{t+1} × Money multiplier_{t+1}, both elasticity-forecast (see Monetary base and Money multiplier rows); growth is then computed from the resulting M2 path.',
+  'broad money growth (%)':     'ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100  •  Live forecast: M2_{t+1} = Monetary base_{t+1} × Money multiplier_{t+1} (elasticity-forecast).',
+  'broad money (growth, in percent)':'ΔM2 = (M2_t ÷ M2_{t−1} − 1) × 100  •  Live forecast: M2_{t+1} = Monetary base_{t+1} × Money multiplier_{t+1} (elasticity-forecast).',
   'private sector credit growth (percent, y-o-y)':'Δcredit = (Credit_t ÷ Credit_{t−1} − 1) × 100',
   'credit to private sector':   'Loans + securities held by depository corporations vis-à-vis private sector',
-  'money multiplier':           'μ = M2 ÷ M0 = Broad money ÷ Reserve money',
-  'money multiplier (m2 / rm)': 'μ = M2 ÷ RM',
+  'money multiplier':           'μ = M2 ÷ M0 = Broad money ÷ Reserve money  •  Live forecast (elasticity): μ_{t+1} = base multiplier (4.7) + sensitivity (0.04) × (interest rate_{t+1} − base-rate anchor 5.0%).',
+  'money multiplier (m2 / rm)': 'μ = M2 ÷ RM  •  Live forecast (elasticity): μ_{t+1} = base multiplier (4.7) + sensitivity (0.04) × (interest rate_{t+1} − base-rate anchor 5.0%).',
   'velocity':                   'V = Nominal GDP ÷ Avg M2 (income velocity of broad money)',
   'velocity (gdp / avg m2)':    'V = Nominal GDP ÷ ((M2_t + M2_{t−1}) ÷ 2)',
   'mb/gdp':                     'MB/GDP = Monetary base ÷ Nominal GDP × 100',
@@ -4990,30 +4469,30 @@ const FORMULAS = {
   'oin — other depository corps':'OIN of Other Depository Corporations',
 
   /* ── ADDITIONAL COVERAGE — projected-path & interlinks tables ── */
-  'inflation':                  'π = GDP deflator inflation ≈ CPI inflation (Δ price level, %)',
-  'inflation (%)':              'π = GDP deflator inflation = (P_t / P_{t−1} − 1) × 100',
-  'exchange rate':              'NER — nominal exchange rate (NC per USD)',
-  'exchange rate (nc/usd)':     'NER — nominal exchange rate (NC per USD)',
-  'nominal er (avg, nc/usd)':   'NER average = (NER_bop + NER_eop) / 2 — used in flow-USD conversions',
-  'nominal er (eop, nc/usd)':   'End-of-period NER (used for stock revaluation)',
-  'ner_a (nc/usd)':             'NER average — used for flow conversion to USD',
-  'ner_eop (nc/usd)':           'NER end-of-period — used to revalue foreign-currency stocks',
-  'fx rate (nc/usd)':           'NC per USD (nominal exchange rate)',
+  'inflation':                  'π = GDP deflator inflation ≈ CPI inflation (Δ price level, %)  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap) — the output gap and RER gap are themselves derived from the Real GDP growth and RER assumptions, so this recalculates automatically as those sliders move.',
+  'inflation (%)':              'π = GDP deflator inflation = (P_t / P_{t−1} − 1) × 100  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap).',
+  'exchange rate':              'NER — nominal exchange rate (NC per USD)  •  Live forecast (elasticity, relative PPP): Δ%FX_{t+1} = (π_domestic − π_world) × ε(pass-through, default 0.6); world inflation anchor = 2.0%.',
+  'exchange rate (nc/usd)':     'NER — nominal exchange rate (NC per USD)  •  Live forecast (elasticity, relative PPP): Δ%FX_{t+1} = (π_domestic − π_world) × ε(pass-through, default 0.6).',
+  'nominal er (avg, nc/usd)':   'NER average = (NER_bop + NER_eop) / 2 — used in flow-USD conversions  •  Live forecast: Δ%FX = (π_domestic − π_world) × ε(pass-through, default 0.6) — relative PPP.',
+  'nominal er (eop, nc/usd)':   'End-of-period NER (used for stock revaluation)  •  Live forecast: Δ%FX = (π_domestic − π_world) × ε(pass-through, default 0.6).',
+  'ner_a (nc/usd)':             'NER average — used for flow conversion to USD  •  Live forecast: Δ%FX = (π_domestic − π_world) × ε(pass-through, default 0.6).',
+  'ner_eop (nc/usd)':           'NER end-of-period — used to revalue foreign-currency stocks  •  Live forecast: Δ%FX = (π_domestic − π_world) × ε(pass-through, default 0.6).',
+  'fx rate (nc/usd)':           'NC per USD (nominal exchange rate)  •  Live forecast (elasticity, relative PPP): Δ%FX = (π_domestic − π_world) × ε(pass-through, default 0.6).',
   'fx rate — avg (nc/usd)':     'Average NC per USD',
   'fx rate — eop (nc/usd)':     'End-of-period NC per USD',
   'foreign inflation (%)':      'π* — trade-weighted foreign CPI inflation',
-  'cpi inflation (%)':          'π_CPI = (CPI_t / CPI_{t−1} − 1) × 100',
-  'real er index (2012=100)':   'REER = NEER × (P_dom / P_for), rebased to 100 in 2012',
-  'gov. revenue':               'Government revenue = Taxes + Social contributions + Grants + Other revenue',
-  'gov. revenue (bn nc)':       'Revenue = Taxes + Social contributions + Grants + Other revenue',
-  'gov. expense':               'Government expense = Compensation + G&S + Interest + Subsidies + Social benefits + Grants paid + Other',
-  'gov. expense (bn nc)':       'Expense = Compensation + Goods&Services + Interest + Subsidies + Social benefits + Grants paid + Other',
-  'exports of g&s':             'Exports of goods and services (X)',
-  'imports of g&s':             'Imports of goods and services (M)',
+  'cpi inflation (%)':          'π_CPI = (CPI_t / CPI_{t−1} − 1) × 100  •  Live forecast (Phillips curve): Δ%CPI_{t+1} = c + ρ·π_t + α_y·(output gap) + α_r·(RER gap).',
+  'real er index (2012=100)':   'REER = NEER × (P_dom / P_for), rebased to 100 in 2012  •  Live forecast: RER_{t+1} = RER_t × (1+Δ%RER/100); RER gap_{t+1} = RER_{t+1} − 100.',
+  'gov. revenue':               'Government revenue = Taxes + Social contributions + Grants + Other revenue  •  Live forecast (elasticity): g_Revenue = g_NominalGDP × tax buoyancy (default 1.1); or via the ETR/Buoyancy method selector on the detailed worksheet.',
+  'gov. revenue (bn nc)':       'Revenue = Taxes + Social contributions + Grants + Other revenue  •  Live forecast (elasticity): g_Revenue = g_NominalGDP × tax buoyancy (default 1.1).',
+  'gov. expense':               'Government expense = Compensation + G&S + Interest + Subsidies + Social benefits + Grants paid + Other  •  Live forecast (elasticity): g_Expense(ex-interest) = Inflation × wage-indexation elasticity (default 0.8).',
+  'gov. expense (bn nc)':       'Expense = Compensation + Goods&Services + Interest + Subsidies + Social benefits + Grants paid + Other  •  Live forecast (elasticity): g_Expense(ex-interest) = Inflation × wage-indexation elasticity (default 0.8).',
+  'exports of g&s':             'Exports of goods and services (X)  •  Live forecast (elasticity): g_X = g_world × ε(export demand, default 1.2) + Δ%FX × ε(export competitiveness, default 0.4).',
+  'imports of g&s':             'Imports of goods and services (M)  •  Live forecast (elasticity): g_M = g_RY × ε(import income, default 1.4) − Δ%FX × ε(import price, default 0.5).',
   'foreign balance':            'Foreign balance = Exports − Imports (X − M)',
   'goods trade balance':        'Goods trade balance = Goods credit − Goods debit',
-  'goods — credit (exports)':   'Goods credit = merchandise exports (FOB)',
-  'goods — debit (imports)':    'Goods debit = merchandise imports (FOB-adjusted)',
+  'goods — credit (exports)':   'Goods credit = merchandise exports (FOB)  •  Live forecast (elasticity model): Δ%RelPrice=((1+ΔP_x/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100; Δ%RealExports = ε_RX,y×Δ%capacity + ε_RX,Prxf×Δ%RelPrice.',
+  'goods — debit (imports)':    'Goods debit = merchandise imports (FOB-adjusted)  •  Live forecast (elasticity model): Δ%RelPrice=((1+ΔP_m/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100; Δ%RealImports = ε_RM,y×Δ%RY + ε_RM,P×Δ%RelPrice.',
   'services — credit':          'Services credit = exports of services (transport, travel, etc.)',
   'services — debit':           'Services debit = imports of services',
   'services net':               'Services net = Services credit − Services debit',
@@ -5065,9 +4544,9 @@ const FORMULAS = {
   'real priv. investment':      'Real private investment ≈ Real GDP × elasticity β_I',
   'rip / gdp':                  'Real private investment / Real GDP × 100',
   'rip / gdp (%)':              'Real private investment / Real GDP × 100',
-  'real imports of goods':      'Real imports (2005 prices) = Nominal imports ÷ import deflator × 100',
-  'real imports of goods (bn nc)':'Real imports (bn NC, 2005 prices)',
-  'real exports of goods':      'Real exports (2005 prices) = Nominal exports ÷ export deflator × 100',
+  'real imports of goods':      'Real imports (2005 prices) = Nominal imports ÷ import deflator × 100  •  Live forecast (elasticity model): Δ%RMg = ε_RM,y×Δ%RY + ε_RM,P×Δ%RelPrice, where Δ%RelPrice = ((1+ΔP_m/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100.',
+  'real imports of goods (bn nc)':'Real imports (bn NC, 2005 prices)  •  Live forecast (elasticity model): Δ%RMg = ε_RM,y×Δ%RY + ε_RM,P×Δ%RelPrice.',
+  'real exports of goods':      'Real exports (2005 prices) = Nominal exports ÷ export deflator × 100  •  Live forecast (elasticity model): Δ%RXg = ε_RX,y×Δ%capacity + ε_RX,Prxf×Δ%RelPrice, where Δ%RelPrice = ((1+ΔP_x/100)(1+ΔNER/100)/(1+ΔCPI/100)−1)×100.',
 
   /* Monetary interlinks / balance-sheet block */
   'currency in circulation':    'Currency in circulation = Notes + coins held outside banks',
@@ -5112,13 +4591,13 @@ const FORMULAS = {
   'net disbursements — long term':'Net disbursements = Disbursements − Amortization (long-term)',
 
   /* Government projection labels */
-  'effective tax rate':         'ETR = Tax revenue ÷ Nominal GDP × 100 (weighted by base composition)',
-  'effective tax rate (%)':     'ETR = Tax revenue ÷ Nominal GDP × 100',
-  'buoyancy':                   'Tax buoyancy = ΔTax revenue % ÷ ΔGDP %',
-  'elasticity':                 'Tax elasticity = ΔTax revenue % (structural) ÷ ΔGDP %',
+  'effective tax rate':         'ETR = Tax revenue ÷ Nominal GDP × 100 (weighted by base composition)  •  Forecast method selector option 1 (ETR): Tax_i,t+1 = ETR_i × Base_i,t+1, where Base = Nominal GDP for income/other tax, Consumption for goods&services tax, Imports for trade tax.',
+  'effective tax rate (%)':     'ETR = Tax revenue ÷ Nominal GDP × 100  •  Forecast method selector option 1 (ETR): Tax_i,t+1 = ETR_i × Base_i,t+1.',
+  'buoyancy':                   'Tax buoyancy = ΔTax revenue % ÷ ΔGDP %  •  Forecast method selector option 2 (Buoyancy): Tax_i,t+1 = Tax_i,t × (1 + buoyancy_i × Δbase_i/base_i).',
+  'elasticity':                 'Tax elasticity = ΔTax revenue % (structural) ÷ ΔGDP %  •  Related but distinct from buoyancy: elasticity strips out discretionary policy changes, while buoyancy (used in the forecast method selector) captures the full observed responsiveness.',
   'tax base':                   'Nominal GDP proxy (or sector-specific base — imports, consumption, etc.)',
-  'projected revenue':          'Projected revenue = ETR × Projected Nominal GDP',
-  'projected expense':          'Projected expense = Base × (1 + growth rate) per category',
+  'projected revenue':          'Projected revenue = ETR × Projected Nominal GDP  •  Selectable forecast method: Effective Tax Rate (level-based, Tax_i=ETR_i×Base_i) or Buoyancy (growth-based, Tax_i,t+1=Tax_i,t×(1+buoyancy_i×Δbase/base)) — toggle via the Revenue method selector.',
+  'projected expense':          'Projected expense = Base × (1 + growth rate) per category  •  Live forecast: category growth rates are elasticity-linked — Compensation/Goods&Services use assumed nominal growth rates; Subsidies/Grants/Social benefits/Other track nominal GDP growth; Interest = rate × previous debt stock (Fisher-equation rate).',
 
   /* Interlinks card labels */
   'goods balance':              'Goods balance = Goods credit − Goods debit',
@@ -5242,8 +4721,7 @@ function initCollapsibleTable(table){
     head.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
-    table.classList.add('collapsed-table');
-    head.classList.add('collapsed');
+    // Tables start expanded by default — no collapsed-table/collapsed classes added here.
   } else if (!head) {
     var bar = document.createElement('div');
     bar.className = 'table-toggle-bar';
@@ -5259,8 +4737,7 @@ function initCollapsibleTable(table){
     bar.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBar(); }
     });
-    table.classList.add('collapsed-table');
-    bar.classList.add('collapsed');
+    // Tables start expanded by default — no collapsed-table/collapsed classes added here.
   }
 }
 function scanForCollapsibleTables(){
@@ -5788,11 +5265,158 @@ function goToCaseTab(tab){
 }
 
 
+/* ============================================================
+   REAL SECTOR MACROECONOMIC FRAMEWORK — interactive guide
+   Every figure is derived live from BASELINE.real / .external /
+   .government so the worked examples always match the Macronia
+   data shown elsewhere on this page, instead of sitting as
+   static placeholder text.
+   ============================================================ */
+const fwState = {
+  year: YEARS[YEARS.length - 1],
+  shock: 0,
+  pcGap: BASELINE.real.output_gap.at(-1),
+  pcGamma: 0.5,
+  isR: 5,
+  isRer: 0,
+};
+function fwIdx(){ return YEARS.indexOf(fwState.year); }
+
+function renderFwWaterfall(){
+  const i = fwIdx();
+  const R = BASELINE.real, E = BASELINE.external;
+  const gdp = R.gdp_nominal[i];
+  // External sector figures are reported in USD mn; convert to bn NC via the
+  // year's exchange rate so they sit on the same footing as Nominal GDP.
+  const primaryNC   = E.primary_income[i]   * E.exchange_rate[i] / 1000;
+  const secondaryNC = E.secondary_income[i] * E.exchange_rate[i] / 1000;
+  const gni  = gdp + primaryNC;
+  const gndi = gni + secondaryNC;
+  const A = R.consumption[i] + R.investment[i];
+  const S = gndi - R.consumption[i];
+  const cabComputed  = gndi - A;
+  const cabActualNC  = E.current_account[i] * E.exchange_rate[i] / 1000;
+
+  const cells = [
+    { label:'GDP (bn NC)',              value: fmt(gdp,1),        sub:`Production, ${fwState.year}` },
+    { label:'+ Net primary income',     value: (primaryNC<0?'':'+') + fmt(primaryNC,1),   sub:`FX ${fmt(E.exchange_rate[i],2)} NC/USD` },
+    { label:'= GNI (bn NC)',            value: fmt(gni,1),        sub:'Income earned by residents' },
+    { label:'+ Net current transfers',  value: (secondaryNC<0?'':'+') + fmt(secondaryNC,1), sub:'from external sector' },
+  ];
+  document.getElementById('fw-waterfall').innerHTML = cells.map(c => `
+    <div class="kpi"><div class="kpi-label">${c.label}</div><div class="kpi-value" style="font-size:16px">${c.value}</div><div class="kpi-sub">${c.sub}</div></div>
+  `).join('') + `
+    <div class="kpi" style="border-color:var(--real)"><div class="kpi-label">= GNDI (bn NC)</div><div class="kpi-value" style="font-size:16px;color:var(--real)">${fmt(gndi,1)}</div><div class="kpi-sub">Available to spend or save</div></div>
+  `;
+  document.getElementById('fw-waterfall-note').innerHTML =
+    `In <strong>${fwState.year}</strong>, Domestic Absorption A = C + I = ${fmt(R.consumption[i],1)} + ${fmt(R.investment[i],1)} = <strong>${fmt(A,1)} bn NC</strong>. `
+    + `National saving S = GNDI &minus; C = ${fmt(gndi,1)} &minus; ${fmt(R.consumption[i],1)} = <strong>${fmt(S,1)} bn NC</strong>. `
+    + `That implies CAB = GNDI &minus; A = S &minus; I = <strong>${fmt(cabComputed,1)} bn NC</strong>, versus the actual reported Current Account of <strong>${fmt(cabActualNC,1)} bn NC</strong> (${fmt(E.ca_pct_gdp[i],2)}% of USD GDP) — the gap reflects the usual valuation and coverage differences between real-account and BOP compilations.`;
+}
+
+function renderFwShock(){
+  const i = fwIdx();
+  const R = BASELINE.real, E = BASELINE.external;
+  const gdp = R.gdp_nominal[i];
+  const gndi = gdp + E.primary_income[i]*E.exchange_rate[i]/1000 + E.secondary_income[i]*E.exchange_rate[i]/1000;
+  const baseA = R.consumption[i] + R.investment[i];
+  const baseCabPct = (gndi - baseA) / gdp * 100;
+  const shockAmt = gdp * (fwState.shock/100);
+  const newA = baseA + shockAmt;
+  const newCabPct = (gndi - newA) / gdp * 100;
+
+  document.getElementById('fw-shock-val').textContent = fwState.shock.toFixed(1)+'%';
+  document.getElementById('fw-shock-kpis').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Baseline Absorption</div><div class="kpi-value" style="font-size:16px">${fmt(baseA,1)}</div><div class="kpi-sub">bn NC · ${fwState.year}</div></div>
+    <div class="kpi"><div class="kpi-label">Shocked Absorption</div><div class="kpi-value" style="font-size:16px">${fmt(newA,1)}</div><div class="kpi-sub">+${fmt(shockAmt,1)} bn NC spending</div></div>
+    <div class="kpi"><div class="kpi-label">Baseline CAB</div><div class="kpi-value" style="font-size:16px">${fmt(baseCabPct,2)}%</div><div class="kpi-sub">of GDP</div></div>
+    <div class="kpi" style="border-color:${newCabPct<baseCabPct?'var(--fiscal)':'var(--real)'}"><div class="kpi-label">Shocked CAB</div><div class="kpi-value" style="font-size:16px;color:${newCabPct<baseCabPct?'var(--fiscal)':'var(--real)'}">${fmt(newCabPct,2)}%</div><div class="kpi-sub">of GDP</div></div>
+  `;
+  document.getElementById('fw-shock-note').innerHTML = fwState.shock === 0
+    ? 'Move the slider to add extra spending on top of the Macronia baseline and watch the Current Account deteriorate, since S &minus; I falls by the same amount as the spending increase.'
+    : `A ${fwState.shock.toFixed(1)}% of GDP absorption shock in ${fwState.year} widens the Current Account balance from ${fmt(baseCabPct,2)}% to <strong>${fmt(newCabPct,2)}% of GDP</strong> — the classic twin-deficits mechanism: higher spending without matching income pushes the gap onto the external accounts.`;
+}
+
+function renderFwStructural(){
+  const R = BASELINE.real;
+  const i = fwIdx();
+  const piE = R.inflation[i]; // use the selected year's own inflation as the expected-inflation anchor
+  const pi = piE + fwState.pcGamma * fwState.pcGap;
+  document.getElementById('fw-pc-gap-val').textContent = fwState.pcGap.toFixed(1)+'%';
+  document.getElementById('fw-pc-gamma-val').textContent = fwState.pcGamma.toFixed(2);
+  let bestI = 0, bestD = Infinity;
+  R.output_gap.forEach((g,idx) => { const d = Math.abs(g - fwState.pcGap); if (d < bestD){ bestD = d; bestI = idx; } });
+  document.getElementById('fw-pc-result').innerHTML =
+    `&pi;_t = ${fmt(piE,2)}% + ${fwState.pcGamma.toFixed(2)} &times; ${fwState.pcGap.toFixed(1)}% = <strong>${fmt(pi,2)}%</strong> implied inflation.<br>`
+    + `Closest historical analogue in Macronia: <strong>${YEARS[bestI]}</strong> had an output gap of ${R.output_gap[bestI]}% and observed inflation of ${R.inflation[bestI]}%.`;
+
+  document.getElementById('fw-is-r-val').textContent = fwState.isR.toFixed(2)+'%';
+  document.getElementById('fw-is-rer-val').textContent = fwState.isRer.toFixed(1)+'%';
+  const a0 = 4, a1 = 0.6, a2 = 0.15; // illustrative calibration — this page carries no modeled real-rate series
+  const impliedGap = a0 - a1*fwState.isR + a2*fwState.isRer;
+  document.getElementById('fw-is-result').innerHTML =
+    `Illustrative calibration (&alpha;&#8320;=${a0}, &alpha;&#8321;=${a1}, &alpha;&#8322;=${a2}): output gap = ${a0} &minus; ${a1}&times;${fwState.isR.toFixed(2)} + ${a2}&times;${fwState.isRer.toFixed(1)} = <strong>${impliedGap.toFixed(2)}%</strong>. `
+    + `Raising r_t tightens monetary conditions and closes a positive gap; a more depreciated RER_t supports net exports and widens it. Since this page doesn't carry a modeled real-interest-rate series, treat these coefficients as teaching values rather than a fitted Macronia estimate.`;
+
+  const gdpDeflatorCheck = (R.gdp_nominal[i]/R.gdp_real[i]*100);
+  document.getElementById('fw-glossary').innerHTML = `
+    <div class="fw-glossary-item">
+      <div class="fw-glossary-term">Output Gap</div>
+      <div class="fw-glossary-def">(Actual Real GDP &minus; Potential GDP) &divide; Potential GDP &times; 100.</div>
+      <div class="fw-glossary-metric">${fwState.year}: (${fmt(R.gdp_real[i],1)} &minus; ${fmt(R.potential_output[i],1)}) &divide; ${fmt(R.potential_output[i],1)} &times; 100 = ${R.output_gap[i]}%</div>
+    </div>
+    <div class="fw-glossary-item">
+      <div class="fw-glossary-term">GDP Deflator</div>
+      <div class="fw-glossary-def">Nominal GDP &divide; Real GDP &times; 100 — the broadest economy-wide price measure.</div>
+      <div class="fw-glossary-metric">${fwState.year}: ${fmt(R.gdp_nominal[i],1)} &divide; ${fmt(R.gdp_real[i],1)} &times; 100 = ${fmt(gdpDeflatorCheck,1)} (reported: ${R.gdp_deflator[i]})</div>
+    </div>
+    <div class="fw-glossary-item">
+      <div class="fw-glossary-term">Crowding Out</div>
+      <div class="fw-glossary-def">Reductions in private investment caused by higher real borrowing rates driven by heavy government bond issuance.</div>
+      <div class="fw-glossary-metric">Macronia's public debt rose from ${BASELINE.government.debt_pct_gdp[0]}% to ${BASELINE.government.debt_pct_gdp.at(-1)}% of GDP over ${YEARS[0]}–${YEARS.at(-1)}, while interest expense rose from ${fmt(BASELINE.government.interest[0],1)} to ${fmt(BASELINE.government.interest.at(-1),1)} bn NC — the fiscal side of the same mechanism.</div>
+    </div>
+  `;
+}
+
+function initFrameworkGuide(){
+  const yearSel = document.getElementById('fw-year-select');
+  if (!yearSel) return; // guide not present on this build
+
+  // Collapsible Introduction card — collapsed by default; click the header to expand.
+  const guideHead = document.getElementById('fw-guide-head');
+  const guideBody = document.getElementById('fw-guide-body');
+  if (guideHead && guideBody) {
+    const toggleGuide = () => {
+      const collapsed = guideBody.classList.toggle('collapsed');
+      guideHead.classList.toggle('collapsed', collapsed);
+      guideHead.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    };
+    guideHead.addEventListener('click', toggleGuide);
+    guideHead.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGuide(); }
+    });
+  }
+
+  yearSel.innerHTML = YEARS.map(y => `<option value="${y}">${y}</option>`).join('');
+  yearSel.value = String(fwState.year);
+  yearSel.addEventListener('change', e => { fwState.year = parseInt(e.target.value); renderFwWaterfall(); renderFwShock(); renderFwStructural(); });
+
+  document.getElementById('fw-shock-slider').addEventListener('input', e => { fwState.shock = parseFloat(e.target.value); renderFwShock(); });
+  const pcGapEl = document.getElementById('fw-pc-gap');
+  pcGapEl.value = fwState.pcGap;
+  pcGapEl.addEventListener('input', e => { fwState.pcGap = parseFloat(e.target.value); renderFwStructural(); });
+  document.getElementById('fw-pc-gamma').addEventListener('input', e => { fwState.pcGamma = parseFloat(e.target.value); renderFwStructural(); });
+  document.getElementById('fw-is-r').addEventListener('input', e => { fwState.isR = parseFloat(e.target.value); renderFwStructural(); });
+  document.getElementById('fw-is-rer').addEventListener('input', e => { fwState.isRer = parseFloat(e.target.value); renderFwStructural(); });
+
+  renderFwWaterfall();
+  renderFwShock();
+  renderFwStructural();
+}
+
 function init(){
   // Initialize projection assumptions now that PROJ_DEFAULTS is defined
   state.projAssumptions = {...PROJ_DEFAULTS};
-  state.realProjAssumptions = {...REAL_PROJ_DEFAULTS, overrides: {}};
-  syncRealProjDerived(); // populate the derived assumptions (output gap, RER gap, CPI, real imports) consistently
 
   // Move the real-reports block into tab-sector (it was declared inside Sector Interlinks HTML)
   const realRep = document.getElementById('real-reports');
@@ -5887,22 +5511,14 @@ function init(){
 
   // Sector Interlinks — both views are always visible, no sub-tab handler needed
 
-  // Real Sector — "View Worksheets Only" solo toggle for the Foreign Balance &
-  // Current Account worksheet (mirrors the Gov Ops sub-tab pattern: one click
-  // hides the sibling sections so only this worksheet shows; click again to restore).
-  const realFbSoloBtn = document.getElementById('real-fb-solo-btn');
-  if (realFbSoloBtn) {
-    realFbSoloBtn.addEventListener('click', () => {
-      const solo = !realFbSoloBtn.classList.contains('active');
-      setRealFbSolo(solo);
-    });
-  }
-
   // Restore key
   loadKey();
 
   // Study Questions by Sector
   initCaseQuestions();
+
+  // Real Sector Macroeconomic Framework — interactive guide
+  initFrameworkGuide();
 
   // Keep the sticky Policy Levers header offset in sync with the real app-header height
   syncHeaderHeight();
