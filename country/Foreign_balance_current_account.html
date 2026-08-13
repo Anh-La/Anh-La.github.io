@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Foreign Balance & Current Account — Projection Worksheets, Macronia FPP case study.">
+<title>Foreign Balance &amp; Current Account — Projection Worksheets · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--real);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:700px){.summary{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+  .kpi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+  .kpi-value{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:6px}
+  .kpi-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi-base{font-family:var(--font-mono);font-size:10px;color:#94a3b8;margin-top:8px;border-top:1px solid #f1f5f9;padding-top:6px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+
+  .charts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media (max-width:700px){.charts{grid-template-columns:1fr}}
+  .chart-wrap{padding:8px;height:220px;position:relative;width:100%;max-width:100%}
+
+  .slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:#e2e8f0;outline:none;border-radius:2px}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
+  .slider::-moz-range-thumb{width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff}
+
+  .info-note{font-size:10.5px;line-height:1.5;color:var(--muted);background:#f8fafc;border:1px solid var(--line);padding:10px;margin-bottom:14px}
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Fb</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · Real Sector Worksheet</div>
+      <div class="brand-title">Foreign Balance &amp; Current Account — Projection Worksheets</div>
+    </div>
+  </div>
+  <a class="back-link" href="real_sector.html">&larr; Back to Real Sector</a>
+</header>
+
+<main>
+  <div style="font-size:11px;color:var(--muted);margin-top:2px">IMF FPP: real exports (elasticity model) · nominal X&amp;M · services ratios · primary/secondary income · Baseline 2013 · Forecast 2014</div>
+  <p class="intro">This worksheet builds the 2014 Current Account forecast bottom-up: real export volumes from an elasticity model, nominal exports and imports from relative price pass-through, services from fixed ratios to goods flows, and primary/secondary income from yields, financing costs and growth assumptions on the external balance sheet.</p>
+
+  <div class="layout">
+    <aside class="card" id="real-proj-panel"></aside>
+    <div>
+      <div class="summary" id="real-proj-kpi"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Consolidated Current Account — Historical + 2014 Forecast</span><span class="mono" style="font-size:10px;color:var(--muted)">USD millions</span></div>
+        <div class="table-wrap"><table class="fp" id="real-proj-table"></table></div>
+      </div>
+      <div class="charts" style="margin-top:12px">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Goods &amp; Services — Credits vs Debits</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-xm"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Current Account Composition</span></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="real-proj-ca"></canvas></div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Elasticity-based Forecast (2014)</span></div>
+        <div class="card-body" style="font-size:12px">
+          <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
+            <div>① Δ%Prxf = ((1 + Δ%Pxf/100) × (1 + Δ%NER/100) / (1 + Δ%CPI/100) − 1) × 100</div>
+            <div>② Δ%RXg = εRX,y × Δ%RYp + εRX,Prxf × Δ%Prxf</div>
+            <div>③ Xg₂₀₁₄ = Xg₂₀₁₃ × (1 + Δ%RXg/100) × (1 + Δ%Pxf/100)</div>
+            <div>④ Mg₂₀₁₄ = Mg₂₀₁₃ × (1 + Δ%RMg/100) × (1 + Δ%Pmf/100)</div>
+            <div>⑤ Services Credit = Xg × service_credit_ratio  ·  Services Debit = Mg × service_debit_ratio</div>
+            <div>⑥ Investment income = yield × avg foreign assets · Interest payments = (LIBOR + spread) × avg external debt</div>
+          </div>
+          <div id="real-proj-formula-values" class="mono" style="margin-top:8px;font-size:11px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "Foreign Balance &amp; Current Account — Projection Worksheets" from the Macronia FPP case study — the content this page replaced from the main Real Sector dashboard. &Delta;%CPI and &Delta;% Real imports volume are set directly with the sliders here; on the Domestic Demand &amp; Prices worksheet they are instead correlated live with the Real GDP path and a Phillips-curve inflation forecast via a Lever Correlation Engine — open that worksheet to see the fully cascaded model. &middot; <a href="real_sector.html">Return to the full Real Sector dashboard &rarr;</a> &middot; <a href="domestic-demand-prices.html">Domestic Demand &amp; Prices worksheet &rarr;</a> &middot; <a href="real-gdp-output-gap.html">Real GDP &amp; Output Gap worksheet &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return v.toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+}
+function makeChart(id, config){
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  el._chart = new Chart(el.getContext('2d'), config);
+}
+
+const REAL_PROJ_YEARS = [2008, 2009, 2010, 2011, 2012, 2013];
+const REAL_PROJ = {
+  years: REAL_PROJ_YEARS,
+  goods_credit:      [9555.37, 8838.23, 9516.25, 10383.11, 11494.73, 12095.65], // USD mn
+  goods_debit:       [14568.70, 10877.29, 12955.95, 15534.48, 17222.81, 18289.86],
+  services_credit:   [4083.32, 3592.91, 4319.98, 4972.35, 5504.70, 5792.47],
+  services_debit:    [1882.40, 1404.81, 1782.75, 1735.48, 1924.10, 2043.30],
+  primary_credit:    [617.82, 253.49, 316.83, 272.38, 173.87, 184.98],
+  investment_income: [546.92, 228.99, 281.63, 209.18, 133.53, 142.06],
+  primary_debit:     [1126.04, 1203.94, 1083.38, 1077.22, 1084.27, 1042.67],
+  interest_payments: [352.60, 308.00, 306.60, 284.10, 285.96, 274.99],
+  other_primary:     [773.44, 895.94, 776.78, 793.12, 798.31, 767.68],
+  secondary_income:  [442.30, 358.80, 366.50, 322.90, 333.50, 342.90],
+  svc_credit_ratio:  [42.73, 40.65, 45.40, 47.89, 47.89, 47.89],
+  svc_debit_ratio:   [12.92, 12.92, 13.76, 11.17, 11.17, 11.17],
+  foreign_assets:    [11617.7, 11915.2, 12732.4, 12928.9, 13775.6, 14636.2],
+  external_debt:     [8964.30, 7878.80, 8631.80, 9764.20, 10236.15, 11068.04],
+  libor:             [3.046, 1.121, 0.518, 0.507, 0.687, 0.409],
+  implicit_rate:     [4.069, 3.657, 3.714, 3.089, 2.860, 2.582],
+  interest_spread:   [1.023, 2.536, 3.196, 2.582, 2.173, 2.173],
+  yield_investment:  [4.672, 1.303, 1.541, 1.090, 1.000, 1.000],
+};
+
+const a = {
+  d_Pxf: 1.5, d_NER: 0.0, d_CPI: 7.482, d_RYp: 4.0,
+  eps_RXy: 1.0, eps_RXP: 0.625,
+  d_Pmf: 1.5, d_RMg: 0.0,
+  svc_credit_ratio: 47.889, svc_debit_ratio: 11.172,
+  yield_investment: 1.0, libor: 0.409, spread: 2.173,
+  other_primary_growth: 0.0, foreign_assets_2014: 14324.0, external_debt_2014: 11809.88,
+  secondary_income_growth: 0.0,
+};
+
+function computeRealProj(a){
+  const B = REAL_PROJ;
+  const i = B.years.length - 1;      // 2013
+  const xg13 = B.goods_credit[i], mg13 = B.goods_debit[i];
+
+  const d_Prxf = ((1 + a.d_Pxf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  const d_RXg = a.eps_RXy * a.d_RYp + a.eps_RXP * d_Prxf;
+  const xg14 = xg13 * (1 + d_RXg/100) * (1 + a.d_Pxf/100);
+  const mg14 = mg13 * (1 + a.d_RMg/100) * (1 + a.d_Pmf/100);
+  const sc14 = xg14 * a.svc_credit_ratio / 100;
+  const sd14 = mg14 * a.svc_debit_ratio / 100;
+  const avg_assets = (B.foreign_assets[i] + a.foreign_assets_2014) / 2;
+  const avg_debt = (B.external_debt[i] + a.external_debt_2014) / 2;
+  const inv_income14 = a.yield_investment / 100 * avg_assets;
+  const interest14 = (a.libor + a.spread) / 100 * avg_debt;
+  const other_prim14 = B.other_primary[i] * (1 + a.other_primary_growth/100);
+  const primary_credit14 = inv_income14 + (B.primary_credit[i] - B.investment_income[i]);
+  const primary_debit14 = interest14 + other_prim14;
+  const primary_net14 = primary_credit14 - primary_debit14;
+  const sec14 = B.secondary_income[i] * (1 + a.secondary_income_growth/100);
+  const goods_net14 = xg14 - mg14;
+  const svc_net14 = sc14 - sd14;
+  const ca14 = goods_net14 + svc_net14 + primary_net14 + sec14;
+
+  return { d_Prxf, d_RXg, xg14, mg14, sc14, sd14, inv_income14, interest14, other_prim14,
+           primary_credit14, primary_debit14, primary_net14, sec14, goods_net14, svc_net14, ca14,
+           avg_assets, avg_debt };
+}
+
+function wireSlider(inp){
+  inp.addEventListener('input', e => {
+    a[inp.dataset.key] = parseFloat(e.target.value);
+    render();
+  });
+}
+
+function render(){
+  const p = computeRealProj(a);
+  const yrs = [...REAL_PROJ_YEARS, 2014];
+
+  const groups = [
+    { title:'Real Exports Elasticity Model', color:'#2563EB', rows: [
+      { key:'d_Pxf', label:'Δ% Export price (USD)', min:-10, max:15, step:.1, suffix:'%' },
+      { key:'d_NER', label:'Δ% Nominal ER (NC/$)', min:-15, max:20, step:.1, suffix:'%' },
+      { key:'d_CPI', label:'Δ% CPI',               min:0,  max:20, step:.1, suffix:'%' },
+      { key:'d_RYp', label:'Δ% Productive capacity',min:-5, max:12, step:.1, suffix:'%' },
+      { key:'eps_RXy',label:'ε RX,y (income elasticity)', min:0, max:3, step:.05, suffix:'x' },
+      { key:'eps_RXP',label:'ε RX,Prxf (price elasticity)', min:-2, max:2, step:.05, suffix:'x' },
+    ]},
+    { title:'Real Imports', color:'#D97706', rows: [
+      { key:'d_Pmf', label:'Δ% Import price (USD)', min:-10, max:15, step:.1, suffix:'%' },
+      { key:'d_RMg', label:'Δ% Real imports volume',min:-15, max:20, step:.1, suffix:'%' },
+    ]},
+    { title:'Services (ratios)', color:'#059669', rows: [
+      { key:'svc_credit_ratio', label:'Services credit / X goods', min:20, max:70, step:.1, suffix:'%' },
+      { key:'svc_debit_ratio',  label:'Services debit / M goods',  min:5,  max:25, step:.1, suffix:'%' },
+    ]},
+    { title:'Primary Income', color:'#7C3AED', rows: [
+      { key:'yield_investment', label:'Yield on foreign assets', min:0, max:8, step:.05, suffix:'%' },
+      { key:'libor',            label:'LIBOR (US$)',             min:0, max:6, step:.01, suffix:'%' },
+      { key:'spread',           label:'Interest spread on debt', min:0, max:8, step:.05, suffix:'%' },
+      { key:'other_primary_growth', label:'Growth: other primary debit', min:-20, max:20, step:.5, suffix:'%' },
+    ]},
+    { title:'Stocks & Secondary', color:'#0F172A', rows: [
+      { key:'foreign_assets_2014', label:'Foreign assets 2014 (USD mn)', min:8000, max:20000, step:100, suffix:'' },
+      { key:'external_debt_2014',  label:'External debt 2014 (USD mn)',  min:8000, max:16000, step:100, suffix:'' },
+      { key:'secondary_income_growth', label:'Growth: secondary income', min:-20, max:20, step:.5, suffix:'%' },
+    ]},
+  ];
+
+  document.getElementById('real-proj-panel').innerHTML = `
+    <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span></div>
+    <div id="real-proj-assumptions-body" style="padding:12px;max-height:76vh;overflow-y:auto">
+      <div class="info-note">Every slider here is an independent assumption on this standalone worksheet. On the Domestic Demand &amp; Prices worksheet, &Delta;%CPI and &Delta;% Real imports volume instead cascade live from the Real GDP path and a Phillips-curve inflation forecast.</div>
+      ${groups.map(g => `
+        <div style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:${g.color};margin-bottom:8px">
+            <span style="width:8px;height:8px;background:${g.color};display:inline-block"></span>${g.title}
+          </div>
+          ${g.rows.map(row => {
+            const v = a[row.key];
+            const dv = row.step < 0.1 ? v.toFixed(2) : (row.step < 1 ? v.toFixed(1) : v.toFixed(0));
+            return `<div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
+                <span style="overflow-wrap:break-word">${row.label}</span>
+                <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+              </div>
+              <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
+            </div>`;
+          }).join('')}
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.querySelectorAll('#real-proj-panel input[type=range]').forEach(wireSlider);
+
+  const kpi = [
+    { label:'Δ% Real exports (Xg)', value: p.d_RXg.toFixed(2)+'%', sub: `Δ% Prxf: ${p.d_Prxf.toFixed(2)}%`, color:'#2563EB', base:'formula ②' },
+    { label:'Goods trade balance', value: `${(p.goods_net14).toFixed(0)}`, sub:`Xg: ${p.xg14.toFixed(0)} · Mg: ${p.mg14.toFixed(0)}`, color:'#D97706', base:'USD mn' },
+    { label:'Primary income net', value: `${p.primary_net14.toFixed(0)}`, sub:`Inv inc: ${p.inv_income14.toFixed(0)} · Int: ${p.interest14.toFixed(0)}`, color:'#7C3AED', base:'USD mn' },
+    { label:'Current account 2014', value: `${p.ca14.toFixed(0)}`, sub:`Services: ${(p.svc_net14).toFixed(0)} · Secondary: ${p.sec14.toFixed(0)}`, color:'#059669', base:'USD mn' },
+  ];
+  document.getElementById('real-proj-kpi').innerHTML = kpi.map(k=>`
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  const rows = [
+    ['Goods — Credit (exports)', [...REAL_PROJ.goods_credit, p.xg14]],
+    ['Goods — Debit (imports)', [...REAL_PROJ.goods_debit, p.mg14]],
+    ['Goods trade balance', REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]).concat([p.goods_net14])],
+    ['Services — Credit', [...REAL_PROJ.services_credit, p.sc14]],
+    ['Services — Debit', [...REAL_PROJ.services_debit, p.sd14]],
+    ['Services net', REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]).concat([p.svc_net14])],
+    ['Primary income — Credit', [...REAL_PROJ.primary_credit, p.primary_credit14]],
+    ['  of which: Investment income', [...REAL_PROJ.investment_income, p.inv_income14]],
+    ['Primary income — Debit', [...REAL_PROJ.primary_debit, p.primary_debit14]],
+    ['  of which: Interest', [...REAL_PROJ.interest_payments, p.interest14]],
+    ['  of which: Other primary', [...REAL_PROJ.other_primary, p.other_prim14]],
+    ['Primary income net', REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]).concat([p.primary_net14])],
+    ['Secondary income', [...REAL_PROJ.secondary_income, p.sec14]],
+    ['Current account', REAL_PROJ.years.map((_,i)=>(REAL_PROJ.goods_credit[i]-REAL_PROJ.goods_debit[i])+(REAL_PROJ.services_credit[i]-REAL_PROJ.services_debit[i])+(REAL_PROJ.primary_credit[i]-REAL_PROJ.primary_debit[i])+REAL_PROJ.secondary_income[i]).concat([p.ca14])],
+  ];
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,i)=>`<th${i===yrs.length-1?' style="background:#fef3c7"':''}>${y}${i===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label, arr]) => `
+    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
+      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
+      ${arr.map((v,i)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${i===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 1)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  document.getElementById('real-proj-table').innerHTML = head + body;
+
+  makeChart('real-proj-xm', {
+    type:'bar',
+    data:{ labels:yrs, datasets:[
+      {label:'Goods credit',     data:[...REAL_PROJ.goods_credit, p.xg14],     backgroundColor:'#059669'},
+      {label:'Services credit',  data:[...REAL_PROJ.services_credit, p.sc14],  backgroundColor:'#2563EB'},
+      {label:'Goods debit',      data:[...REAL_PROJ.goods_debit.map(v=>-v), -p.mg14], backgroundColor:'#D92D20'},
+      {label:'Services debit',   data:[...REAL_PROJ.services_debit.map(v=>-v), -p.sd14], backgroundColor:'#D97706'},
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  makeChart('real-proj-ca', {
+    type:'bar',
+    data:{ labels:yrs, datasets:[
+      {label:'Goods',            data:[...REAL_PROJ.goods_credit.map((c,i)=>c-REAL_PROJ.goods_debit[i]), p.goods_net14], backgroundColor:'#D92D20', stack:'a'},
+      {label:'Services',         data:[...REAL_PROJ.services_credit.map((c,i)=>c-REAL_PROJ.services_debit[i]), p.svc_net14], backgroundColor:'#2563EB', stack:'a'},
+      {label:'Primary income',   data:[...REAL_PROJ.primary_credit.map((c,i)=>c-REAL_PROJ.primary_debit[i]), p.primary_net14], backgroundColor:'#D97706', stack:'a'},
+      {label:'Secondary income', data:[...REAL_PROJ.secondary_income, p.sec14], backgroundColor:'#059669', stack:'a'},
+      {label:'Current account',  data:rows[13][1], type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  document.getElementById('real-proj-formula-values').innerHTML = `
+    <div>① Δ%Prxf = ((1+${a.d_Pxf.toFixed(2)}/100) × (1+${a.d_NER.toFixed(2)}/100) / (1+${a.d_CPI.toFixed(2)}/100) − 1) × 100 = <strong>${p.d_Prxf.toFixed(3)}%</strong></div>
+    <div>② Δ%RXg = ${a.eps_RXy.toFixed(2)} × ${a.d_RYp.toFixed(2)} + ${a.eps_RXP.toFixed(3)} × ${p.d_Prxf.toFixed(3)} = <strong>${p.d_RXg.toFixed(3)}%</strong></div>
+    <div>③ Xg₂₀₁₄ = ${REAL_PROJ.goods_credit.at(-1).toFixed(2)} × (1+${p.d_RXg.toFixed(3)}/100) × (1+${a.d_Pxf.toFixed(2)}/100) = <strong>${p.xg14.toFixed(2)}</strong></div>
+    <div>④ Mg₂₀₁₄ = ${REAL_PROJ.goods_debit.at(-1).toFixed(2)} × (1+${a.d_RMg.toFixed(2)}/100) × (1+${a.d_Pmf.toFixed(2)}/100) = <strong>${p.mg14.toFixed(2)}</strong></div>
+    <div>⑤ Services: Credit = ${p.xg14.toFixed(0)} × ${a.svc_credit_ratio.toFixed(2)}% = <strong>${p.sc14.toFixed(2)}</strong> · Debit = ${p.mg14.toFixed(0)} × ${a.svc_debit_ratio.toFixed(2)}% = <strong>${p.sd14.toFixed(2)}</strong></div>
+    <div>⑥ Inv. income = ${a.yield_investment.toFixed(2)}% × ${p.avg_assets.toFixed(0)} = <strong>${p.inv_income14.toFixed(2)}</strong> · Interest = (${a.libor.toFixed(2)}+${a.spread.toFixed(2)})% × ${p.avg_debt.toFixed(0)} = <strong>${p.interest14.toFixed(2)}</strong></div>
+  `;
+}
+
+render();
+</script>
+</body></html>
