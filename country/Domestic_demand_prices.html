@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Domestic Demand & Prices — Projection Worksheets, Macronia FPP case study.">
+<title>Domestic Demand &amp; Prices — Projection Worksheets · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--real);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:700px){.summary{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+  .kpi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+  .kpi-value{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:6px}
+  .kpi-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi-base{font-family:var(--font-mono);font-size:10px;color:#94a3b8;margin-top:8px;border-top:1px solid #f1f5f9;padding-top:6px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+
+  .slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:#e2e8f0;outline:none;border-radius:2px}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
+  .slider::-moz-range-thumb{width:16px;height:16px;background:var(--ink);border-radius:50%;cursor:pointer;border:2px solid #fff}
+
+  .lever-corr-note{font-size:10.5px;line-height:1.5;color:var(--muted);background:#f8fafc;border:1px solid var(--line);padding:10px;margin-bottom:14px}
+  .lever-tag{font-family:var(--font-body);font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 5px;border-radius:3px}
+  .lever-tag-derived{background:#e2e8f0;color:#475569}
+  .lever-reset-btn{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--ink);color:#fff;border:none;padding:3px 7px;cursor:pointer}
+  .lever-reset-btn:hover{background:#334155}
+
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Dd</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · Real Sector Worksheet</div>
+      <div class="brand-title">Domestic Demand &amp; Prices — Projection Worksheets</div>
+    </div>
+  </div>
+  <a class="back-link" href="real_sector.html">&larr; Back to Real Sector</a>
+</header>
+
+<main>
+  <div style="font-size:11px;color:var(--muted);margin-top:2px">Real private consumption · Real private investment · Real imports · Nominal ER · CPI inflation (Phillips curve) · Baseline 2013 &rarr; Forecast 2014</div>
+  <p class="intro">This worksheet forecasts 2014 domestic demand and prices: private consumption and investment via a constant ratio-to-GDP approach, real imports via an elasticity model, the nominal exchange rate via relative price parity, and CPI inflation via a Phillips curve on the output gap and real-exchange-rate gap. The output gap, RER gap, CPI inflation and real-imports growth are computed automatically from the other assumptions — drag a derived lever to layer a manual shock on its model-implied value, or tap <span class="mono" style="background:var(--ink);color:#fff;padding:1px 5px;font-size:9.5px">Auto</span> to clear it.</p>
+
+  <div class="summary" id="dd-kpi" style="margin-top:14px"></div>
+
+  <div class="layout">
+    <aside class="card" id="dd-proj-panel"></aside>
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Historical + 2014 Forecast (baseline)</span></div>
+        <div class="table-wrap"><table class="fp" id="dd-table"></table></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="card-title">Live Forecast Formulas</span></div>
+        <div class="card-body" style="font-size:11.5px">
+          <div id="dd-formulas" class="mono"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "Domestic Demand &amp; Prices — Projection Worksheets" from the Macronia FPP case study, including the Lever Correlation Engine that ties the output gap, RER gap, Phillips-curve CPI forecast and real-imports elasticity together. It shares the same &Delta;% Real GDP path as the Real GDP &amp; Output Gap worksheet, and the same &Delta;% CPI / &Delta;% real imports volume that the Foreign Balance &amp; Current Account worksheet consumes — open those pages to see the same levers in their own context. &middot; <a href="real_sector.html">Return to the full Real Sector dashboard &rarr;</a> &middot; <a href="real-gdp-output-gap.html">Real GDP &amp; Output Gap worksheet &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return v.toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+}
+
+/* ============================================================
+   Source data — Real GDP path (for the output-gap identity)
+   and the Domestic Demand & Prices historical series.
+   ============================================================ */
+const RGDP_HIST = {
+  years: [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+  ry:         [9864.10, 10508.01, 10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
+  potential:  [9649.91, 9961.09, 10371.12, 10754.77, 11237.05, 11888.18, 12184.44, 12671.82],
+};
+
+const DD_HIST = {
+  years: [2008, 2009, 2010, 2011, 2012, 2013],
+  rgdp:         [10760.33, 10584.88, 11099.25, 11726.95, 12184.44, 12774.63],
+  rcp:          [7553.28, 7682.16, 8033.69, 8406.44, 8818.35, 9288.00],
+  rip:          [2155.85, 1924.40, 1897.40, 2226.59, 2241.17, 2336.10],
+  rmg_nc:       [8666.03, 7023.72, 7680.81, 8717.30, 9457.55, 9990.29],  // real imports of goods (bn NC)
+  ner_avg:      [526.24, 573.29, 525.83, 506.40, 510.79, 530.22],
+  ner_eop:      [555.47, 565.24, 512.97, 510.56, 511.02, 549.42],
+  rer_index:    [121.18, 122.21, 107.69, 101.72, 100.00, 99.27],
+  cpi:          [13.425, 7.843, 5.663, 4.878, 4.613, 6.136],
+  cpi_foreign:  [3.595, -0.171, 1.516, 2.868, 1.958, 1.500],
+  rcp_pct_rgdp: [70.20, 72.58, 72.38, 71.69, 72.37, 72.71],
+  rip_pct_rgdp: [20.04, 18.18, 17.10, 18.99, 18.39, 18.29],
+};
+
+/* ============================================================
+   Assumptions and Lever Correlation Engine — the output gap,
+   RER gap, Phillips-curve CPI forecast, and real-imports growth
+   are accounting identities or model outputs of the OTHER
+   assumptions below, not independent sliders.
+   ============================================================ */
+const a = {
+  d_RY: 4.63,               // real GDP growth
+  d_Pmf: 1.5,                // import price (USD)
+  d_NER: 0.0,                // nominal ER change
+  eps_RMy: 1.0,             // income elasticity of imports
+  eps_RMP: -0.5,            // price elasticity of imports
+  d_RER: 0.0,               // real ER change (+ = depreciation)
+  d_Pf: 1.5,                // foreign inflation
+  phillips_c: 1.4,          // constant
+  phillips_rho: 0.7,        // inflation persistence
+  phillips_ygap: 0,         // output gap 2014 — derived
+  phillips_alpha_y: 1.4,    // coef on output gap
+  phillips_rergap: 0,       // RER gap 2014 — derived
+  phillips_alpha_r: 0.28,   // coef on RER gap
+  d_CPI: 0,                 // derived
+  d_RMg: 0,                 // derived
+  overrides: {},
+};
+
+const DERIVED_KEYS = ['phillips_ygap','phillips_rergap','d_CPI','d_RMg'];
+const DERIVED_BOUNDS = {
+  phillips_ygap:   {min:-5,  max:5},
+  phillips_rergap: {min:-5,  max:5},
+  d_CPI:           {min:0,   max:20},
+  d_RMg:           {min:-15, max:20},
+};
+function clampDerived(key, v){
+  const b = DERIVED_BOUNDS[key];
+  return b ? Math.min(b.max, Math.max(b.min, v)) : v;
+}
+// Output-gap identity: driven by the chosen Real GDP growth path (d_RY)
+function outputGapBase(a){
+  const potential_14 = RGDP_HIST.potential.at(-1) * 1.040;
+  const ry14 = RGDP_HIST.ry.at(-1) * (1 + a.d_RY/100);
+  return 100 * ((ry14 - potential_14) / potential_14);
+}
+// RER-gap identity: driven by the Real ER change assumption (d_RER); 2012=100 is the base year
+function rerGapBase(a){
+  const i = DD_HIST.years.length - 1;
+  const rer14 = DD_HIST.rer_index[i] * (1 + a.d_RER/100);
+  return rer14 - 100;
+}
+// Phillips curve: CPI inflation forecast from the output gap & RER gap
+function cpiBase(a){
+  const i = DD_HIST.years.length - 1;
+  const pi_prev = DD_HIST.cpi[i];
+  return a.phillips_c + a.phillips_rho*pi_prev + a.phillips_alpha_y*a.phillips_ygap + a.phillips_alpha_r*a.phillips_rergap;
+}
+// Elasticity model: real imports volume growth from GDP growth & the relative import price (uses Δ% CPI)
+function importVolumeBase(a){
+  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  return a.eps_RMy * a.d_RY + a.eps_RMP * d_Prmf;
+}
+// Recompute every derived assumption, in dependency order, applying any manual overrides
+function syncDerived(){
+  const ov = k => a.overrides[k] || 0;
+  a.phillips_ygap   = clampDerived('phillips_ygap',   outputGapBase(a) + ov('phillips_ygap'));
+  a.phillips_rergap = clampDerived('phillips_rergap', rerGapBase(a)   + ov('phillips_rergap'));
+  a.d_CPI           = clampDerived('d_CPI',           cpiBase(a)      + ov('d_CPI'));
+  a.d_RMg           = clampDerived('d_RMg',           importVolumeBase(a) + ov('d_RMg'));
+}
+// Slider drag on a derived assumption: convert the dragged value into a manual shock,
+// preserving the correlation for everything else (and cascading to anything downstream of it)
+function setOverride(key, newValue){
+  a.overrides[key] = 0;
+  syncDerived();               // a[key] now holds the pure model-implied baseline
+  const pureBase = a[key];
+  a.overrides[key] = newValue - pureBase;
+  syncDerived();               // final pass — cascades to anything downstream too
+}
+function resetOverride(key){
+  delete a.overrides[key];
+  syncDerived();
+}
+function wireSlider(inp){
+  inp.addEventListener('input', e => {
+    const key = inp.dataset.key, v = parseFloat(e.target.value);
+    if (DERIVED_KEYS.includes(key)) { setOverride(key, v); }
+    else { a[key] = v; syncDerived(); }
+    render();
+  });
+}
+
+function renderPanel(){
+  const rows = [
+    { key:'d_RY',              label:'Δ% Real GDP (all)',       min:-5, max:12, step:.05, suffix:'%' },
+    { key:'d_Pmf',             label:'Δ% Import price (USD)',   min:-10, max:15, step:.1, suffix:'%' },
+    { key:'d_NER',             label:'Δ% Nominal ER (NC/$)',    min:-15, max:20, step:.1, suffix:'%' },
+    { key:'eps_RMy',           label:'ε RM,y (imports)',        min:0, max:3, step:.05, suffix:'x' },
+    { key:'eps_RMP',           label:'ε RM,Prmf (imports)',     min:-2, max:2, step:.05, suffix:'x' },
+    { key:'d_RER',             label:'Δ% Real ER (+depreciate)',min:-15, max:15, step:.1, suffix:'%' },
+    { key:'d_Pf',              label:'Δ% Foreign inflation',    min:0, max:8, step:.05, suffix:'%' },
+    { key:'phillips_ygap',     label:'Output gap 2014',         min:-5, max:5, step:.05, suffix:'%' },
+    { key:'phillips_rergap',   label:'RER gap 2014',            min:-5, max:5, step:.05, suffix:'%' },
+    { key:'d_CPI',             label:'Δ% CPI (Phillips curve)', min:0, max:20, step:.1, suffix:'%' },
+    { key:'d_RMg',             label:'Δ% Real imports volume',  min:-15, max:20, step:.1, suffix:'%' },
+  ];
+  document.getElementById('dd-proj-panel').innerHTML = `
+    <div class="card-head"><span class="card-title">Projection Assumptions (2014)</span></div>
+    <div id="dd-assumptions-body" style="padding:12px;max-height:78vh;overflow-y:auto">
+      <div class="lever-corr-note">
+        <strong>Output/RER gap</strong>, <strong>Δ% CPI</strong> and <strong>Δ% Real imports volume</strong> below are
+        mathematically derived from the other assumptions here — the chosen GDP path, the Real ER change, and the
+        Phillips curve — not set independently. Move a derived lever to layer a manual shock on its model-implied
+        path, or tap <span class="mono" style="background:var(--ink);color:#fff;padding:1px 5px;font-size:9.5px">Auto</span> to clear it.
+      </div>
+      ${rows.map(row => {
+        const v = a[row.key];
+        const dv = row.step < 0.1 ? v.toFixed(2) : (row.step < 1 ? v.toFixed(1) : v.toFixed(0));
+        const isDerived = DERIVED_KEYS.includes(row.key);
+        const hasOverride = isDerived && Math.abs((a.overrides && a.overrides[row.key]) || 0) > 0.049;
+        return `<div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#334155;gap:6px">
+            <span style="display:flex;align-items:center;gap:5px;min-width:0">
+              <span style="overflow-wrap:break-word">${row.label}</span>
+              ${isDerived ? `<span class="lever-tag lever-tag-derived" style="flex:0 0 auto">${hasOverride?'+ shock':'auto'}</span>` : ''}
+            </span>
+            <span style="display:flex;align-items:center;gap:5px;flex:0 0 auto">
+              <span class="mono" style="font-weight:600">${dv}${row.suffix}</span>
+              ${hasOverride ? `<button class="lever-reset-btn" data-reset-key="${row.key}" title="Reset to model-implied value">Auto</button>` : ''}
+            </span>
+          </div>
+          <input type="range" class="slider" data-key="${row.key}" min="${row.min}" max="${row.max}" step="${row.step}" value="${v}" />
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+  document.querySelectorAll('#dd-proj-panel input[type=range]').forEach(wireSlider);
+  const panelEl = document.getElementById('dd-proj-panel');
+  if (!panelEl.dataset.resetBound) {
+    panelEl.addEventListener('click', e => {
+      const btn = e.target.closest('[data-reset-key]');
+      if (!btn) return;
+      resetOverride(btn.dataset.resetKey);
+      render();
+    });
+    panelEl.dataset.resetBound = '1';
+  }
+}
+
+function render(){
+  syncDerived();
+  renderPanel();
+
+  const H = DD_HIST;
+  const i = H.years.length - 1; // 2013
+
+  const rgdp14 = H.rgdp[i] * (1 + a.d_RY/100);
+  const rcp_ratio14 = H.rcp_pct_rgdp[i];
+  const rcp14 = rgdp14 * rcp_ratio14 / 100;
+  const d_rcp = (rcp14 / H.rcp[i] - 1) * 100;
+  const rip_ratio14 = H.rip_pct_rgdp[i];
+  const rip14 = rgdp14 * rip_ratio14 / 100;
+  const d_rip = (rip14 / H.rip[i] - 1) * 100;
+  const d_Prmf = ((1 + a.d_Pmf/100) * (1 + a.d_NER/100) / (1 + a.d_CPI/100) - 1) * 100;
+  const d_RMg = a.d_RMg;
+  const rmg14 = H.rmg_nc[i] * (1 + d_RMg/100);
+  const ner_avg14 = H.ner_avg[i] * (1 + a.d_CPI/100) * (1 + a.d_RER/100) / (1 + a.d_Pf/100);
+  const nere14 = (ner_avg14 * 2) - H.ner_eop[i];
+  const pi_prev = H.cpi[i];
+  const pi14 = a.d_CPI;
+
+  const kpi = [
+    { label:'Real GDP 2014', value: fmt(rgdp14, 0), sub:`+${a.d_RY.toFixed(2)}%`, color:'#2563EB', base:`2013: ${fmt(H.rgdp[i],0)}` },
+    { label:'Priv. Consumption 2014', value: fmt(rcp14, 0), sub:`Δ ${d_rcp.toFixed(2)}% · ${rcp_ratio14.toFixed(1)}% of GDP`, color:'#059669', base:`2013: ${fmt(H.rcp[i],0)}` },
+    { label:'Priv. Investment 2014', value: fmt(rip14, 0), sub:`Δ ${d_rip.toFixed(2)}% · ${rip_ratio14.toFixed(1)}% of GDP`, color:'#D97706', base:`2013: ${fmt(H.rip[i],0)}` },
+    { label:'CPI Inflation 2014 (Phillips)', value: pi14.toFixed(2)+'%', sub:`NER avg → ${fmt(ner_avg14, 1)}`, color:'#7C3AED', base:`2013: ${H.cpi[i].toFixed(2)}%` },
+  ];
+  document.getElementById('dd-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">${k.base}</div>
+    </div>
+  `).join('');
+
+  const yrs = [...H.years, 2014];
+  const rows = [
+    ['Real GDP (bn NC, 2005p)', [...H.rgdp, rgdp14]],
+    ['Real Priv. Consumption', [...H.rcp, rcp14]],
+    ['  RCp / GDP (%)', [...H.rcp_pct_rgdp, rcp_ratio14]],
+    ['Real Priv. Investment', [...H.rip, rip14]],
+    ['  RIp / GDP (%)', [...H.rip_pct_rgdp, rip_ratio14]],
+    ['Real Imports of Goods (bn NC)', [...H.rmg_nc, rmg14]],
+    ['Nominal ER (avg, NC/USD)', [...H.ner_avg, ner_avg14]],
+    ['Nominal ER (EOP, NC/USD)', [...H.ner_eop, nere14]],
+    ['Real ER index (2012=100)', [...H.rer_index, H.rer_index[i] * (1 + a.d_RER/100)]],
+    ['CPI inflation (%)', [...H.cpi, pi14]],
+    ['Foreign inflation (%)', [...H.cpi_foreign, a.d_Pf]],
+  ];
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k) => `<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr]) => `
+    <tr${label.startsWith('  ')?'':' style="font-weight:600;background:#fafafa"'}>
+      <td style="${label.startsWith('  ')?'padding-left:24px':''}">${label}</td>
+      ${arr.map((v,k) => `<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${fmt(v, 2)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  document.getElementById('dd-table').innerHTML = head + body;
+
+  const rmgShock = (a.overrides && a.overrides.d_RMg) || 0;
+  const cpiShock = (a.overrides && a.overrides.d_CPI) || 0;
+  const rmgShockTxt = Math.abs(rmgShock) > 0.049 ? ` + shock ${rmgShock>0?'+':''}${rmgShock.toFixed(2)}` : '';
+  const cpiShockTxt = Math.abs(cpiShock) > 0.049 ? ` + shock ${cpiShock>0?'+':''}${cpiShock.toFixed(2)}` : '';
+  document.getElementById('dd-formulas').innerHTML = `
+    <div style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px">
+      <div>① <strong>Real GDP</strong> — RY₂₀₁₄ = RY₂₀₁₃ × (1 + Δ%RY/100) = ${fmt(H.rgdp[i],2)} × (1+${a.d_RY.toFixed(2)}/100) = <strong>${fmt(rgdp14,2)}</strong></div>
+      <div>② <strong>Priv. Consumption (constant RCp/GDP)</strong> — RCp₂₀₁₄ = ${rcp_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rcp14,2)}</strong></div>
+      <div>③ <strong>Priv. Investment (constant RIp/GDP)</strong> — RIp₂₀₁₄ = ${rip_ratio14.toFixed(2)}% × ${fmt(rgdp14,2)} = <strong>${fmt(rip14,2)}</strong></div>
+      <div>④ <strong>Real Imports (elasticity, derived)</strong>: Δ%Prmf = ((1+${a.d_Pmf.toFixed(2)}/100)×(1+${a.d_NER.toFixed(2)}/100)/(1+${a.d_CPI.toFixed(2)}/100)−1)×100 = <strong>${d_Prmf.toFixed(3)}%</strong> ; Δ%RMg = ${a.eps_RMy.toFixed(2)}×${a.d_RY.toFixed(2)} + ${a.eps_RMP.toFixed(2)}×${d_Prmf.toFixed(3)}${rmgShockTxt} = <strong>${d_RMg.toFixed(3)}%</strong> ; RMg₂₀₁₄ = ${fmt(H.rmg_nc[i],2)} × (1+${d_RMg.toFixed(3)}/100) = <strong>${fmt(rmg14,2)}</strong></div>
+      <div>⑤ <strong>Nominal ER (avg)</strong> — NER₂₀₁₄ = NER₂₀₁₃ × (1+Δ%P/100) × (1+Δ%RER/100) / (1+Δ%Pf/100) = ${fmt(H.ner_avg[i],2)} × (1+${a.d_CPI.toFixed(2)}/100) × (1+${a.d_RER.toFixed(2)}/100) / (1+${a.d_Pf.toFixed(2)}/100) = <strong>${fmt(ner_avg14,2)}</strong></div>
+      <div>⑥ <strong>Δ% CPI — Phillips curve (derived)</strong> — πₜ = c + ρ·πₜ₋₁ + α_y·ygap + α_r·RERgap = ${a.phillips_c.toFixed(1)} + ${a.phillips_rho.toFixed(1)}×${pi_prev.toFixed(2)} + ${a.phillips_alpha_y.toFixed(1)}×${a.phillips_ygap.toFixed(2)} + ${a.phillips_alpha_r.toFixed(2)}×${a.phillips_rergap.toFixed(2)}${cpiShockTxt} = <strong>${pi14.toFixed(2)}%</strong> — this is the same Δ%CPI used in ④ and in the Foreign Balance worksheet's export/import price formulas</div>
+      <div style="color:var(--muted);font-style:italic">Output gap (ygap) and RER gap above are themselves derived: ygap = 100×(RY₂₀₁₄−RYPotential₂₀₁₄)/RYPotential₂₀₁₄ from the chosen GDP path; RERgap = projected RER index (2012=100) − 100 from Δ%RER.</div>
+    </div>
+  `;
+}
+
+render();
+</script>
+</body></html>
