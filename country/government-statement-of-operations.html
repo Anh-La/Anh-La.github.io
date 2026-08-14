@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Statement of General Government Operations, Macronia FPP case study.">
+<title>Statement of Operations · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--fiscal);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  .charts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:900px){.charts{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:700px){.summary{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+  .kpi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+  .kpi-value{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:6px}
+  .kpi-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi-base{font-family:var(--font-mono);font-size:10px;color:#94a3b8;margin-top:8px;border-top:1px solid #f1f5f9;padding-top:6px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+
+  .chart-wrap{padding:8px;height:220px;position:relative;width:100%;max-width:100%}
+
+  .horizon-select{font-family:inherit;font-size:11px;border:1px solid var(--line);padding:6px 10px;background:#fff;color:var(--ink)}
+
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Sgo</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · Government Sector Worksheet</div>
+      <div class="brand-title">Statement of General Government Operations</div>
+    </div>
+  </div>
+  <a class="back-link" href="government-sector.html">&larr; Back to Government Sector</a>
+</header>
+
+<main>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px">
+    <div style="font-size:11px;color:var(--muted)">IMF GFS-style · 2006–2013 · billions of national currency</div>
+    <label style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+      Units
+      <select id="sgo-units" class="horizon-select">
+        <option value="level">bn NC</option>
+        <option value="pct">% of GDP</option>
+      </select>
+    </label>
+  </div>
+  <p class="intro">The Statement of Government Operations records revenue, expense, and the resulting balances (Net operating balance, Net lending/borrowing, Overall balance) above the line, reconciled against financing — the net incurrence of liabilities and net acquisition of financial assets — below the line.</p>
+
+  <div class="summary" id="sgo-kpi" style="margin-top:14px"></div>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-head"><span class="card-title" id="sgo-table-title">Statement of Operations · in bn NC</span><span class="mono" style="font-size:10px;color:var(--muted)">Above the line + Financing must balance</span></div>
+      <div class="table-wrap"><table class="fp" id="sgo-table"></table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Revenue Composition (bn NC)</span></div>
+        <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="sgo-rev"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Expense Composition (bn NC)</span></div>
+        <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="sgo-exp"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts" style="margin-top:12px">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Fiscal Balance Chain (bn NC)</span></div>
+      <div class="card-body"><div class="chart-wrap"><canvas id="sgo-chain"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Financing Sources (bn NC)</span></div>
+      <div class="card-body"><div class="chart-wrap"><canvas id="sgo-fin"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Interest Bill (bn NC)</span></div>
+      <div class="card-body"><div class="chart-wrap"><canvas id="sgo-int"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- Accounting Identity Check for SGO -->
+  <div class="card" style="margin-top:12px">
+    <div class="card-head"><span class="card-title">Statement of Operations — Accounting Identity Checks</span></div>
+    <div class="card-body" style="font-size:12px;line-height:1.6">
+      <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>① NOB = Revenue − Expense</div>
+        <div>② Primary NOB = NOB + Interest</div>
+        <div>③ Net Lending/Borrowing = NOB − Net Acq. of NFA</div>
+        <div>④ Overall Primary Balance = Overall Balance + Interest</div>
+      </div>
+      <div id="sgo-identity" style="margin-top:8px" class="mono"></div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "Statement of Operations" worksheet from the Macronia Government Sector dashboard — the content this page replaced there. &middot; <a href="government-sector.html">Return to the full Government Sector dashboard &rarr;</a> &middot; <a href="government-balance-sheet.html">Balance Sheet worksheet &rarr;</a> &middot; <a href="government-rev-exp-projection.html">Rev &amp; Exp Projection worksheet &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  if (typeof v !== 'number') return String(v);
+  const abs = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+  return v < 0 ? `(${abs})` : abs;
+}
+function makeChart(canvasId, cfg){
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  el._chart = new Chart(el.getContext('2d'), cfg);
+}
+
+const SGO_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const SGO = {
+  // Revenue and its breakdown
+  revenue:            [1638.35, 2104.70, 2490.03, 2363.26, 2730.17, 3023.85, 3271.53, 3625.63],
+  taxes:              [1577.73, 2028.94, 2408.58, 2262.29, 2480.41, 2768.90, 3007.06, 3330.06],
+  tax_income:         [ 394.10,  531.55,  689.22,  687.42,  752.17,  832.20,  891.42,  983.37],
+  tax_goods:          [ 324.27,  407.10,  465.05,  476.30,  511.61,  547.71,  610.80,  672.89],
+  tax_trade:          [ 521.00,  681.40,  797.42,  593.62,  686.66,  803.47,  856.21,  957.70],
+  tax_other:          [ 338.37,  408.89,  456.88,  504.95,  529.97,  585.52,  648.63,  716.10],
+  social_contrib:     [  33.32,   37.95,   43.73,   54.36,   61.24,   66.77,   74.08,   82.80],
+  grants_recv:        [  16.28,   18.18,   25.93,   29.27,  161.32,  165.35,  165.75,  185.24],
+  other_rev:          [  11.02,   19.63,   11.80,   17.35,   27.20,   22.84,   24.63,   27.53],
+  // Expense and its breakdown
+  expense:            [1744.11, 1998.96, 2343.08, 2865.19, 3670.00, 3810.74, 4235.20, 5474.62],
+  compensation:       [ 534.62,  600.69,  720.71,  936.86, 1133.81, 1268.20, 1380.02, 2010.55],
+  goods_services:     [  56.31,   72.61,   87.63,  106.36,  120.68,  135.63,  142.94,  158.62],
+  cons_fixed_capital: [  10.00,   12.00,    9.00,   11.00,   10.00,   13.00,   12.00,   13.32],
+  interest:           [ 436.70,  419.64,  340.09,  360.11,  401.54,  449.38,  471.59,  818.90],
+  interest_dom:       [ 349.45,  331.66,  255.33,  280.64,  336.64,  390.88,  424.58,  762.45],
+  interest_ext:       [  87.25,   87.98,   84.76,   79.47,   64.90,   58.50,   47.00,   56.46],
+  subsidies:          [ 590.08,  777.45, 1042.27, 1246.85, 1758.45, 1669.54, 1946.32, 2159.90],
+  grants_paid:        [  15.86,    3.78,    7.58,   26.09,   30.17,   29.59,   15.31,   16.99],
+  social_benefits:    [ 100.55,  112.79,  135.80,  177.93,  215.35,  245.40,  267.03,  296.33],
+  // Balances
+  net_op_balance:     [-105.76,  105.74,  146.95, -501.92, -939.83, -786.88, -963.68,-1848.98],
+  net_acq_nfa:        [  15.30,   28.17,   52.45,   71.12,   54.39,   59.06,   39.50,   30.85],
+  net_lending:        [-121.06,   77.57,   94.50, -573.04, -994.22, -845.94,-1003.18,-1879.84],
+  primary_expenses:   [1307.41, 1579.32, 2002.99, 2505.08, 3268.46, 3361.36, 3763.62, 4655.72],
+  primary_nob:        [ 330.94,  525.39,  487.04, -141.81, -538.29, -337.51, -492.09,-1030.08],
+  overall_balance:    [-499.06, -280.43,   85.50, -586.04,-1074.22, -949.94,-1241.18,-1879.84],
+  overall_primary:    [ -62.36,  139.21,  425.59, -225.93, -672.67, -500.56, -769.59,-1060.93],
+  // Financing (net incurrence of liabilities)
+  fin_domestic:       [-185.30, -415.48,   47.35,  577.98,  764.48,  940.42,  592.23, 1594.89],
+  fin_from_depcorp:   [-131.40, -218.44,   33.14,  260.61,   -1.77,  196.73,  177.67,  478.47],
+  fin_from_private:   [ -53.91, -197.04,   14.21,  317.37,  766.25,  743.68,  414.56, 1116.42],
+  fin_external:       [  11.36,   69.91,  -49.94,   35.06,  219.73, -128.48,  284.95,  284.95],
+  // Net acquisition of financial assets
+  nafa_domestic:      [-297.00, -265.00,   86.90,   39.00,  -12.00,  -30.00, -132.00,    0.00],
+  nafa_external:      [   2.00,   -3.00,    5.00,    1.00,    2.00,   -4.00,    6.00,    0.00],
+  // GDP anchor for % of GDP conversions
+  gdp_nominal:        [10964.62, 12956.32, 14737.19, 15747.01, 17629.08, 19427.85, 21157.29, 23330.00],
+};
+
+const SGO_IND = {
+  years: [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+  // Cyclical adjustment (bn NC unless noted)
+  revenues_real:          [1473.91, 1706.98, 1818.09, 1588.55, 1718.91, 1825.24, 1889.22, 1958.72],
+  prim_exp_real:          [1176.19, 1280.88, 1462.48, 1683.87, 2057.82, 2028.97, 2173.38, 2515.21],
+  output_gap_ratio:       [1.022,   1.055,   1.038,   0.984,   0.988,   0.986,   1.003,   1.008],
+  rev_elasticity:         [1.15,    1.15,    1.15,    1.15,    1.15,    1.15,    1.15,    1.15],
+  adj_revenues_real:      [1437.17, 1605.22, 1742.67, 1617.91, 1743.47, 1854.13, 1883.29, 1940.60],
+  adj_prim_nob_real:      [ 260.98,  324.34,  280.19,  -65.97, -314.34, -174.84, -290.09, -574.61],
+  adj_prim_nob_pct_pot:   [   2.70,    3.26,    2.70,   -0.61,   -2.80,   -1.47,   -2.38,   -4.54],
+  fiscal_impulse:         [null,    -0.55,    0.55,    3.31,    2.18,   -1.33,    0.91,    2.15],
+  // Broader public-sector memo
+  gov_consumption:        [ 590.93,  673.31,  808.34, 1043.22, 1254.49, 1403.83, 1522.96, 2169.18],
+  gov_investment:         [  15.30,   28.17,   52.45,   71.12,   54.39,   59.06,   39.50,   30.85],
+  public_consumption:     [1076.23, 1265.71, 1555.47, 1931.95, 2298.90, 2496.35, 2733.12, 3337.85],
+  public_investment:      [ 234.02,  286.08,  335.25,  328.86,  425.54,  510.30,  534.89,  590.03],
+  // Memo (potential output for scaling)
+  potential_output:       [9649.91, 9961.09, 10371.12, 10754.77, 11237.05, 11888.18, 12184.44, 12671.82],
+  real_gdp:               [9864.10, 10508.01, 10760.33, 10584.88, 11099.25, 11726.95, 12217.75, 12774.63],
+};
+
+function renderGovSGO(){
+  const units = document.getElementById('sgo-units').value; // 'level' | 'pct'
+  const asPct = units === 'pct';
+  const conv = (arr) => asPct ? arr.map((v,i) => (v / SGO.gdp_nominal[i]) * 100) : arr;
+
+  document.getElementById('sgo-table-title').textContent =
+    `Statement of Operations · ${asPct ? '% of GDP' : 'in bn national currency'}`;
+
+  // KPI strip — latest year 2013
+  const i = SGO_YEARS.length - 1;
+  const gdp13 = SGO.gdp_nominal[i];
+  const kpi = [
+    { label:'Revenue',           value: asPct ? (SGO.revenue[i]/gdp13*100).toFixed(1)+'%' : fmt(SGO.revenue[i],0),
+      sub:`Taxes: ${(SGO.taxes[i]/SGO.revenue[i]*100).toFixed(0)}% of revenue`, color:'#059669' },
+    { label:'Expense',           value: asPct ? (SGO.expense[i]/gdp13*100).toFixed(1)+'%' : fmt(SGO.expense[i],0),
+      sub:`Interest: ${(SGO.interest[i]/SGO.expense[i]*100).toFixed(1)}% of expense`, color:'#D92D20' },
+    { label:'Overall balance',   value: asPct ? (SGO.overall_balance[i]/gdp13*100).toFixed(2)+'%' : fmt(SGO.overall_balance[i],0),
+      sub:`Primary: ${(SGO.overall_primary[i]/gdp13*100).toFixed(2)}% of GDP`, color:'#D97706' },
+    { label:'Net lending/borrowing', value: asPct ? (SGO.net_lending[i]/gdp13*100).toFixed(2)+'%' : fmt(SGO.net_lending[i],0),
+      sub:`NOB: ${asPct ? (SGO.net_op_balance[i]/gdp13*100).toFixed(2)+'%' : fmt(SGO.net_op_balance[i],0)}`, color:'#2563EB' },
+  ];
+  document.getElementById('sgo-kpi').innerHTML = kpi.map(k => `
+    <div class="kpi">
+      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      <div class="kpi-base">Year: 2013</div>
+    </div>
+  `).join('');
+
+  // Build hierarchical table
+  const H = (label) => ({ label, header:true });
+  const R = (label, key, indent=0) => ({ label, key, indent });
+  const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
+
+  const rows = [
+    H('Revenue and its components'),
+    S('Revenue', 'revenue', 0),
+    R('Taxes', 'taxes', 1),
+    R('Taxes on income, profits, capital gains', 'tax_income', 2),
+    R('Taxes on goods and services', 'tax_goods', 2),
+    R('Taxes on international trade', 'tax_trade', 2),
+    R('Other taxes', 'tax_other', 2),
+    R('Social contributions', 'social_contrib', 1),
+    R('Grants (received)', 'grants_recv', 1),
+    R('Other revenue', 'other_rev', 1),
+
+    H('Expense and its components'),
+    S('Expense', 'expense', 0),
+    R('Compensation of employees', 'compensation', 1),
+    R('Use of goods and services', 'goods_services', 1),
+    R('Consumption of fixed capital', 'cons_fixed_capital', 1),
+    R('Interest', 'interest', 1),
+    R('On domestic debt', 'interest_dom', 2),
+    R('On external debt', 'interest_ext', 2),
+    R('Subsidies', 'subsidies', 1),
+    R('Grants (paid)', 'grants_paid', 1),
+    R('Social benefits', 'social_benefits', 1),
+
+    H('Balances (above the line)'),
+    S('Net operating balance (NOB)', 'net_op_balance', 0),
+    R('Net acquisition of non-financial assets', 'net_acq_nfa', 1),
+    S('Net lending(-)/borrowing(+)', 'net_lending', 0),
+    S('Primary net operating balance', 'primary_nob', 0),
+    S('Overall balance (IMF)', 'overall_balance', 0),
+    S('Overall primary balance (IMF)', 'overall_primary', 0),
+
+    H('Financing (below the line) — net incurrence of liabilities'),
+    R('Domestic', 'fin_domestic', 1),
+    R('From depository corporations', 'fin_from_depcorp', 2),
+    R('From rest of the private sector', 'fin_from_private', 2),
+    R('External', 'fin_external', 1),
+    H('Net acquisition of financial assets'),
+    R('Domestic', 'nafa_domestic', 1),
+    R('External', 'nafa_external', 1),
+  ];
+
+  const head = `<thead><tr><th>Line item</th>${SGO_YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(r => {
+    if (r.header) return `<tr><td colspan="${SGO_YEARS.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r.label}</td></tr>`;
+    const arr = conv(SGO[r.key]);
+    const digits = asPct ? 2 : 1;
+    const padding = 8 + (r.indent||0)*16;
+    return `<tr${r.bold?' style="font-weight:600;background:#fafafa"':''}>
+      <td style="padding-left:${padding}px;${r.bold?'color:#0f172a':''}">${r.label}</td>
+      ${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v, digits)}</td>`).join('')}
+    </tr>`;
+  }).join('')}</tbody>`;
+  document.getElementById('sgo-table').innerHTML = head + body;
+
+  // Revenue composition — stacked bar
+  makeChart('sgo-rev', {
+    type:'bar',
+    data:{ labels:SGO_YEARS, datasets:[
+      { label:'Taxes on income',    data:SGO.tax_income,     backgroundColor:'#0F172A', stack:'a' },
+      { label:'Taxes on goods',     data:SGO.tax_goods,      backgroundColor:'#2563EB', stack:'a' },
+      { label:'Taxes on trade',     data:SGO.tax_trade,      backgroundColor:'#059669', stack:'a' },
+      { label:'Other taxes',        data:SGO.tax_other,      backgroundColor:'#7C3AED', stack:'a' },
+      { label:'Social contrib.',    data:SGO.social_contrib, backgroundColor:'#D97706', stack:'a' },
+      { label:'Grants (recv.)',     data:SGO.grants_recv,    backgroundColor:'#94a3b8', stack:'a' },
+      { label:'Other revenue',      data:SGO.other_rev,      backgroundColor:'#cbd5e1', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Expense composition — stacked bar
+  makeChart('sgo-exp', {
+    type:'bar',
+    data:{ labels:SGO_YEARS, datasets:[
+      { label:'Compensation',    data:SGO.compensation,    backgroundColor:'#0F172A', stack:'a' },
+      { label:'Goods & services',data:SGO.goods_services,  backgroundColor:'#2563EB', stack:'a' },
+      { label:'Interest',        data:SGO.interest,        backgroundColor:'#D97706', stack:'a' },
+      { label:'Subsidies',       data:SGO.subsidies,       backgroundColor:'#D92D20', stack:'a' },
+      { label:'Social benefits', data:SGO.social_benefits, backgroundColor:'#059669', stack:'a' },
+      { label:'Grants paid',     data:SGO.grants_paid,     backgroundColor:'#7C3AED', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Balance chain — multi-line
+  makeChart('sgo-chain', {
+    type:'line',
+    data:{ labels:SGO_YEARS, datasets:[
+      { label:'Net operating balance', data:SGO.net_op_balance, borderColor:'#2563EB', backgroundColor:'#2563EB22', borderWidth:2, pointRadius:3, tension:.2 },
+      { label:'Net lending/borrowing', data:SGO.net_lending, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.2 },
+      { label:'Overall primary balance', data:SGO.overall_primary, borderColor:'#059669', borderWidth:2, borderDash:[6,3], pointRadius:3, tension:.2 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Financing sources — stacked bar
+  makeChart('sgo-fin', {
+    type:'bar',
+    data:{ labels:SGO_YEARS, datasets:[
+      { label:'From depository corp.', data:SGO.fin_from_depcorp, backgroundColor:'#7C3AED', stack:'a' },
+      { label:'From private sector',   data:SGO.fin_from_private, backgroundColor:'#2563EB', stack:'a' },
+      { label:'External',              data:SGO.fin_external,     backgroundColor:'#059669', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Interest bill — domestic vs external
+  makeChart('sgo-int', {
+    type:'bar',
+    data:{ labels:SGO_YEARS, datasets:[
+      { label:'On domestic debt', data:SGO.interest_dom, backgroundColor:'#D92D20', stack:'a' },
+      { label:'On external debt', data:SGO.interest_ext, backgroundColor:'#D97706', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // The Selected Fiscal Indicators (% of GDP) table and its two charts
+  // (sgo-ind-table, sgo-cyc, sgo-impulse) have moved back to the main
+  // Government Sector page — see government-sector.html.
+
+  // ---- SGO Accounting Identity Checks ----
+  const idRows = SGO_YEARS.map((y, k) => {
+    const rev = SGO.revenue[k], exp = SGO.expense[k], intr = SGO.interest[k];
+    const nob = SGO.net_op_balance[k], primNob = SGO.primary_nob[k];
+    const nAcq = SGO.net_acq_nfa[k], nlb = SGO.net_lending[k];
+    const oa = SGO.overall_balance[k], op = SGO.overall_primary[k];
+
+    const check = (id, label, expected, actual) => {
+      const diff = actual - expected;
+      const ok = Math.abs(diff) < 5;
+      return `<div style="display:grid;grid-template-columns:26px 1fr 1fr 1fr 90px;gap:6px;padding:3px 0;border-bottom:1px dashed #e2e8f0;font-size:11px">
+        <span>${id}</span>
+        <span>${label}</span>
+        <span>= <strong>${fmt(expected,1)}</strong> expected</span>
+        <span>vs ${fmt(actual,1)} actual</span>
+        <span style="color:${ok?'#059669':'#D92D20'};font-weight:600">${ok?'✓ hold':'Δ '+fmt(diff,1)}</span>
+      </div>`;
+    };
+
+    return `<div style="padding:8px 0;border-bottom:1px solid var(--line)">
+      <div style="font-weight:700;text-transform:uppercase;letter-spacing:.10em;font-size:11px;color:#0f172a;margin-bottom:4px">Year ${y}</div>
+      ${check('①', `Rev ${fmt(rev,1)} − Exp ${fmt(exp,1)}`,           rev - exp,       nob)}
+      ${check('②', `NOB ${fmt(nob,1)} + Int ${fmt(intr,1)}`,           nob + intr,      primNob)}
+      ${check('③', `NOB ${fmt(nob,1)} − NAcq ${fmt(nAcq,1)}`,          nob - nAcq,      nlb)}
+      ${check('④', `Overall ${fmt(oa,1)} + Int ${fmt(intr,1)}`,        oa + intr,       op)}
+    </div>`;
+  }).join('');
+  document.getElementById('sgo-identity').innerHTML = idRows;
+}
+
+document.getElementById('sgo-units').addEventListener('change', renderGovSGO);
+renderGovSGO();
+</script>
+</body></html>
