@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <style>
   :root{
     --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
@@ -419,6 +422,70 @@
 
   /* Prevent horizontal page overflow from wide inline styles */
   html, body{overflow-x:hidden}
+
+  /* ============================================================
+     Introduction / Manual — collapsible reference section
+     ============================================================ */
+  .manual{background:var(--surface);border:1px solid var(--line2);margin:4px 0 24px}
+  .manual-summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;user-select:none;
+    -webkit-tap-highlight-color:transparent}
+  .manual-summary::-webkit-details-marker{display:none}
+  .manual-summary-icon{font-family:var(--font-mono);font-size:13px;color:var(--accent);flex:0 0 auto;
+    transition:transform .18s ease;transform:rotate(0deg);display:inline-flex;width:16px;justify-content:center}
+  .manual[open] > .manual-summary .manual-summary-icon{transform:rotate(90deg)}
+  .manual-summary-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.2}
+  .manual-summary-sub{font-size:11px;color:#cbd5e1;margin-top:3px;letter-spacing:.01em}
+  .manual-summary-badge{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;
+    letter-spacing:.12em;color:#0f172a;background:var(--accent);padding:4px 9px;flex:0 0 auto;white-space:nowrap}
+  .manual-body{padding:22px 24px 26px;border-top:1px solid var(--line)}
+  .manual-section{margin-bottom:26px}
+  .manual-section:last-child{margin-bottom:0}
+  .manual-h2{font-family:var(--font-display);font-style:italic;font-size:19px;font-weight:400;
+    letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  .manual-h3{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin:18px 0 10px}
+  .manual-lead{font-size:12.5px;line-height:1.7;color:#334155;margin:8px 0 14px}
+  .manual-diagram-card{background:var(--surface);border:1px solid var(--line2);margin:16px 0;overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,23,42,.06)}
+  .manual-diagram-headbar{background:#0f172a;color:#fff;font-family:var(--font-mono);font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;text-align:center;padding:11px 14px;font-weight:700}
+  .manual-diagram-canvas{padding:22px 16px 24px;background:linear-gradient(180deg,#fbfbfa 0%,#f6f7f5 100%)}
+  .manual-diagram-canvas svg{display:block;width:100%;height:auto}
+  .manual-eq{background:#f8fafc;border:1px solid var(--line);border-left:3px solid var(--blue);
+    padding:14px 18px;margin:14px 0;text-align:center;font-size:14px;overflow-x:auto}
+  .manual-eq-sm{font-size:12.5px}
+  .manual-list{margin:0 0 14px;padding-left:0;list-style:none}
+  .manual-list.numbered{counter-reset:manual-counter}
+  .manual-list.numbered > li{counter-increment:manual-counter}
+  .manual-list.numbered > li::before{content:counter(manual-counter);font-family:var(--font-mono);
+    font-weight:700;font-size:10.5px;color:#fff;background:var(--ink);width:18px;height:18px;
+    border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+  .manual-list > li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.65;
+    color:#334155;padding:7px 0;border-bottom:1px solid #f1f5f9}
+  .manual-list > li:last-child{border-bottom:none}
+  .manual-list:not(.numbered) > li::before{content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--external);flex:0 0 auto;margin-top:7px}
+  .manual-list strong{color:var(--ink);font-weight:700}
+  .manual-example{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--warn);
+    padding:14px 18px;margin:14px 0}
+  .manual-example-title{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#92400e;display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .manual-example p{font-size:12.5px;line-height:1.65;color:#334155;margin:6px 0}
+  .manual-glossary{display:grid;grid-template-columns:1fr;gap:0;margin:0 0 6px}
+  .manual-glossary > div{padding:12px 0;border-bottom:1px solid #f1f5f9;display:grid;
+    grid-template-columns:220px 1fr;gap:14px;align-items:baseline}
+  .manual-glossary > div:last-child{border-bottom:none}
+  .manual-glossary dt{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink)}
+  .manual-glossary dd{margin:0;font-size:12.5px;line-height:1.6;color:#334155}
+  @media (max-width:700px){
+    .manual-glossary > div{grid-template-columns:1fr;gap:4px}
+    .manual-body{padding:16px 14px 20px}
+    .manual-diagram-canvas{padding:14px 8px 16px}
+    .manual-summary{padding:13px 14px}
+    .manual-summary-title{font-size:15.5px}
+  }
 </style>
 </head>
 <body>
@@ -440,6 +507,152 @@
     <h1 style="font-family:var(--font-display);font-style:italic;font-size:26px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">External Sector — Deep Dive</h1>
     <div style="font-size:12px;color:var(--muted);margin-top:4px">Source charts, historical accounts, and forecast worksheets for the External Sector. Part of the <a href="nation-state.html" style="color:var(--blue)">Financial Programming Framework</a> simulator.</div>
   </div>
+
+  <!-- Introduction / Manual — collapsed by default -->
+  <details class="manual" id="external-manual">
+    <summary class="manual-summary">
+      <span class="manual-summary-icon">&#9656;</span>
+      <div>
+        <div class="manual-summary-title">External Sector &amp; Balance of Payments Manual</div>
+        <div class="manual-summary-sub">Architecture · analytical approaches · structural linkages &amp; glossary</div>
+      </div>
+      <span class="manual-summary-badge">Reference</span>
+    </summary>
+    <div class="manual-body">
+
+      <div class="manual-section">
+        <h2 class="manual-h2">1. Balance of Payments Architecture</h2>
+        <p class="manual-lead">The External Sector tracks all economic and financial transactions between domestic residents and non-residents.</p>
+        <div class="manual-diagram-card">
+          <div class="manual-diagram-headbar">Balance of Payments Statement Structure</div>
+          <div class="manual-diagram-canvas">
+            <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Balance of Payments statement structure: Current Account, Capital Account and Financial Account sum with Errors and Omissions to zero">
+              <defs>
+                <linearGradient id="bopCabGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#059669"/><stop offset="1" stop-color="#047857"/>
+                </linearGradient>
+                <linearGradient id="bopKabGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#a8823f"/><stop offset="1" stop-color="#8a6a2f"/>
+                </linearGradient>
+                <linearGradient id="bopFabGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#0033A0"/>
+                </linearGradient>
+                <linearGradient id="bopEqGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- ===== Panel 1 — Current Account (CAB) ===== -->
+              <rect x="20" y="20" width="270" height="250" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+              <rect x="20" y="20" width="270" height="38" fill="url(#bopCabGrad)"/>
+              <text x="34" y="44" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="800" letter-spacing=".03em" fill="#ffffff">CURRENT ACCOUNT (CAB)</text>
+
+              <circle cx="44" cy="90" r="4.5" fill="#059669"/>
+              <text x="60" y="94" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Goods &amp; Services Trade Balance</text>
+              <text x="60" y="109" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">Exports (X) − Imports (M)</text>
+
+              <circle cx="44" cy="148" r="4.5" fill="#059669"/>
+              <text x="60" y="152" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Primary Income Balance</text>
+              <text x="60" y="167" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">Foreign factor earnings</text>
+
+              <circle cx="44" cy="206" r="4.5" fill="#059669"/>
+              <text x="60" y="210" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Secondary Income Balance</text>
+              <text x="60" y="225" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">Current transfers</text>
+
+              <!-- ===== Panel 2 — Capital Account (KAB) ===== -->
+              <rect x="305" y="20" width="270" height="250" rx="9" fill="#ffffff" stroke="#a8823f" stroke-width="1.4"/>
+              <rect x="305" y="20" width="270" height="38" fill="url(#bopKabGrad)"/>
+              <text x="319" y="44" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="800" letter-spacing=".03em" fill="#ffffff">CAPITAL ACCOUNT (KAB)</text>
+
+              <circle cx="329" cy="119" r="4.5" fill="#a8823f"/>
+              <text x="345" y="123" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Capital Grants</text>
+
+              <circle cx="329" cy="177" r="4.5" fill="#a8823f"/>
+              <text x="345" y="181" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Debt Forgiveness</text>
+
+              <!-- ===== Panel 3 — Financial Account (FAB) ===== -->
+              <rect x="590" y="20" width="270" height="250" rx="9" fill="#ffffff" stroke="#0033A0" stroke-width="1.4"/>
+              <rect x="590" y="20" width="270" height="38" fill="url(#bopFabGrad)"/>
+              <text x="604" y="44" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="800" letter-spacing=".03em" fill="#ffffff">FINANCIAL ACCOUNT (FAB)</text>
+
+              <circle cx="614" cy="90" r="4.5" fill="#0033A0"/>
+              <text x="630" y="94" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Direct Investment</text>
+              <text x="630" y="109" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">FDI, cross-border</text>
+
+              <circle cx="614" cy="148" r="4.5" fill="#0033A0"/>
+              <text x="630" y="152" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Portfolio Investment</text>
+              <text x="630" y="167" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">Equity &amp; debt securities</text>
+
+              <circle cx="614" cy="206" r="4.5" fill="#0033A0"/>
+              <text x="630" y="210" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Official Reserve Assets</text>
+              <text x="630" y="225" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">Δ RES</text>
+
+              <!-- ===== Connectors converging into the identity ===== -->
+              <line x1="155" y1="270" x2="155" y2="305" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="440" y1="270" x2="440" y2="305" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="725" y1="270" x2="725" y2="305" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="155" y1="305" x2="725" y2="305" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="440" y1="305" x2="440" y2="330" stroke="#cbd5e1" stroke-width="1.6"/>
+
+              <circle cx="297" cy="305" r="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
+              <text x="297" y="309" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="700" fill="#475569">+</text>
+              <circle cx="582" cy="305" r="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
+              <text x="582" y="309" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="700" fill="#475569">+</text>
+
+              <!-- ===== Identity bar ===== -->
+              <rect x="60" y="330" width="760" height="66" rx="10" fill="url(#bopEqGrad)" stroke="#a8823f" stroke-width="1"/>
+              <text x="440" y="371" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="15">
+                <tspan fill="#34d399" font-weight="800">CAB</tspan><tspan fill="#94a3b8"> + </tspan><tspan fill="#eab676" font-weight="800">KAB</tspan><tspan fill="#94a3b8"> + </tspan><tspan fill="#60a5fa" font-weight="800">FAB</tspan><tspan fill="#94a3b8"> + </tspan><tspan fill="#cbd5e1" font-size="12">Errors &amp; Omissions</tspan><tspan fill="#ffffff"> = </tspan><tspan fill="#eab676" font-weight="800" font-size="17">0</tspan>
+              </text>
+            </svg>
+          </div>
+        </div>
+        <div class="manual-eq">$$\text{CAB} + \text{KAB} + \text{FAB} + \text{Errors \& Omissions} = 0$$</div>
+      </div>
+
+      <div class="manual-section">
+        <h2 class="manual-h2">2. Four Analytical Approaches to External Balance</h2>
+        <h3 class="manual-h3">The Four Perspectives</h3>
+        <ol class="manual-list numbered">
+          <li><span><strong>Income-Absorption Approach:</strong> $\text{CAB} = \text{GNDI} - A$. Focuses on curbing domestic spending relative to national income.</span></li>
+          <li><span><strong>Saving-Investment Approach:</strong> $\text{CAB} = (S_p - I_p) + (S_g - I_g)$. Explores structural public or private sector funding gaps.</span></li>
+          <li><span><strong>Foreign Savings Perspective:</strong> $\text{CAB}$ deficit equals foreign capital imports needed to offset internal shortfalls.</span></li>
+          <li><span><strong>Monetary Approach to BOP:</strong> $\Delta \text{RES} = \Delta M_2 - \Delta \text{NDA}$. Connects external reserve depletion to domestic credit expansion exceeding broad money demand.</span></li>
+        </ol>
+
+        <h3 class="manual-h3">Practical Example: Sudden Stop Capital Flight</h3>
+        <div class="manual-example">
+          <div class="manual-example-title"><span>&#9888;</span>Worked Scenario</div>
+          <p><strong>Scenario:</strong> Foreign investors stop rolling over foreign portfolio debt ($\Delta \text{FAB}$ turns sharply negative).</p>
+          <p><strong>Adjustment Path:</strong> Under a fixed exchange regime, official central bank reserves ($\Delta \text{RES}$) drain rapidly. To restore external balance without exhausting reserves, the country must contract domestic absorption ($A$) via fiscal tightening or currency devaluation.</p>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h2 class="manual-h2">3. Structural Linkages &amp; Sector Specific Glossary</h2>
+        <h3 class="manual-h3">Exchange Rate &amp; Price Relationships</h3>
+        <p class="manual-lead" style="margin-bottom:4px">Uncovered Interest Parity (UIP):</p>
+        <div class="manual-eq manual-eq-sm">$$i_t = i_t^* + E_t[\Delta e_{t+1}] + rp_t$$</div>
+
+        <h3 class="manual-h3">Sector Glossary &amp; Metrics</h3>
+        <dl class="manual-glossary">
+          <div>
+            <dt>Real Effective Exchange Rate ($\text{REER}$)</dt>
+            <dd>Trade-weighted nominal exchange rate adjusted for relative price inflation differentials across trading partners.</dd>
+          </div>
+          <div>
+            <dt>Terms of Trade ($\text{TOT}$)</dt>
+            <dd>Ratio of export price index to import price index ($P_x / P_m$).</dd>
+          </div>
+          <div>
+            <dt>Net International Investment Position (NIIP)</dt>
+            <dd>Stock of foreign financial assets held by residents minus stock of domestic liabilities held by foreign non-residents.</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+  </details>
 
   <!-- Simulator -->
   <section id="tab-simulator" class="tab-panel hidden">
@@ -699,102 +912,49 @@
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
 
       <!-- Balance of Payments -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
-        <div>
-          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Balance of Payments</h3>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">BPM6 presentation · 2006–2013 · millions of USD</div>
+      <div class="card" style="border-color:var(--line2)">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--external)"></span>Balance of Payments</span>
         </div>
-      </div>
-      <div class="layout" style="grid-template-columns:2fr 1fr">
-        <div class="card">
-          <div class="card-head"><span class="card-title">BOP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">Current + Capital + Financial = Reserves (with net E&amp;O)</span></div>
-          <div class="table-wrap"><table class="fp" id="bop-table"></table></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Current Account Composition</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="bop-ca-chart"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Reserves &amp; Import Coverage</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="bop-res-chart"></canvas></div></div>
-          </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">BPM6 presentation, 2006–2013 — the full Current, Capital and Financial account detail, reserves &amp; import coverage, and the associated ratio memo lines have moved to a standalone worksheet with both charts.</div>
+          <a class="govops-subtab" href="balance-of-payments.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
       </div>
 
       <!-- International Investment Position -->
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
-        <div>
-          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">International Investment Position</h3>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">Net IIP = Assets − Liabilities · millions of USD · end-of-period stocks</div>
+      <div class="card" style="border-color:var(--line2)">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--external)"></span>International Investment Position</span>
         </div>
-      </div>
-      <div class="layout" style="grid-template-columns:2fr 1fr">
-        <div class="card">
-          <div class="card-head"><span class="card-title">IIP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">DI + PI + Deriv. + Other + Reserves</span></div>
-          <div class="table-wrap"><table class="fp" id="iip-table"></table></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Net IIP (% of GDP)</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="iip-net-chart"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Liabilities Composition</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="iip-liab-chart"></canvas></div></div>
-          </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">Net IIP = Assets − Liabilities, end-of-period stocks — the full asset &amp; liability detail by direct investment, portfolio, derivatives and other investment, plus the Net IIP and Liabilities composition charts, have moved to a standalone worksheet.</div>
+          <a class="govops-subtab" href="international-investment-position.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
       </div>
 
       <!-- External Debt -->
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
-        <div>
-          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">External Debt</h3>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">By debtor sector · short vs long term · disbursements &amp; amortization · millions of USD</div>
+      <div class="card" style="border-color:var(--line2)">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--external)"></span>External Debt</span>
         </div>
-      </div>
-      <div class="layout" style="grid-template-columns:2fr 1fr">
-        <div class="card">
-          <div class="card-head"><span class="card-title">External debt — full detail</span></div>
-          <div class="table-wrap"><table class="fp" id="exdebt-table"></table></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Debt by Sector</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-sector-chart"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Short vs Long Term</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-maturity-chart"></canvas></div></div>
-          </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">By debtor sector, short vs long term, and disbursements &amp; amortization, in millions of USD — the full detail table plus the Debt by Sector and Short vs Long Term charts have moved to a standalone worksheet.</div>
+          <a class="govops-subtab" href="external-debt.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
       </div>
 
       <!-- External Stock & Debt Indicators -->
       <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:8px">
-        <div>
-          <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Stock &amp; Debt Indicators</h3>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">External vulnerability ratios · implicit interest rate · maturity · roll-over</div>
+      <div class="card" style="border-color:var(--line2)">
+        <div class="card-head" style="background:#f8fafc">
+          <span class="card-title"><span class="dot" style="background:var(--external)"></span>Stock &amp; Debt Indicators</span>
         </div>
-      </div>
-      <div class="summary" id="exstock-kpi"></div>
-      <div class="layout" style="grid-template-columns:2fr 1fr;margin-top:12px">
-        <div class="card">
-          <div class="card-head"><span class="card-title">External stock indicators — 2006–2013</span></div>
-          <div class="table-wrap"><table class="fp" id="exstock-table"></table></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Debt &amp; Debt Service (% GDP)</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="exstock-debt-chart"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Reserve Adequacy</span></div>
-            <div class="card-body"><div class="chart-wrap"><canvas id="exstock-res-chart"></canvas></div></div>
-          </div>
+        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:640px">External vulnerability ratios, reserve adequacy, and debt cost &amp; maturity, 2006–2013 — the full indicator table plus the Debt &amp; Debt Service and Reserve Adequacy charts have moved to a standalone worksheet.</div>
+          <a class="govops-subtab" href="external-stock-indicators.html" style="display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap">Open Standalone Worksheet ↗</a>
         </div>
       </div>
     </div>
@@ -3807,28 +3967,10 @@ const EX_DEBT_DATA = {
   ratio_short_long:  [  49.89,   58.67,   67.91,   40.97,   34.30,   21.22,   33.28,   33.28],
 };
 
-const EX_STOCK_IND = {
-  years: EXT_YEARS,
-  // Vulnerability ratios (in %)
-  net_iip_gdp:              [-16.62, -19.82, -27.76, -29.76, -28.07, -30.76, -35.17, -39.25],
-  assets_gdp:               [ 47.39,  47.03,  41.48,  43.38,  37.98,  33.70,  33.25,  32.82],
-  liab_gdp:                 [ 64.01,  66.85,  69.25,  73.14,  66.05,  64.46,  68.42,  72.07],
-  debt_gdp:                 [ 33.79,  33.36,  32.01,  28.68,  25.75,  25.45,  24.71,  24.82],
-  debt_to_xgs:              [ 65.44,  65.10,  65.73,  63.38,  62.39,  63.59,  60.22,  61.87],
-  debt_service_gdp:         [  4.10,   3.77,   4.94,   3.45,   2.81,   3.30,   3.22,   3.16],
-  debt_service_xgs:         [  7.94,   7.35,  10.15,   7.63,   6.80,   8.24,   7.85,   7.87],
-  reserves_months_imports:  [  2.65,   3.00,   3.71,   3.31,   3.22,   2.98,   2.84,   2.63],
-  reserves_to_st_debt:      [106.72,  99.73,  89.05, 139.05, 145.36, 172.56,  null,   null],
-  // Other indicators
-  implicit_interest_rate:   [  null,   5.61,   4.07,   3.66,   3.71,   3.09,   2.86,   2.58],
-  avg_maturity_lt:          [  null,   9.54,   5.11,   8.34,   8.81,   6.56,   7.68,   6.78],
-  rollover_rate_lt:         [115.29, 186.52, 106.43, 139.04, 232.20, 266.04,  64.23, 173.40],
-  // Memoranda (USD mn)
-  exports_gs:               [11073.4,12851.7,13638.7,12431.1,13836.2,15355.5,16999.4,17888.1],
-  imports_gs:               [12449.5,14103.0,16451.1,12282.1,14738.7,17270.0,19146.9,20333.2],
-  interest_payments:        [ 266.9,  438.2,  352.6,  308.0,  306.6,  284.1,  286.0,  275.0],
-  total_debt_service:       [ 879.2,  944.9, 1383.7,  948.2,  940.8, 1264.5, 1334.2, 1408.4],
-};
+// The External Stock & Debt Indicators data (EX_STOCK_IND), table (exstock-table)
+// and charts (exstock-debt-chart, exstock-res-chart) now live entirely in their
+// own standalone file — see external-stock-indicators.html — so there is nothing
+// to render here any more.
 
 
 function renderExternalReports() {
@@ -3839,251 +3981,23 @@ function renderExternalReports() {
   const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
   const R = (label, key, indent=0) => ({ label, key, indent });
 
-  const bopRows = [
-    H('Current account'),
-    S('Current account', 'current_account', 0),
-    R('  Goods', 'goods', 1),
-    R('    Credit (exports)', 'goods_credit', 2),
-    R('    Debit (imports)', 'goods_debit', 2),
-    R('  Services', 'services', 1),
-    R('    Credit', 'services_credit', 2),
-    R('    Debit', 'services_debit', 2),
-    R('  Primary income', 'primary_income', 1),
-    R('  Secondary income', 'secondary_income', 1),
-    H('Capital & Financial'),
-    R('Capital account', 'capital_account', 0),
-    S('Financial account', 'financial_account', 0),
-    R('  Direct investment', 'direct_inv', 1),
-    R('  Portfolio investment', 'portfolio_inv', 1),
-    R('  Financial derivatives', 'fin_derivatives', 1),
-    R('  Other investment', 'other_inv', 1),
-    R('Net errors & omissions', 'net_eo', 0),
-    S('Overall balance', 'overall_balance', 0),
-    H('Reserves & memo'),
-    R('Reserve assets (stock)', 'reserves_stock', 0),
-    R('Reserves in months of imports', 'months_imports', 0),
-    R('Current account (% GDP)', 'ca_pct_gdp', 0),
-    R('Exports (% GDP)', 'exports_gdp', 0),
-    R('Imports (% GDP)', 'imports_gdp', 0),
-    R('Trade openness (X+M / GDP)', 'openness', 0),
-    R('Nominal GDP (USD mn)', 'usd_gdp', 0),
-    R('FX rate — avg (NC/USD)', 'fx_avg', 0),
-    R('FX rate — EOP (NC/USD)', 'fx_eop', 0),
-  ];
-  document.getElementById('bop-table').innerHTML = renderExtTable(bopRows, BOP_DATA, Y);
+  // The Balance of Payments table and charts (bop-table, bop-ca-chart,
+  // bop-res-chart) now live entirely in their own standalone file — see
+  // balance-of-payments.html — so there is nothing to render here any more.
 
-  // Current account composition chart
-  makeChart('bop-ca-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'Goods',            data:BOP_DATA.goods,            backgroundColor:'#D92D20', stack:'a' },
-      { label:'Services',         data:BOP_DATA.services,         backgroundColor:'#2563EB', stack:'a' },
-      { label:'Primary income',   data:BOP_DATA.primary_income,   backgroundColor:'#D97706', stack:'a' },
-      { label:'Secondary income', data:BOP_DATA.secondary_income, backgroundColor:'#059669', stack:'a' },
-      { label:'Current acct',     data:BOP_DATA.current_account,  type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
+  // The International Investment Position table and charts (iip-table,
+  // iip-net-chart, iip-liab-chart) now live entirely in their own standalone
+  // file — see international-investment-position.html — so there is nothing
+  // to render here any more.
 
-  // Reserves & import coverage chart
-  makeChart('bop-res-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'Reserves (USD mn)', data:BOP_DATA.reserves_stock, backgroundColor:'#0F172A', yAxisID:'y' },
-      { label:'Months of imports', data:BOP_DATA.months_imports, type:'line', borderColor:'#D97706', backgroundColor:'#D97706', borderWidth:2, pointRadius:4, yAxisID:'y1' },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{
-        x:{ ticks:{font:{size:10, family:"DM Mono"}}},
-        y:{ position:'left', ticks:{font:{size:10, family:"DM Mono"}}},
-        y1:{ position:'right', grid:{drawOnChartArea:false}, ticks:{font:{size:10, family:"DM Mono"}}}
-      }
-    }
-  });
+  // The External Debt table and charts (exdebt-table, exdebt-sector-chart,
+  // exdebt-maturity-chart) now live entirely in their own standalone file —
+  // see external-debt.html — so there is nothing to render here any more.
 
-  // ---- IIP table ----
-  const iipRows = [
-    S('Net International Investment Position', 'net_iip', 0),
-    H('Assets'),
-    S('Total assets', 'assets', 0),
-    R('Direct investments abroad', 'di_abroad', 1),
-    R('Portfolio investments', 'pi_assets', 1),
-    R('Financial derivatives', 'fd_assets', 1),
-    R('Other investments', 'oi_assets', 1),
-    R('Reserve assets', 'reserves', 1),
-    H('Liabilities'),
-    S('Total liabilities', 'liabilities', 0),
-    R('Direct investments', 'di_liab', 1),
-    R('Portfolio investments', 'pi_liab', 1),
-    R('Financial derivatives', 'fd_liab', 1),
-    R('Other investments', 'oi_liab', 1),
-    H('Ratios (% of GDP)'),
-    R('Net IIP (% GDP)', 'net_iip_pct', 0),
-    R('Assets (% GDP)', 'assets_pct', 0),
-    R('Liabilities (% GDP)', 'liab_pct', 0),
-  ];
-  document.getElementById('iip-table').innerHTML = renderExtTable(iipRows, IIP_DATA, Y);
-
-  // Net IIP % GDP chart
-  makeChart('iip-net-chart', {
-    type:'line',
-    data:{ labels:Y, datasets:[
-      { label:'Net IIP (% GDP)', data:IIP_DATA.net_iip_pct, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.2, fill:true },
-      { label:'Assets (% GDP)',       data:IIP_DATA.assets_pct, borderColor:'#059669', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
-      { label:'Liabilities (% GDP)',  data:IIP_DATA.liab_pct, borderColor:'#0F172A', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  // Liabilities composition
-  makeChart('iip-liab-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'Direct investments',  data:IIP_DATA.di_liab, backgroundColor:'#0F172A', stack:'a' },
-      { label:'Portfolio',           data:IIP_DATA.pi_liab, backgroundColor:'#2563EB', stack:'a' },
-      { label:'Financial derivatives', data:IIP_DATA.fd_liab, backgroundColor:'#D97706', stack:'a' },
-      { label:'Other investments',   data:IIP_DATA.oi_liab, backgroundColor:'#059669', stack:'a' },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  // ---- External Debt table ----
-  const dbRows = [
-    S('Total external debt', 'total', 0),
-    H('By debtor sector'),
-    R('General Government', 'gov', 1),
-    R('Central Bank', 'cb', 1),
-    R('Other depository corporations', 'odc', 1),
-    R('Other sectors', 'other_sectors', 1),
-    R('Debt in direct investments', 'fdi_debt', 1),
-    H('By maturity'),
-    R('Short term', 'short_term', 0),
-    R('Long term', 'long_term', 0),
-    R('Ratio short/long (%)', 'ratio_short_long', 0),
-    H('Flows (long-term)'),
-    R('Total disbursements (long-term)', 'disbursements_lt', 0),
-    R('Total amortization (long-term)', 'amortization_lt', 0),
-  ];
-  document.getElementById('exdebt-table').innerHTML = renderExtTable(dbRows, EX_DEBT_DATA, Y);
-
-  makeChart('exdebt-sector-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'General Government',   data:EX_DEBT_DATA.gov,           backgroundColor:'#D92D20', stack:'a' },
-      { label:'Central Bank',         data:EX_DEBT_DATA.cb,            backgroundColor:'#7C3AED', stack:'a' },
-      { label:'Other depository',     data:EX_DEBT_DATA.odc,           backgroundColor:'#2563EB', stack:'a' },
-      { label:'Other sectors',        data:EX_DEBT_DATA.other_sectors, backgroundColor:'#059669', stack:'a' },
-      { label:'FDI-related',          data:EX_DEBT_DATA.fdi_debt,      backgroundColor:'#94a3b8', stack:'a' },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  makeChart('exdebt-maturity-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'Short term', data:EX_DEBT_DATA.short_term, backgroundColor:'#D97706', stack:'a' },
-      { label:'Long term',  data:EX_DEBT_DATA.long_term,  backgroundColor:'#0F172A', stack:'a' },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
-      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  // ---- External Stock & Debt Indicators ----
-  const i = EX_STOCK_IND.years.length - 1;
-  const kpi = [
-    { label:'Debt / GDP',           color:'#0F172A',
-      value:`${EX_STOCK_IND.debt_gdp[i].toFixed(1)}%`,
-      sub:`vs 2006: ${EX_STOCK_IND.debt_gdp[0].toFixed(1)}%`,
-      base:`Debt / X&Gs: ${EX_STOCK_IND.debt_to_xgs[i].toFixed(1)}%` },
-    { label:'Debt Service / X&Gs',  color:'#D92D20',
-      value:`${EX_STOCK_IND.debt_service_xgs[i].toFixed(2)}%`,
-      sub:`Interest + amortization`,
-      base:`Debt Svc / GDP: ${EX_STOCK_IND.debt_service_gdp[i].toFixed(2)}%` },
-    { label:'Reserves cover',       color:'#059669',
-      value:`${EX_STOCK_IND.reserves_months_imports[i].toFixed(1)}m`,
-      sub:`Months of imports (g&s)`,
-      base:`Threshold: 3 months` },
-    { label:'Implicit rate on debt',color:'#D97706',
-      value:`${EX_STOCK_IND.implicit_interest_rate[i].toFixed(2)}%`,
-      sub:`Avg maturity: ${EX_STOCK_IND.avg_maturity_lt[i].toFixed(1)}y`,
-      base:`Roll-over: ${EX_STOCK_IND.rollover_rate_lt[i].toFixed(0)}%` },
-  ];
-  document.getElementById('exstock-kpi').innerHTML = kpi.map(k => `
-    <div class="kpi">
-      <div class="kpi-label"><span class="dot" style="background:${k.color}"></span>${k.label}</div>
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-sub">${k.sub}</div>
-      <div class="kpi-base">${k.base}</div>
-    </div>
-  `).join('');
-
-  const stockRows = [
-    H('Vulnerability ratios (%)'),
-    S('Net IIP / GDP', 'net_iip_gdp', 0),
-    R('Assets / GDP', 'assets_gdp', 1),
-    R('Liabilities / GDP', 'liab_gdp', 1),
-    S('External debt / GDP', 'debt_gdp', 0),
-    R('Debt / Exports of g&s', 'debt_to_xgs', 1),
-    R('Debt service / GDP', 'debt_service_gdp', 1),
-    R('Debt service / Exports of g&s', 'debt_service_xgs', 1),
-    H('Reserve adequacy'),
-    S('Reserves in months of imports', 'reserves_months_imports', 0),
-    R('Reserves / Short-term debt at rem. maturity (%)', 'reserves_to_st_debt', 1),
-    H('Debt cost & maturity'),
-    R('Implicit avg. interest rate (%)', 'implicit_interest_rate', 0),
-    R('Avg maturity of long-term debt (yrs)', 'avg_maturity_lt', 0),
-    R('Roll-over rate — long term (%)', 'rollover_rate_lt', 0),
-    H('Memoranda (USD mn)'),
-    R('Exports of g&s (BOP)', 'exports_gs', 0),
-    R('Imports of g&s (BOP)', 'imports_gs', 0),
-    R('Interest payments', 'interest_payments', 0),
-    R('Total debt service', 'total_debt_service', 0),
-  ];
-  document.getElementById('exstock-table').innerHTML = renderExtTable(stockRows, EX_STOCK_IND, Y);
-
-  makeChart('exstock-debt-chart', {
-    type:'line',
-    data:{ labels:Y, datasets:[
-      { label:'Debt / GDP (%)', data:EX_STOCK_IND.debt_gdp, borderColor:'#0F172A', backgroundColor:'#0F172A22', borderWidth:2, pointRadius:3, tension:.2 },
-      { label:'Debt / Exports (%)', data:EX_STOCK_IND.debt_to_xgs, borderColor:'#2563EB', borderWidth:2, borderDash:[6,3], pointRadius:3, tension:.2 },
-      { label:'Debt service / Exports (%)', data:EX_STOCK_IND.debt_service_xgs, borderColor:'#D92D20', borderWidth:2, pointRadius:3, tension:.2 },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
-    }
-  });
-
-  makeChart('exstock-res-chart', {
-    type:'bar',
-    data:{ labels:Y, datasets:[
-      { label:'Reserves / ST debt at rem. mat. (%)', data:EX_STOCK_IND.reserves_to_st_debt, backgroundColor:'#059669', yAxisID:'y' },
-      { label:'Reserves — months of imports', data:EX_STOCK_IND.reserves_months_imports, type:'line', borderColor:'#D97706', backgroundColor:'#D97706', borderWidth:2, pointRadius:4, yAxisID:'y1' },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
-      scales:{
-        x:{ ticks:{font:{size:10, family:"DM Mono"}}},
-        y:{ position:'left', ticks:{font:{size:10, family:"DM Mono"}}},
-        y1:{ position:'right', grid:{drawOnChartArea:false}, min:0, max:6, ticks:{font:{size:10, family:"DM Mono"}}},
-      }
-    }
-  });
+  // The External Stock & Debt Indicators KPIs, table (exstock-table) and charts
+  // (exstock-debt-chart, exstock-res-chart) now live entirely in their own
+  // standalone file — see external-stock-indicators.html — so there is nothing
+  // to render here any more.
 }
 
 function renderExtTable(rows, data, years) {
@@ -5242,8 +5156,12 @@ function initCollapsibleTable(table){
     head.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
-    table.classList.add('collapsed-table');
-    head.classList.add('collapsed');
+    // The main External Sector table (hist-table) is expanded by default —
+    // every other table.fp on this page starts collapsed.
+    if (table.id !== 'hist-table') {
+      table.classList.add('collapsed-table');
+      head.classList.add('collapsed');
+    }
   } else if (!head) {
     var bar = document.createElement('div');
     bar.className = 'table-toggle-bar';
@@ -5918,6 +5836,28 @@ function syncHeaderHeight(){
   if (h) document.documentElement.style.setProperty('--header-h', h.getBoundingClientRect().height + 'px');
 }
 init();
+
+/* Render the LaTeX in the Introduction / Manual section. Deferred until the
+   details panel is first opened (and once on load in case it's already
+   open) so KaTeX only does work when the reference material is visible. */
+(function initManualMath(){
+  const manual = document.getElementById('external-manual');
+  if (!manual || typeof renderMathInElement !== 'function') return;
+  let rendered = false;
+  const doRender = () => {
+    if (rendered) return;
+    rendered = true;
+    renderMathInElement(manual, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false }
+      ],
+      throwOnError: false
+    });
+  };
+  manual.addEventListener('toggle', () => { if (manual.open) doRender(); });
+  if (manual.open) doRender();
+})();
 </script>
 <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
 
