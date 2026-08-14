@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="External Debt, Macronia FPP case study.">
+<title>External Debt · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--external);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .chart-wrap{padding:8px;height:220px;position:relative;width:100%;max-width:100%}
+
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Xd</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · External Sector Worksheet</div>
+      <div class="brand-title">External Debt</div>
+    </div>
+  </div>
+  <a class="back-link" href="external-sector.html">&larr; Back to External Sector</a>
+</header>
+
+<main>
+  <div style="font-size:11px;color:var(--muted);margin-top:2px">By debtor sector · short vs long term · disbursements &amp; amortization · millions of USD</div>
+  <p class="intro">External Debt is the stock of an economy's outstanding liabilities to non-resident creditors, broken out by debtor sector (general government, central bank, other depository corporations, other sectors, and FDI-related debt) and by maturity (short vs long term), together with the long-term disbursement and amortization flows that drive the stock from year to year.</p>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-head"><span class="card-title">External debt — full detail</span></div>
+      <div class="table-wrap"><table class="fp" id="exdebt-table"></table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Debt by Sector</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-sector-chart"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Short vs Long Term</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="exdebt-maturity-chart"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "External Debt" worksheet from the Macronia External Sector dashboard — the content this page replaced there. &middot; <a href="external-sector.html">Return to the full External Sector dashboard &rarr;</a> &middot; <a href="international-investment-position.html">International Investment Position worksheet &rarr;</a> &middot; <a href="balance-of-payments.html">Balance of Payments worksheet &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  if (typeof v !== 'number') return String(v);
+  const abs = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+  return v < 0 ? `(${abs})` : abs;
+}
+function makeChart(canvasId, cfg){
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  el._chart = new Chart(el.getContext('2d'), cfg);
+}
+function renderExtTable(rows, data, years) {
+  const head = `<thead><tr><th>Line item</th>${years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(r => {
+    if (r.header) return `<tr><td colspan="${years.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r.label}</td></tr>`;
+    const arr = data[r.key] || [];
+    const padding = 8 + (r.indent||0)*14;
+    return `<tr${r.bold?' style="font-weight:600;background:#fafafa"':''}>
+      <td style="padding-left:${padding}px;${r.bold?'color:#0f172a':''}">${r.label}</td>
+      ${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v, 1)}</td>`).join('')}
+    </tr>`;
+  }).join('')}</tbody>`;
+  return head + body;
+}
+
+const EXT_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const EX_DEBT_DATA = {
+  years: EXT_YEARS,
+  total:             [7246.00, 8366.20, 8964.30, 7878.80, 8631.80, 9764.20,10236.15,11068.04],
+  gov:               [1530.50, 1631.30, 1349.50, 1428.90, 2024.30, 1835.10, 2392.96, 2930.38],
+  cb:                [  94.00,   88.90,   80.60,   58.00,   53.50,  303.80,   35.56,   35.56],
+  odc:               [1165.30, 1705.95, 2466.10, 1615.65, 1617.70, 2444.90, 2627.23, 2921.71],
+  other_sectors:     [3698.80, 4184.85, 4274.30, 4156.95, 4167.30, 3700.70, 3700.70, 3700.70],
+  fdi_debt:          [ 757.40,  755.20,  793.80,  619.30,  769.00, 1479.70, 1479.70, 1479.70],
+  short_term:        [2411.82, 3093.59, 3625.43, 2290.00, 2204.61, 1709.18, 2556.10, 2763.83],
+  long_term:         [4834.18, 5272.61, 5338.87, 5588.80, 6427.19, 8055.02, 7680.05, 8304.21],
+  disbursements_lt:  [ 705.89,  945.16, 1097.35,  890.15, 1472.59, 2608.25,  673.27,  624.16],
+  amortization_lt:   [ 612.27,  506.73, 1031.09,  640.22,  634.20,  980.42, 1048.23,     null],
+  ratio_short_long:  [  49.89,   58.67,   67.91,   40.97,   34.30,   21.22,   33.28,   33.28],
+};
+
+function renderExternalDebt() {
+  const Y = EXT_YEARS;
+  const H = (label) => ({ label, header:true });
+  const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
+  const R = (label, key, indent=0) => ({ label, key, indent });
+
+  const dbRows = [
+    S('Total external debt', 'total', 0),
+    H('By debtor sector'),
+    R('General Government', 'gov', 1),
+    R('Central Bank', 'cb', 1),
+    R('Other depository corporations', 'odc', 1),
+    R('Other sectors', 'other_sectors', 1),
+    R('Debt in direct investments', 'fdi_debt', 1),
+    H('By maturity'),
+    R('Short term', 'short_term', 0),
+    R('Long term', 'long_term', 0),
+    R('Ratio short/long (%)', 'ratio_short_long', 0),
+    H('Flows (long-term)'),
+    R('Total disbursements (long-term)', 'disbursements_lt', 0),
+    R('Total amortization (long-term)', 'amortization_lt', 0),
+  ];
+  document.getElementById('exdebt-table').innerHTML = renderExtTable(dbRows, EX_DEBT_DATA, Y);
+
+  makeChart('exdebt-sector-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'General Government',   data:EX_DEBT_DATA.gov,           backgroundColor:'#D92D20', stack:'a' },
+      { label:'Central Bank',         data:EX_DEBT_DATA.cb,            backgroundColor:'#7C3AED', stack:'a' },
+      { label:'Other depository',     data:EX_DEBT_DATA.odc,           backgroundColor:'#2563EB', stack:'a' },
+      { label:'Other sectors',        data:EX_DEBT_DATA.other_sectors, backgroundColor:'#059669', stack:'a' },
+      { label:'FDI-related',          data:EX_DEBT_DATA.fdi_debt,      backgroundColor:'#94a3b8', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  makeChart('exdebt-maturity-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Short term', data:EX_DEBT_DATA.short_term, backgroundColor:'#D97706', stack:'a' },
+      { label:'Long term',  data:EX_DEBT_DATA.long_term,  backgroundColor:'#0F172A', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:10}, boxWidth:12}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+}
+
+renderExternalDebt();
+</script>
+</body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="International Investment Position, Macronia FPP case study.">
+<title>International Investment Position · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--external);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .chart-wrap{padding:8px;height:220px;position:relative;width:100%;max-width:100%}
+
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Iip</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · External Sector Worksheet</div>
+      <div class="brand-title">International Investment Position</div>
+    </div>
+  </div>
+  <a class="back-link" href="external-sector.html">&larr; Back to External Sector</a>
+</header>
+
+<main>
+  <div style="font-size:11px;color:var(--muted);margin-top:2px">Net IIP = Assets &minus; Liabilities · millions of USD · end-of-period stocks</div>
+  <p class="intro">The International Investment Position is the balance sheet of an economy's external claims and obligations: the stock of foreign assets held by residents against the stock of liabilities owed to non-residents, broken out by direct investment, portfolio investment, financial derivatives, other investment, and reserve assets.</p>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-head"><span class="card-title">IIP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">DI + PI + Deriv. + Other + Reserves</span></div>
+      <div class="table-wrap"><table class="fp" id="iip-table"></table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Net IIP (% of GDP)</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="iip-net-chart"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Liabilities Composition</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="iip-liab-chart"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "International Investment Position" worksheet from the Macronia External Sector dashboard — the content this page replaced there. &middot; <a href="external-sector.html">Return to the full External Sector dashboard &rarr;</a> &middot; <a href="balance-of-payments.html">Balance of Payments worksheet &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  if (typeof v !== 'number') return String(v);
+  const abs = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+  return v < 0 ? `(${abs})` : abs;
+}
+function makeChart(canvasId, cfg){
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  el._chart = new Chart(el.getContext('2d'), cfg);
+}
+function renderExtTable(rows, data, years) {
+  const head = `<thead><tr><th>Line item</th>${years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(r => {
+    if (r.header) return `<tr><td colspan="${years.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r.label}</td></tr>`;
+    const arr = data[r.key] || [];
+    const padding = 8 + (r.indent||0)*14;
+    return `<tr${r.bold?' style="font-weight:600;background:#fafafa"':''}>
+      <td style="padding-left:${padding}px;${r.bold?'color:#0f172a':''}">${r.label}</td>
+      ${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v, 1)}</td>`).join('')}
+    </tr>`;
+  }).join('')}</tbody>`;
+  return head + body;
+}
+
+const EXT_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const IIP_DATA = {
+  years: EXT_YEARS,
+  net_iip:           [-3563.80,-4969.80,-7774.20,-8174.60,-9410.30,-11800.60,-14565.56,-17501.24],
+  assets:            [10162.90,11795.40,11617.70,11915.20,12732.40,12928.90,13775.63,14639.72],
+  di_abroad:         [ 1268.00, 1530.40, 1536.30, 1543.80, 1568.60, 1626.40, 2131.84, 2676.05],
+  pi_assets:         [ 1317.90, 1488.20,  950.90, 1275.60, 1055.00,  796.10,  796.10,  796.10],
+  fd_assets:         [  351.00,  391.00,  379.00,  402.00,  472.00,  527.00,  568.00,  648.21],
+  oi_assets:         [ 4111.40, 4272.20, 4952.80, 4627.60, 5007.10, 5221.10, 5469.86, 5740.32],
+  reserves:          [ 3114.60, 4113.60, 3798.70, 4066.20, 4629.70, 4758.30, 4809.82, 4779.04],
+  liabilities:       [13726.70,16765.20,19391.90,20089.80,22142.70,24729.50,28339.64,32141.86],
+  di_liab:           [ 6906.20, 8800.30,10878.50,12226.00,13691.60,15867.70,18217.15,20746.76],
+  pi_liab:           [ 1177.40, 1359.40, 1183.70, 1229.30, 1278.80, 1281.30, 2066.16, 2847.99],
+  fd_liab:           [  102.00,   92.00,   99.00,  104.00,   96.00,   82.00,  102.00,  102.00],
+  oi_liab:           [ 5541.10, 6513.50, 7230.70, 6530.50, 7076.30, 7498.50, 7954.33, 8445.12],
+  // % of GDP
+  net_iip_pct:       [ -16.62,  -19.82,  -27.76,  -29.76,  -28.07,  -30.76,  -35.16,  -39.25],
+  assets_pct:        [  47.39,   47.03,   41.48,   43.38,   37.98,   33.70,   33.25,   32.82],
+  liab_pct:          [  64.01,   66.85,   69.24,   73.14,   66.05,   64.46,   68.42,   72.07],
+};
+
+function renderIIP() {
+  const Y = EXT_YEARS;
+  const H = (label) => ({ label, header:true });
+  const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
+  const R = (label, key, indent=0) => ({ label, key, indent });
+
+  const iipRows = [
+    S('Net International Investment Position', 'net_iip', 0),
+    H('Assets'),
+    S('Total assets', 'assets', 0),
+    R('Direct investments abroad', 'di_abroad', 1),
+    R('Portfolio investments', 'pi_assets', 1),
+    R('Financial derivatives', 'fd_assets', 1),
+    R('Other investments', 'oi_assets', 1),
+    R('Reserve assets', 'reserves', 1),
+    H('Liabilities'),
+    S('Total liabilities', 'liabilities', 0),
+    R('Direct investments', 'di_liab', 1),
+    R('Portfolio investments', 'pi_liab', 1),
+    R('Financial derivatives', 'fd_liab', 1),
+    R('Other investments', 'oi_liab', 1),
+    H('Ratios (% of GDP)'),
+    R('Net IIP (% GDP)', 'net_iip_pct', 0),
+    R('Assets (% GDP)', 'assets_pct', 0),
+    R('Liabilities (% GDP)', 'liab_pct', 0),
+  ];
+  document.getElementById('iip-table').innerHTML = renderExtTable(iipRows, IIP_DATA, Y);
+
+  // Net IIP % GDP chart
+  makeChart('iip-net-chart', {
+    type:'line',
+    data:{ labels:Y, datasets:[
+      { label:'Net IIP (% GDP)', data:IIP_DATA.net_iip_pct, borderColor:'#D92D20', backgroundColor:'#D92D2022', borderWidth:2, pointRadius:3, tension:.2, fill:true },
+      { label:'Assets (% GDP)',       data:IIP_DATA.assets_pct, borderColor:'#059669', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
+      { label:'Liabilities (% GDP)',  data:IIP_DATA.liab_pct, borderColor:'#0F172A', borderWidth:1.5, pointRadius:2, tension:.2, borderDash:[4,3] },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ ticks:{font:{size:10, family:"DM Mono"}}}, y:{ ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Liabilities composition
+  makeChart('iip-liab-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Direct investments',  data:IIP_DATA.di_liab, backgroundColor:'#0F172A', stack:'a' },
+      { label:'Portfolio',           data:IIP_DATA.pi_liab, backgroundColor:'#2563EB', stack:'a' },
+      { label:'Financial derivatives', data:IIP_DATA.fd_liab, backgroundColor:'#D97706', stack:'a' },
+      { label:'Other investments',   data:IIP_DATA.oi_liab, backgroundColor:'#059669', stack:'a' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+}
+
+renderIIP();
+</script>
+</body></html>

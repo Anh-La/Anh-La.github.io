@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Balance of Payments — BPM6 presentation, Macronia FPP case study.">
+<title>Balance of Payments · Macronia FPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:34px;height:34px;background:var(--external);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);border:1px solid var(--line);padding:8px 14px;background:#fff}
+  .back-link:hover{color:var(--ink);border-color:var(--ink)}
+
+  main{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:12px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line)}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+  .chart-wrap{padding:8px;height:220px;position:relative;width:100%;max-width:100%}
+
+  .intro{font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px;margin:8px 0 0}
+  .foot-note{font-size:10.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">Bp</div>
+    <div>
+      <div class="brand-eyebrow">Macronia · External Sector Worksheet</div>
+      <div class="brand-title">Balance of Payments</div>
+    </div>
+  </div>
+  <a class="back-link" href="external-sector.html">&larr; Back to External Sector</a>
+</header>
+
+<main>
+  <div style="font-size:11px;color:var(--muted);margin-top:2px">BPM6 presentation · 2006–2013 · millions of USD</div>
+  <p class="intro">The Balance of Payments records all transactions between residents and non-residents: the Current account (goods, services, primary and secondary income), the Capital and Financial accounts, and the resulting change in reserve assets, reconciled against net errors and omissions.</p>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-head"><span class="card-title">BOP — full detail</span><span class="mono" style="font-size:10px;color:var(--muted)">Current + Capital + Financial = Reserves (with net E&amp;O)</span></div>
+      <div class="table-wrap"><table class="fp" id="bop-table"></table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Current Account Composition</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="bop-ca-chart"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Reserves &amp; Import Coverage</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="bop-res-chart"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">
+    This page is a standalone extract of the "Balance of Payments" worksheet from the Macronia External Sector dashboard — the content this page replaced there. &middot; <a href="external-sector.html">Return to the full External Sector dashboard &rarr;</a>
+  </div>
+</main>
+
+<script>
+function fmt(v, d=1){
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  if (typeof v !== 'number') return String(v);
+  const abs = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+  return v < 0 ? `(${abs})` : abs;
+}
+function makeChart(canvasId, cfg){
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  el._chart = new Chart(el.getContext('2d'), cfg);
+}
+function renderExtTable(rows, data, years) {
+  const head = `<thead><tr><th>Line item</th>${years.map(y=>`<th>${y}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(r => {
+    if (r.header) return `<tr><td colspan="${years.length+1}" style="background:#f1f5f9;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#334155">${r.label}</td></tr>`;
+    const arr = data[r.key] || [];
+    const padding = 8 + (r.indent||0)*14;
+    return `<tr${r.bold?' style="font-weight:600;background:#fafafa"':''}>
+      <td style="padding-left:${padding}px;${r.bold?'color:#0f172a':''}">${r.label}</td>
+      ${arr.map(v => `<td class="${typeof v==='number'&&v<0?'neg':''}">${fmt(v, 1)}</td>`).join('')}
+    </tr>`;
+  }).join('')}</tbody>`;
+  return head + body;
+}
+
+const EXT_YEARS = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const BOP_DATA = {
+  years: EXT_YEARS,
+  current_account:   [-1101.15,-1372.96,-2878.33, -442.61,-1302.51,-2396.44,-2724.38,-2959.84],
+  goods:             [-2727.14,-2985.45,-5013.33,-2039.06,-3439.69,-5151.37,-5728.08,-6194.21],
+  goods_credit:      [ 8101.73, 9299.48, 9555.37, 8838.23, 9516.25,10383.11,11494.73,12095.64],
+  goods_debit:       [10828.87,12284.93,14568.70,10877.29,12955.94,15534.48,17222.81,18289.86],
+  services:          [ 1351.06, 1734.07, 2200.92, 2188.10, 2537.24, 3236.87, 3580.60, 3749.16],
+  services_credit:   [ 2971.66, 3552.18, 4083.32, 3592.91, 4319.98, 4972.35, 5504.70, 5792.47],
+  services_debit:    [ 1620.60, 1818.11, 1882.40, 1404.81, 1782.75, 1735.48, 1924.10, 2043.30],
+  primary_income:    [  -74.18, -591.27, -508.22, -950.45, -766.55, -804.84, -910.40, -857.69],
+  secondary_income:  [  349.10,  469.70,  442.30,  358.80,  366.50,  322.90,  333.50,  342.90],
+  capital_account:   [    1.10,   21.20,    7.40,   58.30,   53.60,   21.60,   37.51,    9.00],
+  financial_account: [-1793.90,-2411.90,-2480.50, -676.90,-1800.20,-2518.90,-2684.79,-2929.05],
+  direct_inv:        [-1371.00,-1633.70,-2072.30,-1339.00,-1440.80,-2118.30,-1844.00,-1985.41],
+  portfolio_inv:     [  442.10,  -11.60, -356.60,  276.10, -268.10, -261.40, -784.86, -781.82],
+  fin_derivatives:   [  -25.00,   50.00,  -19.00,   18.00,   78.00,   69.00,   74.50,   80.21],
+  other_inv:         [ -840.00, -816.60,  -32.60,  368.00, -169.30, -208.20, -130.42, -242.02],
+  net_eo:            [   56.95,  -42.44,   42.43,  -32.69,    9.81,  -11.66,   53.60,    0.00],
+  overall_balance:   [  750.80, 1017.70, -348.00,  259.90,  561.10,  132.40,   51.52,  -21.79],
+  reserves_change:   [  750.80, 1017.70, -348.00,  259.90,  561.10,  132.40,   51.52,  -21.79],
+  reserves_stock:    [ 3114.60, 4113.60, 3798.70, 4066.20, 4629.70, 4758.30, 4809.82, 4779.04],
+  months_imports:    [    null,    null,    2.77,    3.97,    3.77,    3.31,    3.01,    2.82],
+  // Ratios
+  ca_pct_gdp:        [  -5.13,   -5.47,  -10.28,   -1.61,   -3.89,   -6.25,   -6.58,   -6.64],
+  trade_balance_usd: [-1376.07,-1251.38,-2812.41,  149.04, -902.46,-1914.50,-2147.48,-2445.05],
+  exports_gdp:       [  51.64,   51.24,   48.70,   45.26,   41.27,   40.03,   41.04,   40.11],
+  imports_gdp:       [  58.05,   56.23,   58.74,   44.71,   43.96,   45.02,   46.23,   45.59],
+  openness:          [ 109.69,  107.48,  107.44,   89.97,   85.23,   85.04,   87.27,   85.70],
+  fx_avg:            [ 511.30,  516.62,  526.24,  573.29,  525.83,  506.40,  510.79,  530.22],
+  fx_eop:            [ 517.89,  498.10,  555.47,  565.24,  512.97,  510.56,  511.02,  549.42],
+  usd_gdp:           [21444.52,25079.14,28004.92,27467.89,33526.24,38364.63,41420.76,44597.01],
+};
+
+function renderBOP() {
+  const Y = EXT_YEARS;
+  const H = (label) => ({ label, header:true });
+  const S = (label, key, indent=0, bold=true) => ({ label, key, indent, bold });
+  const R = (label, key, indent=0) => ({ label, key, indent });
+
+  const bopRows = [
+    H('Current account'),
+    S('Current account', 'current_account', 0),
+    R('  Goods', 'goods', 1),
+    R('    Credit (exports)', 'goods_credit', 2),
+    R('    Debit (imports)', 'goods_debit', 2),
+    R('  Services', 'services', 1),
+    R('    Credit', 'services_credit', 2),
+    R('    Debit', 'services_debit', 2),
+    R('  Primary income', 'primary_income', 1),
+    R('  Secondary income', 'secondary_income', 1),
+    H('Capital & Financial'),
+    R('Capital account', 'capital_account', 0),
+    S('Financial account', 'financial_account', 0),
+    R('  Direct investment', 'direct_inv', 1),
+    R('  Portfolio investment', 'portfolio_inv', 1),
+    R('  Financial derivatives', 'fin_derivatives', 1),
+    R('  Other investment', 'other_inv', 1),
+    R('Net errors & omissions', 'net_eo', 0),
+    S('Overall balance', 'overall_balance', 0),
+    H('Reserves & memo'),
+    R('Reserve assets (stock)', 'reserves_stock', 0),
+    R('Reserves in months of imports', 'months_imports', 0),
+    R('Current account (% GDP)', 'ca_pct_gdp', 0),
+    R('Exports (% GDP)', 'exports_gdp', 0),
+    R('Imports (% GDP)', 'imports_gdp', 0),
+    R('Trade openness (X+M / GDP)', 'openness', 0),
+    R('Nominal GDP (USD mn)', 'usd_gdp', 0),
+    R('FX rate — avg (NC/USD)', 'fx_avg', 0),
+    R('FX rate — EOP (NC/USD)', 'fx_eop', 0),
+  ];
+  document.getElementById('bop-table').innerHTML = renderExtTable(bopRows, BOP_DATA, Y);
+
+  // Current account composition chart
+  makeChart('bop-ca-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Goods',            data:BOP_DATA.goods,            backgroundColor:'#D92D20', stack:'a' },
+      { label:'Services',         data:BOP_DATA.services,         backgroundColor:'#2563EB', stack:'a' },
+      { label:'Primary income',   data:BOP_DATA.primary_income,   backgroundColor:'#D97706', stack:'a' },
+      { label:'Secondary income', data:BOP_DATA.secondary_income, backgroundColor:'#059669', stack:'a' },
+      { label:'Current acct',     data:BOP_DATA.current_account,  type:'line', borderColor:'#0F172A', borderWidth:2, pointRadius:3 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{ x:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}}, y:{ stacked:true, ticks:{font:{size:10, family:"DM Mono"}}} }
+    }
+  });
+
+  // Reserves & import coverage chart
+  makeChart('bop-res-chart', {
+    type:'bar',
+    data:{ labels:Y, datasets:[
+      { label:'Reserves (USD mn)', data:BOP_DATA.reserves_stock, backgroundColor:'#0F172A', yAxisID:'y' },
+      { label:'Months of imports', data:BOP_DATA.months_imports, type:'line', borderColor:'#D97706', backgroundColor:'#D97706', borderWidth:2, pointRadius:4, yAxisID:'y1' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{font:{size:9}, boxWidth:10}} },
+      scales:{
+        x:{ ticks:{font:{size:10, family:"DM Mono"}}},
+        y:{ position:'left', ticks:{font:{size:10, family:"DM Mono"}}},
+        y1:{ position:'right', grid:{drawOnChartArea:false}, ticks:{font:{size:10, family:"DM Mono"}}}
+      }
+    }
+  });
+}
+
+renderBOP();
+</script>
+</body></html>
