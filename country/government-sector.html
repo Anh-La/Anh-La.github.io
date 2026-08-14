@@ -943,17 +943,10 @@
       </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <div class="card" style="display:inline-flex;padding:3px;gap:2px" data-testid="govops-subtabs">
-          <button class="govops-subtab active" data-sub="sgo">Statement of Operations</button>
-          <button class="govops-subtab" data-sub="bs">Balance Sheet</button>
-          <button class="govops-subtab" data-sub="proj">Rev &amp; Exp Projection</button>
+          <a href="government-statement-of-operations.html" class="govops-subtab" style="text-decoration:none;display:inline-flex;align-items:center" title="Opens the Statement of Operations on its own page">Statement of Operations</a>
+          <a href="government-balance-sheet.html" class="govops-subtab" style="text-decoration:none;display:inline-flex;align-items:center" title="Opens the Balance Sheet on its own page">Balance Sheet</a>
+          <a href="government-rev-exp-projection.html" class="govops-subtab" style="text-decoration:none;display:inline-flex;align-items:center" title="Opens the Rev &amp; Exp Projection on its own page">Rev &amp; Exp Projection</a>
         </div>
-        <label style="display:flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-          Units
-          <select id="sgo-units" class="horizon-select">
-            <option value="level">bn NC</option>
-            <option value="pct">% of GDP</option>
-          </select>
-        </label>
       </div>
     </div>
 
@@ -972,38 +965,12 @@
 
     <!-- SGO subview -->
     <div id="govops-sgo">
-      <div class="summary" id="sgo-kpi"></div>
-
-      <div class="layout" style="grid-template-columns:1.4fr 1fr;margin-top:12px">
-        <div class="card">
-          <div class="card-head"><span class="card-title" id="sgo-table-title">Statement of Operations · in bn NC</span><span class="mono" style="font-size:10px;color:var(--muted)">Above the line + Financing must balance</span></div>
-          <div class="table-wrap"><table class="fp" id="sgo-table"></table></div>
+      <div class="card" style="padding:32px 24px;text-align:center">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Statement of Operations has moved</div>
+        <div style="font-size:12.5px;color:var(--muted);max-width:460px;margin:0 auto 16px;line-height:1.5">
+          The full revenue/expense breakdown, fiscal balance chain, financing sources, and accounting identity checks now live on their own page. Selected Fiscal Indicators (% of GDP) remain below.
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Revenue Composition (bn NC)</span></div>
-            <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="sgo-rev"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Expense Composition (bn NC)</span></div>
-            <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="sgo-exp"></canvas></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="charts" style="margin-top:12px">
-        <div class="card">
-          <div class="card-head"><span class="card-title">Fiscal Balance Chain (bn NC)</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="sgo-chain"></canvas></div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Financing Sources (bn NC)</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="sgo-fin"></canvas></div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Interest Bill (bn NC)</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="sgo-int"></canvas></div></div>
-        </div>
+        <a href="government-statement-of-operations.html" class="tab tab-accent" style="--accent-color:#D92D20;display:inline-flex;align-items:center;justify-content:center;padding:11px 20px;text-decoration:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;border-bottom:2px solid var(--accent-color)">Open Statement of Operations &rarr;</a>
       </div>
 
       <!-- Selected Fiscal Indicators (% of GDP) -->
@@ -1026,115 +993,63 @@
         </div>
       </div>
 
-      <!-- Accounting Identity Check for SGO -->
-      <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Statement of Operations — Accounting Identity Checks</span></div>
-        <div class="card-body" style="font-size:12px;line-height:1.6">
-          <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div>① NOB = Revenue − Expense</div>
-            <div>② Primary NOB = NOB + Interest</div>
-            <div>③ Net Lending/Borrowing = NOB − Net Acq. of NFA</div>
-            <div>④ Overall Primary Balance = Overall Balance + Interest</div>
-          </div>
-          <div id="sgo-identity" style="margin-top:8px" class="mono"></div>
-        </div>
+      <!-- Kept off-screen (not deleted) so renderGovSGO() has elements to populate without erroring. -->
+      <div style="display:none" aria-hidden="true">
+        <select id="sgo-units"><option value="level">bn NC</option><option value="pct">% of GDP</option></select>
+        <div id="sgo-kpi"></div>
+        <span id="sgo-table-title"></span>
+        <table id="sgo-table"></table>
+        <canvas id="sgo-rev"></canvas>
+        <canvas id="sgo-exp"></canvas>
+        <canvas id="sgo-chain"></canvas>
+        <canvas id="sgo-fin"></canvas>
+        <canvas id="sgo-int"></canvas>
+        <div id="sgo-identity"></div>
       </div>
     </div>
 
     <!-- Balance Sheet subview -->
     <div id="govops-bs" class="hidden">
-      <div class="summary" id="bs-kpi"></div>
-
-      <div class="layout" style="grid-template-columns:1.4fr 1fr;margin-top:12px">
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title" id="bs-table-title">General Government Balance Sheet · in bn NC</span>
-            <span class="mono" style="font-size:10px;color:var(--muted)">Stock · Transactions · Other economic flows</span>
-          </div>
-          <div class="table-wrap"><table class="fp" id="bs-table"></table></div>
+      <div class="card" style="padding:32px 24px;text-align:center">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Balance Sheet has moved</div>
+        <div style="font-size:12.5px;color:var(--muted);max-width:460px;margin:0 auto 16px;line-height:1.5">
+          The General Government Balance Sheet — assets, liabilities, net worth, and accounting identity checks — now lives on its own page.
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="card">
-            <div class="card-head"><span class="card-title">Assets &amp; Liabilities (Stock, bn NC)</span></div>
-            <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="bs-al"></canvas></div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">Net Worth vs Net Financial Worth</span></div>
-            <div class="card-body"><div class="chart-wrap" style="height:220px"><canvas id="bs-nw"></canvas></div></div>
-          </div>
-        </div>
+        <a href="government-balance-sheet.html" class="tab tab-accent" style="--accent-color:#D92D20;display:inline-flex;align-items:center;justify-content:center;padding:11px 20px;text-decoration:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;border-bottom:2px solid var(--accent-color)">Open Balance Sheet &rarr;</a>
       </div>
-
-      <div class="charts" style="margin-top:12px">
-        <div class="card">
-          <div class="card-head"><span class="card-title">Asset Composition (bn NC)</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="bs-assets"></canvas></div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Liability Composition (bn NC)</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="bs-liab"></canvas></div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title">Net Worth Reconciliation</span></div>
-          <div class="card-body"><div class="chart-wrap"><canvas id="bs-recon"></canvas></div></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Accounting identity check</span></div>
-        <div class="card-body" style="font-size:12px;line-height:1.6">
-          <div class="mono" style="background:#f8fafc;padding:10px;border:1px solid var(--line)">
-            NW<sub>t</sub> = NW<sub>t-1</sub> + Net Operating Balance<sub>t</sub> + Other Economic Flows<sub>t</sub>
-          </div>
-          <div id="bs-identity" style="margin-top:8px" class="mono"></div>
-        </div>
+      <!-- Kept off-screen (not deleted) so renderGovBalanceSheet() has elements to populate without erroring. -->
+      <div style="display:none" aria-hidden="true">
+        <div id="bs-kpi"></div>
+        <span id="bs-table-title"></span>
+        <table id="bs-table"></table>
+        <canvas id="bs-al"></canvas>
+        <canvas id="bs-nw"></canvas>
+        <canvas id="bs-assets"></canvas>
+        <canvas id="bs-liab"></canvas>
+        <canvas id="bs-recon"></canvas>
+        <div id="bs-identity"></div>
       </div>
     </div>
 
     <!-- Revenue & Expense Projection subview -->
     <div id="govops-proj" class="hidden">
-      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px">
-        <div style="font-size:11px;color:var(--muted);flex:1">
-          IMF-style forecast: <span class="mono">Tax = Effective Tax Rate × Proxy Base</span> for revenues,
-          expense-by-expense growth rates for expenses (interest = rate × previous debt stock).
-          Baseline = 2013. Horizon: 1–5 years.
+      <div class="card" style="padding:32px 24px;text-align:center">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Revenue &amp; Expense Projection has moved</div>
+        <div style="font-size:12.5px;color:var(--muted);max-width:460px;margin:0 auto 16px;line-height:1.5">
+          The ETR-based revenue forecast, expense projections, debt dynamics, and projected Statement of Operations now live on their own page.
         </div>
+        <a href="government-rev-exp-projection.html" class="tab tab-accent" style="--accent-color:#D92D20;display:inline-flex;align-items:center;justify-content:center;padding:11px 20px;text-decoration:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;border-bottom:2px solid var(--accent-color)">Open Rev &amp; Exp Projection &rarr;</a>
       </div>
-
-      <div class="layout" style="grid-template-columns:320px 1fr">
-        <!-- Assumption panel -->
-        <aside class="card" id="proj-assumptions-panel"></aside>
-
-        <div>
-          <div class="summary" id="proj-kpi"></div>
-
-          <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
-            <div class="card">
-              <div class="card-head"><span class="card-title">Revenue Path (bn NC)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-rev-chart"></canvas></div></div>
-            </div>
-            <div class="card">
-              <div class="card-head"><span class="card-title">Expense Path (bn NC)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-exp-chart"></canvas></div></div>
-            </div>
-          </div>
-
-          <div class="charts" style="margin-top:12px;grid-template-columns:repeat(2,1fr)">
-            <div class="card">
-              <div class="card-head"><span class="card-title">Overall Balance (% GDP)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-bal-chart"></canvas></div></div>
-            </div>
-            <div class="card">
-              <div class="card-head"><span class="card-title">Debt Dynamics (% GDP)</span></div>
-              <div class="card-body"><div class="chart-wrap"><canvas id="proj-debt-chart"></canvas></div></div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:12px">
-            <div class="card-head"><span class="card-title">Projected Statement of Operations</span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2014 – …</span></div>
-            <div class="table-wrap"><table class="fp" id="proj-sgo-table"></table></div>
-          </div>
-        </div>
+      <!-- Kept off-screen (not deleted) so renderRevExpProjection() / renderProjAssumptionsPanel() have elements to populate without erroring. -->
+      <div style="display:none" aria-hidden="true">
+        <aside id="proj-assumptions-panel"></aside>
+        <div id="proj-kpi"></div>
+        <canvas id="proj-rev-chart"></canvas>
+        <canvas id="proj-exp-chart"></canvas>
+        <canvas id="proj-bal-chart"></canvas>
+        <canvas id="proj-debt-chart"></canvas>
+        <span id="proj-range"></span>
+        <table id="proj-sgo-table"></table>
       </div>
     </div>
   </section>
@@ -5860,30 +5775,16 @@ function init(){
   fofSel.value = String(state.fofYear);
   fofSel.addEventListener('change', e => { state.fofYear = parseInt(e.target.value); renderFlowOfFunds(); });
 
-  // Gov Ops units selector — refresh whichever subview is visible
+  // Gov Ops units selector — kept off-screen; still refreshes the hidden
+  // SGO/Balance-Sheet render functions so they don't error when called.
   document.getElementById('sgo-units').addEventListener('change', () => {
     renderGovSGO();
     renderGovBalanceSheet();
   });
 
-  // Gov Ops sub-tabs (Statement of Operations / Balance Sheet / Projection)
-  document.querySelectorAll('.govops-subtab[data-sub]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.govops-subtab[data-sub]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const sub = btn.dataset.sub;
-      document.getElementById('govops-sgo').classList.toggle('hidden', sub !== 'sgo');
-      document.getElementById('govops-bs').classList.toggle('hidden', sub !== 'bs');
-      document.getElementById('govops-proj').classList.toggle('hidden', sub !== 'proj');
-      const titles = {
-        sgo: ['Statement of General Government Operations','IMF GFS-style · Macronia 2006–2013 · billions of national currency'],
-        bs:  ['General Government Balance Sheet','IMF GFS-style · Macronia 2006–2013 · stocks, transactions, and other economic flows'],
-        proj:['Revenue & Expense Projection','ETR-based revenue forecast + category-specific expense growth · Baseline 2013'],
-      };
-      document.getElementById('govops-title').textContent = titles[sub][0];
-      document.getElementById('govops-subtitle').textContent = titles[sub][1];
-    });
-  });
+  // Gov Ops sub-tabs are now all direct links (Statement of Operations,
+  // Balance Sheet, Rev & Exp Projection each open their own standalone page),
+  // so there is no in-page sub-tab switching left to wire up.
 
   // Sector Interlinks — both views are always visible, no sub-tab handler needed
 
