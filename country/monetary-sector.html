@@ -87,6 +87,55 @@
   .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
   .card-body{padding:12px}
 
+  /* Sector guidance / intro sections (collapsible) */
+  .intro-card{border:1px solid var(--line2);background:var(--surface);margin-bottom:16px}
+  .intro-head{padding:12px 14px;background:linear-gradient(135deg,#f5f3ff,#f8fafc);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    cursor:pointer;user-select:none;border-bottom:1px solid var(--line2)}
+  .intro-head:hover{background:linear-gradient(135deg,#efeaff,#f1f5f9)}
+  .intro-head.collapsed{border-bottom-color:transparent}
+  .intro-head-left{display:flex;align-items:center;gap:10px;min-width:0}
+  .intro-icon{display:inline-flex;align-items:center;justify-content:center;width:9px;flex:0 0 auto;
+    font-size:9px;color:var(--monetary);transition:transform .15s ease}
+  .intro-head.collapsed .intro-icon{transform:rotate(-90deg)}
+  .intro-head-title{font-size:12.5px;font-weight:800;letter-spacing:-.005em;color:var(--ink)}
+  .intro-head-sub{font-size:10.5px;color:var(--muted);margin-top:1px}
+  .intro-head-badge{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--monetary);background:#ede9fe;padding:3px 8px;flex:0 0 auto;white-space:nowrap}
+  .intro-body{padding:18px 20px 6px}
+  .intro-section{margin-bottom:22px}
+  .intro-section:last-child{margin-bottom:6px}
+  .intro-section-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;
+    background:var(--monetary);color:#fff;font-size:10px;font-weight:700;font-family:var(--font-mono);flex:0 0 auto}
+  .intro-section-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .intro-section-title{font-size:13px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .intro-p{font-size:12px;line-height:1.6;color:#334155;margin:0 0 10px}
+  .intro-diagram-wrap{overflow-x:auto;background:#0f172a;padding:14px 16px;margin:10px 0 14px;
+    -webkit-overflow-scrolling:touch}
+  .intro-diagram{font-family:var(--font-mono);font-size:10.8px;line-height:1.5;color:#cbd5e1;margin:0;white-space:pre}
+  .intro-diagram .intro-diagram-hd{color:#a78bfa}
+  .intro-subhead{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;
+    color:var(--monetary);margin:14px 0 8px}
+  .intro-subhead:first-child{margin-top:0}
+  .intro-formula-box{background:#f8fafc;border:1px solid var(--line);border-left:3px solid var(--monetary);
+    padding:12px 14px;margin:8px 0 14px}
+  .intro-formula{font-family:var(--font-mono);font-size:12.5px;color:var(--ink);line-height:1.9}
+  .intro-formula-note{font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .intro-example{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--warn);
+    padding:12px 14px;margin:8px 0 4px}
+  .intro-example-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    color:#92400e;margin-bottom:6px}
+  .intro-example p{font-size:11.5px;line-height:1.6;color:#451a03;margin:0 0 6px}
+  .intro-example p:last-child{margin-bottom:0}
+  .intro-glossary{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:8px}
+  .intro-glossary dt{font-family:var(--font-mono);font-size:11.5px;font-weight:700;color:var(--monetary);margin-bottom:3px}
+  .intro-glossary dd{font-size:11.5px;line-height:1.55;color:#334155;margin:0}
+  @media (max-width:640px){
+    .intro-body{padding:14px 14px 4px}
+    .intro-glossary{grid-template-columns:1fr}
+    .intro-diagram{font-size:9.5px}
+  }
+
   /* Policy Levers */
   .levers{padding:12px;max-height:60vh;overflow-y:auto}
   @media (max-width:900px){.levers{max-height:none}}
@@ -215,6 +264,10 @@
   table.fp tbody tr:hover td:first-child{background:#f8fafc}
   table.fp tbody tr:hover{background:#f8fafc}
   .neg{color:var(--fiscal)}
+  .worksheet-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 12px;text-decoration:none;color:inherit}
+  .worksheet-link:hover{background:#f8fafc}
+  .worksheet-link-sub{font-size:11.5px;color:var(--muted)}
+  .worksheet-link-cta{font-size:11px;font-weight:700;color:var(--blue);white-space:nowrap}
 
   /* Historical sector tabs */
   .sector-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:12px;gap:4px}
@@ -607,6 +660,101 @@
     </div>
     <!-- Monetary Sector — Source Charts (moved to top of tab; shown only for Monetary sector) -->
     <div id="monetary-src-charts" class="hidden">
+      <div class="intro-card" id="monetary-intro-card">
+        <div class="intro-head collapsed" id="monetary-intro-head" role="button" tabindex="0"
+             onclick="document.getElementById('monetary-intro-head').classList.toggle('collapsed');document.getElementById('monetary-intro-body').classList.toggle('hidden')"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+          <div class="intro-head-left">
+            <span class="intro-icon">▾</span>
+            <div>
+              <div class="intro-head-title">Financial &amp; Monetary Sector Guidance Document</div>
+              <div class="intro-head-sub">Institutional architecture · balance sheet identities · policy transmission · glossary</div>
+            </div>
+          </div>
+          <span class="intro-head-badge">Reference</span>
+        </div>
+        <div class="intro-body hidden" id="monetary-intro-body">
+
+          <div class="intro-section">
+            <div class="intro-section-head">
+              <span class="intro-section-num">1</span>
+              <span class="intro-section-title">Institutional Architecture &amp; Monetary Survey Framework</span>
+            </div>
+            <p class="intro-p">The Monetary Sector measures money creation, depository balance sheets, and central bank transmission mechanisms.</p>
+            <div class="intro-diagram-wrap">
+              <pre class="intro-diagram"><span class="intro-diagram-hd">+-------------------------------------------------------------------------+
+|               DEPOSITORY CORPORATIONS SURVEY BALANCE SHEET              |
++------------------------------------+------------------------------------+
+|               ASSETS               |            LIABILITIES             |
++------------------------------------+------------------------------------+</span>
+| Net Foreign Assets (NFA)           | Broad Money Liabilities (M2)       |
+| Net Domestic Assets (NDA)          |  - Currency in Circulation         |
+|   - Net Claims on Government (NCG) |  - Transferable Deposits           |
+|   - Credit to Private Sector (CPS) |  - Non-transferable Time Deposits  |
+|   - Other Items Net (OIN)          |                                    |
+<span class="intro-diagram-hd">+------------------------------------+------------------------------------+</span></pre>
+            </div>
+          </div>
+
+          <div class="intro-section">
+            <div class="intro-section-head">
+              <span class="intro-section-num">2</span>
+              <span class="intro-section-title">Balance Sheet Identities &amp; Money Multiplier Mechanics</span>
+            </div>
+
+            <div class="intro-subhead">Core Accounting Identities</div>
+            <div class="intro-formula-box">
+              <div class="intro-formula">Broad Money Creation: &nbsp; M<sub>2</sub> = NFA + NDA</div>
+              <div class="intro-formula" style="margin-top:6px">Domestic Credit Composition: &nbsp; NDA = NDC + OIN = NCG + CPS + OIN</div>
+            </div>
+
+            <div class="intro-subhead">Money Multiplier Formulation</div>
+            <div class="intro-formula-box">
+              <div class="intro-formula">Broad Money (M<sub>2</sub>) = mm × Monetary Base (MB)</div>
+              <div class="intro-formula" style="margin-top:6px">mm = (1 + c + t + mmf) / (r + c)</div>
+              <div class="intro-formula-note">where c = currency ratio, r = reserve ratio, t = time deposit ratio, mmf = money market fund ratio.</div>
+            </div>
+
+            <div class="intro-subhead">Practical Example: Open Market Sterilization</div>
+            <div class="intro-example">
+              <div class="intro-example-label">Scenario → Mechanism</div>
+              <p><strong>Scenario:</strong> A central bank intervenes in FX markets, buying $100M in foreign assets (ΔNFA &gt; 0).</p>
+              <p><strong>Mechanism:</strong> To prevent this liquidity from expanding the Monetary Base (MB) and triggering domestic inflation, the central bank sells domestic government bonds (ΔNDA &lt; 0), sterilizing the intervention so total broad money supply (M<sub>2</sub>) stays constant.</p>
+            </div>
+          </div>
+
+          <div class="intro-section">
+            <div class="intro-section-head">
+              <span class="intro-section-num">3</span>
+              <span class="intro-section-title">Policy Transmission &amp; Sector-Specific Glossary</span>
+            </div>
+
+            <div class="intro-subhead">Central Bank Policy Rules</div>
+            <div class="intro-formula-box">
+              <div class="intro-formula-note" style="margin:0 0 6px">Taylor Rule — sets short-term nominal interest rate (i<sub>t</sub>) targets:</div>
+              <div class="intro-formula">i<sub>t</sub> = r* + π<sub>t</sub> + θ<sub>1</sub>(π<sub>t</sub> − π*) + θ<sub>2</sub>(Y<sub>t</sub> − Y<sub>t</sub><sup>p</sup>)</div>
+            </div>
+
+            <div class="intro-subhead">Sector Glossary &amp; Metrics</div>
+            <dl class="intro-glossary">
+              <div>
+                <dt>Monetary Base (MB)</dt>
+                <dd>Currency in circulation plus bank reserves held at the central bank.</dd>
+              </div>
+              <div>
+                <dt>Seigniorage</dt>
+                <dd>Real revenue raised by the monetary authority via money creation.</dd>
+              </div>
+              <div>
+                <dt>Quantity Theory of Money (QTM)</dt>
+                <dd>M · v = P · Y</dd>
+              </div>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+
       <div>
         <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Source Charts</h3>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Interest-rate corridor · Broad-money vs credit growth · 2008–2013</div>
@@ -648,28 +796,26 @@
       <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
         <div class="card">
           <div class="card-head"><span class="card-title">Money Multiplier — Reserve &amp; Broad Money</span></div>
-          <div class="table-wrap"><table class="fp" id="mm-table"></table></div>
+          <a class="worksheet-link" href="monetary-money-multiplier.html" title="Opens the Money Multiplier worksheet on its own page">
+            <span class="worksheet-link-sub">Reserve money, broad money &amp; multiplier ratio, 2006–2014F</span>
+            <span class="worksheet-link-cta mono">Open table ↗</span>
+          </a>
         </div>
         <div class="card">
           <div class="card-head"><span class="card-title">Velocity &amp; Money Demand</span></div>
-          <div class="table-wrap"><table class="fp" id="vel-table"></table></div>
+          <a class="worksheet-link" href="monetary-velocity-money-demand.html" title="Opens the Velocity & Money Demand worksheet on its own page">
+            <span class="worksheet-link-sub">Nominal GDP, broad money stock &amp; income velocity, 2006–2014F</span>
+            <span class="worksheet-link-cta mono">Open table ↗</span>
+          </a>
         </div>
       </div>
 
       <div class="card" style="margin-top:12px">
         <div class="card-head"><span class="card-title">Taylor Rule — Coefficients &amp; Fitted Series</span></div>
-        <div class="card-body" style="font-size:12px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-            <div class="table-wrap"><table class="fp" id="taylor-table"></table></div>
-            <div style="background:#f8fafc;padding:12px;border:1px solid var(--line);font-size:11.5px">
-              <div style="font-weight:700;margin-bottom:6px">Taylor rule formula</div>
-              <div class="mono">i<sub>t</sub> = ρ·i<sub>t-1</sub> + (1−ρ)·[r* + π<sup>e</sup> + α·(π−π*) + β·ygap]</div>
-              <div style="margin-top:10px;font-weight:700">Coefficients</div>
-              <div class="mono">α (inflation gap) = 1.500 · β (output gap) = 2.300 · ρ (smoothing) = 0.200 · r* (neutral) = 2.0%</div>
-              <div style="margin-top:10px" id="taylor-forecast"></div>
-            </div>
-          </div>
-        </div>
+        <a class="worksheet-link" href="monetary-taylor-rule.html" title="Opens the Taylor Rule worksheet on its own page">
+          <span class="worksheet-link-sub">Actual vs. fitted policy rate, coefficients &amp; 2014 forecast, 2011–2014</span>
+          <span class="worksheet-link-cta mono">Open table ↗</span>
+        </a>
       </div>
 
       <div class="layout" style="grid-template-columns:1fr 1fr;margin-top:12px">
@@ -678,20 +824,20 @@
             <span class="card-title">NFA &amp; OIN — Central Bank Forecast</span>
             <span class="mono" style="font-size:10px;color:var(--muted)">ΔNFA(USD) = Overall BOP · Val. adj = ΔNER × NFA(USD)</span>
           </div>
-          <div class="table-wrap"><table class="fp" id="nfa-cb-table"></table></div>
-          <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
-            NFA (bn NC) = NFA (USD mn) × NER<sub>eop</sub> / 1000 · OIN<sub>t</sub> = OIN<sub>t-1</sub> + valuation adj.
-          </div>
+          <a class="worksheet-link" href="monetary-nfa-oin.html#central-bank" title="Opens the combined NFA & OIN worksheet on its own page">
+            <span class="worksheet-link-sub">NFA &amp; OIN, 2013 actual → 2014 forecast</span>
+            <span class="worksheet-link-cta mono">Open table ↗</span>
+          </a>
         </div>
         <div class="card">
           <div class="card-head">
             <span class="card-title">Total NFA &amp; OIN — Banking System</span>
             <span class="mono" style="font-size:10px;color:var(--muted)">CB + Other Depository Corporations</span>
           </div>
-          <div class="table-wrap"><table class="fp" id="nfa-total-table"></table></div>
-          <div style="padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc">
-            Total NFA = NFA(CB) + NFA(ODC) · ODC NFA revalued by end-of-period exchange rate change.
-          </div>
+          <a class="worksheet-link" href="monetary-nfa-oin.html#banking-system" title="Opens the combined NFA & OIN worksheet on its own page">
+            <span class="worksheet-link-sub">Total NFA &amp; OIN, CB + ODC, 2013 actual → 2014 forecast</span>
+            <span class="worksheet-link-cta mono">Open table ↗</span>
+          </a>
         </div>
       </div>
     </div>
@@ -3051,102 +3197,13 @@ function renderMonetaryReports(){
     </div>
   `).join('');
 
-  const yrs = [...H.years, 2014];
-
-  // Money multiplier table
-  const mmRows = [
-    ['Reserve money (bn NC, EOP)', [...H.reserve_money, rm14]],
-    ['Broad money (bn NC, EOP)', [...H.broad_money, bm14]],
-    ['Broad money growth (%)', [...H.bm_growth, bm_growth_14]],
-    ['Money multiplier (M2 / RM)', [...H.money_multiplier, mm14]],
-  ];
-  document.getElementById('mm-table').innerHTML = buildMonTable(mmRows, yrs);
-
-  // Velocity table
-  const velRows = [
-    ['Nominal GDP (bn NC)', [...H.nominal_gdp, ngdp14]],
-    ['Broad money — avg stock', [...H.broad_money_avg, bm_avg_14]],
-    ['Broad money — EOP stock', [...H.broad_money, bm14]],
-    ['Velocity (GDP / avg M2)', [...H.velocity, velocity_14]],
-  ];
-  document.getElementById('vel-table').innerHTML = buildMonTable(velRows, yrs);
-
-  // Taylor Rule table
-  const taylorRows = [
-    ['MP rate — actual (%)', H.mp_rate_actual],
-    ['MP rate — fitted (%)', H.mp_rate_fitted],
-    ['CPI — actual y/y (%)', H.cpi_actual],
-    ['CPI — target (%)', H.cpi_target],
-    ['CPI — expectations (%)', H.cpi_expect],
-    ['Inflation gap (%)', H.inflation_gap],
-    ['Lagged MP rate (%)', H.lagged_mp],
-    ['Neutral real rate (%)', H.neutral_rate],
-    ['Interbank rate (%)', H.interbank],
-  ];
-  const tyrs = H.taylor_years;
-  const thead = `<thead><tr><th>Series</th>${tyrs.map((y,k)=>`<th${k===tyrs.length-1?' style="background:#fef3c7"':''}>${y}${k===tyrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
-  const tbody = `<tbody>${taylorRows.map(([label,arr]) => `
-    <tr><td>${label}</td>${arr.map((v,k)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${k===tyrs.length-1?' style="background:#fef8e6"':''}>${fmt(v,3)}</td>`).join('')}</tr>
-  `).join('')}</tbody>`;
-  document.getElementById('taylor-table').innerHTML = thead + tbody;
-
-  // NFA & OIN forecast tables
-  const nfa_cb_nc_13 = 3969.92, ner_eop_13 = 549.42, nfa_cb_usd_13 = 7225.67, oin_13 = 817.47;
-  const bop_2014 = -21.79; // Overall BOP balance USD mn from BOP data
-  const ner_eop_14 = 549.42 * 1.05; // assumed 5% depreciation
-  const nfa_cb_usd_14 = nfa_cb_usd_13 + bop_2014;
-  const nfa_cb_nc_14 = nfa_cb_usd_14 * ner_eop_14 / 1000;
-  const val_adj = nfa_cb_nc_14 - (nfa_cb_usd_13 * ner_eop_14 / 1000); // FX revaluation
-  const oin_14 = oin_13 + val_adj * 0.1; // small valuation impact assumed
-
-  document.getElementById('nfa-cb-table').innerHTML = `
-    <thead><tr><th>Central Bank NFA & OIN</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
-    <tbody>
-      <tr style="font-weight:600;background:#fafafa"><td>NFA (bn NC)</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
-      <tr><td>NER end-of-period (NC/USD)</td><td>${fmt(ner_eop_13,2)}</td><td style="background:#fef8e6">${fmt(ner_eop_14,2)}</td></tr>
-      <tr><td>NFA (USD mn)</td><td>${fmt(nfa_cb_usd_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_usd_14,2)}</td></tr>
-      <tr><td>Overall BOP balance (USD mn)</td><td>—</td><td style="background:#fef8e6">${fmt(bop_2014,2)}</td></tr>
-      <tr style="font-weight:600;background:#fafafa"><td>OIN (bn NC)</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
-      <tr><td>Valuation adjustment (bn NC)</td><td>—</td><td style="background:#fef8e6">${fmt(val_adj,2)}</td></tr>
-    </tbody>`;
-
-  // Total NFA/OIN for banking system (CB + ODCs)
-  const nfa_odc_nc_13 = 2473.20;  // from NFA (Survey) 2012 baseline, using proxy value
-  const oin_odc_13 = -1017.53;
-  const nfa_odc_nc_14 = nfa_odc_nc_13 * (ner_eop_14 / ner_eop_13);
-  const total_nfa_13 = nfa_cb_nc_13 + nfa_odc_nc_13;
-  const total_nfa_14 = nfa_cb_nc_14 + nfa_odc_nc_14;
-  const total_oin_13 = oin_13 + oin_odc_13;
-  const total_oin_14 = oin_14 + oin_odc_13 * 1.02;
-
-  document.getElementById('nfa-total-table').innerHTML = `
-    <thead><tr><th>Total banking system</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
-    <tbody>
-      <tr><td>NFA — Central Bank</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
-      <tr><td>NFA — Other depository corps</td><td>${fmt(nfa_odc_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_odc_nc_14,2)}</td></tr>
-      <tr style="font-weight:600;background:#fafafa"><td>Total NFA (bn NC)</td><td>${fmt(total_nfa_13,2)}</td><td style="background:#fef8e6">${fmt(total_nfa_14,2)}</td></tr>
-      <tr><td>OIN — Central Bank</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
-      <tr><td>OIN — Other depository corps</td><td>${fmt(oin_odc_13,2)}</td><td style="background:#fef8e6">${fmt(oin_odc_13*1.02,2)}</td></tr>
-      <tr style="font-weight:600;background:#fafafa"><td>Total OIN (bn NC)</td><td>${fmt(total_oin_13,2)}</td><td style="background:#fef8e6">${fmt(total_oin_14,2)}</td></tr>
-    </tbody>`;
-
-  // Taylor forecast box
-  document.getElementById('taylor-forecast').innerHTML = `
-    <div style="font-weight:700">2014 Taylor rule forecast</div>
-    <div class="mono" style="margin-top:4px">i₂₀₁₄ = 0.2×8.866 + 0.8×[2.0 + 5.0 + 1.5×(7.482−5.0) + 2.3×1.422] = <strong>8.866%</strong></div>
-    <div class="mono" style="margin-top:4px">Interbank rate ≈ i + spread → <strong>13.866%</strong></div>
-  `;
-}
-
-function buildMonTable(rows, yrs){
-  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k)=>`<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
-  const body = `<tbody>${rows.map(([label,arr]) => `
-    <tr style="font-weight:600;background:#fafafa">
-      <td>${label}</td>
-      ${arr.map((v,k)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${v===null?'—':fmt(v, 2)}</td>`).join('')}
-    </tr>
-  `).join('')}</tbody>`;
-  return head + body;
+  // Note: the Money Multiplier, Velocity & Money Demand, Taylor Rule, and
+  // NFA/OIN worksheet tables now live on their own standalone pages
+  // (monetary-money-multiplier.html, monetary-velocity-money-demand.html,
+  // monetary-taylor-rule.html, monetary-nfa-oin.html), linked from
+  // compact cards above.
+  // bm14 / mm14 / rm14 / ngdp14 / bm_avg_14 / velocity_14 computed above
+  // remain in use for the KPI strip only.
 }
 
 
