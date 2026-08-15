@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <style>
   :root{
     --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
@@ -607,24 +604,24 @@
             </svg>
           </div>
         </div>
-        <div class="manual-eq">$$\text{CAB} + \text{KAB} + \text{FAB} + \text{Errors \& Omissions} = 0$$</div>
+        <div class="manual-eq">CAB + KAB + FAB + Errors &amp; Omissions = 0</div>
       </div>
 
       <div class="manual-section">
         <h2 class="manual-h2">2. Four Analytical Approaches to External Balance</h2>
         <h3 class="manual-h3">The Four Perspectives</h3>
         <ol class="manual-list numbered">
-          <li><span><strong>Income-Absorption Approach:</strong> $\text{CAB} = \text{GNDI} - A$. Focuses on curbing domestic spending relative to national income.</span></li>
-          <li><span><strong>Saving-Investment Approach:</strong> $\text{CAB} = (S_p - I_p) + (S_g - I_g)$. Explores structural public or private sector funding gaps.</span></li>
-          <li><span><strong>Foreign Savings Perspective:</strong> $\text{CAB}$ deficit equals foreign capital imports needed to offset internal shortfalls.</span></li>
-          <li><span><strong>Monetary Approach to BOP:</strong> $\Delta \text{RES} = \Delta M_2 - \Delta \text{NDA}$. Connects external reserve depletion to domestic credit expansion exceeding broad money demand.</span></li>
+          <li><span><strong>Income-Absorption Approach:</strong> CAB = GNDI &minus; A. Focuses on curbing domestic spending relative to national income.</span></li>
+          <li><span><strong>Saving-Investment Approach:</strong> CAB = (S<sub>p</sub> &minus; I<sub>p</sub>) + (S<sub>g</sub> &minus; I<sub>g</sub>). Explores structural public or private sector funding gaps.</span></li>
+          <li><span><strong>Foreign Savings Perspective:</strong> a CAB deficit equals foreign capital imports needed to offset internal shortfalls.</span></li>
+          <li><span><strong>Monetary Approach to BOP:</strong> &Delta;RES = &Delta;M&#8322; &minus; &Delta;NDA. Connects external reserve depletion to domestic credit expansion exceeding broad money demand.</span></li>
         </ol>
 
         <h3 class="manual-h3">Practical Example: Sudden Stop Capital Flight</h3>
         <div class="manual-example">
           <div class="manual-example-title"><span>&#9888;</span>Worked Scenario</div>
-          <p><strong>Scenario:</strong> Foreign investors stop rolling over foreign portfolio debt ($\Delta \text{FAB}$ turns sharply negative).</p>
-          <p><strong>Adjustment Path:</strong> Under a fixed exchange regime, official central bank reserves ($\Delta \text{RES}$) drain rapidly. To restore external balance without exhausting reserves, the country must contract domestic absorption ($A$) via fiscal tightening or currency devaluation.</p>
+          <p><strong>Scenario:</strong> Foreign investors stop rolling over foreign portfolio debt (&Delta;FAB turns sharply negative).</p>
+          <p><strong>Adjustment Path:</strong> Under a fixed exchange regime, official central bank reserves (&Delta;RES) drain rapidly. To restore external balance without exhausting reserves, the country must contract domestic absorption (A) via fiscal tightening or currency devaluation.</p>
         </div>
       </div>
 
@@ -632,17 +629,17 @@
         <h2 class="manual-h2">3. Structural Linkages &amp; Sector Specific Glossary</h2>
         <h3 class="manual-h3">Exchange Rate &amp; Price Relationships</h3>
         <p class="manual-lead" style="margin-bottom:4px">Uncovered Interest Parity (UIP):</p>
-        <div class="manual-eq manual-eq-sm">$$i_t = i_t^* + E_t[\Delta e_{t+1}] + rp_t$$</div>
+        <div class="manual-eq manual-eq-sm">i<sub>t</sub> = i<sub>t</sub>* + E<sub>t</sub>[&Delta;e<sub>t+1</sub>] + rp<sub>t</sub></div>
 
         <h3 class="manual-h3">Sector Glossary &amp; Metrics</h3>
         <dl class="manual-glossary">
           <div>
-            <dt>Real Effective Exchange Rate ($\text{REER}$)</dt>
+            <dt>Real Effective Exchange Rate (REER)</dt>
             <dd>Trade-weighted nominal exchange rate adjusted for relative price inflation differentials across trading partners.</dd>
           </div>
           <div>
-            <dt>Terms of Trade ($\text{TOT}$)</dt>
-            <dd>Ratio of export price index to import price index ($P_x / P_m$).</dd>
+            <dt>Terms of Trade (TOT)</dt>
+            <dd>Ratio of export price index to import price index (P<sub>x</sub> / P<sub>m</sub>).</dd>
           </div>
           <div>
             <dt>Net International Investment Position (NIIP)</dt>
@@ -5836,28 +5833,6 @@ function syncHeaderHeight(){
   if (h) document.documentElement.style.setProperty('--header-h', h.getBoundingClientRect().height + 'px');
 }
 init();
-
-/* Render the LaTeX in the Introduction / Manual section. Deferred until the
-   details panel is first opened (and once on load in case it's already
-   open) so KaTeX only does work when the reference material is visible. */
-(function initManualMath(){
-  const manual = document.getElementById('external-manual');
-  if (!manual || typeof renderMathInElement !== 'function') return;
-  let rendered = false;
-  const doRender = () => {
-    if (rendered) return;
-    rendered = true;
-    renderMathInElement(manual, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false }
-      ],
-      throwOnError: false
-    });
-  };
-  manual.addEventListener('toggle', () => { if (manual.open) doRender(); });
-  if (manual.open) doRender();
-})();
 </script>
 <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;7f7b0fd8732c4326aae4b9d58d5c514a&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
 
