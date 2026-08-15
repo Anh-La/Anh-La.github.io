@@ -757,28 +757,6 @@
       </div>
     </div>
 
-    <!-- ============================================================
-         Study Questions by Sector — sourced from the Q&A case-study
-         workbooks, deduplicated across both files. Interactive: filter
-         by sector or search, expand a question to see a brief pointer
-         to the relevant chart/table elsewhere on this page, and jump
-         straight to that tab.
-         ============================================================ -->
-    <div class="card" id="caseq-card" style="margin-top:12px">
-      <div class="card-head">
-        <span class="card-title"><span class="dot" style="background:var(--accent)"></span>Study Questions by Sector</span>
-        <span class="mono" style="font-size:10px;color:var(--muted)" id="caseq-count"></span>
-      </div>
-      <div class="card-body">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Distinct questions from the case-study Q&amp;A workbooks, deduplicated and grouped by sector. Click a question to expand a brief pointer to where on this page you'd find the data to answer it.</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px">
-          <div class="card" id="caseq-filters" style="display:inline-flex;flex-wrap:wrap;padding:3px;gap:2px"></div>
-          <input id="caseq-search" class="text-input" style="flex:1;min-width:180px" placeholder="Search questions…">
-        </div>
-        <div id="caseq-list"></div>
-      </div>
-    </div>
-
   </section>
 
   <!-- Sector Deep-Dive (shared panel — driven by state.histSector) -->
@@ -1295,6 +1273,28 @@
       </div>
     </div>
   </section>
+
+  <!-- ============================================================
+       Study Questions — External Sector
+       Relocated from the Policy Simulator tab (which isn't reachable
+       as an in-page tab on this standalone page) so these questions
+       are actually visible here. Always shown, regardless of which
+       tab above is active.
+       ============================================================ -->
+  <div class="card" id="caseq-card" style="margin-top:12px">
+    <div class="card-head">
+      <span class="card-title"><span class="dot" style="background:#059669"></span>Study Questions — External Sector</span>
+      <span class="mono" style="font-size:10px;color:var(--muted)" id="caseq-count"></span>
+    </div>
+    <div class="card-body">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Distinct External-sector questions from the case-study Q&amp;A workbooks. Click a question to expand a brief pointer to where on this page you'd find the data to answer it. For the full question bank across all sectors, see the <a href="nation-state.html" style="color:var(--blue)">main simulator</a>.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px">
+        <div class="card" id="caseq-filters" style="display:inline-flex;flex-wrap:wrap;padding:3px;gap:2px"></div>
+        <input id="caseq-search" class="text-input" style="flex:1;min-width:180px" placeholder="Search questions…">
+      </div>
+      <div id="caseq-list"></div>
+    </div>
+  </div>
 
   <!-- (Scenario Compare merged into Policy Simulator) -->
 </main>
@@ -5221,31 +5221,6 @@ function scanForCollapsibleTables(){
 const CASE_QUESTIONS = 
 [
   {
-    "sector": "Real",
-    "items": [
-      {
-        "q": "Which element of real sector contributed the most to real GDP growth in 2012?",
-        "hint": "Real tab → Source Charts → “Real GDP growth & contribution (percent)” breaks 2012 growth into consumption, investment, exports and imports.",
-        "tab": "real"
-      },
-      {
-        "q": "which element of real sector contributed the most to the contraction in real GDP in 2009?",
-        "hint": "Same chart, 2009 bar: Real tab → Source Charts → “Real GDP growth & contribution (percent)” shows which component (usually investment or exports) turned most negative.",
-        "tab": "real"
-      },
-      {
-        "q": "Comparing the year 2011 to 2006, all indicators of inflation suggest that inflation decreased and the output gap decreased as well",
-        "hint": "Real tab → Source Charts → “Real GDP growth & output gap” and “Inflation indicators”, or the Real GDP & Output Gap worksheet table, let you read 2006 vs 2011 side by side.",
-        "tab": "real"
-      },
-      {
-        "q": "During 2006 – 2012 CPI inflation appears to have been less volatile than GDP deflator inflation",
-        "hint": "Real tab → Source Charts → “Inflation indicators” overlays GDP deflator, CPI average and CPI eop across 2006–2012 so you can compare volatility visually.",
-        "tab": "real"
-      }
-    ]
-  },
-  {
     "sector": "External",
     "items": [
       {
@@ -5345,266 +5320,6 @@ const CASE_QUESTIONS =
       }
     ]
   },
-  {
-    "sector": "Government",
-    "items": [
-      {
-        "q": "What is the coverage of these accounts in your country: does the definition of the Public Sector include Public Corporations, or only General Government?",
-        "hint": "Government tab → Statement of Operations subtab header/notes describe the coverage used (General Government, GFSM 2014 presentation).",
-        "tab": "govops"
-      },
-      {
-        "q": "On which basis are these recorded? Cash or accrual?",
-        "hint": "Government tab → Statement of Operations subtab — revenue/expense line structure (Compensation, Goods & Services, Interest, etc.) follows GFSM accrual-style presentation.",
-        "tab": "govops"
-      },
-      {
-        "q": "What are net worth and net financial worth in your country? How have these evolved over time, in percent of GDP?",
-        "hint": "Government tab → Balance Sheet subtab has explicit Net worth and Net financial worth rows across the historical years.",
-        "tab": "govops"
-      },
-      {
-        "q": "What explains the change in net worth and net financial worth over time, that is what was the contribution of the Net Operating Balance in percent of GDP, what was the contribution of Net Acquisition of Non-financial Assets?",
-        "hint": "Government tab → Balance Sheet subtab (stock reconciliation) alongside Statement of Operations subtab's Net Operating Balance row.",
-        "tab": "govops"
-      },
-      {
-        "q": "Compute the major balances (Net Operating Balance, Net Lending/Borrowing, Overall Balance, and Primary Balance) in percent of GDP. How have these evolved over time in the past 6 years? What explains these developments?",
-        "hint": "Government tab → Statement of Operations subtab lists all four balances by year; Source Charts add the visual trend.",
-        "tab": "govops"
-      },
-      {
-        "q": "How do the balances that you found above compare to those of comparable (peer) countries?",
-        "hint": "No peer-country data is modeled here — use the Statement of Operations subtab's own balances as the basis for the country's story.",
-        "tab": "govops"
-      },
-      {
-        "q": "Has fiscal policy changed in 2008-2009 in response to the global financial crisis? In case it did change, has it gone back to pre-crisis levels? For this question you may also want to use the IMF World Economic Outlook Database, which present a series on the structural balance, a concept that is very similar in construction to the cyclically adjusted balance.",
-        "hint": "Government tab → Statement of Operations subtab, compare the Overall balance / Primary balance columns for 2008–2009 vs. later years (external WEO data isn't included on this page).",
-        "tab": "govops"
-      },
-      {
-        "q": "Compute the major stock indicators in percent of GDP (debt, assets, liabilities, net worth, net financial worth). How have these evolved over time in the past 6 years? What explains these developments?",
-        "hint": "Government tab → Balance Sheet subtab has Debt, Assets, Liabilities, Net worth and Net financial worth rows for the full historical period.",
-        "tab": "govops"
-      },
-      {
-        "q": "How do these indicators compare to those of comparable (peer) countries?",
-        "hint": "No peer-country benchmark is included — the Balance Sheet subtab gives only this country's own stock indicators.",
-        "tab": "govops"
-      },
-      {
-        "q": "In case fiscal policy changed in 2008-2009 in response to the global financial crisis, what was the impact on the stock aggregates? Are these raising concern in your country?",
-        "hint": "Government tab → Balance Sheet subtab, Public debt (% GDP) row around 2008–2009 onward shows whether the stock aggregates deteriorated.",
-        "tab": "govops"
-      }
-    ]
-  },
-  {
-    "sector": "Monetary",
-    "items": [
-      {
-        "q": "What are the main functions of the financial system?",
-        "hint": "Conceptual question — no specific chart; the Monetary tab's central bank and ODC balance sheets illustrate the intermediation function in practice.",
-        "tab": "monetary"
-      },
-      {
-        "q": "What kinds of products and services does the financial sector create?",
-        "hint": "Conceptual question — the Monetary tab's Money Multiplier & Velocity table (deposits, credit, broad money) shows the products (deposits, credit) in balance-sheet form.",
-        "tab": "monetary"
-      },
-      {
-        "q": "Which of the following are common functions of the central bank?",
-        "hint": "Monetary tab → central bank balance-sheet worksheet (NFA/NDA) shows the central bank's actual balance-sheet functions (reserve management, currency issuance).",
-        "tab": "monetary"
-      },
-      {
-        "q": "How can the central bank sterilize a purchase of foreign reserves (US dollars) from commercial banks?",
-        "hint": "Monetary tab → central bank NFA/NDA table — an NFA increase offset by an NDA decrease (e.g. lower net credit) is the sterilization pattern to look for.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much is base money in your country? Express this both in units of national currency and in percent of GDP.",
-        "hint": "Monetary tab → central bank balance-sheet table, Monetary base (M0) row; divide by Real tab's Nominal GDP for the ratio.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much of base money is currency in circulation? How much are bank reserves?",
-        "hint": "Monetary tab → central bank balance-sheet table breaks Monetary base into Currency issued and Bank reserves components.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much did base money grow in the past five years?",
-        "hint": "Monetary tab → Money Multiplier & Velocity table, Monetary base row across years; Source Charts show the trend.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How did the central bank use the expansion of base money? That is, what were the developments in NFA and NDA?",
-        "hint": "Monetary tab → central bank balance-sheet table, NFA and NDA rows show how much of base-money growth came from each side.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much has inflation been in your country in the past five years? (the reason for this question will become clear later in the module--we promise).",
-        "hint": "Real tab → Source Charts → “Inflation indicators,” or Domestic Demand & Prices worksheet's CPI inflation row.",
-        "tab": "real"
-      },
-      {
-        "q": "What institutions are part of Other Depository Corporations (or, in common language, what we call the banking sector)?",
-        "hint": "Monetary tab → ODC (commercial banks) balance-sheet worksheet — its NFA/NDA/deposits structure represents the ODC sector.",
-        "tab": "monetary"
-      },
-      {
-        "q": "What are important functions of the Other Depository Corporations (ODCs)?",
-        "hint": "Monetary tab → ODC balance-sheet table — credit to private sector and deposit-taking rows illustrate the ODCs' intermediation role.",
-        "tab": "monetary"
-      },
-      {
-        "q": "Why are Other Depository Corporations (ODCs) an important channel of monetary policy?",
-        "hint": "Monetary tab → Source Charts → “Broad Money vs Private Credit Growth” shows how ODC credit creation drives broad money.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much are bank deposits? Express this both in units of national currency and in percent of GDP.",
-        "hint": "Monetary tab → ODC balance-sheet table, deposits row; divide by Real tab's Nominal GDP for the ratio.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How large are NFA and NDA? How large is credit to the private sector?",
-        "hint": "Monetary tab → ODC balance-sheet table lists NFA, NDA and Credit to private sector rows directly.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much have deposits grown in the past five years?",
-        "hint": "Monetary tab → ODC balance-sheet table, deposits row across the historical years.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How did ODCs use the expansion of deposits? That is, what were the developments in NFA and NDA? How did Other Items, Net change over the past five years?",
-        "hint": "Monetary tab → ODC balance-sheet table — NFA, NDA and Other items net rows track the counterpart to deposit growth.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much is broad money? Express this both in units of national currency and in percent of GDP.",
-        "hint": "Monetary tab → Money Multiplier & Velocity table, Broad money (M2) row; Policy Simulator → Projected Path table also shows it for the forecast years.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How large are NFA and NDA? How large is credit to the private sector? How much is credit to the government",
-        "hint": "Monetary tab → consolidated (central bank + ODC) balance sheet worksheet has NFA, NDA, credit-to-private-sector and credit-to-government rows.",
-        "tab": "monetary"
-      },
-      {
-        "q": "How much has broad money grown in the past five years? What changes happened at the same time in NFA and NDA?",
-        "hint": "Monetary tab → Source Charts → “Broad Money vs Private Credit Growth” plus the consolidated balance-sheet table's NFA/NDA rows.",
-        "tab": "monetary"
-      },
-      {
-        "q": "Can you associate the developments described above with any other developments in the economy?",
-        "hint": "Sector Interlinks tab → Flow of Funds table ties monetary-sector flows to the other sectors (Government, Rest of World, Households/Corporates) in one grid.",
-        "tab": "flowoffunds"
-      },
-      {
-        "q": "How could the government budget play a role in money growth?",
-        "hint": "Sector Interlinks tab → Flow of Funds table's Government row/column shows government financing needs alongside the Monetary tab's NDA (credit to government).",
-        "tab": "flowoffunds"
-      },
-      {
-        "q": "How does the central bank of your country conduct monetary policy? What are the anchors and the targets? Under what type of regime does the exchange rate of your country operate?",
-        "hint": "Monetary tab → Taylor Rule worksheet shows the policy-rate reaction function (inflation & output-gap anchors); Real tab's Δ%NER derivation reflects the exchange-rate regime assumption.",
-        "tab": "monetary"
-      }
-    ]
-  },
-  {
-    "sector": "Interrelation",
-    "items": [
-      {
-        "q": "How would you summarize, in no more than three paragraphs, the major economic development in your country over the past five years? How would you link the development in one sector of the economy to those in some other sector? Try to write a brief description of the recent economic development in your country, focusing on key indicators and behavioral relationships.",
-        "hint": "Sector Interlinks tab → Flow of Funds & Balance Sheets ties Real, External, Government and Monetary together in one place; the Policy Simulator's AI Policy Analysis panel can also draft commentary once you add an API key.",
-        "tab": "flowoffunds"
-      }
-    ]
-  },
-  {
-    "sector": "Financial Programing",
-    "items": [
-      {
-        "q": "What are macroeconomic objectives explicitly targeted in IMF's financial programming?",
-        "hint": "Policy Simulator → Policy Levers panel's targets (growth, inflation, reserves/CA, fiscal balance) mirror the standard FPP objective set.",
-        "tab": "simulator"
-      },
-      {
-        "q": "What are examples of macroeconomic policy measures (explicit actions) applied in IMF financial program?",
-        "hint": "Policy Simulator → Policy Levers panel — each lever (fiscal, monetary, exchange rate) is one such policy instrument you can adjust and re-run.",
-        "tab": "simulator"
-      },
-      {
-        "q": "1. List one or two key economic problems that your country is experiencing and the main causes;",
-        "hint": "Scan the Real/External/Government/Monetary tabs' Source Charts for the sharpest deteriorations (e.g. current account, debt/GDP, inflation) to identify the key problems.",
-        "tab": "simulator"
-      },
-      {
-        "q": "2. Identify the main economic policy objectives of your country;",
-        "hint": "Policy Simulator → Policy Levers panel's scenario targets are a good starting template for stating objectives (growth, inflation, external and fiscal sustainability).",
-        "tab": "simulator"
-      },
-      {
-        "q": "3. List some policy measures that your country has used in recent years to address these problems; and",
-        "hint": "Government tab → Statement of Operations subtab and Monetary tab → Taylor Rule worksheet show the actual fiscal and monetary policy stance taken historically.",
-        "tab": "govops"
-      },
-      {
-        "q": "4. Explain whether these policies belong under the heading demand management, expenditure switching, or structural policies.",
-        "hint": "Compare Policy Simulator levers (fiscal/monetary = demand management, exchange rate = expenditure switching) against what the Government/Monetary tabs show was actually done.",
-        "tab": "simulator"
-      },
-      {
-        "q": "What statements best describes the country’s economy?",
-        "hint": "Real tab's Source Charts (GDP growth, inflation, saving/investment) give the headline structural picture to describe.",
-        "tab": "real"
-      },
-      {
-        "q": "What is the largest sector of the economy?",
-        "hint": "Real tab → Domestic Demand & Prices worksheet's RCp/GDP and RIp/GDP ratio rows show consumption's and investment's share of GDP.",
-        "tab": "real"
-      },
-      {
-        "q": "What makes its economy attractive to foreign investors?",
-        "hint": "External tab → IIP table (Direct investment liabilities) and Reserve adequacy chart speak to investor-relevant stability indicators.",
-        "tab": "external"
-      },
-      {
-        "q": "What were the effects of the 2008 financial crisis on its economy?",
-        "hint": "Real tab → Source Charts → “Real GDP growth & output gap” shows the 2009 contraction; External tab → BOP table shows the same year's trade/financial-account swing.",
-        "tab": "real"
-      },
-      {
-        "q": "How did the monetary authority respond to the 2008-09 financial crisis in your country?",
-        "hint": "Monetary tab → Taylor Rule worksheet and central bank balance-sheet table around 2008–2009 show the policy-rate and NFA/NDA response.",
-        "tab": "monetary"
-      },
-      {
-        "q": "What statement best describes the country’s economic trends in the recent years?",
-        "hint": "Real tab → Source Charts (2006–2012 trend lines) give the most recent-years growth/inflation trajectory.",
-        "tab": "real"
-      },
-      {
-        "q": "What statement best describes most recent economic developments?",
-        "hint": "Policy Simulator → Projected Path table (2013 base year row) is the most recent data point carried into the forecast.",
-        "tab": "simulator"
-      },
-      {
-        "q": "What were the effects of its fiscal stimulus between (year) and (year)?",
-        "hint": "Government tab → Statement of Operations subtab — compare Overall balance and Expense rows across the years in question.",
-        "tab": "govops"
-      },
-      {
-        "q": "its monetary tightening policy is related to which?",
-        "hint": "Monetary tab → Taylor Rule worksheet: a policy-rate increase should line up with a rising inflation or output-gap term in that period.",
-        "tab": "monetary"
-      }
-    ]
-  }
 ];
 
 const CASEQ_SECTOR_COLOR = {
