@@ -1,0 +1,162 @@
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Combined net foreign assets and other items net worksheet — central bank forecast and total banking system, part of the Monetary Sector deep-dive.">
+<title>NFA &amp; OIN — Central Bank &amp; Banking System · Financial Programming Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap">
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:36px;height:36px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:20px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--accent)}
+  .back-link{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--monetary);display:inline-flex;align-items:center;gap:6px}
+  .back-link:hover{color:var(--ink)}
+
+  main{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+  .breadcrumb{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px}
+  .breadcrumb a{color:var(--muted)}
+  .breadcrumb a:hover{color:var(--monetary)}
+  h1{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:26px;letter-spacing:-0.01em;margin:0 0 4px}
+  .page-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+
+  .card{background:var(--surface);border:1px solid var(--line);margin-bottom:16px}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;
+    background:linear-gradient(to right,var(--surface) 30%,rgba(255,255,255,0)),
+      linear-gradient(to right,rgba(255,255,255,0),var(--surface) 70%) 100% 0,
+      linear-gradient(to right,rgba(15,23,42,.12),rgba(255,255,255,0)),
+      linear-gradient(to left,rgba(15,23,42,.12),rgba(255,255,255,0)) 100% 0;
+    background-repeat:no-repeat;background-color:var(--surface);
+    background-size:24px 100%,24px 100%,10px 100%,10px 100%;
+    background-attachment:local,local,scroll,scroll}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+  .note{padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc}
+  .formula-box{background:#f8fafc;padding:12px;border:1px solid var(--line);font-size:11.5px;margin-top:12px}
+
+  footer{max-width:1000px;margin:0 auto;padding:24px 16px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+  @media (max-width:640px){
+    main{padding:16px 10px 32px}
+    h1{font-size:21px}
+    table.fp{font-size:10.5px}
+    table.fp th, table.fp td{padding:5px 6px}
+  }
+  html, body{overflow-x:hidden}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">FP</div>
+    <div>
+      <div class="brand-eyebrow">National Accounts</div>
+      <div class="brand-title">Financial Programming Framework</div>
+    </div>
+  </div>
+  <a class="back-link" href="monetary-sector.html">&larr; Back to Monetary Sector</a>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="monetary-sector.html">Monetary Sector</a> &rsaquo; Worksheet</div>
+  <h1>NFA &amp; OIN</h1>
+  <div class="page-sub">Central bank forecast &amp; total banking system · 2013 actual, 2014 forecast</div>
+
+  <div class="card" id="central-bank">
+    <div class="card-head">
+      <span class="card-title">NFA &amp; OIN — Central Bank Forecast</span>
+      <span class="mono" style="font-size:10px;color:var(--muted)">&Delta;NFA(USD) = Overall BOP &middot; Val. adj = &Delta;NER &times; NFA(USD)</span>
+    </div>
+    <div class="table-wrap"><table class="fp" id="nfa-cb-table"></table></div>
+    <div class="note">NFA (bn NC) = NFA (USD mn) &times; NER<sub>eop</sub> / 1000 &middot; OIN<sub>t</sub> = OIN<sub>t-1</sub> + valuation adj.</div>
+  </div>
+
+  <div class="card" id="banking-system">
+    <div class="card-head">
+      <span class="card-title">Total NFA &amp; OIN — Banking System</span>
+      <span class="mono" style="font-size:10px;color:var(--muted)">CB + Other Depository Corporations</span>
+    </div>
+    <div class="table-wrap"><table class="fp" id="nfa-total-table"></table></div>
+    <div class="note">Total NFA = NFA(CB) + NFA(ODC) &middot; ODC NFA revalued by end-of-period exchange rate change.</div>
+  </div>
+</main>
+
+<footer>
+  <span>&#9432;</span>
+  <span>Model: IMF-style Financial Programming Framework &middot; Baseline: Macronia 2006&ndash;2012 &middot; Projections are stylised and driven by user-set policy levers. All logic runs in your browser &mdash; safe to host as a static site on GitHub Pages.</span>
+</footer>
+</body></html>
+
+<script>
+
+function fmt(v,d=1){
+  if(v===null||v===undefined||Number.isNaN(v))return '—';
+  if(typeof v!=='number')return String(v);
+  const abs=Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  return v<0?`(${abs})`:abs;
+}
+
+const nfa_cb_nc_13 = 3969.92, ner_eop_13 = 549.42, nfa_cb_usd_13 = 7225.67, oin_13 = 817.47;
+const bop_2014 = -21.79;
+const ner_eop_14 = 549.42 * 1.05;
+const nfa_cb_usd_14 = nfa_cb_usd_13 + bop_2014;
+const nfa_cb_nc_14 = nfa_cb_usd_14 * ner_eop_14 / 1000;
+const val_adj = nfa_cb_nc_14 - (nfa_cb_usd_13 * ner_eop_14 / 1000);
+const oin_14 = oin_13 + val_adj * 0.1;
+
+document.getElementById('nfa-cb-table').innerHTML = `
+    <thead><tr><th>Central Bank NFA & OIN</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr style="font-weight:600;background:#fafafa"><td>NFA (bn NC)</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
+      <tr><td>NER end-of-period (NC/USD)</td><td>${fmt(ner_eop_13,2)}</td><td style="background:#fef8e6">${fmt(ner_eop_14,2)}</td></tr>
+      <tr><td>NFA (USD mn)</td><td>${fmt(nfa_cb_usd_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_usd_14,2)}</td></tr>
+      <tr><td>Overall BOP balance (USD mn)</td><td>&mdash;</td><td style="background:#fef8e6">${fmt(bop_2014,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>OIN (bn NC)</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
+      <tr><td>Valuation adjustment (bn NC)</td><td>&mdash;</td><td style="background:#fef8e6">${fmt(val_adj,2)}</td></tr>
+    </tbody>`;
+
+const nfa_odc_nc_13 = 2473.20;
+const oin_odc_13 = -1017.53;
+const nfa_odc_nc_14 = nfa_odc_nc_13 * (ner_eop_14 / ner_eop_13);
+const total_nfa_13 = nfa_cb_nc_13 + nfa_odc_nc_13;
+const total_nfa_14 = nfa_cb_nc_14 + nfa_odc_nc_14;
+const total_oin_13 = oin_13 + oin_odc_13;
+const total_oin_14 = oin_14 + oin_odc_13 * 1.02;
+
+document.getElementById('nfa-total-table').innerHTML = `
+    <thead><tr><th>Total banking system</th><th>2013</th><th style="background:#fef3c7">2014 F</th></tr></thead>
+    <tbody>
+      <tr><td>NFA &mdash; Central Bank</td><td>${fmt(nfa_cb_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_cb_nc_14,2)}</td></tr>
+      <tr><td>NFA &mdash; Other depository corps</td><td>${fmt(nfa_odc_nc_13,2)}</td><td style="background:#fef8e6">${fmt(nfa_odc_nc_14,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total NFA (bn NC)</td><td>${fmt(total_nfa_13,2)}</td><td style="background:#fef8e6">${fmt(total_nfa_14,2)}</td></tr>
+      <tr><td>OIN &mdash; Central Bank</td><td>${fmt(oin_13,2)}</td><td style="background:#fef8e6">${fmt(oin_14,2)}</td></tr>
+      <tr><td>OIN &mdash; Other depository corps</td><td>${fmt(oin_odc_13,2)}</td><td style="background:#fef8e6">${fmt(oin_odc_13*1.02,2)}</td></tr>
+      <tr style="font-weight:600;background:#fafafa"><td>Total OIN (bn NC)</td><td>${fmt(total_oin_13,2)}</td><td style="background:#fef8e6">${fmt(total_oin_14,2)}</td></tr>
+    </tbody>`;
+</script>

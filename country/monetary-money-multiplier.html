@@ -1,0 +1,165 @@
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Money multiplier worksheet — reserve money, broad money, and the multiplier ratio, part of the Monetary Sector deep-dive.">
+<title>Money Multiplier — Reserve &amp; Broad Money · Financial Programming Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Mono:wght@400;500&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap">
+<style>
+  :root{
+    --bg:#fafafa; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --line2:#cbd5e1;
+    --blue:#0033A0; --real:#2563EB; --external:#059669; --fiscal:#D92D20; --monetary:#7C3AED; --warn:#D97706;
+    --accent:#a8823f; --font-display:'DM Serif Display',Georgia,serif; --font-body:'Manrope',system-ui,sans-serif; --font-mono:'DM Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--font-mono)}
+  a{color:var(--blue);text-decoration:none}
+
+  header.app-header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:36px;height:36px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);font-style:italic}
+  .brand-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand-title{font-family:var(--font-display);font-style:italic;font-size:20px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;color:var(--accent)}
+  .back-link{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--monetary);display:inline-flex;align-items:center;gap:6px}
+  .back-link:hover{color:var(--ink)}
+
+  main{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+  .breadcrumb{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px}
+  .breadcrumb a{color:var(--muted)}
+  .breadcrumb a:hover{color:var(--monetary)}
+  h1{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:26px;letter-spacing:-0.01em;margin:0 0 4px}
+  .page-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+
+  .card{background:var(--surface);border:1px solid var(--line);margin-bottom:16px}
+  .card-head{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fafc;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card-body{padding:12px}
+
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;
+    background:linear-gradient(to right,var(--surface) 30%,rgba(255,255,255,0)),
+      linear-gradient(to right,rgba(255,255,255,0),var(--surface) 70%) 100% 0,
+      linear-gradient(to right,rgba(15,23,42,.12),rgba(255,255,255,0)),
+      linear-gradient(to left,rgba(15,23,42,.12),rgba(255,255,255,0)) 100% 0;
+    background-repeat:no-repeat;background-color:var(--surface);
+    background-size:24px 100%,24px 100%,10px 100%,10px 100%;
+    background-attachment:local,local,scroll,scroll}
+  table.fp{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+  table.fp th,table.fp td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right;white-space:nowrap}
+  table.fp th{background:#f1f5f9;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--muted);font-size:10.5px;border-bottom:1px solid var(--line2)}
+  table.fp th:first-child,table.fp td:first-child{text-align:left;font-family:var(--font-body);position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+  table.fp th:first-child{background:#f1f5f9;z-index:2}
+  table.fp tbody tr:hover td:first-child{background:#f8fafc}
+  table.fp tbody tr:hover{background:#f8fafc}
+  .neg{color:var(--fiscal)}
+  .note{padding:10px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);background:#f8fafc}
+  .formula-box{background:#f8fafc;padding:12px;border:1px solid var(--line);font-size:11.5px;margin-top:12px}
+
+  footer{max-width:1000px;margin:0 auto;padding:24px 16px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+  @media (max-width:640px){
+    main{padding:16px 10px 32px}
+    h1{font-size:21px}
+    table.fp{font-size:10.5px}
+    table.fp th, table.fp td{padding:5px 6px}
+  }
+  html, body{overflow-x:hidden}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">FP</div>
+    <div>
+      <div class="brand-eyebrow">National Accounts</div>
+      <div class="brand-title">Financial Programming Framework</div>
+    </div>
+  </div>
+  <a class="back-link" href="monetary-sector.html">&larr; Back to Monetary Sector</a>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="monetary-sector.html">Monetary Sector</a> &rsaquo; Worksheet</div>
+  <h1>Money Multiplier</h1>
+  <div class="page-sub">Reserve &amp; broad money · 2006–2013 actual, 2014 forecast</div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Money Multiplier — Reserve &amp; Broad Money</span></div>
+    <div class="table-wrap"><table class="fp" id="mm-table"></table></div>
+    <div class="note">Money multiplier = Broad money (EOP) / Reserve money (EOP). 2014 broad money assumes +8.83% growth from the FPP forecast, applied to the 2013 multiplier to back out reserve money.</div>
+  </div>
+</main>
+
+<footer>
+  <span>&#9432;</span>
+  <span>Model: IMF-style Financial Programming Framework &middot; Baseline: Macronia 2006&ndash;2012 &middot; Projections are stylised and driven by user-set policy levers. All logic runs in your browser &mdash; safe to host as a static site on GitHub Pages.</span>
+</footer>
+</body></html>
+
+<script>
+
+function fmt(v,d=1){
+  if(v===null||v===undefined||Number.isNaN(v))return '—';
+  if(typeof v!=='number')return String(v);
+  const abs=Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  return v<0?`(${abs})`:abs;
+}
+
+
+const MON_YEARS_HIST = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013];
+const MON_DATA = {
+  years: MON_YEARS_HIST,
+  reserve_money:  [1184.598, 1409.041, 1676.447, 1945.492, 2032.015, 2218.277, 2168.671, 2555.960],
+  broad_money:    [6222.082, 7495.513, 8799.849, 9506.764, 9582.344, 10283.775, 11219.599, 12229.434],
+  broad_money_avg:[6222.082, 6858.797, 8147.681, 9153.307, 9544.554, 9933.059, 10751.687, 11724.517],
+  money_multiplier:[5.252, 5.320, 5.249, 4.887, 4.716, 4.636, 5.173, 4.785],
+  nominal_gdp:    [10964.62, 12956.32, 14737.19, 15747.01, 17629.08, 19427.85, 21157.29, 23646.19],
+  velocity:       [1.762, 1.889, 1.809, 1.720, 1.847, 1.956, 1.968, 2.017],
+  bm_growth:      [null, 20.464, 17.401, 8.032, 0.795, 7.320, 9.099, 9.001],
+  taylor_years:   [2011, 2012, 2013, 2014],
+  mp_rate_actual: [5.00, 7.00, 8.866, 8.866],
+  mp_rate_fitted: [8.185, 6.600, 8.493, 8.866],
+  cpi_actual:     [4.878, 5.00, 6.136, 7.482],
+  cpi_target:     [5, 5, 5, 5],
+  cpi_expect:     [6.500, 5.00, 5.00, 5.00],
+  inflation_gap:  [-0.122, 0.00, 1.136, 2.482],
+  lagged_mp:      [10.400, 5.00, 7.00, 8.866],
+  neutral_rate:   [2.0, 2.0, 2.0, 2.0],
+  interbank:      [8.0, 9.250, 12.200, 13.866],
+};
+const H = MON_DATA;
+const i = H.years.length - 1;
+const bm_growth_14 = 8.83;
+const bm14 = H.broad_money[i] * (1 + bm_growth_14/100);
+const mm14 = H.money_multiplier[i];
+const rm14 = bm14 / mm14;
+const ngdp14 = 27082.07;
+const bm_avg_14 = (H.broad_money[i] + bm14) / 2;
+const velocity_14 = ngdp14 / bm_avg_14;
+const yrs = [...H.years, 2014];
+
+
+function buildMonTable(rows, yrs){
+  const head = `<thead><tr><th>Line item</th>${yrs.map((y,k)=>`<th${k===yrs.length-1?' style="background:#fef3c7"':''}>${y}${k===yrs.length-1?' F':''}</th>`).join('')}</tr></thead>`;
+  const body = `<tbody>${rows.map(([label,arr]) => `
+    <tr style="font-weight:600;background:#fafafa">
+      <td>${label}</td>
+      ${arr.map((v,k)=>`<td class="${typeof v==='number'&&v<0?'neg':''}"${k===yrs.length-1?' style="background:#fef8e6"':''}>${v===null?'—':fmt(v, 2)}</td>`).join('')}
+    </tr>
+  `).join('')}</tbody>`;
+  return head + body;
+}
+
+const mmRows = [
+  ['Reserve money (bn NC, EOP)', [...H.reserve_money, rm14]],
+  ['Broad money (bn NC, EOP)', [...H.broad_money, bm14]],
+  ['Broad money growth (%)', [...H.bm_growth, bm_growth_14]],
+  ['Money multiplier (M2 / RM)', [...H.money_multiplier, mm14]],
+];
+document.getElementById('mm-table').innerHTML = buildMonTable(mmRows, yrs);
+</script>
