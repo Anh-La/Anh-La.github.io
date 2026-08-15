@@ -415,40 +415,85 @@
   /* Prevent horizontal page overflow from wide inline styles */
   html, body{overflow-x:hidden}
 
-  /* Real Sector Macroeconomic Framework — interactive guide (single merged Introduction section) */
-  .fw-guide-head{cursor:pointer;user-select:none}
-  .fw-guide-head:hover{background:#eef2f7}
-  .fw-guide-title-wrap{display:flex;align-items:center;gap:6px}
-  .fw-guide-icon{display:inline-block;width:10px;transition:transform .15s ease;font-size:9px;color:var(--muted);flex-shrink:0}
-  .fw-guide-head.collapsed .fw-guide-icon{transform:rotate(-90deg)}
-  #fw-guide-body.collapsed{display:none}
-  .fw-panel{display:none}
-  .fw-panel.active{display:block}
-  .fw-formula{font-family:var(--font-mono);font-size:13px;font-weight:600;background:#f8fafc;border:1px solid var(--line);
-    padding:10px 14px;margin:8px 0;overflow-x:auto;white-space:nowrap}
-  .fw-formula-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:3px;white-space:normal}
-  .fw-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:800px){.fw-grid2{grid-template-columns:1fr}}
+  /* ============================================================
+     Introduction / Manual — collapsible reference section
+     (matches the External Sector manual's style & wording conventions)
+     ============================================================ */
+  .manual{background:var(--surface);border:1px solid var(--line2);margin:4px 0 24px}
+  .manual-summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;user-select:none;
+    -webkit-tap-highlight-color:transparent}
+  .manual-summary::-webkit-details-marker{display:none}
+  .manual-summary-icon{font-family:var(--font-mono);font-size:13px;color:var(--accent);flex:0 0 auto;
+    transition:transform .18s ease;transform:rotate(0deg);display:inline-flex;width:16px;justify-content:center}
+  .manual[open] > .manual-summary .manual-summary-icon{transform:rotate(90deg)}
+  .manual-summary-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.2}
+  .manual-summary-sub{font-size:11px;color:#cbd5e1;margin-top:3px;letter-spacing:.01em}
+  .manual-summary-badge{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;
+    letter-spacing:.12em;color:#0f172a;background:var(--accent);padding:4px 9px;flex:0 0 auto;white-space:nowrap}
+  .manual-body{padding:22px 24px 26px;border-top:1px solid var(--line)}
+  .manual-section{margin-bottom:26px}
+  .manual-section:last-child{margin-bottom:0}
+  .manual-h2{font-family:var(--font-display);font-style:italic;font-size:19px;font-weight:400;
+    letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  .manual-h3{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin:18px 0 10px}
+  .manual-lead{font-size:12.5px;line-height:1.7;color:#334155;margin:8px 0 14px}
+  .manual-diagram-card{background:var(--surface);border:1px solid var(--line2);margin:16px 0;overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,23,42,.06)}
+  .manual-diagram-headbar{background:#0f172a;color:#fff;font-family:var(--font-mono);font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;text-align:center;padding:11px 14px;font-weight:700}
+  .manual-diagram-canvas{padding:22px 16px 24px;background:linear-gradient(180deg,#fbfbfa 0%,#f6f7f5 100%)}
+  .manual-diagram-canvas svg{display:block;width:100%;height:auto}
+  .manual-eq{background:#f8fafc;border:1px solid var(--line);border-left:3px solid var(--blue);
+    padding:14px 18px;margin:14px 0;text-align:center;font-size:14px;overflow-x:auto}
+  .manual-eq-sm{font-size:12.5px}
+  .manual-eq-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;
+    margin-bottom:6px;white-space:normal;text-align:center}
+  .manual-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:800px){.manual-grid2{grid-template-columns:1fr}}
+  .manual-list{margin:0 0 14px;padding-left:0;list-style:none}
+  .manual-list.numbered{counter-reset:manual-counter}
+  .manual-list.numbered > li{counter-increment:manual-counter}
+  .manual-list.numbered > li::before{content:counter(manual-counter);font-family:var(--font-mono);
+    font-weight:700;font-size:10.5px;color:#fff;background:var(--ink);width:18px;height:18px;
+    border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+  .manual-list > li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.65;
+    color:#334155;padding:7px 0;border-bottom:1px solid #f1f5f9}
+  .manual-list > li:last-child{border-bottom:none}
+  .manual-list:not(.numbered) > li::before{content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--real);flex:0 0 auto;margin-top:7px}
+  .manual-list strong{color:var(--ink);font-weight:700}
+  .manual-example{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--warn);
+    padding:14px 18px;margin:14px 0}
+  .manual-example-title{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#92400e;display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .manual-example p{font-size:12.5px;line-height:1.65;color:#334155;margin:6px 0}
+  .manual-glossary{display:grid;grid-template-columns:1fr;gap:0;margin:0 0 6px}
+  .manual-glossary > div{padding:12px 0;border-bottom:1px solid #f1f5f9;display:grid;
+    grid-template-columns:220px 1fr;gap:14px;align-items:baseline}
+  .manual-glossary > div:last-child{border-bottom:none}
+  .manual-glossary dt{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink)}
+  .manual-glossary dd{margin:0;font-size:12.5px;line-height:1.6;color:#334155}
+  .manual-glossary-metric{font-family:var(--font-mono);font-size:10.5px;color:var(--real);margin-top:6px;
+    padding-top:6px;border-top:1px dashed var(--line);line-height:1.5}
+  @media (max-width:700px){
+    .manual-glossary > div{grid-template-columns:1fr;gap:4px}
+    .manual-body{padding:16px 14px 20px}
+    .manual-diagram-canvas{padding:14px 8px 16px}
+    .manual-summary{padding:13px 14px}
+    .manual-summary-title{font-size:15.5px}
+  }
+
+  /* Live-linked widgets inside the manual — interactive extensions unique to the Real Sector page */
   .fw-callout{border-left:3px solid var(--real);background:#eff6ff;padding:10px 14px;font-size:12px;color:#1e293b;margin:10px 0;line-height:1.55}
   .fw-callout.warn{border-color:var(--warn);background:#fff8ed}
-  .fw-diagram{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 16px;background:#f8fafc;border:1px solid var(--line);margin:12px 0}
-  .fw-diagram-box{border:1.5px solid var(--ink);background:#fff;padding:10px 18px;font-size:11px;font-weight:700;text-align:center;
-    text-transform:uppercase;letter-spacing:.06em;min-width:240px;max-width:100%}
-  .fw-diagram-box.accent{border-color:var(--real);color:var(--real)}
-  .fw-diagram-arrow{font-size:16px;color:var(--muted);line-height:1}
-  .fw-diagram-sub{font-size:10px;color:var(--muted);font-family:var(--font-mono)}
   .fw-slider-row{display:flex;flex-direction:column;gap:4px;margin:10px 0}
   .fw-slider-row label{font-size:10.5px;font-weight:600;color:#334155;display:flex;justify-content:space-between;gap:8px}
   .fw-slider-row input[type="range"]{width:100%}
-  .fw-glossary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
-  @media (max-width:900px){.fw-glossary{grid-template-columns:1fr}}
-  .fw-glossary-item{border:1px solid var(--line);padding:12px;background:#fff}
-  .fw-glossary-term{font-size:11px;font-weight:800;color:var(--ink);margin-bottom:4px}
-  .fw-glossary-def{font-size:11.5px;color:#334155;line-height:1.5}
-  .fw-glossary-metric{font-family:var(--font-mono);font-size:10.5px;color:var(--real);margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);line-height:1.5}
   @media (max-width:560px){
-    .fw-formula{white-space:normal;font-size:11.5px}
-    .fw-diagram-box{min-width:0;font-size:10px;padding:9px 12px}
+    .manual-eq{white-space:normal;font-size:12.5px}
   }
 </style>
 </head>
@@ -477,57 +522,102 @@
        wired to BASELINE.real / BASELINE.external / BASELINE.government
        so every worked example recalculates from this page's own
        Macronia data instead of sitting as static placeholder text.
+       Styled to match the External Sector manual.
        ============================================================ -->
-  <div class="card" id="fw-guide" style="margin-bottom:16px">
-    <div class="card-head fw-guide-head collapsed" id="fw-guide-head" role="button" tabindex="0" aria-expanded="false" aria-controls="fw-guide-body" style="background:#f8fafc">
-      <span class="fw-guide-title-wrap">
-        <span class="fw-guide-icon">&#9662;</span>
-        <span class="card-title"><span class="dot" style="background:var(--real)"></span>Introduction</span>
-      </span>
-      <span class="mono" style="font-size:10px;color:var(--muted)">Interactive guide · live-linked to the Macronia 2006–2012 baseline below</span>
-    </div>
-    <div class="card-body collapsed" id="fw-guide-body">
-      <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px;max-width:900px;line-height:1.55">The Real Sector covers all real economic transactions — production, income and consumption — inside an economy. This guide walks through how those flows are measured, how they connect to the external accounts through the Current Account, and the structural equations linking output, prices and interest rates. Every number below recalculates from the actual Macronia figures shown elsewhere on this page.</div>
+  <details class="manual" id="real-manual">
+    <summary class="manual-summary">
+      <span class="manual-summary-icon">&#9656;</span>
+      <div>
+        <div class="manual-summary-title">Real Sector &amp; National Accounts Manual</div>
+        <div class="manual-summary-sub">Output measurement · income–expenditure identities · structural relationships &amp; glossary</div>
+      </div>
+      <span class="manual-summary-badge">Reference</span>
+    </summary>
+    <div class="manual-body">
 
-      <!-- 1. Core Principles & Measuring Aggregate Output -->
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">1 · Core Principles &amp; Output</div>
-      <div class="fw-panel active" id="fw-panel-core">
-        <p style="font-size:12px;color:#334155;line-height:1.6;margin:4px 0 8px">Gross Domestic Product (GDP) is the total market value of all final goods and services produced within national physical borders over a specific period.</p>
-        <div class="fw-formula"><div class="fw-formula-label">GDP — production approach</div>GDP = &Sigma; Gross Value Added = Gross Output &minus; Intermediate Consumption</div>
-        <div class="fw-grid2">
-          <div class="fw-formula"><div class="fw-formula-label">Gross National Income — primary income earned by residents globally</div>GNI = GDP + Net Primary Income from Abroad</div>
-          <div class="fw-formula"><div class="fw-formula-label">Gross National Disposable Income — total income available to spend or save</div>GNDI = GNI + Net Current Transfers from Abroad</div>
+      <div class="manual-section">
+        <h2 class="manual-h2">1. Measuring Aggregate Output</h2>
+        <p class="manual-lead">The Real Sector tracks all real economic transactions — production, income and consumption — that take place inside an economy. Its central measure, Gross Domestic Product, is the total market value of all final goods and services produced within national physical borders over a specific period.</p>
+        <div class="manual-eq">GDP = &Sigma; Gross Value Added = Gross Output &minus; Intermediate Consumption</div>
+        <div class="manual-grid2">
+          <div class="manual-eq manual-eq-sm"><div class="manual-eq-label">Gross National Income — primary income earned by residents globally</div>GNI = GDP + Net Primary Income from Abroad</div>
+          <div class="manual-eq manual-eq-sm"><div class="manual-eq-label">Gross National Disposable Income — total income available to spend or save</div>GNDI = GNI + Net Current Transfers from Abroad</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px">
-          <span style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">Walk GDP &rarr; GNI &rarr; GNDI using Macronia's own data</span>
+        <h3 class="manual-h3">Live Walkthrough — GDP &rarr; GNI &rarr; GNDI, using Macronia's own data</h3>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px">
+          <span style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">Select a year</span>
           <select class="text-input" id="fw-year-select" style="min-width:90px"></select>
         </div>
         <div class="summary" id="fw-waterfall" style="grid-template-columns:repeat(5,1fr)"></div>
         <div class="fw-callout" id="fw-waterfall-note"></div>
       </div>
 
-      <!-- 2. Income-Expenditure Accounts & Savings-Investment Gaps -->
-      <div style="border-top:1px solid var(--line);margin:22px 0 14px"></div>
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">2 · Income–Expenditure &amp; S–I Gap</div>
-      <div class="fw-panel active" id="fw-panel-income">
-        <div class="fw-diagram">
-          <div class="fw-diagram-box accent">Gross National Disposable Income (GNDI)</div>
-          <div class="fw-diagram-arrow">&#8595;</div>
-          <div class="fw-diagram-box">Domestic Absorption (A = C + I)</div>
-          <div class="fw-diagram-sub">total spending on domestic &amp; foreign final goods and services</div>
-          <div class="fw-diagram-arrow">&#8595;</div>
-          <div class="fw-diagram-box">Current Account Balance (CAB = GNDI &minus; A)</div>
+      <div class="manual-section">
+        <h2 class="manual-h2">2. Income–Expenditure Identities &amp; the Savings–Investment Gap</h2>
+        <p class="manual-lead">Disposable income is either spent on domestic and foreign final goods and services (absorption) or saved. The gap between national saving and investment is, by identity, the same thing as the Current Account balance — the bridge between the Real Sector and the External Sector.</p>
+        <div class="manual-diagram-card">
+          <div class="manual-diagram-headbar">Income–Expenditure &amp; Savings–Investment Identity</div>
+          <div class="manual-diagram-canvas">
+            <svg viewBox="0 0 880 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gross National Disposable Income flows into Domestic Absorption, and the residual equals the Current Account Balance">
+              <defs>
+                <linearGradient id="reGndiGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1d4ed8"/>
+                </linearGradient>
+                <linearGradient id="reEqGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- GNDI box -->
+              <rect x="20" y="20" width="260" height="80" rx="9" fill="#ffffff" stroke="#2563EB" stroke-width="1.4"/>
+              <rect x="20" y="20" width="260" height="34" fill="url(#reGndiGrad)"/>
+              <text x="34" y="42" font-family="'DM Mono',ui-monospace,monospace" font-size="11.5" font-weight="800" letter-spacing=".02em" fill="#ffffff">GROSS NATIONAL DISPOSABLE INCOME</text>
+              <text x="34" y="75" font-family="'Manrope',sans-serif" font-size="12" font-weight="700" fill="#0f172a">GNDI</text>
+              <text x="34" y="92" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">income available to spend or save</text>
+
+              <!-- Absorption box -->
+              <rect x="310" y="20" width="260" height="80" rx="9" fill="#ffffff" stroke="#0f172a" stroke-width="1.4"/>
+              <rect x="310" y="20" width="260" height="34" fill="#0f172a"/>
+              <text x="324" y="42" font-family="'DM Mono',ui-monospace,monospace" font-size="11.5" font-weight="800" letter-spacing=".02em" fill="#ffffff">DOMESTIC ABSORPTION</text>
+              <text x="324" y="75" font-family="'Manrope',sans-serif" font-size="12" font-weight="700" fill="#0f172a">A = C + I</text>
+              <text x="324" y="92" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">spending on domestic &amp; foreign final goods</text>
+
+              <!-- National Savings box -->
+              <rect x="600" y="20" width="260" height="80" rx="9" fill="#ffffff" stroke="#a8823f" stroke-width="1.4"/>
+              <rect x="600" y="20" width="260" height="34" fill="url(#reEqGrad)"/>
+              <text x="614" y="42" font-family="'DM Mono',ui-monospace,monospace" font-size="11.5" font-weight="800" letter-spacing=".02em" fill="#ffffff">GROSS NATIONAL SAVINGS</text>
+              <text x="614" y="75" font-family="'Manrope',sans-serif" font-size="12" font-weight="700" fill="#0f172a">S = GNDI &minus; C</text>
+              <text x="614" y="92" font-family="'Manrope',sans-serif" font-size="10" font-style="italic" fill="#64748b">unconsumed disposable income</text>
+
+              <!-- Connectors -->
+              <line x1="150" y1="100" x2="150" y2="135" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="440" y1="100" x2="440" y2="135" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="730" y1="100" x2="730" y2="135" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="150" y1="135" x2="730" y2="135" stroke="#cbd5e1" stroke-width="1.6"/>
+              <line x1="440" y1="135" x2="440" y2="160" stroke="#cbd5e1" stroke-width="1.6"/>
+
+              <circle cx="295" cy="135" r="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
+              <text x="295" y="139" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="700" fill="#475569">&minus;</text>
+              <circle cx="585" cy="135" r="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
+              <text x="585" y="139" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="700" fill="#475569">&minus;</text>
+
+              <!-- Identity bar -->
+              <rect x="80" y="160" width="720" height="66" rx="10" fill="url(#reEqGrad)" stroke="#a8823f" stroke-width="1"/>
+              <text x="440" y="201" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="15">
+                <tspan fill="#60a5fa" font-weight="800">GNDI &minus; A</tspan><tspan fill="#94a3b8"> = </tspan><tspan fill="#eab676" font-weight="800">S &minus; I</tspan><tspan fill="#ffffff"> = </tspan><tspan fill="#34d399" font-weight="800" font-size="17">CAB</tspan>
+              </text>
+            </svg>
+          </div>
+        </div>
+        <div class="manual-eq">CAB = GNDI &minus; A = S &minus; I</div>
+
+        <div class="manual-example">
+          <div class="manual-example-title"><span>&#9888;</span>Practical Example — Twin Deficits &amp; Absorption Shock</div>
+          <p>A country lifts government spending (G) without a matching rise in domestic production or revenue. Domestic absorption (A) expands beyond disposable income (GNDI). Because S &minus; I = CAB, the resulting savings deficit forces the economy to borrow from abroad, widening the Current Account deficit.</p>
         </div>
 
-        <div class="fw-grid2">
-          <div class="fw-formula"><div class="fw-formula-label">Domestic absorption</div>A = C + I</div>
-          <div class="fw-formula"><div class="fw-formula-label">Gross national savings — unconsumed disposable income</div>S = GNDI &minus; C</div>
-        </div>
-        <div class="fw-formula"><div class="fw-formula-label">Savings–Investment gap — connects real sector choices to the external balance</div>CAB = GNDI &minus; A = S &minus; I</div>
-
-        <div class="fw-callout warn" style="margin-top:16px"><strong>Practical example — the Twin Deficits &amp; Absorption Shock.</strong> A country lifts government spending (G) without a matching rise in domestic production or revenue. Domestic absorption (A) expands beyond disposable income (GNDI). Because S &minus; I = CAB, the resulting savings deficit forces the economy to borrow from abroad, widening the Current Account deficit.</div>
-
+        <h3 class="manual-h3">Try It — Absorption Shock Simulator</h3>
         <div class="fw-slider-row">
           <label>Absorption shock — extra spending, % of GDP<span id="fw-shock-val" class="mono">0.0%</span></label>
           <input type="range" id="fw-shock-slider" min="0" max="8" step="0.5" value="0">
@@ -536,13 +626,12 @@
         <div class="fw-callout" id="fw-shock-note"></div>
       </div>
 
-      <!-- 3. Structural Relationships & Sector Specific Glossary -->
-      <div style="border-top:1px solid var(--line);margin:22px 0 14px"></div>
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--real);font-weight:700;margin:4px 0 10px">3 · Structural Relations &amp; Glossary</div>
-      <div class="fw-panel active" id="fw-panel-structural">
-        <div class="fw-grid2">
+      <div class="manual-section">
+        <h2 class="manual-h2">3. Structural Relationships &amp; Sector Glossary</h2>
+        <p class="manual-lead">Two structural equations link the Real Sector to prices and interest rates: the Phillips Curve, which ties inflation to the output gap, and the IS Curve, which ties the output gap to real interest rates and the real exchange rate. Adjust the sliders below to see each relationship at work.</p>
+        <div class="manual-grid2">
           <div>
-            <div class="fw-formula"><div class="fw-formula-label">Phillips Curve — links the output gap to inflation dynamics</div>&pi;_t = &pi;_t^e + &gamma;(Y_t &minus; Y_t^p) + &epsilon;_t</div>
+            <div class="manual-eq manual-eq-sm"><div class="manual-eq-label">Phillips Curve — links the output gap to inflation dynamics</div>&pi;_t = &pi;_t^e + &gamma;(Y_t &minus; Y_t^p) + &epsilon;_t</div>
             <div class="fw-slider-row">
               <label>Output gap, Y_t &minus; Y_t^p (%)<span id="fw-pc-gap-val" class="mono">0.0%</span></label>
               <input type="range" id="fw-pc-gap" min="-6" max="6" step="0.1" value="0">
@@ -554,7 +643,7 @@
             <div class="fw-callout" id="fw-pc-result"></div>
           </div>
           <div>
-            <div class="fw-formula"><div class="fw-formula-label">IS Curve — goods-market equilibrium driven by real interest rates</div>(Y_t &minus; Y_t^p) = &alpha;&#8320; &minus; &alpha;&#8321;r_t + &alpha;&#8322;RER_t + e_t</div>
+            <div class="manual-eq manual-eq-sm"><div class="manual-eq-label">IS Curve — goods-market equilibrium driven by real interest rates</div>(Y_t &minus; Y_t^p) = &alpha;&#8320; &minus; &alpha;&#8321;r_t + &alpha;&#8322;RER_t + e_t</div>
             <div class="fw-slider-row">
               <label>Real interest rate, r_t (%)<span id="fw-is-r-val" class="mono">5.0%</span></label>
               <input type="range" id="fw-is-r" min="-2" max="15" step="0.25" value="5">
@@ -567,12 +656,12 @@
           </div>
         </div>
 
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600;margin-top:18px">Sector glossary &amp; metrics — computed for the year selected in the Core Principles section above</div>
-        <div class="fw-glossary" id="fw-glossary"></div>
+        <h3 class="manual-h3">Sector Glossary &amp; Metrics — computed for the year selected in Section 1 above</h3>
+        <dl class="manual-glossary" id="fw-glossary"></dl>
       </div>
 
     </div>
-  </div>
+  </details>
 
   <!-- Simulator -->
   <section id="tab-simulator" class="tab-panel hidden">
@@ -5360,20 +5449,23 @@ function renderFwStructural(){
 
   const gdpDeflatorCheck = (R.gdp_nominal[i]/R.gdp_real[i]*100);
   document.getElementById('fw-glossary').innerHTML = `
-    <div class="fw-glossary-item">
-      <div class="fw-glossary-term">Output Gap</div>
-      <div class="fw-glossary-def">(Actual Real GDP &minus; Potential GDP) &divide; Potential GDP &times; 100.</div>
-      <div class="fw-glossary-metric">${fwState.year}: (${fmt(R.gdp_real[i],1)} &minus; ${fmt(R.potential_output[i],1)}) &divide; ${fmt(R.potential_output[i],1)} &times; 100 = ${R.output_gap[i]}%</div>
+    <div>
+      <dt>Output Gap</dt>
+      <dd>(Actual Real GDP &minus; Potential GDP) &divide; Potential GDP &times; 100.
+        <div class="manual-glossary-metric">${fwState.year}: (${fmt(R.gdp_real[i],1)} &minus; ${fmt(R.potential_output[i],1)}) &divide; ${fmt(R.potential_output[i],1)} &times; 100 = ${R.output_gap[i]}%</div>
+      </dd>
     </div>
-    <div class="fw-glossary-item">
-      <div class="fw-glossary-term">GDP Deflator</div>
-      <div class="fw-glossary-def">Nominal GDP &divide; Real GDP &times; 100 — the broadest economy-wide price measure.</div>
-      <div class="fw-glossary-metric">${fwState.year}: ${fmt(R.gdp_nominal[i],1)} &divide; ${fmt(R.gdp_real[i],1)} &times; 100 = ${fmt(gdpDeflatorCheck,1)} (reported: ${R.gdp_deflator[i]})</div>
+    <div>
+      <dt>GDP Deflator</dt>
+      <dd>Nominal GDP &divide; Real GDP &times; 100 — the broadest economy-wide price measure.
+        <div class="manual-glossary-metric">${fwState.year}: ${fmt(R.gdp_nominal[i],1)} &divide; ${fmt(R.gdp_real[i],1)} &times; 100 = ${fmt(gdpDeflatorCheck,1)} (reported: ${R.gdp_deflator[i]})</div>
+      </dd>
     </div>
-    <div class="fw-glossary-item">
-      <div class="fw-glossary-term">Crowding Out</div>
-      <div class="fw-glossary-def">Reductions in private investment caused by higher real borrowing rates driven by heavy government bond issuance.</div>
-      <div class="fw-glossary-metric">Macronia's public debt rose from ${BASELINE.government.debt_pct_gdp[0]}% to ${BASELINE.government.debt_pct_gdp.at(-1)}% of GDP over ${YEARS[0]}–${YEARS.at(-1)}, while interest expense rose from ${fmt(BASELINE.government.interest[0],1)} to ${fmt(BASELINE.government.interest.at(-1),1)} bn NC — the fiscal side of the same mechanism.</div>
+    <div>
+      <dt>Crowding Out</dt>
+      <dd>Reductions in private investment caused by higher real borrowing rates driven by heavy government bond issuance.
+        <div class="manual-glossary-metric">Macronia's public debt rose from ${BASELINE.government.debt_pct_gdp[0]}% to ${BASELINE.government.debt_pct_gdp.at(-1)}% of GDP over ${YEARS[0]}–${YEARS.at(-1)}, while interest expense rose from ${fmt(BASELINE.government.interest[0],1)} to ${fmt(BASELINE.government.interest.at(-1),1)} bn NC — the fiscal side of the same mechanism.</div>
+      </dd>
     </div>
   `;
 }
@@ -5382,20 +5474,8 @@ function initFrameworkGuide(){
   const yearSel = document.getElementById('fw-year-select');
   if (!yearSel) return; // guide not present on this build
 
-  // Collapsible Introduction card — collapsed by default; click the header to expand.
-  const guideHead = document.getElementById('fw-guide-head');
-  const guideBody = document.getElementById('fw-guide-body');
-  if (guideHead && guideBody) {
-    const toggleGuide = () => {
-      const collapsed = guideBody.classList.toggle('collapsed');
-      guideHead.classList.toggle('collapsed', collapsed);
-      guideHead.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    };
-    guideHead.addEventListener('click', toggleGuide);
-    guideHead.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGuide(); }
-    });
-  }
+  // Introduction / Manual is a native <details> element — collapsed by default,
+  // no custom toggle JS needed (matches the External Sector manual pattern).
 
   yearSel.innerHTML = YEARS.map(y => `<option value="${y}">${y}</option>`).join('');
   yearSel.value = String(fwState.year);
