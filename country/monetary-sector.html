@@ -87,53 +87,77 @@
   .card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
   .card-body{padding:12px}
 
-  /* Sector guidance / intro sections (collapsible) */
-  .intro-card{border:1px solid var(--line2);background:var(--surface);margin-bottom:16px}
-  .intro-head{padding:12px 14px;background:linear-gradient(135deg,#f5f3ff,#f8fafc);
-    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    cursor:pointer;user-select:none;border-bottom:1px solid var(--line2)}
-  .intro-head:hover{background:linear-gradient(135deg,#efeaff,#f1f5f9)}
-  .intro-head.collapsed{border-bottom-color:transparent}
-  .intro-head-left{display:flex;align-items:center;gap:10px;min-width:0}
-  .intro-icon{display:inline-flex;align-items:center;justify-content:center;width:9px;flex:0 0 auto;
-    font-size:9px;color:var(--monetary);transition:transform .15s ease}
-  .intro-head.collapsed .intro-icon{transform:rotate(-90deg)}
-  .intro-head-title{font-size:12.5px;font-weight:800;letter-spacing:-.005em;color:var(--ink)}
-  .intro-head-sub{font-size:10.5px;color:var(--muted);margin-top:1px}
-  .intro-head-badge{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-    color:var(--monetary);background:#ede9fe;padding:3px 8px;flex:0 0 auto;white-space:nowrap}
-  .intro-body{padding:18px 20px 6px}
-  .intro-section{margin-bottom:22px}
-  .intro-section:last-child{margin-bottom:6px}
-  .intro-section-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;
-    background:var(--monetary);color:#fff;font-size:10px;font-weight:700;font-family:var(--font-mono);flex:0 0 auto}
-  .intro-section-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
-  .intro-section-title{font-size:13px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
-  .intro-p{font-size:12px;line-height:1.6;color:#334155;margin:0 0 10px}
-  .intro-diagram-wrap{overflow-x:auto;background:#0f172a;padding:14px 16px;margin:10px 0 14px;
-    -webkit-overflow-scrolling:touch}
-  .intro-diagram{font-family:var(--font-mono);font-size:10.8px;line-height:1.5;color:#cbd5e1;margin:0;white-space:pre}
-  .intro-diagram .intro-diagram-hd{color:#a78bfa}
-  .intro-subhead{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;
-    color:var(--monetary);margin:14px 0 8px}
-  .intro-subhead:first-child{margin-top:0}
-  .intro-formula-box{background:#f8fafc;border:1px solid var(--line);border-left:3px solid var(--monetary);
-    padding:12px 14px;margin:8px 0 14px}
-  .intro-formula{font-family:var(--font-mono);font-size:12.5px;color:var(--ink);line-height:1.9}
-  .intro-formula-note{font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.5}
-  .intro-example{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--warn);
-    padding:12px 14px;margin:8px 0 4px}
-  .intro-example-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-    color:#92400e;margin-bottom:6px}
-  .intro-example p{font-size:11.5px;line-height:1.6;color:#451a03;margin:0 0 6px}
-  .intro-example p:last-child{margin-bottom:0}
-  .intro-glossary{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:8px}
-  .intro-glossary dt{font-family:var(--font-mono);font-size:11.5px;font-weight:700;color:var(--monetary);margin-bottom:3px}
-  .intro-glossary dd{font-size:11.5px;line-height:1.55;color:#334155;margin:0}
-  @media (max-width:640px){
-    .intro-body{padding:14px 14px 4px}
-    .intro-glossary{grid-template-columns:1fr}
-    .intro-diagram{font-size:9.5px}
+  /* ============================================================
+     Introduction / Manual — collapsible reference section
+     (matches the External Sector manual's style & wording conventions)
+     ============================================================ */
+  .manual{background:var(--surface);border:1px solid var(--line2);margin:4px 0 24px}
+  .manual-summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;user-select:none;
+    -webkit-tap-highlight-color:transparent}
+  .manual-summary::-webkit-details-marker{display:none}
+  .manual-summary-icon{font-family:var(--font-mono);font-size:13px;color:var(--accent);flex:0 0 auto;
+    transition:transform .18s ease;transform:rotate(0deg);display:inline-flex;width:16px;justify-content:center}
+  .manual[open] > .manual-summary .manual-summary-icon{transform:rotate(90deg)}
+  .manual-summary-title{font-family:var(--font-display);font-style:italic;font-size:18px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.2}
+  .manual-summary-sub{font-size:11px;color:#cbd5e1;margin-top:3px;letter-spacing:.01em}
+  .manual-summary-badge{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;
+    letter-spacing:.12em;color:#0f172a;background:var(--accent);padding:4px 9px;flex:0 0 auto;white-space:nowrap}
+  .manual-body{padding:22px 24px 26px;border-top:1px solid var(--line)}
+  .manual-section{margin-bottom:26px}
+  .manual-section:last-child{margin-bottom:0}
+  .manual-h2{font-family:var(--font-display);font-style:italic;font-size:19px;font-weight:400;
+    letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  .manual-h3{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin:18px 0 10px}
+  .manual-lead{font-size:12.5px;line-height:1.7;color:#334155;margin:8px 0 14px}
+  .manual-diagram-card{background:var(--surface);border:1px solid var(--line2);margin:16px 0;overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,23,42,.06)}
+  .manual-diagram-headbar{background:#0f172a;color:#fff;font-family:var(--font-mono);font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;text-align:center;padding:11px 14px;font-weight:700}
+  .manual-diagram-canvas{padding:22px 16px 24px;background:linear-gradient(180deg,#fbfbfa 0%,#f6f7f5 100%)}
+  .manual-diagram-canvas svg{display:block;width:100%;height:auto}
+  .manual-eq{background:#f8fafc;border:1px solid var(--line);border-left:3px solid var(--blue);
+    padding:14px 18px;margin:14px 0;text-align:center;font-size:14px;overflow-x:auto}
+  .manual-eq-sm{font-size:12.5px}
+  .manual-eq-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;
+    margin-bottom:6px;white-space:normal;text-align:center}
+  .manual-eq-note{font-size:10.5px;color:var(--muted);margin-top:8px;line-height:1.5;text-align:center}
+  .manual-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:800px){.manual-grid2{grid-template-columns:1fr}}
+  .manual-list{margin:0 0 14px;padding-left:0;list-style:none}
+  .manual-list.numbered{counter-reset:manual-counter}
+  .manual-list.numbered > li{counter-increment:manual-counter}
+  .manual-list.numbered > li::before{content:counter(manual-counter);font-family:var(--font-mono);
+    font-weight:700;font-size:10.5px;color:#fff;background:var(--ink);width:18px;height:18px;
+    border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+  .manual-list > li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.65;
+    color:#334155;padding:7px 0;border-bottom:1px solid #f1f5f9}
+  .manual-list > li:last-child{border-bottom:none}
+  .manual-list:not(.numbered) > li::before{content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--monetary);flex:0 0 auto;margin-top:7px}
+  .manual-list strong{color:var(--ink);font-weight:700}
+  .manual-example{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--warn);
+    padding:14px 18px;margin:14px 0}
+  .manual-example-title{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#92400e;display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .manual-example p{font-size:12.5px;line-height:1.65;color:#334155;margin:6px 0}
+  .manual-glossary{display:grid;grid-template-columns:1fr;gap:0;margin:0 0 6px}
+  .manual-glossary > div{padding:12px 0;border-bottom:1px solid #f1f5f9;display:grid;
+    grid-template-columns:220px 1fr;gap:14px;align-items:baseline}
+  .manual-glossary > div:last-child{border-bottom:none}
+  .manual-glossary dt{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink)}
+  .manual-glossary dd{margin:0;font-size:12.5px;line-height:1.6;color:#334155}
+  @media (max-width:700px){
+    .manual-glossary > div{grid-template-columns:1fr;gap:4px}
+    .manual-body{padding:16px 14px 20px}
+    .manual-diagram-canvas{padding:14px 8px 16px}
+    .manual-summary{padding:13px 14px}
+    .manual-summary-title{font-size:15.5px}
+  }
+  @media (max-width:560px){
+    .manual-eq{white-space:normal;font-size:12.5px}
   }
 
   /* Policy Levers */
@@ -660,83 +684,123 @@
     </div>
     <!-- Monetary Sector — Source Charts (moved to top of tab; shown only for Monetary sector) -->
     <div id="monetary-src-charts" class="hidden">
-      <div class="intro-card" id="monetary-intro-card">
-        <div class="intro-head collapsed" id="monetary-intro-head" role="button" tabindex="0"
-             onclick="document.getElementById('monetary-intro-head').classList.toggle('collapsed');document.getElementById('monetary-intro-body').classList.toggle('hidden')"
-             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-          <div class="intro-head-left">
-            <span class="intro-icon">▾</span>
-            <div>
-              <div class="intro-head-title">Financial &amp; Monetary Sector Guidance Document</div>
-              <div class="intro-head-sub">Institutional architecture · balance sheet identities · policy transmission · glossary</div>
+      <details class="manual" id="monetary-manual">
+        <summary class="manual-summary">
+          <span class="manual-summary-icon">&#9656;</span>
+          <div>
+            <div class="manual-summary-title">Financial &amp; Monetary Sector Manual</div>
+            <div class="manual-summary-sub">Institutional architecture · balance sheet identities · policy transmission &amp; glossary</div>
+          </div>
+          <span class="manual-summary-badge">Reference</span>
+        </summary>
+        <div class="manual-body">
+
+          <div class="manual-section">
+            <h2 class="manual-h2">1. Institutional Architecture &amp; Monetary Survey Framework</h2>
+            <p class="manual-lead">The Monetary Sector measures money creation, depository balance sheets, and central bank transmission mechanisms.</p>
+            <div class="manual-diagram-card">
+              <div class="manual-diagram-headbar">Depository Corporations Survey Balance Sheet</div>
+              <div class="manual-diagram-canvas">
+                <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Depository Corporations Survey balance sheet: Net Foreign Assets and Net Domestic Assets on the asset side equal Broad Money Liabilities on the liability side">
+                  <defs>
+                    <linearGradient id="monAssetGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#5b21b6"/>
+                    </linearGradient>
+                    <linearGradient id="monLiabGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/>
+                    </linearGradient>
+                    <linearGradient id="monEqGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- ===== Panel 1 — Assets ===== -->
+                  <rect x="20" y="20" width="405" height="230" rx="9" fill="#ffffff" stroke="#7C3AED" stroke-width="1.4"/>
+                  <rect x="20" y="20" width="405" height="36" fill="url(#monAssetGrad)"/>
+                  <text x="34" y="43" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="800" letter-spacing=".03em" fill="#ffffff">ASSETS</text>
+
+                  <circle cx="44" cy="86" r="4.5" fill="#7C3AED"/>
+                  <text x="60" y="90" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Net Foreign Assets (NFA)</text>
+
+                  <circle cx="44" cy="120" r="4.5" fill="#7C3AED"/>
+                  <text x="60" y="124" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Net Domestic Assets (NDA)</text>
+
+                  <circle cx="64" cy="152" r="3.5" fill="#a78bfa"/>
+                  <text x="78" y="156" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Net Claims on Government (NCG)</text>
+
+                  <circle cx="64" cy="182" r="3.5" fill="#a78bfa"/>
+                  <text x="78" y="186" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Credit to Private Sector (CPS)</text>
+
+                  <circle cx="64" cy="212" r="3.5" fill="#a78bfa"/>
+                  <text x="78" y="216" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Other Items Net (OIN)</text>
+
+                  <!-- ===== Panel 2 — Liabilities ===== -->
+                  <rect x="455" y="20" width="405" height="230" rx="9" fill="#ffffff" stroke="#0f172a" stroke-width="1.4"/>
+                  <rect x="455" y="20" width="405" height="36" fill="url(#monLiabGrad)"/>
+                  <text x="469" y="43" font-family="'DM Mono',ui-monospace,monospace" font-size="12" font-weight="800" letter-spacing=".03em" fill="#ffffff">LIABILITIES</text>
+
+                  <circle cx="479" cy="86" r="4.5" fill="#0f172a"/>
+                  <text x="495" y="90" font-family="'Manrope',sans-serif" font-size="12.5" font-weight="700" fill="#0f172a">Broad Money Liabilities (M&#8322;)</text>
+
+                  <circle cx="499" cy="120" r="3.5" fill="#94a3b8"/>
+                  <text x="513" y="124" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Currency in Circulation</text>
+
+                  <circle cx="499" cy="150" r="3.5" fill="#94a3b8"/>
+                  <text x="513" y="154" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Transferable Deposits</text>
+
+                  <circle cx="499" cy="180" r="3.5" fill="#94a3b8"/>
+                  <text x="513" y="184" font-family="'Manrope',sans-serif" font-size="11" fill="#334155">Non-transferable Time Deposits</text>
+
+                  <!-- ===== Connectors converging into the identity ===== -->
+                  <line x1="222" y1="250" x2="222" y2="285" stroke="#cbd5e1" stroke-width="1.6"/>
+                  <line x1="657" y1="250" x2="657" y2="285" stroke="#cbd5e1" stroke-width="1.6"/>
+                  <line x1="222" y1="285" x2="657" y2="285" stroke="#cbd5e1" stroke-width="1.6"/>
+                  <line x1="440" y1="285" x2="440" y2="300" stroke="#cbd5e1" stroke-width="1.6"/>
+
+                  <!-- ===== Identity bar ===== -->
+                  <rect x="140" y="300" width="600" height="30" rx="8" fill="url(#monEqGrad)" stroke="#a8823f" stroke-width="1"/>
+                  <text x="440" y="320" text-anchor="middle" font-family="'DM Mono',ui-monospace,monospace" font-size="13.5">
+                    <tspan fill="#c4b5fd" font-weight="800">NFA + NDA</tspan><tspan fill="#ffffff"> = </tspan><tspan fill="#eab676" font-weight="800">M&#8322;</tspan>
+                  </text>
+                </svg>
+              </div>
             </div>
           </div>
-          <span class="intro-head-badge">Reference</span>
-        </div>
-        <div class="intro-body hidden" id="monetary-intro-body">
 
-          <div class="intro-section">
-            <div class="intro-section-head">
-              <span class="intro-section-num">1</span>
-              <span class="intro-section-title">Institutional Architecture &amp; Monetary Survey Framework</span>
+          <div class="manual-section">
+            <h2 class="manual-h2">2. Balance Sheet Identities &amp; Money Multiplier Mechanics</h2>
+            <p class="manual-lead">Broad money is created against two counterpart assets on the depository survey — net foreign assets and net domestic assets — and expands from the monetary base through the money multiplier.</p>
+
+            <h3 class="manual-h3">Core Accounting Identities</h3>
+            <div class="manual-eq">M<sub>2</sub> = NFA + NDA</div>
+            <div class="manual-eq">NDA = NDC + OIN = NCG + CPS + OIN</div>
+
+            <h3 class="manual-h3">Money Multiplier Formulation</h3>
+            <div class="manual-eq">M<sub>2</sub> = mm &times; MB</div>
+            <div class="manual-eq manual-eq-sm">mm = (1 + c + t + mmf) / (r + c)
+              <div class="manual-eq-note">where c = currency ratio, r = reserve ratio, t = time deposit ratio, mmf = money market fund ratio.</div>
             </div>
-            <p class="intro-p">The Monetary Sector measures money creation, depository balance sheets, and central bank transmission mechanisms.</p>
-            <div class="intro-diagram-wrap">
-              <pre class="intro-diagram"><span class="intro-diagram-hd">+-------------------------------------------------------------------------+
-|               DEPOSITORY CORPORATIONS SURVEY BALANCE SHEET              |
-+------------------------------------+------------------------------------+
-|               ASSETS               |            LIABILITIES             |
-+------------------------------------+------------------------------------+</span>
-| Net Foreign Assets (NFA)           | Broad Money Liabilities (M2)       |
-| Net Domestic Assets (NDA)          |  - Currency in Circulation         |
-|   - Net Claims on Government (NCG) |  - Transferable Deposits           |
-|   - Credit to Private Sector (CPS) |  - Non-transferable Time Deposits  |
-|   - Other Items Net (OIN)          |                                    |
-<span class="intro-diagram-hd">+------------------------------------+------------------------------------+</span></pre>
+
+            <h3 class="manual-h3">Practical Example: Open Market Sterilization</h3>
+            <div class="manual-example">
+              <div class="manual-example-title"><span>&#9888;</span>Scenario &rarr; Mechanism</div>
+              <p><strong>Scenario:</strong> A central bank intervenes in FX markets, buying $100M in foreign assets (&Delta;NFA &gt; 0).</p>
+              <p><strong>Mechanism:</strong> To prevent this liquidity from expanding the Monetary Base (MB) and triggering domestic inflation, the central bank sells domestic government bonds (&Delta;NDA &lt; 0), sterilizing the intervention so total broad money supply (M<sub>2</sub>) stays constant.</p>
             </div>
           </div>
 
-          <div class="intro-section">
-            <div class="intro-section-head">
-              <span class="intro-section-num">2</span>
-              <span class="intro-section-title">Balance Sheet Identities &amp; Money Multiplier Mechanics</span>
+          <div class="manual-section">
+            <h2 class="manual-h2">3. Policy Transmission &amp; Sector-Specific Glossary</h2>
+            <p class="manual-lead">The central bank sets short-term interest rates through a policy rule, transmitting monetary conditions to inflation and the output gap.</p>
+
+            <h3 class="manual-h3">Central Bank Policy Rules</h3>
+            <div class="manual-eq manual-eq-sm">
+              <div class="manual-eq-label">Taylor Rule — sets short-term nominal interest rate (i_t) targets</div>
+              i<sub>t</sub> = r* + &pi;<sub>t</sub> + &theta;<sub>1</sub>(&pi;<sub>t</sub> &minus; &pi;*) + &theta;<sub>2</sub>(Y<sub>t</sub> &minus; Y<sub>t</sub><sup>p</sup>)
             </div>
 
-            <div class="intro-subhead">Core Accounting Identities</div>
-            <div class="intro-formula-box">
-              <div class="intro-formula">Broad Money Creation: &nbsp; M<sub>2</sub> = NFA + NDA</div>
-              <div class="intro-formula" style="margin-top:6px">Domestic Credit Composition: &nbsp; NDA = NDC + OIN = NCG + CPS + OIN</div>
-            </div>
-
-            <div class="intro-subhead">Money Multiplier Formulation</div>
-            <div class="intro-formula-box">
-              <div class="intro-formula">Broad Money (M<sub>2</sub>) = mm × Monetary Base (MB)</div>
-              <div class="intro-formula" style="margin-top:6px">mm = (1 + c + t + mmf) / (r + c)</div>
-              <div class="intro-formula-note">where c = currency ratio, r = reserve ratio, t = time deposit ratio, mmf = money market fund ratio.</div>
-            </div>
-
-            <div class="intro-subhead">Practical Example: Open Market Sterilization</div>
-            <div class="intro-example">
-              <div class="intro-example-label">Scenario → Mechanism</div>
-              <p><strong>Scenario:</strong> A central bank intervenes in FX markets, buying $100M in foreign assets (ΔNFA &gt; 0).</p>
-              <p><strong>Mechanism:</strong> To prevent this liquidity from expanding the Monetary Base (MB) and triggering domestic inflation, the central bank sells domestic government bonds (ΔNDA &lt; 0), sterilizing the intervention so total broad money supply (M<sub>2</sub>) stays constant.</p>
-            </div>
-          </div>
-
-          <div class="intro-section">
-            <div class="intro-section-head">
-              <span class="intro-section-num">3</span>
-              <span class="intro-section-title">Policy Transmission &amp; Sector-Specific Glossary</span>
-            </div>
-
-            <div class="intro-subhead">Central Bank Policy Rules</div>
-            <div class="intro-formula-box">
-              <div class="intro-formula-note" style="margin:0 0 6px">Taylor Rule — sets short-term nominal interest rate (i<sub>t</sub>) targets:</div>
-              <div class="intro-formula">i<sub>t</sub> = r* + π<sub>t</sub> + θ<sub>1</sub>(π<sub>t</sub> − π*) + θ<sub>2</sub>(Y<sub>t</sub> − Y<sub>t</sub><sup>p</sup>)</div>
-            </div>
-
-            <div class="intro-subhead">Sector Glossary &amp; Metrics</div>
-            <dl class="intro-glossary">
+            <h3 class="manual-h3">Sector Glossary &amp; Metrics</h3>
+            <dl class="manual-glossary">
               <div>
                 <dt>Monetary Base (MB)</dt>
                 <dd>Currency in circulation plus bank reserves held at the central bank.</dd>
@@ -747,13 +811,13 @@
               </div>
               <div>
                 <dt>Quantity Theory of Money (QTM)</dt>
-                <dd>M · v = P · Y</dd>
+                <dd>M &middot; v = P &middot; Y</dd>
               </div>
             </dl>
           </div>
 
         </div>
-      </div>
+      </details>
 
       <div>
         <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Monetary Sector — Source Charts</h3>
