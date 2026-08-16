@@ -77,8 +77,8 @@
     .levers-toggle-icon{font-size:13px;line-height:1}
     .levers-toggle-chevron{transition:transform .15s ease;font-size:10px}
     .levers-toggle-btn.open .levers-toggle-chevron{transform:rotate(180deg)}
-    #simulator-aside{display:none;overflow:hidden}
-    #simulator-aside.open{display:block}
+    #levers-panel-wrap{display:none;overflow:hidden}
+    #levers-panel-wrap.open{display:block}
   }
 
   .card{background:var(--surface);border:1px solid var(--line)}
@@ -88,12 +88,17 @@
   .card-body{padding:12px}
 
   /* Policy Levers */
-  .levers{padding:12px;max-height:60vh;overflow-y:auto}
-  @media (max-width:900px){.levers{max-height:none}}
+  .levers{padding:12px}
   /* Keep the Policy Levers title + Horizon selector pinned to the top of the tab as the page scrolls */
   .lever-card-head{position:sticky;top:calc(var(--header-h,70px) + 8px);z-index:15;box-shadow:0 1px 0 var(--line)}
   @media (max-width:900px){.lever-card-head{top:8px}}
   .lever{margin-bottom:14px}
+  /* Four sector group cards inside the expanded Policy Levers panel — always one row */
+  .levers-groups{display:grid;grid-template-columns:repeat(4,minmax(230px,1fr));gap:14px}
+  @media (max-width:1100px){.levers-groups{grid-auto-flow:column;grid-template-columns:repeat(4,minmax(230px,1fr));overflow-x:auto;padding-bottom:6px}}
+  .lever-group-card{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff;min-width:0}
+  .lever-group-head{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
+    padding-left:9px;margin-bottom:12px;color:var(--ink)}
   .lever-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
   .lever-label{display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;font-weight:500}
   .lever-bar{width:2px;height:14px;background:var(--muted);display:inline-block;border-radius:1px}
@@ -442,7 +447,6 @@
     <a href="external-sector.html" class="tab tab-accent" style="--accent-color:#059669;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the External Sector deep-dive on its own page">External</a>
     <a href="government-sector.html" class="tab tab-accent" style="--accent-color:#D92D20;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Government Sector deep-dive on its own page">Government</a>
     <a href="monetary-sector.html" class="tab tab-accent" style="--accent-color:#7C3AED;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Monetary Sector deep-dive on its own page">Monetary</a>
-    <a href="sector-interlinks.html" class="tab" style="text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Sector Interlinks deep-dive on its own page">Sector Interlinks</a>
   </div>
 
   <!-- Simulator -->
@@ -458,9 +462,7 @@
         <span class="levers-toggle-chevron" id="levers-toggle-chevron">&#9662;</span>
       </button>
     </div>
-    <div class="layout" id="simulator-layout">
-      <aside id="simulator-aside">
-        <div id="levers-panel-wrap" style="margin-bottom:12px"><div class="card">
+    <div id="levers-panel-wrap" style="margin-bottom:16px"><div class="card">
     <div class="card-head lever-card-head" id="levers-card-head" style="border-top:3px solid #0F172A;flex-wrap:wrap">
       <span class="card-title" style="display:flex;align-items:center;gap:8px">Policy Levers <span class="scenario-badge" id="levers-scenario-badge" style="background:#0F172A">Base Case</span></span>
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
@@ -485,7 +487,7 @@
       <button class="btn" id="run-btn" data-testid="run-btn">Run Projection</button>
     </div>
   </div></div>
-      </aside>
+    <div id="simulator-layout">
       <div>
         <div class="scenario-table-wrap"><table class="scenario-table" id="summary-strip"></table></div>
         <div class="card" style="margin-top:12px">
@@ -547,6 +549,59 @@
             <div class="ai-placeholder">Enter your Anthropic API key and click "Analyze scenario" for IMF-style commentary on your policy mix, sustainability risks and cross-sector implications from Claude Sonnet 4.5.</div>
           </div>
           <div class="ai-note">Note: this static build calls Anthropic directly from your browser using <code class="mono">anthropic-dangerous-direct-browser-access: true</code>. Your key never leaves your machine. Remove this panel by deleting the <code class="mono">#ai-commentary</code> block if you don't need AI.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator -->
+    <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+
+    <!-- Sector Interlinks (Balance Sheets stacked on top of Flow of Funds) — merged into Policy Simulator -->
+    <div>
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+        <div>
+          <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Sector Interlinks</h2>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Year-end stocks per sector, plus inter-sector flows between Private, Government, Depository Corp., and Rest of World.</div>
+        </div>
+      </div>
+
+      <!-- Balance Sheets section -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 8px;flex-wrap:wrap;gap:8px">
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Sector Balance Sheets — Cross-Sector Identities</h3>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+          Year <select id="bs-year" class="horizon-select"><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option></select>
+        </label>
+      </div>
+      <div id="fof-stocks-view">
+        <div id="bs-grid" class="bs-grid"></div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-head"><span class="card-title">Cross-Sector Accounting Identities</span></div>
+          <div class="identities-grid" id="identities-grid"></div>
+        </div>
+      </div>
+
+      <!-- Separator -->
+      <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
+
+      <!-- Flow of Funds section -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 8px;flex-wrap:wrap;gap:8px">
+        <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Flow of Funds — Institutional Sectors</h3>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
+          Year <select id="fof-year" class="horizon-select"><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>
+        </label>
+      </div>
+      <div id="fof-flows-view">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span>
+            <span class="mono" style="font-size:10px;color:var(--muted)">Non-financial balance + Financing = 0 by construction</span>
+          </div>
+          <div class="table-wrap"><table class="fp" id="fof-table"></table></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <div class="card-head"><span class="card-title">Sector Balances</span></div>
+          <div class="card-body"><div class="chart-wrap" style="height:280px"><canvas id="fof-chart"></canvas></div></div>
         </div>
       </div>
     </div>
@@ -888,57 +943,6 @@
       </div>
       </div>
     </div></section>
-
-  <!-- Sector Interlinks (Balance Sheets stacked on top of Flow of Funds) -->
-  <section id="tab-flowoffunds" class="tab-panel hidden">
-    <!-- Header -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
-      <div>
-        <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Sector Interlinks</h2>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Year-end stocks per sector, plus inter-sector flows between Private, Government, Depository Corp., and Rest of World.</div>
-      </div>
-    </div>
-
-    <!-- Balance Sheets section -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 8px;flex-wrap:wrap;gap:8px">
-      <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Sector Balance Sheets — Cross-Sector Identities</h3>
-      <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-        Year <select id="bs-year" class="horizon-select"><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option></select>
-      </label>
-    </div>
-    <div id="fof-stocks-view">
-      <div id="bs-grid" class="bs-grid"></div>
-      <div class="card" style="margin-top:16px">
-        <div class="card-head"><span class="card-title">Cross-Sector Accounting Identities</span></div>
-        <div class="identities-grid" id="identities-grid"></div>
-      </div>
-    </div>
-
-    <!-- Separator -->
-    <div style="border-top:1px solid var(--line);margin:24px 0 16px"></div>
-
-    <!-- Flow of Funds section -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 8px;flex-wrap:wrap;gap:8px">
-      <h3 style="font-size:14px;font-weight:800;letter-spacing:-.01em;margin:0">Flow of Funds — Institutional Sectors</h3>
-      <label style="display:flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-        Year <select id="fof-year" class="horizon-select"><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>
-      </label>
-    </div>
-    <div id="fof-flows-view">
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title" id="fof-title">Flow of Funds · 2012 · billions of national currency</span>
-          <span class="mono" style="font-size:10px;color:var(--muted)">Non-financial balance + Financing = 0 by construction</span>
-        </div>
-        <div class="table-wrap"><table class="fp" id="fof-table"></table></div>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <div class="card-head"><span class="card-title">Sector Balances</span></div>
-        <div class="card-body"><div class="chart-wrap" style="height:280px"><canvas id="fof-chart"></canvas></div></div>
-      </div>
-    <!-- Extra Real sector reports: Foreign Balance & Current Account Projections -->
-    
-  </div></section>
   <section id="tab-govops" class="tab-panel hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
       <div>
@@ -1815,7 +1819,18 @@ function renderLevers(){
       other lever below is mathematically derived from them (Fisher equation, relative PPP,
       trade elasticities, tax buoyancy, quantity theory). Move a derived lever to layer a manual
       shock on its model-implied path, or tap <span class="lever-reset-inline">Auto</span> to clear it.
-    </div>`;
+    </div>
+    <div class="levers-groups" id="levers-groups"></div>`;
+  const groupsDiv = document.getElementById('levers-groups');
+  const SECTOR_GROUP_LABELS = { real:'Real Sector', external:'External Sector', fiscal:'Fiscal Sector', monetary:'Monetary Sector' };
+  const groupBodies = {};
+  Object.keys(SECTOR_GROUP_LABELS).forEach(sector => {
+    const groupCard = document.createElement('div');
+    groupCard.className = 'lever-group-card';
+    groupCard.innerHTML = `<div class="lever-group-head" style="border-left:3px solid ${SECTOR_COLORS[sector]}">${SECTOR_GROUP_LABELS[sector]}</div><div class="lever-group-body"></div>`;
+    groupsDiv.appendChild(groupCard);
+    groupBodies[sector] = groupCard.querySelector('.lever-group-body');
+  });
   LEVER_DEFS.forEach(def => {
     const isPrimary = PRIMARY_LEVER_KEYS.includes(def.key);
     const hasOverride = !isPrimary && Math.abs(levers.overrides[def.key]||0) > 0.049;
@@ -1853,7 +1868,7 @@ function renderLevers(){
         runSimulator();
       });
     }
-    leversDiv.appendChild(div);
+    (groupBodies[def.sector] || leversDiv).appendChild(div);
   });
   updateAIScenarioName();
 }
@@ -4796,7 +4811,6 @@ document.querySelectorAll('#tabs button.tab').forEach(btn => {
       return;
     }
     document.getElementById('tab-'+tab).classList.remove('hidden');
-    if (tab === 'flowoffunds') { renderFlowOfFunds(); renderBalanceSheets(); }
     if (tab === 'govops') { renderSourceCharts('gov'); renderGovSGO(); renderGovBalanceSheet(); renderRevExpProjection(); }
   });
 });
@@ -5388,6 +5402,16 @@ const CASE_QUESTIONS =
         "tab": "monetary"
       }
     ]
+  },
+  {
+    "sector": "Interrelation",
+    "items": [
+      {
+        "q": "How would you summarize, in no more than three paragraphs, the major economic development in your country over the past five years? How would you link the development in one sector of the economy to those in some other sector? Try to write a brief description of the recent economic development in your country, focusing on key indicators and behavioral relationships.",
+        "hint": "Policy Simulator tab → Sector Interlinks (Flow of Funds & Balance Sheets) ties Real, External, Government and Monetary together in one place; the AI Policy Analysis panel can also draft commentary once you add an API key.",
+        "tab": "simulator"
+      }
+    ]
   }
 ];
 
@@ -5397,7 +5421,7 @@ const CASEQ_SECTOR_COLOR = {
 };
 const CASEQ_TAB_LABEL = {
   real:'Real tab', external:'External tab', govops:'Government tab',
-  monetary:'Monetary tab', flowoffunds:'Sector Interlinks tab', simulator:'Policy Simulator tab'
+  monetary:'Monetary tab', simulator:'Policy Simulator tab'
 };
 
 let caseQSector = 'All';
@@ -5510,7 +5534,7 @@ function init(){
   // Mobile: Policy Levers panel toggle so it doesn't occupy the whole screen on small devices
   (function initLeversToggle(){
     const toggleBtn = document.getElementById('levers-toggle-btn');
-    const aside = document.getElementById('simulator-aside');
+    const aside = document.getElementById('levers-panel-wrap');
     const chevron = document.getElementById('levers-toggle-chevron');
     if (!toggleBtn || !aside) return;
     const isMobile = () => window.matchMedia('(max-width:900px)').matches;
@@ -5561,6 +5585,10 @@ function init(){
   fofSel.innerHTML = [2011,2012,2013].map(y => `<option value="${y}">${y}</option>`).join('');
   fofSel.value = String(state.fofYear);
   fofSel.addEventListener('change', e => { state.fofYear = parseInt(e.target.value); renderFlowOfFunds(); });
+
+  // Sector Interlinks is now part of the always-visible Policy Simulator tab, so render it on load
+  renderBalanceSheets();
+  renderFlowOfFunds();
 
   // Gov Ops units selector — refresh whichever subview is visible
   document.getElementById('sgo-units').addEventListener('change', () => {
