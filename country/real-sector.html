@@ -513,7 +513,7 @@
 <main>
   <!-- Tab strip -->
   <div class="tabs" id="tabs" role="tablist">
-    <button class="tab" data-tab="simulator" role="tab" title="Back to the Policy Simulator on this page">Policy Simulator</button>
+    <a href="nation-state.html" class="tab tab-accent" style="--accent-color:#0F172A;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Policy Simulator on the Financial Programming Framework page">Policy Simulator</a>
     <button class="tab active tab-accent" data-tab="real" style="--accent-color:#2563EB" role="tab">Real</button>
     <a href="external-sector.html" class="tab tab-accent" style="--accent-color:#059669;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the External Sector deep-dive on its own page">External</a>
     <a href="government-sector.html" class="tab tab-accent" style="--accent-color:#D92D20;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Government Sector deep-dive on its own page">Government</a>
@@ -674,110 +674,6 @@
 
   <!-- Simulator -->
   <section id="tab-simulator" class="tab-panel hidden">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
-      <div>
-        <h2 style="font-family:var(--font-display);font-style:italic;font-size:22px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">Forward Guidance</h2>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Base, Positive and Conservative cases run side by side. Pick a scenario below to tune its policy levers.</div>
-      </div>
-      <button class="levers-toggle-btn" id="levers-toggle-btn" type="button" aria-expanded="false" aria-controls="levers-panel-wrap">
-        <span class="levers-toggle-icon">&#9881;</span>
-        <span id="levers-toggle-label">Policy Levers</span>
-        <span class="levers-toggle-chevron" id="levers-toggle-chevron">&#9662;</span>
-      </button>
-    </div>
-    <div class="layout" id="simulator-layout">
-      <aside id="simulator-aside">
-        <div id="levers-panel-wrap" style="margin-bottom:12px"><div class="card">
-    <div class="card-head lever-card-head" id="levers-card-head" style="border-top:3px solid #0F172A;flex-wrap:wrap">
-      <span class="card-title" style="display:flex;align-items:center;gap:8px">Policy Levers <span class="scenario-badge" id="levers-scenario-badge" style="background:#0F172A">Base Case</span></span>
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-          Scenario
-          <select class="horizon-select" id="scenario-select" data-testid="scenario-select" style="min-width:150px">
-            <option value="base">Base Case</option>
-            <option value="positive">Positive Case</option>
-            <option value="conservative">Conservative Case</option>
-          </select>
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600">
-          Horizon
-          <select class="horizon-select" id="horizon-select" data-testid="horizon-select">
-            <option value="3">3 yrs</option><option value="5">5 yrs</option><option value="10">10 yrs</option>
-          </select>
-        </label>
-      </div>
-    </div>
-    <div class="levers" id="levers-list"></div>
-    <div style="padding:10px 12px;border-top:1px solid var(--line);background:#f8fafc">
-      <button class="btn" id="run-btn" data-testid="run-btn">Run Projection</button>
-    </div>
-  </div></div>
-      </aside>
-      <div>
-        <div class="scenario-table-wrap"><table class="scenario-table" id="summary-strip"></table></div>
-        <div class="card" style="margin-top:12px">
-          <div class="card-head">
-            <span class="card-title">Projection Charts</span>
-            <span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range">2013 – 2017</span>
-          </div>
-          <div class="card-body">
-            <div class="charts" id="charts-grid"><div class="card"><div class="card-head"><span class="card-title">Real GDP growth (%)</span></div><div class="chart-wrap"><canvas id="c-growth"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Inflation (%)</span></div><div class="chart-wrap"><canvas id="c-infl"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Current Account (% GDP)</span></div><div class="chart-wrap"><canvas id="c-ca"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Fiscal Overall Balance (% GDP)</span></div><div class="chart-wrap"><canvas id="c-fisc"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Public Debt (% GDP)</span></div><div class="chart-wrap"><canvas id="c-debt"></canvas></div></div><div class="card"><div class="card-head"><span class="card-title">Broad Money Growth (%)</span></div><div class="chart-wrap"><canvas id="c-bm"></canvas></div></div></div>
-          </div>
-        </div>
-        <div class="card" style="margin-top:12px">
-          <div class="card-head"><span class="card-title">Projected Path <span class="scenario-badge" id="proj-scenario-badge" style="background:#0F172A">Base Case</span></span><span class="mono" style="font-size:10px;color:var(--muted)" id="proj-range2">2013 – 2017</span></div>
-          <div class="table-wrap"><table class="fp" id="proj-table"><thead><tr><th>Indicator</th><th>2013</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr></thead><tbody>
-    <tr><td title="Nominal GDP = Real GDP × GDP deflator ÷ 100  ≡  C + I + G + (X − M)" class="has-formula" data-formula-applied="1">Nominal GDP (bn NC)</td><td class="">23,114.7</td><td class="">25,241.2</td><td class="">27,563.4</td><td class="">30,099.3</td><td class="">32,868.4</td></tr>
-  
-    <tr><td title="gᵧ,t = (RY_t / RY_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Real GDP growth (%)</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td><td class="">4.00</td></tr>
-  
-    <tr><td title="π = GDP deflator inflation = (P_t / P_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Inflation (%)</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td><td class="">5.00</td></tr>
-  
-    <tr><td title="NER — nominal exchange rate (NC per USD)" class="has-formula" data-formula-applied="1">Exchange rate (NC/USD)</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td><td class="">510.80</td></tr>
-  
-    <tr><td title="CA in USD mn = Goods + Services + Primary income + Secondary income" class="has-formula" data-formula-applied="1">Current account (USD mn)</td><td class="neg">(2,493.0)</td><td class="neg">(2,651.4)</td><td class="neg">(2,822.5)</td><td class="neg">(3,007.2)</td><td class="neg">(3,206.7)</td></tr>
-  
-    <tr><td title="CA/GDP = Current account balance ÷ Nominal GDP (USD) × 100" class="has-formula" data-formula-applied="1">Current account (% GDP)</td><td class="neg">(5.51)</td><td class="neg">(5.37)</td><td class="neg">(5.23)</td><td class="neg">(5.10)</td><td class="neg">(4.98)</td></tr>
-  
-    <tr><td title="Revenue = Taxes + Social contributions + Grants + Other revenue" class="has-formula" data-formula-applied="1">Gov. revenue (bn NC)</td><td class="">3,533.2</td><td class="">3,815.9</td><td class="">4,121.1</td><td class="">4,450.8</td><td class="">4,806.9</td></tr>
-  
-    <tr><td title="Expense = Compensation + Goods&amp;Services + Interest + Subsidies + Social benefits + Grants paid + Other" class="has-formula" data-formula-applied="1">Gov. expense (bn NC)</td><td class="">4,536.5</td><td class="">4,911.8</td><td class="">5,317.8</td><td class="">5,756.9</td><td class="">6,231.9</td></tr>
-  
-    <tr><td title="Overall fiscal or BOP balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Overall balance (% GDP)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td><td class="neg">(4.34)</td></tr>
-  
-    <tr><td title="Primary balance ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Primary balance (% GDP)</td><td class="neg">(2.30)</td><td class="neg">(2.27)</td><td class="neg">(2.25)</td><td class="neg">(2.22)</td><td class="neg">(2.20)</td></tr>
-  
-    <tr><td title="Debt/GDP = Public debt ÷ Nominal GDP × 100" class="has-formula" data-formula-applied="1">Public debt (% GDP)</td><td class="">45.16</td><td class="">45.70</td><td class="">46.19</td><td class="">46.64</td><td class="">47.05</td></tr>
-  
-    <tr><td title="M0 = Currency issued + Required + Excess reserves held at central bank" class="has-formula" data-formula-applied="1">Monetary base (bn NC)</td><td class="">2,978.7</td><td class="">3,276.6</td><td class="">3,604.2</td><td class="">3,964.6</td><td class="">4,361.1</td></tr>
-  
-    <tr><td title="M2 = Currency outside banks + Transferable + Other deposits" class="has-formula" data-formula-applied="1">Broad money (bn NC)</td><td class="">13,999.8</td><td class="">15,399.8</td><td class="">16,939.8</td><td class="">18,633.8</td><td class="">20,497.2</td></tr>
-  
-    <tr><td title="ΔM2 (%) = (M2_t ÷ M2_{t−1} − 1) × 100" class="has-formula" data-formula-applied="1">Broad money growth (%)</td><td class="">24.83</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td><td class="">10.00</td></tr>
-  </tbody></table></div>
-        </div>
-        <div class="card" id="ai-commentary" style="margin-top:12px">
-          <div class="card-head" style="background:#f1f5f9">
-            <span class="card-title"><span class="dot" style="background:var(--blue);margin-right:6px"></span>AI Policy Analysis</span>
-            <div class="ai-controls">
-              <input id="scenario-name" class="text-input" placeholder="Scenario name" value="Scenario A">
-              <button id="analyze-btn" class="btn" style="width:auto" onclick="onAnalyze()">Analyze scenario</button>
-            </div>
-          </div>
-          <div class="ai-key-row">
-            <span>Anthropic API key (browser-only, stored locally):</span>
-            <input id="anth-key" class="text-input" type="password" placeholder="sk-ant-...">
-            <button class="btn" style="width:auto;background:var(--warn)" onclick="saveKey()">Save</button>
-            <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Get a key ↗</a>
-          </div>
-          <div class="ai-body" id="ai-output">
-            <div class="ai-placeholder">Enter your Anthropic API key and click "Analyze scenario" for IMF-style commentary on your policy mix, sustainability risks and cross-sector implications from Claude Sonnet 4.5.</div>
-          </div>
-          <div class="ai-note">Note: this static build calls Anthropic directly from your browser using <code class="mono">anthropic-dangerous-direct-browser-access: true</code>. Your key never leaves your machine. Remove this panel by deleting the <code class="mono">#ai-commentary</code> block if you don't need AI.</div>
-        </div>
-      </div>
-    </div>
-
   </section>
 
   <!-- Sector Deep-Dive (shared panel — driven by state.histSector) -->
@@ -4254,7 +4150,8 @@ function saveKey(){
 }
 function loadKey(){
   const k = localStorage.getItem('anth_key');
-  if (k) document.getElementById('anth-key').value = k;
+  const el = document.getElementById('anth-key');
+  if (k && el) el.value = k;
 }
 function updateAIScenarioName(){
   const input = document.getElementById('scenario-name');
@@ -4356,11 +4253,16 @@ function escape(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
    ============================================================ */
 document.querySelectorAll('#tabs .tab').forEach(btn => {
   btn.addEventListener('click', () => {
+    // Some ".tab" elements are plain <a href="..."> links out to other standalone
+    // pages (External/Government/Monetary) and have no data-tab attribute — let
+    // those navigate normally instead of running the in-page tab-switch logic.
+    const tab = btn.dataset.tab;
+    if (!tab) return;
+
     document.querySelectorAll('#tabs .tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
 
-    const tab = btn.dataset.tab;
     const sectorMap = { real:'real', external:'external', monetary:'monetary' };
     if (sectorMap[tab]) {
       state.histSector = sectorMap[tab];
@@ -4368,7 +4270,8 @@ document.querySelectorAll('#tabs .tab').forEach(btn => {
       renderHistoricalTable();
       return;
     }
-    document.getElementById('tab-'+tab).classList.remove('hidden');
+    const panel = document.getElementById('tab-'+tab);
+    if (panel) panel.classList.remove('hidden');
     if (tab === 'flowoffunds') { renderFlowOfFunds(); renderBalanceSheets(); }
     if (tab === 'govops') { renderSourceCharts('gov'); renderGovSGO(); renderGovBalanceSheet(); renderRevExpProjection(); }
   });
@@ -5155,8 +5058,11 @@ function init(){
   }
 
   // Simulator — three scenarios (Base / Positive / Conservative), edited one at a time via the Scenario dropdown
-  runSimulator();       // compute all 3 projections up front
-  renderLevers();        // populate sliders for the active scenario
+  // (Policy Simulator tab content has been removed from this page, so skip computing/rendering it.)
+  if (document.getElementById('levers-list')) {
+    runSimulator();       // compute all 3 projections up front
+    renderLevers();        // populate sliders for the active scenario
+  }
 
   // Mobile: Policy Levers panel toggle so it doesn't occupy the whole screen on small devices
   (function initLeversToggle(){
@@ -5186,20 +5092,20 @@ function init(){
     setOpen(!isMobile() ? true : false);
   })();
 
-  document.getElementById('scenario-select').addEventListener('change', (e) => {
+  document.getElementById('scenario-select')?.addEventListener('change', (e) => {
     state.activeScenario = e.target.value;
     renderLevers();
     renderSummary();
     renderProjTable();
   });
 
-  document.getElementById('horizon-select').addEventListener('change', (e) => {
+  document.getElementById('horizon-select')?.addEventListener('change', (e) => {
     state.horizon = parseInt(e.target.value);
     Object.keys(state.scenarios).forEach(k => { state.scenarios[k].horizon = state.horizon; });
     runSimulator();
   });
 
-  document.getElementById('run-btn').addEventListener('click', () => runSimulator());
+  document.getElementById('run-btn')?.addEventListener('click', () => runSimulator());
 
   // Balance sheets year selector
   const bsSel = document.getElementById('bs-year');
