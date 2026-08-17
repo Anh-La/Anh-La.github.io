@@ -35,7 +35,7 @@
   main{max-width:1440px;margin:0 auto;padding:16px}
 
   /* Tabs */
-  .tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
+  .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
     overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
     background-image:linear-gradient(to right,var(--surface) 30%,rgba(255,255,255,0)),
       linear-gradient(to right,rgba(255,255,255,0),var(--surface) 70%) 100% 0,
@@ -50,7 +50,7 @@
   .tab:hover:not(.active){background:#f8fafc;color:var(--ink)}
   .tab-accent{position:relative}
   .tab-accent.active{border-bottom-color:var(--accent-color,var(--accent))}
-  @media (max-width:900px){.tabs{grid-template-columns:repeat(6,minmax(140px,1fr))}}
+  @media (max-width:900px){.tabs{grid-template-columns:repeat(5,minmax(140px,1fr))}}
 
   /* Scenario B compare styles */
   .compare-toggle{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.10em;font-weight:600;color:#334155;cursor:pointer;padding:6px 10px;border:1px solid var(--line2);background:var(--surface)}
@@ -312,7 +312,7 @@
     .sector-chips{font-size:10px;gap:6px 10px;width:100%;order:3;padding-top:8px;border-top:1px solid var(--line);margin-top:2px}
 
     /* Tabs — horizontal swipe carousel, generous tap targets */
-    .tabs{grid-template-columns:repeat(6, minmax(118px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(5, minmax(118px, 1fr)) !important}
     .tab{padding:13px 10px;font-size:11px;letter-spacing:.05em;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center}
 
     /* Force every inline grid layout to a single column */
@@ -390,7 +390,7 @@
 
   @media (max-width: 560px){
     main{padding:10px 8px}
-    .tabs{grid-template-columns:repeat(6, minmax(104px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(5, minmax(104px, 1fr)) !important}
     .tab{font-size:10px;padding:12px 8px}
     .summary{grid-template-columns:1fr !important}
     .bs-grid{grid-template-columns:1fr !important}
