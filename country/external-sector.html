@@ -35,7 +35,7 @@
   main{max-width:1440px;margin:0 auto;padding:16px}
 
   /* Tabs */
-  .tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
+  .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line);padding:0;gap:0;
     overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
     background-image:linear-gradient(to right,var(--surface) 30%,rgba(255,255,255,0)),
       linear-gradient(to right,rgba(255,255,255,0),var(--surface) 70%) 100% 0,
@@ -50,7 +50,7 @@
   .tab:hover:not(.active){background:#f8fafc;color:var(--ink)}
   .tab-accent{position:relative}
   .tab-accent.active{border-bottom-color:var(--accent-color,var(--accent))}
-  @media (max-width:900px){.tabs{grid-template-columns:repeat(6,minmax(140px,1fr))}}
+  @media (max-width:900px){.tabs{grid-template-columns:repeat(5,minmax(140px,1fr))}}
 
   /* Scenario B compare styles */
   .compare-toggle{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.10em;font-weight:600;color:#334155;cursor:pointer;padding:6px 10px;border:1px solid var(--line2);background:var(--surface)}
@@ -307,7 +307,7 @@
     .sector-chips{font-size:10px;gap:6px 10px;width:100%;order:3;padding-top:8px;border-top:1px solid var(--line);margin-top:2px}
 
     /* Tabs — horizontal swipe carousel, generous tap targets */
-    .tabs{grid-template-columns:repeat(6, minmax(118px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(5, minmax(118px, 1fr)) !important}
     .tab{padding:13px 10px;font-size:11px;letter-spacing:.05em;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center}
 
     /* Force every inline grid layout to a single column */
@@ -385,7 +385,7 @@
 
   @media (max-width: 560px){
     main{padding:10px 8px}
-    .tabs{grid-template-columns:repeat(6, minmax(104px, 1fr)) !important}
+    .tabs{grid-template-columns:repeat(5, minmax(104px, 1fr)) !important}
     .tab{font-size:10px;padding:12px 8px}
     .summary{grid-template-columns:1fr !important}
     .bs-grid{grid-template-columns:1fr !important}
@@ -495,10 +495,19 @@
       <div class="brand-title">Financial Programming Framework</div>
     </div>
   </div>
-  <a href="nation-state.html" class="btn" style="width:auto;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 16px">&larr; Back to Full Simulator</a>
+ 
 </header>
 
 <main>
+  <!-- Tab strip -->
+  <div class="tabs" id="tabs" role="tablist">
+    <button class="tab" data-tab="simulator" role="tab" title="Back to the Policy Simulator on this page">Policy Simulator</button>
+    <a href="real-sector.html" class="tab tab-accent" style="--accent-color:#2563EB;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Real Sector deep-dive on its own page">Real</a>
+    <button class="tab active tab-accent" data-tab="external" style="--accent-color:#059669" role="tab">External</button>
+    <a href="government-sector.html" class="tab tab-accent" style="--accent-color:#D92D20;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Government Sector deep-dive on its own page">Government</a>
+    <a href="monetary-sector.html" class="tab tab-accent" style="--accent-color:#7C3AED;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer" role="tab" title="Opens the Monetary Sector deep-dive on its own page">Monetary</a>
+  </div>
+
   <!-- External Sector — standalone page header (replaces the multi-sector tab strip) -->
   <div style="margin:4px 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)">
     <h1 style="font-family:var(--font-display);font-style:italic;font-size:26px;font-weight:400;letter-spacing:-.01em;margin:0;color:var(--ink)">External Sector — Deep Dive</h1>
