@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rails &amp; Official Gold — Macro Clocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117; --bg-raised:#141b23; --bg-panel:#161d26;
+    --line:#26303c; --line-soft:#1d252f;
+    --ink:#e9e6dc; --ink-dim:#9aa4af; --ink-faint:#616d79;
+    --gold:#c9a24a; --teal:#4fa8a0; --rose:#c2726c; --purple:#8b8fd6;
+    --accent:#4fa8a0;
+    --radius:10px;
+    --serif:'DM Serif Display', Georgia, serif;
+    --sans:'Manrope', -apple-system, sans-serif;
+    --mono:'DM Mono', 'SF Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15.5px; line-height:1.62; -webkit-font-smoothing:antialiased; padding-bottom:60px;}
+  a{color:var(--teal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 20px;}
+  ::selection{background:color-mix(in srgb, var(--accent) 35%, transparent); color:#fff;}
+
+  .issues-nav{display:flex; gap:6px; overflow-x:auto; padding:14px 20px; white-space:nowrap; scrollbar-width:none; border-bottom:1px solid var(--line); background:var(--bg-raised);}
+  .issues-nav::-webkit-scrollbar{display:none;}
+  .issue-pill{font-family:var(--mono); font-size:10.5px; letter-spacing:.03em; padding:6px 11px; border-radius:20px; border:1px solid var(--line); color:var(--ink-faint); flex-shrink:0;}
+  .issue-pill:hover{text-decoration:none; color:var(--ink);}
+  .issue-pill.active{border-color:var(--c); color:var(--c); background:color-mix(in srgb, var(--c) 12%, transparent);}
+
+  header.top{padding:36px 0 22px; border-bottom:1px solid var(--line);
+    background:radial-gradient(ellipse 640px 200px at 20% -20%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+  .eyebrow a{color:var(--ink-faint);}
+  .eyebrow a:hover{color:var(--accent);}
+  h1{font-family:var(--serif); font-weight:400; font-size:clamp(28px,5.5vw,38px); line-height:1.1; letter-spacing:-.01em; margin-bottom:12px;}
+  p.thesis{color:var(--ink-dim); font-size:15.5px; max-width:60ch; margin-bottom:18px;}
+  .meta-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:20px; border:1px solid var(--accent); color:var(--accent);}
+  .tag2b{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:20px; border:1px solid var(--gold); color:var(--gold);}
+  .as-of{font-family:var(--mono); font-size:11px; color:var(--ink-faint);}
+  .deep-link{font-family:var(--mono); font-size:11.5px; color:var(--accent); margin-left:auto;}
+
+  nav.toc{position:sticky; top:0; z-index:10; background:rgba(13,17,23,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); overflow-x:auto; white-space:nowrap; scrollbar-width:none;}
+  nav.toc::-webkit-scrollbar{display:none;}
+  nav.toc .wrap{display:flex; gap:2px; padding:0 20px;}
+  nav.toc a{font-family:var(--sans); font-weight:600; font-size:12.5px; color:var(--ink-faint); padding:12px 11px; display:inline-block; border-bottom:2px solid transparent;}
+  nav.toc a:hover{color:var(--ink-dim); text-decoration:none;}
+
+  main{padding-top:8px;}
+  section{padding:30px 0 6px; border-bottom:1px solid var(--line-soft); scroll-margin-top:52px;}
+  section:last-of-type{border-bottom:none;}
+  h2{font-family:var(--serif); font-weight:400; font-size:23px; margin-bottom:12px; letter-spacing:-.01em;}
+  p{margin-bottom:12px; color:var(--ink-dim);}
+  p b, p strong{color:var(--ink); font-weight:700;}
+  .lede{color:var(--ink); font-size:16px;}
+
+  .region{background:var(--bg-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:8px; padding:14px 16px; margin-bottom:12px;}
+  .region h4{font-family:var(--mono); font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; text-transform:uppercase; letter-spacing:.04em;}
+  .region p{margin-bottom:0; font-size:14px;}
+
+  .views{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
+  .view-row{background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px;}
+  .view-row .who{font-family:var(--mono); font-size:11.5px; color:var(--accent); margin-bottom:4px;}
+  .view-row p{margin-bottom:0; font-size:14px;}
+
+  .rule{font-family:var(--mono); font-size:12.5px; color:var(--ink-dim); background:var(--bg-panel); border:1px solid var(--line); border-left:3px solid var(--gold); padding:12px 14px; border-radius:8px; margin:16px 0;}
+
+  .sleeves-mini{display:grid; grid-template-columns:1fr; gap:8px; margin-bottom:14px;}
+  .sleeve-mini{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:12px 14px;}
+  .sleeve-mini .tag2{font-family:var(--mono); font-size:11px; color:var(--accent);}
+  .sleeve-mini p{margin:4px 0 0; font-size:13.5px;}
+
+  .mstone{position:relative; padding-left:22px; margin-bottom:16px; border-left:1px solid var(--line);}
+  .mstone::before{content:''; position:absolute; left:-5px; top:3px; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px var(--bg);}
+  .mstone .when{font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-bottom:4px;}
+  .mstone p{font-size:14px; margin-bottom:4px;}
+
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px;}
+  th{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; text-align:left; color:var(--ink-faint); padding:8px 9px; border-bottom:1px solid var(--line);}
+  td{padding:9px; border-bottom:1px solid var(--line-soft); color:var(--ink-dim); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px; margin-bottom:16px;}
+  .tbl-wrap table{margin-bottom:0;}
+
+  .trades{display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:14px;}
+  @media(min-width:640px){.trades{grid-template-columns:1fr 1fr 1fr;}}
+  .trade-card{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:14px;}
+  .trade-card h5{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); margin-bottom:8px;}
+  .trade-card p{font-size:13.5px; margin-bottom:0;}
+
+  .src-list{display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-bottom:16px;}
+  .src-list a{display:flex; justify-content:space-between; gap:10px; background:var(--bg-raised); padding:11px 14px; color:var(--ink); text-decoration:none; font-size:13px; border-bottom:1px solid var(--line-soft);}
+  .src-list a:last-child{border-bottom:none;}
+  .src-list a:hover{background:var(--bg-panel);}
+  .src-list a .d{font-family:var(--mono); color:var(--ink-faint); font-size:11px; white-space:nowrap;}
+
+  footer.foot{padding:34px 0 10px;}
+  .foot-links{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .foot-links a{font-family:var(--mono); font-size:11.5px; color:var(--ink-dim); border:1px solid var(--line); border-radius:20px; padding:6px 12px;}
+  .foot-links a:hover{color:var(--accent); border-color:var(--accent); text-decoration:none;}
+  .foot-note{text-align:center; padding-top:14px; color:var(--ink-faint); font-family:var(--mono); font-size:11px; border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<div class="issues-nav">
+  <a class="issue-pill" style="--c:#c2726c" href="dollar-funding-stress.html">Dollar &amp; Funding Stress</a>
+  <a class="issue-pill" style="--c:#c9a24a" href="fiscal-dominance.html">Fiscal Dominance</a>
+  <a class="issue-pill active" style="--c:#4fa8a0" href="rails-and-gold.html">Rails &amp; Official Gold</a>
+  <a class="issue-pill" style="--c:#8b8fd6" href="neo-mercantilist-alignment.html">Neo-Mercantilist Alignment</a>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow"><a href="index.html">Finance &amp; Family</a> / <a href="macro-clocks.html">Macro Clocks</a> / Rails &amp; Official Gold</div>
+    <h1>The store-of-value job is moving out of the bond market.</h1>
+    <p class="thesis lede">Not toward one clean successor — toward a coexistence. Official gold and dollar-denominated bills or stablecoins appear to be splitting the work that a 30-year Treasury used to do alone: one holds value, the other keeps settlement moving.</p>
+    <div class="meta-row">
+      <span class="tag">Clock C</span>
+      <span class="tag2b">+ Clock B — gold</span>
+      <span class="as-of">As of 29 Aug 2026</span>
+    </div>
+    <p style="margin-top:10px;"><a class="deep-link" href="macro-clocks.html?tab=ledger&clock=C" style="margin-left:0;">Clock C ledger →</a> &nbsp;·&nbsp; <a class="deep-link" href="macro-clocks.html?tab=ledger&geo=China" style="margin-left:0;">China thread →</a></p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#geography">Geography</a>
+    <a href="#views">Views</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#milestones">Milestones</a>
+    <a href="#watchlist">Watch List</a>
+    <a href="#trades">Trade Ideas</a>
+    <a href="#references">References</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="geography">
+    <h2>Where it's playing out</h2>
+    <div class="region">
+      <h4>China</h4>
+      <p>The four large state banks shut retail paper-gold products; Shanghai Gold Exchange physical delivery and Hong Kong vault capacity are both expanding (Bravos Research, 27 Aug). China's Treasury holdings are down roughly 50% since 2014 — a slow, multi-year rotation away from long coupons, not a sudden move. June's roughly 173-tonne import figure against an approximately $125bn trade surplus implies settlement-scale gold pricing well above the paper market — Gromen's range runs $22,600–$25,700.</p>
+    </div>
+    <div class="region">
+      <h4>Europe / UK</h4>
+      <p>Gold has already displaced the euro as the second official reserve asset (Lacalle, 27 Aug) — a threshold that appears to have been crossed quietly, without a single dramatic headline marking the moment.</p>
+    </div>
+    <div class="region">
+      <h4>Global</h4>
+      <p>IMF COFER data — which covers FX reserves only, and explicitly excludes gold — still shows the US dollar around 56–57% of FX reserves even as the gold side of the overall reserve picture shifts underneath it. The two data sets are answering different questions, and reading them together is where the real signal is.</p>
+    </div>
+  </section>
+
+  <section id="views">
+    <h2>How the analysts read it</h2>
+    <div class="views">
+      <div class="view-row"><div class="who">Daniel Lacalle</div><p>Three limits are already broken — economic, fiscal, inflationary. Long sovereign debt is losing the store-of-value job specifically, not the transaction job. The dollar stays the fiat reserve currency simply because every other fiat option is worse. Stablecoins are the bridge letting the transaction dollar keep functioning even as the store-of-value job migrates elsewhere. CBDCs, in his read, are recentralization dressed as innovation — not a hedge against anything.</p></div>
+      <div class="view-row"><div class="who">Luke Gromen</div><p>Settlement-scale gold arithmetic built from China's import-versus-surplus gap. A gold-certificate revaluation could inject roughly $5–5.5tn into the TGA — presented explicitly as arithmetic, not a week-one prediction.</p></div>
+      <div class="view-row"><div class="who">Bravos Research</div><p>The China paper-gold shutdown is a plumbing story as much as a price story — retail flow is being redirected specifically toward physical delivery and Hong Kong vaulting.</p></div>
+      <div class="view-row"><div class="who">Brent Johnson</div><p>Reframes "Fort Knox" as a reserve-policy question rather than a conspiracy question — the live issue is how official gold gets valued and used, not whether it physically exists.</p></div>
+    </div>
+    <div class="rule"><b>Crowded-trade fix to hold onto —</b> a gold ETF is not allocated metal, and BTC is not official gold. Two different vehicles doing two different jobs; conflating them is the single most common error on this thread.</div>
+  </section>
+
+  <section id="strategy">
+    <h2>Investment strategy &amp; portfolio</h2>
+    <p>This thread maps to two sleeves simultaneously. <b>Sleeve B (Store of Value)</b> — unlevered allocated gold; the retiree variant, per Gromen's telling, leans on TIPS plus scheduled physical-coin sales rather than a 30-year bond ladder. <b>Sleeve F (Alternate Rails)</b> — stablecoins treated as bills, not as a bond substitute; BTC only after its correlation to Nasdaq actually breaks, which the ledger hasn't shown yet.</p>
+    <div class="sleeves-mini">
+      <div class="sleeve-mini"><span class="tag2">Sleeve B — Store of Value</span><p>Unlevered allocated gold, sized deliberately rather than accumulated on autopilot.</p></div>
+      <div class="sleeve-mini"><span class="tag2">Sleeve F — Alternate Rails</span><p>Stablecoins as a bill-equivalent cash tool. BTC stays market-weight until its Nasdaq correlation breaks.</p></div>
+    </div>
+  </section>
+
+  <section id="milestones">
+    <h2>Milestones on this thread</h2>
+    <div class="mstone">
+      <div class="when">Milestone 1 — 1 to 4 weeks out</div>
+      <p>Physical premiums and SGE delivery volumes rising is read as Bravos/Gromen confirmation — the signal to shift paper-gold beta into allocated metal rather than add more paper exposure.</p>
+    </div>
+    <div class="mstone">
+      <div class="when">Milestone 3 — 2027</div>
+      <p>This is the thread's clearest coexistence test: EM stablecoin scale on one side, SGE/Hong Kong physical share on the other — plausibly rising together rather than one displacing the other.</p>
+    </div>
+    <div class="mstone">
+      <div class="when">Milestone 4 — 2028–31</div>
+      <p>Gromen's settlement-gold arithmetic and Lacalle's coexistence thesis both become long-horizon structural questions rather than near-term trades by this point.</p>
+    </div>
+  </section>
+
+  <section id="watchlist">
+    <h2>Watch list indicators</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:20%">Item</th><th style="width:30%">Measure</th><th style="width:30%">Primary source</th><th style="width:20%">Tests</th></tr></thead>
+        <tbody>
+          <tr><td><b>FX reserve mix</b></td><td>COFER USD/EUR shares</td><td><a href="https://data.imf.org/en/datasets/IMF.STA:COFER" target="_blank">IMF COFER</a></td><td>Gammon vs Lacalle/Every (gold not in COFER)</td></tr>
+          <tr><td><b>Official gold</b></td><td>PBoC tonnes; WGC central-bank net buying</td><td><a href="https://www.gold.org/goldhub/research/gold-demand-trends" target="_blank">WGC GDT</a></td><td>Clock B</td></tr>
+          <tr><td><b>China physical</b></td><td>SGE withdrawals; premium; customs imports</td><td>SGE; China Customs</td><td>Bravos; Gromen scale</td></tr>
+          <tr><td><b>China UST vs gold</b></td><td>TIC China holdings vs PBoC gold</td><td>TIC; PBoC</td><td>Bravos path</td></tr>
+          <tr><td><b>Stablecoin rail</b></td><td>USDT+USDC AUM; T-bill backing mix</td><td>Issuer attestations; Genius/Clarity calendar</td><td>Lacalle; Every</td></tr>
+          <tr><td><b>BTC regime</b></td><td>60-day correlation vs Nasdaq and 10y real</td><td><a href="https://fred.stlouisfed.org/series/NASDAQCOM" target="_blank">NASDAQCOM</a>; DFII10</td><td>Gromen satellite rule</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="trades">
+    <h2>What this means to trade</h2>
+    <div class="trades">
+      <div class="trade-card"><h5>Individuals</h5><p>Size allocated gold so a 20–30% Clock A drawdown doesn't force a sale at the worst moment. Don't assume gold offsets a stronger dollar and a higher 30-year printing on the same day — historically it often doesn't.</p></div>
+      <div class="trade-card"><h5>Companies</h5><p>Hold working capital in bills rather than reaching for a stablecoin yield story prematurely — the rail is a settlement innovation here, not yet a proven treasury-management tool at scale.</p></div>
+      <div class="trade-card"><h5>Nation-states</h5><p>Accumulate official gold specifically on DXY or real-yield spikes, not steadily regardless of price. Keep allocated gold in a jurisdiction you can actually deliver from, not just custody in. Treat a CBDC rollout as a control-architecture decision, not a reserve-diversification one.</p></div>
+    </div>
+  </section>
+
+  <section id="references">
+    <h2>References &amp; resources</h2>
+    <div class="src-list">
+      <a href="https://youtu.be/KwlbirZxPQc" target="_blank" rel="noopener"><span>Daniel Lacalle / MacroVoices #547</span><span class="d">27 Aug 2026</span></a>
+      <a href="https://youtu.be/cbknsJEshD8" target="_blank" rel="noopener"><span>Bravos Research</span><span class="d">27 Aug 2026</span></a>
+      <a href="https://youtu.be/R1VLmuXYU3o" target="_blank" rel="noopener"><span>Luke Gromen — gold, BTC, framework</span><span class="d">26–28 Aug 2026</span></a>
+      <a href="https://youtu.be/Q5qdRK5kze0" target="_blank" rel="noopener"><span>Brent Johnson — Fort Knox</span><span class="d">16 Aug 2026</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="macro-clocks.html?tab=ledger&clock=C">↗ Clock C ledger</a>
+      <a href="macro-clocks.html?tab=ledger&geo=China">↗ China thread</a>
+      <a href="index.html#note-clock-b-gold">↗ Weekly note on the hub</a>
+      <a href="neo-mercantilist-alignment.html">Next issue: Neo-Mercantilist Alignment →</a>
+    </div>
+    <div class="foot-note">MACRO CLOCKS · ONE OF FOUR ISSUES · NOT ADVICE</div>
+  </div>
+</footer>
+
+</body>
+</html>

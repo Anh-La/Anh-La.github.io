@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dollar &amp; Funding Stress — Macro Clocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117; --bg-raised:#141b23; --bg-panel:#161d26;
+    --line:#26303c; --line-soft:#1d252f;
+    --ink:#e9e6dc; --ink-dim:#9aa4af; --ink-faint:#616d79;
+    --gold:#c9a24a; --teal:#4fa8a0; --rose:#c2726c; --purple:#8b8fd6;
+    --accent:#c2726c;
+    --radius:10px;
+    --serif:'DM Serif Display', Georgia, serif;
+    --sans:'Manrope', -apple-system, sans-serif;
+    --mono:'DM Mono', 'SF Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15.5px; line-height:1.62; -webkit-font-smoothing:antialiased; padding-bottom:60px;}
+  a{color:var(--teal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 20px;}
+  ::selection{background:color-mix(in srgb, var(--accent) 35%, transparent); color:#fff;}
+
+  .issues-nav{display:flex; gap:6px; overflow-x:auto; padding:14px 20px; white-space:nowrap; scrollbar-width:none; border-bottom:1px solid var(--line); background:var(--bg-raised);}
+  .issues-nav::-webkit-scrollbar{display:none;}
+  .issue-pill{font-family:var(--mono); font-size:10.5px; letter-spacing:.03em; padding:6px 11px; border-radius:20px; border:1px solid var(--line); color:var(--ink-faint); flex-shrink:0;}
+  .issue-pill:hover{text-decoration:none; color:var(--ink);}
+  .issue-pill.active{border-color:var(--c); color:var(--c); background:color-mix(in srgb, var(--c) 12%, transparent);}
+
+  header.top{padding:36px 0 22px; border-bottom:1px solid var(--line);
+    background:radial-gradient(ellipse 640px 200px at 20% -20%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+  .eyebrow a{color:var(--ink-faint);}
+  .eyebrow a:hover{color:var(--accent);}
+  h1{font-family:var(--serif); font-weight:400; font-size:clamp(28px,5.5vw,38px); line-height:1.1; letter-spacing:-.01em; margin-bottom:12px;}
+  p.thesis{color:var(--ink-dim); font-size:15.5px; max-width:60ch; margin-bottom:18px;}
+  .meta-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:20px; border:1px solid var(--accent); color:var(--accent);}
+  .as-of{font-family:var(--mono); font-size:11px; color:var(--ink-faint);}
+  .deep-link{font-family:var(--mono); font-size:11.5px; color:var(--accent); margin-left:auto;}
+
+  nav.toc{position:sticky; top:0; z-index:10; background:rgba(13,17,23,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); overflow-x:auto; white-space:nowrap; scrollbar-width:none;}
+  nav.toc::-webkit-scrollbar{display:none;}
+  nav.toc .wrap{display:flex; gap:2px; padding:0 20px;}
+  nav.toc a{font-family:var(--sans); font-weight:600; font-size:12.5px; color:var(--ink-faint); padding:12px 11px; display:inline-block; border-bottom:2px solid transparent;}
+  nav.toc a:hover{color:var(--ink-dim); text-decoration:none;}
+
+  main{padding-top:8px;}
+  section{padding:30px 0 6px; border-bottom:1px solid var(--line-soft); scroll-margin-top:52px;}
+  section:last-of-type{border-bottom:none;}
+  h2{font-family:var(--serif); font-weight:400; font-size:23px; margin-bottom:12px; letter-spacing:-.01em;}
+  p{margin-bottom:12px; color:var(--ink-dim);}
+  p b, p strong{color:var(--ink); font-weight:700;}
+  .lede{color:var(--ink); font-size:16px;}
+
+  .region{background:var(--bg-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:8px; padding:14px 16px; margin-bottom:12px;}
+  .region h4{font-family:var(--sans); font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; font-family:var(--mono); text-transform:uppercase; letter-spacing:.04em;}
+  .region p{margin-bottom:0; font-size:14px;}
+
+  .views{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
+  .view-row{background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px;}
+  .view-row .who{font-family:var(--mono); font-size:11.5px; color:var(--accent); margin-bottom:4px;}
+  .view-row p{margin-bottom:0; font-size:14px;}
+
+  .rule{font-family:var(--mono); font-size:12.5px; color:var(--ink-dim); background:var(--bg-panel); border:1px solid var(--line); border-left:3px solid var(--gold); padding:12px 14px; border-radius:8px; margin:16px 0;}
+
+  .sleeves-mini{display:grid; grid-template-columns:1fr; gap:8px; margin-bottom:14px;}
+  .sleeve-mini{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:12px 14px;}
+  .sleeve-mini .tag2{font-family:var(--mono); font-size:11px; color:var(--accent);}
+  .sleeve-mini p{margin:4px 0 0; font-size:13.5px;}
+
+  .mstone{position:relative; padding-left:22px; margin-bottom:16px; border-left:1px solid var(--line);}
+  .mstone::before{content:''; position:absolute; left:-5px; top:3px; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px var(--bg);}
+  .mstone .when{font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-bottom:4px;}
+  .mstone p{font-size:14px; margin-bottom:4px;}
+
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px;}
+  th{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; text-align:left; color:var(--ink-faint); padding:8px 9px; border-bottom:1px solid var(--line);}
+  td{padding:9px; border-bottom:1px solid var(--line-soft); color:var(--ink-dim); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px; margin-bottom:16px;}
+  .tbl-wrap table{margin-bottom:0;}
+
+  .trades{display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:14px;}
+  @media(min-width:640px){.trades{grid-template-columns:1fr 1fr 1fr;}}
+  .trade-card{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:14px;}
+  .trade-card h5{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); margin-bottom:8px;}
+  .trade-card p{font-size:13.5px; margin-bottom:0;}
+
+  .src-list{display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-bottom:16px;}
+  .src-list a{display:flex; justify-content:space-between; gap:10px; background:var(--bg-raised); padding:11px 14px; color:var(--ink); text-decoration:none; font-size:13px; border-bottom:1px solid var(--line-soft);}
+  .src-list a:last-child{border-bottom:none;}
+  .src-list a:hover{background:var(--bg-panel);}
+  .src-list a .d{font-family:var(--mono); color:var(--ink-faint); font-size:11px; white-space:nowrap;}
+
+  footer.foot{padding:34px 0 10px;}
+  .foot-links{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .foot-links a{font-family:var(--mono); font-size:11.5px; color:var(--ink-dim); border:1px solid var(--line); border-radius:20px; padding:6px 12px;}
+  .foot-links a:hover{color:var(--accent); border-color:var(--accent); text-decoration:none;}
+  .foot-note{text-align:center; padding-top:14px; color:var(--ink-faint); font-family:var(--mono); font-size:11px; border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<div class="issues-nav">
+  <a class="issue-pill active" style="--c:#c2726c" href="dollar-funding-stress.html">Dollar &amp; Funding Stress</a>
+  <a class="issue-pill" style="--c:#c9a24a" href="fiscal-dominance.html">Fiscal Dominance</a>
+  <a class="issue-pill" style="--c:#4fa8a0" href="rails-and-gold.html">Rails &amp; Official Gold</a>
+  <a class="issue-pill" style="--c:#8b8fd6" href="neo-mercantilist-alignment.html">Neo-Mercantilist Alignment</a>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow"><a href="index.html">Finance &amp; Family</a> / <a href="macro-clocks.html">Macro Clocks</a> / Dollar &amp; Funding Stress</div>
+    <h1>Nobody can pin the long end, and nobody can count the money.</h1>
+    <p class="thesis lede">Clock A's near-term question isn't whether the dollar survives — it's whether official tools can hold the long end down while the very definition of "the money supply" stops meaning what it used to. August's evidence points one way: the bid faded, and the measuring stick is broken.</p>
+    <div class="meta-row">
+      <span class="tag">Clock A</span>
+      <span class="as-of">As of 29 Aug 2026</span>
+      <a class="deep-link" href="macro-clocks.html?tab=ledger&clock=A">View the live Clock A ledger →</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#geography">Geography</a>
+    <a href="#views">Views</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#milestones">Milestones</a>
+    <a href="#watchlist">Watch List</a>
+    <a href="#trades">Trade Ideas</a>
+    <a href="#references">References</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="geography">
+    <h2>Where it's playing out</h2>
+    <div class="region">
+      <h4>United States</h4>
+      <p>The 19 August buyback ceiling was raised to $4bn; the 30-year fell roughly 9bp and gave nearly all of it back within the week (Johnson, 23 Aug; Gammon, 27 Aug). This is not QE — it's a reverse auction, debt is retired, and no new money is created. The next tool under discussion is a Treasury General Account (TGA) drawdown of up to roughly $500bn — cash already earmarked for entitlement spending — used to buy 10-year notes, with issuance later refilling the account.</p>
+    </div>
+    <div class="region">
+      <h4>Japan / Asia</h4>
+      <p>Steve Hanke's 18 August read: yen intervention fails the same test it failed in 1997. NIIP dynamics and the carry trade remain the binding constraint, not the spot-market intervention itself — a pattern Snider separately frames as an "eurodollar thermometer" reading on the same underlying stress.</p>
+    </div>
+    <div class="region">
+      <h4>Global</h4>
+      <p>Michael Howell's 22 July view sets the ceiling on the whole thread: global liquidity has already peaked, a 5–6 year refinancing wall is approaching, and ultimately the market — not any single buyback program — sets the long end if the official bid isn't large enough to matter.</p>
+    </div>
+  </section>
+
+  <section id="views">
+    <h2>How the analysts read it</h2>
+    <div class="views">
+      <div class="view-row"><div class="who">Brent Johnson</div><p>The dollar as a post-1971 "dagger"; the Triffin flip is real, but the debasement trade is not a straight line — shortage episodes tend to strengthen the dollar first, before any structural decline shows up.</p></div>
+      <div class="view-row"><div class="who">Michael Howell</div><p>Global liquidity already peaked. The 5–6 year refinancing wall is the structural clock underneath everything else in this thread. The market sets the rate if the official bid is too small — full stop.</p></div>
+      <div class="view-row"><div class="who">Steve Hanke</div><p>Yen intervention fails the 1997 test. Spot-market defense doesn't fix an NIIP and carry-trade problem.</p></div>
+      <div class="view-row"><div class="who">Jeff Snyder (Eurodollar University)</div><p>Four distinct growth/inflation regimes exist, and a default 60/40 portfolio fails specifically in the wrong one — which regime you're in matters more than any single indicator.</p></div>
+      <div class="view-row"><div class="who">Jeff Snider</div><p>Nobody can count the relevant money. M1 and M2 are "obsolete domestic fossils" — eurodollar instruments, swaps, and derivatives behave as money in ways the official stock measures simply don't see. Fed "printing," in this read, is often a reaction to unseen destruction elsewhere in the system, not a proactive policy choice.</p></div>
+    </div>
+    <div class="rule"><b>Rule retained across this whole map —</b> the 30-year stayed high after the high-yield auction because of curve uninversion / front-end steepening and term premium, not a ratings cut, a "too much debt" headline, or a CPI print. Hunt's scorecard: nominal rate = real rate + expected inflation + term/risk premium — and all three can rise together, which is exactly what makes this thread and the fiscal-dominance thread inseparable in practice.</div>
+  </section>
+
+  <section id="strategy">
+    <h2>Investment strategy &amp; portfolio</h2>
+    <p>This is <b>Sleeve A (Liquidity)</b> — the sleeve whose entire job is to survive Clock A and stay positioned to ride the bill rail if the neo-mercantilist alignment thread scales stablecoin demand for short paper. Default posture: bills, cash-like instruments, and pre-arranged swap or repo access, arranged <i>before</i> a stress event, not during one.</p>
+    <div class="sleeves-mini">
+      <div class="sleeve-mini"><span class="tag2">Do</span><p>Hold liquidity in bills; keep swap/repo lines pre-arranged; treat any single buyback rally as unproven until it survives more than a week.</p></div>
+      <div class="sleeve-mini"><span class="tag2">Don't</span><p>Rebuild core 20–30y duration on a bid that hasn't demonstrated durability — that's a tactical call for Sleeve C (Duration), not a core allocation, and Sleeve C stays small until its own clock actually prints.</p></div>
+    </div>
+  </section>
+
+  <section id="milestones">
+    <h2>Milestones on this thread</h2>
+    <div class="mstone">
+      <div class="when">Milestone 0 — already printed (late Aug 2026)</div>
+      <p>High 30-year after the high-yield auction; the $4bn buyback faded within the week. Separate Clock A from Clock B mentally — don't let one confirm the other prematurely.</p>
+    </div>
+    <div class="mstone">
+      <div class="when">Milestone 1 — 1 to 4 weeks out</div>
+      <p>The next buyback test is the cleanest signal on this whole thread. A bid that drops yields 5–15bp then fades confirms Johnson/Gammon — fade duration, hard stop. A bid that holds while bills rally on stablecoin headlines instead confirms Every + Lacalle's alignment thesis — own the bill, but that still doesn't make the 30-year core.</p>
+    </div>
+    <div class="mstone">
+      <div class="when">Milestone 2 — 1 to 3 months out</div>
+      <p>Midterm pressure on the 10-year; a cooler CPI print combined with large deficits should be read as Snider's shock-fade plus Hunt's broken-savings dynamic — not as a return to a normal, benign rate environment.</p>
+    </div>
+  </section>
+
+  <section id="watchlist">
+    <h2>Watch list indicators</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:20%">Item</th><th style="width:30%">Measure</th><th style="width:30%">Primary source</th><th style="width:20%">Tests</th></tr></thead>
+        <tbody>
+          <tr><td><b>Buyback test</b></td><td>Max vs accepted par; 10y/30y move t0 to t+1 / t+5</td><td><a href="https://www.treasurydirect.gov/auctions/announcements-data-results/buy-backs/" target="_blank">Treasury buybacks</a>, <a href="https://fred.stlouisfed.org/series/DGS30" target="_blank">FRED DGS30</a></td><td>Johnson/Gammon fade vs Every twist</td></tr>
+          <tr><td><b>TGA</b></td><td>TGA balance; bills vs coupons</td><td><a href="https://fred.stlouisfed.org/series/WTREGEN" target="_blank">FRED WTREGEN</a></td><td>Gammon's next tool</td></tr>
+          <tr><td><b>Auction / curve</b></td><td>Tail, bid-to-cover, 2s10s</td><td><a href="https://fred.stlouisfed.org/series/T10Y2Y" target="_blank">FRED T10Y2Y</a></td><td>Opening 30y fact; Howell</td></tr>
+          <tr><td><b>Fisher pieces</b></td><td>10y real, breakeven, term premium</td><td><a href="https://fred.stlouisfed.org/series/DFII10" target="_blank">DFII10</a>, <a href="https://fred.stlouisfed.org/series/T10YIE" target="_blank">T10YIE</a></td><td>Hunt</td></tr>
+          <tr><td><b>Yen / basis</b></td><td>USDJPY; 3m FX-swap basis</td><td><a href="https://fred.stlouisfed.org/series/DEXJPUS" target="_blank">DEXJPUS</a></td><td>Hanke; Snider</td></tr>
+          <tr><td><b>M2 vs shadow money</b></td><td>M2; Fed balance sheet; swap basis</td><td><a href="https://fred.stlouisfed.org/series/M2SL" target="_blank">M2SL</a>, <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">WALCL</a></td><td>Snider vs Hunt</td></tr>
+          <tr><td><b>DXY vs hard assets</b></td><td>DXY; gold; copper; diesel crack</td><td>ICE DXY; LBMA; EIA</td><td>Johnson; Every</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="trades">
+    <h2>What this means to trade</h2>
+    <div class="trades">
+      <div class="trade-card"><h5>Individuals</h5><p>Shorten personal duration. Hold near-term needs in bills, not bonds. Don't chase a 30-year rally that hasn't survived a full week yet. Build dollar liquidity ahead of a funding-stress event, not after one.</p></div>
+      <div class="trade-card"><h5>Companies</h5><p>Term out debt ahead of the refinancing wall. Match asset life to liability life. Buy USD liquidity before Clock A stress hits. Use options and collars instead of a naked bet on official support holding.</p></div>
+      <div class="trade-card"><h5>Nation-states</h5><p>Shorten official portfolio duration toward 0–2y paper. Pre-arrange dollar swap and repo lines now, while they're cheap to set up. Don't assume a headline buyback ceiling permanently pins the long end — it didn't survive a week in August.</p></div>
+    </div>
+  </section>
+
+  <section id="references">
+    <h2>References &amp; resources</h2>
+    <div class="src-list">
+      <a href="https://youtu.be/6UNpL51bayc" target="_blank" rel="noopener"><span>Brent Johnson — buybacks</span><span class="d">23 Aug 2026</span></a>
+      <a href="https://youtu.be/mXi5jB-kPJE" target="_blank" rel="noopener"><span>George Gammon — TGA / house of cards</span><span class="d">27 Aug 2026</span></a>
+      <a href="https://youtu.be/NiwtzN3nhTY" target="_blank" rel="noopener"><span>Michael Howell</span><span class="d">22 Jul 2026</span></a>
+      <a href="https://youtu.be/M02XW4bgyWs" target="_blank" rel="noopener"><span>Steve Hanke</span><span class="d">18 Aug 2026</span></a>
+      <a href="https://www.youtube.com/live/a4-N-0_6WU0" target="_blank" rel="noopener"><span>Eurodollar University / Jeff Snyder regimes</span><span class="d">9–10 Aug 2026</span></a>
+      <a href="https://youtu.be/bDiiqy-OiGE" target="_blank" rel="noopener"><span>Jeff Snider / Eurodollar Clips</span><span class="d">27 Aug 2026</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="macro-clocks.html?tab=ledger&clock=A">↗ Clock A ledger</a>
+      <a href="macro-clocks.html?tab=watchlist&q=buyback">↗ Watch list: buyback</a>
+      <a href="index.html#note-clock-a-money">↗ Weekly note on the hub</a>
+      <a href="fiscal-dominance.html">Next issue: Fiscal Dominance →</a>
+    </div>
+    <div class="foot-note">MACRO CLOCKS · ONE OF FOUR ISSUES · NOT ADVICE</div>
+  </div>
+</footer>
+
+</body>
+</html>

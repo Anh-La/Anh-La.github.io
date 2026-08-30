@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macro Clocks — A Living Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-raised:#141b23;
+    --bg-panel:#161d26;
+    --line:#26303c;
+    --line-soft:#1d252f;
+    --ink:#e9e6dc;
+    --ink-dim:#9aa4af;
+    --ink-faint:#616d79;
+    --gold:#c9a24a;
+    --gold-dim:#8a7233;
+    --teal:#4fa8a0;
+    --rose:#c2726c;
+    --clock-a:#c2726c;
+    --clock-b:#c9a24a;
+    --clock-c:#4fa8a0;
+    --clock-d:#8b8fd6;
+    --clock-none:#7f8794;
+    --radius:10px;
+    --serif:'DM Serif Display', Georgia, serif;
+    --sans:'Manrope', -apple-system, sans-serif;
+    --mono:'DM Mono', 'SF Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:64px;
+  }
+  ::selection{background:var(--gold-dim); color:#fff;}
+  a{color:var(--teal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 18px;}
+
+  header.top{
+    padding:28px 0 20px;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 700px 220px at 15% -20%, rgba(201,162,74,0.10), transparent 60%),
+      radial-gradient(ellipse 600px 200px at 90% -10%, rgba(79,168,160,0.08), transparent 60%);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex; align-items:center; gap:8px;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .eyebrow .left{display:flex; align-items:center; gap:8px;}
+  .hub-link{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:none;
+    color:var(--ink-faint); border:1px solid var(--line); border-radius:20px;
+    padding:4px 10px; transition:color .15s, border-color .15s;
+  }
+  .hub-link:hover{color:var(--gold); border-color:var(--gold-dim); text-decoration:none;}
+  .note-back{
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:10px; margin-left:12px;
+    font-family:var(--mono); font-size:11.5px; color:var(--teal);
+    background:rgba(79,168,160,0.08); border:1px solid rgba(79,168,160,0.25);
+    border-radius:20px; padding:4px 10px;
+  }
+  .note-back:hover{text-decoration:none; border-color:var(--teal);}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold); animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+  h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px, 6vw, 40px);
+    line-height:1.08;
+    margin:10px 0 8px;
+    letter-spacing:-0.01em;
+  }
+  header.top p.sub{color:var(--ink-dim); max-width:60ch; font-size:14.5px;}
+  header.top p.sub .note{color:var(--ink-faint); font-size:12.5px; display:block; margin-top:6px;}
+
+  .stats-bar{
+    display:flex; flex-wrap:wrap; gap:0;
+    margin:18px 0 4px;
+    border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; background:var(--bg-raised);
+  }
+  .stat{
+    flex:1; min-width:110px;
+    padding:11px 14px;
+    border-right:1px solid var(--line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .n{font-family:var(--serif); font-size:20px; color:var(--gold); line-height:1;}
+  .stat .l{font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); margin-top:4px;}
+
+  .clocks{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+    margin:16px 0 4px;
+  }
+  @media (max-width:680px){ .clocks{grid-template-columns:repeat(2,1fr);} }
+  .clock-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 12px;
+    cursor:pointer;
+    transition:border-color .15s, transform .15s;
+    position:relative;
+    overflow:hidden;
+  }
+  .clock-card:hover{border-color:var(--line-soft); transform:translateY(-1px);}
+  .clock-card.active{border-color:var(--dial-color, var(--gold));}
+  .clock-card svg{display:block; margin:0 auto 8px;}
+  .clock-card .cname{
+    font-family:var(--mono);
+    font-size:10.5px;
+    text-align:center;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--dial-color, var(--ink));
+  }
+  .clock-card .clabel{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-faint);
+    margin-top:2px;
+  }
+  .clock-card .cmeta{
+    text-align:center;
+    font-family:var(--mono);
+    font-size:9.5px;
+    color:var(--ink-faint);
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid var(--line-soft);
+  }
+  #clockA{--dial-color:var(--clock-a);}
+  #clockB{--dial-color:var(--clock-b);}
+  #clockC{--dial-color:var(--clock-c);}
+  #clockD{--dial-color:var(--clock-d);}
+
+  .clock-detail{
+    display:none;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-left:3px solid var(--dial-color, var(--gold));
+    border-radius:8px;
+    padding:16px 16px;
+    margin-top:12px;
+    font-size:14px;
+    color:var(--ink-dim);
+  }
+  .clock-detail.open{display:block;}
+  .clock-detail h4{font-family:var(--serif); font-weight:400; font-size:17px; color:var(--ink); margin-bottom:8px;}
+  .clock-detail b{color:var(--ink);}
+  .clock-detail .jump{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:11.5px;
+    color:var(--dial-color, var(--gold));
+  }
+
+  nav.tabs{
+    position:sticky; top:0; z-index:20;
+    background:rgba(13,17,23,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    white-space:nowrap;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs .wrap{display:flex; gap:2px; padding:0 18px;}
+  nav.tabs button{
+    background:none; border:none;
+    font-family:var(--sans); font-weight:600; font-size:13px;
+    color:var(--ink-faint);
+    padding:13px 12px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+    flex-shrink:0;
+  }
+  nav.tabs button:hover{color:var(--ink-dim);}
+  nav.tabs button.active{color:var(--gold); border-color:var(--gold);}
+
+  section.pane{display:none; padding:26px 0 10px;}
+  section.pane.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  h2.h{
+    font-family:var(--serif); font-weight:400; font-size:22px;
+    margin-bottom:4px; letter-spacing:-0.01em;
+  }
+  p.lead{color:var(--ink-dim); font-size:14px; margin-bottom:18px; max-width:64ch;}
+
+  .rule{
+    font-family:var(--mono); font-size:12.5px; color:var(--ink-dim);
+    background:var(--bg-panel); border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    padding:12px 14px; border-radius:8px; margin-bottom:20px;
+  }
+  .rule b{color:var(--gold); font-family:var(--sans);}
+
+  .framework-note{
+    font-size:13px; color:var(--ink-dim);
+    background:var(--bg-panel); border:1px dashed var(--line);
+    border-radius:8px; padding:12px 14px; margin-bottom:18px;
+  }
+  .framework-note b{color:var(--ink);}
+  .ledger-controls{
+    display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;
+  }
+  .ledger-controls select, .ledger-controls input[type=text]{
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:8px;
+    padding:9px 12px; color:var(--ink); font-family:var(--sans); font-size:13px;
+  }
+  .ledger-controls input[type=text]{flex:1; min-width:140px;}
+  .ledger-controls select{font-family:var(--mono); font-size:12px;}
+  .ledger-controls button.dir{
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:8px;
+    color:var(--ink-dim); font-family:var(--mono); font-size:11.5px; padding:9px 12px; cursor:pointer;
+  }
+  .ledger-controls button.dir:hover{color:var(--gold); border-color:var(--gold-dim);}
+  .ledger-count{
+    font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+    margin-bottom:14px;
+  }
+
+  .ledger-track{position:relative; padding-left:20px; border-left:1px solid var(--line);}
+  .lentry{position:relative; margin-bottom:16px;}
+  .lentry::before{
+    content:''; position:absolute; left:-25px; top:5px; width:9px; height:9px; border-radius:50%;
+    background:var(--dot-color, var(--ink-faint)); box-shadow:0 0 0 3px var(--bg);
+  }
+  .lentry .row1{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:3px;}
+  .lentry .date{font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); white-space:nowrap;}
+  .badge{
+    font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.05em;
+    padding:2px 7px; border-radius:20px; border:1px solid var(--badge-color, var(--ink-faint));
+    color:var(--badge-color, var(--ink-faint));
+  }
+  .lentry .speaker{font-weight:700; font-size:13.5px;}
+  .lentry .claim{font-size:13.5px; color:var(--ink-dim); margin:2px 0 2px;}
+  .lentry .src{font-family:var(--mono); font-size:11px;}
+
+  .accordion{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:14px;}
+  .acc-item + .acc-item{border-top:1px solid var(--line);}
+  .acc-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 16px; cursor:pointer; background:var(--bg-raised);
+    font-weight:700; font-size:14.5px; gap:10px;
+  }
+  .acc-head:hover{background:var(--bg-panel);}
+  .acc-head .htitle{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .acc-head .hmeta{font-family:var(--mono); font-size:10.5px; font-weight:500; color:var(--ink-faint);}
+  .acc-head .chev{color:var(--gold); font-family:var(--mono); transition:transform .2s; font-size:13px; flex-shrink:0;}
+  .acc-item.open .chev{transform:rotate(45deg);}
+  .acc-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .acc-item.open .acc-body{max-height:3000px;}
+  .acc-body-in{padding:2px 16px 16px; color:var(--ink-dim); font-size:14px;}
+  .acc-body-in p{margin-bottom:8px;}
+  .acc-body-in .measure{
+    font-family:var(--mono); font-size:12px; color:var(--teal);
+    background:rgba(79,168,160,0.08); border:1px solid rgba(79,168,160,0.25);
+    border-radius:6px; padding:8px 10px; margin-top:8px;
+  }
+  .geo-jump{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:11.5px; color:var(--gold);
+  }
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:18px;}
+  th{
+    font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    text-align:left; color:var(--ink-faint); padding:8px 10px; border-bottom:1px solid var(--line);
+  }
+  td{padding:10px 10px; border-bottom:1px solid var(--line-soft); color:var(--ink-dim); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td b, td strong{color:var(--ink);}
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); margin-bottom:18px;}
+  .tbl-wrap table{margin-bottom:0;}
+
+  .sleeves{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px;}
+  @media (max-width:680px){.sleeves{grid-template-columns:1fr 1fr;}}
+  .sleeve{
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:8px;
+    padding:12px 12px;
+  }
+  .sleeve .tag{font-family:var(--mono); font-size:11px; color:var(--gold);}
+  .sleeve h5{font-size:13.5px; margin:4px 0 4px;}
+  .sleeve p{font-size:12.5px; color:var(--ink-faint);}
+
+  .mstone{position:relative; padding-left:26px; margin-bottom:22px; border-left:1px solid var(--line);}
+  .mstone:last-child{border-left:1px solid transparent;}
+  .mstone::before{
+    content:''; position:absolute; left:-5px; top:2px; width:9px; height:9px;
+    border-radius:50%; background:var(--gold); box-shadow:0 0 0 3px var(--bg);
+  }
+  .mstone h4{font-family:var(--serif); font-weight:400; font-size:17px; margin-bottom:4px;}
+  .mstone .when{font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-bottom:8px;}
+  .mstone p{font-size:13.5px; color:var(--ink-dim); margin-bottom:6px;}
+
+  .wl-controls{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+  .wl-controls input[type=text]{
+    flex:1; min-width:160px;
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:8px;
+    padding:9px 12px; color:var(--ink); font-family:var(--sans); font-size:13.5px;
+  }
+  .wl-controls input::placeholder{color:var(--ink-faint);}
+  .wl-count{font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); align-self:center; padding:0 4px;}
+  .wl-row td{font-size:13px;}
+  .wl-row .num{font-family:var(--mono); color:var(--ink-faint); width:26px;}
+  .wl-row .tests{font-size:12px; color:var(--ink-faint);}
+
+  .src-list{display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .src-list a{
+    display:flex; justify-content:space-between; gap:10px;
+    background:var(--bg-raised); padding:12px 14px; color:var(--ink);
+    text-decoration:none; font-size:13.5px; border-bottom:1px solid var(--line-soft);
+  }
+  .src-list a:last-child{border-bottom:none;}
+  .src-list a:hover{background:var(--bg-panel);}
+  .src-list a .d{font-family:var(--mono); color:var(--ink-faint); font-size:11.5px; white-space:nowrap;}
+
+  .closing{
+    margin-top:30px; padding:16px; border-radius:var(--radius);
+    background:var(--bg-panel); border:1px solid var(--line);
+    font-size:13.5px; color:var(--ink-dim); line-height:1.65;
+  }
+
+  footer.foot{
+    text-align:center; padding:26px 18px 10px; color:var(--ink-faint);
+    font-family:var(--mono); font-size:11px;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">
+      <span class="left"><span class="dot"></span> A living ledger, not a snapshot</span>
+      <a class="hub-link" href="index.html#group-blog">← Weekly Notes hub</a>
+    </div>
+    <h1>Four clocks, one growing map.</h1>
+    <p class="sub">Every source below is logged with a date and a geography. The clocks, the regional lenses, and the scorecard are just filtered views over that one append-only log — nothing is deleted as new evidence arrives, a view is revised or reinforced instead.
+      <span class="note">This is not personal advice to buy or sell any security.</span>
+    </p>
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="clocks">
+      <div class="clock-card" id="clockA" onclick="toggleClock('A')">
+        <svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="var(--dial-color)" stroke-width="1.6" opacity="0.35"/><line x1="23" y1="23" x2="23" y2="9" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="23" x2="33" y2="27" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="23" r="2" fill="var(--dial-color)"/></svg>
+        <div class="cname">Clock A</div>
+        <div class="clabel">Dollar &amp; funding<br>stress — near term</div>
+        <div class="cmeta" id="metaA"></div>
+      </div>
+      <div class="clock-card" id="clockB" onclick="toggleClock('B')">
+        <svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="var(--dial-color)" stroke-width="1.6" opacity="0.35"/><line x1="23" y1="23" x2="23" y2="12" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="23" x2="14" y2="33" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="23" r="2" fill="var(--dial-color)"/></svg>
+        <div class="cname">Clock B</div>
+        <div class="clabel">Fiscal dominance<br>&amp; official gold</div>
+        <div class="cmeta" id="metaB"></div>
+      </div>
+      <div class="clock-card" id="clockC" onclick="toggleClock('C')">
+        <svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="var(--dial-color)" stroke-width="1.6" opacity="0.35"/><line x1="23" y1="23" x2="23" y2="15" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="23" x2="30" y2="17" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="23" r="2" fill="var(--dial-color)"/></svg>
+        <div class="cname">Clock C</div>
+        <div class="clabel">Coexistence<br>of rails</div>
+        <div class="cmeta" id="metaC"></div>
+      </div>
+      <div class="clock-card" id="clockD" onclick="toggleClock('D')">
+        <svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="var(--dial-color)" stroke-width="1.6" opacity="0.35"/><line x1="23" y1="23" x2="23" y2="10" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="23" x2="35" y2="23" stroke="var(--dial-color)" stroke-width="2" stroke-linecap="round"/><circle cx="23" cy="23" r="2" fill="var(--dial-color)"/></svg>
+        <div class="cname">Switch D</div>
+        <div class="clabel">Neo-mercantilist<br>alignment</div>
+        <div class="cmeta" id="metaD"></div>
+      </div>
+    </div>
+
+    <div class="clock-detail" id="detailA">
+      <h4>Clock A — near-term dollar and funding stress</h4>
+      <p><b>Johnson:</b> dollar as post-1971 "dagger," Triffin flip, debasement trade is not a straight line. <b>Howell:</b> global liquidity already peaked; 5–6 year refinancing wall; the market sets the long end. <b>Hanke:</b> yen intervention fails the 1997 test. <b>Snyder:</b> four growth/inflation regimes; 60/40 fails in the wrong climate. <b>Snider (27 Aug):</b> nobody can count the relevant money; M1/M2 are obsolete domestic fossils; eurodollar / swaps / derivatives behave as money; Fed "printing" is often a reaction to unseen destruction.</p>
+      <a class="jump" href="#" onclick="jumpToLedger({clock:'A'}); return false;">View every Clock A entry in the ledger →</a>
+      <div id="noteBackA"></div>
+    </div>
+    <div class="clock-detail" id="detailB">
+      <h4>Clock B — multi-year fiscal dominance and official gold</h4>
+      <p><b>Gromen:</b> NIIP about −80% of GDP; entitlements + interest + veterans ≈ 105% of receipts; soft YCC; gold-certificate revaluation injecting ~$5–5.5tn into the TGA; AI capex ~3.5% of GDP; 26 Aug — all roads lead to gold more than even he thought; China June ~173t imports vs ~$125bn surplus → settlement-scale gold ~$22,600–$25,700. <b>Hunt:</b> new inflationary era; capital scarcity; Fisher terms all rising; net national savings near zero; potential growth 2–2.5%; debt 120%→130% of GDP; interest already above military spend. <b>Gammon:</b> holdings-based reserve clock ~5 years vs transaction dollar ≥25 years; TGA as next tool after buybacks; AI capex ~$800bn→$1tn+/~$1.2tn by 2029; S&amp;P–housing–economy pyramid. <b>Bravos:</b> China four large banks shut retail paper-gold; SGE physical delivery; HK vaults; China Treasury holdings down ~50% since 2014.</p>
+      <a class="jump" href="#" onclick="jumpToLedger({clock:'B'}); return false;">View every Clock B entry in the ledger →</a>
+      <div id="noteBackB"></div>
+    </div>
+    <div class="clock-detail" id="detailC">
+      <h4>Clock C — coexistence of rails</h4>
+      <p><b>Lacalle:</b> three limits already broken — economic, fiscal, inflationary; long sovereign debt is losing the store-of-value job; USD stays the fiat reserve because other fiat is worse; stablecoins are the bridge; citizens and technology move first; CBDCs are recentralisation; gold already displaced the euro as the second official reserve asset.</p>
+      <a class="jump" href="#" onclick="jumpToLedger({clock:'C'}); return false;">View every Clock C entry in the ledger →</a>
+      <div id="noteBackC"></div>
+    </div>
+    <div class="clock-detail" id="detailD">
+      <h4>Switch D — neo-mercantilist alignment</h4>
+      <p><b>Every / Taggart (27 Aug):</b> nations are being forced onto US markets + tech + finance + stablecoins, or toward Iran, with a China complication; stablecoins are also a sanctions tool; Treasury twist — bills fund long-end buybacks; Genius/Clarity path, large EM stablecoin use by 2027; physical constraints — diesel, refining, copper, grid — bind before financial gimmicks; America has a better chance of prevailing than collapsing.</p>
+      <a class="jump" href="#" onclick="jumpToLedger({clock:'D'}); return false;">View every Switch D entry in the ledger →</a>
+      <div id="noteBackD"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="wrap" id="tabbar">
+    <button class="active" data-tab="ledger">Ledger</button>
+    <button data-tab="overview">Scorecard</button>
+    <button data-tab="geography">Geography</button>
+    <button data-tab="portfolio">Portfolio</button>
+    <button data-tab="milestones">Milestones</button>
+    <button data-tab="watchlist">Watch List</button>
+    <button data-tab="sources">Sources</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="pane active" id="ledger">
+    <h2 class="h">The ledger</h2>
+    <p class="lead">Every entry below is one dated, geography-tagged claim. Newest first by default. Filter by geography or clock to read a single thread evolve over time.</p>
+
+    <div class="framework-note">
+      <b>How this stays current:</b> the whole site is one array of entries — <span style="font-family:var(--mono)">{date, geography, clock, speaker, claim, source}</span>. Every tab (Clocks, Geography, Watch List) is a computed view over that same array. To extend the map, append a new entry with today's date; nothing upstream needs to be rewritten. See the code comment above <span style="font-family:var(--mono)">const ENTRIES</span> for the exact shape.
+    </div>
+
+    <div class="ledger-controls">
+      <select id="f-geo"></select>
+      <select id="f-clock"></select>
+      <input type="text" id="f-search" placeholder="Search claims, speakers…">
+      <button class="dir" id="f-dir" onclick="toggleDir()">Newest first ↓</button>
+    </div>
+    <div class="ledger-count" id="ledgerCount"></div>
+    <div class="ledger-track" id="ledgerTrack"></div>
+  </section>
+
+  <section class="pane" id="overview">
+    <h2 class="h">How the views sit together</h2>
+    <p class="lead">The standing scorecard, as of the most recent ledger entry. None of the four clocks is discarded when another prints.</p>
+
+    <div class="rule"><b>Rule retained from the first note —</b> the US 30-year stayed high after a high-yield auction because of curve uninversion / front-end steepening and term premium, not because a ratings cut, "too much debt" headline, or a CPI print was the binding story. Hunt's long-end scorecard: nominal rate = real rate + expected inflation + term/risk premium. All three can rise together.</p></div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th style="width:22%">Question</th><th>Keep all of these</th></tr>
+        <tr><td><b>Do official bids pin the long end?</b></td><td>Johnson/Gammon: $2bn→$4bn buyback, ~9bp rally, gone by Friday. Every: twist + stablecoin T-bill demand will be tried again as statecraft. Howell: the market still sets the rate if the bid is too small.</td></tr>
+        <tr><td><b>Is the dollar dying?</b></td><td>Gammon: holdings share already compressed (his ~52–53% clock). Official IMF COFER USD share of FX reserves recently ~56–57%. Lacalle/Every: transaction dollar can be extended by stablecoins. Johnson: shortage episodes strengthen USD first.</td></tr>
+        <tr><td><b>Is gold the endgame?</b></td><td>Gromen/Bravos/Hunt: official metal and settlement math. Every: neo-mercantilism need not be a gold standard; commodities-in-use and alignment matter in his sequence. Both can run.</td></tr>
+        <tr><td><b>Is AI a boom or a bomb?</b></td><td>Baker/Huang: real demand. Hunt/Gromen/Gammon: capex crowds scarce capital, FCF negative, job cuts before a restructure = credit event. Every: data centres hit grids and household bills.</td></tr>
+        <tr><td><b>What is money?</b></td><td>Hunt uses fiscal/monetary pressure. Snider: you cannot count the stock that matters. Every: stablecoins are a visible dollar liability the state can steer.</td></tr>
+      </table>
+    </div>
+
+    <p class="lead" style="margin-bottom:6px;">Mike Preston (same Thoughtful Money episode as Every): commodities as a 10-year theme; some TLT-style bonds if yields are forced down; equities can blow off then lose a large fraction. That is his book — it does not make 20–30y the gold substitute in this map.</p>
+
+    <h2 class="h" style="margin-top:26px;">Crowded-trade fixes</h2>
+    <p class="lead">Shorthand equivalences this map explicitly rejects.</p>
+    <div class="accordion"><div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><span>Show all 18 fixes</span><span class="chev">+</span></div>
+      <div class="acc-body"><div class="acc-body-in">
+        <p>Buybacks ≠ QE &nbsp;·&nbsp; M2 ≠ the money stock &nbsp;·&nbsp; USD settlement rail ≠ store of value &nbsp;·&nbsp; Capex up ≠ FCF up &nbsp;·&nbsp; Gold ETF ≠ allocated metal &nbsp;·&nbsp; BTC ≠ official gold &nbsp;·&nbsp; Hikes can worsen fiscal dominance &nbsp;·&nbsp; Private credit ≠ a missing Treasury bid &nbsp;·&nbsp; CBDC ≠ a hedge &nbsp;·&nbsp; BRICS unit ≠ the official hedge &nbsp;·&nbsp; Stablecoins ≠ long bonds (they are bills) &nbsp;·&nbsp; Twist-as-statecraft ≠ a proven pin &nbsp;·&nbsp; Commodity bull ≠ a straight line through a DXY squeeze &nbsp;·&nbsp; Alignment ≠ sell all gold &nbsp;·&nbsp; TLT in a model ≠ TLT as the core reserve &nbsp;·&nbsp; Fire waste / cut healthcare admin first ≠ a free fiscal fix.</p>
+      </div></div>
+    </div></div>
+
+    <div class="closing">
+      The 30-year stayed high after a high-yield auction because of curve and term premium. Every says the state will try to take that veto away with bills, buybacks, and stablecoin alignment. Johnson and Gammon say the last test already failed. The working book is to fade a bid that does not stick, own the bill rail if stablecoins scale, keep official gold for the store-of-value job, and treat diesel, copper, and watts as the physical constraint the financial plan cannot ignore.
+    </div>
+  </section>
+
+  <section class="pane" id="geography">
+    <h2 class="h">Key issues by geography</h2>
+    <p class="lead">Each region accumulates its own thread in the ledger. The narrative below is the standing synthesis; the badge shows how many entries and how recent.</p>
+    <div class="accordion" id="geo-acc"></div>
+  </section>
+
+  <section class="pane" id="portfolio">
+    <h2 class="h">Portfolio architecture</h2>
+    <p class="lead">Barbell A + B. D is the neo-mercantilist accumulation sleeve. C and F stay small until their clock prints.</p>
+
+    <div class="sleeves">
+      <div class="sleeve"><div class="tag">A</div><h5>Liquidity</h5><p>Survive Clock A; ride Every's bill rail. Default: bills / cash-like / swap access.</p></div>
+      <div class="sleeve"><div class="tag">B</div><h5>Store of value</h5><p>Clock B. Unlevered allocated gold. Retiree variant (Gromen): TIPS + scheduled physical-coin sales.</p></div>
+      <div class="sleeve"><div class="tag">C</div><h5>Duration</h5><p>Not the gold substitute. Tactical fade of official bids only. Preston may hold a bond sleeve; this map does not make TLT core.</p></div>
+      <div class="sleeve"><div class="tag">D</div><h5>Real capacity</h5><p>Hunt crowding + Every physical. Power, grid, copper-in-use, diesel/refining, food/energy security.</p></div>
+      <div class="sleeve"><div class="tag">E</div><h5>Credit hedge</h5><p>Spreads, private credit, consumer delinquency. Listed CDS/basis; haircut private-credit NAVs.</p></div>
+      <div class="sleeve"><div class="tag">F</div><h5>Alternate rails</h5><p>Clock C satellite. Stablecoins as bills; BTC only after it leaves the Nasdaq twin.</p></div>
+    </div>
+
+    <div class="accordion" id="portfolio-acc"></div>
+  </section>
+
+  <section class="pane" id="milestones">
+    <h2 class="h">Milestone plan</h2>
+    <p class="lead">Forward hypotheses the ledger will test. A view is supported when its indicator prints in the stated direction — it is not falsified by one opposite week if another clock is also printing.</p>
+    <div id="noteBackMilestones"></div>
+    <div id="mstone-list"></div>
+  </section>
+
+  <section class="pane" id="watchlist">
+    <h2 class="h">Watch list — measures &amp; sources</h2>
+    <p class="lead">26 indicators. Each is the thing to check before a ledger entry gets marked confirmed or faded. Search by name, source, or which view a print supports.</p>
+    <div id="noteBackWatchlist"></div>
+    <div class="wl-controls">
+      <input type="text" id="wl-search" placeholder="Search e.g. gold, TGA, Snider, buyback…">
+      <span class="wl-count" id="wl-count"></span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:4%">#</th><th style="width:18%">Item</th><th style="width:26%">Measure</th><th style="width:26%">Primary source</th><th style="width:26%">Tests</th></tr></thead>
+        <tbody id="wl-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="pane" id="sources">
+    <h2 class="h">Raw source feed</h2>
+    <p class="lead">The interpretation layer the ledger entries are drawn from — this is the full inbox, including items too situational to log as a standalone claim.</p>
+    <div class="src-list" id="src-list"></div>
+  </section>
+
+</main>
+
+<footer class="foot">MACRO CLOCKS · LIVING LEDGER, NOT ADVICE · UPDATED THROUGH 29 AUG 2026</footer>
+
+<script>
+/* =========================================================================
+   THE FRAMEWORK
+   One append-only array is the entire source of truth. Every other view --
+   the clock dials, the geography accordions, the scorecard's "as of" date --
+   is computed from ENTRIES at render time. To bring the map forward:
+     1. Add a new object to ENTRIES with today's date, a geo, and a clock
+        (clock is optional -- leave null for a geography-only item).
+     2. Leave everything else in this file untouched.
+   Nothing is ever edited or removed from history; if a view changes, log
+   a NEW entry that supersedes the old one -- the ledger shows the revision
+   in place, dated, rather than silently overwriting the record.
+   geo values: 'Global' | 'US' | 'Japan-Asia' | 'China' | 'Europe-UK' | 'Australia'
+   clock values: 'A' | 'B' | 'C' | 'D' | null
+   ========================================================================= */
+const ENTRIES = [
+  {date:'2026-06-07', geo:'Global', clock:'A', speaker:'Brent Johnson', claim:'Dollar as post-1971 "dagger"; Triffin flip; the debasement trade is not a straight line.', src:'https://youtu.be/Bej0-8r8Rmk'},
+  {date:'2026-06-28', geo:'US', clock:'A', speaker:'Brent Johnson', claim:'Shortage episodes strengthen USD first -- a complication for the straight-line debasement trade.', src:'https://youtu.be/KQdKsc7fsXM'},
+  {date:'2026-07-09', geo:'US', clock:'B', speaker:'George Gammon', claim:'GDPNow slump and a cancelled Blackstone campus already show AI capex hitting the import/deficit channel.', src:'https://youtu.be/Ca0X4O2t9Mo'},
+  {date:'2026-07-22', geo:'Global', clock:'A', speaker:'Michael Howell', claim:'Global liquidity already peaked; a 5-6 year refinancing wall is coming; the market still sets the long end.', src:'https://youtu.be/NiwtzN3nhTY'},
+  {date:'2026-08-04', geo:'Japan-Asia', clock:null, speaker:'Richard Werner', claim:'Durable growth is domestic credit creation, not a foreign-debt miracle.', src:'https://youtu.be/LF4R6u9kYJs'},
+  {date:'2026-08-09', geo:'Global', clock:'A', speaker:'Jeff Snyder (Eurodollar University)', claim:'Four growth/inflation regimes; a default 60/40 portfolio fails in the wrong climate.', src:'https://www.youtube.com/live/a4-N-0_6WU0'},
+  {date:'2026-08-10', geo:'US', clock:null, speaker:'Huang / Fink / Solomon (CNBC)', claim:'Real AI demand is there -- the boom side of the boom/bomb question stays live.', src:'https://www.cnbc.com/video/2026/08/10/pro-watch-cnbcs-full-interview-with.html'},
+  {date:'2026-08-12', geo:'Global', clock:'B', speaker:'Luke Gromen', claim:'NIIP near -80% of GDP; entitlements + interest + veterans near 105% of receipts.', src:'https://youtu.be/iY38M1wONbQ'},
+  {date:'2026-08-15', geo:'Global', clock:null, speaker:'Ken McElroy (Limitless Expo panel)', claim:'Panel context on the broader macro setup feeding into the same watch list.', src:'https://www.youtube.com/live/bbCt47eRnZg'},
+  {date:'2026-08-16', geo:'US', clock:'B', speaker:'Brent Johnson', claim:'Fort Knox framing of official gold as a reserve question, not a conspiracy question.', src:'https://youtu.be/Q5qdRK5kze0'},
+  {date:'2026-08-18', geo:'Japan-Asia', clock:'A', speaker:'Steve Hanke', claim:'Yen intervention fails the 1997 test.', src:'https://youtu.be/M02XW4bgyWs'},
+  {date:'2026-08-20', geo:'Global', clock:'B', speaker:'Luke Gromen (Monetary Matters)', claim:'AI capex near 3.5% of GDP; a soft form of yield-curve control is already underway.', src:'https://youtu.be/IsswgLUkUas'},
+  {date:'2026-08-21', geo:'US', clock:'B', speaker:'Lacy Hunt & Brent Johnson', claim:'All three Fisher terms -- real rate, expected inflation, term premium -- can rise together.', src:'https://www.youtube.com/live/Scr5YXYJGzo'},
+  {date:'2026-08-21', geo:'Global', clock:'B', speaker:'George Gammon (reserve clocks)', claim:'S&P-housing-economy pyramid; the TGA is flagged as the next tool after buybacks.', src:'https://youtu.be/IcDsLFqzN5k'},
+  {date:'2026-08-23', geo:'US', clock:'A', speaker:'Brent Johnson', claim:'$2bn to $4bn buyback rallied the 30-year ~9bp -- and it faded by Friday.', src:'https://youtu.be/6UNpL51bayc'},
+  {date:'2026-08-27', geo:'China', clock:'B', speaker:'Bravos Research', claim:"China's four large banks shut retail paper-gold; SGE physical delivery and Hong Kong vaults expand.", src:'https://youtu.be/cbknsJEshD8'},
+  {date:'2026-08-27', geo:'Europe-UK', clock:'C', speaker:'Daniel Lacalle (MacroVoices #547)', claim:'Long sovereign debt is losing the store-of-value job; gold has already displaced the euro as the No.2 official reserve.', src:'https://youtu.be/KwlbirZxPQc'},
+  {date:'2026-08-27', geo:'Global', clock:'A', speaker:'Jeff Snider (Eurodollar Clips)', claim:'Nobody can count the relevant money; M1/M2 are obsolete domestic fossils.', src:'https://youtu.be/bDiiqy-OiGE'},
+  {date:'2026-08-27', geo:'Global', clock:'D', speaker:'Michael Every / Adam Taggart', claim:'Nations are being forced onto US markets/tech/finance/stablecoins, or toward Iran, with a China complication.', src:'https://youtu.be/QNPCzV_1vFQ'},
+  {date:'2026-08-28', geo:'Global', clock:'B', speaker:'Luke Gromen (gold/BTC framework)', claim:'"All roads lead to gold" more than even he thought; settlement-scale gold near $22,600-$25,700.', src:'https://youtu.be/R1VLmuXYU3o'},
+  {date:'2026-08-29', geo:'Global', clock:null, speaker:'Map compiled', claim:'Full four-clock map assembled. Rule retained: the 30-year stayed high on curve/term premium, not a debt-headline or ratings story.', src:''},
+];
+
+const GEO_COLOR = {'Global':'var(--ink-dim)','US':'var(--clock-a)','Japan-Asia':'var(--clock-c)','China':'var(--rose)','Europe-UK':'var(--clock-d)','Australia':'var(--gold)'};
+const CLOCK_COLOR = {'A':'var(--clock-a)','B':'var(--clock-b)','C':'var(--clock-c)','D':'var(--clock-d)'};
+const CLOCK_LABEL = {'A':'Clock A','B':'Clock B','C':'Clock C','D':'Switch D'};
+function fmtDate(d){
+  const dt = new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('en-US',{day:'numeric', month:'short', year:'numeric'});
+}
+
+(function renderStats(){
+  const dates = ENTRIES.map(e=>e.date).sort();
+  const geos = new Set(ENTRIES.map(e=>e.geo));
+  const bar = document.getElementById('statsBar');
+  const stats = [
+    [ENTRIES.length, 'entries logged'],
+    [geos.size, 'geographies'],
+    [4, 'active clocks'],
+    [fmtDate(dates[dates.length-1]), 'last update'],
+  ];
+  bar.innerHTML = stats.map(s=>`<div class="stat"><div class="n">${s[0]}</div><div class="l">${s[1]}</div></div>`).join('');
+})();
+
+['A','B','C','D'].forEach(c=>{
+  const es = ENTRIES.filter(e=>e.clock===c);
+  const el = document.getElementById('meta'+c);
+  if(es.length){
+    const last = es.map(e=>e.date).sort().slice(-1)[0];
+    el.textContent = `${es.length} entries \u00b7 ${fmtDate(last)}`;
+  } else {
+    el.textContent = 'no entries yet';
+  }
+});
+
+const tabs = document.querySelectorAll('nav.tabs button');
+const panes = document.querySelectorAll('section.pane');
+
+/* =========================================================================
+   WEEKLY NOTES REGISTRY
+   Mirrors BLOG_POSTS in index.html — one row per published note, matched
+   here to the tab/clock/geo it covers. This is what makes the link
+   bidirectional: index.html links IN with ?tab=&clock=&geo=&q=, and this
+   registry links BACK OUT to index.html#note-<slug>. When you publish a
+   new weekly note in index.html, add its match here too (same slug).
+   ========================================================================= */
+const WEEKLY_NOTES = [
+  {slug:'map-compiled',      title:'The map, compiled',            matchTab:'ledger'},
+  {slug:'clock-a-money',     title:'Nobody can count the money',   matchClock:'A'},
+  {slug:'clock-b-gold',      title:'All roads lead to gold',       matchClock:'B'},
+  {slug:'clock-c-rails',     title:'Rails that coexist',           matchClock:'C'},
+  {slug:'switch-d-alignment',title:'Alignment or Iran',            matchClock:'D'},
+  {slug:'geo-china-gold',    title:'Paper gold shuts down',        matchGeo:'China'},
+  {slug:'geo-us-buyback',    title:'The buyback that faded',       matchGeo:'US'},
+  {slug:'geo-japan-1997',    title:'1997 test, again',             matchGeo:'Japan-Asia'},
+  {slug:'watchlist-buyback', title:'What to watch this week',      matchTab:'watchlist'},
+  {slug:'milestones-window', title:'Milestone 1 window opens',     matchTab:'milestones'},
+];
+function noteBacklinkHtml(note){
+  if(!note) return '';
+  return `<a class="note-back" href="index.html#note-${note.slug}" target="_top">\uD83D\uDCDD From the weekly notes: ${note.title} \u2192</a>`;
+}
+function noteLinkForClock(clock){
+  return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchClock===clock));
+}
+function noteLinkForGeo(geo){
+  return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchGeo===geo));
+}
+function noteLinkForTab(tab){
+  return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchTab===tab));
+}
+['A','B','C','D'].forEach(c=>{
+  document.getElementById('noteBack'+c).innerHTML = noteLinkForClock(c);
+});
+
+function activateTab(name){
+  tabs.forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  panes.forEach(p=>p.classList.toggle('active', p.id===name));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+tabs.forEach(btn=> btn.addEventListener('click', ()=>activateTab(btn.dataset.tab)) );
+
+function toggleClock(id){
+  const card = document.getElementById('clock'+id);
+  const detail = document.getElementById('detail'+id);
+  const wasOpen = detail.classList.contains('open');
+  document.querySelectorAll('.clock-detail').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.clock-card').forEach(c=>c.classList.remove('active'));
+  if(!wasOpen){ detail.classList.add('open'); card.classList.add('active'); }
+}
+
+function toggleAcc(head){
+  const item = head.parentElement;
+  item.classList.toggle('open');
+  head.querySelector('.chev').textContent = item.classList.contains('open') ? '\u2212' : '+';
+}
+function buildAccordion(container, items){
+  items.forEach(it=>{
+    const div = document.createElement('div');
+    div.className = 'acc-item';
+    div.innerHTML = `<div class="acc-head" onclick="toggleAcc(this)"><span class="htitle"><span>${it.title}</span>${it.metaHtml||''}</span><span class="chev">+</span></div>
+      <div class="acc-body"><div class="acc-body-in">${it.body}${it.measure ? `<div class="measure">${it.measure}</div>` : ''}${it.jump||''}</div></div>`;
+    container.appendChild(div);
+  });
+}
+
+const geoSel = document.getElementById('f-geo');
+const clockSel = document.getElementById('f-clock');
+const searchInput = document.getElementById('f-search');
+const dirBtn = document.getElementById('f-dir');
+let sortDir = 'desc';
+
+function populateFilters(){
+  const geos = ['All geographies', ...new Set(ENTRIES.map(e=>e.geo))];
+  geoSel.innerHTML = geos.map(g=>`<option value="${g}">${g}</option>`).join('');
+  const clocks = [['All','All clocks'],['A','Clock A'],['B','Clock B'],['C','Clock C'],['D','Switch D'],['none','No clock (geo-only)']];
+  clockSel.innerHTML = clocks.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('');
+}
+populateFilters();
+
+function renderLedger(){
+  const geo = geoSel.value;
+  const clk = clockSel.value;
+  const q = searchInput.value.trim().toLowerCase();
+  let rows = ENTRIES.filter(e=>{
+    if(geo && geo!=='All geographies' && e.geo!==geo) return false;
+    if(clk && clk!=='All'){
+      if(clk==='none' && e.clock!==null) return false;
+      if(clk!=='none' && e.clock!==clk) return false;
+    }
+    if(q){
+      const hay = (e.speaker+' '+e.claim+' '+e.geo).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  rows.sort((a,b)=> sortDir==='desc' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date) );
+
+  document.getElementById('ledgerCount').textContent = `${rows.length} of ${ENTRIES.length} entries`;
+  const track = document.getElementById('ledgerTrack');
+  track.innerHTML = '';
+  rows.forEach(e=>{
+    const dotColor = e.clock ? CLOCK_COLOR[e.clock] : (GEO_COLOR[e.geo]||'var(--ink-faint)');
+    const div = document.createElement('div');
+    div.className = 'lentry';
+    div.style.setProperty('--dot-color', dotColor);
+    div.innerHTML = `
+      <div class="row1">
+        <span class="date">${fmtDate(e.date)}</span>
+        <span class="badge" style="--badge-color:${GEO_COLOR[e.geo]||'var(--ink-faint)'}">${e.geo}</span>
+        ${e.clock ? `<span class="badge" style="--badge-color:${CLOCK_COLOR[e.clock]}">${CLOCK_LABEL[e.clock]}</span>` : ''}
+      </div>
+      <div class="speaker">${e.speaker}</div>
+      <div class="claim">${e.claim}</div>
+      ${e.src ? `<a class="src" href="${e.src}" target="_blank" rel="noopener">source \u2197</a>` : ''}
+    `;
+    track.appendChild(div);
+  });
+}
+geoSel.addEventListener('change', renderLedger);
+clockSel.addEventListener('change', renderLedger);
+searchInput.addEventListener('input', renderLedger);
+function toggleDir(){
+  sortDir = sortDir==='desc' ? 'asc' : 'desc';
+  dirBtn.textContent = sortDir==='desc' ? 'Newest first \u2193' : 'Oldest first \u2191';
+  renderLedger();
+}
+function jumpToLedger(opts){
+  geoSel.value = opts.geo || 'All geographies';
+  clockSel.value = opts.clock || 'All';
+  searchInput.value = '';
+  renderLedger();
+  activateTab('ledger');
+}
+renderLedger();
+
+function geoMeta(geo){
+  const es = ENTRIES.filter(e=>e.geo===geo);
+  if(!es.length) return '<span class="hmeta">no entries yet</span>';
+  const last = es.map(e=>e.date).sort().slice(-1)[0];
+  return `<span class="hmeta">${es.length} entries \u00b7 latest ${fmtDate(last)}</span>`;
+}
+buildAccordion(document.getElementById('geo-acc'), [
+  {title:'United States -- long end, buybacks, TGA', metaHtml:geoMeta('US'),
+   body:`High-yield auction did not cap 30s. 19 Aug buyback ceiling raised; 30-year fell ~9bp and gave it back (Johnson 23 Aug, Gammon 27 Aug). Not QE: no new money, reverse auction, debt retired. Next discussed tool: draw the TGA (cash already earmarked for entitlements) by up to ~$500bn to buy 10s, then issue to refill. Gromen: hiking policy rates accelerates fiscal dominance. Hunt: all three Fisher terms can rise.`,
+   measure:'Buyback max vs accepted par \u00b7 10y/30y from announcement to +1 and +5 sessions \u00b7 TGA (WTREGEN / Daily Treasury Statement) \u00b7 auction tail and bid-to-cover \u00b7 DFII10 + T10YIE + ACM term premium \u00b7 interest outlays / receipts \u00b7 NIIP / GDP',
+   jump:`<a class="geo-jump" href="#" onclick="jumpToLedger({geo:'US'}); return false;">View US ledger \u2192</a>${noteLinkForGeo('US')}`},
+  {title:'United States -- AI capex and financing', metaHtml:'',
+   body:`Path cited by Gammon: ~$400bn (2025) &rarr; ~$800bn (2026) &rarr; &gt;$1tn (2027) &rarr; ~$1.2tn by 2029. NVIDIA-class ~$500bn Wall Street platforms pull in pensions, unprofitable AI names, and rating mechanics. Hyperscalers moved to negative FCF; IG-style spreads ~65 &rarr; ~125bp; Oracle-class CDS widening. Lease reclassifications can turn capex into multi-decade overhead. GDPNow slump and Blackstone campus cancellation already showed the import/deficit channel (Gammon Jul). Gromen 26 Aug: healthcare-admin cuts of several percent of jobs, done before the sovereign balance sheet is recut, become mortgage / auto / card defaults. Every: the same build raises local power bills unless communities share the gains.`,
+   measure:'Atlanta Fed GDPNow vs BEA IP / information-processing investment \u00b7 10-Q FCF after capex and net debt \u00b7 ICE BofA IG OAS \u00b7 single-name CDS \u00b7 BLS healthcare/admin payrolls \u00b7 NY Fed household delinquencies \u00b7 interconnection queues and electricity CPI'},
+  {title:'United States -- dollar, gold, stablecoins', metaHtml:'',
+   body:`Lacalle: store-of-value job is already impaired. Every: stablecoins can split global dollar rates and force alignment. Gromen: settlement gold far above paper. Johnson: DXY spikes hit gold and commodities first. Snider: none of this is visible in M2. Bravos: China physical plumbing is being tightened while official gold buying continues.`,
+   measure:'IMF COFER USD share (FX only -- gold is outside COFER) \u00b7 WGC / PBoC gold tonnes \u00b7 SGE withdrawals and SHH-LBMA premium \u00b7 China customs gold imports vs trade surplus \u00b7 stablecoin AUM and T-bill backing \u00b7 DXY vs gold/copper/diesel \u00b7 M2 vs FX-swap basis'},
+  {title:'Japan / Asia', metaHtml:geoMeta('Japan-Asia'),
+   body:`Hanke: intervention failed. NIIP and carry remain the constraint (Gromen, Johnson). Werner: durable growth is domestic credit creation, not a foreign-debt miracle. Snider: yen and cross-currency basis are eurodollar thermometers. Every: BOJ-style "dirty shirt" interventions are part of the same toolkit.`,
+   measure:'USDJPY \u00b7 MoF intervention reports \u00b7 3m FX-swap basis \u00b7 Japanese M2 \u00b7 BIS credit-to-GDP',
+   jump:`<a class="geo-jump" href="#" onclick="jumpToLedger({geo:'Japan-Asia'}); return false;">View Japan/Asia ledger \u2192</a>${noteLinkForGeo('Japan-Asia')}`},
+  {title:'China', metaHtml:geoMeta('China'),
+   body:`Bravos: retail paper-gold shut at the four large banks; SGE delivery; HK vault expansion. Gromen: import-vs-surplus gold scale check. Every: transshipment / "Trojan horse" trade; US-China gets harder as the Iran binary hardens. Surplus states still face Gammon's choice: hold long coupons or rotate into metal and short dollar claims.`,
+   measure:'PBoC monthly gold \u00b7 TIC China UST holdings \u00b7 SGE withdrawals \u00b7 customs gold imports \u00b7 local premium',
+   jump:`<a class="geo-jump" href="#" onclick="jumpToLedger({geo:'China'}); return false;">View China ledger \u2192</a>${noteLinkForGeo('China')}`},
+  {title:'Europe / UK', metaHtml:geoMeta('Europe-UK'),
+   body:`Same duration-supply problem. Lacalle: gold already passed the euro as second official reserve; CBDC impulse is repression risk. Every: Russia/NATO/Iran-missile tails after the 21 Sep 2026 Duma date.`,
+   jump:`<a class="geo-jump" href="#" onclick="jumpToLedger({geo:'Europe-UK'}); return false;">View Europe/UK ledger \u2192</a>`},
+  {title:'Australia / Asia-Pacific', metaHtml:geoMeta('Australia'),
+   body:`Super that is long duration + long US AI + a thin gold ETF is one crowding trade. Imported tightening arrives through the US 30-year, USD, and credit spreads. Gold will not offset a stronger USD and a higher 30-year on the same day.`}
+]);
+
+buildAccordion(document.getElementById('portfolio-acc'), [
+  {title:'Nation-states', body:`<p><b>Hedge.</b> Shorten official duration (0-2y paper + gold, shrink 20-30y). Pre-arrange dollar swaps and repo. Allocated gold in a jurisdiction you can deliver from. Treat energy, refining, copper, and grid equipment as reserves. Do not treat CBDC as a reserve policy. If you issue: bill-heavy; do not assume a $4bn ceiling pins 30s. Every: alignment is now a reserve decision -- access to US rails is a balance-sheet item.</p>
+   <p><b>Accumulate.</b> Official gold on DXY / real-yield spikes. Short-duration dollar claims if you must hold USD. Domestic credit for tradable output (Werner). Strategic inventory.</p>
+   <p><b>Stress test.</b> Simultaneous strong USD + higher UST 30y + wider corporate spreads + diesel spike.</p>
+   <p><b>Do not.</b> Short the dollar as policy because "limits are broken." Announce gold revaluation as a surprise without a settlement and banking recap plan. The ~$5-5.5tn TGA figure is arithmetic, not a week-one print.</p>`},
+  {title:'Companies', body:`<p><b>All firms.</b> Term out debt on Howell's wall. Match asset life to liability life. Buy USD liquidity before Clock A. Use options/collars, not a naked YCC long. Haircut private-credit lines. Hold working capital in bills.</p>
+   <p><b>Hyperscalers / AI platforms.</b> Treat the ~$500bn third-party architecture as off-balance-sheet duration. Hedge own/peer spreads. Stage campuses (Blackstone tell). Every: contract power and share bill relief with host communities or the permit dies in politics.</p>
+   <p><b>Energy, grid, industrials.</b> Sleeve D for the world. Copper and refining are use-assets, not ticker speculation. After a capex washout this is the accumulation list -- not during the melt-up.</p>`},
+  {title:'Individuals (incl. Australian super)', body:`<p><b>Hedge.</b> Kill the default 60/40 + US AI + gold ETF. Shorten personal duration. Size allocated gold so a 20-30% Clock A draw does not force a sale. Trim the most negative-FCF AI first. No leverage on the core barbell. Australia: keep an AUD cash buffer; do not assume gold pays groceries the week USD and UST 30y both rise.</p>
+   <p><b>Accumulate.</b> Automate bills + a fixed gold increment on Clock A dips. After a confirmed capex cut, add Sleeve D from a written list. Human capital: skills that pair with AI beat skills that compete with healthcare-admin cuts. BTC only as F after correlation with Nasdaq breaks.</p>
+   <p><b>Retirees (Gromen).</b> TIPS (~3% real in his telling) + sell a small physical unit on a schedule -- not a 30-year ladder.</p>`}
+]);
+
+const milestones = [
+  {when:'Milestone 0 -- late Aug 2026', title:'Printed', body:`High 30-year after auction; faded $4bn buyback; wide hyperscaler spreads; China paper-gold ban; Jackson Hole week; Gromen gold/BTC note; Snider money-stock note; Lacalle reserve note; Every alignment/stablecoin note.<br><br><b>Do:</b> separate A from B. Do not rebuild core 20-30y. Inventory AI by FCF. Do not use M2 as a switch.`},
+  {when:'Milestone 1 -- 1-4 weeks', title:'Near-term prints', body:`Next $4bn buyback; TGA rumour; China gold imports; SGE/HK; hyperscaler CDS; yen/basis; Iran oil/diesel; Clarity/Genius process.`,
+    table:[
+      ['Bid drops yields 5-15bp then fades','Johnson / Gammon','Fade duration; hard stop'],
+      ['Bid holds and bills rally with stablecoin headlines','Every + Lacalle',"Own the bill, still not the 30-year as core"],
+      ['USD up, gold/commodities down','Johnson Clock A','Rebalance B; do not liquidate'],
+      ['Diesel/refining spike, crude not confirming','Every physical','D over paper oil beta'],
+      ['Yen / basis stress','Hanke / Snider','Options, not a huge naked FX book'],
+      ['Fed eases while basis widens','Snider reactive','Do not buy risk on the headline'],
+      ['BTC up with Nasdaq','Gromen not confirmed','F stays market weight'],
+      ['Physical premiums / SGE delivery up','Bravos / Gromen','Shift paper-gold beta into allocated metal'],
+    ]},
+  {when:'Milestone 2 -- 1-3 months', title:'Midterm pressure', body:`Midterm pressure on 10y; 2027 capex guides; 21 Sep 2026 Duma date; Clarity Act path; official gold tonnes; consumer delinquencies vs AI job cuts; 9-12 Oct Eurodollar University (information date only). Larger official tool likely if the first failed. Capex up + FCF down = credit event. Cooler CPI + large deficits = Snider shock-fade + Hunt broken savings -- not a 30-year green light.`},
+  {when:'Milestone 3 -- 2027', title:'Scale test', body:`Capex toward $1tn or first winter. EM stablecoin scale (Every). SGE/HK physical share (Bravos). If sovereign is pinned and corporates are not, short the corporate-Treasury basis. Keep the post-washout list for power/grid/copper-in-use. Do not buy that list into the melt-up.`},
+  {when:'Milestone 4 -- 2028-31', title:'Structural window', body:`Gammon holdings clock; Hunt inflation volatility; Gromen settlement-gold arithmetic; Lacalle coexistence; Every commodities-in-use. 60/40 remains the wrong household default if Snyder's inflation-volatility climate holds. Restructure the sovereign balance sheet before counting on AI job cuts or "waste" cuts to fix the fiscal math.`},
+  {when:'Milestone 5 -- 5-25 years', title:'Long horizon', body:`Transaction dollar can last (Gammon, Lacalle, Every). Store of value can still leave the long bond (Gromen, Bravos, Hunt). Eurodollar residual can stay uncounted (Snider). Never one slogan.`},
+];
+const mList = document.getElementById('mstone-list');
+milestones.forEach(m=>{
+  const div = document.createElement('div');
+  div.className = 'mstone';
+  let tableHtml = '';
+  if(m.table){
+    tableHtml = `<div class="tbl-wrap" style="margin-top:10px;"><table>
+      <thead><tr><th>Print</th><th>Whose view is live</th><th>Action</th></tr></thead>
+      <tbody>${m.table.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  div.innerHTML = `<div class="when">${m.when}</div><h4>${m.title}</h4><p>${m.body}</p>${tableHtml}`;
+  mList.appendChild(div);
+});
+
+const watchlist = [
+  [1,'Buyback test','Max vs accepted; 10y/30y t0 to t+1 / t+5','<a href="https://www.treasurydirect.gov/auctions/announcements-data-results/buy-backs/" target="_blank">Treasury buybacks</a>, <a href="https://fiscaldata.treasury.gov/datasets/treasury-securities-buybacks/" target="_blank">Fiscal Data</a>, <a href="https://fred.stlouisfed.org/series/DGS10" target="_blank">FRED DGS10</a>/<a href="https://fred.stlouisfed.org/series/DGS30" target="_blank">DGS30</a>','Johnson/Gammon fade vs Every twist'],
+  [2,'TGA','TGA balance; bills vs coupons','<a href="https://fiscaldata.treasury.gov/datasets/daily-treasury-statement/" target="_blank">Daily Treasury Statement</a>, <a href="https://fred.stlouisfed.org/series/WTREGEN" target="_blank">FRED WTREGEN</a>','Gammon next tool'],
+  [3,'Auction / curve','Tail, bid-to-cover, 2s10s','<a href="https://www.treasurydirect.gov/auctions/announcements-data-results/" target="_blank">TreasuryDirect auctions</a>, <a href="https://fred.stlouisfed.org/series/T10Y2Y" target="_blank">FRED T10Y2Y</a>','Opening 30y fact; Howell'],
+  [4,'Fisher pieces','10y real, breakeven, ACM','<a href="https://fred.stlouisfed.org/series/DFII10" target="_blank">DFII10</a>, <a href="https://fred.stlouisfed.org/series/T10YIE" target="_blank">T10YIE</a>, NY Fed ACM','Hunt'],
+  [5,'Fiscal dominance','Interest/receipts; debt/GDP','<a href="https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/" target="_blank">Monthly Treasury Statement</a>, <a href="https://fred.stlouisfed.org/series/GFDEGDQ188S" target="_blank">FRED GFDEGDQ188S</a>','Gromen; Hunt'],
+  [6,'NIIP / TIC','NIIP; foreign official UST','<a href="https://www.bea.gov/data/intl-trade-investment/international-investment-position" target="_blank">BEA IIP</a>, <a href="https://home.treasury.gov/data/treasury-international-capital-tic-system" target="_blank">TIC</a>','Gromen; Johnson'],
+  [7,'GDPNow vs capex','GDPNow; private fixed investment','<a href="https://www.atlantafed.org/cqer/research/gdpnow" target="_blank">Atlanta Fed GDPNow</a>, <a href="https://fred.stlouisfed.org/series/GDPNOW" target="_blank">FRED GDPNOW</a>','Gammon Jul'],
+  [8,'Hyperscaler FCF','FCF after capex; net debt','SEC 10-Q/10-K','Financing stack'],
+  [9,'AI credit','IG OAS; CDS','<a href="https://fred.stlouisfed.org/series/BAMLC0A0CM" target="_blank">FRED BAMLC0A0CM</a>','Sleeve E'],
+  [10,'Private credit','Fundraising, dq, NAV','Preqin/PitchBook; insurer filings','Gromen substitution'],
+  [11,'Consumer dq','Healthcare/admin payrolls; 30+ dq','<a href="https://www.bls.gov/ces/" target="_blank">BLS CES</a>, <a href="https://www.newyorkfed.org/microeconomics/hhdc" target="_blank">NY Fed HHDC</a>','Gromen 26 Aug'],
+  [12,'Yen / basis','USDJPY; 3m basis; MoF','<a href="https://fred.stlouisfed.org/series/DEXJPUS" target="_blank">DEXJPUS</a>, <a href="https://www.mof.go.jp/english/policy/international_policy/reference/itn_transactions_in_markets/index.htm" target="_blank">MoF Japan</a>','Hanke; Snider'],
+  [13,'M2 vs shadow','M2; Fed assets; basis','<a href="https://fred.stlouisfed.org/series/M2SL" target="_blank">M2SL</a>, <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">WALCL</a>','Snider vs Hunt'],
+  [14,'DXY vs hard assets','DXY; gold; copper; diesel crack','ICE DXY; LBMA; <a href="https://fred.stlouisfed.org/series/PCOPPUSDM" target="_blank">PCOPPUSDM</a>; EIA','Johnson; Every'],
+  [15,'FX reserve mix','COFER USD/EUR shares','<a href="https://data.imf.org/en/datasets/IMF.STA:COFER" target="_blank">IMF COFER</a>','Gammon vs Lacalle/Every (gold not in COFER)'],
+  [16,'Official gold','PBoC tonnes; WGC CB net','<a href="https://www.safe.gov.cn/en/" target="_blank">SAFE/PBoC</a>, <a href="https://www.gold.org/goldhub/research/gold-demand-trends" target="_blank">WGC GDT</a>','Clock B'],
+  [17,'China physical','SGE withdrawals; premium; customs imports','SGE; <a href="https://www.gold.org/goldhub/gold-focus" target="_blank">WGC China</a>; China Customs','Bravos; Gromen scale'],
+  [18,'China UST vs gold','TIC China vs PBoC gold','TIC; PBoC','Bravos path'],
+  [19,'Stablecoin rail','USDT+USDC AUM; T-bill mix','Issuer attestations; Genius/Clarity calendar','Lacalle; Every'],
+  [20,'Iran / diesel','Exports; diesel stocks/crack','EIA; tanker-tracking; OFAC','Every'],
+  [21,'Venezuela crude','US imports; production vs prior peak','EIA / OPEC secondary','Every slow ramp'],
+  [22,'Duma / NATO tail','21 Sep 2026 election; mobilisation','Official calendar','Every volatility'],
+  [23,'Grid politics','Queue MW; electricity CPI; 8-Ks','EIA; BLS; company filings','Every; Gammon'],
+  [24,'BTC regime','60-day corr. vs Nasdaq and 10y real','BTC; <a href="https://fred.stlouisfed.org/series/NASDAQCOM" target="_blank">NASDAQCOM</a>; DFII10','Gromen satellite rule'],
+  [25,'Saving / C&I','Net saving; C&I loans','<a href="https://fred.stlouisfed.org/series/W201RC1Q027SBEA" target="_blank">W201RC1Q027SBEA</a>, <a href="https://fred.stlouisfed.org/series/TOTCI" target="_blank">TOTCI</a>','Hunt'],
+  [26,'EDU date','9-12 Oct 2026','<a href="https://eurodollar-university.com/edu-conference-2026" target="_blank">eurodollar-university.com</a>','Snider info date only'],
+];
+const wlBody = document.getElementById('wl-body');
+const wlCount = document.getElementById('wl-count');
+function renderWatchlist(filter=''){
+  const f = filter.trim().toLowerCase();
+  wlBody.innerHTML = '';
+  let shown = 0;
+  watchlist.forEach(row=>{
+    const haystack = row.join(' ').toLowerCase();
+    if(f && !haystack.includes(f)) return;
+    shown++;
+    const tr = document.createElement('tr');
+    tr.className = 'wl-row';
+    tr.innerHTML = `<td class="num">${row[0]}</td><td><b>${row[1]}</b></td><td>${row[2]}</td><td>${row[3]}</td><td class="tests">${row[4]}</td>`;
+    wlBody.appendChild(tr);
+  });
+  wlCount.textContent = `${shown} / ${watchlist.length}`;
+}
+document.getElementById('wl-search').addEventListener('input', e=>renderWatchlist(e.target.value));
+renderWatchlist();
+
+const sources = [
+  ['Michael Every / Adam Taggart, Thoughtful Money','27 Aug 2026','https://youtu.be/QNPCzV_1vFQ'],
+  ['Jeff Snider / Eurodollar Clips','27 Aug 2026','https://youtu.be/bDiiqy-OiGE'],
+  ['Luke Gromen -- gold, BTC, framework','26-28 Aug 2026','https://youtu.be/R1VLmuXYU3o'],
+  ['Daniel Lacalle / MacroVoices #547','27 Aug 2026','https://youtu.be/KwlbirZxPQc'],
+  ['Bravos Research','27 Aug 2026','https://youtu.be/cbknsJEshD8'],
+  ['George Gammon -- TGA / house of cards','27 Aug 2026','https://youtu.be/mXi5jB-kPJE'],
+  ['George Gammon -- reserve clocks','21 Aug 2026','https://youtu.be/IcDsLFqzN5k'],
+  ['Lacy Hunt & Brent Johnson, Thoughtful Money','21 Aug 2026','https://www.youtube.com/live/Scr5YXYJGzo'],
+  ['Brent Johnson -- buybacks','23 Aug 2026','https://youtu.be/6UNpL51bayc'],
+  ['Luke Gromen -- Monetary Matters','20 Aug 2026','https://youtu.be/IsswgLUkUas'],
+  ['Steve Hanke','18 Aug 2026','https://youtu.be/M02XW4bgyWs'],
+  ['Brent Johnson -- Fort Knox','16 Aug 2026','https://youtu.be/Q5qdRK5kze0'],
+  ['Ken McElroy Limitless Expo panel','15 Aug 2026','https://www.youtube.com/live/bbCt47eRnZg'],
+  ['Luke Gromen (prior)','12 Aug 2026','https://youtu.be/iY38M1wONbQ'],
+  ['Eurodollar University / Jeff Snyder regimes','9-10 Aug 2026','https://www.youtube.com/live/a4-N-0_6WU0'],
+  ['Huang / Fink / Solomon, CNBC','10 Aug 2026','https://www.cnbc.com/video/2026/08/10/pro-watch-cnbcs-full-interview-with.html'],
+  ['Richard Werner','4 Aug 2026','https://youtu.be/LF4R6u9kYJs'],
+  ['Michael Howell','22 Jul 2026','https://youtu.be/NiwtzN3nhTY'],
+  ['George Gammon -- GDPNow / AI imports','9 Jul 2026','https://youtu.be/Ca0X4O2t9Mo'],
+  ['Brent Johnson -- debasement unwind','28 Jun 2026','https://youtu.be/KQdKsc7fsXM'],
+  ['Brent Johnson -- Triffin / dagger','7 Jun 2026','https://youtu.be/Bej0-8r8Rmk'],
+  ['All-In / Gavin Baker','--','https://youtu.be/kVzYGVJ8zUk'],
+  ['Santos -- long-end','--','https://www.youtube.com/watch?v=ElYoX383ur4'],
+];
+const srcList = document.getElementById('src-list');
+sources.forEach(s=>{
+  const a = document.createElement('a');
+  a.href = s[2]; a.target = '_blank'; a.rel = 'noopener';
+  a.innerHTML = `<span>${s[0]}</span><span class="d">${s[1]}</span>`;
+  srcList.appendChild(a);
+});
+
+document.getElementById('noteBackWatchlist').innerHTML = noteLinkForTab('watchlist');
+document.getElementById('noteBackMilestones').innerHTML = noteLinkForTab('milestones');
+
+/* =========================================================================
+   DEEP LINKS IN
+   index.html's weekly notes link here as macro-clocks.html?tab=...&clock=
+   ...&geo=...&q=... — read those on load and land directly on the
+   matching filtered view, so a note reads as "here's the thread," not
+   just "here's the whole page again."
+   Supported params:
+     tab   = ledger | overview | geography | portfolio | milestones | watchlist | sources
+     clock = A | B | C | D          (ledger tab only)
+     geo   = Global | US | China | Japan-Asia | Europe-UK | Australia  (ledger tab only)
+     q     = free-text search       (watchlist tab only)
+   ========================================================================= */
+(function applyURLParams(){
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
+  const geo = params.get('geo');
+  const clock = params.get('clock');
+  const q = params.get('q');
+
+  if(tab === 'watchlist'){
+    activateTab('watchlist');
+    if(q){
+      document.getElementById('wl-search').value = q;
+      renderWatchlist(q);
+    }
+    return;
+  }
+  if(geo || clock || tab === 'ledger'){
+    jumpToLedger({geo, clock});
+    return;
+  }
+  if(tab){
+    activateTab(tab);
+  }
+})();
+</script>
+</body>
+</html>
