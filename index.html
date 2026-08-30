@@ -336,6 +336,82 @@
     }
     .asset-tile:hover .asset-name { color: var(--blue); }
 
+    /* ── Weekly notes list ── */
+    .note-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .note-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--c, var(--accent));
+      border-radius: var(--r);
+      padding: 14px 16px;
+      transition: border-color .18s, transform .18s;
+    }
+    .note-row:hover {
+      border-color: var(--border-hi);
+      border-left-color: var(--c, var(--accent));
+      transform: translateX(3px);
+    }
+    .note-row {
+      scroll-margin-top: 24px;
+    }
+    .note-row:target {
+      border-left-width: 4px;
+      box-shadow: 0 0 0 1px var(--c, var(--accent));
+      animation: note-flash 1.8s ease;
+    }
+    @keyframes note-flash {
+      0% { background: color-mix(in srgb, var(--c, var(--accent)) 22%, var(--card)); }
+      100% { background: var(--card); }
+    }
+    .note-date {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 72px;
+      flex-shrink: 0;
+    }
+    .note-body { flex: 1; min-width: 0; }
+    .note-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .note-excerpt {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .note-arrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--c, var(--accent));
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 2px;
+      opacity: .85;
+    }
+    .note-row:hover .note-arrow { opacity: 1; }
+    @media (max-width: 560px) {
+      .note-row { flex-wrap: wrap; }
+      .note-arrow { display: none; }
+    }
+
     /* ── Footer ── */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -392,7 +468,15 @@
     <div class="carousel-track" id="list-apps"></div>
   </div>
 
-  <!-- SECTION 2 — ASSET CALCULATORS -->
+  <!-- SECTION 2 — WEEKLY NOTES -->
+  <div class="project-group" id="group-blog">
+    <div class="section-label">
+      <span class="section-label-text" data-i18n="labelBlog">Weekly Notes</span>
+    </div>
+    <div class="note-list" id="list-blog"></div>
+  </div>
+
+  <!-- SECTION 3 — ASSET CALCULATORS -->
   <div class="project-group" id="group-assets">
     <div class="section-label">
       <span class="section-label-text" data-i18n="labelAssets">Asset Class Calculators</span>
@@ -422,18 +506,20 @@
       sub:         'A personal suite of financial tools and family records. Select a project to open it.',
       langBtn:     '🌐 Tiếng Việt',
       labelApps:   'Applications',
+      labelBlog:   'Weekly Notes',
       labelAssets: 'Asset Class Calculators',
       footerNote:  'All tools run locally · No data leaves your browser',
-      footerCount: (n, m) => `${n} apps · ${m} calculators`,
+      footerCount: (n, p, m) => `${n} apps · ${p} notes · ${m} calculators`,
     },
     vi: {
       title:       'Tài Chính & Gia Đình',
       sub:         'Bộ công cụ tài chính đơn giản cho cá nhân và gia đình. Chọn một dự án để mở.',
       langBtn:     '🌐 English',
       labelApps:   'Ứng Dụng',
+      labelBlog:   'Ghi Chú Hàng Tuần',
       labelAssets: 'Máy Tính Cho Từng Loại Tài Sản',
       footerNote:  'Tất cả công cụ chạy cục bộ · Không có dữ liệu rời khỏi trình duyệt',
-      footerCount: (n, m) => `${n} ứng dụng · ${m} máy tính`,
+      footerCount: (n, p, m) => `${n} ứng dụng · ${p} ghi chú · ${m} máy tính`,
     }
   };
 
@@ -553,7 +639,100 @@
     },
 
     /* === NEW PROJECTS ADDED === */
-    
+    {
+      icon: '📉',
+      color: '#ff9f43',
+      href: 'credit_cycle_explorer.html',
+      tag: { en: 'Macro', vi: 'Vĩ Mô' },
+      name: { en: 'Credit Cycle Explorer', vi: 'Khám Phá Chu Kỳ Tín Dụng' },
+      desc: { en: 'Interactive analysis of credit cycle phases with 100+ years of empirical data, charts & simulator',
+              vi: 'Phân tích tương tác các giai đoạn chu kỳ tín dụng với dữ liệu thực nghiệm 100+ năm, biểu đồ & mô phỏng' },
+      features: {
+        en: ['4-phase interactive explorer', 'Historical default clustering & sector rotation', 'Policy & leverage simulator'],
+        vi: ['Khám phá 4 giai đoạn tương tác', 'Lịch sử cụm vỡ nợ & xoay vòng ngành', 'Mô phỏng chính sách & đòn bẩy'],
+      },
+      tagColor: '#ff9f43',
+    },
+    {
+      icon: '💧',
+      color: '#5c9eff',
+      href: 'liquidity-framework.html',
+      tag: { en: 'Macro', vi: 'Vĩ Mô' },
+      name: { en: 'Global Liquidity Framework', vi: 'Khung Thanh Khoản Toàn Cầu' },
+      desc: { en: 'Michael Howell liquidity cycle analysis — metrics, cycle simulator & policy transmission',
+              vi: 'Phân tích chu kỳ thanh khoản Michael Howell — chỉ số, mô phỏng chu kỳ & truyền dẫn chính sách' },
+      features: {
+        en: ['Global liquidity metrics dashboard', '65-month cycle & asset rotation simulator', 'Policy transmission analysis'],
+        vi: ['Bảng chỉ số thanh khoản toàn cầu', 'Mô phỏng chu kỳ 65 tháng & xoay vòng tài sản', 'Phân tích truyền dẫn chính sách'],
+      },
+      tagColor: '#5c9eff',
+    },
+    {
+      icon: '🕰️',
+      color: '#c8a96e',
+      href: 'macro-clocks.html',
+      tag: { en: 'Macro', vi: 'Vĩ Mô' },
+      name: { en: 'Macro Scorecard — Living Ledger', vi: 'Bảng Điểm Vĩ Mô — Sổ Ghi Chép Sống' },
+      desc: { en: 'Continuously updated macro scorecard — a dated, geo-tagged ledger of expert views across four clocks',
+              vi: 'Bảng điểm vĩ mô cập nhật liên tục — sổ ghi chép quan điểm chuyên gia theo ngày & khu vực trên bốn đồng hồ' },
+      features: {
+        en: ['Dated, geo-tagged ledger of views', 'Four-clock framework — dollar, fiscal, rails, alignment', '26-indicator watch list with primary sources'],
+        vi: ['Sổ ghi chép quan điểm theo ngày & khu vực', 'Khung 4 đồng hồ — đô la, tài khóa, kênh dẫn, liên minh', 'Danh sách 26 chỉ số theo dõi kèm nguồn'],
+      },
+      tagColor: '#c8a96e',
+    },
+  ];
+
+  /* ── Weekly notes ──
+     Each note now points to its own long-form article (not a filtered
+     macro-clocks.html view) — the excerpt lives here, the full write-up
+     with geography/views/strategy/milestones/watchlist/trades/references
+     lives in that article file. Newest first. `slug` must match an entry
+     in macro-clocks.html's WEEKLY_NOTES registry so its backlinks resolve;
+     the article file's own footer links back here with the same slug.
+     To publish next week's note: add one object to the top of this array,
+     add a matching row to WEEKLY_NOTES in macro-clocks.html, done. */
+  const BLOG_POSTS = [
+    {
+      slug: 'rails-and-gold',
+      date: '2026-08-28',
+      href: 'rails-and-gold.html',
+      tag: { en: 'Rails & Gold', vi: 'Kênh Dẫn & Vàng' },
+      tagColor: '#4fa8a0',
+      title: { en: 'The store-of-value job is moving out of the bond market', vi: 'Vai trò lưu trữ giá trị đang rời khỏi thị trường trái phiếu' },
+      excerpt: { en: 'Official gold and stablecoins appear to be splitting the job a 30-year Treasury used to do alone — China\u2019s paper-gold shutdown, gold passing the euro as the No.2 reserve, and settlement-scale gold math from Gromen.',
+                 vi: 'Vàng chính thức và stablecoin dường như đang chia nhau công việc mà trái phiếu 30 năm từng đảm nhận một mình — Trung Quốc ngừng vàng giấy, vàng vượt qua đồng euro thành dự trữ thứ hai, và phép tính vàng ở quy mô thanh toán của Gromen.' },
+    },
+    {
+      slug: 'dollar-funding-stress',
+      date: '2026-08-27',
+      href: 'dollar-funding-stress.html',
+      tag: { en: 'Dollar & Funding', vi: 'Đô La & Thanh Khoản' },
+      tagColor: '#c2726c',
+      title: { en: 'Nobody can pin the long end, and nobody can count the money', vi: 'Không ai ghìm được lãi suất dài hạn, và không ai đếm được lượng tiền thực' },
+      excerpt: { en: 'The $4bn buyback rallied the 30-year ~9bp then fully faded within a week. Snider: M1/M2 are obsolete fossils. Hanke: yen intervention fails the 1997 test, again.',
+                 vi: 'Đợt mua lại 4 tỷ USD đẩy lợi suất 30 năm giảm ~9 điểm cơ bản rồi phai nhạt hoàn toàn trong một tuần. Snider: M1/M2 là tàn tích lỗi thời. Hanke: can thiệp đồng yên lại không vượt qua phép thử 1997.' },
+    },
+    {
+      slug: 'neo-mercantilist-alignment',
+      date: '2026-08-27',
+      href: 'neo-mercantilist-alignment.html',
+      tag: { en: 'Alignment', vi: 'Liên Minh' },
+      tagColor: '#8b8fd6',
+      title: { en: 'Pick a rail, or pick Iran', vi: 'Chọn một kênh dẫn, hoặc chọn Iran' },
+      excerpt: { en: 'Every / Taggart: nations are being forced onto US markets, tech, finance and stablecoins — or toward Iran, with a China complication. Currently a single-source thread, flagged as such.',
+                 vi: 'Every / Taggart: các quốc gia bị buộc phải chọn thị trường, công nghệ, tài chính & stablecoin của Mỹ — hoặc ngả về Iran, với biến số Trung Quốc. Hiện chỉ có một nguồn cho luồng này, được ghi chú rõ.' },
+    },
+    {
+      slug: 'fiscal-dominance',
+      date: '2026-08-21',
+      href: 'fiscal-dominance.html',
+      tag: { en: 'Fiscal Dominance', vi: 'Thế Thượng Phong Tài Khóa' },
+      tagColor: '#c9a24a',
+      title: { en: 'The math isn\u2019t a future risk. It\u2019s already policy', vi: 'Bài toán không phải rủi ro tương lai. Nó đã là chính sách' },
+      excerpt: { en: 'NIIP near \u221280% of GDP; entitlements + interest + veterans near 105% of receipts. AI capex is now the fastest channel carrying that math to household balance sheets.',
+                 vi: 'NIIP gần \u221280% GDP; phúc lợi + lãi vay + cựu chiến binh gần 105% nguồn thu. Chi tiêu vốn AI hiện là kênh nhanh nhất đưa bài toán đó đến bảng cân đối tài chính hộ gia đình.' },
+    },
   ];
 
   const ASSETS = [
@@ -600,6 +779,32 @@
       listEl.appendChild(a);
     });
 
+    // Weekly notes list (newest first)
+    const blogEl = document.getElementById('list-blog');
+    blogEl.innerHTML = '';
+    const postsSorted = [...BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+    postsSorted.forEach(post => {
+      const a = document.createElement('a');
+      a.href = post.href;
+      a.id = 'note-' + post.slug;
+      a.className = 'note-row';
+      a.style.setProperty('--c', post.tagColor);
+      const d = new Date(post.date + 'T00:00:00');
+      const dateLabel = d.toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', { day: 'numeric', month: 'short', year: 'numeric' });
+      a.innerHTML = `
+        <span class="note-date">${dateLabel}</span>
+        <div class="note-body">
+          <div class="note-title">
+            ${post.title[lang]}
+            <span class="card-tag" style="border-color:${post.tagColor}; color:${post.tagColor};">${post.tag[lang]}</span>
+          </div>
+          <div class="note-excerpt">${post.excerpt[lang]}</div>
+        </div>
+        <span class="note-arrow">${lang === 'en' ? 'Read' : 'Đọc'} →</span>
+      `;
+      blogEl.appendChild(a);
+    });
+
     // Asset carousel
     const gridEl = document.getElementById('grid-assets');
     gridEl.innerHTML = '';
@@ -616,7 +821,7 @@
 
     // Footer count
     const fc = document.getElementById('footer-count');
-    fc.textContent = T[lang].footerCount(APPS.length, ASSETS.length);
+    fc.textContent = T[lang].footerCount(APPS.length, BLOG_POSTS.length, ASSETS.length);
   }
 
   function scrollCarousel(id, dir) {
