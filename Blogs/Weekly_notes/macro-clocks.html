@@ -621,16 +621,10 @@ const panes = document.querySelectorAll('section.pane');
    new weekly note in index.html, add its match here too (same slug).
    ========================================================================= */
 const WEEKLY_NOTES = [
-  {slug:'map-compiled',      title:'The map, compiled',            matchTab:'ledger'},
-  {slug:'clock-a-money',     title:'Nobody can count the money',   matchClock:'A'},
-  {slug:'clock-b-gold',      title:'All roads lead to gold',       matchClock:'B'},
-  {slug:'clock-c-rails',     title:'Rails that coexist',           matchClock:'C'},
-  {slug:'switch-d-alignment',title:'Alignment or Iran',            matchClock:'D'},
-  {slug:'geo-china-gold',    title:'Paper gold shuts down',        matchGeo:'China'},
-  {slug:'geo-us-buyback',    title:'The buyback that faded',       matchGeo:'US'},
-  {slug:'geo-japan-1997',    title:'1997 test, again',             matchGeo:'Japan-Asia'},
-  {slug:'watchlist-buyback', title:'What to watch this week',      matchTab:'watchlist'},
-  {slug:'milestones-window', title:'Milestone 1 window opens',     matchTab:'milestones'},
+  {slug:'dollar-funding-stress',       title:'Nobody can pin the long end, and nobody can count the money', matchClock:'A', matchGeoList:['US','Japan-Asia']},
+  {slug:'fiscal-dominance',            title:'The math isn\u2019t a future risk. It\u2019s already policy',        matchClock:'B'},
+  {slug:'rails-and-gold',              title:'The store-of-value job is moving out of the bond market',     matchClock:'C', matchGeoList:['China','Europe-UK']},
+  {slug:'neo-mercantilist-alignment',  title:'Pick a rail, or pick Iran',                                    matchClock:'D'},
 ];
 function noteBacklinkHtml(note){
   if(!note) return '';
@@ -640,7 +634,7 @@ function noteLinkForClock(clock){
   return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchClock===clock));
 }
 function noteLinkForGeo(geo){
-  return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchGeo===geo));
+  return noteBacklinkHtml(WEEKLY_NOTES.find(n=>(n.matchGeoList||[]).includes(geo)));
 }
 function noteLinkForTab(tab){
   return noteBacklinkHtml(WEEKLY_NOTES.find(n=>n.matchTab===tab));
